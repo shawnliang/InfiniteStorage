@@ -17,6 +17,8 @@
 		519E5162170AA8C0000A58DF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 519E5142170AA8C0000A58DF /* Cocoa.framework */; };
 		519E516A170AA8C0000A58DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 519E5168170AA8C0000A58DF /* InfoPlist.strings */; };
 		519E516D170AA8C0000A58DF /* InfinityStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 519E516C170AA8C0000A58DF /* InfinityStorageTests.m */; };
+		519E517E170AAB15000A58DF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 519E5147170AA8C0000A58DF /* Foundation.framework */; };
+		519E5181170AE10D000A58DF /* WFBonjourServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 519E5180170AE10D000A58DF /* WFBonjourServer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,25 +32,27 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		519E513F170AA8C0000A58DF /* InfinityStorage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InfinityStorage.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		519E513F170AA8C0000A58DF /* InfiniteStorage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InfiniteStorage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		519E5142170AA8C0000A58DF /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		519E5145170AA8C0000A58DF /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		519E5146170AA8C0000A58DF /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		519E5147170AA8C0000A58DF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		519E514A170AA8C0000A58DF /* InfinityStorage-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "InfinityStorage-Info.plist"; sourceTree = "<group>"; };
+		519E514A170AA8C0000A58DF /* InfiniteStorage-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "InfiniteStorage-Info.plist"; sourceTree = "<group>"; };
 		519E514C170AA8C0000A58DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		519E514E170AA8C0000A58DF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		519E5150170AA8C0000A58DF /* InfinityStorage-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "InfinityStorage-Prefix.pch"; sourceTree = "<group>"; };
+		519E5150170AA8C0000A58DF /* InfiniteStorage-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "InfiniteStorage-Prefix.pch"; sourceTree = "<group>"; };
 		519E5152170AA8C0000A58DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		519E5154170AA8C0000A58DF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		519E5155170AA8C0000A58DF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		519E5158170AA8C0000A58DF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		519E515F170AA8C0000A58DF /* InfinityStorageTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InfinityStorageTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		519E515F170AA8C0000A58DF /* InfiniteStorageTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InfiniteStorageTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		519E5160170AA8C0000A58DF /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		519E5167170AA8C0000A58DF /* InfinityStorageTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "InfinityStorageTests-Info.plist"; sourceTree = "<group>"; };
+		519E5167170AA8C0000A58DF /* InfiniteStorageTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "InfiniteStorageTests-Info.plist"; sourceTree = "<group>"; };
 		519E5169170AA8C0000A58DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		519E516B170AA8C0000A58DF /* InfinityStorageTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InfinityStorageTests.h; sourceTree = "<group>"; };
 		519E516C170AA8C0000A58DF /* InfinityStorageTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfinityStorageTests.m; sourceTree = "<group>"; };
+		519E517F170AE10D000A58DF /* WFBonjourServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFBonjourServer.h; sourceTree = "<group>"; };
+		519E5180170AE10D000A58DF /* WFBonjourServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFBonjourServer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				519E517E170AAB15000A58DF /* Foundation.framework in Frameworks */,
 				519E5143170AA8C0000A58DF /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -85,8 +90,8 @@
 		519E5140170AA8C0000A58DF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				519E513F170AA8C0000A58DF /* InfinityStorage.app */,
-				519E515F170AA8C0000A58DF /* InfinityStorageTests.octest */,
+				519E513F170AA8C0000A58DF /* InfiniteStorage.app */,
+				519E515F170AA8C0000A58DF /* InfiniteStorageTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -114,6 +119,8 @@
 		519E5148170AA8C0000A58DF /* InfinityStorage */ = {
 			isa = PBXGroup;
 			children = (
+				519E517F170AE10D000A58DF /* WFBonjourServer.h */,
+				519E5180170AE10D000A58DF /* WFBonjourServer.m */,
 				519E5154170AA8C0000A58DF /* AppDelegate.h */,
 				519E5155170AA8C0000A58DF /* AppDelegate.m */,
 				519E5157170AA8C0000A58DF /* MainMenu.xib */,
@@ -125,10 +132,10 @@
 		519E5149170AA8C0000A58DF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				519E514A170AA8C0000A58DF /* InfinityStorage-Info.plist */,
+				519E514A170AA8C0000A58DF /* InfiniteStorage-Info.plist */,
 				519E514B170AA8C0000A58DF /* InfoPlist.strings */,
 				519E514E170AA8C0000A58DF /* main.m */,
-				519E5150170AA8C0000A58DF /* InfinityStorage-Prefix.pch */,
+				519E5150170AA8C0000A58DF /* InfiniteStorage-Prefix.pch */,
 				519E5151170AA8C0000A58DF /* Credits.rtf */,
 			);
 			name = "Supporting Files";
@@ -147,7 +154,7 @@
 		519E5166170AA8C0000A58DF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				519E5167170AA8C0000A58DF /* InfinityStorageTests-Info.plist */,
+				519E5167170AA8C0000A58DF /* InfiniteStorageTests-Info.plist */,
 				519E5168170AA8C0000A58DF /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -156,9 +163,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		519E513E170AA8C0000A58DF /* InfinityStorage */ = {
+		519E513E170AA8C0000A58DF /* InfiniteStorage */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 519E5170170AA8C0000A58DF /* Build configuration list for PBXNativeTarget "InfinityStorage" */;
+			buildConfigurationList = 519E5170170AA8C0000A58DF /* Build configuration list for PBXNativeTarget "InfiniteStorage" */;
 			buildPhases = (
 				519E513B170AA8C0000A58DF /* Sources */,
 				519E513C170AA8C0000A58DF /* Frameworks */,
@@ -168,14 +175,14 @@
 			);
 			dependencies = (
 			);
-			name = InfinityStorage;
+			name = InfiniteStorage;
 			productName = InfinityStorage;
-			productReference = 519E513F170AA8C0000A58DF /* InfinityStorage.app */;
+			productReference = 519E513F170AA8C0000A58DF /* InfiniteStorage.app */;
 			productType = "com.apple.product-type.application";
 		};
-		519E515E170AA8C0000A58DF /* InfinityStorageTests */ = {
+		519E515E170AA8C0000A58DF /* InfiniteStorageTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 519E5173170AA8C0000A58DF /* Build configuration list for PBXNativeTarget "InfinityStorageTests" */;
+			buildConfigurationList = 519E5173170AA8C0000A58DF /* Build configuration list for PBXNativeTarget "InfiniteStorageTests" */;
 			buildPhases = (
 				519E515A170AA8C0000A58DF /* Sources */,
 				519E515B170AA8C0000A58DF /* Frameworks */,
@@ -187,9 +194,9 @@
 			dependencies = (
 				519E5164170AA8C0000A58DF /* PBXTargetDependency */,
 			);
-			name = InfinityStorageTests;
+			name = InfiniteStorageTests;
 			productName = InfinityStorageTests;
-			productReference = 519E515F170AA8C0000A58DF /* InfinityStorageTests.octest */;
+			productReference = 519E515F170AA8C0000A58DF /* InfiniteStorageTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -201,7 +208,7 @@
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Waveface Inc.";
 			};
-			buildConfigurationList = 519E513A170AA8C0000A58DF /* Build configuration list for PBXProject "InfinityStorage" */;
+			buildConfigurationList = 519E513A170AA8C0000A58DF /* Build configuration list for PBXProject "InfiniteStorage" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -213,8 +220,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				519E513E170AA8C0000A58DF /* InfinityStorage */,
-				519E515E170AA8C0000A58DF /* InfinityStorageTests */,
+				519E513E170AA8C0000A58DF /* InfiniteStorage */,
+				519E515E170AA8C0000A58DF /* InfiniteStorageTests */,
 			);
 		};
 /* End PBXProject section */
@@ -263,6 +270,7 @@
 			files = (
 				519E514F170AA8C0000A58DF /* main.m in Sources */,
 				519E5156170AA8C0000A58DF /* AppDelegate.m in Sources */,
+				519E5181170AE10D000A58DF /* WFBonjourServer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,7 +287,7 @@
 /* Begin PBXTargetDependency section */
 		519E5164170AA8C0000A58DF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 519E513E170AA8C0000A58DF /* InfinityStorage */;
+			target = 519E513E170AA8C0000A58DF /* InfiniteStorage */;
 			targetProxy = 519E5163170AA8C0000A58DF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -384,9 +392,9 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "InfinityStorage/InfinityStorage-Prefix.pch";
-				INFOPLIST_FILE = "InfinityStorage/InfinityStorage-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "InfinityStorage/InfiniteStorage-Prefix.pch";
+				INFOPLIST_FILE = "InfinityStorage/InfiniteStorage-Info.plist";
+				PRODUCT_NAME = InfiniteStorage;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -396,9 +404,9 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "InfinityStorage/InfinityStorage-Prefix.pch";
-				INFOPLIST_FILE = "InfinityStorage/InfinityStorage-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "InfinityStorage/InfiniteStorage-Prefix.pch";
+				INFOPLIST_FILE = "InfinityStorage/InfiniteStorage-Info.plist";
+				PRODUCT_NAME = InfiniteStorage;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -411,8 +419,8 @@
 				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "InfinityStorage/InfinityStorage-Prefix.pch";
-				INFOPLIST_FILE = "InfinityStorageTests/InfinityStorageTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "InfinityStorageTests/InfiniteStorageTests-Info.plist";
+				PRODUCT_NAME = InfiniteStorageTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -426,8 +434,8 @@
 				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "InfinityStorage/InfinityStorage-Prefix.pch";
-				INFOPLIST_FILE = "InfinityStorageTests/InfinityStorageTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "InfinityStorageTests/InfiniteStorageTests-Info.plist";
+				PRODUCT_NAME = InfiniteStorageTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -436,7 +444,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		519E513A170AA8C0000A58DF /* Build configuration list for PBXProject "InfinityStorage" */ = {
+		519E513A170AA8C0000A58DF /* Build configuration list for PBXProject "InfiniteStorage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				519E516E170AA8C0000A58DF /* Debug */,
@@ -445,21 +453,23 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		519E5170170AA8C0000A58DF /* Build configuration list for PBXNativeTarget "InfinityStorage" */ = {
+		519E5170170AA8C0000A58DF /* Build configuration list for PBXNativeTarget "InfiniteStorage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				519E5171170AA8C0000A58DF /* Debug */,
 				519E5172170AA8C0000A58DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
-		519E5173170AA8C0000A58DF /* Build configuration list for PBXNativeTarget "InfinityStorageTests" */ = {
+		519E5173170AA8C0000A58DF /* Build configuration list for PBXNativeTarget "InfiniteStorageTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				519E5174170AA8C0000A58DF /* Debug */,
 				519E5175170AA8C0000A58DF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

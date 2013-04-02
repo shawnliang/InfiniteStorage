@@ -8,8 +8,15 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate> {
+    IBOutlet NSTextField *statusBar;
+    IBOutlet NSButton *actionButton;
+}
 
 @property (assign) IBOutlet NSWindow *window;
+
+
+- (IBAction) actionClicked:(id)sender;
+
 
 @end
