@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="zh-TW" xmlns="http://schemas.microsoft.com/wix/2006/localization" Codepage="65001">
+  <!-- This is translation to Chinese (Traditional, Taiwan) -->
+  <String Id="LANGUAGE">1028</String>
+  <String Id="CULTURE">zh-TW</String>
+  <String Id="APPNAME">(zh-TW) Infinite Storage</String>
+  <String Id="SHORTCUT.UNINSTALLER.NAME">(zh-TW) Uninstaller</String>
+  <String Id="FEATURE.UNINSTALLER.TITLE">(zh-TW) Uninstaller</String>
+  <String Id="FEATURE.UNINSTALLER.DESCRIPTION">(zh-TW) Description of uninstaller</String>
+  <String Id="FEATURE.MAINFEATURE.TITLE">(zh-TW) Main feature</String>
+  <String Id="FEATURE.MAINFEATURE.DESCRIPTION">(zh-TW) This is description of the main feature of the product</String>
+  <String Id="FEATURE.SUBFEATURE.TITLE">(zh-TW) Sub feature</String>
+  <String Id="FEATURE.SUBFEATURE.DESCRIPTION">(zh-TW) This is description of one of the subfeature of the product</String>
+  <String Id="FEATURE.DOCUMENTATION.TITLE">(zh-TW) Documentation</String>
+  <String Id="FEATURE.DOCUMENTATION.DESCRIPTION">(zh-TW) These are common files for viewing documentation</String>
+  <String Id="FEATURE.ENGLISH.TITLE">(zh-TW) English</String>
+  <String Id="FEATURE.ENGLISH.DESCRIPTION">(zh-TW) English documentation</String>
+  <String Id="FEATURE.FRENCH.TITLE">(zh-TW) French</String>
+  <String Id="FEATURE.FRENCH.DESCRIPTION">(zh-TW) French documentaion</String>
+  <String Id="FEATURE.GERMAN.TITLE">(zh-TW) German</String>
+  <String Id="FEATURE.GERMAN.DESCRIPTION">(zh-TW) German documentation</String>
+</WixLocalization>

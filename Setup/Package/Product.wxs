@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?define AppCode = "InfiniteStorage" ?>
+  <?define AppProductCode = "{2fc96c10-c0e0-43aa-8bc9-00c6b9cca391}" ?>
+  <?define AppVersionMajor = "0" ?>
+  <?define AppVersionMinor = "5" ?>
+  <?define AppVersionPatch = "0" ?>
+  <?define AppVersionBuild = "0" ?>
+  <?define AppVersion = "$(var.AppVersionMajor).$(var.AppVersionMinor).$(var.AppVersionPatch).$(var.AppVersionBuild)" ?>
+  <?define AppManufacturer = "Waveface" ?>
+  <?define DefaultCulture = "en-US" ?>
+  <Product Id="$(var.AppProductCode)" Name="$(var.AppCode)" Language="!(loc.LANGUAGE)" Version="$(var.AppVersion)" Manufacturer="$(var.AppManufacturer)" UpgradeCode="{2e15093a-8bab-4e3b-9b33-043057fea922}">
+    <Package Id="*" InstallerVersion="200" Compressed="yes" />
+    <Media Id="1" Cabinet="media1.cab" EmbedCab="no" />
+    <Property Id="INSTALLLEVEL" Value="100" />
+    <Property Id="ALLUSERS" Value="1" />
+    <Property Id="TEST" Value="NO" />
+    <!-- <Icon Id="icon.ico" SourceFile="..\ProductBuild\sampleIcon.ico" /> -->
+
+    <Directory Id="TARGETDIR" Name="SourceDir" DiskId="1">
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name="!(loc.APPNAME)">
+          <Component Id="pmd" Guid="{971d558a-99d6-40cc-89ed-f24620bfcf4b}">
+            <RegistryValue Root="HKCU" Key="SOFTWARE\$(var.AppCode)\ProgramMenuDir" Type="string" Value="ProgramMenuDir" KeyPath="yes" />
+            <RemoveFolder Id="ProgramMenuDirRF" On="uninstall" />
+
+            <Shortcut Id="ProgMenu.Shortcut.Uninstaller" Name="!(loc.SHORTCUT.UNINSTALLER.NAME)"
+                      WorkingDirectory="INSTALLDIR" Target="[UninstallDir]Uninstaller.exe" Arguments="!(loc.CULTURE)" />
+            
+          </Component>
+        </Directory>
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+
+    <?include Product.Uninstaller.wxi ?>
+    <DirectoryRef Id="TARGETDIR">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLLOCATION" Name="$(var.AppCode)">
+          
+          <!--
+          <Component Id="MainExecutable" Guid="{ca876046-2016-467c-9d2d-c1eee38fcc87}">
+            <File Id="MainExecutableFile" Name="SampleApp.exe" Source="..\ProductBuild\sampleFile.txt" KeyPath="yes">
+              <Shortcut Id="MainExecutableStartMenu" Directory="ProgramMenuDir" Name="!(loc.APPNAME)" WorkingDirectory="INSTALLDIR" Icon="icon.ico" IconIndex="0" Advertise="yes"/>
+              <Shortcut Id="MainExecutableDesktop" Directory="DesktopFolder" Name="!(loc.APPNAME)" WorkingDirectory="INSTALLDIR" Icon="icon.ico" IconIndex="0" Advertise="yes" />
+            </File>
+          </Component>
+          <Component Id="SubFeatureExecutable" Guid="{17be4274-7017-40fe-84cd-184de0246a99}">
+            <File Id="SubFeatureExecutableFile" Name="SampleLibrary.dll" Source="..\ProductBuild\sampleFile.txt" Vital="yes" />
+          </Component>
+          <Component Id="DocumentationPound" Guid="{1861cd98-31d3-43a1-b72d-b41c54ba4753}">
+            <File Id="DocumentationPoundFile" Name="Pound.currency" Source="..\ProductBuild\sampleFile.txt" Vital="yes" />
+          </Component>
+          <Component Id="DocumentationEuro" Guid="{e7769d61-b057-46c4-83d4-5faf53bd6436}">
+            <File Id="DocumentationEuroFile" Name="Euro.currency" Source="..\ProductBuild\sampleFile.txt" Vital="yes" />
+          </Component>
+          <Component Id="DocumentationCommon" Guid="{340416dd-8704-4f46-bf0e-e95638e80f19}">
+            <File Id="DocumentationCommonFile" Name="help.exe" Source="..\ProductBuild\sampleFile.txt" Vital="yes" />
+          </Component>
+          <Component Id="DocumentationEnglish" Guid="{1aa674b1-9902-4a45-b76d-14530b0f07c5}">
+            <File Id="DocumentationEnglishFile" Name="English.documentation" Source="..\ProductBuild\sampleFile.txt" Vital="yes" />
+          </Component>
+          <Component Id="DocumentationFrench" Guid="{3d435a37-8617-46d6-b26e-3951eb6f2562}">
+            <File Id="DocumentationFrenchFile" Name="French.documentation" Source="..\ProductBuild\sampleFile.txt" Vital="yes" />
+          </Component>
+          <Component Id="DocumentationGerman" Guid="{91b2c569-1297-45a7-8c15-41748cc6f115}">
+            <File Id="DocumentationGermanFile" Name="German.documentation" Source="..\ProductBuild\sampleFile.txt" Vital="yes" />
+          </Component>
+          
+          -->
+        </Directory>
+      </Directory>
+    </DirectoryRef>
+
+    <Feature Id='MainFeature' Level='1' Title='!(loc.FEATURE.MAINFEATURE.TITLE)' Description='!(loc.FEATURE.MAINFEATURE.DESCRIPTION)' Display='collapse'>
+      <ComponentRef Id='pmd'/>
+    </Feature>
+
+    <!--
+    <Binary Id="SharpSetupCAFile" SourceFile="$(var.SharpSetupToolsDir)\SharpSetup.CustomActions.CA.dll"/>
+    <CustomAction Id="SampleCAData" Property="SampleCA" Value="CommandLine=C:\Windows\system32\ping.exe -n 10 127.0.0.1;ApproximateTime=10" Return="check" />
+    <CustomAction Id="SampleCA" DllEntry="ExeCustomAction" BinaryKey="SharpSetupCAFile" Return="check" Execute="deferred" />
+    <InstallExecuteSequence>
+      <Custom Action="SampleCAData" Before="SampleCA"/>
+      <Custom Action="SampleCA" Before="InstallFinalize"/>
+    </InstallExecuteSequence>
+    <UI>
+      <ProgressText Action="SampleCA">Sample Custom Action</ProgressText>
+    </UI>
+    -->
+  </Product>
+</Wix>

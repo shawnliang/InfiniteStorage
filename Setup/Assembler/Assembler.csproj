@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectGuid>{38A37A25-0F69-41E6-B9BC-3139C59489B8}</ProjectGuid>
+    <AssemblyName>InfiniteStorage</AssemblyName>
+    <OutputPath>..\$(Configuration)\</OutputPath>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Assembler</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(SharpSetupTargetsPath)\SharpSetup.Assembler.targets" />
+  <ItemGroup>
+    <IncludeInCab Include="..\Debug\Gui.exe">
+      <Link>Gui.exe</Link>
+    </IncludeInCab>
+    <IncludeInCab Include="..\Debug\IntermediateBootstrapper.dll">
+      <Link>IntermediateBootstrapper.dll</Link>
+    </IncludeInCab>
+    <IncludeInCab Include="..\Debug\media1.cab">
+      <Link>media1.cab</Link>
+    </IncludeInCab>
+    <IncludeInCab Include="..\Debug\Package.msi">
+      <Link>Package.msi</Link>
+    </IncludeInCab>
+    <IncludeInCab Include="..\Debug\SharpSetup.dll">
+      <Link>SharpSetup.dll</Link>
+    </IncludeInCab>
+  </ItemGroup>
+  <ItemGroup>
+    <IncludeInCabExtracted Include="..\Debug\Gui.translations.cab">
+      <Link>Gui.translations.cab</Link>
+    </IncludeInCabExtracted>
+    <IncludeInCabExtracted Include="..\Debug\SharpSetup.translations.cab">
+      <Link>SharpSetup.translations.cab</Link>
+    </IncludeInCabExtracted>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+</Project>

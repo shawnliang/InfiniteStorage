@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  <Property Id="ARPSYSTEMCOMPONENT" Value="1"/>
+
+  <DirectoryRef Id="TARGETDIR">
+    <Component Id="AddRemovePrograms" Guid="{9ad19cc4-2d43-4356-9c09-b579567c5459}">
+      <RegistryValue Id="ARPEntry1" Type="string" Action="write" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\$(var.AppCode)" Name="DisplayName" Value="!(loc.APPNAME)"/>
+      <RegistryValue Id="ARPEntry2" Type="string" Action="write" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\$(var.AppCode)" Name="DisplayVersion" Value="$(var.AppVersion)"/>
+      <RegistryValue Id="ARPEntry3" Type="string" Action="write" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\$(var.AppCode)" Name="Publisher" Value="$(var.AppManufacturer)"/>
+      <RegistryValue Id="ARPEntry4" Type="integer" Action="write" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\$(var.AppCode)" Name="NoModify" Value="1"/>
+      <RegistryValue Id="ARPEntry5" Type="string" Action="write" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\$(var.AppCode)" Name="UninstallString" Value="&quot;[CommonAppDataFolder]\[ProductCode]\Uninstaller.exe&quot; !(loc.CULTURE)"/>
+      <RegistryValue Id="ARPEntry6" Type="string" Action="write" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\$(var.AppCode)" Name="VersionMajor" Value="$(var.AppVersionMajor)"/>
+      <RegistryValue Id="ARPEntry7" Type="string" Action="write" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\$(var.AppCode)" Name="VersionMinor" Value="$(var.AppVersionMinor)"/>
+      <RegistryValue Id="ARPEntry8" Type="string" Action="write" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\$(var.AppCode)" Name="DisplayIcon" Value="[CommonAppDataFolder]\[ProductCode]\Uninstaller.exe"/>
+      <RegistryValue Id="ARPEntry9" Type="string" Action="write" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\$(var.AppCode)" Name="LanguageCode" Value="!(loc.CULTURE)"/>
+      <!-- <RegistryValue Id="ARPEntryN" Type="string" Action="write" Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Uninstall\WixMsi" Name="CustomProperty" Value="[CUSTOMPROPERTY]"/>  -->
+    </Component>
+    <Directory Id="CommonAppDataFolder">
+      <Directory Id="UninstallDir" Name="$(var.AppProductCode)">
+        <Component Id="UninstallerExe" Guid="{1c8a8d20-888a-4b67-8d58-8ffdb0790fad}">
+          <File Id="UninstallerExeFile" Name="Uninstaller.exe" Source="$(var.OutDir)\Gui.exe" Vital="yes" KeyPath="yes">
+          </File>
+        </Component>
+        <Component Id="UninstallerDll" Guid="{84efa597-7875-46b3-8692-b5535401f911}">
+          <File Id="UninstallerDllFile" Name="SharpSetup.dll" Source="$(var.OutDir)\SharpSetup.dll" Vital="yes" />
+        </Component>
+        <?foreach Culture in $(var.Cultures) ?>
+        <Directory Id="UninstallerDirLocalization_$(ss.Replace($(var.Culture), -, _))" Name="$(ss.Replace($(var.Culture), default, $(var.DefaultCulture)))">
+          <?if $(var.Culture) != default ?>
+          <Component Id="UninstallerExeLocalization_$(ss.Replace($(var.Culture), -, _))" Guid="*">
+            <File Id="UninstallerExeLocalizationFile_$(ss.Replace($(var.Culture), -, _))" Name="Gui.resources.dll" Source="$(var.OutDir)\$(ss.Replace($(var.Culture), default, $(var.DefaultCulture)))\Gui.resources.dll" Vital="yes" />
+          </Component>
+          <?endif?>
+          <Component Id="UninstallerDllLocalization_$(ss.Replace($(var.Culture), -, _))" Guid="*">
+            <File Id="UninstallerDllLocalizationFile_$(ss.Replace($(var.Culture), -, _))" Name="SharpSetup.resources.dll" Source="$(var.OutDir)\$(ss.Replace($(var.Culture), default, $(var.DefaultCulture)))\SharpSetup.resources.dll" Vital="yes" />
+          </Component>
+        </Directory>
+        <?endforeach?>
+      </Directory>
+    </Directory>
+  </DirectoryRef>
+
+  <Feature Id="Uninstaller" Level="1" Title="!(loc.FEATURE.UNINSTALLER.TITLE)" Description="!(loc.FEATURE.UNINSTALLER.DESCRIPTION)" Display="hidden">
+    <ComponentRef Id="UninstallerExe" />
+    <ComponentRef Id="UninstallerDll" />
+    <?foreach Culture in $(var.Cultures) ?>
+    <?if $(var.Culture) != default ?>
+    <ComponentRef Id="UninstallerExeLocalization_$(ss.Replace($(var.Culture), -, _))" />
+    <?endif?>
+    <ComponentRef Id="UninstallerDllLocalization_$(ss.Replace($(var.Culture), -, _))" />
+    <?endforeach?>
+    <ComponentRef Id="AddRemovePrograms" />
+  </Feature>
+
+</Include>
