@@ -38,18 +38,23 @@ namespace InfiniteStorage
 			}
 			catch
 			{
-				Error();
+				OnError();
 				throw;
 			}
 		}
 
-		public void Error()
+		public void Clear()
 		{
 			if (ctx != null && ctx.temp_file != null)
 			{
 				ctx.temp_file.Delete();
 				ctx.temp_file = null;
 			}
+		}
+
+		public void OnError()
+		{
+			Clear();
 		}
 	}
 }

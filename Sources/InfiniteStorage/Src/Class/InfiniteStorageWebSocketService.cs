@@ -5,12 +5,14 @@ using System.Text;
 using WebSocketSharp.Server;
 using WebSocketSharp;
 using System.IO;
+using log4net;
 
 namespace InfiniteStorage
 {
 	class InfiniteStorageWebSocketService: WebSocketService
 	{
-		ProtocolHanlder handler;
+		private static ILog logger = LogManager.GetLogger("WebsocketService");
+		private ProtocolHanlder handler;
 
 		public InfiniteStorageWebSocketService()
 		{
@@ -38,10 +40,17 @@ namespace InfiniteStorage
 			}
 			catch (WebsocketProtocol.ProtocolErrorException err)
 			{
+				logger.Warn("Protocol error. Close connection.", err);
 				this.Stop(WebSocketSharp.Frame.CloseStatusCode.PROTOCOL_ERROR, err.Message);
 				Stop();
 			}
-			
+			catch (Exception err)
+			{
+				logger.Warn("Error handing websocket data", err);
+#if DEBUG
+				System.Diagnostics.Debug.Fail(err.Message);
+#endif
+			}
 		}
 
 		protected override void onOpen(object sender, EventArgs e)
@@ -51,13 +60,14 @@ namespace InfiniteStorage
 
 		protected override void onError(object sender, WebSocketSharp.ErrorEventArgs e)
 		{
-			handler.Error();
+			logger.Warn("Error occured: " + e.Message);
+			handler.OnError();
 			base.onError(sender, e);
 		}
 
 		protected override void onClose(object sender, CloseEventArgs e)
 		{
-			handler.Error();
+			handler.Clear();
 			base.onClose(sender, e);
 		}
 	}

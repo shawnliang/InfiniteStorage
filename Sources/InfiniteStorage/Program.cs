@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Bonjour;
 using WebSocketSharp.Server;
+using log4net;
 
 namespace InfiniteStorage
 {
@@ -20,6 +21,8 @@ namespace InfiniteStorage
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
+
+			configureLog4net();
 
 
 			var port = (ushort)13895;
@@ -47,18 +50,15 @@ namespace InfiniteStorage
 			ws_server.Stop();
 		}
 
+		private static void configureLog4net()
+		{
+			
+			//log4net.Config.XmlConfigurator.ConfigureAndWatch();
+		}
+
 		static void m_bonjourService_Error(object sender, BonjourErrorEventArgs e)
 		{
 			MessageBox.Show("Bonjour DNS operation error: " + e.error, "Error");
-		}
-
-		static void m_eventManager_ServiceRegistered(DNSSDService service, DNSSDFlags flags, string name, string regtype, string domain)
-		{
-		}
-
-		static void m_eventManager_OperationFailed(DNSSDService service, DNSSDError error)
-		{
-			MessageBox.Show("Operation returned an error code " + error, "Error");
 		}
 	}
 }
