@@ -8,7 +8,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <ProjectGuid>{38A37A25-0F69-41E6-B9BC-3139C59489B8}</ProjectGuid>
-    <AssemblyName>InfiniteStorage</AssemblyName>
+    <AssemblyName>InfiniteStorage-installer</AssemblyName>
     <OutputPath>..\$(Configuration)\</OutputPath>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -28,6 +28,12 @@
     <IncludeInCab Include="..\Debug\IntermediateBootstrapper.dll">
       <Link>IntermediateBootstrapper.dll</Link>
     </IncludeInCab>
+    <IncludeInCab Include="..\..\Libs\bonjourSdk\bonjour.msi">
+      <Link>bonjour.msi</Link>
+    </IncludeInCab>
+    <IncludeInCab Include="..\..\Libs\bonjourSdk\bonjour64.msi">
+      <Link>bonjour64.msi</Link>
+    </IncludeInCab>
     <IncludeInCab Include="..\Debug\media1.cab">
       <Link>media1.cab</Link>
     </IncludeInCab>
@@ -45,8 +51,5 @@
     <IncludeInCabExtracted Include="..\Debug\SharpSetup.translations.cab">
       <Link>SharpSetup.translations.cab</Link>
     </IncludeInCabExtracted>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
   </ItemGroup>
 </Project>

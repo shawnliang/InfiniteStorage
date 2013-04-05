@@ -24,6 +24,11 @@
             <RegistryValue Root="HKCU" Key="SOFTWARE\$(var.AppCode)\ProgramMenuDir" Type="string" Value="ProgramMenuDir" KeyPath="yes" />
             <RemoveFolder Id="ProgramMenuDirRF" On="uninstall" />
 
+            <Shortcut Id="ProgMenu.Shortcut.MainEntry" Name="!(loc.APPNAME)"
+                      WorkingDirectory="INSTALLDIR" Target="[INSTALLLOCATION]InfiniteStorage.exe">
+              <ShortcutProperty Key="System.AppUserModel.ID" Value="com.waveface.infiniteStorage.app"></ShortcutProperty>
+            </Shortcut>
+            
             <Shortcut Id="ProgMenu.Shortcut.Uninstaller" Name="!(loc.SHORTCUT.UNINSTALLER.NAME)"
                       WorkingDirectory="INSTALLDIR" Target="[UninstallDir]Uninstaller.exe" Arguments="!(loc.CULTURE)" />
             
@@ -37,43 +42,38 @@
     <DirectoryRef Id="TARGETDIR">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLLOCATION" Name="$(var.AppCode)">
-          
-          <!--
-          <Component Id="MainExecutable" Guid="{ca876046-2016-467c-9d2d-c1eee38fcc87}">
-            <File Id="MainExecutableFile" Name="SampleApp.exe" Source="..\ProductBuild\sampleFile.txt" KeyPath="yes">
-              <Shortcut Id="MainExecutableStartMenu" Directory="ProgramMenuDir" Name="!(loc.APPNAME)" WorkingDirectory="INSTALLDIR" Icon="icon.ico" IconIndex="0" Advertise="yes"/>
-              <Shortcut Id="MainExecutableDesktop" Directory="DesktopFolder" Name="!(loc.APPNAME)" WorkingDirectory="INSTALLDIR" Icon="icon.ico" IconIndex="0" Advertise="yes" />
-            </File>
+
+          <Component Id="InfiniteStorage.exe" Guid="*">
+            <File Id="InfiniteStorage.exe" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\InfiniteStorage.exe" />
           </Component>
-          <Component Id="SubFeatureExecutable" Guid="{17be4274-7017-40fe-84cd-184de0246a99}">
-            <File Id="SubFeatureExecutableFile" Name="SampleLibrary.dll" Source="..\ProductBuild\sampleFile.txt" Vital="yes" />
+
+          <Component Id="Interop.Bonjour.dll" Guid="*">
+            <File Id="Interop.Bonjour.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Interop.Bonjour.dll" />
           </Component>
-          <Component Id="DocumentationPound" Guid="{1861cd98-31d3-43a1-b72d-b41c54ba4753}">
-            <File Id="DocumentationPoundFile" Name="Pound.currency" Source="..\ProductBuild\sampleFile.txt" Vital="yes" />
+
+          <Component Id="log4net.dll" Guid="*">
+            <File Id="log4net.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\log4net.dll" />
           </Component>
-          <Component Id="DocumentationEuro" Guid="{e7769d61-b057-46c4-83d4-5faf53bd6436}">
-            <File Id="DocumentationEuroFile" Name="Euro.currency" Source="..\ProductBuild\sampleFile.txt" Vital="yes" />
+
+          <Component Id="Newtonsoft.Json.dll" Guid="*">
+            <File Id="Newtonsoft.Json.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Newtonsoft.Json.dll" />
           </Component>
-          <Component Id="DocumentationCommon" Guid="{340416dd-8704-4f46-bf0e-e95638e80f19}">
-            <File Id="DocumentationCommonFile" Name="help.exe" Source="..\ProductBuild\sampleFile.txt" Vital="yes" />
+
+          <Component Id="websocketsharp.dll" Guid="*">
+            <File Id="websocketsharp.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\websocket-sharp.dll" />
           </Component>
-          <Component Id="DocumentationEnglish" Guid="{1aa674b1-9902-4a45-b76d-14530b0f07c5}">
-            <File Id="DocumentationEnglishFile" Name="English.documentation" Source="..\ProductBuild\sampleFile.txt" Vital="yes" />
-          </Component>
-          <Component Id="DocumentationFrench" Guid="{3d435a37-8617-46d6-b26e-3951eb6f2562}">
-            <File Id="DocumentationFrenchFile" Name="French.documentation" Source="..\ProductBuild\sampleFile.txt" Vital="yes" />
-          </Component>
-          <Component Id="DocumentationGerman" Guid="{91b2c569-1297-45a7-8c15-41748cc6f115}">
-            <File Id="DocumentationGermanFile" Name="German.documentation" Source="..\ProductBuild\sampleFile.txt" Vital="yes" />
-          </Component>
-          
-          -->
+
         </Directory>
       </Directory>
     </DirectoryRef>
 
     <Feature Id='MainFeature' Level='1' Title='!(loc.FEATURE.MAINFEATURE.TITLE)' Description='!(loc.FEATURE.MAINFEATURE.DESCRIPTION)' Display='collapse'>
       <ComponentRef Id='pmd'/>
+      <ComponentRef Id='InfiniteStorage.exe' />
+      <ComponentRef Id="Interop.Bonjour.dll" />
+      <ComponentRef Id="log4net.dll" />
+      <ComponentRef Id="Newtonsoft.Json.dll" />
+      <ComponentRef Id="websocketsharp.dll" />
     </Feature>
 
     <!--
