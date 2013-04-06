@@ -42,6 +42,7 @@
     <Reference Include="SharpSetup, Version=1.4.1.158, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -51,6 +52,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BonjourInstallationStep.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BonjourInstallationStep.Designer.cs">
+      <DependentUpon>BonjourInstallationStep.cs</DependentUpon>
+    </Compile>
     <Compile Include="FatalErrorStep.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -95,6 +102,9 @@
     <Compile Include="WelcomeStep.Designer.cs">
       <DependentUpon>WelcomeStep.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="BonjourInstallationStep.resx">
+      <DependentUpon>BonjourInstallationStep.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FatalErrorStep.resx">
       <DependentUpon>FatalErrorStep.cs</DependentUpon>
     </EmbeddedResource>
@@ -140,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.ico" />
+    <Content Include="ResourceFiles\BonjourInstallationStep.png" />
     <Content Include="ResourceFiles\InstallationStep.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

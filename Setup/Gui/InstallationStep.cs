@@ -5,6 +5,8 @@ using SharpSetup.UI.Controls;
 using SharpSetup.UI.Forms.Modern;
 using Gui.Properties;
 using System.IO;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace Gui
 {
@@ -26,28 +28,12 @@ namespace Gui
 				if (mode == InstallationMode.Uninstall)
 				{
 					MsiConnection.Instance.Uninstall();
-					/*
-					try
-					{
-						MsiConnection.Instance.Open(new Guid("{74a76f6a-ba58-4a07-828f-a0d3a0e937b3}"));
-						MsiConnection.Instance.Uninstall();
-					}
-					catch (Exception ex)
-					{
-						MessageBox.Show(ex.Message, "Uninstall");
-					}
-					*/
+
 					if (File.Exists(Resources.MainMsiFile))
 						MsiConnection.Instance.Open(Resources.MainMsiFile, true);
 				}
 				else if (mode == InstallationMode.Install)
 				{
-					/*
-					MsiConnection.Instance.SaveAs("MainInstall");
-					MsiConnection.Instance.Open("other.msi", false);
-					MsiConnection.Instance.Install("");
-					MsiConnection.Instance.OpenSaved("MainInstall");
-					*/
 					MsiConnection.Instance.Install();
 				}
 				else

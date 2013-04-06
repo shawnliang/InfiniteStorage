@@ -60,6 +60,22 @@ namespace Gui.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap BonjourInstallationStepImg {
+            get {
+                object obj = ResourceManager.GetObject("BonjourInstallationStepImg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setup is configuring bonjour service....
+        /// </summary>
+        internal static string ConfigureBonjourService {
+            get {
+                return ResourceManager.GetString("ConfigureBonjourService", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to The wizard has detected that newer version of Infinite Storage is already installed on your computer. Setup cannot continue..
         /// </summary>
@@ -82,6 +98,15 @@ namespace Gui.Properties {
             get {
                 object obj = ResourceManager.GetObject("InstallationStepImg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setup is installing bonjour service....
+        /// </summary>
+        internal static string InstallBonjourService {
+            get {
+                return ResourceManager.GetString("InstallBonjourService", resourceCulture);
             }
         }
         

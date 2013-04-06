@@ -61,6 +61,7 @@ namespace Gui
 						AddStep(new Step1());
 						AddStep(new ReadyStep());
 						*/
+						AddStep(new BonjourInstallationStep(InstallationMode.Install));
 						AddStep(new InstallationStep(InstallationMode.Install));
 						AddStep(new FinishStep());
 						break;
