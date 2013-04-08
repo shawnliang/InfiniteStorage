@@ -60,6 +60,13 @@ namespace InfiniteStorage.Properties {
             }
         }
         
+        internal static System.Drawing.Icon product_icon {
+            get {
+                object obj = ResourceManager.GetObject("product_icon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Infinite Storage.
         /// </summary>

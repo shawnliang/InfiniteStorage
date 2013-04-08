@@ -5,13 +5,15 @@ using System.Windows.Forms;
 using Bonjour;
 using WebSocketSharp.Server;
 using log4net;
+using InfiniteStorage.Properties;
 
 namespace InfiniteStorage
 {
 	static class Program
 	{
 		static BonjourService m_bonjourService;
-
+		static NotifyIcon m_notifyIcon;
+		static Form1 m_mainForm;
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -22,7 +24,10 @@ namespace InfiniteStorage
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
+			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
 			configureLog4net();
+
+			initNotifyIcon();
 
 
 			var port = (ushort)13895;
@@ -44,10 +49,38 @@ namespace InfiniteStorage
 				return;
 			}
 
-			Application.Run(new Form1());
+			m_mainForm = new Form1();
+			m_mainForm.Show();
+
+			Application.Run();
 
 			m_bonjourService.Unregister();
 			ws_server.Stop();
+		}
+
+		static void Application_ApplicationExit(object sender, EventArgs e)
+		{
+			if (m_notifyIcon != null)
+				m_notifyIcon.Dispose();
+		}
+
+		private static void initNotifyIcon()
+		{
+			m_notifyIcon = new NotifyIcon();
+			m_notifyIcon.Text = Resources.ProductName;
+			m_notifyIcon.Icon = Resources.product_icon;
+			m_notifyIcon.ContextMenu = new ContextMenu(
+				new MenuItem[] {
+					new MenuItem("Open", (s,e)=>{
+						if (m_mainForm.IsDisposed)
+							m_mainForm = new Form1();
+
+						m_mainForm.Show();
+						m_mainForm.Activate();
+					}),
+					new MenuItem("Exit", (s,e)=>{Application.Exit();}),
+				});
+			m_notifyIcon.Visible = true;
 		}
 
 		private static void configureLog4net()
