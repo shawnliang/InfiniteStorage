@@ -1,14 +1,17 @@
 package com.waveface.sync;
 
-import com.waveface.sync.util.SystemUiHider;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.waveface.sync.util.ChatConnection;
+import com.waveface.sync.util.NsdHelper;
+import com.waveface.sync.util.SystemUiHider;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -44,6 +47,10 @@ public class MainActivity extends Activity {
 	 * The instance of the {@link SystemUiHider} for this activity.
 	 */
 	private SystemUiHider mSystemUiHider;
+
+    private NsdHelper mNsdHelper;
+    private Handler mUpdateHandler;
+    private ChatConnection mConnection;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +123,19 @@ public class MainActivity extends Activity {
 		// while interacting with the UI.
 		findViewById(R.id.dummy_button).setOnTouchListener(
 				mDelayHideTouchListener);
+        mUpdateHandler = new Handler() {
+            @Override
+        public void handleMessage(Message msg) {
+            String chatLine = msg.getData().getString("msg");
+            addChatLine(chatLine);
+        }
+    };
+
+    mConnection = new ChatConnection(mUpdateHandler);
+
+    mNsdHelper = new NsdHelper(this);
+    mNsdHelper.initializeNsd();
+
 	}
 
 	@Override
@@ -150,6 +170,9 @@ public class MainActivity extends Activity {
 			mSystemUiHider.hide();
 		}
 	};
+    public void addChatLine(String line) {
+    	//TODO:
+    }
 
 	/**
 	 * Schedules a call to hide() in [delay] milliseconds, canceling any
@@ -159,4 +182,28 @@ public class MainActivity extends Activity {
 		mHideHandler.removeCallbacks(mHideRunnable);
 		mHideHandler.postDelayed(mHideRunnable, delayMillis);
 	}
+	
+    @Override
+    protected void onPause() {
+        if (mNsdHelper != null) {
+            mNsdHelper.stopDiscovery();
+        }
+        super.onPause();
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mNsdHelper != null) {
+            mNsdHelper.discoverServices();
+        }
+    }
+    
+    @Override
+    protected void onDestroy() {
+        mNsdHelper.tearDown();
+        mConnection.tearDown();
+        super.onDestroy();
+    }
+
 }
