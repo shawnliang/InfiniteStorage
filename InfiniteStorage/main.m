@@ -1,6 +1,6 @@
 //
 //  main.m
-//  InfinityStorage
+//  InfiniteStorage
 //
 //  Created by ben wei on 4/2/13.
 //  Copyright (c) 2013 Waveface Inc. All rights reserved.

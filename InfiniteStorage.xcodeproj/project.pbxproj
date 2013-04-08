@@ -16,7 +16,7 @@
 		519E5161170AA8C0000A58DF /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 519E5160170AA8C0000A58DF /* SenTestingKit.framework */; };
 		519E5162170AA8C0000A58DF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 519E5142170AA8C0000A58DF /* Cocoa.framework */; };
 		519E516A170AA8C0000A58DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 519E5168170AA8C0000A58DF /* InfoPlist.strings */; };
-		519E516D170AA8C0000A58DF /* InfinityStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 519E516C170AA8C0000A58DF /* InfinityStorageTests.m */; };
+		519E516D170AA8C0000A58DF /* InfiniteStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 519E516C170AA8C0000A58DF /* InfiniteStorageTests.m */; };
 		519E517E170AAB15000A58DF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 519E5147170AA8C0000A58DF /* Foundation.framework */; };
 		519E5181170AE10D000A58DF /* WFBonjourServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 519E5180170AE10D000A58DF /* WFBonjourServer.m */; };
 /* End PBXBuildFile section */
@@ -27,7 +27,7 @@
 			containerPortal = 519E5137170AA8C0000A58DF /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 519E513E170AA8C0000A58DF;
-			remoteInfo = InfinityStorage;
+			remoteInfo = InfiniteStorage;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -49,8 +49,8 @@
 		519E5160170AA8C0000A58DF /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		519E5167170AA8C0000A58DF /* InfiniteStorageTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "InfiniteStorageTests-Info.plist"; sourceTree = "<group>"; };
 		519E5169170AA8C0000A58DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		519E516B170AA8C0000A58DF /* InfinityStorageTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InfinityStorageTests.h; sourceTree = "<group>"; };
-		519E516C170AA8C0000A58DF /* InfinityStorageTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfinityStorageTests.m; sourceTree = "<group>"; };
+		519E516B170AA8C0000A58DF /* InfiniteStorageTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InfiniteStorageTests.h; sourceTree = "<group>"; };
+		519E516C170AA8C0000A58DF /* InfiniteStorageTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfiniteStorageTests.m; sourceTree = "<group>"; };
 		519E517F170AE10D000A58DF /* WFBonjourServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFBonjourServer.h; sourceTree = "<group>"; };
 		519E5180170AE10D000A58DF /* WFBonjourServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFBonjourServer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -80,8 +80,8 @@
 		519E5136170AA8C0000A58DF = {
 			isa = PBXGroup;
 			children = (
-				519E5148170AA8C0000A58DF /* InfinityStorage */,
-				519E5165170AA8C0000A58DF /* InfinityStorageTests */,
+				519E5148170AA8C0000A58DF /* InfiniteStorage */,
+				519E5165170AA8C0000A58DF /* InfiniteStorageTests */,
 				519E5141170AA8C0000A58DF /* Frameworks */,
 				519E5140170AA8C0000A58DF /* Products */,
 			);
@@ -116,7 +116,7 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		519E5148170AA8C0000A58DF /* InfinityStorage */ = {
+		519E5148170AA8C0000A58DF /* InfiniteStorage */ = {
 			isa = PBXGroup;
 			children = (
 				519E517F170AE10D000A58DF /* WFBonjourServer.h */,
@@ -126,7 +126,7 @@
 				519E5157170AA8C0000A58DF /* MainMenu.xib */,
 				519E5149170AA8C0000A58DF /* Supporting Files */,
 			);
-			path = InfinityStorage;
+			path = InfiniteStorage;
 			sourceTree = "<group>";
 		};
 		519E5149170AA8C0000A58DF /* Supporting Files */ = {
@@ -141,14 +141,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		519E5165170AA8C0000A58DF /* InfinityStorageTests */ = {
+		519E5165170AA8C0000A58DF /* InfiniteStorageTests */ = {
 			isa = PBXGroup;
 			children = (
-				519E516B170AA8C0000A58DF /* InfinityStorageTests.h */,
-				519E516C170AA8C0000A58DF /* InfinityStorageTests.m */,
+				519E516B170AA8C0000A58DF /* InfiniteStorageTests.h */,
+				519E516C170AA8C0000A58DF /* InfiniteStorageTests.m */,
 				519E5166170AA8C0000A58DF /* Supporting Files */,
 			);
-			path = InfinityStorageTests;
+			path = InfiniteStorageTests;
 			sourceTree = "<group>";
 		};
 		519E5166170AA8C0000A58DF /* Supporting Files */ = {
@@ -176,7 +176,7 @@
 			dependencies = (
 			);
 			name = InfiniteStorage;
-			productName = InfinityStorage;
+			productName = InfiniteStorage;
 			productReference = 519E513F170AA8C0000A58DF /* InfiniteStorage.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -195,7 +195,7 @@
 				519E5164170AA8C0000A58DF /* PBXTargetDependency */,
 			);
 			name = InfiniteStorageTests;
-			productName = InfinityStorageTests;
+			productName = InfiniteStorageTests;
 			productReference = 519E515F170AA8C0000A58DF /* InfiniteStorageTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
@@ -278,7 +278,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				519E516D170AA8C0000A58DF /* InfinityStorageTests.m in Sources */,
+				519E516D170AA8C0000A58DF /* InfiniteStorageTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -392,8 +392,8 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "InfinityStorage/InfiniteStorage-Prefix.pch";
-				INFOPLIST_FILE = "InfinityStorage/InfiniteStorage-Info.plist";
+				GCC_PREFIX_HEADER = "InfiniteStorage/InfiniteStorage-Prefix.pch";
+				INFOPLIST_FILE = "InfiniteStorage/InfiniteStorage-Info.plist";
 				PRODUCT_NAME = InfiniteStorage;
 				WRAPPER_EXTENSION = app;
 			};
@@ -404,8 +404,8 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "InfinityStorage/InfiniteStorage-Prefix.pch";
-				INFOPLIST_FILE = "InfinityStorage/InfiniteStorage-Info.plist";
+				GCC_PREFIX_HEADER = "InfiniteStorage/InfiniteStorage-Prefix.pch";
+				INFOPLIST_FILE = "InfiniteStorage/InfiniteStorage-Info.plist";
 				PRODUCT_NAME = InfiniteStorage;
 				WRAPPER_EXTENSION = app;
 			};
@@ -414,12 +414,12 @@
 		519E5174170AA8C0000A58DF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/InfinityStorage.app/Contents/MacOS/InfinityStorage";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/InfiniteStorage.app/Contents/MacOS/InfiniteStorage";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "InfinityStorage/InfinityStorage-Prefix.pch";
-				INFOPLIST_FILE = "InfinityStorageTests/InfiniteStorageTests-Info.plist";
+				GCC_PREFIX_HEADER = "InfiniteStorage/InfiniteStorage-Prefix.pch";
+				INFOPLIST_FILE = "InfiniteStorageTests/InfiniteStorageTests-Info.plist";
 				PRODUCT_NAME = InfiniteStorageTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
@@ -429,12 +429,12 @@
 		519E5175170AA8C0000A58DF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/InfinityStorage.app/Contents/MacOS/InfinityStorage";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/InfiniteStorage.app/Contents/MacOS/InfiniteStorage";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "InfinityStorage/InfinityStorage-Prefix.pch";
-				INFOPLIST_FILE = "InfinityStorageTests/InfiniteStorageTests-Info.plist";
+				GCC_PREFIX_HEADER = "InfiniteStorage/InfiniteStorage-Prefix.pch";
+				INFOPLIST_FILE = "InfiniteStorageTests/InfiniteStorageTests-Info.plist";
 				PRODUCT_NAME = InfiniteStorageTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
