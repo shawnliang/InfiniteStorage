@@ -35,7 +35,9 @@ namespace Gui
 					if (doesBonjourServiceExist())
 					{
 						progressLabel.Text = Resources.ConfigureBonjourService;
-						//TODO: make sure bonjour service is started and will auto start
+
+						startBonjourService();
+
 						Wizard.NextStep();
 					}
 					else
@@ -56,6 +58,19 @@ namespace Gui
 				if (mex.ErrorCode != (uint)InstallError.UserExit)
 					MessageBox.Show("Installation failed: " + mex.Message);
 				Wizard.Finish();
+			}
+		}
+
+		private static void startBonjourService()
+		{
+			using (var svc = new ServiceController("bonjour service"))
+			{
+				ServiceHelper.ChangeStartMode(svc, ServiceStartMode.Automatic);
+				if (svc.Status == ServiceControllerStatus.Stopped)
+				{
+					svc.Start();
+					svc.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(10.0));
+				}
 			}
 		}
 
