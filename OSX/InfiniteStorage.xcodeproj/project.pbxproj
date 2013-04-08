@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5160D8F31712890900757610 /* WFWebSocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5160D8F21712890900757610 /* WFWebSocketServer.m */; };
+		5160D8F617129D1800757610 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 5160D8F517129D1800757610 /* index.html */; };
+		51749D3E1712975A0058632C /* mongoose.c in Sources */ = {isa = PBXBuildFile; fileRef = 51749D3C1712975A0058632C /* mongoose.c */; };
 		519E5143170AA8C0000A58DF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 519E5142170AA8C0000A58DF /* Cocoa.framework */; };
 		519E514D170AA8C0000A58DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 519E514B170AA8C0000A58DF /* InfoPlist.strings */; };
 		519E514F170AA8C0000A58DF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 519E514E170AA8C0000A58DF /* main.m */; };
@@ -32,6 +35,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5160D8F11712890900757610 /* WFWebSocketServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFWebSocketServer.h; sourceTree = "<group>"; };
+		5160D8F21712890900757610 /* WFWebSocketServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFWebSocketServer.m; sourceTree = "<group>"; };
+		5160D8F517129D1800757610 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = index.html; path = Resources/index.html; sourceTree = SOURCE_ROOT; };
+		51749D3C1712975A0058632C /* mongoose.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mongoose.c; path = ../../external/mongoose/mongoose.c; sourceTree = "<group>"; };
+		51749D3D1712975A0058632C /* mongoose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mongoose.h; path = ../../external/mongoose/mongoose.h; sourceTree = "<group>"; };
 		519E513F170AA8C0000A58DF /* InfiniteStorage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InfiniteStorage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		519E5142170AA8C0000A58DF /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		519E5145170AA8C0000A58DF /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -77,9 +85,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5160D8ED1712882700757610 /* Websocket */ = {
+			isa = PBXGroup;
+			children = (
+				5160D8F517129D1800757610 /* index.html */,
+				51749D3C1712975A0058632C /* mongoose.c */,
+				51749D3D1712975A0058632C /* mongoose.h */,
+				5160D8F11712890900757610 /* WFWebSocketServer.h */,
+				5160D8F21712890900757610 /* WFWebSocketServer.m */,
+			);
+			name = Websocket;
+			path = InfiniteStorage;
+			sourceTree = "<group>";
+		};
 		519E5136170AA8C0000A58DF = {
 			isa = PBXGroup;
 			children = (
+				5160D8ED1712882700757610 /* Websocket */,
 				519E5148170AA8C0000A58DF /* InfiniteStorage */,
 				519E5165170AA8C0000A58DF /* InfiniteStorageTests */,
 				519E5141170AA8C0000A58DF /* Frameworks */,
@@ -234,6 +256,7 @@
 				519E514D170AA8C0000A58DF /* InfoPlist.strings in Resources */,
 				519E5153170AA8C0000A58DF /* Credits.rtf in Resources */,
 				519E5159170AA8C0000A58DF /* MainMenu.xib in Resources */,
+				5160D8F617129D1800757610 /* index.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +294,8 @@
 				519E514F170AA8C0000A58DF /* main.m in Sources */,
 				519E5156170AA8C0000A58DF /* AppDelegate.m in Sources */,
 				519E5181170AE10D000A58DF /* WFBonjourServer.m in Sources */,
+				5160D8F31712890900757610 /* WFWebSocketServer.m in Sources */,
+				51749D3E1712975A0058632C /* mongoose.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,6 +374,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					USE_WEBSOCKET,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -378,6 +404,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = USE_WEBSOCKET;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;

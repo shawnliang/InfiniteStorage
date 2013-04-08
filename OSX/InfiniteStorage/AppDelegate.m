@@ -8,26 +8,32 @@
 
 #import "AppDelegate.h"
 #import "WFBonjourServer.h"
+#import "WFWebSocketServer.h"
 
+#define DEFAULT_SERVICE_PORT 1338
 
 @implementation AppDelegate {
-    WFBonjourServer * _server;
+    WFBonjourServer * bonjourServer;
+    WFWebSocketServer *wsServer;
     BOOL _running;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    _server = [[WFBonjourServer alloc] init];
+    bonjourServer = [[WFBonjourServer alloc] init];
+    
+    wsServer = [[WFWebSocketServer alloc] init];
+    wsServer.port = DEFAULT_SERVICE_PORT;
+    bonjourServer.port = wsServer.port;
 
-  
-    _server.port = 1338;
-  
     [self startService];
 }
 
 - (BOOL) startService
 {
-    _running = [_server start];
+    [wsServer start];
+
+    _running = [bonjourServer start];
     NSString * msg = [NSString stringWithFormat:@"Service started: %@.", _running ? @"OK" : @"Fail" ];
     [statusBar setStringValue:msg];
     actionButton.title = @"Stop";
@@ -38,7 +44,8 @@
 {
     NSString * msg = [NSString stringWithFormat:@"Service stopped."];
     [statusBar setStringValue:msg];
-    [_server stop];
+    [bonjourServer stop];
+    [wsServer stop];
    
     actionButton.title = @"start";
     _running = NO;

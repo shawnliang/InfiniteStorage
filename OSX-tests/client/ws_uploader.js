@@ -23,7 +23,7 @@ function wfclient() {
     }
 
     that.send = function (data) {
-        that.ws.send(data, {mask: true});
+        that.ws.send(data, {binary: false, mask: false});
     }
 
     that.connect = function (target, cb) {
@@ -84,18 +84,19 @@ SOUploader.method('uploadStream', function () {
     var req = {file: filename, size: stats.size};
 
     self.wsclient.send(JSON.stringify(req));
-
+    var blkno = 0;
     fs.createReadStream(this.filename, {
         'flags': 'r',
         'encoding': 'binary',
         'mode': 0666,
         'bufferSize': self.bufferSize
     }).addListener( "data", function(chunk) {
-        console.log("read and sent " + chunk.length + " bytes");
+        blkno++;
+        console.log(blkno + "- read and sent " + chunk.length + " bytes");
         self.wsclient.write(chunk);
     }).addListener( "close",function() {
         console.log("end of read");
-        self.wsclient.send("end of file");
+        self.wsclient.write("end of file");
     });
 });
 
@@ -108,20 +109,37 @@ SOUploader.method('upload', function () {
 function main() {
     var client = wfclient();
     var ws_url = "ws://localhost:8080";
+    var port = 8080;
 
-    var uploader = new SOUploader(__dirname + '/cherry_blossoms.JPG', client);
+    if (process.argv.length > 2) {
+        port = process.argv[2];
+    }
+
+    var ws_url = "ws://localhost:" + port;
+    var filename = __dirname + '/cherry_blossoms.JPG';
+    // var filename = __dirname + '/test.txt';
+
+    var uploader = new SOUploader(filename, client);
 
     client.onopen = function () {
         uploader.uploadStream();
     }
-
+    console.log("connecting to " + ws_url);
     client.connect(ws_url, function (err, data, ws, flags) {
         if (err) {
             console.log("data: " + err);
             return;
         }
 
-        console.log("s->c flags:" + util.inspect(flags) + ",data " + data.length + " bytes");
+        if (flags.binary == true) {
+            if (data.length == 4) {
+                console.log("s->c recv len:" +flags.buffer.readUInt32BE(0));
+            } else {
+            console.log("s->c flags:" + util.inspect(flags) + ",data " + data.length + " bytes");
+            }
+        } else {
+            console.log("s->c data " + data.length + " bytes: " + data);
+        }
     });
 
     return 0;
