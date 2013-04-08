@@ -23,9 +23,11 @@ namespace InfiniteStorage
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-
 			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
-			configureLog4net();
+
+			Log4netConfigure.InitLog4net();
+
+			log4net.LogManager.GetLogger("main").Debug("==== program started ====");
 
 			initNotifyIcon();
 
@@ -42,6 +44,8 @@ namespace InfiniteStorage
 				var url = string.Format("ws://0.0.0.0:{0}/", port);
 				ws_server = new WebSocketSharp.Server.WebSocketServer<InfiniteStorageWebSocketService>(url);
 				ws_server.Start();
+
+
 			}
 			catch
 			{
@@ -83,15 +87,10 @@ namespace InfiniteStorage
 			m_notifyIcon.Visible = true;
 		}
 
-		private static void configureLog4net()
-		{
-			
-			//log4net.Config.XmlConfigurator.ConfigureAndWatch();
-		}
-
 		static void m_bonjourService_Error(object sender, BonjourErrorEventArgs e)
 		{
 			MessageBox.Show("Bonjour DNS operation error: " + e.error, "Error");
+			log4net.LogManager.GetLogger("main").Warn("Bonjour DNS operation error: " + e.error.ToString());
 		}
 	}
 }
