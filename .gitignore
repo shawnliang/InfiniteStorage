@@ -8,3 +8,8 @@ xcuserstate
 build
 Pods/
 Podfile.lock
+*.o
+ws_server
+
+# node js
+node_modules
