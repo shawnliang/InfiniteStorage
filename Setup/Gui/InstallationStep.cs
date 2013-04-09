@@ -27,6 +27,8 @@ namespace Gui
 			{
 				if (mode == InstallationMode.Uninstall)
 				{
+					closeRunningProcess();
+
 					MsiConnection.Instance.Uninstall();
 
 					if (File.Exists(Resources.MainMsiFile))
@@ -47,6 +49,21 @@ namespace Gui
 			}
 			ipProgress.StopListening();
 			Wizard.NextStep();
+		}
+
+		private static void closeRunningProcess()
+		{
+			try
+			{
+				var procs = Process.GetProcessesByName("InfiniteStorage");
+				foreach (var proc in procs)
+				{
+					proc.Kill();
+				}
+			}
+			catch
+			{
+			}
 		}
 
 		public override bool CanClose()
