@@ -41,15 +41,12 @@ namespace InfiniteStorage
 			catch (WebsocketProtocol.ProtocolErrorException err)
 			{
 				logger.Warn("Protocol error. Close connection.", err);
-				this.Stop(WebSocketSharp.Frame.CloseStatusCode.PROTOCOL_ERROR, err.Message);
-				Stop();
+				Stop(WebSocketSharp.Frame.CloseStatusCode.PROTOCOL_ERROR, err.Message);
 			}
 			catch (Exception err)
 			{
 				logger.Warn("Error handing websocket data", err);
-#if DEBUG
-				System.Diagnostics.Debug.Fail(err.Message);
-#endif
+				Stop(WebSocketSharp.Frame.CloseStatusCode.SERVER_ERROR, err.Message);
 			}
 		}
 

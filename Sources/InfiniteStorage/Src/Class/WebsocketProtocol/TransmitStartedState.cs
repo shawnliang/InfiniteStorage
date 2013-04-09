@@ -20,7 +20,11 @@ namespace InfiniteStorage.WebsocketProtocol
 		public void handleFileEndCmd(TransmitContext ctx, TextCommand cmd)
 		{
 			ctx.temp_file.EndWrite();
+
 			ctx.storage.MoveToStorage(ctx.temp_file.Path, ctx.file_name);
+
+			if (ctx.file_size != ctx.temp_file.BytesWritten)
+				log4net.LogManager.GetLogger("").WarnFormat("{0} is expected to have {1} bytes but {2} bytes received.", ctx.file_name, ctx.file_size, ctx.temp_file.BytesWritten);
 
 			ctx.SetState(new TransmitInitState());
 		}

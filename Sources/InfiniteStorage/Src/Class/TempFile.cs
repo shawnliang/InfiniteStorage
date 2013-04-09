@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace InfiniteStorage
 {
-	class TempFile : ITempFile
+	public class TempFile : ITempFile
 	{
 		private FileStream stream;
 
@@ -32,6 +32,7 @@ namespace InfiniteStorage
 		public void Write(byte[] data)
 		{
 			stream.Write(data, 0, data.Length);
+			BytesWritten += data.Length;
 		}
 
 		public void EndWrite()

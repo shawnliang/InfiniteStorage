@@ -22,7 +22,7 @@ namespace InfiniteStorage
 			{
 				if (e.Type == WebSocketSharp.Frame.Opcode.TEXT)
 				{
-					var cmd = Newtonsoft.Json.JsonConvert.DeserializeObject<WebsocketProtocol.TextCommand>(e.Data);
+					TextCommand cmd = parseTextCommand(e);
 
 					if (cmd.isFileStartCmd())
 						ctx.handleFileStartCmd(cmd);
@@ -40,6 +40,18 @@ namespace InfiniteStorage
 			{
 				OnError();
 				throw;
+			}
+		}
+
+		private static TextCommand parseTextCommand(MessageEventArgs e)
+		{
+			try
+			{
+				return Newtonsoft.Json.JsonConvert.DeserializeObject<WebsocketProtocol.TextCommand>(e.Data);
+			}
+			catch (Exception err)
+			{
+				throw new ProtocolErrorException("Invalid text command: " + e.Data, err);
 			}
 		}
 

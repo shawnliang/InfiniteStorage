@@ -87,6 +87,41 @@ namespace UnitTest
 		}
 
 		[TestMethod]
+		[ExpectedException(typeof(ProtocolErrorException))]
+		public void testRecvFileStartTwice()
+		{
+			var tempFile = new Mock<ITempFile>();
+
+			var tempFactory = new Mock<ITempFileFactory>();
+			tempFactory.Setup(x => x.CreateTempFile()).Returns(tempFile.Object);
+
+			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object);
+
+
+			//
+			// file-start
+			// 
+			var fileStart = new { action = "file-start", file_name = "file1.jpg", file_size = 20 };
+			protoHdler.HandleMessage(new MessageEventArgs(JsonConvert.SerializeObject(fileStart)));
+			protoHdler.HandleMessage(new MessageEventArgs(JsonConvert.SerializeObject(fileStart)));
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ProtocolErrorException))]
+		public void testInvalidTextCommand()
+		{
+			var tempFactory = new Mock<ITempFileFactory>();
+			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object);
+
+			//
+			// Unknown command XXXXX
+			// 
+			//var fileStart = new { action = "XXXXX", file_name = "file1.jpg", file_size = 20 };
+			protoHdler.HandleMessage(new MessageEventArgs("1234567899"));
+
+		}
+
+		[TestMethod]
 		public void tempFileIsDeletedIfErrorHappens()
 		{
 			var tempFile = new Mock<ITempFile>();
