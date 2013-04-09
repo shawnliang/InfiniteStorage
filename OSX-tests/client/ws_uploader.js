@@ -23,7 +23,7 @@ function wfclient() {
     }
 
     that.send = function (data) {
-        that.ws.send(data, {binary: false, mask: false});
+        return that.ws.send(data, {binary: false, mask: false});
     }
 
     that.connect = function (target, cb) {
@@ -62,10 +62,14 @@ function shouldTerminate(ws) {
     process.exit(0);
 }
 
-var SOUploader = function (filename, wsclient) {
+var SOUploader = function (filename, wsclient, bufferSize) {
     this.filename = filename;
     this.wsclient = wsclient;
-    this.bufferSize = 512;
+
+    if (bufferSize < 512)
+      bufferSize = 512
+
+    this.bufferSize = bufferSize;
 }
 
 SOUploader.method('uploadStream', function () {
@@ -81,7 +85,10 @@ SOUploader.method('uploadStream', function () {
         return;
     }
 
-    var req = {file: filename, size: stats.size};
+    var req = {
+      action: "file-start",
+      file_name: filename,
+      file_size: stats.size};
 
     self.wsclient.send(JSON.stringify(req));
     var blkno = 0;
@@ -92,11 +99,17 @@ SOUploader.method('uploadStream', function () {
         'bufferSize': self.bufferSize
     }).addListener( "data", function(chunk) {
         blkno++;
-        console.log(blkno + "- read and sent " + chunk.length + " bytes");
         self.wsclient.write(chunk);
+        console.log(blkno + ": sent " + chunk.length + " bytes");
     }).addListener( "close",function() {
         console.log("end of read");
-        self.wsclient.write("end of file");
+        var endblob = {
+            action: 'file-end',
+            file_name: filename
+        };
+        setTimeout(function (){
+          self.wsclient.send(JSON.stringify(endblob));
+        }, 1000);
     });
 });
 
@@ -106,20 +119,35 @@ SOUploader.method('upload', function () {
     this.wsclient.write(data);
 });
 
+var syntax = function () {
+  console.log("syntax: " + process.argv[1] + " <option> args\n"
+    + " option: \n"
+    + "url <ws_url>   -- with url\n"
+    + "port <ws_port> -- with local port\n");
+  process.exit(1);
+}
+
 function main() {
     var client = wfclient();
-    var ws_url = "ws://localhost:8080";
-    var port = 8080;
+    var ws_url = "ws://localhost:1338";
+    var port = 1338;
+    var bufferSize = 0;
 
-    if (process.argv.length > 2) {
-        port = process.argv[2];
+    if (process.argv.length > 3) {
+        op = process.argv[2];
+        if (op == 'url') {
+          ws_url = process.argv[3];
+        } else if (op == 'port') {
+          ws_url = "ws://localhost:" + port;
+        } else if (op == 'size') {
+          bufferSize = parseInt(process.argv[3]);
+        }
     }
 
-    var ws_url = "ws://localhost:" + port;
     var filename = __dirname + '/cherry_blossoms.JPG';
     // var filename = __dirname + '/test.txt';
 
-    var uploader = new SOUploader(filename, client);
+    var uploader = new SOUploader(filename, client, bufferSize);
 
     client.onopen = function () {
         uploader.uploadStream();

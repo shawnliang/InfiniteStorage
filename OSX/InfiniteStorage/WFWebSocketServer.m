@@ -13,13 +13,16 @@
 #include "mongoose.h"
 #include <arpa/inet.h>
 
-
+#define OP_TEXT   0x1
+#define OP_BINARY 0x2
+#define WS_MODE_FILE 1
+#define WS_MODE_STANDBY 0
 
 @implementation WFWebSocketServer {
     NSThread *wsThread;
     NSMutableDictionary *status;
     BOOL running;
-    NSOutputStream *oStream;
+    NSMutableDictionary *sessions;
 }
 
 static WFWebSocketServer *sharedWSServer = nil;
@@ -29,6 +32,7 @@ static WFWebSocketServer *sharedWSServer = nil;
     self = [super init];
     if (self) {
         sharedWSServer = self;
+        sessions = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -40,9 +44,6 @@ static WFWebSocketServer *sharedWSServer = nil;
     }
     return sharedWSServer;
 }
-
-#define OP_TEXT   0x1
-#define OP_BINARY 0x2
 
 static void websocket_ready_handler(struct mg_connection *conn) {
     char buf[40];
@@ -60,12 +61,6 @@ static int websocket_reply_received_length(struct mg_connection *conn, size_t da
     return mg_websocket_write(conn, OP_BINARY, reply, 4);
 }
 
-static size_t filelen = 0;
-#define WS_MODE_FILE 1
-#define WS_MODE_STANDBY 0
-static int ws_mode = WS_MODE_STANDBY;
-static size_t totalSize = 0;
-
 - (NSDictionary *) JSONToDic: (const char *) data withLength: (size_t) len
 {
     NSError *error;
@@ -74,26 +69,121 @@ static size_t totalSize = 0;
     return res;
 }
 
-- (void) createOutputStream: (NSString *) filename
+- (void) createSession: (const char *) data withSize: (size_t) data_len withFlags: (int) flags withIndex: (unsigned long) index
 {
-   NSLog(@"Creating and opening NSOutputStream...");
-   NSString *pathname = [NSString stringWithFormat:@"%@/Desktop/%@", NSHomeDirectory(), filename];
-   // oStream is an instance variable
-   oStream = [[NSOutputStream alloc] initToFileAtPath:pathname append:YES];
-//   [oStream scheduleInRunLoop:[NSRunLoop currentRunLoop]
-//                           forMode:NSDefaultRunLoopMode];
-   [oStream open];
+    NSString *sessionID = [NSString stringWithFormat:@"%lu", index];
+    //NSDictionary *sess = [sessions objectForKey: sessionID];
+    NSMutableDictionary *sess = [sessions objectForKey:@"sessionID"];
+    NSDictionary *res = [sharedWSServer JSONToDic:data withLength:data_len];
+    if (res == nil) {
+        NSLog(@"Error: JSON Parse failure [%@]rcv[%lu]: f:%08x : %.*s\n", sessionID, data_len, flags, (int) data_len, data);
+        return;
+    }
+    
+    [sess setObject:res forKey:@"res"];
+    NSString *filename = [res objectForKey:@"file_name"] ;
+    if (filename) {
+        [sess setValue:filename forKey:@"filename"];
+    }
+    
+    NSString *action = [res objectForKey:@"action"];
+    NSNumber *wsMode = nil;
+    if ([action isEqualToString:@"file-start"]) {
+        sess = [[NSMutableDictionary alloc] init];
+        wsMode = [NSNumber numberWithInt:WS_MODE_FILE];
+        [sess setValue:wsMode forKey:@"ws_mode"];
+    } else if ([action isEqualToString:@"file-end"]) {
+        wsMode = [NSNumber numberWithInt:WS_MODE_STANDBY];
+        [sess setValue:wsMode forKey:@"ws_mode"];
+        [self closeOutputStreamWithID: sessionID];
+        NSLog(@"close file [%@]rcv[%lu]: f:%08x : %.*s\n", sessionID, data_len, flags,(int) data_len, data);
+        return;
+    } else {
+        NSLog(@"unknown [%@]rcv[%lu]: f:%08x : %.*s\n", sessionID, data_len, flags,(int) data_len, data);
+        return;
+    }
+
+    NSLog(@"[%@] createSession...", sessionID);
+    NSString *size = [res objectForKey:@"file_size"] ;
+    size_t totalSize = 0;
+    if (size) {
+        totalSize = [size intValue];
+        [sess setValue:[NSNumber numberWithLong:totalSize] forKey:@"total_size"];
+    }
+
+    NSNumber *fileLen = [NSNumber numberWithLong:0];
+    [sess setValue:fileLen forKey:@"file_len"];
+
+    NSLog(@"[%@]rcv[%lu]: f:%08x file:%@ size:%lu from %.*s\n", sessionID, data_len, flags, filename, totalSize, (int) data_len, data);
+ 
+    NSString *pathname = [NSString stringWithFormat:@"%@/Desktop/%@", NSHomeDirectory(), filename];
+    [sess setObject:pathname forKey:@"target_pathname"];
+    NSOutputStream *oStream = [[NSOutputStream alloc] initToFileAtPath:pathname append:YES];
+    [sess setObject:oStream forKey:@"output_stream"];
+    [oStream open];
+    [sessions setObject:sess forKey:sessionID];
 }
 
-- (void) writeOutputStream: (const uint8_t *) data withSize: (size_t) size
+- (NSMutableDictionary *) getSession:(unsigned long) index
 {
+    NSString *sessionID = [NSString stringWithFormat:@"%lu", index];
+    NSMutableDictionary *sess = [sessions objectForKey:sessionID];
+    return sess;
+}
+
+- (BOOL) isFileUploading: (unsigned long) index {
+    NSDictionary *sess = [self getSession: index];
+    NSNumber *wsMode = [sess objectForKey:@"ws_mode"];
+    return WS_MODE_FILE == [wsMode integerValue];
+}
+
+/*
+ * @return YES, match file total size, otherwise NO is return;
+ */
+
+- (long) writeOutputStream: (const uint8_t *) data withSize: (size_t) size withIndex: (unsigned long) index
+{
+    NSString *sessionID = [NSString stringWithFormat:@"%lu", index];
+    NSMutableDictionary *sess = [sessions objectForKey:sessionID];
+    NSOutputStream *oStream = [sess objectForKey:@"output_stream"];
+
     [oStream write:data maxLength:size];
+
+    NSNumber *fileLen = [sess objectForKey:@"file_len"];
+    long len = [fileLen longValue] + size;
+    [sess setValue: [NSNumber numberWithLong:len] forKey:@"file_len"];
+    long total = [[sess objectForKey:@"total_size"] longValue];
+    NSLog(@"%@ rcvb[%lu]: %lu/%lu\n", sessionID, size, len, total);
+    if (len == total) {
+        [sess setValue: [NSNumber numberWithLong:WS_MODE_STANDBY] forKey:@"ws_mode"];
+        return YES;
+    }
+    return NO;
 }
 
-- (void) closeOutputStream
+- (void) closeOutputStreamWithID: (NSString *) sessionID
 {
+    NSMutableDictionary *sess = [sessions objectForKey:sessionID];
+    NSOutputStream *oStream = [sess objectForKey:@"output_stream"];
     [oStream close];
     oStream = nil;
+}
+
+- (void) closeOutputStream: (unsigned long) index
+{
+    NSString *sessionID = [NSString stringWithFormat:@"%lu", index];
+    NSMutableDictionary *sess = [sessions objectForKey:sessionID];
+    NSOutputStream *oStream = [sess objectForKey:@"output_stream"];
+    [oStream close];
+    oStream = nil;
+}
+
+int wfReplyWithCode(struct mg_connection *conn, int code)
+{
+    char buf[40];
+    size_t n = snprintf((char *) buf, sizeof(buf) - 1,
+                        "{\"action\", \"file-end\",\"code\": %d}", code);
+    return mg_websocket_write(conn, OP_TEXT, buf, n);
 }
 
 // Arguments:
@@ -108,30 +198,17 @@ static int websocket_data_handler(struct mg_connection *conn, int flags,
 
     switch (op) {
         case OP_TEXT:
-            if (memcmp(data, "{\"file\":", 8) == 0) {
-                NSDictionary *res = [sharedWSServer JSONToDic:data withLength:data_len];
-                NSString *filename = [res objectForKey:@"file"] ;
-                NSString *size = [res objectForKey:@"size"] ;
-                totalSize = [size intValue];
-                filelen = 0;
-                ws_mode = WS_MODE_FILE;
-                [sharedWSServer createOutputStream: filename];
-                NSLog(@"rcv[%lu]: f:%08x file:%@ size:%lu\n", data_len, flags, filename, totalSize);
+            if (*data == '{' && (data[1] == '\'' || data[1] == '\"')) {
+                [sharedWSServer createSession: data withSize: data_len withFlags: flags withIndex:(unsigned long) conn];
             } else {
-                NSLog(@"rcv[%lu]: f:%08x %s\n", data_len, flags, data);
+                NSLog(@"rcv[%lu]: f:%08x %.*s\n", data_len, flags, (int) data_len, data);
             }
             break;
         case OP_BINARY:
-            if (ws_mode == WS_MODE_FILE) {
-                filelen += data_len;
-                [sharedWSServer writeOutputStream:(const uint8_t *) data withSize:data_len];
-                NSLog(@"rcvb[%lu]: f:%08x: %lu/%lu\n", data_len, flags, filelen, totalSize);
-                if (filelen == totalSize) {
-                    [sharedWSServer closeOutputStream];
-                    ws_mode = WS_MODE_STANDBY;
-                    char buf[40];
-                    size_t n = snprintf((char *) buf, sizeof(buf) - 1, "recv eof: total: %lu", filelen);
-                    mg_websocket_write(conn, OP_TEXT, buf, n);
+            if ([sharedWSServer isFileUploading:(unsigned long) conn]) {
+                BOOL ret = [sharedWSServer writeOutputStream:(const uint8_t *) data withSize:data_len withIndex:(unsigned long) conn];
+                if (ret) {
+                    wfReplyWithCode(conn, 0);
                 }
             } else {
                 NSLog(@"rcvb[%lu]: f:%08x\n", data_len, flags);
@@ -140,8 +217,9 @@ static int websocket_data_handler(struct mg_connection *conn, int flags,
         default:
             NSLog(@"rcv[%lu]: f:%08x\n", data_len, flags);            
     }
-    
+#ifdef WS_DEBUG
     websocket_reply_received_length(conn, data_len);
+#endif
     return 1;
 }
 
