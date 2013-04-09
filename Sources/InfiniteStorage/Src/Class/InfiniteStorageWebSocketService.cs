@@ -35,6 +35,7 @@ namespace InfiniteStorage
 		{
 			try
 			{
+				logger.DebugFormat("{0} bytes received from {1}", e.RawData.Length, this.ID);
 				handler.HandleMessage(e);
 				base.onMessage(sender, e);
 			}

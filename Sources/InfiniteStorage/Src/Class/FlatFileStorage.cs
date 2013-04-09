@@ -6,7 +6,7 @@ using System.IO;
 
 namespace InfiniteStorage
 {
-	class FlatFileStorage: IFileStorage
+	public class FlatFileStorage: IFileStorage
 	{
 		private string storagePath;
 
@@ -17,7 +17,27 @@ namespace InfiniteStorage
 
 		public void MoveToStorage(string tempfile, string file_name)
 		{
-			File.Move(tempfile, Path.Combine(storagePath, file_name));
+			var saved_file = Path.Combine(storagePath, file_name);
+			int num = 1;
+
+			while (true)
+			{
+				try
+				{
+					File.Move(tempfile, saved_file);
+					break;
+				}
+				catch (IOException e)
+				{
+					if (File.Exists(saved_file))
+					{
+						saved_file = Path.Combine(storagePath, Path.GetFileNameWithoutExtension(file_name) + "." + num + Path.GetExtension(file_name));
+						num += 1;
+					}
+					else
+						throw new IOException("Unable to move file to " + saved_file, e);
+				}
+			}
 		}
 	}
 }
