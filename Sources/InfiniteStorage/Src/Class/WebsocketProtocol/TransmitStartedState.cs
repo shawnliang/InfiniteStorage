@@ -11,6 +11,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		public void handleBinaryData(TransmitContext ctx, byte[] data)
 		{
 			ctx.temp_file.Write(data);
+			log4net.LogManager.GetLogger("wsproto").DebugFormat("file content of {0}: {1} bytes", ctx.file_name, data.Length);
 		}
 
 		public void handleFileStartCmd(TransmitContext ctx, TextCommand cmd)
@@ -33,6 +34,8 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			if (ctx.file_size != ctx.temp_file.BytesWritten)
 				log4net.LogManager.GetLogger(typeof(TransmitStartedState)).WarnFormat("{0} is expected to have {1} bytes but {2} bytes received.", ctx.file_name, ctx.file_size, ctx.temp_file.BytesWritten);
+
+			log4net.LogManager.GetLogger("wsproto").Debug("file-end: " + ctx.file_name);
 
 			ctx.SetState(new TransmitInitState());
 		}
