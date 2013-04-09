@@ -20,8 +20,9 @@ namespace Gui
 			var modes = SetupHelper.GetStandardInstallationModes(mode);
 			//uncomment this line if you want to support modification mode iff reinstallation is possible
 			//modes.InsertBefore(InstallationMode.Reinstall, InstallationMode.Modify);
+
 			//uncomment this line if you don't want to support reinstallation
-			//modes.Remove(InstallationMode.Reinstall);
+			modes.Remove(InstallationMode.Reinstall);
 			if (modes.Contains(SetupHelper.InstallationModeFromCommandLine))
 				return new InstallationModeCollection(SetupHelper.InstallationModeFromCommandLine);
 			else
@@ -39,6 +40,7 @@ namespace Gui
 				//uncomment this line if you want to support MSI property passthrough
 				//SetupHelper.ApplyMsiProperties();
 				var modes = GetInstallationModes(MsiConnection.Instance.Mode);
+
 				if (modes.Contains(InstallationMode.Downgrade))
 					AddStep(new FatalErrorStep(Gui.Properties.Resources.DowngradeNotSupported));
 				else if (modes.Count > 1)
