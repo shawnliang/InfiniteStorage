@@ -24,7 +24,6 @@ import org.jwebsocket.util.Tools;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Base64;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.RuntimePlayer;
@@ -43,7 +42,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 	/**
 	 * sub protocol value
 	 */
-	private WebSocketSubProtocol mSubProt = null;
+	public static WebSocketSubProtocol mSubProt = null;
 	// private String mSubProt;
 	// private WebSocketEncoding mEncoding;
 	private String mUsername = null;
@@ -53,7 +52,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 	private final ScheduledThreadPoolExecutor mResponseQueueExecutor =
 			new ScheduledThreadPoolExecutor(1);
 	private static Context mContext;
-
+	
 	/**
 	 * Default constructor
 	 */
@@ -90,6 +89,19 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		mSubProt = aSubProt;
 		addSubProtocol(mSubProt);
 		addListener(new TokenClientListener());
+	}
+	
+	
+	public void setSubProt(String aSubProt){
+		
+		if(aSubProt.equals(JWebSocketCommonConstants.WS_SUBPROT_BINARY)){
+			changeNegotiatedSubProtocol(true);
+		}
+		else{
+			changeNegotiatedSubProtocol(false);
+		}
+		
+		mSubProt = new WebSocketSubProtocol(aSubProt, JWebSocketCommonConstants.WS_ENCODING_DEFAULT);
 	}
 
 	/**
@@ -244,8 +256,6 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 	@Override
 	public void close() {
 		super.close();
-		mUsername = null;
-		fClientId = null;
 	}
 
 	/**
@@ -282,6 +292,9 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		if (JWebSocketCommonConstants.WS_FORMAT_JSON.equals(mSubProt.getFormat())) {
 			lToken = JSONProcessor.packetToToken(aPacket);
 		}
+		else if (JWebSocketCommonConstants.WS_FORMAT_BINARY.equals(mSubProt.getFormat())) {
+			lToken =  FileProcessor.packetToToken(aPacket);
+		}
 		return lToken;
 	}
 
@@ -296,6 +309,9 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		if (JWebSocketCommonConstants.WS_FORMAT_JSON.equals(mSubProt.getFormat())) {
 			lPacket = JSONProcessor.tokenToPacket(aToken);
 		}
+		else if (JWebSocketCommonConstants.WS_FORMAT_BINARY.equals(mSubProt.getFormat())) {
+			lPacket = FileProcessor.tokenToPacket(aToken);
+		}		
 		return lPacket;
 	}
 
@@ -421,16 +437,20 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 	 * @throws WebSocketException
 	 */
 	public void sendFile(String aHeader, byte[] aData, String aFilename, String aTarget) throws WebSocketException {
-		Token lToken = TokenFactory.createToken(NS_FILESYSTEM_PLUGIN, "send");
-		lToken.setString("sourceId", getClientId());
-		lToken.setString("sender", getUsername());
-		lToken.setString("filename", aFilename);
-		// TODO: set mimetype correctly according to file extension based on configuration in jWebSocket.xml
-		lToken.setString("mimetype", "image/jpeg");
-		lToken.setString("unid", aTarget);
-		int flags = Base64.NO_WRAP | Base64.URL_SAFE;
-		lToken.setString("data", aHeader + Base64.encodeToString(aData, flags));
-		sendToken(lToken);
+		
+//		Token lToken = TokenFactory.createToken(NS_FILESYSTEM_PLUGIN, "send");
+//		lToken.setString("sourceId", "");
+//		lToken.setString("sender", "");
+//		lToken.setString("filename", aFilename);
+//		// TODO: set mimetype correctly according to file extension based on configuration in jWebSocket.xml
+//		lToken.setString("mimetype", "image/jpeg");
+//		lToken.setString("unid", aTarget);
+//		int flags = Base64.NO_WRAP | Base64.URL_SAFE;
+//		lToken.setString("data", Base64.encodeToString(aData, flags));
+//		lToken.setString("data", Base64.encodeToString(aData, flags));
+//		sendToken(lToken);
+//		WebSocketPacket lPacket = new RawPacket(aData);
+		super.send(aData);
 	}
 
 	/*

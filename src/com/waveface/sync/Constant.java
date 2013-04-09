@@ -81,74 +81,7 @@ public class Constant {
 	public final static String ACTION_ONCLICK_CALENDAR_STATUS = "com.waveface.wammer.action.ONCLICK_CALENDAR_STATUS";
 
 
-	public final static String EXTRA_POSTS = "com.waveface.wammer.extra.POSTS";
-	public final static String EXTRA_POST = "com.waveface.wammer.extra.POST";
-	public final static String EXTRA_POST_REFRESH_DIRECTION = "com.waveface.wammer.extra.POST_REFRESH_DIRECTION";
-	public final static String EXTRA_POST_REFRESH_UP = "com.waveface.wammer.extra.POST_REFRESH_UP";
-	public final static String EXTRA_POST_REFRESH_DOWN = "com.waveface.wammer.extra.POST_REFRESH_DOWN";
-	public final static String EXTRA_POST_REFRESH_POST_ID = "com.waveface.wammer.extra.POST_REFRESH_POST_ID";
-	public final static String EXTRA_POST_REFRESH_POSITION = "com.waveface.wammer.extra.POST_REFRESH_POSITION";
-	public final static String EXTRA_POST_TIMELINE_TOP_POST_ID = "com.waveface.wammer.extra.POST_TIMELINE_TOP_POST_ID";
-	public final static String EXTRA_POST_TIMELINE_TOP_POST_TIME = "com.waveface.wammer.extra.POST_TIMELINE_TOP_POST_TIME";
-	public final static String EXTRA_POST_TIMELINE_BOTTOM_POST_ID = "com.waveface.wammer.extra.POST_TIMELINE_BOTTOM_POST_ID";
-	public final static String EXTRA_POST_TIMELINE_BOTTOM_POST_TIME = "com.waveface.wammer.extra.POST_TIMELINE_BOTTOM_POST_TIME";
-	public final static String EXTRA_POST_LAST_CREATED_POST_ID = "com.waveface.wammer.extra.POST_LAST_CREATED_POST_ID";
-	public final static String EXTRA_POST_LAST_CREATED_POST_TIME = "com.waveface.wammer.extra.POST_LAST_CREATED_POST_TIME";
-	public final static String EXTRA_USERS = "com.waveface.wammer.extra.USERS";
-	public final static String EXTRA_COMMENTS = "com.waveface.wammer.extra.COMMENTS";
-	public final static String EXTRA_COMMENT = "com.waveface.wammer.extra.COMMENT";
-	public final static String EXTRA_POST_ID = "com.waveface.wammer.extra.POST_ID";
-	public final static String EXTRA_OBJECT_ID = "com.waveface.wammer.extra.OBJECT_ID";
-	public final static String EXTRA_OBJECT_TYPE = "com.waveface.wammer.extra.OBJECT_TYPE";
-	public final static String EXTRA_POST_COUNT = "com.waveface.wammer.extra.POST_COUNT";
-	public final static String EXTRA_EXISTED_POST_ID = "com.waveface.wammer.extra.EXISTED_POST_ID";
-	public final static String EXTRA_DRAFT_POST_ID = "com.waveface.wammer.extra.DRAFT_POST_ID";
-	public final static String EXTRA_FILES = "com.waveface.wammer.extra.FILES";
-	public final static String EXTRA_FILENAMES = "com.waveface.wammer.extra.FILENAMES";
-	public final static String EXTRA_FILENAME = "com.waveface.wammer.extra.FILENAME";
-	public final static String EXTRA_FILEPATH = "com.waveface.wammer.extra.FILEPATH";
-	public final static String EXTRA_STATE = "com.waveface.wammer.extra.STATE";
-	public final static String EXTRA_ACTION = "com.waveface.wammer.extra.ACTION";
-	public final static String EXTRA_DOWNLOAD_FILE = "com.waveface.wammer.extra.DOWNLOAD_FILE";
-	public final static String EXTRA_POSITION = "com.waveface.wammer.extra.POSITION";
-	public final static String EXTRA_POST_TYPE = "com.waveface.wammer.extra.COMPOSER_TYPE";
-	public final static String EXTRA_UPLOAD_TOTAL = "com.waveface.wammer.extra.FILES_TOTAL";
-	public final static String EXTRA_UPLOAD_COUNT = "com.waveface.wammer.extra.FILES_UPLOAD_COUNT";
-	public final static String EXTRA_URL = "com.waveface.wammer.extra.URL";
-	public final static String EXTRA_PREVIEW_TARGET = "com.waveface.wammer.extra.PREVIEW_TARGET";
-	public final static String EXTRA_FIRST_PREVIEW_URL = "com.waveface.wammer.extra.FIRST_PREVIEW_URL";
-	public final static String EXTRA_OPEN_GRAPH_SIZE = "com.waveface.wammer.extra.OPEN_GRAPH_SIZE";
-	public final static String EXTRA_OPEN_GRAPH = "com.waveface.wammer.extra.OPEN_GRAPH";
-	public final static String EXTRA_REFRESH_STATE = "com.waveface.wammer.extra.REFRESH_STATE";
-	public final static String EXTRA_CMMENT_COUNTS = "com.waveface.wammer.extra.CMMENT_COUNTS";
-	public final static String EXTRA_SERVICE_ENABLE = "com.waveface.wammer.extra.SERVICE_ENABLE";
-	public final static String EXTRA_ERROR_MESSAGE_ID = "com.waveface.wammer.extra.ERROR_MESSAGE_ID";
-	public final static String EXTRA_ERROR_API_RETURN_CODE = "com.waveface.wammer.extra.ERROR_API_RETURN_CODE";
-	public final static String EXTRA_STATUS_CODE = "com.waveface.wammer.extra.EXTRA_STATUS_CODE";
-	public final static String EXTRA_SUCCESS_MESSAGE_ID = "com.waveface.wammer.extra.SUCCESS_MESSAGE_ID";
-	public final static String EXTRA_IMAGE_TARGET = "com.waveface.wammer.extra.IMAGE_TARGET";
-	public final static String EXTRA_NOTIFICATION_ID = "com.waveface.wammer.extra.NOTIFICATION_ID";
-	public final static String EXTRA_SHOW_UNREAD = "com.waveface.wammer.extra.SHOW_UNREAD";
-	public final static String EXTRA_HAS_MULTI_GROUPS = "com.waveface.wammer.extra.HAS_MULTI_GROUPS";
-	public final static String EXTRA_TIMESTAMP = "com.waveface.wammer.extra.TIMESTAMP";
-	public final static String EXTRA_USER_MANUAL_SYNC = "com.waveface.wammer.extra.USER_MANUAL_SYNC";
-	public final static String EXTRA_SYNC_FAILED = "com.waveface.wammer.extra.SYNC_FAILED";
-
-	public final static String EXTRA_DIALOG_INDETERMINATE = "com.waveface.wammer.extra.DIALOG_INDETERMINATE";
-	public final static String EXTRA_DIALOG_CANCELABLE = "com.waveface.wammer.extra.DIALOG_CANCELABLE";
-	public final static String EXTRA_DIALOG_MESSAGE_ID = "com.waveface.wammer.extra.MESSAGE_ID";
-	public final static String EXTRA_FILTER = "com.waveface.wammer.extra.FILTER";
-	public final static String EXTRA_NATIVE_SIGNUP_FAIL =  "com.waveface.wammer.extra.NATIVE_SIGNUP_FAIL";
-
 	//KEEP ON DEVICE
-	public final static String EXTRA_KEEP_TOTAL = "com.waveface.wammer.extra.KEEP_TOTAL";
-	public final static String EXTRA_KEEP_COUNT =  "com.waveface.wammer.extra.KEEP_COUNT";
-
-	public final static String SNS_LOGIN = "SnsLogin";
-	public final static String SNS_SIGNUP = "SnsSignup";
-	public final static String SNS_FBSIGNUP = "SnsFBSignup";
-	public final static String SNS_CONNECT = "SnsConnect";
-	public final static String SNS_DISCONNECT = "SnsDisconnect";
 
 	public final static int TYPE_POST_PHOTO = 0;
 	public final static int TYPE_POST_PREVIEW = 1;
@@ -194,6 +127,11 @@ public class Constant {
 	public final static String PARAM_COVER_ATTACH = "cover_attach";
 	public final static String PARAM_FROM_COMPOSER = "from_composer";
 	public final static String PARAM_FILENAME = "filename";
+	public final static String PARAM_FILESIZE = "filesize";
+	public final static String PARAM_FILEACTION_START = "file-start";
+	public final static String PARAM_FILEACTION_END = "file-end";
+	
+	
 	public final static String PARAM_GROUP_ID = "group_id";
 	public final static String PARAM_POST_ID = "post_id";
 	public final static String PARAM_COLLECTION_ID = "collection_id";

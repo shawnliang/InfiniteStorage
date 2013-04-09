@@ -7,6 +7,7 @@ import javolution.util.FastList;
 import org.jwebsocket.api.WebSocketClientEvent;
 import org.jwebsocket.api.WebSocketClientTokenListener;
 import org.jwebsocket.api.WebSocketPacket;
+import org.jwebsocket.config.JWebSocketCommonConstants;
 import org.jwebsocket.kit.WebSocketException;
 import org.jwebsocket.token.Token;
 
@@ -38,6 +39,14 @@ public class RuntimeWebClient {
 		mURL = prefs.getString(Constant.PREF_STATION_WEB_SOCKET_URL, "");
 	}
 
+	public static void setDefaultFormat(){
+		mWebSocketClient.setSubProt(JWebSocketCommonConstants.WS_SUBPROT_DEFAULT);
+	}
+	public static void setBinaryFormat(){
+		mWebSocketClient.setSubProt(JWebSocketCommonConstants.WS_SUBPROT_BINARY);
+	}
+	
+	
 	public static void open() throws WebSocketException {
 		mWebSocketClient.open(mURL);
 	}
@@ -72,6 +81,12 @@ public class RuntimeWebClient {
 			throws WebSocketException {
 		mWebSocketClient.sendFile(aHeader, aData, aFilename, aTarget);
 	}
+	public static void sendFile(byte[] aData)
+			throws WebSocketException {
+		setBinaryFormat();
+		mWebSocketClient.send(aData);
+	}
+	
 
 	public static void addListener(WebSocketClientTokenListener aListener) {
 		mListeners.add(aListener);

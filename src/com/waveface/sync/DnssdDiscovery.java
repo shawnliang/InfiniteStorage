@@ -1,7 +1,15 @@
 package com.waveface.sync;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.HashMap;
 
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceEvent;
@@ -15,11 +23,17 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.widget.TextView;
 
+import com.waveface.sync.entity.FIleTransferEntity;
+import com.waveface.sync.util.Log;
+import com.waveface.sync.util.StringUtil;
 import com.waveface.sync.websocket.RuntimeWebClient;
 
 
@@ -62,7 +76,8 @@ public class DnssdDiscovery extends Activity {
                 public void serviceResolved(ServiceEvent ev) {
                 	@SuppressWarnings("deprecation")
                 	ServiceInfo si = ev.getInfo();
-					String display ="Name:" + si.getName();
+                	String server = si.getName();
+					String display ="Name:" + server;
 					String host = si.getHostAddress();
 					int port =  si.getPort();
 					display +="\nHost Adddress:" + si.getHostAddress() + " \nport:" + si.getPort();
@@ -81,8 +96,8 @@ public class DnssdDiscovery extends Activity {
                     SharedPreferences prefs = getSharedPreferences(
             				Constant.PREFS_NAME, Context.MODE_PRIVATE);
                     String wsLocation = prefs.getString(Constant.PREF_STATION_WEB_SOCKET_URL, "");
-                    if(TextUtils.isEmpty(wsLocation) || RuntimePlayer.OnWebSocketOpened == false ){
-                    	wsLocation = "ws://"+host+"/"+port;
+                    if( server.equals("ben-MBP") && (TextUtils.isEmpty(wsLocation) || RuntimePlayer.OnWebSocketOpened == false )){
+                    	wsLocation = "ws://"+host+":"+port;
                     	prefs.edit().putString(Constant.PREF_STATION_WEB_SOCKET_URL, wsLocation).commit();
             			if(RuntimePlayer.OnWebSocketOpened == false){
             				RuntimeWebClient.init(DnssdDiscovery.this);
@@ -99,6 +114,7 @@ public class DnssdDiscovery extends Activity {
             					if(isConnected){
             						RuntimePlayer.OnWebSocketOpened = true;
             						notifyUser("Connected To "+si.getName());
+            						sendFile(DnssdDiscovery.this);
             					}
             				}
             			}
@@ -124,6 +140,204 @@ public class DnssdDiscovery extends Activity {
         }
     }
 
+    public void sendFile(Context context){
+		String currentDate = "";
+		String cursorDate = "";
+		long refCursorDate = 0 ;
+		long dateTaken = 0;
+		long dateModified = 0;
+		long dateAdded = 0;
+		String fileSize = null;
+		String mediaData = null;
+		String imageId = null;
+
+		String[] projection = {
+				MediaStore.Images.Media.DATA,
+				MediaStore.Images.Media.DATE_TAKEN,
+				MediaStore.Images.Media.DISPLAY_NAME,
+				MediaStore.Images.Media.DATE_ADDED,
+				MediaStore.Images.Media.DATE_MODIFIED,
+				MediaStore.Images.Media.SIZE,
+				MediaStore.Images.Media._ID};
+
+
+		String selection =  getImageSelection(context);
+
+		String selectionArgs[] = { currentDate };
+		Log.d(TAG, "selection => " + selection);
+		Cursor cursor =context.getContentResolver().query(
+				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
+				selection, selectionArgs,
+				MediaStore.Images.Media.DATE_TAKEN+" DESC");
+		
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			int count = cursor.getCount();
+			ArrayList<String> filenames = new ArrayList<String>();
+			ArrayList<String> filesizes = new ArrayList<String>();
+			
+			for(int i = 0 ; i < count; i++){
+				mediaData = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+				dateTaken = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_TAKEN));
+				dateModified = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED));
+				dateAdded = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED));
+				fileSize = cursor.getString(5);
+				imageId = cursor.getString(6);		
+	
+				if (dateTaken != -1) {
+					refCursorDate = dateTaken / 1000;
+				} else if (dateModified != -1) {
+					refCursorDate = dateModified / 1000;
+				} else if (dateAdded != -1) {
+					refCursorDate = dateAdded / 1000;
+				}
+				cursorDate = StringUtil.getConverDate(refCursorDate);
+				Log.d(TAG, "cursorDate ==>" + cursorDate);
+				Log.d(TAG, "Filename ==>" + mediaData);
+				filenames.add(mediaData);
+				filesizes.add(fileSize);
+				
+				cursor.moveToNext();
+			}
+			cursor.close();
+			HashMap<String,ArrayList<String>> param = new HashMap<String,ArrayList<String>>();
+			param.put(Constant.PARAM_FILENAME, filenames);
+			param.put(Constant.PARAM_FILESIZE, filesizes);
+			new SendFileTask(context).execute(param);
+		}
+    }
+    
+    class SendFileTask extends AsyncTask<HashMap<String,ArrayList<String>>,Void,Void>{
+
+    	private Context mContext ;
+    	public SendFileTask(Context context){
+    		mContext = context;
+    	}
+		@SuppressLint("NewApi")
+		@Override
+		protected Void doInBackground(HashMap<String, ArrayList<String>>... params) {
+			
+			
+			ArrayList<String> filenames = params[0].get(Constant.PARAM_FILENAME);
+			ArrayList<String> filesizes = params[0].get(Constant.PARAM_FILESIZE);
+			String filename = null;
+			String filesize = null;
+
+			try {
+				for(int i = 0 ; i < filenames.size();i++){
+					filename = filenames.get(i);
+					filesize = filesizes.get(i);
+				
+					//send file index for start
+					FIleTransferEntity entity = new FIleTransferEntity();
+					entity.action = Constant.PARAM_FILEACTION_START;
+					entity.fileName = StringUtil.getFilename(filename);
+					entity.fileSize = filesize;
+					String jsonOuput = RuntimePlayer.GSON.toJson(entity);
+					RuntimeWebClient.setDefaultFormat();
+					RuntimeWebClient.send(jsonOuput);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					//send file binary
+	//				byte[] data = null;
+	//				Bitmap bm = BitmapFactory.decodeFile(filename);
+	//				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	//				if (bm != null) {
+	//					data = stream.toByteArray();
+	//				}
+					
+	//		        ByteArrayOutputStream ous = null;
+			        InputStream ios = null;
+			        RuntimeWebClient.setBinaryFormat();
+			        try {
+			            byte[] buffer = new byte[1024];
+			            byte[] finalBuffer = null;
+	//		            
+			            ios = new FileInputStream(new File(filename));
+			            int read = 0;
+			            while ( (read = ios.read(buffer)) != -1 ) {
+			            	if(read != buffer.length){
+			            		finalBuffer = new byte[read];
+			            		finalBuffer = Arrays.copyOf(buffer, read);
+			            		RuntimeWebClient.sendFile(finalBuffer);
+			            	}
+			            	else{
+			            		RuntimeWebClient.sendFile(buffer);
+			            	}
+	//						RuntimeWebClient.sendFile("123", buffer, entity.fileName, "123");		            	
+			            }
+			        } catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} finally { 
+	//		            try {
+	//		                 if ( ous != null ) 
+	//		                     ous.close();
+	//		            } catch ( IOException e) {
+	//		            }
+	
+			            try {
+			                 if ( ios != null ) 
+			                      ios.close();
+			            } catch ( IOException e) {
+			            }
+			        }				
+					//send file index for end
+			        RuntimeWebClient.setDefaultFormat();
+			        entity.action = Constant.PARAM_FILEACTION_END;
+					jsonOuput = RuntimePlayer.GSON.toJson(entity);
+					RuntimeWebClient.send(jsonOuput);
+				}
+
+			} catch (WebSocketException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}	
+    }
+    
+    public byte[] read(File file) throws IOException {
+
+        ByteArrayOutputStream ous = null;
+        InputStream ios = null;
+        try {
+            byte[] buffer = new byte[4096];
+            ous = new ByteArrayOutputStream();
+            ios = new FileInputStream(file);
+            int read = 0;
+            while ( (read = ios.read(buffer)) != -1 ) {
+                ous.write(buffer, 0, read);
+            }
+        } finally { 
+            try {
+                 if ( ous != null ) 
+                     ous.close();
+            } catch ( IOException e) {
+            }
+
+            try {
+                 if ( ios != null ) 
+                      ios.close();
+            } catch ( IOException e) {
+            }
+        }
+        return ous.toByteArray();
+    }
+	public static String getImageSelection(Context context){
+		String selection = "(" + MediaStore.Images.Media.DATE_ADDED + " <= ? ";
+		//IMPORT ALL
+		selection += " AND "+ MediaStore.Images.Media.DISPLAY_NAME
+				+" NOT LIKE '%.jps%' )";
+		return selection;
+	}
 
     private void notifyUser(final String msg) {
         handler.postDelayed(new Runnable() {
