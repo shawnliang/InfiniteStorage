@@ -22,7 +22,7 @@ namespace Gui
 			//modes.InsertBefore(InstallationMode.Reinstall, InstallationMode.Modify);
 
 			//uncomment this line if you don't want to support reinstallation
-			modes.Remove(InstallationMode.Reinstall);
+			//modes.Remove(InstallationMode.Reinstall);
 			if (modes.Contains(SetupHelper.InstallationModeFromCommandLine))
 				return new InstallationModeCollection(SetupHelper.InstallationModeFromCommandLine);
 			else
@@ -41,12 +41,15 @@ namespace Gui
 				//SetupHelper.ApplyMsiProperties();
 				var modes = GetInstallationModes(MsiConnection.Instance.Mode);
 
+				if (modes.Contains(InstallationMode.Reinstall))
+					modes.Remove(InstallationMode.Reinstall);
+
 				if (modes.Contains(InstallationMode.Downgrade))
 					AddStep(new FatalErrorStep(Gui.Properties.Resources.DowngradeNotSupported));
-				else if (modes.Count > 1)
-					AddStep(new InstallationModeStep(modes));
-				else if (modes.Count == 1)
+				else if (modes.Count == 1 && modes.Contains(InstallationMode.Install))
 					AddStep(new WelcomeStep(modes[0]));
+				else
+					AddStep(new InstallationModeStep(modes));
 			}
 			else if (type == LifecycleActionType.ModeSelected)
 			{
