@@ -6,14 +6,17 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using InfiniteStorage.Properties;
 
 namespace InfiniteStorage
 {
-	public partial class Form1 : Form
+	public partial class PreferenceDialog : Form
 	{
-		public Form1()
+		public PreferenceDialog()
 		{
 			InitializeComponent();
+			Text = Resources.ProductName;
+			Icon = Resources.product_icon;
 		}
 	}
 }

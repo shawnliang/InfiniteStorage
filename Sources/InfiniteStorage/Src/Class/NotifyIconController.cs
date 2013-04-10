@@ -8,7 +8,7 @@ namespace InfiniteStorage
 {
 	class NotifyIconController
 	{
-		private Form1 preferenceForm = new Form1();
+		private PreferenceDialog preferenceForm = new PreferenceDialog();
 
 		public void OnOpenBackupFolderMenuItemClicked(object sender, EventArgs arg)
 		{
@@ -18,7 +18,7 @@ namespace InfiniteStorage
 		public void OnPreferencesMenuItemClicked(object sender, EventArgs arg)
 		{
 			if (preferenceForm.IsDisposed)
-				preferenceForm = new Form1();
+				preferenceForm = new PreferenceDialog();
 
 			preferenceForm.Show();
 			preferenceForm.Activate();
