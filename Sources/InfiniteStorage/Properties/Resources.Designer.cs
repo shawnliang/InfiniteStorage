@@ -75,5 +75,50 @@ namespace InfiniteStorage.Properties {
                 return ResourceManager.GetString("ProductName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting started....
+        /// </summary>
+        internal static string TrayMenuItem_GettingStarted {
+            get {
+                return ResourceManager.GetString("TrayMenuItem_GettingStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open backup folder.
+        /// </summary>
+        internal static string TrayMenuItem_OpenBackupFolder {
+            get {
+                return ResourceManager.GetString("TrayMenuItem_OpenBackupFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preferences....
+        /// </summary>
+        internal static string TrayMenuItem_Preferences {
+            get {
+                return ResourceManager.GetString("TrayMenuItem_Preferences", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quit.
+        /// </summary>
+        internal static string TrayMenuItem_Quit {
+            get {
+                return ResourceManager.GetString("TrayMenuItem_Quit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transferring files: {0} ({1}/{2}).
+        /// </summary>
+        internal static string TrayMenuItem_Transfering {
+            get {
+                return ResourceManager.GetString("TrayMenuItem_Transfering", resourceCulture);
+            }
+        }
     }
 }

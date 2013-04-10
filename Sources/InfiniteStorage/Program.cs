@@ -13,7 +13,7 @@ namespace InfiniteStorage
 	{
 		static BonjourService m_bonjourService;
 		static NotifyIcon m_notifyIcon;
-		static Form1 m_mainForm;
+		static NotifyIconController m_notifyIconController;
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -53,19 +53,10 @@ namespace InfiniteStorage
 				return;
 			}
 
-			m_mainForm = new Form1();
-			m_mainForm.Show();
-
 			Application.Run();
 
 			m_bonjourService.Unregister();
 			ws_server.Stop();
-		}
-
-		static void Application_ApplicationExit(object sender, EventArgs e)
-		{
-			if (m_notifyIcon != null)
-				m_notifyIcon.Dispose();
 		}
 
 		private static void initNotifyIcon()
@@ -73,18 +64,23 @@ namespace InfiniteStorage
 			m_notifyIcon = new NotifyIcon();
 			m_notifyIcon.Text = Resources.ProductName;
 			m_notifyIcon.Icon = Resources.product_icon;
+			m_notifyIconController = new NotifyIconController();
+
 			m_notifyIcon.ContextMenu = new ContextMenu(
 				new MenuItem[] {
-					new MenuItem("Open", (s,e)=>{
-						if (m_mainForm.IsDisposed)
-							m_mainForm = new Form1();
-
-						m_mainForm.Show();
-						m_mainForm.Activate();
-					}),
-					new MenuItem("Exit", (s,e)=>{Application.Exit();}),
+					new MenuItem(Resources.TrayMenuItem_OpenBackupFolder, m_notifyIconController.OnOpenBackupFolderMenuItemClicked),
+					new MenuItem(Resources.TrayMenuItem_Preferences, m_notifyIconController.OnPreferencesMenuItemClicked),
+					new MenuItem(Resources.TrayMenuItem_GettingStarted, m_notifyIconController.OnGettingStartedMenuItemClicked),
+					new MenuItem("-"),
+					new MenuItem(Resources.TrayMenuItem_Quit, m_notifyIconController.OnQuitMenuItemClicked),
 				});
 			m_notifyIcon.Visible = true;
+		}
+
+		static void Application_ApplicationExit(object sender, EventArgs e)
+		{
+			if (m_notifyIcon != null)
+				m_notifyIcon.Dispose();
 		}
 
 		static void m_bonjourService_Error(object sender, BonjourErrorEventArgs e)

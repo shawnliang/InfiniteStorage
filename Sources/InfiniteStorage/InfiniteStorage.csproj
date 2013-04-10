@@ -67,6 +67,7 @@
     <Compile Include="Src\Class\BonjourService.cs" />
     <Compile Include="Src\Class\FlatFileStorage.cs" />
     <Compile Include="Src\Class\Log4netConfigure.cs" />
+    <Compile Include="Src\Class\NotifyIconController.cs" />
     <Compile Include="Src\Class\TempFileFactory.cs" />
     <Compile Include="Src\Class\InfiniteStorageWebSocketService.cs" />
     <Compile Include="Src\Class\ITempFileFactory.cs" />
