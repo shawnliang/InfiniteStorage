@@ -1,4 +1,4 @@
-package com.waveface.sync;
+package com.waveface.sync.ui;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -31,6 +31,9 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.widget.TextView;
 
+import com.waveface.sync.Constant;
+import com.waveface.sync.R;
+import com.waveface.sync.RuntimePlayer;
 import com.waveface.sync.entity.FIleTransferEntity;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.StringUtil;
@@ -41,6 +44,7 @@ public class DnssdDiscovery extends Activity {
 	private String TAG = DnssdDiscovery.class.getSimpleName();
     android.net.wifi.WifiManager.MulticastLock lock;
     android.os.Handler handler = new android.os.Handler();
+    public static String DATE_FOMAT = "yyyyMMddHHmmss";
     private final int BASE_BYTES = 1024;
 	private static ArrayList<String> mFolders = new ArrayList<String>();			
 	private static ArrayList<String> mFilenames = new ArrayList<String>();
@@ -69,7 +73,7 @@ public class DnssdDiscovery extends Activity {
 			String action = intent.getAction();
 			Log.d(TAG, "action:" + intent.getAction());
 			if (Constant.ACTION_BACKUP_FILE.equals(action)) {
-				new SendFileTask(context).execute(new Void[]{});
+				new SendFileTask().execute(new Void[]{});
 			}
 		}
 	};
@@ -134,7 +138,11 @@ public class DnssdDiscovery extends Activity {
             					if(isConnected){
             						RuntimePlayer.OnWebSocketOpened = true;
             						notifyUser("Connected To "+si.getName());
-            						sendFile(DnssdDiscovery.this);
+//            						sendFile(DnssdDiscovery.this,Constant.TYPE_AUDIO);
+//            						sendFile(DnssdDiscovery.this,Constant.TYPE_VIDEO);
+            						sendFile(DnssdDiscovery.this,Constant.TYPE_IMAGE);
+            						Intent intent = new Intent(Constant.ACTION_BACKUP_FILE);
+            						sendBroadcast(intent);
             					}
             				}
             			}
@@ -148,62 +156,104 @@ public class DnssdDiscovery extends Activity {
 
                 @Override
                 public void serviceAdded(ServiceEvent event) {
-                    // Required to force serviceResolved to be called again (after the first search)
                     jmdns.requestServiceInfo(event.getType(), event.getName(), 1);
                 }
             });
-//            serviceInfo = ServiceInfo.create("_infinite-storage._tcp.local.", "Android from Lm ", 12345, "version=1.0:name=cool");
-//            jmdns.registerService(serviceInfo);
         } catch (IOException e) {
             e.printStackTrace();
             return;
         }
     }
 
-    @SuppressWarnings("unchecked")
-	public void sendFile(Context context){
+	public void sendFile(Context context,int type){
 		String currentDate = "";
 		String cursorDate = "";
 		long refCursorDate = 0 ;
-		long dateTaken = 0;
+		long dateTaken = -1;
 		long dateModified = 0;
 		long dateAdded = 0;
 		String fileSize = null;
 		String folderName = null;
 		String mediaData = null;
 		String imageId = null;
-
-		String[] projection = {
-				MediaStore.Images.Media.DATA,
-				MediaStore.Images.Media.DATE_TAKEN,
-				MediaStore.Images.Media.DISPLAY_NAME,
-				MediaStore.Images.Media.DATE_ADDED,
-				MediaStore.Images.Media.DATE_MODIFIED,
-				MediaStore.Images.Media.SIZE,
-				MediaStore.Images.Media._ID};
-
-
-		String selection =  getImageSelection(context);
-
-		String selectionArgs[] = { currentDate };
-		Log.d(TAG, "selection => " + selection);
-		Cursor cursor =context.getContentResolver().query(
-				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
-				selection, selectionArgs,
-				MediaStore.Images.Media.DATE_TAKEN+" DESC");
 		
+		String[] projection = null;
+		String selection =  null;
+		String selectionArgs[] = { currentDate };
+		Cursor cursor = null;
+		if(type == Constant.TYPE_IMAGE){//IMAGES
+			projection = new String[]{
+					MediaStore.Images.Media.DATA,
+					MediaStore.Images.Media.DATE_TAKEN,
+					MediaStore.Images.Media.DISPLAY_NAME,
+					MediaStore.Images.Media.DATE_ADDED,
+					MediaStore.Images.Media.DATE_MODIFIED,
+					MediaStore.Images.Media.SIZE,
+					MediaStore.Images.Media._ID};
+			selection =  getImageSelection(context);
+	
+			Log.d(TAG, "selection => " + selection);
+			cursor =context.getContentResolver().query(
+					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
+					selection, selectionArgs,
+					MediaStore.Images.Media.DATE_TAKEN+" DESC");
+		}
+		else if(type == Constant.TYPE_VIDEO){//VIDEO
+		projection = new String[]{
+				MediaStore.Video.Media.DATA,
+				MediaStore.Video.Media.DATE_TAKEN,
+				MediaStore.Video.Media.DISPLAY_NAME,
+				MediaStore.Video.Media.DATE_ADDED,
+				MediaStore.Video.Media.DATE_MODIFIED,
+				MediaStore.Video.Media.SIZE,
+				MediaStore.Video.Media._ID};
+
+		selection =  getVideoSelection(context);
+		Log.d(TAG, "selection => " + selection);
+		cursor =context.getContentResolver().query(
+				MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection,
+				selection, selectionArgs,
+				MediaStore.Video.Media.DATE_TAKEN+" DESC");
+		}
+		else if(type == Constant.TYPE_AUDIO){//AUDIO
+			projection = new String[]{
+					MediaStore.Audio.Media.DATA,
+					MediaStore.Audio.Media.DISPLAY_NAME,
+					MediaStore.Audio.Media.ALBUM,
+					MediaStore.Audio.Media.DATE_ADDED,
+					MediaStore.Audio.Media.DATE_MODIFIED,
+					MediaStore.Audio.Media.SIZE,
+					MediaStore.Audio.Media._ID};
+	
+			selection =  getAudioSelection(context);
+	
+			Log.d(TAG, "selection => " + selection);
+			cursor = context.getContentResolver().query(
+					MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection,
+					selection, selectionArgs,
+					MediaStore.Audio.Media.DATE_ADDED+" DESC");
+		}
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();
-			int count = cursor.getCount();
-//			ArrayList<String> folders = new ArrayList<String>();			
-//			ArrayList<String> filenames = new ArrayList<String>();
-//			ArrayList<String> filesizes = new ArrayList<String>();
-			
+			int count = cursor.getCount();			
 			for(int i = 0 ; i < count; i++){
-				mediaData = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-				dateTaken = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_TAKEN));
-				dateModified = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED));
-				dateAdded = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED));
+				if(type == Constant.TYPE_IMAGE){
+					mediaData = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+					dateTaken = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_TAKEN));
+					dateModified = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED));
+					dateAdded = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED));					
+				}
+				else if(type == Constant.TYPE_AUDIO){
+					mediaData = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+					dateModified = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED));
+					dateAdded = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DATE_ADDED));
+				}
+				else if(type == Constant.TYPE_VIDEO){
+					mediaData = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
+					dateTaken = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media.DATE_TAKEN));
+					dateModified = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media.DATE_MODIFIED));
+					dateAdded = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media.DATE_ADDED));
+				}
 				fileSize = cursor.getString(5);
 				imageId = cursor.getString(6);		
 				folderName =  getFoldername(mediaData);
@@ -224,14 +274,7 @@ public class DnssdDiscovery extends Activity {
 				
 				cursor.moveToNext();
 			}
-			cursor.close();
-//			HashMap<String,ArrayList<String>> param = new HashMap<String,ArrayList<String>>();
-//			param.put(Constant.PARAM_FOLDERNAME, folders);
-//			param.put(Constant.PARAM_FILENAME, filenames);
-//			param.put(Constant.PARAM_FILESIZE, filesizes);
-			
-			Intent intent = new Intent(Constant.ACTION_BACKUP_FILE);
-			context.sendBroadcast(intent);
+			cursor.close();			
 		}
     }
 	public static String getFoldername(String imageFullpath){
@@ -246,16 +289,8 @@ public class DnssdDiscovery extends Activity {
 	}
     class SendFileTask extends AsyncTask<Void,Void,Void>{
 
-    	private Context mContext ;
-    	public SendFileTask(Context context){
-    		mContext = context;
-    	}
 		@Override
-		protected Void doInBackground(Void... params) {
-			
-//			ArrayList<String> foldernames = params[0].get(Constant.PARAM_FOLDERNAME);			
-//			ArrayList<String> filenames = params[0].get(Constant.PARAM_FILENAME);
-//			ArrayList<String> filesizes = params[0].get(Constant.PARAM_FILESIZE);
+		protected Void doInBackground(Void... params) {			
 			String foldername = null;
 			String filename = null;
 			String filesize = null;
@@ -375,6 +410,27 @@ public class DnssdDiscovery extends Activity {
 		//IMPORT ALL
 		selection += " AND "+ MediaStore.Images.Media.DISPLAY_NAME
 				+" NOT LIKE '%.jps%' )";
+		return selection;
+	}
+	public static String getVideoSelection(Context context){
+		String selection = MediaStore.Video.Media.DATE_ADDED + " <= ? ";
+		//IMPORT ALL
+//		selection += " AND "+ MediaStore.Video.Media.DISPLAY_NAME
+//				+" NOT LIKE '%.jps%' )";
+		return selection;
+	}
+	public static String getAudioSelection(Context context){
+		String selection = MediaStore.Audio.Media.DATE_ADDED + " <= ? ";
+		//IMPORT ALL
+//		selection += " AND "+ MediaStore.Video.Media.DISPLAY_NAME
+//				+" NOT LIKE '%.jps%' )";
+		return selection;
+	}
+	public static String getFilesSelection(Context context){
+		String selection = MediaStore.Files.FileColumns.DATE_ADDED + " <= ? ";
+		//IMPORT ALL
+//		selection += " AND "+ MediaStore.Video.Media.DISPLAY_NAME
+//				+" NOT LIKE '%.jps%' )";
 		return selection;
 	}
 

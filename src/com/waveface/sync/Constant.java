@@ -24,6 +24,12 @@ public class Constant {
 
 	public final static String ACTION_BACKUP_FILE = "com.waveface.wammer.action.BACKUP_FILE";
 
+	//File Type
+	public static final int TYPE_IMAGE = 1;
+	public static final int TYPE_AUDIO = 2;
+	public static final int TYPE_VIDEO = 3;	
+	public static final int TYPE_DOC = 4;		
+
 	
 	public final static String ACTION_USERS_ADDED = "com.waveface.wammer.action.USERS_ADDED";
 	public final static String ACTION_COMMENTS_ADDED = "com.waveface.wammer.action.COMMENTS_ADDED";

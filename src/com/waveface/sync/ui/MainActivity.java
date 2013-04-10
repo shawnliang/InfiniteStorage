@@ -1,4 +1,4 @@
-package com.waveface.sync;
+package com.waveface.sync.ui;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -9,6 +9,7 @@ import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.waveface.sync.R;
 import com.waveface.sync.util.ChatConnection;
 import com.waveface.sync.util.NsdHelper;
 import com.waveface.sync.util.SystemUiHider;

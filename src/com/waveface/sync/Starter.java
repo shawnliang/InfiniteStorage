@@ -17,17 +17,28 @@ public class Starter extends Application {
 						+ android.os.Debug.getNativeHeapAllocatedSize());
 		super.onCreate();
 		SYNC_CONTEXT = getApplicationContext();
-		ScanImageFolder();
+//		ScanImageFolder();
+//		ScanVideoFolder();
 	}
 	private void ScanImageFolder() {
 		//Scan Image Folder
-		String imageFolders = ImageUtil.findAlbums(SYNC_CONTEXT);
+		String imageFolders = ImageUtil.findFolders(SYNC_CONTEXT,Constant.TYPE_IMAGE);
 		if(imageFolders.length()>0){
 			if(imageFolders.endsWith(",")){
 				imageFolders = imageFolders.substring(0, imageFolders.length()-1);
 			}
 		}
-		PhotoImport.addDefaultImportFolder(SYNC_CONTEXT, imageFolders.split(","), "P");
+		PhotoImport.addDefaultImportFolder(SYNC_CONTEXT, imageFolders.split(","), Constant.TYPE_IMAGE);
+	}
+	private void ScanVideoFolder() {
+		//Scan Image Folder
+		String videoFolders = ImageUtil.findFolders(SYNC_CONTEXT,Constant.TYPE_VIDEO);
+		if(videoFolders.length()>0){
+			if(videoFolders.endsWith(",")){
+				videoFolders = videoFolders.substring(0, videoFolders.length()-1);
+			}
+		}
+		PhotoImport.addDefaultImportFolder(SYNC_CONTEXT, videoFolders.split(","), Constant.TYPE_VIDEO);
 	}
 
 }

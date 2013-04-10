@@ -799,9 +799,9 @@ public class PhotoImport {
 	 * add (photo/doc/audio/video) import folder to database
 	 * @param context
 	 * @param folderNames all the folders aboout type
-	 * @param type "D" means Doc,"P" means Photos,"A" means Audio,"V" means Video
+	 * @param type "1" means Photos,"2" means Audio,"3" means Video,"4" means Document
 	 */
-	public static void addDefaultImportFolder(Context context,String[] folderNames,String type){
+	public static void addDefaultImportFolder(Context context,String[] folderNames,int type){
 		ArrayList<ContentValues> imports = new ArrayList<ContentValues>();
 		ContentResolver cr = context.getContentResolver();
 		String currentTimestamp = StringUtil.getLocalDate();
@@ -811,7 +811,7 @@ public class PhotoImport {
 			Cursor cursor = cr.query(ImportTable.CONTENT_URI,
 					new String[]{ImportTable.COLUMN_FOLDER_NAME}
 					,ImportTable.COLUMN_TYPE+"=?"
-					, new String[]{type}, null);
+					, new String[]{String.valueOf(type)}, null);
 			if(cursor!=null && cursor.getCount()>0){
 				cursor.moveToFirst();
 				for(int i = 0 ; i < cursor.getCount(); i++){

@@ -16,18 +16,19 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.media.ExifInterface;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.widget.ImageView;
+
+import com.waveface.sync.Constant;
 
 
 public class ImageUtil {
@@ -303,6 +304,48 @@ public class ImageUtil {
 		}
 		return fileSize;
 	}
+    public static String findFolders(Context context,int type){
+		String selection = null;
+		String[] projection = null;
+		if(type == Constant.TYPE_IMAGE){
+			selection = MediaStore.Images.Media.BUCKET_DISPLAY_NAME+ " NOT LIKE '%.jps%'";
+			projection = new String[]{MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
+		}
+		else if(type == Constant.TYPE_VIDEO){
+			projection = new String[]{MediaStore.Video.Media.BUCKET_DISPLAY_NAME};			
+		}
+		else if(type == Constant.TYPE_AUDIO){
+			projection = new String[]{MediaStore.Audio.Media.BOOKMARK};			
+		}		
+		Cursor cursor = context.getContentResolver().query(
+				MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+				projection,
+				selection,
+				null,
+				MediaStore.Images.Media.DEFAULT_SORT_ORDER);
+		StringBuilder sb = new StringBuilder();
+		if(cursor!=null && cursor.getCount()>0){
+			int count = cursor.getCount();
+			String lastDisplayName = "";
+			String thisTimeDisplayname = "";
+			if(count>0){
+				cursor.moveToFirst();
+				for (int i = 0; i < count ; i++) {
+					thisTimeDisplayname = cursor.getString(0);
+					if(!thisTimeDisplayname.equals(lastDisplayName)){
+						sb.append(thisTimeDisplayname).append(",");
+						lastDisplayName = thisTimeDisplayname;
+					}
+					cursor.moveToNext();
+				}
+			}
+		}
+		if(cursor!=null){
+			cursor.close();
+		}
+		return sb.toString();
+    }
+	
     public static String findAlbums(Context context){
 		String selection = MediaStore.Images.Media.DATA + " NOT LIKE " + "'%Stream%'"
 					+ " AND "+MediaStore.Images.Media.DISPLAY_NAME
@@ -335,6 +378,65 @@ public class ImageUtil {
 		}
 		return sb.toString();
     }
+    public static String findVideoFolders(Context context){
+		Cursor cursor = context.getContentResolver().query(
+				MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+				new String[]{MediaStore.Video.Media.BUCKET_DISPLAY_NAME},
+				null,
+				null,
+				MediaStore.Images.Media.DEFAULT_SORT_ORDER);
+		StringBuilder sb = new StringBuilder();
+		if(cursor!=null && cursor.getCount()>0){
+			int count = cursor.getCount();
+			String lastDisplayName = "";
+			String thisTimeDisplayname = "";
+			if(count>0){
+				cursor.moveToFirst();
+				for (int i = 0; i < count ; i++) {
+					thisTimeDisplayname = cursor.getString(0);
+					if(!thisTimeDisplayname.equals(lastDisplayName)){
+						sb.append(thisTimeDisplayname).append(",");
+						lastDisplayName = thisTimeDisplayname;
+					}
+					cursor.moveToNext();
+				}
+			}
+		}
+		if(cursor!=null){
+			cursor.close();
+		}
+		return sb.toString();
+    }
+    public static String findAudioFolders(Context context){
+		Cursor cursor = context.getContentResolver().query(
+				MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+				new String[]{MediaStore.Video.Media.BUCKET_DISPLAY_NAME},
+				null,
+				null,
+				MediaStore.Images.Media.DEFAULT_SORT_ORDER);
+		StringBuilder sb = new StringBuilder();
+		if(cursor!=null && cursor.getCount()>0){
+			int count = cursor.getCount();
+			String lastDisplayName = "";
+			String thisTimeDisplayname = "";
+			if(count>0){
+				cursor.moveToFirst();
+				for (int i = 0; i < count ; i++) {
+					thisTimeDisplayname = cursor.getString(0);
+					if(!thisTimeDisplayname.equals(lastDisplayName)){
+						sb.append(thisTimeDisplayname).append(",");
+						lastDisplayName = thisTimeDisplayname;
+					}
+					cursor.moveToNext();
+				}
+			}
+		}
+		if(cursor!=null){
+			cursor.close();
+		}
+		return sb.toString();
+    }
+    
 
 	public static void setImage(ImageView image, Bitmap bitmap) {
 		if (bitmap != null) {

@@ -11,8 +11,8 @@ public class ImportTable  implements BaseColumns {
 	public static final Uri IMPORT_URI = Uri.parse("content://"
 			+ SyncProvider.AUTHORITY + "/" + IMPORT_NAME);
 	public static final Uri CONTENT_URI = IMPORT_URI;
-	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.wammer.dev.import";
-	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.wammer.dev.import";
+	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.wammer.sync.import";
+	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.wammer.sync.import";
 	public static final String DEFAULT_SORT_ORDER = ImportTable.COLUMN_FOLDER_NAME;
 
 	public static final String TABLE_NAME = "Import";
