@@ -73,7 +73,11 @@ public class DnssdDiscovery extends Activity {
 			}
 		}
 	};
-
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(mReceiver);
+	}
 
     private String type = "_infinite-storage._tcp.local.";
     private JmDNS jmdns = null;
