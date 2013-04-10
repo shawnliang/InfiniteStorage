@@ -34,7 +34,9 @@
 			this.buttonCancel = new System.Windows.Forms.Button();
 			this.buttonApply = new System.Windows.Forms.Button();
 			this.checkboxAutoRun = new System.Windows.Forms.CheckBox();
+			this.generalPreferenceControl1 = new InfiniteStorage.GeneralPreferenceControl();
 			this.tabControl.SuspendLayout();
+			this.tabPage1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl
@@ -51,6 +53,7 @@
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.Controls.Add(this.generalPreferenceControl1);
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -101,6 +104,14 @@
 			this.checkboxAutoRun.Text = "Auto run at system starts";
 			this.checkboxAutoRun.UseVisualStyleBackColor = true;
 			// 
+			// generalPreferenceControl1
+			// 
+			this.generalPreferenceControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.generalPreferenceControl1.Location = new System.Drawing.Point(3, 3);
+			this.generalPreferenceControl1.Name = "generalPreferenceControl1";
+			this.generalPreferenceControl1.Size = new System.Drawing.Size(614, 305);
+			this.generalPreferenceControl1.TabIndex = 0;
+			// 
 			// PreferenceDialog
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -116,6 +127,7 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "[ProductName]";
 			this.tabControl.ResumeLayout(false);
+			this.tabPage1.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -129,6 +141,7 @@
 		private System.Windows.Forms.Button buttonCancel;
 		private System.Windows.Forms.Button buttonApply;
 		private System.Windows.Forms.CheckBox checkboxAutoRun;
+		private GeneralPreferenceControl generalPreferenceControl1;
 	}
 }
 
