@@ -3,6 +3,7 @@ package com.waveface.sync;
 import android.app.Application;
 import android.content.Context;
 
+import com.waveface.sync.logic.FileImport;
 import com.waveface.sync.logic.PhotoImport;
 import com.waveface.sync.util.ImageUtil;
 import com.waveface.sync.util.Log;
@@ -17,6 +18,9 @@ public class Starter extends Application {
 						+ android.os.Debug.getNativeHeapAllocatedSize());
 		super.onCreate();
 		SYNC_CONTEXT = getApplicationContext();
+		FileImport.scanFileForImport(SYNC_CONTEXT, Constant.TYPE_IMAGE);
+		FileImport.scanFileForImport(SYNC_CONTEXT, Constant.TYPE_AUDIO);
+		FileImport.scanFileForImport(SYNC_CONTEXT, Constant.TYPE_VIDEO);		
 //		ScanImageFolder();
 //		ScanVideoFolder();
 	}

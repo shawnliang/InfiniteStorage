@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/imageDevice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@android:drawable/ic_menu_mapmode" />
+
+    <TextView
+        android:id="@+id/textDevice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageDevice"
+        android:layout_centerHorizontal="true"
+        android:text="lmichael-Nexus S" />
+
+    <TextView
+        android:id="@+id/textPeriod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textDevice"
+        android:layout_centerHorizontal="true"
+        android:text="2009-01-01~20130409" />
+
+    <RelativeLayout
+        android:id="@+id/rl1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textPeriod"
+        android:layout_margin="10dp" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:src="@android:drawable/ic_menu_gallery" />
+
+        <TextView
+            android:id="@+id/textPhotoCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageView1"
+            android:layout_toRightOf="@+id/imageView1"
+            android:text="total 100 photos" />
+
+        <TextView
+            android:id="@+id/textPhotoSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textPhotoCount"
+            android:layout_alignRight="@+id/textPhotoCount"
+            android:layout_below="@+id/textPhotoCount"
+            android:text="7GB" />
+
+        <Button
+            android:id="@+id/btnDeletePhoto"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/imageView1"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/textPhotoCount"
+            android:text="Delete Photos"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl1"
+        android:layout_margin="10dp" >
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:src="@android:drawable/ic_menu_slideshow" />
+
+        <TextView
+            android:id="@+id/textVideoCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageView2"
+            android:layout_toRightOf="@+id/imageView2"
+            android:text="total 10 videos" />
+
+        <TextView
+            android:id="@+id/textVideoSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textVideoCount"
+            android:layout_alignRight="@+id/textVideoCount"
+            android:layout_below="@+id/textVideoCount"
+            android:text="7GB" />
+
+        <Button
+            android:id="@+id/btnVideoPhoto"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/imageView2"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/textVideoCount"
+            android:text="Delete Videos"
+            android:textSize="14sp" />
+    </RelativeLayout>
+    
+    <View
+            android:id="@+id/btnVideoPhoto"        
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_margin="10dp"
+            android:layout_below="@+id/rl2"
+  			android:background="#00FF00"
+        />
+
+    <RelativeLayout
+        android:id="@+id/rl3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnVideoPhoto"        
+        android:layout_margin="10dp" >
+    
+    <ImageView
+        android:id="@+id/imagePC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnVideoPhoto"
+        android:layout_marginLeft="14dp"
+        android:layout_toLeftOf="@+id/textPeriod"
+        android:src="@drawable/ic_station" />
+    
+    <TextView
+        android:id="@+id/textBackupPC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imagePC"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/imagePC"
+        android:text="G-SO&apos;s PC(Backuping....)"
+        android:textSize="14sp" />
+
+    <TextView
+       android:id="@+id/textBackupDays"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_below="@+id/imagePC"
+       android:layout_alignLeft="@+id/imagePC"
+       android:layout_marginTop="10dp"
+       android:layout_marginBottom="10dp"       
+       android:text="20090101~20100102"       
+       />
+	</RelativeLayout>
+</RelativeLayout>
