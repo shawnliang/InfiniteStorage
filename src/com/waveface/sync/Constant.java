@@ -22,6 +22,9 @@ public class Constant {
 	//GCM SENDER ID
 	public final static String GCM_SENDER_ID = "294837951572,889550322062,578853549967";//PRODUCT,STAGING,DEVELOP)
 
+	public final static String ACTION_BACKUP_FILE = "com.waveface.wammer.action.BACKUP_FILE";
+
+	
 	public final static String ACTION_USERS_ADDED = "com.waveface.wammer.action.USERS_ADDED";
 	public final static String ACTION_COMMENTS_ADDED = "com.waveface.wammer.action.COMMENTS_ADDED";
 	public final static String ACTION_COMMENT_ADDED = "com.waveface.wammer.action.COMMENT_ADDED";
@@ -126,6 +129,7 @@ public class Constant {
 	public final static String PARAM_TIMEZONE = "timezone";
 	public final static String PARAM_COVER_ATTACH = "cover_attach";
 	public final static String PARAM_FROM_COMPOSER = "from_composer";
+	public final static String PARAM_FOLDERNAME = "foldername";	
 	public final static String PARAM_FILENAME = "filename";
 	public final static String PARAM_FILESIZE = "filesize";
 	public final static String PARAM_FILEACTION_START = "file-start";

@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.HashMap;
 
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceEvent;
@@ -19,13 +18,14 @@ import javax.jmdns.ServiceListener;
 import org.jwebsocket.kit.WebSocketException;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -41,12 +41,20 @@ public class DnssdDiscovery extends Activity {
 	private String TAG = DnssdDiscovery.class.getSimpleName();
     android.net.wifi.WifiManager.MulticastLock lock;
     android.os.Handler handler = new android.os.Handler();
+    private final int BASE_BYTES = 1024;
+	private static ArrayList<String> mFolders = new ArrayList<String>();			
+	private static ArrayList<String> mFilenames = new ArrayList<String>();
+	private static ArrayList<String> mFilesizes = new ArrayList<String>();
 
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.discover);
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Constant.ACTION_BACKUP_FILE);
+		registerReceiver(mReceiver, filter);
 
         handler.postDelayed(new Runnable() {
             public void run() {
@@ -55,14 +63,22 @@ public class DnssdDiscovery extends Activity {
             }, 1000);
 
     }    /** Called when the activity is first created. */
+	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			Log.d(TAG, "action:" + intent.getAction());
+			if (Constant.ACTION_BACKUP_FILE.equals(action)) {
+				new SendFileTask(context).execute(new Void[]{});
+			}
+		}
+	};
 
 
     private String type = "_infinite-storage._tcp.local.";
     private JmDNS jmdns = null;
     private ServiceListener listener = null;
-    private ServiceInfo serviceInfo;
-    @TargetApi(Build.VERSION_CODES.DONUT)
-	@SuppressLint("NewApi")
+    private ServiceInfo serviceInfo = null;
 	private void setUp() {
         android.net.wifi.WifiManager wifi = (android.net.wifi.WifiManager) getSystemService(android.content.Context.WIFI_SERVICE);
         lock = wifi.createMulticastLock("mylockthereturn");
@@ -96,7 +112,7 @@ public class DnssdDiscovery extends Activity {
                     SharedPreferences prefs = getSharedPreferences(
             				Constant.PREFS_NAME, Context.MODE_PRIVATE);
                     String wsLocation = prefs.getString(Constant.PREF_STATION_WEB_SOCKET_URL, "");
-                    if( server.equals("ben-MBP") && (TextUtils.isEmpty(wsLocation) || RuntimePlayer.OnWebSocketOpened == false )){
+                    if( server.equals("shawnliang") && (TextUtils.isEmpty(wsLocation) || RuntimePlayer.OnWebSocketOpened == false )){
                     	wsLocation = "ws://"+host+":"+port;
                     	prefs.edit().putString(Constant.PREF_STATION_WEB_SOCKET_URL, wsLocation).commit();
             			if(RuntimePlayer.OnWebSocketOpened == false){
@@ -140,7 +156,8 @@ public class DnssdDiscovery extends Activity {
         }
     }
 
-    public void sendFile(Context context){
+    @SuppressWarnings("unchecked")
+	public void sendFile(Context context){
 		String currentDate = "";
 		String cursorDate = "";
 		long refCursorDate = 0 ;
@@ -148,6 +165,7 @@ public class DnssdDiscovery extends Activity {
 		long dateModified = 0;
 		long dateAdded = 0;
 		String fileSize = null;
+		String folderName = null;
 		String mediaData = null;
 		String imageId = null;
 
@@ -173,8 +191,9 @@ public class DnssdDiscovery extends Activity {
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();
 			int count = cursor.getCount();
-			ArrayList<String> filenames = new ArrayList<String>();
-			ArrayList<String> filesizes = new ArrayList<String>();
+//			ArrayList<String> folders = new ArrayList<String>();			
+//			ArrayList<String> filenames = new ArrayList<String>();
+//			ArrayList<String> filesizes = new ArrayList<String>();
 			
 			for(int i = 0 ; i < count; i++){
 				mediaData = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
@@ -183,7 +202,8 @@ public class DnssdDiscovery extends Activity {
 				dateAdded = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED));
 				fileSize = cursor.getString(5);
 				imageId = cursor.getString(6);		
-	
+				folderName =  getFoldername(mediaData);
+				
 				if (dateTaken != -1) {
 					refCursorDate = dateTaken / 1000;
 				} else if (dateModified != -1) {
@@ -194,43 +214,58 @@ public class DnssdDiscovery extends Activity {
 				cursorDate = StringUtil.getConverDate(refCursorDate);
 				Log.d(TAG, "cursorDate ==>" + cursorDate);
 				Log.d(TAG, "Filename ==>" + mediaData);
-				filenames.add(mediaData);
-				filesizes.add(fileSize);
+				mFolders.add(folderName);
+				mFilenames.add(mediaData);
+				mFilesizes.add(fileSize);
 				
 				cursor.moveToNext();
 			}
 			cursor.close();
-			HashMap<String,ArrayList<String>> param = new HashMap<String,ArrayList<String>>();
-			param.put(Constant.PARAM_FILENAME, filenames);
-			param.put(Constant.PARAM_FILESIZE, filesizes);
-			new SendFileTask(context).execute(param);
+//			HashMap<String,ArrayList<String>> param = new HashMap<String,ArrayList<String>>();
+//			param.put(Constant.PARAM_FOLDERNAME, folders);
+//			param.put(Constant.PARAM_FILENAME, filenames);
+//			param.put(Constant.PARAM_FILESIZE, filesizes);
+			
+			Intent intent = new Intent(Constant.ACTION_BACKUP_FILE);
+			context.sendBroadcast(intent);
 		}
     }
-    
-    class SendFileTask extends AsyncTask<HashMap<String,ArrayList<String>>,Void,Void>{
+	public static String getFoldername(String imageFullpath){
+		if(!TextUtils.isEmpty(imageFullpath)){
+			int lastIndex = imageFullpath.lastIndexOf(File.separator);
+			int lastSecondIndex = imageFullpath.substring(0,lastIndex).lastIndexOf(File.separator);
+			return imageFullpath.substring(lastSecondIndex+1, lastIndex);
+		}
+		else{
+			return "";
+		}
+	}
+    class SendFileTask extends AsyncTask<Void,Void,Void>{
 
     	private Context mContext ;
     	public SendFileTask(Context context){
     		mContext = context;
     	}
-		@SuppressLint("NewApi")
 		@Override
-		protected Void doInBackground(HashMap<String, ArrayList<String>>... params) {
+		protected Void doInBackground(Void... params) {
 			
-			
-			ArrayList<String> filenames = params[0].get(Constant.PARAM_FILENAME);
-			ArrayList<String> filesizes = params[0].get(Constant.PARAM_FILESIZE);
+//			ArrayList<String> foldernames = params[0].get(Constant.PARAM_FOLDERNAME);			
+//			ArrayList<String> filenames = params[0].get(Constant.PARAM_FILENAME);
+//			ArrayList<String> filesizes = params[0].get(Constant.PARAM_FILESIZE);
+			String foldername = null;
 			String filename = null;
 			String filesize = null;
 
 			try {
-				for(int i = 0 ; i < filenames.size();i++){
-					filename = filenames.get(i);
-					filesize = filesizes.get(i);
+				for(int i = 0 ; i < mFilenames.size();i++){
+					foldername = mFolders.get(i);
+					filename = mFilenames.get(i);
+					filesize = mFilesizes.get(i);
 				
 					//send file index for start
 					FIleTransferEntity entity = new FIleTransferEntity();
 					entity.action = Constant.PARAM_FILEACTION_START;
+					entity.folder = foldername;
 					entity.fileName = StringUtil.getFilename(filename);
 					entity.fileSize = filesize;
 					String jsonOuput = RuntimePlayer.GSON.toJson(entity);
@@ -254,7 +289,7 @@ public class DnssdDiscovery extends Activity {
 			        InputStream ios = null;
 			        RuntimeWebClient.setBinaryFormat();
 			        try {
-			            byte[] buffer = new byte[1024];
+			            byte[] buffer = new byte[128*BASE_BYTES];
 			            byte[] finalBuffer = null;
 	//		            
 			            ios = new FileInputStream(new File(filename));

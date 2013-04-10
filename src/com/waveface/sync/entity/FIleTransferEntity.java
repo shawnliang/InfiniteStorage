@@ -12,5 +12,7 @@ public class FIleTransferEntity {
 
 	@SerializedName("file_size")
 	public String fileSize;
-
+	
+	@SerializedName("folder")
+	public String folder;
 }
