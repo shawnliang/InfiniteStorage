@@ -18,9 +18,9 @@ public class Starter extends Application {
 						+ android.os.Debug.getNativeHeapAllocatedSize());
 		super.onCreate();
 		SYNC_CONTEXT = getApplicationContext();
-		FileImport.scanFileForImport(SYNC_CONTEXT, Constant.TYPE_IMAGE);
-		FileImport.scanFileForImport(SYNC_CONTEXT, Constant.TYPE_AUDIO);
-		FileImport.scanFileForImport(SYNC_CONTEXT, Constant.TYPE_VIDEO);		
+//		FileImport.scanFileForImport(SYNC_CONTEXT, Constant.TYPE_IMAGE);
+//		FileImport.scanFileForImport(SYNC_CONTEXT, Constant.TYPE_AUDIO);
+//		FileImport.scanFileForImport(SYNC_CONTEXT, Constant.TYPE_VIDEO);		
 //		ScanImageFolder();
 //		ScanVideoFolder();
 	}

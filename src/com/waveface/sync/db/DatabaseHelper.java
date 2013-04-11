@@ -16,7 +16,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 1;
 	private static final String[] TABLE_NAME_LIST = {
 			ImportTable.TABLE_NAME,
-			ImportFilesTable.TABLE_NAME};
+			ImportFilesTable.TABLE_NAME,
+			ServersTable.TABLE_NAME};
 
 
 	private static final String INDEX_IMPORT_FILE_1 = "IDX_"+ImportFilesTable.TABLE_NAME+"_1";
@@ -65,10 +66,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	      .append(ImportFilesTable.COLUMN_IMAGE_ID + " TEXT NOT NULL DEFAULT '-1');");
 		createTable(db, sqlBuilder.toString(), ImportFilesTable.TABLE_NAME);
 
+		// Create ImportFiles table
+		sqlBuilder = new StringBuilder();
+		sqlBuilder.append("Create Table {0} (")
+		  .append(ServersTable.COLUMN_SERVER_ID + " TEXT PRIMARY KEY,")
+		  .append(ServersTable.COLUMN_SERVER_NAME+" TEXT NOT NULL DEFAULT ''' ,")
+		  .append(ServersTable.COLUMN_STATUS+" TEXT NOT NULL,")
+		  .append(ServersTable.COLUMN_START_DATETIME + " TEXT NOT NULL DEFAULT ''',")
+		  .append(ServersTable.COLUMN_END_DATETIME + " TEXT NOT NULL DEFAULT ''',")		  
+		  .append(ServersTable.COLUMN_FOLDER + " TEXT NOT NULL DEFAULT ''',")
+	      .append(ServersTable.COLUMN_FREE_SPACE + " TEXT NOT NULL DEFAULT '0',")
+	      .append(ServersTable.COLUMN_PHOTO_COUNT + " TEXT NOT NULL DEFAULT '0',")
+	      .append(ServersTable.COLUMN_VIDEO_COUNT + " TEXT NOT NULL DEFAULT '0',")
+	      .append(ServersTable.COLUMN_AUDIO_COUNT + " TEXT NOT NULL DEFAULT '0');");
+		
+		createTable(db, sqlBuilder.toString(), ServersTable.TABLE_NAME);
+		
 		//Create Indexes
-//		String sql = "CREATE INDEX "+INDEX_IMPORT_FILE_1+" on "+PostTable.TABLE_NAME+"("+PostTable.COLUMN_POST_ID+","+PostTable.COLUMN_GROUP_ID+");";
-//		db.execSQL(sql);
-//		Log.d(TAG, "CREATE INDEXES(1) FOR POST TABLE:"+sql);
+		String sql = "CREATE INDEX "+INDEX_IMPORT_FILE_1+" on "+ImportFilesTable.TABLE_NAME+"("+ImportFilesTable.COLUMN_FILETYPE+");";
+		db.execSQL(sql);
+		Log.d(TAG, "CREATE INDEXES(1) FOR IMPORT FILE TABLE:"+sql);
+	
 	}
 
 

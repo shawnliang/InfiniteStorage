@@ -22,8 +22,21 @@ public class Constant {
 	//GCM SENDER ID
 	public final static String GCM_SENDER_ID = "294837951572,889550322062,578853549967";//PRODUCT,STAGING,DEVELOP)
 
+	public final static String ACTION_BONJOUR_MULTICAT_EVENT = "com.waveface.wammer.action.BONJOUR_MULTICAT_EVENT";	
 	public final static String ACTION_BACKUP_FILE = "com.waveface.wammer.action.BACKUP_FILE";
 
+	//
+	public static final String EXTRA_BONJOUR_SERVICE_EVENT = "com.waveface.wammer.extra.BONJOUR_SERVICE_EVENT";
+	
+	public static final int EVENT_BONJOUR_RESOLVED = 1;
+	public static final int EVENT_BONJOUR_REMOVED = 2;
+	public static final int EVENT_BONJOUR_ADDED = 3;
+	
+	
+	
+	//SERVICE SETTING
+    public static String INFINTE_STORAGE = "_infinite-storage._tcp.local.";
+	
 	//File Type
 	public static final int TYPE_IMAGE = 1;
 	public static final int TYPE_AUDIO = 2;

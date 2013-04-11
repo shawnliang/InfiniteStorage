@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import com.waveface.sync.db.DatabaseHelper;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.db.ImportTable;
+import com.waveface.sync.db.ServersTable;
 
 public class SyncProvider extends ContentProvider {
 
@@ -25,6 +26,8 @@ public class SyncProvider extends ContentProvider {
 	private final static int IMPORTFILES = 3;
 	private final static int IMPORTFILES_ID = 4;
 
+	private final static int SERVERS = 5;
+	private final static int SERVERS_ID = 6;
 
 
 	public static final String AUTHORITY = "com.waveface.sync";
@@ -41,6 +44,10 @@ public class SyncProvider extends ContentProvider {
 		sUriMatcher.addURI(AUTHORITY, ImportFilesTable.IMPORT_FILE_NAME, IMPORTFILES);
 		sUriMatcher.addURI(AUTHORITY, ImportFilesTable.IMPORT_FILE_NAME + "/*", IMPORTFILES_ID);
 
+		//FOR IMPORT FILES
+		sUriMatcher.addURI(AUTHORITY, ServersTable.SERVERS_NAME, SERVERS);
+		sUriMatcher.addURI(AUTHORITY, ServersTable.SERVERS_NAME + "/*", SERVERS_ID);
+		
 	}
 
 	private DatabaseHelper mOpenHelper;
@@ -96,6 +103,13 @@ public class SyncProvider extends ContentProvider {
 			tableName = ImportFilesTable.TABLE_NAME;
 			where = (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
 			break;
+		case SERVERS:
+			tableName = ServersTable.TABLE_NAME;
+			break;
+		case SERVERS_ID:
+			tableName = ServersTable.TABLE_NAME;
+			where = (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
+			break;			
 		case IMPORTS:
 			tableName = ImportTable.TABLE_NAME;
 			break;
@@ -118,6 +132,15 @@ public class SyncProvider extends ContentProvider {
 			return ImportTable.CONTENT_TYPE;
 		case IMPORTS_ID:
 			return ImportTable.CONTENT_ITEM_TYPE;
+		case SERVERS:
+			return ServersTable.CONTENT_TYPE;
+		case SERVERS_ID:
+			return ServersTable.CONTENT_ITEM_TYPE;
+		case IMPORTFILES:
+			return ImportFilesTable.CONTENT_TYPE;
+		case IMPORTFILES_ID:
+			return ImportFilesTable.CONTENT_ITEM_TYPE;
+
 		default:
 			throw new IllegalArgumentException("Unknown post type: " + uri);
 		}
@@ -156,6 +179,17 @@ public class SyncProvider extends ContentProvider {
 				return queueUri;
 			}
 			break;
+		case SERVERS:
+			rowId = db.insert(ServersTable.TABLE_NAME,
+					ServersTable.SERVERS_NAME, values);
+			if (rowId > 0) {
+				Uri queueUri = ContentUris.withAppendedId(
+						ServersTable.CONTENT_URI, rowId);
+				getContext().getContentResolver().notifyChange(queueUri, null);
+				return queueUri;
+			}
+			break;
+
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -195,6 +229,25 @@ public class SyncProvider extends ContentProvider {
 			c.setNotificationUri(getContext().getContentResolver(),
 					ImportTable.CONTENT_URI);
 			break;
+		case SERVERS:
+			if (TextUtils.isEmpty(sortOrder)) {
+				orderBy = ServersTable.DEFAULT_SORT_ORDER;
+			} else {
+				orderBy = sortOrder;
+			}
+			c = mDb.query(ServersTable.TABLE_NAME, projection, where,
+					whereArgs, null, null, orderBy);
+			c.setNotificationUri(getContext().getContentResolver(),
+					ServersTable.CONTENT_URI);
+			break;
+		case SERVERS_ID:
+			String serverId = uri.getLastPathSegment();
+			c = executeGeneralQuery(serverId, ServersTable.TABLE_NAME,
+					ServersTable.COLUMN_SERVER_ID, where, whereArgs);
+			c.setNotificationUri(getContext().getContentResolver(),
+					ServersTable.CONTENT_URI);
+			break;
+
 		case IMPORTFILES:
 			if (TextUtils.isEmpty(sortOrder)) {
 				orderBy = ImportFilesTable.DEFAULT_SORT_ORDER;
@@ -254,6 +307,21 @@ public class SyncProvider extends ContentProvider {
 							+ (!TextUtils.isEmpty(where) ? " AND (" + where
 									+ ")" : ""), whereArgs);
 			break;
+		case SERVERS:
+			affected = db.update(ServersTable.TABLE_NAME, values, where,
+					whereArgs);
+			break;
+		case SERVERS_ID:
+			String serverId = uri.getPathSegments().get(1);
+			affected = db.update(ServersTable.TABLE_NAME, values,
+					ServersTable.COLUMN_SERVER_ID
+							+ "='"
+							+ serverId
+							+ "'"
+							+ (!TextUtils.isEmpty(where) ? " AND (" + where
+									+ ")" : ""), whereArgs);
+			break;
+
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -328,6 +396,46 @@ public class SyncProvider extends ContentProvider {
 					insert.bindString(5, value.getAsString(ImportFilesTable.COLUMN_FILETYPE));
 					insert.bindString(6, value.getAsString(ImportFilesTable.COLUMN_FOLDER));
 					insert.bindString(7, value.getAsString(ImportFilesTable.COLUMN_IMAGE_ID));
+					insert.execute();
+				}
+				db.setTransactionSuccessful();
+				numInserted = values.length;
+			} finally {
+				if (insert != null) {
+					insert.close();
+				}
+				db.endTransaction();
+			}
+			return numInserted;
+		case SERVERS:
+			db.beginTransaction();
+			try {
+				// standard SQL insert statement, that can be reused
+				insert = db.compileStatement("INSERT INTO "
+						+ ServersTable.TABLE_NAME + "("
+						+ ServersTable.COLUMN_SERVER_ID + ","
+						+ ServersTable.COLUMN_SERVER_NAME + ","
+						+ ServersTable.COLUMN_STATUS + ","
+						+ ServersTable.COLUMN_START_DATETIME + ","
+						+ ServersTable.COLUMN_END_DATETIME + ","
+						+ ServersTable.COLUMN_FOLDER + ","
+						+ ServersTable.COLUMN_FREE_SPACE + ","
+						+ ServersTable.COLUMN_PHOTO_COUNT + ","
+						+ ServersTable.COLUMN_VIDEO_COUNT + ","
+						+ ServersTable.COLUMN_AUDIO_COUNT + ","						
+						+ " values (?,?,?,?,?,?,?,?,?,?)");
+
+				for (ContentValues value : values) {
+					insert.bindString(1, value.getAsString(ServersTable.COLUMN_SERVER_ID));
+					insert.bindString(2, value.getAsString(ServersTable.COLUMN_SERVER_NAME));
+					insert.bindString(3, value.getAsString(ServersTable.COLUMN_STATUS));
+					insert.bindString(4, value.getAsString(ServersTable.COLUMN_START_DATETIME));
+					insert.bindString(5, value.getAsString(ServersTable.COLUMN_END_DATETIME));
+					insert.bindString(6, value.getAsString(ServersTable.COLUMN_FOLDER));
+					insert.bindString(7, value.getAsString(ServersTable.COLUMN_FREE_SPACE));
+					insert.bindString(8, value.getAsString(ServersTable.COLUMN_PHOTO_COUNT));
+					insert.bindString(9, value.getAsString(ServersTable.COLUMN_VIDEO_COUNT));
+					insert.bindString(10, value.getAsString(ServersTable.COLUMN_AUDIO_COUNT));					
 					insert.execute();
 				}
 				db.setTransactionSuccessful();

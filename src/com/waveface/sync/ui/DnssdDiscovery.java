@@ -73,7 +73,7 @@ public class DnssdDiscovery extends Activity {
 			String action = intent.getAction();
 			Log.d(TAG, "action:" + intent.getAction());
 			if (Constant.ACTION_BACKUP_FILE.equals(action)) {
-				new SendFileTask().execute(new Void[]{});
+//				new SendFileTask().execute(new Void[]{});
 			}
 		}
 	};
@@ -86,8 +86,7 @@ public class DnssdDiscovery extends Activity {
     private String type = "_infinite-storage._tcp.local.";
     private JmDNS jmdns = null;
     private ServiceListener listener = null;
-    private ServiceInfo serviceInfo = null;
-	private void setUp() {
+    private void setUp() {
         android.net.wifi.WifiManager wifi = (android.net.wifi.WifiManager) getSystemService(android.content.Context.WIFI_SERVICE);
         lock = wifi.createMulticastLock("mylockthereturn");
         lock.setReferenceCounted(true);
@@ -120,7 +119,7 @@ public class DnssdDiscovery extends Activity {
                     SharedPreferences prefs = getSharedPreferences(
             				Constant.PREFS_NAME, Context.MODE_PRIVATE);
                     String wsLocation = prefs.getString(Constant.PREF_STATION_WEB_SOCKET_URL, "");
-                    if( server.equals("shawnliang") && (TextUtils.isEmpty(wsLocation) || RuntimePlayer.OnWebSocketOpened == false )){
+                    if( server.equals("ben-MBP2") && (TextUtils.isEmpty(wsLocation) || RuntimePlayer.OnWebSocketOpened == false )){
                     	wsLocation = "ws://"+host+":"+port;
                     	prefs.edit().putString(Constant.PREF_STATION_WEB_SOCKET_URL, wsLocation).commit();
             			if(RuntimePlayer.OnWebSocketOpened == false){
@@ -139,8 +138,8 @@ public class DnssdDiscovery extends Activity {
             						RuntimePlayer.OnWebSocketOpened = true;
             						notifyUser("Connected To "+si.getName());
 //            						sendFile(DnssdDiscovery.this,Constant.TYPE_AUDIO);
-//            						sendFile(DnssdDiscovery.this,Constant.TYPE_VIDEO);
-            						sendFile(DnssdDiscovery.this,Constant.TYPE_IMAGE);
+            						sendFile(DnssdDiscovery.this,Constant.TYPE_VIDEO);
+//            						sendFile(DnssdDiscovery.this,Constant.TYPE_IMAGE);
             						Intent intent = new Intent(Constant.ACTION_BACKUP_FILE);
             						sendBroadcast(intent);
             					}
@@ -175,8 +174,6 @@ public class DnssdDiscovery extends Activity {
 		String fileSize = null;
 		String folderName = null;
 		String mediaData = null;
-		String imageId = null;
-		
 		String[] projection = null;
 		String selection =  null;
 		String selectionArgs[] = { currentDate };
@@ -196,7 +193,7 @@ public class DnssdDiscovery extends Activity {
 			cursor =context.getContentResolver().query(
 					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
 					selection, selectionArgs,
-					MediaStore.Images.Media.DATE_TAKEN+" DESC");
+					MediaStore.Images.Media.DATE_TAKEN+" DESC LIMIT 1");
 		}
 		else if(type == Constant.TYPE_VIDEO){//VIDEO
 		projection = new String[]{
@@ -213,7 +210,7 @@ public class DnssdDiscovery extends Activity {
 		cursor =context.getContentResolver().query(
 				MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection,
 				selection, selectionArgs,
-				MediaStore.Video.Media.DATE_TAKEN+" DESC");
+				MediaStore.Video.Media.DATE_TAKEN+" DESC LIMIT 1");
 		}
 		else if(type == Constant.TYPE_AUDIO){//AUDIO
 			projection = new String[]{
@@ -231,7 +228,7 @@ public class DnssdDiscovery extends Activity {
 			cursor = context.getContentResolver().query(
 					MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection,
 					selection, selectionArgs,
-					MediaStore.Audio.Media.DATE_ADDED+" DESC");
+					MediaStore.Audio.Media.DATE_ADDED+" DESC LIMIT 1");
 		}
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();
@@ -255,15 +252,15 @@ public class DnssdDiscovery extends Activity {
 					dateAdded = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media.DATE_ADDED));
 				}
 				fileSize = cursor.getString(5);
-				imageId = cursor.getString(6);		
+				cursor.getString(6);		
 				folderName =  getFoldername(mediaData);
 				
 				if (dateTaken != -1) {
 					refCursorDate = dateTaken / 1000;
 				} else if (dateModified != -1) {
-					refCursorDate = dateModified / 1000;
+					refCursorDate = dateModified ;
 				} else if (dateAdded != -1) {
-					refCursorDate = dateAdded / 1000;
+					refCursorDate = dateAdded ;
 				}
 				cursorDate = StringUtil.getConverDate(refCursorDate);
 				Log.d(TAG, "cursorDate ==>" + cursorDate);
@@ -328,7 +325,8 @@ public class DnssdDiscovery extends Activity {
 			        InputStream ios = null;
 			        RuntimeWebClient.setBinaryFormat();
 			        try {
-			            byte[] buffer = new byte[128*BASE_BYTES];
+//			            byte[] buffer = new byte[128*BASE_BYTES];
+			            byte[] buffer = new byte[64*BASE_BYTES];			            
 			            byte[] finalBuffer = null;
 	//		            
 			            ios = new FileInputStream(new File(filename));

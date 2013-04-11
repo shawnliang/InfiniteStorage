@@ -1,12 +1,16 @@
 package com.waveface.sync.logic;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.TreeSet;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -18,8 +22,11 @@ import com.waveface.sync.util.StringUtil;
 
 public class FileImport {
 	private static String TAG = FileImport.class.getSimpleName();
-
+	public static String DATE_FORMAT = "yyyyMMddHHmmss";
+	public static String ISO_DATE_FORMAT = "yyyy-MM-dd";
+	
 	public static void scanFileForImport(Context context,int type){
+		SimpleDateFormat sdfLimit = new SimpleDateFormat(DATE_FORMAT,Locale.US);
 		String currentDate = "";
 		String cursorDate = "";
 		long refCursorDate = 0 ;
@@ -44,7 +51,10 @@ public class FileImport {
 			cursor.moveToFirst();
 			currentDate = cursor.getString(0);
 		}
-		
+		if(!TextUtils.isEmpty(currentDate)){
+			currentDate = StringUtil.getEndDate(sdfLimit.format(StringUtil
+					.parseDate(currentDate)));
+		}
 		String selectionArgs[] = { currentDate };
 		
 		if(type == Constant.TYPE_IMAGE){//IMAGES
@@ -135,7 +145,7 @@ public class FileImport {
 				} else if (dateAdded != -1) {
 					refCursorDate = dateAdded ;
 				}
-				cursorDate = StringUtil.getConverDate(refCursorDate);
+				cursorDate = StringUtil.getConverDate(refCursorDate,StringUtil.ISO_8601_DATE_FORMAT);
 				Log.d(TAG, "cursorDate ==>" + cursorDate);
 				Log.d(TAG, "Filename ==>" + mediaData);
 				
@@ -244,6 +254,7 @@ public class FileImport {
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();
 			newestDay = cursor.getString(0);
+			newestDay = newestDay.substring(0,10);
 		}
 		cursor = cr.query(ImportFilesTable.CONTENT_URI, 
 				new String[]{ImportFilesTable.COLUMN_DATE}, 
@@ -253,9 +264,10 @@ public class FileImport {
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();
 			oldestDay = cursor.getString(0);
+			oldestDay = oldestDay.substring(0,10);
 		}
 		cursor.close();
-		return new String[]{newestDay,oldestDay};
+		return new String[]{oldestDay,newestDay};
 	}
 	public static long[] getFileInfo(Context context,int type){
 		Cursor cursor = null;
@@ -278,5 +290,15 @@ public class FileImport {
 		cursor.close();
 		return new long[]{count,totalSizes};
 	}
+	public static void autoBackupStart(Context context){
+		SharedPreferences pref = context.getSharedPreferences(Constant.PREFS_NAME,Context.MODE_PRIVATE);
+		String autoImportBornTime = pref.getString(Constant.PREF_AUTO_IMPORT_BORN_TIME, "");
+		if(TextUtils.isEmpty(autoImportBornTime)){
+			String bornTime = StringUtil.changeToLocalString(StringUtil.formatDate(new Date()));
+			pref.edit().putString(Constant.PREF_AUTO_IMPORT_BORN_TIME, bornTime).commit();
+		}
+		pref.edit().putBoolean(Constant.PREF_AUTO_IMPORT_ENABLED, true).commit();
+	}
+
 	
 }
