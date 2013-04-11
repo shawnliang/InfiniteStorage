@@ -46,5 +46,53 @@ namespace InfiniteStorage.Properties {
                 this["ServerId"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PhotoLocation {
+            get {
+                return ((string)(this["PhotoLocation"]));
+            }
+            set {
+                this["PhotoLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string VideoLocation {
+            get {
+                return ((string)(this["VideoLocation"]));
+            }
+            set {
+                this["VideoLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AudioLocation {
+            get {
+                return ((string)(this["AudioLocation"]));
+            }
+            set {
+                this["AudioLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int OrganizeMethod {
+            get {
+                return ((int)(this["OrganizeMethod"]));
+            }
+            set {
+                this["OrganizeMethod"] = value;
+            }
+        }
     }
 }

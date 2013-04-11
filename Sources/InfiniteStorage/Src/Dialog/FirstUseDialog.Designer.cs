@@ -29,8 +29,8 @@
 		private void InitializeComponent()
 		{
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.prevButton = new System.Windows.Forms.Button();
 			this.nextButton = new System.Windows.Forms.Button();
+			this.prevButton = new System.Windows.Forms.Button();
 			this.tabControlEx1 = new InfiniteStorage.TabControlEx();
 			this.tabWelcome = new System.Windows.Forms.TabPage();
 			this.label1 = new System.Windows.Forms.Label();
@@ -59,16 +59,6 @@
 			this.panel1.Size = new System.Drawing.Size(695, 46);
 			this.panel1.TabIndex = 0;
 			// 
-			// prevButton
-			// 
-			this.prevButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.prevButton.Location = new System.Drawing.Point(12, 6);
-			this.prevButton.Name = "prevButton";
-			this.prevButton.Size = new System.Drawing.Size(75, 32);
-			this.prevButton.TabIndex = 0;
-			this.prevButton.Text = "Previous";
-			this.prevButton.UseVisualStyleBackColor = true;
-			// 
 			// nextButton
 			// 
 			this.nextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -79,6 +69,17 @@
 			this.nextButton.Text = "Next";
 			this.nextButton.UseVisualStyleBackColor = true;
 			this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
+			// 
+			// prevButton
+			// 
+			this.prevButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.prevButton.Location = new System.Drawing.Point(12, 6);
+			this.prevButton.Name = "prevButton";
+			this.prevButton.Size = new System.Drawing.Size(75, 32);
+			this.prevButton.TabIndex = 0;
+			this.prevButton.Text = "Previous";
+			this.prevButton.UseVisualStyleBackColor = true;
+			this.prevButton.Click += new System.EventHandler(this.prevButton_Click);
 			// 
 			// tabControlEx1
 			// 
@@ -141,10 +142,14 @@
 			// 
 			// generalPreferenceControl1
 			// 
+			this.generalPreferenceControl1.AudioLocation = "";
 			this.generalPreferenceControl1.Location = new System.Drawing.Point(46, 52);
 			this.generalPreferenceControl1.Name = "generalPreferenceControl1";
+			this.generalPreferenceControl1.OrganizeMethod = InfiniteStorage.OrganizeMethod.YearMonthDay;
+			this.generalPreferenceControl1.PhotoLocation = "";
 			this.generalPreferenceControl1.Size = new System.Drawing.Size(602, 308);
 			this.generalPreferenceControl1.TabIndex = 0;
+			this.generalPreferenceControl1.VideoLocation = "";
 			// 
 			// tabInstallAppAndStart
 			// 

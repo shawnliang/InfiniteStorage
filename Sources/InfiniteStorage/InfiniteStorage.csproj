@@ -56,12 +56,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FirstUseDialog.cs">
+    <Compile Include="Src\Dialog\FirstUseDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FirstUseDialog.Designer.cs">
+    <Compile Include="Src\Dialog\FirstUseDialog.Designer.cs">
       <DependentUpon>FirstUseDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Src\Class\OrganizeMethod.cs" />
     <Compile Include="Src\UIControl\GeneralPreferenceControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -91,10 +92,10 @@
     <Compile Include="Src\Class\WebsocketProtocol\TransmitContext.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\TransmitInitState.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\TransmitStartedState.cs" />
-    <Compile Include="TabControlEx.cs">
+    <Compile Include="Src\UIControl\TabControlEx.cs">
       <SubType>Component</SubType>
     </Compile>
-    <EmbeddedResource Include="FirstUseDialog.resx">
+    <EmbeddedResource Include="Src\Dialog\FirstUseDialog.resx">
       <DependentUpon>FirstUseDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\PreferenceDialog.resx">
