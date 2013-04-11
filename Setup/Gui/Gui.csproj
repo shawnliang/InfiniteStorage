@@ -97,6 +97,7 @@
     <Compile Include="SetupWizard.Designer.cs">
       <DependentUpon>SetupWizard.cs</DependentUpon>
     </Compile>
+    <Compile Include="UACHelper.cs" />
     <Compile Include="WelcomeStep.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -20,6 +20,10 @@ namespace InfiniteStorage
 			var tempFolder = Path.Combine(appFolder, "temp");
 			var deviceFolder = Path.Combine(appFolder, "samsung gt-9300");
 
+
+			if (!Directory.Exists(deviceFolder))
+				Directory.CreateDirectory(deviceFolder);
+
 			Process.Start(deviceFolder);
 		}
 

@@ -8,20 +8,28 @@ namespace Gui
 	[System.ComponentModel.ToolboxItem(false)]
 	public partial class FinishStep : ModernInfoStep
 	{
-		public FinishStep()
+		InstallationMode mode;
+
+		public FinishStep(InstallationMode mode)
 		{
 			InitializeComponent();
+			this.mode = mode;
 		}
 
 		private void FinishStep_Entered(object sender, EventArgs e)
 		{
 			Wizard.BackButton.Enabled = false;
+
+			cbRunNow.Checked = cbRunNow.Visible = (mode == InstallationMode.Install || mode == InstallationMode.Upgrade);
 		}
 
 		private void FinishStep_Finish(object sender, ChangeStepEventArgs e)
 		{
-			if (cbRunNow.Checked)
-				Process.Start(string.Format(Gui.Properties.Resources.FinishStepCommand, MsiConnection.Instance.GetPath("INSTALLLOCATION")));
+			if (cbRunNow.Checked && cbRunNow.Visible)
+			{
+				var program = string.Format(Gui.Properties.Resources.FinishStepCommand, MsiConnection.Instance.GetPath("INSTALLLOCATION"));
+				UACHelper.CreateProcessAsStandardUser(program, "");
+			}
 		}
 
 		private void FinishStep_Entering(object sender, ChangeStepEventArgs e)

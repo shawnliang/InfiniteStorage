@@ -86,7 +86,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0}\application.exe.
+        ///   Looks up a localized string similar to {0}\InfiniteStorage.exe.
         /// </summary>
         internal static string FinishStepCommand {
             get {
