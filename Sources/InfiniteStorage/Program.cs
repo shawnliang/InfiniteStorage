@@ -6,6 +6,7 @@ using Bonjour;
 using WebSocketSharp.Server;
 using log4net;
 using InfiniteStorage.Properties;
+using System.IO;
 
 namespace InfiniteStorage
 {
@@ -29,8 +30,15 @@ namespace InfiniteStorage
 
 			log4net.LogManager.GetLogger("main").Debug("==== program started ====");
 
-			initNotifyIcon();
+			if (string.IsNullOrEmpty(Settings.Default.BackupFolder))
+			{
+				if (showFirstUseWizard() != DialogResult.OK)
+					return;
 
+
+			}
+
+			initNotifyIcon();
 
 			var port = (ushort)13895;
 			WebSocketServer<InfiniteStorageWebSocketService> ws_server = null;
@@ -38,8 +46,13 @@ namespace InfiniteStorage
 			{
 				m_bonjourService = new BonjourService();
 				m_bonjourService.Error += new EventHandler<BonjourErrorEventArgs>(m_bonjourService_Error);
-				m_bonjourService.Register(port);
 
+				if (string.IsNullOrEmpty(Settings.Default.ServerId))
+				{
+					Settings.Default.ServerId = Guid.NewGuid().ToString();
+					Settings.Default.Save();
+				}
+				m_bonjourService.Register(port, Settings.Default.ServerId);
 
 				var url = string.Format("ws://0.0.0.0:{0}/", port);
 				ws_server = new WebSocketSharp.Server.WebSocketServer<InfiniteStorageWebSocketService>(url);
@@ -59,6 +72,12 @@ namespace InfiniteStorage
 			ws_server.Stop();
 		}
 
+		private static DialogResult showFirstUseWizard()
+		{
+			var firstUseDialog = new FirstUseDialog();
+			return firstUseDialog.ShowDialog();
+		}
+
 		private static void initNotifyIcon()
 		{
 			m_notifyIcon = new NotifyIcon();
@@ -75,6 +94,8 @@ namespace InfiniteStorage
 					new MenuItem(Resources.TrayMenuItem_Quit, m_notifyIconController.OnQuitMenuItemClicked),
 				});
 			m_notifyIcon.Visible = true;
+
+			m_notifyIcon.ShowBalloonTip(3000, Resources.ProductName, "超屌備份在此為您服務", ToolTipIcon.None);
 		}
 
 		static void Application_ApplicationExit(object sender, EventArgs e)
