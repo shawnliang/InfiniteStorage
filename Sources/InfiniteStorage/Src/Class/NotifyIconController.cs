@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
+using InfiniteStorage.Properties;
 
 namespace InfiniteStorage
 {
@@ -12,19 +13,27 @@ namespace InfiniteStorage
 	{
 		private PreferenceDialog preferenceForm = new PreferenceDialog();
 
-		public void OnOpenBackupFolderMenuItemClicked(object sender, EventArgs arg)
+		public void OnOpenPhotoBackupFolderMenuItemClicked(object sender, EventArgs arg)
 		{
-			// TODO: use non-hardcode data
-			var userFolder = Environment.GetEnvironmentVariable("USERPROFILE");
-			var appFolder = Path.Combine(userFolder, "InfiniteStorage");
-			var tempFolder = Path.Combine(appFolder, "temp");
-			var deviceFolder = Path.Combine(appFolder, "samsung gt-9300");
+			openFolderInExplorer(Settings.Default.PhotoLocation);
+		}
 
+		public void OnOpenVideoBackupFolderMenuItemClicked(object sender, EventArgs arg)
+		{
+			openFolderInExplorer(Settings.Default.VideoLocation);
+		}
 
-			if (!Directory.Exists(deviceFolder))
-				Directory.CreateDirectory(deviceFolder);
+		public void OnOpenAudioBackupFolderMenuItemClicked(object sender, EventArgs arg)
+		{
+			openFolderInExplorer(Settings.Default.AudioLocation);
+		}
 
-			Process.Start(deviceFolder);
+		private static void openFolderInExplorer(string folder)
+		{
+			if (!Directory.Exists(folder))
+				Directory.CreateDirectory(folder);
+
+			Process.Start(folder);
 		}
 
 		public void OnPreferencesMenuItemClicked(object sender, EventArgs arg)

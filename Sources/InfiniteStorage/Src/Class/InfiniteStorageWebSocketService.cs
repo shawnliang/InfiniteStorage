@@ -6,6 +6,7 @@ using WebSocketSharp.Server;
 using WebSocketSharp;
 using System.IO;
 using log4net;
+using InfiniteStorage.Properties;
 
 namespace InfiniteStorage
 {
@@ -16,19 +17,16 @@ namespace InfiniteStorage
 
 		public InfiniteStorageWebSocketService()
 		{
-			// TODO: use non-hardcode data
-			var userFolder = Environment.GetEnvironmentVariable("USERPROFILE");
-			var appFolder = Path.Combine(userFolder, "InfiniteStorage");
-			var tempFolder = Path.Combine(appFolder, "temp");
-			var deviceFolder = Path.Combine(appFolder, "samsung gt-9300");
-
+			var tempFolder = Path.Combine(Settings.Default.PhotoLocation, "temp");
 			if (!Directory.Exists(tempFolder))
 				Directory.CreateDirectory(tempFolder);
 
-			if (!Directory.Exists(deviceFolder))
-				Directory.CreateDirectory(deviceFolder);
+			var storage = new FlatFileStorage(Settings.Default.PhotoLocation, Settings.Default.VideoLocation, Settings.Default.AudioLocation);
 
-			handler = new ProtocolHanlder(new TempFileFactory(tempFolder), new FlatFileStorage(deviceFolder));
+			// TODO: remove hard code
+			storage.setDeviceName("fakeDevName");
+
+			handler = new ProtocolHanlder(new TempFileFactory(tempFolder), storage);
 		}
 
 		protected override void onMessage(object sender, MessageEventArgs e)

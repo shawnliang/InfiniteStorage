@@ -14,7 +14,10 @@ namespace UnitTest
 		[TestInitialize]
 		public void setup()
 		{
-			using (var f = new StreamWriter("a.jpg"))
+			if (!Directory.Exists("dev"))
+				Directory.CreateDirectory("dev");
+
+			using (var f = new StreamWriter(@"dev\a.jpg"))
 			{
 				f.Write("aaa");
 			}
@@ -28,14 +31,16 @@ namespace UnitTest
 		[TestMethod]
 		public void appendNumsToDupFileName()
 		{
-			Assert.IsTrue(File.Exists("a.jpg"));
-			var flatFileStorage = new FlatFileStorage(".");
+			Assert.IsTrue(File.Exists(@"dev\a.jpg"));
+			var flatFileStorage = new FlatFileStorage(".", ".", ".");
+			flatFileStorage.setDeviceName("dev");
+
 
 			flatFileStorage.MoveToStorage("temp.jpg", "a.jpg");
-			Assert.IsTrue(File.Exists("a.jpg"));
-			Assert.IsTrue(File.Exists("a.1.jpg"));
+			Assert.IsTrue(File.Exists(@"dev\a.jpg"));
+			Assert.IsTrue(File.Exists(@"dev\a.1.jpg"));
 
-			using (var f = new StreamReader("a.1.jpg"))
+			using (var f = new StreamReader(@"dev\a.1.jpg"))
 			{
 				Assert.AreEqual("temp", f.ReadToEnd());
 			}

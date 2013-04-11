@@ -30,13 +30,8 @@ namespace InfiniteStorage
 
 			log4net.LogManager.GetLogger("main").Debug("==== program started ====");
 
-			if (string.IsNullOrEmpty(Settings.Default.BackupFolder))
-			{
-				if (showFirstUseWizard() != DialogResult.OK)
-					return;
-
-
-			}
+			if (showFirstUseWizard() != DialogResult.OK)
+				return;
 
 			initNotifyIcon();
 
@@ -87,7 +82,11 @@ namespace InfiniteStorage
 
 			m_notifyIcon.ContextMenu = new ContextMenu(
 				new MenuItem[] {
-					new MenuItem(Resources.TrayMenuItem_OpenBackupFolder, m_notifyIconController.OnOpenBackupFolderMenuItemClicked),
+					new MenuItem(Resources.TrayMenuItem_OpenBackupFolder, new MenuItem[] {
+						new MenuItem("Photos", m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked),
+						new MenuItem("Videos", m_notifyIconController.OnOpenVideoBackupFolderMenuItemClicked),
+						new MenuItem("Audios", m_notifyIconController.OnOpenAudioBackupFolderMenuItemClicked)
+					}),
 					new MenuItem(Resources.TrayMenuItem_Preferences, m_notifyIconController.OnPreferencesMenuItemClicked),
 					new MenuItem(Resources.TrayMenuItem_GettingStarted, m_notifyIconController.OnGettingStartedMenuItemClicked),
 					new MenuItem("-"),
