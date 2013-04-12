@@ -27,6 +27,7 @@
     [txtRecordDataDictionary setValue:[NSString stringWithFormat:@"1.0"] forKey:@"version"];
     [txtRecordDataDictionary setValue:[NSString stringWithFormat:@"%lu", self.port] forKey:@"ws_port"];
     [txtRecordDataDictionary setObject:ServerIDHash forKey:@"server_id"];
+    [txtRecordDataDictionary setObject:@"OSX" forKey:@"os"];
    
     [self.netService setTXTRecordData:[NSNetService dataFromTXTRecordDictionary:txtRecordDataDictionary]];
     [self.netService publishWithOptions:0];

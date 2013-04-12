@@ -23,6 +23,7 @@
     NSMutableDictionary *status;
     BOOL running;
     NSMutableDictionary *sessions;
+    NSString *savePath;
 }
 
 static WFWebSocketServer *sharedWSServer = nil;
@@ -47,10 +48,9 @@ static WFWebSocketServer *sharedWSServer = nil;
 
 static void websocket_ready_handler(struct mg_connection *conn) {
     char buf[40];
-    size_t n = snprintf((char *) buf, sizeof(buf) - 1, "%s", "server ready");
+    size_t n = snprintf((char *) buf, sizeof(buf) - 1, "%s", "{\"banner\":\"server ready\"}");
     mg_websocket_write(conn, OP_TEXT, buf, n);
 }
-
 
 static int websocket_reply_received_length(struct mg_connection *conn, size_t data_len)
 {
@@ -116,7 +116,7 @@ static int websocket_reply_received_length(struct mg_connection *conn, size_t da
 
     NSLog(@"[%@]rcv[%lu]: f:%08x file:%@ size:%lu from %.*s\n", sessionID, data_len, flags, filename, totalSize, (int) data_len, data);
  
-    NSString *pathname = [NSString stringWithFormat:@"%@/Desktop/%@", NSHomeDirectory(), filename];
+     NSString *pathname = [NSString stringWithFormat:@"%@/%@", savePath, filename];
     [sess setObject:pathname forKey:@"target_pathname"];
     NSOutputStream *oStream = [[NSOutputStream alloc] initToFileAtPath:pathname append:YES];
     [sess setObject:oStream forKey:@"output_stream"];
@@ -255,7 +255,13 @@ static int websocket_data_handler(struct mg_connection *conn, int flags,
 {
     running = true;
     wsThread = [[NSThread alloc] initWithTarget:self selector:@selector(startWSThread:) object:status];
-    
+    NSFileManager *fileManager= [NSFileManager defaultManager];
+    savePath = [NSString stringWithFormat:@"%@/Desktop/InfiniteStorage", NSHomeDirectory()];
+    BOOL isDir = FALSE;
+    if(![fileManager fileExistsAtPath:savePath isDirectory:&isDir]) {
+        if(![fileManager createDirectoryAtPath:savePath withIntermediateDirectories:YES attributes:nil error:NULL]) {             NSLog(@"Error: Create folder failed %@", savePath);
+        }
+    }
     [wsThread start];
     
     return FALSE;

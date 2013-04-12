@@ -41,8 +41,8 @@
 		5160D8F517129D1800757610 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = index.html; path = Resources/index.html; sourceTree = SOURCE_ROOT; };
 		51749D3C1712975A0058632C /* mongoose.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mongoose.c; path = ../../external/mongoose/mongoose.c; sourceTree = "<group>"; };
 		51749D3D1712975A0058632C /* mongoose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mongoose.h; path = ../../external/mongoose/mongoose.h; sourceTree = "<group>"; };
-		5196CEF91717ABB000239DB6 /* SOIPAddress.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SOIPAddress.c; sourceTree = "<group>"; };
-		5196CEFB1717AC0C00239DB6 /* SOIPAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SOIPAddress.h; sourceTree = "<group>"; };
+		5196CEF91717ABB000239DB6 /* SOIPAddress.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = SOIPAddress.c; path = InfiniteStorage/SOIPAddress.c; sourceTree = "<group>"; };
+		5196CEFB1717AC0C00239DB6 /* SOIPAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SOIPAddress.h; path = InfiniteStorage/SOIPAddress.h; sourceTree = "<group>"; };
 		519E513F170AA8C0000A58DF /* InfiniteStorage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InfiniteStorage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		519E5142170AA8C0000A58DF /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		519E5145170AA8C0000A58DF /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -92,8 +92,6 @@
 			isa = PBXGroup;
 			children = (
 				5160D8F517129D1800757610 /* index.html */,
-				5196CEFB1717AC0C00239DB6 /* SOIPAddress.h */,
-				5196CEF91717ABB000239DB6 /* SOIPAddress.c */,
 				51749D3C1712975A0058632C /* mongoose.c */,
 				51749D3D1712975A0058632C /* mongoose.h */,
 				5160D8F11712890900757610 /* WFWebSocketServer.h */,
@@ -103,9 +101,19 @@
 			path = InfiniteStorage;
 			sourceTree = "<group>";
 		};
+		5196CEFC1717B84800239DB6 /* SOLib */ = {
+			isa = PBXGroup;
+			children = (
+				5196CEFB1717AC0C00239DB6 /* SOIPAddress.h */,
+				5196CEF91717ABB000239DB6 /* SOIPAddress.c */,
+			);
+			name = SOLib;
+			sourceTree = "<group>";
+		};
 		519E5136170AA8C0000A58DF = {
 			isa = PBXGroup;
 			children = (
+				5196CEFC1717B84800239DB6 /* SOLib */,
 				5160D8ED1712882700757610 /* Websocket */,
 				519E5148170AA8C0000A58DF /* InfiniteStorage */,
 				519E5165170AA8C0000A58DF /* InfiniteStorageTests */,
