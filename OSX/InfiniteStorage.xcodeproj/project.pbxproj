@@ -10,6 +10,7 @@
 		5160D8F31712890900757610 /* WFWebSocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5160D8F21712890900757610 /* WFWebSocketServer.m */; };
 		5160D8F617129D1800757610 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 5160D8F517129D1800757610 /* index.html */; };
 		51749D3E1712975A0058632C /* mongoose.c in Sources */ = {isa = PBXBuildFile; fileRef = 51749D3C1712975A0058632C /* mongoose.c */; };
+		5196CEFA1717ABB000239DB6 /* SOIPAddress.c in Sources */ = {isa = PBXBuildFile; fileRef = 5196CEF91717ABB000239DB6 /* SOIPAddress.c */; };
 		519E5143170AA8C0000A58DF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 519E5142170AA8C0000A58DF /* Cocoa.framework */; };
 		519E514D170AA8C0000A58DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 519E514B170AA8C0000A58DF /* InfoPlist.strings */; };
 		519E514F170AA8C0000A58DF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 519E514E170AA8C0000A58DF /* main.m */; };
@@ -40,6 +41,8 @@
 		5160D8F517129D1800757610 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = index.html; path = Resources/index.html; sourceTree = SOURCE_ROOT; };
 		51749D3C1712975A0058632C /* mongoose.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mongoose.c; path = ../../external/mongoose/mongoose.c; sourceTree = "<group>"; };
 		51749D3D1712975A0058632C /* mongoose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mongoose.h; path = ../../external/mongoose/mongoose.h; sourceTree = "<group>"; };
+		5196CEF91717ABB000239DB6 /* SOIPAddress.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SOIPAddress.c; sourceTree = "<group>"; };
+		5196CEFB1717AC0C00239DB6 /* SOIPAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SOIPAddress.h; sourceTree = "<group>"; };
 		519E513F170AA8C0000A58DF /* InfiniteStorage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InfiniteStorage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		519E5142170AA8C0000A58DF /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		519E5145170AA8C0000A58DF /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -89,6 +92,8 @@
 			isa = PBXGroup;
 			children = (
 				5160D8F517129D1800757610 /* index.html */,
+				5196CEFB1717AC0C00239DB6 /* SOIPAddress.h */,
+				5196CEF91717ABB000239DB6 /* SOIPAddress.c */,
 				51749D3C1712975A0058632C /* mongoose.c */,
 				51749D3D1712975A0058632C /* mongoose.h */,
 				5160D8F11712890900757610 /* WFWebSocketServer.h */,
@@ -296,6 +301,7 @@
 				519E5181170AE10D000A58DF /* WFBonjourServer.m in Sources */,
 				5160D8F31712890900757610 /* WFWebSocketServer.m in Sources */,
 				51749D3E1712975A0058632C /* mongoose.c in Sources */,
+				5196CEFA1717ABB000239DB6 /* SOIPAddress.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
