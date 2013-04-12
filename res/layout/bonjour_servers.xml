@@ -21,7 +21,7 @@
     android:layout_height="wrap_content"
     android:layout_below="@+id/imageView1"
     android:layout_alignLeft="@+id/listview"
-    android:text="選擇一台電腦"
+    android:text="@string/choose_server"
     android:textColor="#33CCFF"
     android:textSize="18sp"    
     />    

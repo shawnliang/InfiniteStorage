@@ -8,5 +8,23 @@
     <string name="title_activity_bonjour_servers">BonjourServers</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="file_scanning">Scaning Files..</string>
+    <string name="clean_space">Clear</string>    
+    <string name="period">FROM %1$s TO %2$s</string>    
 
+
+    <string name="backuping">Backuping ...</string>    
+    <string name="offline">OFFLINE</string>    
+
+    <string name="total">Total</string>    
+    <string name="videos">Total %1$d video(s)</string>    
+    <string name="audios">Total %1$d audio(s)</string>    
+    <string name="photos">Total %1$d photo(s)</string>        
+    
+    <!--SERVERS-->
+    <string name="backup_period">BACKUP FROM %1$s TO %2$s</string>    
+    <string name="free_space">Free Space %1$s</string>    
+    <string name="backup_folder">Backup Folder %1$s</string>    
+    <string name="backuped_info">Backuped %1$d photo(s), %2$d video(s), %3$d audio(s)</string>
+    <string name="choose_server">Select a PC</string>
 </resources>

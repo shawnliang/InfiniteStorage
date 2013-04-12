@@ -81,7 +81,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/imageView1"
             android:layout_alignBottom="@+id/imageView1"
-            android:text="Clear"
+            android:text="@string/clean_space"
             android:textSize="14sp" />
     </RelativeLayout>
 
@@ -132,7 +132,58 @@
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/imageView2"
             android:layout_alignBottom="@+id/imageView2"
-            android:text="Clear"
+            android:text="@string/clean_space"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl2"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp" >
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"            
+            android:src="@drawable/ic_audio" />
+
+        <TextView
+            android:id="@+id/textAudioCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageView3"
+            android:layout_toRightOf="@+id/imageView3"
+            android:layout_marginLeft="2dp"
+            android:text="" 
+            android:textColor="#FFFFFF"/>
+
+        <TextView
+            android:id="@+id/textAudioSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textAudioCount"
+            android:layout_alignRight="@+id/textAudioCount"
+            android:layout_below="@+id/textAudioCount"
+            android:layout_marginLeft="2dp"
+            android:text="7GB" 
+            android:textColor="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/btnAudioPhoto"
+            android:layout_width="75dp"
+            android:layout_height="50dp"
+            android:layout_alignBottom="@+id/imageView3"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/imageView3"
+            android:text="@string/clean_space"
             android:textSize="14sp" />
 
     </RelativeLayout>
@@ -142,7 +193,7 @@
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:layout_margin="10dp"
-            android:layout_below="@+id/rl2"
+            android:layout_below="@+id/rl3"
   			android:background="#00FF00"
     />
 
@@ -151,9 +202,7 @@
   		android:id="@+id/listview"
         android:layout_below="@+id/btnVideoPhoto"        
   		android:layout_width="match_parent"
-  		android:layout_height="wrap_content" 
-  		android:divider="#00FF00"
-        android:dividerHeight="2px">
+  		android:layout_height="wrap_content">
 
 	</ListView> 	
     

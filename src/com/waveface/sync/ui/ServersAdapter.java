@@ -37,16 +37,26 @@ public class ServersAdapter  extends BaseAdapter {
 	    
 	    
 	    if(entity.status.equals(Constant.SERVER_LINKING)){
-	    	tv.setText( entity.serverName+" ( BACKUPING... )");
+	    	tv.setText( entity.serverName+" ( "+context.getString(R.string.backuping)+" )");
 	    	iv.setImageResource(R.drawable.ic_transfer);
 	    	pb.setVisibility(View.VISIBLE);
 	    }
 	    else{
-	    	tv.setText( entity.serverName+" ( OFFLINE )");
+	    	tv.setText( entity.serverName+" ( "+context.getString(R.string.offline)+" )");
 	    	iv.setImageResource(R.drawable.ic_offline);
 	    	pb.setVisibility(View.INVISIBLE);
 	    }
-	    //tv = (TextView) rowView.findViewById(R.id.textBackupDays);
+	    tv = (TextView) rowView.findViewById(R.id.textBackupDays);
+	    tv.setText(context.getString(R.string.backup_period,"2010-01-01","2013-04-12"));	    
+	    tv = (TextView) rowView.findViewById(R.id.textFreespace);
+	    tv.setText(context.getString(R.string.free_space,"500TB"));
+	    tv = (TextView) rowView.findViewById(R.id.textFolder);
+	    tv.setText(context.getString(R.string.backup_folder,"C:\\infiniteStorage"));	    
+	    tv = (TextView) rowView.findViewById(R.id.textBackupInfo);
+	    tv.setText(context.getString(R.string.backup_info,100,200,300));	    
+	    
+	    
+	    
 	    return rowView;
 	  }
 

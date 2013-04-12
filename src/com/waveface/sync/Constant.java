@@ -7,6 +7,7 @@ public class Constant {
 
 	public final static String ACTION_BONJOUR_MULTICAT_EVENT = "com.waveface.wammer.action.BONJOUR_MULTICAT_EVENT";	
 	public final static String ACTION_BACKUP_FILE = "com.waveface.wammer.action.BACKUP_FILE";
+	public final static String ACTION_SCAN_FILE = "com.waveface.wammer.action.SCAN_FILE";
 
 	//
 	public static final String EXTRA_BONJOUR_SERVICE_EVENT = "com.waveface.wammer.extra.BONJOUR_SERVICE_EVENT";

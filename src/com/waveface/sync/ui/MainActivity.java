@@ -19,6 +19,7 @@ import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -51,6 +52,13 @@ public class MainActivity extends Activity {
     //UI
 	private TextView mDevice;
 	private TextView mNowPeriod;
+	private TextView mPhotoCount;
+	private TextView mPhotoSize;
+	private TextView mVideoCount;
+	private TextView mVideoSize;
+	private TextView mAudioCount;
+	private TextView mAudioSize;
+	
 	private static boolean mHasOpen = false;
 	private static boolean mIsBackuping = false;
 	
@@ -67,25 +75,30 @@ public class MainActivity extends Activity {
 		mDevice.setText(displayText);
 		mNowPeriod = (TextView) this.findViewById(R.id.textPeriod);
 		String[] periods = FileBackup.getFilePeriods(this);
-		displayText = "From "+periods[0]+" to "+periods[1];
-		mNowPeriod.setText(displayText);
+		if(TextUtils.isEmpty(periods[0])){
+			mNowPeriod.setText(R.string.file_scanning);
+		}else{
+			mNowPeriod.setText(getString(R.string.period,periods[0],periods[1]));
+		}
 		
 		long[] datas = FileBackup.getFileInfo(this, Constant.TYPE_IMAGE);
-		TextView tv = (TextView) this.findViewById(R.id.textPhotoCount);
-		displayText = "Total "+datas[0]+" photos.";
-		tv.setText(displayText);
-		tv = (TextView) this.findViewById(R.id.textPhotoSize);
-		displayText = StringUtil.byteCountToDisplaySize(datas[1]);
-		tv.setText(displayText);
-	
+		mPhotoCount = (TextView) this.findViewById(R.id.textPhotoCount);
+		mPhotoSize = (TextView) this.findViewById(R.id.textPhotoSize);
+		mPhotoCount.setText(getString(R.string.photos, datas[0]));
+		mPhotoSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
+		//VIDEO
 		datas = FileBackup.getFileInfo(this, Constant.TYPE_VIDEO);
-		tv = (TextView) this.findViewById(R.id.textVideoCount);
-		displayText = "Total "+datas[0]+" videos.";
-		tv.setText(displayText);
-		tv = (TextView) this.findViewById(R.id.textVideoSize);
-		displayText = StringUtil.byteCountToDisplaySize(datas[1]);
-		tv.setText(displayText);
+		mVideoCount = (TextView) this.findViewById(R.id.textVideoCount);
+		mVideoSize = (TextView) this.findViewById(R.id.textVideoSize);
+		mVideoCount.setText(getString(R.string.videos, datas[0]));
+		mVideoSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
 		
+		//AUDIO
+		datas = FileBackup.getFileInfo(this, Constant.TYPE_AUDIO);
+		mAudioCount = (TextView) this.findViewById(R.id.textAudioCount);
+		mAudioSize = (TextView) this.findViewById(R.id.textAudioSize);
+		mAudioCount.setText(getString(R.string.audios, datas[0]));
+		mAudioSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
 		
 		ListView listview = (ListView) findViewById(R.id.listview);
 		ArrayList<ServerEntity> servers = ServersLogic.getServers(this);		
@@ -94,6 +107,7 @@ public class MainActivity extends Activity {
 		
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_BACKUP_FILE);
+		filter.addAction(Constant.ACTION_SCAN_FILE);		
 		registerReceiver(mReceiver, filter);
 
         mHandler.postDelayed(new Runnable() {
@@ -112,6 +126,9 @@ public class MainActivity extends Activity {
 					RuntimePlayer.isBackuping = true;
 					new BackupFilesTask(context).execute(new Void[]{});
 				}
+			}
+			else if (Constant.ACTION_SCAN_FILE.equals(action)) {
+			    refresh();
 			}
 		}
 	};
@@ -238,6 +255,25 @@ public class MainActivity extends Activity {
     	super.onDestroy();
     }
     public void refresh(){
-    	
+ 		mNowPeriod = (TextView) this.findViewById(R.id.textPeriod);
+		String[] periods = FileBackup.getFilePeriods(this);
+		if(TextUtils.isEmpty(periods[0])){
+			mNowPeriod.setText(R.string.file_scanning);
+		}else{
+			mNowPeriod.setText(getString(R.string.period,periods[0],periods[1]));
+		}
+				
+		long[] datas = FileBackup.getFileInfo(this, Constant.TYPE_IMAGE);
+		mPhotoCount.setText(getString(R.string.photos, datas[0]));
+		mPhotoSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
+	
+		datas = FileBackup.getFileInfo(this, Constant.TYPE_VIDEO);
+		mVideoCount.setText(getString(R.string.videos, datas[0]));
+		mVideoSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
+		
+		datas = FileBackup.getFileInfo(this, Constant.TYPE_AUDIO);
+		mAudioCount.setText(getString(R.string.audios, datas[0]));
+		mAudioSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
+
     }
 }

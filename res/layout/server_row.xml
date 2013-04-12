@@ -2,7 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="1dp" 
+    android:layout_marginTop="1dp" 
+    android:layout_marginLeft="1dp" 
+    android:layout_marginRight="1dp" 
+    android:layout_marginBottom="30dp"     
     android:background="#000000">
     <ImageView
         android:id="@+id/imagePC"
@@ -53,7 +56,7 @@
        android:layout_below="@+id/textFolder"
        android:layout_alignLeft="@+id/imagePC"
        android:layout_marginTop="3dp"
-       android:layout_marginBottom="3dp"       
+       android:layout_marginBottom="10dp"       
        android:text="Backuped: 300 photos,3videos,0 audio"
        android:textColor="#FFFFFF"       
        />
