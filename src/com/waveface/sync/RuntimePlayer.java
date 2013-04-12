@@ -40,6 +40,8 @@ public class RuntimePlayer {
 	public static boolean LocationImporting = false;
 	public static boolean NotificationForUploadThumbShow = false;
 	public static boolean SummaryRefreshing = false;
+	public static boolean isBackuping = false;
+	
 
 
 	public static boolean HasGap = false;

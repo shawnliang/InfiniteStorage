@@ -1,6 +1,7 @@
 package com.waveface.sync.ui;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceEvent;
@@ -18,14 +19,16 @@ import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimePlayer;
 import com.waveface.sync.entity.ServerEntity;
-import com.waveface.sync.logic.FileImport;
-import com.waveface.sync.task.BackupTask;
+import com.waveface.sync.logic.FileBackup;
+import com.waveface.sync.logic.ServersLogic;
+import com.waveface.sync.task.BackupFilesTask;
 import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.StringUtil;
@@ -42,18 +45,17 @@ public class MainActivity extends Activity {
 	private String TAG = MainActivity.class.getSimpleName();
 	//BONJOUR
     private WifiManager.MulticastLock lock;
-    private Handler handler = new android.os.Handler();
+    private Handler mHandler = new Handler();
     private JmDNS jmdns = null;
-    private ServiceListener listener = null;
+    private ServiceListener mListener = null;
     //UI
 	private TextView mDevice;
 	private TextView mNowPeriod;
 	private static boolean mHasOpen = false;
 	private static boolean mIsBackuping = false;
 	
-	private static int OPEN_SERVER_CHOOSER = 1;
-	
-	
+	//DATAS
+	private ServersAdapter mAdapter ;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,11 +66,11 @@ public class MainActivity extends Activity {
 		String displayText = value +"-"+DeviceUtil.getDeviceName();
 		mDevice.setText(displayText);
 		mNowPeriod = (TextView) this.findViewById(R.id.textPeriod);
-		String[] periods = FileImport.getFilePeriods(this);
+		String[] periods = FileBackup.getFilePeriods(this);
 		displayText = "From "+periods[0]+" to "+periods[1];
 		mNowPeriod.setText(displayText);
 		
-		long[] datas = FileImport.getFileInfo(this, Constant.TYPE_IMAGE);
+		long[] datas = FileBackup.getFileInfo(this, Constant.TYPE_IMAGE);
 		TextView tv = (TextView) this.findViewById(R.id.textPhotoCount);
 		displayText = "Total "+datas[0]+" photos.";
 		tv.setText(displayText);
@@ -76,7 +78,7 @@ public class MainActivity extends Activity {
 		displayText = StringUtil.byteCountToDisplaySize(datas[1]);
 		tv.setText(displayText);
 	
-		datas = FileImport.getFileInfo(this, Constant.TYPE_VIDEO);
+		datas = FileBackup.getFileInfo(this, Constant.TYPE_VIDEO);
 		tv = (TextView) this.findViewById(R.id.textVideoCount);
 		displayText = "Total "+datas[0]+" videos.";
 		tv.setText(displayText);
@@ -84,15 +86,21 @@ public class MainActivity extends Activity {
 		displayText = StringUtil.byteCountToDisplaySize(datas[1]);
 		tv.setText(displayText);
 		
+		
+		ListView listview = (ListView) findViewById(R.id.listview);
+		ArrayList<ServerEntity> servers = ServersLogic.getServers(this);		
+		mAdapter = new ServersAdapter(this,servers);
+		listview.setAdapter(mAdapter);
+		
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_BACKUP_FILE);
 		registerReceiver(mReceiver, filter);
 
-        handler.postDelayed(new Runnable() {
+        mHandler.postDelayed(new Runnable() {
             public void run() {
                 setUp();
             }
-            }, 1000);
+            }, 100);
 	}
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		@Override
@@ -100,7 +108,10 @@ public class MainActivity extends Activity {
 			String action = intent.getAction();
 			Log.d(TAG, "action:" + intent.getAction());
 			if (Constant.ACTION_BACKUP_FILE.equals(action)) {
-				new BackupTask(context).execute(new Void[]{});
+				if(RuntimePlayer.isBackuping == false){
+					RuntimePlayer.isBackuping = true;
+					new BackupFilesTask(context).execute(new Void[]{});
+				}
 			}
 		}
 	};
@@ -111,26 +122,33 @@ public class MainActivity extends Activity {
         lock.acquire();
         try {
             jmdns = JmDNS.create();
-            jmdns.addServiceListener(Constant.INFINTE_STORAGE, listener = new ServiceListener() {
+            jmdns.addServiceListener(Constant.INFINTE_STORAGE, mListener = new ServiceListener() {
                 @Override
                 public void serviceResolved(ServiceEvent ev) {
                 	@SuppressWarnings("deprecation")
                 	ServiceInfo si = ev.getInfo();
-                    ServerEntity entity = new ServerEntity();
+                    final ServerEntity entity = new ServerEntity();
                 	entity.serverName = si.getName();
-					entity.serverId = si.getPropertyString("server_id");
+					entity.serverId = si.getPropertyString(Constant.PARAM_SERVER_ID);
+					entity.serverOS = si.getPropertyString(Constant.PARAM_SERVER_OS);					
                     entity.wsLocation = "ws://"+si.getHostAddress()+":"+si.getPort();
-                    if(RuntimePlayer.OnWebSocketOpened == false){
+                    Log.d(TAG, "SERVER NAME:"+entity.serverName);
+                    if(RuntimePlayer.OnWebSocketOpened == false ){
 	                    if(mHasOpen == false ){
 		                    Intent intent = new Intent(MainActivity.this, BonjourServersActivity.class);
-		                    intent.putExtra("ServerDATA", entity);
-		                    MainActivity.this.startActivityForResult(intent, OPEN_SERVER_CHOOSER);
+		                    intent.putExtra(Constant.PARAM_SERVER_DATA, entity);
+		                    MainActivity.this.startActivityForResult(intent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
 		                    mHasOpen = true;
 	                    }
 	                    else{
-		                    Intent intent = new Intent(Constant.ACTION_BONJOUR_MULTICAT_EVENT);
-		                    intent.putExtra("ServerDATA", entity);
-		                    MainActivity.this.sendBroadcast(intent);
+	                        mHandler.postDelayed(new Runnable() {
+	                            public void run() {
+	    	                    	Intent intent = new Intent(Constant.ACTION_BONJOUR_MULTICAT_EVENT);
+	    		                    intent.putExtra(Constant.PARAM_SERVER_DATA, entity);
+	    		                    MainActivity.this.sendBroadcast(intent);
+	                            }
+	                            }, 500);
+
 	                    }
                     }
                 }
@@ -138,6 +156,10 @@ public class MainActivity extends Activity {
                 @Override
                 public void serviceRemoved(ServiceEvent ev) {
                 	//TODO:
+                	ServiceInfo si = ev.getInfo();
+                    ServerEntity entity = new ServerEntity();
+                	entity.serverName = si.getName();
+					entity.serverId = si.getPropertyString(Constant.PARAM_SERVER_ID);
                 }
 
                 @Override
@@ -178,11 +200,24 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
-        if (requestCode == OPEN_SERVER_CHOOSER) {
+        if (requestCode == Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {                
-            	ServerEntity entity = (ServerEntity)data.getExtras().get("result");
+            	ServerEntity entity = (ServerEntity)data.getExtras().get(Constant.PARAM_RESULT);
             	Log.d(TAG, "WS:"+entity.wsLocation);
+            	SharedPreferences prefs = getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);
+            	prefs.edit().putString(Constant.PREF_STATION_WEB_SOCKET_URL, entity.wsLocation).commit();
+            	entity.status = Constant.SERVER_LINKING;
+            	entity.startDatetime ="";
+            	entity.endDatetime = "";
+            	entity.Folder ="";
+            	entity.freespace = "";
+            	entity.photoCount ="";
+            	entity.videoCount ="";
+            	entity.audioCount ="";
+            	int result = ServersLogic.updateServer(this, entity);
+            	Log.d(TAG, "Update Server:"+result);
+        		mAdapter.setData(ServersLogic.getServers(this));
             	startBackuping(entity);
             }
         }
@@ -202,5 +237,7 @@ public class MainActivity extends Activity {
 		unregisterReceiver(mReceiver);
     	super.onDestroy();
     }
-
+    public void refresh(){
+    	
+    }
 }

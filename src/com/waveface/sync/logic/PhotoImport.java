@@ -225,7 +225,7 @@ public class PhotoImport {
 				ImportFilesTable.COLUMN_SIZE,
 				ImportFilesTable.COLUMN_DATE,
 				ImportFilesTable.COLUMN_FILENAME},
-				ImportFilesTable.COLUMN_IMPORTED+"=?"+
+				ImportFilesTable.COLUMN_STATUS+"=?"+
 				" AND "+ImportFilesTable.COLUMN_DATE+"=?"
 				, new String[]{Constant.IMPORT_FILE_INCLUDED,date}, null);
 		if(cursor.getCount()>0){
@@ -250,7 +250,7 @@ public class PhotoImport {
 				new String[]{
 				ImportFilesTable.COLUMN_SIZE,
 				ImportFilesTable.COLUMN_FILENAME},
-				ImportFilesTable.COLUMN_IMPORTED+"=?"+
+				ImportFilesTable.COLUMN_STATUS+"=?"+
 				" AND "+ImportFilesTable.COLUMN_DATE+"=?"
 				, new String[]{Constant.IMPORT_FILE_INCLUDED,date}, null);
 		if(cursor.getCount()>0){
@@ -276,7 +276,7 @@ public class PhotoImport {
 		Cursor cursor = cr.query(ImportFilesTable.CONTENT_URI,
 				new String[]{
 				ImportFilesTable.COLUMN_DATE},
-				ImportFilesTable.COLUMN_IMPORTED+"=? "
+				ImportFilesTable.COLUMN_STATUS+"=? "
 				, new String[]{Constant.IMPORT_FILE_INCLUDED}, ImportFilesTable.DEFAULT_SORT_ORDER+" LIMIT 1");
 		if(cursor.getCount()>0){
 			cursor.moveToFirst();
@@ -292,7 +292,7 @@ public class PhotoImport {
 				ImportFilesTable.COLUMN_DATE,
 				ImportFilesTable.COLUMN_SIZE,
 				ImportFilesTable.COLUMN_FILENAME,
-				ImportFilesTable.COLUMN_IMPORTED},
+				ImportFilesTable.COLUMN_STATUS},
 				ImportFilesTable.COLUMN_DATE+"=?", new String[]{importDay}, null);
 		if(cursor.getCount()>0){
 			int count = cursor.getCount();
@@ -326,8 +326,8 @@ public class PhotoImport {
 		int ramindCount = 0 ;
 		Cursor cursor = cr.query(ImportFilesTable.CONTENT_URI,
 					new String[]{ImportFilesTable.COLUMN_DATE},
-					ImportFilesTable.COLUMN_IMPORTED+"=?",
-					new String[]{Constant.IMPORT_FILE_UPLOAD_META},null);
+					ImportFilesTable.COLUMN_STATUS+"=?",
+					new String[]{Constant.IMPORT_FILE_BACKUPED},null);
 		if(cursor!=null && cursor.getCount()>0){
 			ramindCount = cursor.getCount();
 		}
@@ -388,7 +388,7 @@ public class PhotoImport {
 			//STEP1:CHECKOUT unupload Image Meta
 			uploadMissedImageMeta(context,importDay);
 			//STEP2:update import statue form 0 -->1
-			updateImportStatus(context,importDay,Constant.IMPORT_FILE_INCLUDED,Constant.IMPORT_FILE_UPLOAD_META);
+			updateImportStatus(context,importDay,Constant.IMPORT_FILE_INCLUDED,Constant.IMPORT_FILE_BACKUPED);
 		}
 		return goNext;
 	}
@@ -398,7 +398,7 @@ public class PhotoImport {
 		ContentResolver cr = context.getContentResolver();
 		Cursor cursor = cr.query(ImportFilesTable.CONTENT_URI,
 				new String[]{ImportFilesTable.COLUMN_SIZE,ImportFilesTable.COLUMN_FILENAME},
-				ImportFilesTable.COLUMN_DATE+"=? AND "+ImportFilesTable.COLUMN_IMPORTED+"=?",
+				ImportFilesTable.COLUMN_DATE+"=? AND "+ImportFilesTable.COLUMN_STATUS+"=?",
 				new String[]{importDay,Constant.IMPORT_FILE_INCLUDED}, null);
 
 		String[] objectIds = null;
@@ -427,32 +427,32 @@ public class PhotoImport {
 	public static int updateImportStatus(Context context,String importDay,String nowStatus,String newStatus){
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
-		cv.put(ImportFilesTable.COLUMN_IMPORTED, newStatus);
+		cv.put(ImportFilesTable.COLUMN_STATUS, newStatus);
 		return cr.update(ImportFilesTable.CONTENT_URI, cv,
-				ImportFilesTable.COLUMN_DATE+"=? AND "+ImportFilesTable.COLUMN_IMPORTED+"=?" , new String[]{importDay,nowStatus});
+				ImportFilesTable.COLUMN_DATE+"=? AND "+ImportFilesTable.COLUMN_STATUS+"=?" , new String[]{importDay,nowStatus});
 	}
 	public static int updateImportStatus(Context context,String nowStatus,String newStatus){
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
-		cv.put(ImportFilesTable.COLUMN_IMPORTED, newStatus);
+		cv.put(ImportFilesTable.COLUMN_STATUS, newStatus);
 		return cr.update(ImportFilesTable.CONTENT_URI, cv,
-				ImportFilesTable.COLUMN_IMPORTED+"=?" , new String[]{nowStatus});
+				ImportFilesTable.COLUMN_STATUS+"=?" , new String[]{nowStatus});
 	}
 
 	public static int updateImportStatus(Context context,String objectId,boolean uploadMeta,boolean uploadThumb,boolean imported){
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
 		if(uploadMeta){
-			cv.put(ImportFilesTable.COLUMN_IMPORTED, Constant.IMPORT_FILE_UPLOAD_META);
+			cv.put(ImportFilesTable.COLUMN_STATUS, Constant.IMPORT_FILE_BACKUPED);
 		}
 		else if(uploadThumb){
-			cv.put(ImportFilesTable.COLUMN_IMPORTED, Constant.IMPORT_FILE_UPLOAD_THUMB);
+			cv.put(ImportFilesTable.COLUMN_STATUS, Constant.IMPORT_FILE_BACKUPED);
 		}
 		else if(imported){
-			cv.put(ImportFilesTable.COLUMN_IMPORTED, Constant.IMPORT_FILE_BACKUP);
+			cv.put(ImportFilesTable.COLUMN_STATUS, Constant.IMPORT_FILE_BACKUPED);
 		}
 		else{
-			cv.put(ImportFilesTable.COLUMN_IMPORTED, Constant.IMPORT_FILE_INCLUDED);
+			cv.put(ImportFilesTable.COLUMN_STATUS, Constant.IMPORT_FILE_INCLUDED);
 		}
 		return cr.update(ImportFilesTable.CONTENT_URI, cv,ImportFilesTable.COLUMN_SIZE+"=?" , new String[]{objectId});
 	}
@@ -575,7 +575,7 @@ public class PhotoImport {
 						cv.put(ImportFilesTable.COLUMN_FILENAME, mediaData);
 						cv.put(ImportFilesTable.COLUMN_SIZE, StringUtil.getUUID());
 						cv.put(ImportFilesTable.COLUMN_DATE, postDate);
-						cv.put(ImportFilesTable.COLUMN_IMPORTED, Constant.IMPORT_FILE_INCLUDED);
+						cv.put(ImportFilesTable.COLUMN_STATUS, Constant.IMPORT_FILE_INCLUDED);
 						cv.put(ImportFilesTable.COLUMN_FOLDER, folderName);
 						cv.put(ImportFilesTable.COLUMN_IMAGE_ID, imageId);
 						filenamesSet.add(mediaData);
@@ -721,7 +721,7 @@ public class PhotoImport {
 					cv.put(ImportFilesTable.COLUMN_FILENAME, mediaData);
 					cv.put(ImportFilesTable.COLUMN_SIZE, StringUtil.getUUID());
 					cv.put(ImportFilesTable.COLUMN_DATE, cursorDate);
-					cv.put(ImportFilesTable.COLUMN_IMPORTED, Constant.IMPORT_FILE_INCLUDED);
+					cv.put(ImportFilesTable.COLUMN_STATUS, Constant.IMPORT_FILE_INCLUDED);
 					cv.put(ImportFilesTable.COLUMN_FOLDER, folderName);
 					cv.put(ImportFilesTable.COLUMN_IMAGE_ID, imageId);
 					filenamesSet.add(mediaData);
@@ -844,7 +844,7 @@ public class PhotoImport {
 		ContentResolver cr = context.getContentResolver();
 		ArrayList<String> filenames = new ArrayList<String>();
 		Cursor cursor = null;
-		String Selection = ImportFilesTable.COLUMN_IMAGE_ID+"=? AND "+ImportFilesTable.COLUMN_IMPORTED+"=?";
+		String Selection = ImportFilesTable.COLUMN_IMAGE_ID+"=? AND "+ImportFilesTable.COLUMN_STATUS+"=?";
 		cursor = cr.query(ImportFilesTable.CONTENT_URI,
 				new String[]{ImportFilesTable.COLUMN_FILENAME},
 				Selection,new String[]{"-1",Constant.IMPORT_FILE_INCLUDED}, null);

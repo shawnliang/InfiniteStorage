@@ -18,14 +18,15 @@ import android.text.TextUtils;
 import com.waveface.sync.Constant;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.util.Log;
+import com.waveface.sync.util.MediaFile;
 import com.waveface.sync.util.StringUtil;
 
-public class FileImport {
-	private static String TAG = FileImport.class.getSimpleName();
+public class FileBackup {
+	private static String TAG = FileBackup.class.getSimpleName();
 	public static String DATE_FORMAT = "yyyyMMddHHmmss";
 	public static String ISO_DATE_FORMAT = "yyyy-MM-dd";
 	
-	public static void scanFileForImport(Context context,int type){
+	public static void scanFileForBackup(Context context,int type){
 		SimpleDateFormat sdfLimit = new SimpleDateFormat(DATE_FORMAT,Locale.US);
 		String currentDate = "";
 		String cursorDate = "";
@@ -36,6 +37,7 @@ public class FileImport {
 		String fileSize = null;
 		String folderName = null;
 		String mediaData = null;
+		String mimetype = null;
 		String imageId = null;		
 		String[] projection = null;
 		String selection =  null;
@@ -65,6 +67,7 @@ public class FileImport {
 					MediaStore.Images.Media.DATE_ADDED,
 					MediaStore.Images.Media.DATE_MODIFIED,
 					MediaStore.Images.Media.SIZE,
+					MediaStore.Images.Media.MIME_TYPE,
 					MediaStore.Images.Media._ID};
 			selection =  getImageSelection(context,currentDate);
 			Log.d(TAG, "selection => " + selection);
@@ -81,6 +84,7 @@ public class FileImport {
 					MediaStore.Video.Media.DATE_ADDED,
 					MediaStore.Video.Media.DATE_MODIFIED,
 					MediaStore.Video.Media.SIZE,
+					MediaStore.Video.Media.MIME_TYPE,
 					MediaStore.Video.Media._ID};
 	
 			selection =  getVideoSelection(context,currentDate);
@@ -98,6 +102,7 @@ public class FileImport {
 					MediaStore.Audio.Media.DATE_ADDED,
 					MediaStore.Audio.Media.DATE_MODIFIED,
 					MediaStore.Audio.Media.SIZE,
+					MediaStore.Audio.Media.MIME_TYPE,
 					MediaStore.Audio.Media._ID};
 	
 			selection =  getAudioSelection(context,currentDate);
@@ -135,7 +140,11 @@ public class FileImport {
 					dateAdded = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media.DATE_ADDED));
 				}
 				fileSize = cursor.getString(5);
-				imageId = cursor.getString(6);		
+				mimetype = cursor.getString(6);
+				if(TextUtils.isEmpty(mimetype)){
+					mimetype = MediaFile.getMimetype(mediaData);
+				}
+				imageId = cursor.getString(7);		
 				folderName =  getFoldername(mediaData);
 				
 				if (dateTaken != -1) {
@@ -154,14 +163,23 @@ public class FileImport {
 					cv.put(ImportFilesTable.COLUMN_FILENAME, mediaData);
 					cv.put(ImportFilesTable.COLUMN_SIZE, fileSize);
 					cv.put(ImportFilesTable.COLUMN_DATE, cursorDate);
-					cv.put(ImportFilesTable.COLUMN_IMPORTED, Constant.IMPORT_FILE_INCLUDED);
-					cv.put(ImportFilesTable.COLUMN_FILETYPE, type);					
+					cv.put(ImportFilesTable.COLUMN_STATUS, Constant.IMPORT_FILE_INCLUDED);
+					cv.put(ImportFilesTable.COLUMN_FILETYPE, type);		
+					cv.put(ImportFilesTable.COLUMN_MIMETYPE, mimetype);							
 					cv.put(ImportFilesTable.COLUMN_FOLDER, folderName);
 					cv.put(ImportFilesTable.COLUMN_IMAGE_ID, imageId);
 					filenamesSet.add(mediaData);
 					datas.add(cv);
 				}
 				cursor.moveToNext();
+				if(datas.size() == 100){
+					//SAVE TO DB
+					cvs = new ContentValues[datas.size()];
+					datas.toArray(cvs);
+					int result = cr.bulkInsert(ImportFilesTable.CONTENT_URI, cvs);
+					Log.d(TAG,result+ " Files Imported!");
+					datas.clear();
+				}
 			}
 			cursor.close();			
 			if(datas.size()>0){
@@ -300,5 +318,11 @@ public class FileImport {
 		pref.edit().putBoolean(Constant.PREF_AUTO_IMPORT_ENABLED, true).commit();
 	}
 
-	
+	public static int updateBackupStatus(Context context,String filename,String status){
+		ContentResolver cr = context.getContentResolver();
+		ContentValues cv = new ContentValues();
+		cv.put(ImportFilesTable.COLUMN_STATUS, status);
+		return cr.update(ImportFilesTable.CONTENT_URI, cv,ImportFilesTable.COLUMN_FILENAME+"=?" , new String[]{filename});
+	}
+
 }

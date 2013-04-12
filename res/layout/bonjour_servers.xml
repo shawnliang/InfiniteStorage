@@ -6,11 +6,34 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".BonjourServersActivity" >
+    tools:context=".BonjourServersActivity"
+    android:background="#000000" >
 
+<ImageView
+    android:id="@+id/imageView1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:src="@drawable/ic_pairing" />
+<TextView 
+    android:id="@+id/textView1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/imageView1"
+    android:layout_alignLeft="@+id/listview"
+    android:text="選擇一台電腦"
+    android:textColor="#33CCFF"
+    android:textSize="18sp"    
+    />    
 <ListView
   android:id="@+id/listview"
   android:layout_width="match_parent"
-  android:layout_height="wrap_content" >
-</ListView> 	
+  android:layout_height="wrap_content"
+  android:layout_below="@+id/textView1"
+  android:layout_margin="20dp" 
+  android:divider="#00FF00"
+  android:dividerHeight="2px">
+</ListView>
+
+ 	
 </RelativeLayout>

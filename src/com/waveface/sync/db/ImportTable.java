@@ -23,13 +23,6 @@ public class ImportTable  implements BaseColumns {
 	public static final String COLUMN_LAST_IMPORT_TIME = "last_import_time";
 	public static final String COLUMN_ADDED_TIME = "added_time";
 
-	public static final int COLUMN_POS_DB_ID = 0;
-	public static final int COLUMN_POS_FOLDER_NAME = 1;
-	public static final int COLUMN_POS_TYPE = 2;
-	public static final int COLUMN_POS_ENABLE = 3;
-	public static final int COLUMN_POS_LAST_IMPORT_TIME = 4;
-	public static final int COLUMN_POS_ADDED_TIME = 5;
-
 	private ImportTable() {
 	}
 }

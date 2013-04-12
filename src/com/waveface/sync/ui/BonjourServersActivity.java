@@ -8,12 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,14 +35,9 @@ public class BonjourServersActivity extends Activity {
 		registerReceiver(mReceiver, filter);
 
 		ListView listview = (ListView) findViewById(R.id.listview);
-//		ServerEntity[] datas = new ServerEntity[1];
-		ServerEntity entity = (ServerEntity) getIntent().getExtras().get("ServerDATA");
+		ServerEntity entity = (ServerEntity) getIntent().getExtras().get(Constant.PARAM_SERVER_DATA);
 		ArrayList<ServerEntity> datas = new ArrayList<ServerEntity>();
 		datas.add(entity);
-//		datas[0] = (ServerEntity) bundle.getSerializable("ServerDATA");
-		
-//		ServerEntity[] datas = new ServerEntity[RuntimePlayer.servers.size()];
-//		RuntimePlayer.servers.toArray(datas);		
 		mAdapter = new ServerArrayAdapter(this, datas);
 		listview.setAdapter(mAdapter);
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -59,8 +56,7 @@ public class BonjourServersActivity extends Activity {
 			String action = intent.getAction();
 			Log.d(TAG, "action:" + intent.getAction());
 			if (Constant.ACTION_BONJOUR_MULTICAT_EVENT.equals(action)) {		
-				//new SendFileTask().execute(new Void[]{});
-				ServerEntity entity = (ServerEntity) intent.getExtras().get("ServerDATA");
+				ServerEntity entity = (ServerEntity) intent.getExtras().get(Constant.PARAM_SERVER_DATA);
 				mAdapter.addData(entity);
 			}
 		}
@@ -78,13 +74,22 @@ public class BonjourServersActivity extends Activity {
 
 		  @Override
 		  public View getView(int position, View convertView, ViewGroup parent) {
-		    LayoutInflater inflater = (LayoutInflater) context
+			  ServerEntity entity = values.get(position);
+
+			  LayoutInflater inflater = (LayoutInflater) context
 		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		    View rowView = inflater.inflate(R.layout.server_row, parent, false);
+		    View rowView = inflater.inflate(R.layout.choose_server_row, parent, false);
 		    TextView tv = (TextView) rowView.findViewById(R.id.textBackupPC);
-		    tv.setText( values.get(position).serverName);
-		    tv = (TextView) rowView.findViewById(R.id.textBackupDays);
-		    tv.setText("");
+		    tv.setText( entity.serverName);
+		    ImageView iv = (ImageView) rowView.findViewById(R.id.imagePC);
+		    if(!TextUtils.isEmpty(entity.serverOS)){
+			    if(entity.serverOS.equals("OSX")){
+			    	iv.setImageResource(R.drawable.ic_apple);
+			    }
+			    else{
+			    	iv.setImageResource(R.drawable.ic_windows);
+			    }
+		    }
 		    return rowView;
 		  }
 
@@ -128,7 +133,7 @@ public class BonjourServersActivity extends Activity {
     
     public void Finish(ServerEntity entity){
     	Intent returnIntent = new Intent();
-    	returnIntent.putExtra("result",entity);
+    	returnIntent.putExtra(Constant.PARAM_RESULT,entity);
     	setResult(RESULT_OK,returnIntent);
     	finish();
     }

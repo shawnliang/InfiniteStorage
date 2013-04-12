@@ -58,9 +58,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		sqlBuilder = new StringBuilder();
 		sqlBuilder.append("Create Table {0} (")
 		  .append(ImportFilesTable.COLUMN_FILENAME + " TEXT PRIMARY KEY,")
-		  .append(ImportFilesTable.COLUMN_SIZE+" TEXT  ,")
+		  .append(ImportFilesTable.COLUMN_SIZE+" TEXT NOT NULL,")
+		  .append(ImportFilesTable.COLUMN_MIMETYPE+" TEXT NOT NULL,")		  
 		  .append(ImportFilesTable.COLUMN_DATE+" TEXT NOT NULL,")
-		  .append(ImportFilesTable.COLUMN_IMPORTED + " TEXT NOT NULL DEFAULT '0',")
+		  .append(ImportFilesTable.COLUMN_STATUS + " TEXT NOT NULL DEFAULT '0',")
 		  .append(ImportFilesTable.COLUMN_FILETYPE + " TEXT NOT NULL ,")		  
 		  .append(ImportFilesTable.COLUMN_FOLDER + " TEXT NOT NULL DEFAULT ''',")
 	      .append(ImportFilesTable.COLUMN_IMAGE_ID + " TEXT NOT NULL DEFAULT '-1');");

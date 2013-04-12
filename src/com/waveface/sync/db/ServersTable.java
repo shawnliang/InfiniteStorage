@@ -26,18 +26,6 @@ public class ServersTable implements BaseColumns {
 	public static final String COLUMN_PHOTO_COUNT = "photoCount";
 	public static final String COLUMN_VIDEO_COUNT = "videoCount";	
 	public static final String COLUMN_AUDIO_COUNT = "audioCount";
-
-	public static final int COLUMN_POS_SERVER_ID = 0;
-	public static final int COLUMN_POS_SERVER_NAME = 1;
-	public static final int COLUMN_POS_STATUS = 2;
-	public static final int COLUMN_POS_START_DATETIME = 3;
-	public static final int COLUMN_POS_END_DATETIME = 4;	
-	public static final int COLUMN_POS_FOLDER = 5;
-	public static final int COLUMN_POS_FREE_SPACE = 6;
-	public static final int COLUMN_POS_PHOTO_COUNT = 7;	
-	public static final int COLUMN_POS_VIDEO_COUNT = 8;
-	public static final int COLUMN_POS_AUDIO_COUNT = 9;
-	
 	
 	private ServersTable() {
 

@@ -15,4 +15,10 @@ public class FIleTransferEntity {
 	
 	@SerializedName("folder")
 	public String folder;
+	
+	@SerializedName("mimetype")
+	public String mimetype;
+
+	@SerializedName("datetime")
+	public String datetime;
 }

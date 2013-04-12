@@ -381,21 +381,23 @@ public class SyncProvider extends ContentProvider {
 						+ ImportFilesTable.TABLE_NAME + "("
 						+ ImportFilesTable.COLUMN_FILENAME + ","
 						+ ImportFilesTable.COLUMN_SIZE + ","
+						+ ImportFilesTable.COLUMN_MIMETYPE + ","						
 						+ ImportFilesTable.COLUMN_DATE + ","
-						+ ImportFilesTable.COLUMN_IMPORTED + ","
+						+ ImportFilesTable.COLUMN_STATUS + ","
 						+ ImportFilesTable.COLUMN_FILETYPE + ","
 						+ ImportFilesTable.COLUMN_FOLDER + ","
 						+ ImportFilesTable.COLUMN_IMAGE_ID + ")"
-						+ " values (?,?,?,?,?,?,?)");
+						+ " values (?,?,?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
 					insert.bindString(1, value.getAsString(ImportFilesTable.COLUMN_FILENAME));
 					insert.bindString(2, value.getAsString(ImportFilesTable.COLUMN_SIZE));
-					insert.bindString(3, value.getAsString(ImportFilesTable.COLUMN_DATE));
-					insert.bindString(4, value.getAsString(ImportFilesTable.COLUMN_IMPORTED));
-					insert.bindString(5, value.getAsString(ImportFilesTable.COLUMN_FILETYPE));
-					insert.bindString(6, value.getAsString(ImportFilesTable.COLUMN_FOLDER));
-					insert.bindString(7, value.getAsString(ImportFilesTable.COLUMN_IMAGE_ID));
+					insert.bindString(3, value.getAsString(ImportFilesTable.COLUMN_MIMETYPE));
+					insert.bindString(4, value.getAsString(ImportFilesTable.COLUMN_DATE));
+					insert.bindString(5, value.getAsString(ImportFilesTable.COLUMN_STATUS));
+					insert.bindString(6, value.getAsString(ImportFilesTable.COLUMN_FILETYPE));
+					insert.bindString(7, value.getAsString(ImportFilesTable.COLUMN_FOLDER));
+					insert.bindString(8, value.getAsString(ImportFilesTable.COLUMN_IMAGE_ID));
 					insert.execute();
 				}
 				db.setTransactionSuccessful();
@@ -422,7 +424,7 @@ public class SyncProvider extends ContentProvider {
 						+ ServersTable.COLUMN_FREE_SPACE + ","
 						+ ServersTable.COLUMN_PHOTO_COUNT + ","
 						+ ServersTable.COLUMN_VIDEO_COUNT + ","
-						+ ServersTable.COLUMN_AUDIO_COUNT + ","						
+						+ ServersTable.COLUMN_AUDIO_COUNT + ")"						
 						+ " values (?,?,?,?,?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {

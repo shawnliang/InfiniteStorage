@@ -17,20 +17,13 @@ public class ImportFilesTable implements BaseColumns {
 
 	public static final String TABLE_NAME = "ImportFiles";
 	public static final String COLUMN_FILENAME = "filename";
+	public static final String COLUMN_MIMETYPE = "mimetype";	
 	public static final String COLUMN_SIZE = "file_size";
 	public static final String COLUMN_DATE = "date";
-	public static final String COLUMN_IMPORTED = "imported";
+	public static final String COLUMN_STATUS = "status";
 	public static final String COLUMN_FILETYPE = "file_type";	
 	public static final String COLUMN_FOLDER = "folder";
 	public static final String COLUMN_IMAGE_ID = "imageId";
-
-	public static final int COLUMN_POS_FILENAME = 0;
-	public static final int COLUMN_POS_OBJECT_ID = 1;
-	public static final int COLUMN_POS_DATE = 2;
-	public static final int COLUMN_POS_FILETYPE = 3;
-	public static final int COLUMN_POS_IMPORTED = 4;	
-	public static final int COLUMN_POS_FOLDER = 5;
-	public static final int COLUMN_POS_IMAGE_ID = 6;
 	
 	private ImportFilesTable() {
 

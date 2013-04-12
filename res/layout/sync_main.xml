@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#000000" >
 
     <ImageView
         android:id="@+id/imageDevice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:src="@android:drawable/ic_menu_mapmode" />
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/ic_phone" />
 
     <TextView
         android:id="@+id/textDevice"
@@ -16,7 +19,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageDevice"
         android:layout_centerHorizontal="true"
-        android:text="lmichael-Nexus S" />
+        android:text="lmichael-Nexus S"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textPeriod"
@@ -24,24 +29,29 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textDevice"
         android:layout_centerHorizontal="true"
-        android:text="2009-01-01~20130409" />
+        android:text="2009-01-01~20130409"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
 
     <RelativeLayout
         android:id="@+id/rl1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/textPeriod"
-        android:layout_margin="10dp" >
+        android:layout_margin="5dp" >
 
         <ImageView
             android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:src="@android:drawable/ic_menu_gallery" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"            
+            android:src="@drawable/ic_photo" />
 
         <TextView
             android:id="@+id/textPhotoCount"
@@ -49,7 +59,9 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/imageView1"
             android:layout_toRightOf="@+id/imageView1"
-            android:text="total 100 photos" />
+            android:layout_marginLeft="2dp"
+            android:text="total 100 photos"
+            android:textColor="#FFFFFF" />
 
         <TextView
             android:id="@+id/textPhotoSize"
@@ -58,36 +70,39 @@
             android:layout_alignLeft="@+id/textPhotoCount"
             android:layout_alignRight="@+id/textPhotoCount"
             android:layout_below="@+id/textPhotoCount"
-            android:text="7GB" />
+            android:layout_marginLeft="2dp"
+            android:text="7GB" 
+            android:textColor="#FFFFFF"/>
 
         <Button
             android:id="@+id/btnDeletePhoto"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_width="75dp"
+            android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/imageView1"
-            android:layout_marginRight="15dp"
-            android:layout_toRightOf="@+id/textPhotoCount"
-            android:text="Delete Photos"
+            android:layout_alignBottom="@+id/imageView1"
+            android:text="Clear"
             android:textSize="14sp" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl1"
+        android:layout_centerHorizontal="true"
         android:layout_margin="10dp" >
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:src="@android:drawable/ic_menu_slideshow" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"            
+            android:src="@drawable/ic_video" />
 
         <TextView
             android:id="@+id/textVideoCount"
@@ -95,7 +110,9 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/imageView2"
             android:layout_toRightOf="@+id/imageView2"
-            android:text="total 10 videos" />
+            android:layout_marginLeft="2dp"
+            android:text="total 10 videos" 
+            android:textColor="#FFFFFF"/>
 
         <TextView
             android:id="@+id/textVideoSize"
@@ -104,18 +121,20 @@
             android:layout_alignLeft="@+id/textVideoCount"
             android:layout_alignRight="@+id/textVideoCount"
             android:layout_below="@+id/textVideoCount"
-            android:text="7GB" />
+            android:layout_marginLeft="2dp"
+            android:text="7GB" 
+            android:textColor="#FFFFFF"/>
 
         <Button
             android:id="@+id/btnVideoPhoto"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_width="75dp"
+            android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/imageView2"
-            android:layout_marginRight="15dp"
-            android:layout_toRightOf="@+id/textVideoCount"
-            android:text="Delete Videos"
+            android:layout_alignBottom="@+id/imageView2"
+            android:text="Clear"
             android:textSize="14sp" />
+
     </RelativeLayout>
     
     <View
@@ -125,43 +144,17 @@
             android:layout_margin="10dp"
             android:layout_below="@+id/rl2"
   			android:background="#00FF00"
-        />
+    />
 
-    <RelativeLayout
-        android:id="@+id/rl3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    
+    <ListView
+  		android:id="@+id/listview"
         android:layout_below="@+id/btnVideoPhoto"        
-        android:layout_margin="10dp" >
-    
-    <ImageView
-        android:id="@+id/imagePC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/btnVideoPhoto"
-        android:layout_marginLeft="14dp"
-        android:layout_toLeftOf="@+id/textPeriod"
-        android:src="@drawable/ic_station" />
-    
-    <TextView
-        android:id="@+id/textBackupPC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imagePC"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/imagePC"
-        android:text="G-SO&apos;s PC(Backuping....)"
-        android:textSize="14sp" />
+  		android:layout_width="match_parent"
+  		android:layout_height="wrap_content" 
+  		android:divider="#00FF00"
+        android:dividerHeight="2px">
 
-    <TextView
-       android:id="@+id/textBackupDays"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_below="@+id/imagePC"
-       android:layout_alignLeft="@+id/imagePC"
-       android:layout_marginTop="10dp"
-       android:layout_marginBottom="10dp"       
-       android:text="20090101~20100102"       
-       />
-	</RelativeLayout>
+	</ListView> 	
+    
 </RelativeLayout>

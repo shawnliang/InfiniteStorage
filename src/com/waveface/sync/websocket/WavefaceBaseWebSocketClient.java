@@ -390,11 +390,6 @@ public class WavefaceBaseWebSocketClient implements WebSocketClient {
 					mOut.write(0xff);
 				}
 			} else {
-				if (WebSocketEncoding.BINARY.equals(mNegotiatedSubProtocol.getEncoding())) {
-					Log.d("WS","BINARY");
-				} else {
-					Log.d("WS","JSON");
-				}				
 				mOut.write(aData);
 			}
 			mOut.flush();

@@ -2,25 +2,8 @@ package com.waveface.sync;
 
 public class Constant {
 
-	public final static String APP_FOLDER = "/AOStream.dev";
-	public final static String APP_ORI_FOLDER = "/Waveface.dev";
-	public final static String APP_ORI_DEV_FOLDER = "/Waveface.dev";
-	public final static String DOWNLOAD_FOLDER = APP_FOLDER + "/download";
-	public final static String PHOTO_FOLDER = APP_FOLDER;
-	public final static String THUMBNAIL_FOLDER = PHOTO_FOLDER + "/thumb";
-	public final static String AVATAR_FOLDER = PHOTO_FOLDER + "/account";
-	public final static String PHOTO_TEMP_FOLDER = PHOTO_FOLDER + "/temp";
-	public final static String CACHE_IMAGE_FOLDER = "/images";
-	public final static String CACHE_SHARE_FOLDER = APP_FOLDER + "/share";
+	public final static String APP_FOLDER = "/InfiniteStorage";
 
-	public final static String PHONE_API_KEY = "e96546fa-3ed5-540a-9ef2-1f8ce1dc60f2";
-	public final static String TABLET_API_KEY = "c0870e40-1416-5d88-9014-bc089832ebd8";
-
-	//GOOGLE ANALYTICS ID
-	public final static String GOOGLE_ANALYTICS_ACCOUNT = "UA-38571392-1";
-
-	//GCM SENDER ID
-	public final static String GCM_SENDER_ID = "294837951572,889550322062,578853549967";//PRODUCT,STAGING,DEVELOP)
 
 	public final static String ACTION_BONJOUR_MULTICAT_EVENT = "com.waveface.wammer.action.BONJOUR_MULTICAT_EVENT";	
 	public final static String ACTION_BACKUP_FILE = "com.waveface.wammer.action.BACKUP_FILE";
@@ -32,7 +15,9 @@ public class Constant {
 	public static final int EVENT_BONJOUR_REMOVED = 2;
 	public static final int EVENT_BONJOUR_ADDED = 3;
 	
-	
+	//SERVER STATUS
+	public static final String SERVER_LINKING = "1";
+	public static final String SERVER_OFFLINE = "2";	
 	
 	//SERVICE SETTING
     public static String INFINTE_STORAGE = "_infinite-storage._tcp.local.";
@@ -42,41 +27,10 @@ public class Constant {
 	public static final int TYPE_AUDIO = 2;
 	public static final int TYPE_VIDEO = 3;	
 	public static final int TYPE_DOC = 4;		
+	
+	public static final int K_BYTES = 1024;
 
 	
-	public final static String ACTION_USERS_ADDED = "com.waveface.wammer.action.USERS_ADDED";
-	public final static String ACTION_COMMENTS_ADDED = "com.waveface.wammer.action.COMMENTS_ADDED";
-	public final static String ACTION_COMMENT_ADDED = "com.waveface.wammer.action.COMMENT_ADDED";
-	public final static String ACTION_CREATE_POST_STATE = "com.waveface.wammer.action.CREATE_POST_STATE";
-	public final static String ACTION_UPDATE_POST_STATE = "com.waveface.wammer.action.UPDATE_POST_STATE";
-	public final static String ACTION_CREATE_COMMENT_STATE = "com.waveface.wammer.action.CREATE_COMMENT_STATE";
-	public final static String ACTION_PREVIEW_DONE = "com.waveface.wammer.action.PREVIEW_DONE";
-	public final static String ACTION_SIGNUP_STATE = "com.waveface.wammer.action.SIGNUP_STATE";
-	public final static String ACTION_LOGIN_STATE = "com.waveface.wammer.action.LOGIN_STATE";
-	public final static String ACTION_KEEP_ON_DEVICE_STATE = "com.waveface.wammer.action.KEEP_ON_DEVICE_STATE";
-	public final static String ACTION_FACEBOOK_CONNECT = "com.waveface.wammer.action.FACEBOOK_CONNECT";
-	public final static String ACTION_LOGOUT_STATE = "com.waveface.wammer.action.LOGOUT_STATE";
-	public final static String ACTION_NATIVE_SIGNUP_STATE = "com.waveface.wammer.action.NATIVE_SIGNUP_STATE";
-	public final static String ACTION_DOWNLOAD_STATE = "com.waveface.wammer.action.DOWNLOAD_STATE";
-	public final static String ACTION_LATEST_SCAN_POST = "com.waveface.wammer.action.LATEST_SCAN_POST";
-	public final static String ACTION_REFRESH_STATE = "com.waveface.wammer.action.REFRESH_STATE";
-	public final static String ACTION_REFRESH_COMMENT_COUNT = "com.waveface.wammer.action.REFRESH_COMMENT_COUNT";
-	public final static String ACTION_SWITCH_SERVER = "com.waveface.wammer.action.SWITCH_SERVER";
-	public final static String ACTION_FILTER_STATE = "com.waveface.wammer.action.FILTER_STATE";
-	public final static String ACTION_CHECK_STATION = "com.waveface.wammer.action.CHECK_STATION";
-	public final static String ACTION_CHANGELOGS_REFRESH = "com.waveface.wammer.action.CHANGELOGS_REFRESH";
-	public final static String ACTION_MANUAL_GET_IMAGE_MEMO = "com.waveface.wammer.action.MANUAL_GET_IMAGE_MEMO";
-	public final static String ACTION_MANUAL_SYNCING = "com.waveface.wammer.action.MANUAL_SYNCING";
-	public final static String ACTION_MANUAL_SYNCED = "com.waveface.wammer.action.MANUAL_SYNCED";
-	public final static String ACTION_DOWNLOAD_MORE_POST = "com.waveface.wammer.action.DOWNLOAD_MORE_POST";
-	public final static String ACTION_GET_LARGER_IMAGE = "com.waveface.wammer.action.GET_LARGER_IMAGE";
-	public final static String ACTION_SNS_LINK = "com.waveface.wammer.action.SNS_LINK";
-	public final static String ACTION_SNS_FB_DISCONNECTED = "com.waveface.wammer.action.SNS_FB_DISCONNECTED";
-	public final static String ACTION_SNS_GOOGLE_DISCONNECTED = "com.waveface.wammer.action.SNS_GOOGLE_DISCONNECTED";
-	public final static String ACTION_SNS_TWITTER_DISCONNECTED = "com.waveface.wammer.action.SNS_TWITTER_DISCONNECTED";
-	public final static String ACTION_SNS_FOURSQUARE_DISCONNECTED = "com.waveface.wammer.action.SNS_FOURSQUARE_DISCONNECTED";
-	public final static String ACTION_LOGIN_FINISH = "com.waveface.wammer.action.LOGIN_FINISH";
-	public final static String ACTION_NON_FB_APP = "com.waveface.wammer.action.NON_FB_APP";
 	public final static String ACTION_NETWORK_STATE_CHANGED = "com.waveface.wammer.action.NETWORK_STATE_CHANGED";
 	public final static String ACTION_STATION_LINKED = "com.waveface.wammer.action.STATION_LINKED";
 	public final static String ACTION_SERVICE_SHOW_TOAST = "com.waveface.wammer.action.SERVICE_SHOW_TOAST";
@@ -93,39 +47,13 @@ public class Constant {
 	public final static String ACTION_COLLECTION_UPDATE = "com.waveface.wammer.action.ACTION_COLLECTION_UPDATE";
 	public final static String ACTION_CLICK_CALENDAR_DATE = "com.waveface.wammer.action.CLICK_CALENDAR_DATE";
 	public final static String ACTION_COLLECTION_COVER = "com.waveface.wammer.action.ACTION_COLLECTION_COVER";
-	public final static String ACTION_UPDATE_EVENT_CONTENT = "com.waveface.wammer.action.UPDATE_EVENT_CONTENT";
-	public final static String ACTION_UPDATE_EVENT_CONTENT_TIMELINE = "com.waveface.wammer.action.UPDATE_EVENT_CONTENT_TIMELINE";
-	public final static String ACTION_UPDATE_USER_NAME = "com.waveface.wammer.action.UPDATE_USER_NAME";
-	public final static String ACTION_UPDATE_USER_EMAIL = "com.waveface.wammer.action.UPDATE_USER_EMAIL";
-	public final static String ACTION_DELETE_WITH_EMAIL = "com.waveface.wammer.action.DELETE_WITH_EMAIL";
-	public final static String ACTION_IMPORT_FILES_DONE = "com.waveface.wammer.action.IMPORT_FILES_DONE";
-	public final static String ACTION_REMOVE_ATTACHMENT = "com.waveface.wammer.action.ACTION_REMOVE_ATTACHMENT";
-	public final static String ACTION_ONCLICK_CALENDAR_STATUS = "com.waveface.wammer.action.ONCLICK_CALENDAR_STATUS";
-
-
-	//KEEP ON DEVICE
-
-	public final static int TYPE_POST_PHOTO = 0;
-	public final static int TYPE_POST_PREVIEW = 1;
-	public final static int TYPE_POST_DOCUMENT = 2;
-	public final static int TYPE_POST_TEXT = 3;
 
 
 	public final static int STATE_SUCCESS = 0;
 	public final static int STATE_FAILED = 1;
 	public final static int STATE_REFRESHING = 2;
 
-	public final static int CALLOUT_FAVORITE = 0;
-	public final static int CALLOUT_COVERIMAGE = 1;
-	public final static int CALLOUT_REMOVE = 2;
 
-	public static final int CLOUD_CONNECTION_TIMEOUT = 20000;
-	public static final int CLOUD_SOCKET_TIMEOUT = 20000;
-	public static final int STATION_CONNECTION_TIMEOUT = 5000;
-	public static final int STATION_SOCKET_TIMEOUT = 20000;
-	public static final int DOWNLOAD_CONNECTION_TIMEOUT = 60000;
-	public static final int DOWNLOAD_SOCKET_TIMEOUT = 90000;
-	public static final int DOWNLOAD_POST_MAX_COUNT = 100;
 
 	public static final int TIMELINE_IMAGE_TOTAL_HEIGHT = 200;
 	public static final int TIMELINE_IMAGE_2CELL_TOTAL_HEIGHT = 148;
@@ -135,6 +63,20 @@ public class Constant {
 
 	public static final int RESULT_BACK = 20;
 
+
+	public final static String PARAM_FOLDERNAME = "foldername";	
+	public final static String PARAM_FILENAME = "filename";
+	public final static String PARAM_FILESIZE = "filesize";
+	public final static String PARAM_FILEACTION_START = "file-start";
+	public final static String PARAM_FILEACTION_END = "file-end";
+	public final static String PARAM_SERVER_DATA = "server_data";
+	public final static String PARAM_SERVER_ID = "server_id";	
+	public final static String PARAM_SERVER_OS = "os";		
+	public final static String PARAM_RESULT = "result";
+	
+
+	
+	//
 	public final static String PARAM_CREATOR_ID = "creator_id";
 	public final static String PARAM_DEVICE_NAME = "device_name";
 	public final static String PARAM_DEVICE_ID = "device_id";
@@ -148,11 +90,8 @@ public class Constant {
 	public final static String PARAM_TIMEZONE = "timezone";
 	public final static String PARAM_COVER_ATTACH = "cover_attach";
 	public final static String PARAM_FROM_COMPOSER = "from_composer";
-	public final static String PARAM_FOLDERNAME = "foldername";	
-	public final static String PARAM_FILENAME = "filename";
-	public final static String PARAM_FILESIZE = "filesize";
-	public final static String PARAM_FILEACTION_START = "file-start";
-	public final static String PARAM_FILEACTION_END = "file-end";
+	
+	
 	
 	
 	public final static String PARAM_GROUP_ID = "group_id";
@@ -287,7 +226,7 @@ public class Constant {
 	public final static String QUEUE_STATUS_PROCESS = "P";
 	public final static String QUEUE_STATUS_DONE = "1";
 
-	public final static String PREFS_NAME = "WammerPreferences";
+	public final static String PREFS_NAME = "InfinitePref";
 	public final static String PREF_USERNAME = "username";
 	public final static String PREF_USER_ID = "UserId";
 	public final static String PREF_USER_EMAIL = "UserEmail";
@@ -302,18 +241,8 @@ public class Constant {
 	public final static String PREF_LATEST_TIMESTAMP = "latest_timestamp";
 	public final static String PREF_UNREAD = "unread";
 	public static final String PREF_BROWSING_POST_ID = "browsing_post_id";
-	public final static String PREF_TIMELINE_TOP_POST_ID = "top_post_id";
-	public final static String PREF_TIMELINE_TOP_POST_TIME = "top_timeline";
-	public final static String PREF_TIMELINE_BOTTOM_POST_ID = "bottom_post_id";
-	public final static String PREF_TIMELINE_BOTTOM_POST_TIME = "bottom_timeline";
-	public final static String PREF_POST_LAST_CREATED_POST_ID = "last_created_post_id";
-	public final static String PREF_POST_LAST_CREATED_POST_TIME = "last_created_post_time";
 	public final static String PREF_NOTIFICATION_ID = "notification_id";
 	public final static String PREF_STATION_WEB_SOCKET_URL = "station_websocket_url";
-	public final static String PREF_STATION_HAS_NOTIFY_QUEUE = "hasNotifyQueue";
-	public final static String PREF_LAST_TOUCH_SHOEBOX ="last_touch_shoebox";
-	public final static String PREF_LAST_TOUCH_ADD_MONTH="last_touch_addmoth";
-	public final static String PREF_LAST_TOUCH_DATA_PAGE_NUM="last_touch_page_num";
 
 	// OLDEST POST ID AND TIMESTAMP
 	public final static String PREF_LATESTTIME_POST_TIMESTAMP = "lastest_time_post_timestamp";
@@ -337,25 +266,6 @@ public class Constant {
 	//DISPLAY SLIDE MENU FOR THE VERY FIRST TIME
 	public final static String PREF_DISPLAY_SLIDE_MENU_FOR_FIRST_USE = "display_slide_menu_for_first_time";
 
-	// FOR STORAGE
-	public final static String PREF_STORAGE_OVER_QUOTA = "over_quota";
-	public final static String PREF_STORAGE_QUOTA_STARTING_TIME = "quota_starting_time";
-	public final static String PREF_STORAGE_MONTH_TOTAL_OBJECTS = "month_total_objects";
-	public final static String PREF_STORAGE_AVAIL_MONTH_TOTAL_OBJECTS = "avail_month_total_objects";
-	public final static String PREF_STORAGE_QUOTA_TOTAL_OBJECTS = "month_quota_total_objects";
-	public final static String PREF_STORAGE_OBJECTS_IN_QUEUE = "objects_in_queue";
-	public final static String PREF_STORAGE_OBJECTS_NOT_SYNCED_IN_QUEUE = "objects_not_synced_in_queue";
-	public final static String PREF_STORAGE_QUEUE_STATUS = "queue_status";
-	public final static String PREF_LAST_POST_TIME ="last_post_time";
-	public final static String PREF_LAST_IMPORT_COUNTS ="last_import_counts";
-	public final static String PREF_LAST_IMPORT_POSITION ="last_import_position";
-	public final static String PREF_NEWER_LAST_POST_TIME ="newer_last_post_time";
-	public final static String PREF_NEWER_LAST_IMPORT_COUNTS ="newer_last_import_counts";
-	public final static String PREF_NEWER_LAST_IMPORT_POSITION ="newer_last_import_position";
-	public final static String PREF_OLDER_LAST_IMPORT_COUNTS ="older_last_import_counts";
-	public final static String PREF_OLDER_LAST_IMPORT_POSITION ="older_last_import_position";
-
-	public final static String PREF_IMPORT_ONCE ="import_once";
 
 	//FOR SERVER
 	public final static String PREF_CLOUD_SERVER = "cloud_server";
@@ -365,36 +275,6 @@ public class Constant {
 	public final static int TWITTER_CONNECT = 2 ;
 	public final static int FOURSQUARE_CONNECT = 3 ;
 
-	//FOR FB WEBLOGIN
-	public final static String PREF_WEB_LOGINED = "web_logined";
-	public final static String PREF_FB_ID = "fb_id";
-	public final static String PREF_FB_AUTH_TOKEN = "fb_auth_token";
-	public final static String PREF_FB_ACCESS_EXPIRED = "fb_access_expired";
-	public final static String PREF_FB_SNSID = "fb_snsid";
-	public final static String PREF_FB_STATUS = "fb_status";
-	public final static String PREF_FB_ENABLED = "fb_enabled";
-	public final static String PREF_FB_LAST_SYNC = "fb_last_sync";
-	public final static String PREF_FB_TO_DATE = "fb_to_date";
-	public final static String PREF_FB_DISCONNECTED ="disconnected";
-	public final static String PREF_FB_PROGRESS ="progress";
-	public final static String PREF_FB_COMPLETE ="complete";
-	public final static String PREF_FB_DISABLE_AND_DISCONNECTED = "fb_disable_and_disconnect";
-	//FOR GOOGLE WEBLOGIN
-	public final static String PREF_GOOGLE_AUTH_TOKEN = "google_auth_token";
-	public final static String PREF_GOOGLE_STATUS = "google_status";
-	public final static String PREF_GOOGLE_ENABLED = "google_enabled";
-	public final static String PREF_GOOGLE_DISCONNECTED ="google_disconnected";
-	//FOR TWITTER WEBLOGIN
-	public final static String PREF_TWITTER_AUTH_TOKEN = "twitter_auth_token";
-	public final static String PREF_TWITTER_STATUS = "twitter_status";
-	public final static String PREF_TWITTER_ENABLED = "twitter_enabled";
-	public final static String PREF_TWITTER_DISCONNECTED ="twitter_disconnected";
-	//FOR FOURSQUARE WEBLOGIN
-	public final static String PREF_FOURSQUARE_ENABLED = "foursquare_enabled";
-	public final static String PREF_FOURSQUARE_DISCONNECTED ="foursquare_disconnected";
-
-	//FOR GPS
-	public final static String PREF_GPS_ENABLED = "gps_enabled";
 
 	//FOR PHOTO Import
 	public final static String PREF_AUTO_IMPORTING = "auto_importing";
@@ -407,43 +287,6 @@ public class Constant {
 	public final static String PREF_AUTO_IMPORT_FIRST_TIME_DONE = "auto_import_first_time_done";
 	public final static String PREF_AUTO_IMPORT_OLDEST_FILE = "auto_import_oldest_file";
 
-	//PAYMENT PACKAGE
-	public final static String PREF_PAYMENT_PACKAGE = "payment_package";
-	//BILLING
-	public final static String PREF_BILLING_CYCLE_START = "billing_cycle_start";
-	public final static String PREF_BILLING_TYPE = "billing_type";
-	public final static String PREF_BILLING_PLAN = "billing_plan";
-	public final static String PREF_BILLING_CYCLE = "billing_cycle";
-	//QUOTA IMAGE
-	public final static String PREF_QUOTA_IMAGE_META_FILES = "quota_image_meta_files";
-	public final static String PREF_QUOTA_IMAGE_META_SIZE = "quota_image_meta_size";
-	public final static String PREF_QUOTA_IMAGE_OBJECTS = "quota_image_objects";
-	public final static String PREF_QUOTA_IMAGE_ORIGIN_FILES = "quota_image_origin_files";
-	public final static String PREF_QUOTA_IMAGE_ORIGIN_SIZE = "quota_image_origin_size";
-	//QUOTA DOC
-	public final static String PREF_QUOTA_DOC_META_FILES = "quota_doc_meta_files";
-	public final static String PREF_QUOTA_DOC_META_SIZE = "quota_doc_meta_size";
-	public final static String PREF_QUOTA_DOC_OBJECTS = "quota_doc_objects";
-	public final static String PREF_QUOTA_DOC_ORIGIN_FILES = "quota_doc_origin_files";
-	public final static String PREF_QUOTA_DOC_ORIGIN_SIZE = "quota_doc_origin_size";
-	//QUOTA TOTAL
-	public final static String PREF_QUOTA_TOTAL_META_FILES = "quota_total_meta_files";
-	public final static String PREF_QUOTA_TOTAL_META_SIZE = "quota_total_meta_size";
-	public final static String PREF_QUOTA_TOTAL_OBJECTS = "quota_total_objects";
-	public final static String PREF_QUOTA_TOTAL_ORIGIN_FILES = "quota_total_origin_files";
-	public final static String PREF_QUOTA_TOTAL_ORIGIN_SIZE = "quota_total_origin_size";
-	//USAGE IMAGE
-	public final static String PREF_USAGE_IMAGE_META_FILES = "usage_image_meta_files";
-	public final static String PREF_USAGE_IMAGE_META_SIZE = "usage_image_meta_size";
-	public final static String PREF_USAGE_IMAGE_OBJECTS = "usage_image_objects";
-	public final static String PREF_USAGE_IMAGE_ORIGIN_FILES = "usage_image_origin_files";
-	public final static String PREF_USAGE_IMAGE_ORIGIN_SIZE = "usage_image_origin_size";
-	//USAGE DOC
-	public final static String PREF_USAGE_DOC_META_FILES = "usage_doc_meta_files";
-	public final static String PREF_USAGE_DOC_META_SIZE = "usage_doc_meta_size";
-	public final static String PREF_USAGE_DOC_OBJECTS = "usage_doc_objects";
-	public final static String PREF_USAGE_DOC_ORIGIN_FILES = "usage_doc_origin_files";
-	public final static String PREF_USAGE_DOC_ORIGIN_SIZE = "usage_doc_origin_size";
 
 	//SYNC STATUS
 	public final static String PREF_SYNC_STATUS_THUMB_UPLOAD_ID = "sync_status_thumb_upload_id";
@@ -464,31 +307,12 @@ public class Constant {
 	//public static String PREF_USER_STATE = "user_state";
 	public static String PREF_SERVER = "Link_Server";
 
-	public static final int TYPE_SUMMARY_STREAM = 1;
-	public static final int TYPE_PHOTOS_STREAM = 2;
-	public static final int TYPE_WORK_STREAM = 3;
-	public static final int TYPE_READING_STREAM = 4;
-
-
 	public final static String DEVICE_NAME = "Android";
 	public final static String DEVICE_TABLET_NAME = "AndroidTablet";
 	public final static String SHARED_URL_LINK = "SHARED_URL_LINK";
-	public final static int THUMBNAIL_HEIGHT_DIP = 70;
-	public final static int THUMBNAIL_WIDTH_DIP = 90;
-	public final static int THUMBNAIL_VERTICAL_HEIGHT_DIP = 110;
-	public final static int THUMBNAIL_VERTICAL_WIDTH_DIP = 90;
 
-	public static final int REQUEST_CODE_PICK_PHOTO = 0;
-	public static final int REQUEST_CODE_CAMERA = 1;
-	public static final int REQUEST_CODE_LOGIN = 2;
-	public static final int REQUEST_CODE_EDITOR = 3;;
-	public static final int REQUEST_CODE_PICK_FILE = 4;
-	public static final int REQUEST_CODE_COMPOSER = 5;
-	public static final int REQUEST_CODE_COVER_CHANGE = 6;
-	public static final int REQUEST_CODE_FOOT_NOTE = 7;
-	public static final int REQUEST_CODE_EDITPOST = 8;
-	public static final int REQUEST_CODE_WEBLOGIN = 9;
-	public static final int REQUEST_CODE_IMPORT_SETTING = 10;
+	//REQUEST CODE
+	public static final int REQUEST_CODE_OPEN_SERVER_CHOOSER = 0;
 
 
 	public static final int RESULT_CODE_FINISH = 1;
@@ -590,9 +414,7 @@ public class Constant {
 
 	//IMPORTED FILE STATUS
 	public static final String IMPORT_FILE_INCLUDED = "0";
-	public static final String IMPORT_FILE_UPLOAD_META = "1";
-	public static final String IMPORT_FILE_UPLOAD_THUMB = "2";
-	public static final String IMPORT_FILE_BACKUP = "3";
+	public static final String IMPORT_FILE_BACKUPED = "3";
 	public static final String IMPORT_FILE_EXCLUDE = "99";
 	public static final String IMPORT_FILE_DELETED = "100";
 
@@ -662,9 +484,6 @@ public class Constant {
 	public static final int STATUS_UPLOAD_ORIGINL_IMAGE = 4;
 
 
-	public static final String FACEBOOK_API_ID_DEV = "357087874306060";
-	public static final String FACEBOOK_API_ID_STAGING = "356863037711668";
-	public static final String FACEBOOK_API_ID_PRODUCT = "234823683291756";
 
 	public static final int AUTO_IMPORT_ID = 100001;
 
