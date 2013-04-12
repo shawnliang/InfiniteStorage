@@ -23,15 +23,6 @@ namespace InfiniteStorage
 		private void FirstUseDialog_Load(object sender, EventArgs e)
 		{
 			UpdateUI();
-
-			var userFolder = Environment.GetEnvironmentVariable("UserProfile");
-			var myPic = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-			var myVideo = Path.Combine(userFolder, "Videos");
-			var myPodcasts = Path.Combine(userFolder, "Podcasts");
-
-			generalPreferenceControl1.PhotoLocation = Path.Combine(myPic, Resources.ProductName);
-			generalPreferenceControl1.VideoLocation = Path.Combine(myVideo, Resources.ProductName);
-			generalPreferenceControl1.AudioLocation = Path.Combine(myPodcasts, Resources.ProductName);
 		}
 
 		private void nextButton_Click(object sender, EventArgs e)
@@ -40,9 +31,19 @@ namespace InfiniteStorage
 			{
 				DialogResult = System.Windows.Forms.DialogResult.OK;
 
-				Settings.Default.PhotoLocation = generalPreferenceControl1.PhotoLocation;
-				Settings.Default.VideoLocation = generalPreferenceControl1.VideoLocation;
-				Settings.Default.AudioLocation = generalPreferenceControl1.AudioLocation;
+				Settings.Default.LocationType = (int)generalPreferenceControl1.LocationType;
+
+				if (generalPreferenceControl1.LocationType == LocationType.Custom)
+				{
+					Settings.Default.CustomPhotoLocation = generalPreferenceControl1.CustomPhotoLocation;
+					Settings.Default.CustomVideoLocation = generalPreferenceControl1.CustomVideoLocation;
+					Settings.Default.CustomAudioLocation = generalPreferenceControl1.CustomAudioLocation;
+				}
+				else if (generalPreferenceControl1.LocationType == LocationType.SingleFolder)
+				{
+					Settings.Default.SingleFolderLocation = generalPreferenceControl1.SingleFolderLocation;
+				}
+
 				Settings.Default.OrganizeMethod = (int)generalPreferenceControl1.OrganizeMethod;
 				Settings.Default.Save();
 				Close();

@@ -54,15 +54,15 @@
 			this.panel1.Controls.Add(this.nextButton);
 			this.panel1.Controls.Add(this.prevButton);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel1.Location = new System.Drawing.Point(0, 377);
+			this.panel1.Location = new System.Drawing.Point(0, 375);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(695, 46);
+			this.panel1.Size = new System.Drawing.Size(707, 46);
 			this.panel1.TabIndex = 0;
 			// 
 			// nextButton
 			// 
 			this.nextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.nextButton.Location = new System.Drawing.Point(608, 6);
+			this.nextButton.Location = new System.Drawing.Point(620, 6);
 			this.nextButton.Name = "nextButton";
 			this.nextButton.Size = new System.Drawing.Size(75, 32);
 			this.nextButton.TabIndex = 1;
@@ -93,7 +93,7 @@
 			this.tabControlEx1.Name = "tabControlEx1";
 			this.tabControlEx1.PageIndex = 2;
 			this.tabControlEx1.SelectedIndex = 0;
-			this.tabControlEx1.Size = new System.Drawing.Size(695, 377);
+			this.tabControlEx1.Size = new System.Drawing.Size(707, 375);
 			this.tabControlEx1.TabIndex = 1;
 			this.tabControlEx1.SelectedIndexChanged += new System.EventHandler(this.tabControlEx1_SelectedIndexChanged);
 			// 
@@ -104,7 +104,7 @@
 			this.tabWelcome.Location = new System.Drawing.Point(0, 0);
 			this.tabWelcome.Name = "tabWelcome";
 			this.tabWelcome.Padding = new System.Windows.Forms.Padding(3);
-			this.tabWelcome.Size = new System.Drawing.Size(695, 377);
+			this.tabWelcome.Size = new System.Drawing.Size(707, 375);
 			this.tabWelcome.TabIndex = 0;
 			this.tabWelcome.Text = "Infinite Storage";
 			// 
@@ -125,7 +125,7 @@
 			this.tabChooseFolder.Location = new System.Drawing.Point(0, 0);
 			this.tabChooseFolder.Name = "tabChooseFolder";
 			this.tabChooseFolder.Padding = new System.Windows.Forms.Padding(3);
-			this.tabChooseFolder.Size = new System.Drawing.Size(695, 377);
+			this.tabChooseFolder.Size = new System.Drawing.Size(707, 375);
 			this.tabChooseFolder.TabIndex = 1;
 			this.tabChooseFolder.Text = "設定備份位置";
 			this.tabChooseFolder.UseVisualStyleBackColor = true;
@@ -142,14 +142,12 @@
 			// 
 			// generalPreferenceControl1
 			// 
-			this.generalPreferenceControl1.AudioLocation = "";
-			this.generalPreferenceControl1.Location = new System.Drawing.Point(46, 52);
+			this.generalPreferenceControl1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.generalPreferenceControl1.Location = new System.Drawing.Point(44, 45);
 			this.generalPreferenceControl1.Name = "generalPreferenceControl1";
 			this.generalPreferenceControl1.OrganizeMethod = InfiniteStorage.OrganizeMethod.YearMonthDay;
-			this.generalPreferenceControl1.PhotoLocation = "";
-			this.generalPreferenceControl1.Size = new System.Drawing.Size(602, 308);
+			this.generalPreferenceControl1.Size = new System.Drawing.Size(618, 330);
 			this.generalPreferenceControl1.TabIndex = 0;
-			this.generalPreferenceControl1.VideoLocation = "";
 			// 
 			// tabInstallAppAndStart
 			// 
@@ -159,7 +157,7 @@
 			this.tabInstallAppAndStart.Location = new System.Drawing.Point(0, 0);
 			this.tabInstallAppAndStart.Name = "tabInstallAppAndStart";
 			this.tabInstallAppAndStart.Padding = new System.Windows.Forms.Padding(3);
-			this.tabInstallAppAndStart.Size = new System.Drawing.Size(695, 377);
+			this.tabInstallAppAndStart.Size = new System.Drawing.Size(707, 375);
 			this.tabInstallAppAndStart.TabIndex = 2;
 			this.tabInstallAppAndStart.Text = "安裝 App";
 			this.tabInstallAppAndStart.UseVisualStyleBackColor = true;
@@ -196,7 +194,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(695, 423);
+			this.ClientSize = new System.Drawing.Size(707, 421);
 			this.Controls.Add(this.tabControlEx1);
 			this.Controls.Add(this.panel1);
 			this.Name = "FirstUseDialog";

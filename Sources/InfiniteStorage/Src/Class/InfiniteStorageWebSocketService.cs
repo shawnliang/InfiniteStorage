@@ -17,16 +17,15 @@ namespace InfiniteStorage
 
 		public InfiniteStorageWebSocketService()
 		{
-			var tempFolder = Path.Combine(Settings.Default.PhotoLocation, "temp");
-			if (!Directory.Exists(tempFolder))
-				Directory.CreateDirectory(tempFolder);
+			if (!Directory.Exists(MyFileFolder.Temp))
+				Directory.CreateDirectory(MyFileFolder.Temp);
 
-			var storage = new FlatFileStorage(Settings.Default.PhotoLocation, Settings.Default.VideoLocation, Settings.Default.AudioLocation);
+			var storage = new FlatFileStorage(MyFileFolder.Photo, MyFileFolder.Video, MyFileFolder.Audio);
 
 			// TODO: remove hard code
 			storage.setDeviceName("fakeDevName");
 
-			handler = new ProtocolHanlder(new TempFileFactory(tempFolder), storage);
+			handler = new ProtocolHanlder(new TempFileFactory(MyFileFolder.Temp), storage);
 		}
 
 		protected override void onMessage(object sender, MessageEventArgs e)

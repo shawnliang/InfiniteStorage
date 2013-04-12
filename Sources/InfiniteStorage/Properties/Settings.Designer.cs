@@ -38,36 +38,36 @@ namespace InfiniteStorage.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string PhotoLocation {
+        public string CustomPhotoLocation {
             get {
-                return ((string)(this["PhotoLocation"]));
+                return ((string)(this["CustomPhotoLocation"]));
             }
             set {
-                this["PhotoLocation"] = value;
+                this["CustomPhotoLocation"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string VideoLocation {
+        public string CustomVideoLocation {
             get {
-                return ((string)(this["VideoLocation"]));
+                return ((string)(this["CustomVideoLocation"]));
             }
             set {
-                this["VideoLocation"] = value;
+                this["CustomVideoLocation"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string AudioLocation {
+        public string CustomAudioLocation {
             get {
-                return ((string)(this["AudioLocation"]));
+                return ((string)(this["CustomAudioLocation"]));
             }
             set {
-                this["AudioLocation"] = value;
+                this["CustomAudioLocation"] = value;
             }
         }
         
@@ -80,6 +80,30 @@ namespace InfiniteStorage.Properties {
             }
             set {
                 this["OrganizeMethod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SingleFolderLocation {
+            get {
+                return ((string)(this["SingleFolderLocation"]));
+            }
+            set {
+                this["SingleFolderLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LocationType {
+            get {
+                return ((int)(this["LocationType"]));
+            }
+            set {
+                this["LocationType"] = value;
             }
         }
     }

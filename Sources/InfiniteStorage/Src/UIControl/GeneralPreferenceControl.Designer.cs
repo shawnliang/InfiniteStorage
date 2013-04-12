@@ -29,23 +29,13 @@
 		private void InitializeComponent()
 		{
 			this.label1 = new System.Windows.Forms.Label();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.changeAudioLocation = new System.Windows.Forms.Button();
-			this.changeVedioLocation = new System.Windows.Forms.Button();
-			this.boxAudioLocation = new System.Windows.Forms.TextBox();
-			this.boxVideoLocation = new System.Windows.Forms.TextBox();
-			this.boxPhotoLocation = new System.Windows.Forms.TextBox();
-			this.label4 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
-			this.changePhotoLocation = new System.Windows.Forms.Button();
-			this.label3 = new System.Windows.Forms.Label();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.label6 = new System.Windows.Forms.Label();
 			this.radioY = new System.Windows.Forms.RadioButton();
 			this.radioYM = new System.Windows.Forms.RadioButton();
 			this.radioYMD = new System.Windows.Forms.RadioButton();
 			this.lblComputerName = new System.Windows.Forms.Label();
-			this.groupBox1.SuspendLayout();
+			this.backupLocationControl = new InfiniteStorage.BackupLocationControl();
 			this.groupBox2.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -58,107 +48,6 @@
 			this.label1.TabIndex = 0;
 			this.label1.Text = "This computer :";
 			// 
-			// groupBox1
-			// 
-			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox1.Controls.Add(this.changeAudioLocation);
-			this.groupBox1.Controls.Add(this.changeVedioLocation);
-			this.groupBox1.Controls.Add(this.boxAudioLocation);
-			this.groupBox1.Controls.Add(this.boxVideoLocation);
-			this.groupBox1.Controls.Add(this.boxPhotoLocation);
-			this.groupBox1.Controls.Add(this.label4);
-			this.groupBox1.Controls.Add(this.label2);
-			this.groupBox1.Controls.Add(this.changePhotoLocation);
-			this.groupBox1.Controls.Add(this.label3);
-			this.groupBox1.Location = new System.Drawing.Point(15, 44);
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(573, 117);
-			this.groupBox1.TabIndex = 2;
-			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Backup location";
-			// 
-			// changeAudioLocation
-			// 
-			this.changeAudioLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.changeAudioLocation.Location = new System.Drawing.Point(465, 79);
-			this.changeAudioLocation.Name = "changeAudioLocation";
-			this.changeAudioLocation.Size = new System.Drawing.Size(87, 23);
-			this.changeAudioLocation.TabIndex = 13;
-			this.changeAudioLocation.Text = "Change...";
-			this.changeAudioLocation.UseVisualStyleBackColor = true;
-			this.changeAudioLocation.Click += new System.EventHandler(this.changeLocation_Click);
-			// 
-			// changeVedioLocation
-			// 
-			this.changeVedioLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.changeVedioLocation.Location = new System.Drawing.Point(465, 50);
-			this.changeVedioLocation.Name = "changeVedioLocation";
-			this.changeVedioLocation.Size = new System.Drawing.Size(87, 23);
-			this.changeVedioLocation.TabIndex = 12;
-			this.changeVedioLocation.Text = "Change...";
-			this.changeVedioLocation.UseVisualStyleBackColor = true;
-			this.changeVedioLocation.Click += new System.EventHandler(this.changeLocation_Click);
-			// 
-			// boxAudioLocation
-			// 
-			this.boxAudioLocation.Location = new System.Drawing.Point(54, 81);
-			this.boxAudioLocation.Name = "boxAudioLocation";
-			this.boxAudioLocation.Size = new System.Drawing.Size(387, 20);
-			this.boxAudioLocation.TabIndex = 11;
-			// 
-			// boxVideoLocation
-			// 
-			this.boxVideoLocation.Location = new System.Drawing.Point(55, 52);
-			this.boxVideoLocation.Name = "boxVideoLocation";
-			this.boxVideoLocation.Size = new System.Drawing.Size(387, 20);
-			this.boxVideoLocation.TabIndex = 10;
-			// 
-			// boxPhotoLocation
-			// 
-			this.boxPhotoLocation.Location = new System.Drawing.Point(55, 23);
-			this.boxPhotoLocation.Name = "boxPhotoLocation";
-			this.boxPhotoLocation.Size = new System.Drawing.Size(387, 20);
-			this.boxPhotoLocation.TabIndex = 9;
-			// 
-			// label4
-			// 
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(6, 84);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(42, 13);
-			this.label4.TabIndex = 8;
-			this.label4.Text = "Audios:";
-			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(7, 55);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(42, 13);
-			this.label2.TabIndex = 7;
-			this.label2.Text = "Videos:";
-			// 
-			// changePhotoLocation
-			// 
-			this.changePhotoLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.changePhotoLocation.Location = new System.Drawing.Point(465, 21);
-			this.changePhotoLocation.Name = "changePhotoLocation";
-			this.changePhotoLocation.Size = new System.Drawing.Size(87, 23);
-			this.changePhotoLocation.TabIndex = 5;
-			this.changePhotoLocation.Text = "Change...";
-			this.changePhotoLocation.UseVisualStyleBackColor = true;
-			this.changePhotoLocation.Click += new System.EventHandler(this.changeLocation_Click);
-			// 
-			// label3
-			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(6, 26);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(43, 13);
-			this.label3.TabIndex = 4;
-			this.label3.Text = "Photos:";
-			// 
 			// groupBox2
 			// 
 			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -167,7 +56,7 @@
 			this.groupBox2.Controls.Add(this.radioY);
 			this.groupBox2.Controls.Add(this.radioYM);
 			this.groupBox2.Controls.Add(this.radioYMD);
-			this.groupBox2.Location = new System.Drawing.Point(15, 177);
+			this.groupBox2.Location = new System.Drawing.Point(15, 186);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(573, 128);
 			this.groupBox2.TabIndex = 3;
@@ -224,19 +113,33 @@
 			this.lblComputerName.TabIndex = 4;
 			this.lblComputerName.Text = "[this computer name]";
 			// 
+			// backupLocationControl
+			// 
+			this.backupLocationControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.backupLocationControl.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.backupLocationControl.CustomAudioLocation = "C:\\Users\\shawnliang\\Podcasts\\Infinite Storage";
+			this.backupLocationControl.CustomPhotoLocation = "C:\\Users\\shawnliang\\Pictures\\Infinite Storage";
+			this.backupLocationControl.CustomVideoLocation = "C:\\Users\\shawnliang\\Videos\\Infinite Storage";
+			this.backupLocationControl.Location = new System.Drawing.Point(15, 40);
+			this.backupLocationControl.LocationType = InfiniteStorage.LocationType.SingleFolder;
+			this.backupLocationControl.Name = "backupLocationControl";
+			this.backupLocationControl.SingleFolderLocation = "C:\\Users\\shawnliang\\Infinite Storage";
+			this.backupLocationControl.Size = new System.Drawing.Size(573, 140);
+			this.backupLocationControl.TabIndex = 5;
+			// 
 			// GeneralPreferenceControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.Controls.Add(this.backupLocationControl);
 			this.Controls.Add(this.lblComputerName);
 			this.Controls.Add(this.groupBox2);
-			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.label1);
 			this.Name = "GeneralPreferenceControl";
-			this.Size = new System.Drawing.Size(602, 326);
+			this.Size = new System.Drawing.Size(602, 334);
 			this.Load += new System.EventHandler(this.GeneralPreferenceControl_Load);
-			this.groupBox1.ResumeLayout(false);
-			this.groupBox1.PerformLayout();
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
 			this.ResumeLayout(false);
@@ -247,21 +150,12 @@
 		#endregion
 
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.Button changePhotoLocation;
-		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.RadioButton radioY;
 		private System.Windows.Forms.RadioButton radioYM;
 		private System.Windows.Forms.RadioButton radioYMD;
 		private System.Windows.Forms.Label lblComputerName;
-		private System.Windows.Forms.Button changeAudioLocation;
-		private System.Windows.Forms.Button changeVedioLocation;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.TextBox boxAudioLocation;
-		private System.Windows.Forms.TextBox boxVideoLocation;
-		private System.Windows.Forms.TextBox boxPhotoLocation;
+		private BackupLocationControl backupLocationControl;
 	}
 }

@@ -21,25 +21,35 @@ namespace InfiniteStorage
 		private void GeneralPreferenceControl_Load(object sender, EventArgs e)
 		{
 			lblComputerName.Text = Environment.MachineName;
+			
+			if (!DesignMode)
+				OrganizeMethod = (OrganizeMethod)Settings.Default.OrganizeMethod;
 		}
 
 
-		public string PhotoLocation
+		public LocationType LocationType
 		{
-			get { return boxPhotoLocation.Text; }
-			set { boxPhotoLocation.Text = value; }
-		}
-		
-		public string VideoLocation
-		{
-			get { return boxVideoLocation.Text; }
-			set { boxVideoLocation.Text = value; }
+			get { return backupLocationControl.LocationType; }
 		}
 
-		public string AudioLocation
+		public string SingleFolderLocation
 		{
-			get { return boxAudioLocation.Text; }
-			set { boxAudioLocation.Text = value; }
+			get { return backupLocationControl.SingleFolderLocation; }
+		}
+
+		public string CustomPhotoLocation
+		{
+			get { return backupLocationControl.CustomPhotoLocation; }
+		}
+
+		public string CustomVideoLocation
+		{
+			get { return backupLocationControl.CustomVideoLocation; }
+		}
+
+		public string CustomAudioLocation
+		{
+			get { return backupLocationControl.CustomAudioLocation; }
 		}
 
 		public OrganizeMethod OrganizeMethod
@@ -71,35 +81,6 @@ namespace InfiniteStorage
 					default:
 						throw new NotImplementedException();
 				}
-			}
-		}
-
-		private void changeLocation_Click(object sender, EventArgs e)
-		{
-			TextBox box;
-
-			if (sender == changePhotoLocation)
-				box = boxPhotoLocation;
-			else if (sender == changeVedioLocation)
-				box = boxVideoLocation;
-			else if (sender == changeAudioLocation)
-				box = boxAudioLocation;
-			else
-				throw new NotImplementedException();
-
-			changeLocation(box);
-		}
-
-		private static void changeLocation(TextBox box)
-		{
-			var dialog = new FolderBrowserDialog();
-			if (!string.IsNullOrEmpty(box.Text))
-				dialog.SelectedPath = Path.GetDirectoryName(box.Text);
-
-			if (dialog.ShowDialog() == DialogResult.OK)
-			{
-				var newLocation = Path.Combine(dialog.SelectedPath, Resources.ProductName);
-				box.Text = newLocation;
 			}
 		}
 	}

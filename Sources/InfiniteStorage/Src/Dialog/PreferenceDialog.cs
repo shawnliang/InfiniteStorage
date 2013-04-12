@@ -21,10 +21,19 @@ namespace InfiniteStorage
 
 		private void PreferenceDialog_Load(object sender, EventArgs e)
 		{
-			generalPreferenceControl1.PhotoLocation = Settings.Default.PhotoLocation;
-			generalPreferenceControl1.VideoLocation = Settings.Default.VideoLocation;
-			generalPreferenceControl1.AudioLocation = Settings.Default.AudioLocation;
-			generalPreferenceControl1.OrganizeMethod = (OrganizeMethod)Settings.Default.OrganizeMethod;
+		}
+
+		private void buttonCancel_Click(object sender, EventArgs e)
+		{
+			DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			Close();
+		}
+
+		private void buttonOK_Click(object sender, EventArgs e)
+		{
+			DialogResult = System.Windows.Forms.DialogResult.OK;
+			MessageBox.Show("Not implemented yet");
+			Close();
 		}
 	}
 }

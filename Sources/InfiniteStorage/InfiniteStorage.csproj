@@ -56,6 +56,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\Class\MyFileFolder.cs" />
+    <Compile Include="Src\Class\MediaLibrary.cs" />
+    <Compile Include="Src\UIControl\BackupLocationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Src\UIControl\BackupLocationControl.Designer.cs">
+      <DependentUpon>BackupLocationControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Src\Dialog\FirstUseDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +119,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Src\UIControl\BackupLocationControl.resx">
+      <DependentUpon>BackupLocationControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\GeneralPreferenceControl.resx">
       <DependentUpon>GeneralPreferenceControl.cs</DependentUpon>
     </EmbeddedResource>

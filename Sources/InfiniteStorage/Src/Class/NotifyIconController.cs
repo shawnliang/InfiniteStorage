@@ -15,17 +15,17 @@ namespace InfiniteStorage
 
 		public void OnOpenPhotoBackupFolderMenuItemClicked(object sender, EventArgs arg)
 		{
-			openFolderInExplorer(Settings.Default.PhotoLocation);
+			openFolderInExplorer(MyFileFolder.Photo);
 		}
 
 		public void OnOpenVideoBackupFolderMenuItemClicked(object sender, EventArgs arg)
 		{
-			openFolderInExplorer(Settings.Default.VideoLocation);
+			openFolderInExplorer(MyFileFolder.Video);
 		}
 
 		public void OnOpenAudioBackupFolderMenuItemClicked(object sender, EventArgs arg)
 		{
-			openFolderInExplorer(Settings.Default.AudioLocation);
+			openFolderInExplorer(MyFileFolder.Audio);
 		}
 
 		private static void openFolderInExplorer(string folder)
