@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using InfiniteStorage.WebsocketProtocol;
 
 namespace InfiniteStorage
 {
@@ -45,6 +46,6 @@ namespace InfiniteStorage
 
 	public interface IFileStorage
 	{
-		void MoveToStorage(string tempfile, string file_name);
+		void MoveToStorage(string tempfile, FileContext file);
 	}
 }

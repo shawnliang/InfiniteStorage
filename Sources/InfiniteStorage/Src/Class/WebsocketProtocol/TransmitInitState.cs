@@ -15,11 +15,19 @@ namespace InfiniteStorage.WebsocketProtocol
 
 		public void handleFileStartCmd(TransmitContext ctx, TextCommand cmd)
 		{
-			ctx.file_name = cmd.file_name;
-			ctx.file_size = cmd.file_size;
+			ctx.fileCtx = new FileContext
+			{
+				file_name = cmd.file_name,
+				file_size = cmd.file_size,
+				folder = cmd.folder,
+				mimetype = cmd.mimetype,
+				datetime = cmd.datetime,
+				UTI = cmd.UTI
+			};
+
 			ctx.temp_file = ctx.factory.CreateTempFile();
 
-			log4net.LogManager.GetLogger("wsproto").Debug("file-start: " + ctx.file_name);
+			log4net.LogManager.GetLogger("wsproto").Debug("file-start: " + ctx.fileCtx.file_name);
 			ctx.SetState(new TransmitStartedState());
 		}
 

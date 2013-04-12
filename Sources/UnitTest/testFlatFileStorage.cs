@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using InfiniteStorage;
 using System.IO;
+using InfiniteStorage.WebsocketProtocol;
 
 namespace UnitTest
 {
@@ -36,7 +37,7 @@ namespace UnitTest
 			flatFileStorage.setDeviceName("dev");
 
 
-			flatFileStorage.MoveToStorage("temp.jpg", "a.jpg");
+			flatFileStorage.MoveToStorage("temp.jpg", new FileContext { file_name = "a.jpg" });
 			Assert.IsTrue(File.Exists(@"dev\a.jpg"));
 			Assert.IsTrue(File.Exists(@"dev\a.1.jpg"));
 

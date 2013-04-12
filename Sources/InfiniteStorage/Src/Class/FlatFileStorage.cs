@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using InfiniteStorage.WebsocketProtocol;
 
 namespace InfiniteStorage
 {
@@ -46,7 +47,7 @@ namespace InfiniteStorage
 				Directory.CreateDirectory(audioDir);
 		}
 
-		public void MoveToStorage(string tempfile, string file_name)
+		public void MoveToStorage(string tempfile, FileContext file)
 		{
 			if (string.IsNullOrEmpty(deviceName))
 				throw new InvalidOperationException("should setDeviceName() first");
@@ -54,7 +55,7 @@ namespace InfiniteStorage
 			//TODO: seperate photo/video/audio
 			var storagePath = Path.Combine(photoLocation, deviceName);
 
-			var saved_file = Path.Combine(storagePath, file_name);
+			var saved_file = Path.Combine(storagePath, file.file_name);
 			int num = 1;
 
 			while (true)
@@ -68,7 +69,7 @@ namespace InfiniteStorage
 				{
 					if (File.Exists(saved_file))
 					{
-						saved_file = Path.Combine(storagePath, Path.GetFileNameWithoutExtension(file_name) + "." + num + Path.GetExtension(file_name));
+						saved_file = Path.Combine(storagePath, Path.GetFileNameWithoutExtension(file.file_name) + "." + num + Path.GetExtension(file.file_name));
 						num += 1;
 					}
 					else

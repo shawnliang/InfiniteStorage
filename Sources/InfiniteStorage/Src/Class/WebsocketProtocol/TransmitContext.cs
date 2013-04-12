@@ -9,8 +9,9 @@ namespace InfiniteStorage.WebsocketProtocol
 	{
 		private IStateTransmit state;
 
-		public string file_name { get; set; }
-		public long file_size { get; set; }
+		//public string file_name { get; set; }
+		//public long file_size { get; set; }
+		public FileContext fileCtx { get; set; }
 		public ITempFile temp_file { get; set; }
 
 		public IFileStorage storage { get; private set; }

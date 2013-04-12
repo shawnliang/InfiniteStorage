@@ -37,7 +37,7 @@ namespace UnitTest
 			var tempFactory = new Mock<ITempFileFactory>();
 			tempFactory.Setup(x => x.CreateTempFile()).Returns(tempFile.Object).Verifiable();
 
-			storage.Setup(x => x.MoveToStorage("path", "file1.jpg")).Verifiable();
+			storage.Setup(x => x.MoveToStorage("path", It.Is<FileContext>((file)=>file.file_name.Equals("file1.jpg")))).Verifiable();
 
 			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object);
 			
