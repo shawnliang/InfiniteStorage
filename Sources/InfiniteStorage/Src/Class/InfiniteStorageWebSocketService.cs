@@ -7,6 +7,7 @@ using WebSocketSharp;
 using System.IO;
 using log4net;
 using InfiniteStorage.Properties;
+using InfiniteStorage.WebsocketProtocol;
 
 namespace InfiniteStorage
 {
@@ -20,12 +21,32 @@ namespace InfiniteStorage
 			if (!Directory.Exists(MyFileFolder.Temp))
 				Directory.CreateDirectory(MyFileFolder.Temp);
 
-			var storage = new FlatFileStorage(MyFileFolder.Photo, MyFileFolder.Video, MyFileFolder.Audio);
+			IDirOrganizer organizer = getDirOrganizer();
+
+			var storage = new FlatFileStorage(MyFileFolder.Photo, MyFileFolder.Video, MyFileFolder.Audio, organizer);
 
 			// TODO: remove hard code
 			storage.setDeviceName("fakeDevName");
 
 			handler = new ProtocolHanlder(new TempFileFactory(MyFileFolder.Temp), storage);
+		}
+
+		private static IDirOrganizer getDirOrganizer()
+		{
+			switch ((OrganizeMethod)Settings.Default.OrganizeMethod)
+			{
+				case OrganizeMethod.Year:
+					return new DirOrganizerByYYYY();
+
+				case OrganizeMethod.YearMonth:
+					return new DirOrganizerByYYYYMM();
+
+				case OrganizeMethod.YearMonthDay:
+					return new DirOrganizerByYYYYMMDD();
+	
+				default:
+					throw new NotImplementedException();
+			}
 		}
 
 		protected override void onMessage(object sender, MessageEventArgs e)

@@ -56,9 +56,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\Class\FileMover.cs" />
     <Compile Include="Src\Class\MyFileFolder.cs" />
     <Compile Include="Src\Class\MediaLibrary.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\FileContext.cs" />
+    <Compile Include="Src\Class\WebsocketProtocol\DirOrganizer.cs" />
     <Compile Include="Src\UIControl\BackupLocationControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

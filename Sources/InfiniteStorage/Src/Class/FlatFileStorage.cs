@@ -13,12 +13,17 @@ namespace InfiniteStorage
 		private string videoLocation;
 		private string audioLocation;
 		private string deviceName;
+		private IDirOrganizer dirOrganizer;
 
-		public FlatFileStorage(string photoLocation, string videoLocation, string audioLocation)
+		public IFileMove FileMover { get; set; }
+
+		public FlatFileStorage(string photoLocation, string videoLocation, string audioLocation, IDirOrganizer dirOrganizer)
 		{
 			this.photoLocation = photoLocation;
 			this.videoLocation = videoLocation;
 			this.audioLocation = audioLocation;
+			this.dirOrganizer = dirOrganizer;
+			this.FileMover = new FileMover();
 		}
 
 		public void setDeviceName(string deviceName)
@@ -52,30 +57,37 @@ namespace InfiniteStorage
 			if (string.IsNullOrEmpty(deviceName))
 				throw new InvalidOperationException("should setDeviceName() first");
 
-			//TODO: seperate photo/video/audio
-			var storagePath = Path.Combine(photoLocation, deviceName);
+			string baseDir = "photoLocation";
 
-			var saved_file = Path.Combine(storagePath, file.file_name);
-			int num = 1;
-
-			while (true)
+			if (!string.IsNullOrEmpty(file.mimetype))
 			{
-				try
+				if (file.mimetype.StartsWith("image", StringComparison.InvariantCultureIgnoreCase))
 				{
-					File.Move(tempfile, saved_file);
-					break;
+					baseDir = photoLocation;
 				}
-				catch (IOException e)
+				else if (file.mimetype.StartsWith("video", StringComparison.InvariantCultureIgnoreCase))
 				{
-					if (File.Exists(saved_file))
-					{
-						saved_file = Path.Combine(storagePath, Path.GetFileNameWithoutExtension(file.file_name) + "." + num + Path.GetExtension(file.file_name));
-						num += 1;
-					}
-					else
-						throw new IOException("Unable to move file to " + saved_file, e);
+					baseDir = videoLocation;
 				}
+				else if (file.mimetype.StartsWith("audio", StringComparison.InvariantCultureIgnoreCase))
+				{
+					baseDir = audioLocation;
+				}
+				else
+					log4net.LogManager.GetLogger("FileStorage").WarnFormat(
+						"Unable to categorize mime type: {0}. Assume photo: {1}", file.mimetype, file.file_name);
 			}
+
+			var baseDir2 = Path.Combine(baseDir, deviceName);
+			var baseDir3 = Path.Combine(baseDir2, dirOrganizer.GetDir(file));
+
+			if (!Directory.Exists(baseDir3))
+				Directory.CreateDirectory(baseDir3);
+
+			var saved_file = Path.Combine(baseDir3, file.file_name);
+
+			// TODO: handle saved_file_name
+			var saved_file_name = FileMover.Move(tempfile, saved_file);
 		}
 	}
 }

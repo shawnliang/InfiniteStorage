@@ -10,7 +10,7 @@ using InfiniteStorage.WebsocketProtocol;
 namespace UnitTest
 {
 	[TestClass]
-	public class testFlatFileStorage
+	public class testFileMover
 	{
 		[TestInitialize]
 		public void setup()
@@ -32,19 +32,12 @@ namespace UnitTest
 		[TestMethod]
 		public void appendNumsToDupFileName()
 		{
-			Assert.IsTrue(File.Exists(@"dev\a.jpg"));
-			var flatFileStorage = new FlatFileStorage(".", ".", ".");
-			flatFileStorage.setDeviceName("dev");
+			var mover = new FileMover();
+			var newName = mover.Move("temp.jpg", @"dev\a.jpg");
 
+			Assert.AreEqual(@"dev\a.1.jpg", newName);
 
-			flatFileStorage.MoveToStorage("temp.jpg", new FileContext { file_name = "a.jpg" });
-			Assert.IsTrue(File.Exists(@"dev\a.jpg"));
 			Assert.IsTrue(File.Exists(@"dev\a.1.jpg"));
-
-			using (var f = new StreamReader(@"dev\a.1.jpg"))
-			{
-				Assert.AreEqual("temp", f.ReadToEnd());
-			}
 		}
 	}
 }
