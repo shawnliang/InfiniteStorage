@@ -59,8 +59,14 @@
     <Compile Include="Src\Class\FileMover.cs" />
     <Compile Include="Src\Class\MyFileFolder.cs" />
     <Compile Include="Src\Class\MediaLibrary.cs" />
+    <Compile Include="Src\Class\WebsocketProtocol\ConnectedState.cs" />
+    <Compile Include="Src\Class\WebsocketProtocol\ConnectMsgHandler.cs" />
+    <Compile Include="Src\Class\WebsocketProtocol\ConnectMsgHandlerUtil.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\FileContext.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\DirOrganizer.cs" />
+    <Compile Include="Src\Class\IProtocolHandlerContext.cs" />
+    <Compile Include="Src\Class\WebsocketProtocol\IConnectMsgHandlerUtil.cs" />
+    <Compile Include="Src\Class\WebsocketProtocol\UnconnectedState.cs" />
     <Compile Include="Src\UIControl\BackupLocationControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -97,7 +103,7 @@
     <Compile Include="Src\Class\ITempFileFactory.cs" />
     <Compile Include="Src\Class\ProtocolHanlder.cs" />
     <Compile Include="Src\Class\TempFile.cs" />
-    <Compile Include="Src\Class\WebsocketProtocol\IProtocolState.cs" />
+    <Compile Include="Src\Class\WebsocketProtocol\AbstractProtocolState.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ProtocolErrorException.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\TextCommand.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ProtocolContext.cs" />

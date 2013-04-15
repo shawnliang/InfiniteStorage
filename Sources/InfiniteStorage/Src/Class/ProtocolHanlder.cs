@@ -9,11 +9,16 @@ namespace InfiniteStorage
 {
 	public class ProtocolHanlder
 	{
-		ProtocolContext ctx;
+		IProtocolHandlerContext ctx;
 
-		public ProtocolHanlder(ITempFileFactory tempfileFactory, IFileStorage storage, IProtocolState initialState)
+		public ProtocolHanlder(ITempFileFactory tempfileFactory, IFileStorage storage, AbstractProtocolState initialState)
 		{
 			this.ctx = new ProtocolContext(tempfileFactory, storage, initialState);
+		}
+
+		public ProtocolHanlder(ITempFileFactory tempfileFactory, IFileStorage storage, IProtocolHandlerContext ctx)
+		{
+			this.ctx = ctx;
 		}
 
 		public void HandleMessage(MessageEventArgs e)
@@ -28,6 +33,8 @@ namespace InfiniteStorage
 						ctx.handleFileStartCmd(cmd);
 					else if (cmd.isFileEndCmd())
 						ctx.handleFileEndCmd(cmd);
+					else if (cmd.isConnectCmd(cmd))
+						ctx.handleConnectCmd(cmd);
 					else
 						throw new ProtocolErrorException("Unknown action: " + cmd.action);
 				}
@@ -57,10 +64,9 @@ namespace InfiniteStorage
 
 		public void Clear()
 		{
-			if (ctx != null && ctx.temp_file != null)
+			if (ctx != null)
 			{
-				ctx.temp_file.Delete();
-				ctx.temp_file = null;
+				ctx.Clear();
 			}
 		}
 

@@ -14,6 +14,10 @@ namespace InfiniteStorage.WebsocketProtocol
 		public string UTI { get; set; }
 		public string folder { get; set; }
 		public DateTime datetime { get; set; }
+		public string device_name { get; set; }
+		public string device_id { get; set; }
+		public int transfer_count { get; set; }
+
 
 		public bool isFileStartCmd()
 		{
@@ -23,6 +27,11 @@ namespace InfiniteStorage.WebsocketProtocol
 		public bool isFileEndCmd()
 		{
 			return "file-end".Equals(action);
+		}
+
+		public bool isConnectCmd(TextCommand cmd)
+		{
+			return "connect".Equals(action);
 		}
 	}
 }

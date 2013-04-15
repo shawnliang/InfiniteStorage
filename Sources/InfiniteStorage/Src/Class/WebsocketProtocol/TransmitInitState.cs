@@ -5,15 +5,9 @@ using System.Text;
 
 namespace InfiniteStorage.WebsocketProtocol
 {
-	public class TransmitInitState : IProtocolState
+	public class TransmitInitState : AbstractProtocolState
 	{
-		public void handleBinaryData(ProtocolContext ctx, byte[] data)
-		{
-			throw new ProtocolErrorException("binary data is not expected in transmit-init state");
-		}
-
-
-		public void handleFileStartCmd(ProtocolContext ctx, TextCommand cmd)
+		public override void handleFileStartCmd(ProtocolContext ctx, TextCommand cmd)
 		{
 			ctx.fileCtx = new FileContext
 			{
@@ -29,11 +23,6 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			log4net.LogManager.GetLogger("wsproto").Debug("file-start: " + ctx.fileCtx.file_name);
 			ctx.SetState(new TransmitStartedState());
-		}
-
-		public void handleFileEndCmd(ProtocolContext ctx, TextCommand cmd)
-		{
-			throw new ProtocolErrorException("file-end cmd is not expected in transmit-init state");
 		}
 	}
 }

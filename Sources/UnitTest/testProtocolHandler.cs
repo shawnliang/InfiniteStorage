@@ -152,5 +152,48 @@ namespace UnitTest
 				tempFile.VerifyAll();
 			}
 		}
+
+		[TestMethod]
+		public void protocolHandlerSendConnectMsgToProperHandler()
+		{
+			var connectMSg =new TextCommand{ action = "connect", device_name = "de", device_id = "id"};
+
+
+			var tempFactory = new Mock<ITempFileFactory>();
+			var fileStorage = new Mock<IFileStorage>();
+			var ctx = new Mock<IProtocolHandlerContext>();
+			ctx.Setup(x=>x.handleConnectCmd(It.Is<TextCommand>( cmd => cmd.action == "connect" && cmd.device_id == "id" && cmd.device_name == "de"))).Verifiable();
+			var protoHdr = new ProtocolHanlder(tempFactory.Object, storage.Object, ctx.Object);
+
+			protoHdr.HandleMessage(new MessageEventArgs(JsonConvert.SerializeObject(connectMSg)));
+
+			ctx.VerifyAll();
+
+		}
+
+		[TestMethod]
+		public void unconnected_connect_conntected()
+		{
+			var connectMsg = new TextCommand { action = "connect", device_name = "dev", device_id = "guid1" };
+
+			var tempFactory = new Mock<ITempFileFactory>();
+			var fileStorage = new Mock<IFileStorage>();
+			var connectHandler = new Mock<IConnectMsgHandler>();
+			connectHandler.Setup(x => x.HandleConnectMsg(connectMsg, It.IsAny<ProtocolContext>())).Verifiable();
+			
+			var initState = new UnconnectedState();
+			initState.handler = connectHandler.Object;
+			var ctx = new ProtocolContext(tempFactory.Object, storage.Object, initState);
+
+			
+
+			ctx.handleConnectCmd(connectMsg);
+
+			connectHandler.VerifyAll();
+			Assert.IsTrue(ctx.GetState() is TransmitInitState);
+			Assert.AreEqual("dev", ctx.device_name);
+			Assert.AreEqual("guid1", ctx.device_id);
+
+		}
 	}
 }
