@@ -9,11 +9,11 @@ namespace InfiniteStorage
 {
 	public class ProtocolHanlder
 	{
-		TransmitContext ctx;
+		ProtocolContext ctx;
 
-		public ProtocolHanlder(ITempFileFactory tempfileFactory, IFileStorage storage)
+		public ProtocolHanlder(ITempFileFactory tempfileFactory, IFileStorage storage, IProtocolState initialState)
 		{
-			this.ctx = new TransmitContext(tempfileFactory, storage);
+			this.ctx = new ProtocolContext(tempfileFactory, storage, initialState);
 		}
 
 		public void HandleMessage(MessageEventArgs e)

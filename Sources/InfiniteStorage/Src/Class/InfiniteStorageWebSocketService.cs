@@ -28,7 +28,7 @@ namespace InfiniteStorage
 			// TODO: remove hard code
 			storage.setDeviceName("fakeDevName");
 
-			handler = new ProtocolHanlder(new TempFileFactory(MyFileFolder.Temp), storage);
+			handler = new ProtocolHanlder(new TempFileFactory(MyFileFolder.Temp), storage, new TransmitInitState());
 		}
 
 		private static IDirOrganizer getDirOrganizer()
@@ -43,7 +43,7 @@ namespace InfiniteStorage
 
 				case OrganizeMethod.YearMonthDay:
 					return new DirOrganizerByYYYYMMDD();
-	
+
 				default:
 					throw new NotImplementedException();
 			}

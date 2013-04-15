@@ -6,20 +6,20 @@ using System.IO;
 
 namespace InfiniteStorage.WebsocketProtocol
 {
-	class TransmitStartedState : IStateTransmit
+	class TransmitStartedState : IProtocolState
 	{
-		public void handleBinaryData(TransmitContext ctx, byte[] data)
+		public void handleBinaryData(ProtocolContext ctx, byte[] data)
 		{
 			ctx.temp_file.Write(data);
 			log4net.LogManager.GetLogger("wsproto").DebugFormat("file content of {0}: {1} bytes", ctx.fileCtx.file_name, data.Length);
 		}
 
-		public void handleFileStartCmd(TransmitContext ctx, TextCommand cmd)
+		public void handleFileStartCmd(ProtocolContext ctx, TextCommand cmd)
 		{
 			throw new ProtocolErrorException("file-start cmd is not expected in transmit-started state");
 		}
 
-		public void handleFileEndCmd(TransmitContext ctx, TextCommand cmd)
+		public void handleFileEndCmd(ProtocolContext ctx, TextCommand cmd)
 		{
 			ctx.temp_file.EndWrite();
 

@@ -97,10 +97,10 @@
     <Compile Include="Src\Class\ITempFileFactory.cs" />
     <Compile Include="Src\Class\ProtocolHanlder.cs" />
     <Compile Include="Src\Class\TempFile.cs" />
-    <Compile Include="Src\Class\WebsocketProtocol\IStateTransmit.cs" />
+    <Compile Include="Src\Class\WebsocketProtocol\IProtocolState.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ProtocolErrorException.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\TextCommand.cs" />
-    <Compile Include="Src\Class\WebsocketProtocol\TransmitContext.cs" />
+    <Compile Include="Src\Class\WebsocketProtocol\ProtocolContext.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\TransmitInitState.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\TransmitStartedState.cs" />
     <Compile Include="Src\UIControl\TabControlEx.cs">

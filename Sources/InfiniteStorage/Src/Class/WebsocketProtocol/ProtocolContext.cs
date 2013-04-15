@@ -5,27 +5,24 @@ using System.Text;
 
 namespace InfiniteStorage.WebsocketProtocol
 {
-	class TransmitContext
+	public class ProtocolContext
 	{
-		private IStateTransmit state;
-
-		//public string file_name { get; set; }
-		//public long file_size { get; set; }
+		private IProtocolState state;
 		public FileContext fileCtx { get; set; }
 		public ITempFile temp_file { get; set; }
 
 		public IFileStorage storage { get; private set; }
 		public ITempFileFactory factory { get; private set; }
 
-		public TransmitContext(ITempFileFactory factory, IFileStorage storage)
+		public ProtocolContext(ITempFileFactory factory, IFileStorage storage, IProtocolState initialState)
 		{
 			this.factory = factory;
 			this.storage = storage;
 
-			this.state = new TransmitInitState();
+			this.state = initialState;
 		}
 
-		public void SetState(IStateTransmit newState)
+		public void SetState(IProtocolState newState)
 		{
 			state = newState;
 		}

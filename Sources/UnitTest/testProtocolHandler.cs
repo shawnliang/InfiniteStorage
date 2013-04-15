@@ -39,7 +39,7 @@ namespace UnitTest
 
 			storage.Setup(x => x.MoveToStorage("path", It.Is<FileContext>((file)=>file.file_name.Equals("file1.jpg")))).Verifiable();
 
-			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object);
+			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object, new TransmitInitState());
 			
 			
 			//
@@ -76,7 +76,7 @@ namespace UnitTest
 		public void testUnknownTxtCmd()
 		{
 			var tempFactory = new Mock<ITempFileFactory>();
-			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object);
+			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object, new TransmitInitState());
 
 			//
 			// Unknown command XXXXX
@@ -95,7 +95,7 @@ namespace UnitTest
 			var tempFactory = new Mock<ITempFileFactory>();
 			tempFactory.Setup(x => x.CreateTempFile()).Returns(tempFile.Object);
 
-			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object);
+			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object, new TransmitInitState());
 
 
 			//
@@ -111,7 +111,7 @@ namespace UnitTest
 		public void testInvalidTextCommand()
 		{
 			var tempFactory = new Mock<ITempFileFactory>();
-			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object);
+			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object, new TransmitInitState());
 
 			//
 			// Unknown command XXXXX
@@ -130,7 +130,7 @@ namespace UnitTest
 			var tempFactory = new Mock<ITempFileFactory>();
 			tempFactory.Setup(x => x.CreateTempFile()).Returns(tempFile.Object).Verifiable();
 
-			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object);
+			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object, new TransmitInitState());
 
 
 			//
