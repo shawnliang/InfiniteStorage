@@ -95,8 +95,6 @@ namespace InfiniteStorage
 			foreach (var item in toRemove)
 				m_notifyIcon.ContextMenuStrip.Items.Remove(item);
 
-
-
 			// add new status items
 			foreach (var conn in connections)
 			{
@@ -106,6 +104,13 @@ namespace InfiniteStorage
 				m_notifyIcon.ContextMenuStrip.Items.Insert(2, item);
 			}
 
+
+			var oldConns = toRemove.Select(x=>(IConnectionStatus)x.Tag);
+			foreach (var newConn in connections)
+			{
+				if (!oldConns.Contains(newConn))
+					m_notifyIcon.ShowBalloonTip(3000, Resources.ProductName, string.Format("{0} 要備份 {1} 個檔案", newConn.device_name, newConn.total_files), ToolTipIcon.Info);
+			}
 		}
 
 		private static DialogResult showFirstUseWizard()
