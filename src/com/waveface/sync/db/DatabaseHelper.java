@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String[] TABLE_NAME_LIST = {
 			ImportTable.TABLE_NAME,
 			ImportFilesTable.TABLE_NAME,
-			ServersTable.TABLE_NAME,
+			BackupedServersTable.TABLE_NAME,
 			BackupDetailsTable.TABLE_NAME};
 
 	private interface Views {
@@ -73,20 +73,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	      .append(ImportFilesTable.COLUMN_IMAGE_ID + " TEXT NOT NULL DEFAULT '-1');");
 		createTable(db, sqlBuilder.toString(), ImportFilesTable.TABLE_NAME);
 
-		// Create Servers table
+		// Create Backuped Servers table
 		sqlBuilder = new StringBuilder();
 		sqlBuilder.append("Create Table {0} (")
-		  .append(ServersTable.COLUMN_SERVER_ID + " TEXT PRIMARY KEY,")
-		  .append(ServersTable.COLUMN_SERVER_NAME+" TEXT NOT NULL DEFAULT ''' ,")
-		  .append(ServersTable.COLUMN_STATUS+" TEXT NOT NULL,")
-		  .append(ServersTable.COLUMN_START_DATETIME + " TEXT NOT NULL DEFAULT ''',")
-		  .append(ServersTable.COLUMN_END_DATETIME + " TEXT NOT NULL DEFAULT ''',")		  
-		  .append(ServersTable.COLUMN_FOLDER + " TEXT NOT NULL DEFAULT ''',")
-	      .append(ServersTable.COLUMN_FREE_SPACE + " TEXT NOT NULL DEFAULT '0',")
-	      .append(ServersTable.COLUMN_PHOTO_COUNT + " TEXT NOT NULL DEFAULT '0',")
-	      .append(ServersTable.COLUMN_VIDEO_COUNT + " TEXT NOT NULL DEFAULT '0',")
-	      .append(ServersTable.COLUMN_AUDIO_COUNT + " TEXT NOT NULL DEFAULT '0');");		
-		createTable(db, sqlBuilder.toString(), ServersTable.TABLE_NAME);
+		  .append(BackupedServersTable.COLUMN_SERVER_ID + " TEXT PRIMARY KEY,")
+		  .append(BackupedServersTable.COLUMN_SERVER_NAME+" TEXT NOT NULL DEFAULT ''' ,")
+		  .append(BackupedServersTable.COLUMN_STATUS+" TEXT NOT NULL,")
+		  .append(BackupedServersTable.COLUMN_START_DATETIME + " TEXT NOT NULL DEFAULT ''',")
+		  .append(BackupedServersTable.COLUMN_END_DATETIME + " TEXT NOT NULL DEFAULT ''',")		  
+		  .append(BackupedServersTable.COLUMN_FOLDER + " TEXT NOT NULL DEFAULT ''',")
+	      .append(BackupedServersTable.COLUMN_FREE_SPACE + " TEXT NOT NULL DEFAULT '0',")
+	      .append(BackupedServersTable.COLUMN_PHOTO_COUNT + " TEXT NOT NULL DEFAULT '0',")
+	      .append(BackupedServersTable.COLUMN_VIDEO_COUNT + " TEXT NOT NULL DEFAULT '0',")
+	      .append(BackupedServersTable.COLUMN_AUDIO_COUNT + " TEXT NOT NULL DEFAULT '0');");		
+		createTable(db, sqlBuilder.toString(), BackupedServersTable.TABLE_NAME);
+
+		// Create BonjourServers table
+		sqlBuilder = new StringBuilder();
+		sqlBuilder.append("Create Table {0} (")
+		  .append(BonjourServersTable.COLUMN_SERVER_ID + " TEXT PRIMARY KEY,")
+		  .append(BonjourServersTable.COLUMN_SERVER_NAME+" TEXT NOT NULL DEFAULT ''' ,")
+		  .append(BonjourServersTable.COLUMN_SERVER_OS+" TEXT NOT NULL,")
+		  .append(BonjourServersTable.COLUMN_WS_LOCATION + " TEXT NOT NULL );");		
+		createTable(db, sqlBuilder.toString(), BonjourServersTable.TABLE_NAME);
 
 		// Create Servers table
 		sqlBuilder = new StringBuilder();
@@ -96,7 +105,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		  .append(BackupDetailsTable.COLUMN_STATUS+" TEXT NOT NULL,")		
 		  .append("PRIMARY KEY ( "+BackupDetailsTable.COLUMN_SERVER_ID+","+BackupDetailsTable.COLUMN_FILENAME+"));");
 
-		createTable(db, sqlBuilder.toString(), ServersTable.TABLE_NAME);
+		createTable(db, sqlBuilder.toString(), BackupDetailsTable.TABLE_NAME);
 
 		//Create Indexes
 		String sql = "CREATE INDEX "+INDEX_IMPORT_FILE_1+" on "+ImportFilesTable.TABLE_NAME+"("+ImportFilesTable.COLUMN_FILETYPE+");";
@@ -119,7 +128,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	      .append(" A."+ImportFilesTable.COLUMN_MIMETYPE+" AS "+ServerFilesView.COLUMN_MIMETYPE+",")
 	      .append(" A."+ImportFilesTable.COLUMN_SIZE+" AS "+ServerFilesView.COLUMN_SIZE+",")
 	      .append(" A."+ImportFilesTable.COLUMN_FOLDER+" AS "+ServerFilesView.COLUMN_FOLDER+",")
-	      .append(" A."+ImportFilesTable.COLUMN_DATE+" AS "+ServerFilesView.COLUMN_DATE+",")	      
+	      .append(" A."+ImportFilesTable.COLUMN_DATE+" AS "+ServerFilesView.COLUMN_DATE)	      
 	      .append(" FROM "+ImportFilesTable.TABLE_NAME+" A,"+BackupDetailsTable.TABLE_NAME+" B")
 	      .append(" WHERE A."+ImportFilesTable.COLUMN_FILENAME+"=B."+BackupDetailsTable.COLUMN_FILENAME)
 	      .append(" AND B."+BackupDetailsTable.COLUMN_STATUS+"!='"+Constant.IMPORT_FILE_INCLUDED+"'");

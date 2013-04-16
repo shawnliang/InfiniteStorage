@@ -22,6 +22,7 @@ public class Starter extends Application {
 		super.onCreate();
 		SYNC_CONTEXT = getApplicationContext();
 		ServersLogic.resetStatus(SYNC_CONTEXT);
+		ServersLogic.purgeBonjourServer(this);
 		new ScanTask(SYNC_CONTEXT).execute(new Void[]{});
 		initialDirectory();
 //		ScanImageFolder();

@@ -2,9 +2,13 @@ package com.waveface.sync;
 
 public class Constant {
 
+	//DEVICE TYPE
+	public static boolean PHONE = true;
+
 	public final static String APP_FOLDER = "/InfiniteStorage";
 
 
+	
 	public final static String ACTION_WS_SERVER_NOTIFY = "com.waveface.wammer.action.WS_SERVER_NOTIFY";	
 	public final static String ACTION_BONJOUR_MULTICAT_EVENT = "com.waveface.wammer.action.BONJOUR_MULTICAT_EVENT";	
 	public final static String ACTION_BACKUP_FILE = "com.waveface.wammer.action.BACKUP_FILE";

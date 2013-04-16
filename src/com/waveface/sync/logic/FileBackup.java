@@ -19,7 +19,7 @@ import com.waveface.sync.Constant;
 import com.waveface.sync.db.BackupDetailsTable;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.db.ServerFilesView;
-import com.waveface.sync.db.ServersTable;
+import com.waveface.sync.db.BackupedServersTable;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.MediaFile;
 import com.waveface.sync.util.StringUtil;

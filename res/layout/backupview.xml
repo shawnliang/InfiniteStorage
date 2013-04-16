@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_popup">
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_pairing" />
+
+    <RelativeLayout
+	    android:id="@+id/frameSendLink"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/llBtns"
+	    android:layout_below="@+id/imageView1"
+	    android:layout_centerHorizontal="true"
+	    android:background="#3D3D3D">
+    
+    <TextView
+        android:id="@+id/tvWording1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="第一次備份的檔案較多\n請您耐心等待"
+        android:textColor="#FFFFFF" />
+        
+    <TextView
+        android:id="@+id/tvWording2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvWording1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="以後每天新增的\n照片 影片 錄音 音樂\n都會自動透過Wi-Fi回到電腦中!"
+        android:textColor="#FFFFFF" />
+
+    <ProgressBar
+        android:id="@+id/pbBackup"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_above="@+id/tvWording3"
+        android:layout_below="@+id/tvWording2"
+        android:layout_centerHorizontal="true"
+        android:max="100"
+        android:progress="@android:integer/config_mediumAnimTime" />
+
+    <TextView
+        android:id="@+id/tvWording3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
+        android:text="檔案傳輸中"
+        android:textColor="#33CCFF" />
+    	    	    
+	</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/llBtns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true">
+
+    <Button
+        android:id="@+id/btnConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dip"
+        android:layout_marginRight="30dip"
+        android:text="確定" />
+
+	</LinearLayout>
+
+</RelativeLayout>

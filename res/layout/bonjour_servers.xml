@@ -2,12 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".BonjourServersActivity" >
+     android:background="@drawable/ic_popup">
 
     <ImageView
         android:id="@+id/imageView1"
@@ -15,16 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:src="@drawable/ic_pairing" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/listview"
-        android:layout_below="@+id/imageView1"
-        android:text="@string/choose_server"
-        android:textColor="#33CCFF"
-        android:textSize="18sp" />
 
     <ListView
         android:id="@+id/listview"
@@ -47,7 +32,7 @@
     <TextView
         android:id="@+id/tvSearch"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/pbSearch"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/pbSearch"
@@ -75,5 +60,15 @@
             android:layout_weight="1"
             android:text="開始備份" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:text="@string/choose_server"
+        android:textColor="#33CCFF"
+        android:textSize="18sp" />
 
 </RelativeLayout>

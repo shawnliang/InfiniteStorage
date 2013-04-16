@@ -17,7 +17,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.waveface.sync.Constant;
-import com.waveface.sync.RuntimePlayer;
+import com.waveface.sync.RuntimeConfig;
 import com.waveface.sync.entity.FIleTransferEntity;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.StringUtil;
@@ -56,7 +56,7 @@ public class BackupTask extends AsyncTask<Void, Void, Void> {
 				entity.folder = foldername;
 				entity.fileName = StringUtil.getFilename(filename);
 				entity.fileSize = filesize;
-				String jsonOuput = RuntimePlayer.GSON.toJson(entity);
+				String jsonOuput = RuntimeConfig.GSON.toJson(entity);
 				RuntimeWebClient.setDefaultFormat();
 				RuntimeWebClient.send(jsonOuput);
 				try {
@@ -97,7 +97,7 @@ public class BackupTask extends AsyncTask<Void, Void, Void> {
 				// send file index for end
 				RuntimeWebClient.setDefaultFormat();
 				entity.action = Constant.WS_ACTION_FILE_END;
-				jsonOuput = RuntimePlayer.GSON.toJson(entity);
+				jsonOuput = RuntimeConfig.GSON.toJson(entity);
 				RuntimeWebClient.send(jsonOuput);
 			}
 

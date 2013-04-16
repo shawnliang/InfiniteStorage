@@ -16,7 +16,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.waveface.sync.Constant;
-import com.waveface.sync.RuntimePlayer;
+import com.waveface.sync.RuntimeConfig;
 
 
 public class RuntimeWebClient {
@@ -166,7 +166,7 @@ public class RuntimeWebClient {
 		@Override
 		public void processClosed(WebSocketClientEvent aEvent) {
 			Log.d(TAG, "processClosed");
-			RuntimePlayer.OnWebSocketOpened = false;
+			RuntimeConfig.OnWebSocketOpened = false;
 		}
 
 		@Override

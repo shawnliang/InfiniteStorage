@@ -1,5 +1,6 @@
 <resources>
 
     <color name="black_overlay">#66000000</color>
-
+	<color name="article_pop_activity_background">#55000000</color>  
+    
 </resources>

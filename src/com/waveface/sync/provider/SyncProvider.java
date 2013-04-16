@@ -14,11 +14,12 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import com.waveface.sync.db.BackupDetailsTable;
+import com.waveface.sync.db.BackupedServersTable;
+import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.db.DatabaseHelper;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.db.ImportTable;
 import com.waveface.sync.db.ServerFilesView;
-import com.waveface.sync.db.ServersTable;
 
 public class SyncProvider extends ContentProvider {
 
@@ -28,11 +29,14 @@ public class SyncProvider extends ContentProvider {
 	private final static int IMPORTFILES = 3;
 	private final static int IMPORTFILES_ID = 4;
 
-	private final static int SERVERS = 5;
-	private final static int SERVERS_ID = 6;
+	private final static int BACKUPED_SERVERS = 5;
+	private final static int BACKUPED_SERVERS_ID = 6;
 
-	private final static int BACKUPDETAILS = 7;
-	private final static int BACKUPDETAILS_ID = 8;
+	private final static int BONJOUR_SERVERS = 7;
+	private final static int BONJOUR_SERVERS_ID = 8;
+	
+	private final static int BACKUPDETAILS = 9;
+	private final static int BACKUPDETAILS_ID = 10;
 
 	//FOR VIEW
 	private final static int SERVERFILES_VIEW = 101;
@@ -52,10 +56,15 @@ public class SyncProvider extends ContentProvider {
 		sUriMatcher.addURI(AUTHORITY, ImportFilesTable.IMPORT_FILE_NAME, IMPORTFILES);
 		sUriMatcher.addURI(AUTHORITY, ImportFilesTable.IMPORT_FILE_NAME + "/*", IMPORTFILES_ID);
 
-		//FOR IMPORT FILES
-		sUriMatcher.addURI(AUTHORITY, ServersTable.SERVERS_NAME, SERVERS);
-		sUriMatcher.addURI(AUTHORITY, ServersTable.SERVERS_NAME + "/*", SERVERS_ID);
+		//FOR BACKUPED SERVER
+		sUriMatcher.addURI(AUTHORITY, BackupedServersTable.BACKUPED_SERVERS_NAME, BACKUPED_SERVERS);
+		sUriMatcher.addURI(AUTHORITY, BackupedServersTable.BACKUPED_SERVERS_NAME + "/*", BACKUPED_SERVERS_ID);
 
+		//FOR BONJOUR SERVER
+		sUriMatcher.addURI(AUTHORITY, BonjourServersTable.BONJOUR_SERVERS_NAME, BONJOUR_SERVERS);
+		sUriMatcher.addURI(AUTHORITY, BonjourServersTable.BONJOUR_SERVERS_NAME + "/*", BONJOUR_SERVERS_ID);
+
+		
 		//FOR IMPORT FILES
 		sUriMatcher.addURI(AUTHORITY, BackupDetailsTable.BACKUP_DETAILS_NAME, BACKUPDETAILS);
 		sUriMatcher.addURI(AUTHORITY, BackupDetailsTable.BACKUP_DETAILS_NAME + "/*", BACKUPDETAILS_ID);
@@ -119,11 +128,18 @@ public class SyncProvider extends ContentProvider {
 			tableName = ImportFilesTable.TABLE_NAME;
 			where = (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
 			break;
-		case SERVERS:
-			tableName = ServersTable.TABLE_NAME;
+		case BACKUPED_SERVERS:
+			tableName = BackupedServersTable.TABLE_NAME;
 			break;
-		case SERVERS_ID:
-			tableName = ServersTable.TABLE_NAME;
+		case BACKUPED_SERVERS_ID:
+			tableName = BackupedServersTable.TABLE_NAME;
+			where = (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
+			break;			
+		case BONJOUR_SERVERS:
+			tableName = BonjourServersTable.TABLE_NAME;
+			break;
+		case BONJOUR_SERVERS_ID:
+			tableName = BonjourServersTable.TABLE_NAME;
 			where = (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
 			break;			
 		case IMPORTS:
@@ -156,10 +172,14 @@ public class SyncProvider extends ContentProvider {
 			return ImportTable.CONTENT_TYPE;
 		case IMPORTS_ID:
 			return ImportTable.CONTENT_ITEM_TYPE;
-		case SERVERS:
-			return ServersTable.CONTENT_TYPE;
-		case SERVERS_ID:
-			return ServersTable.CONTENT_ITEM_TYPE;
+		case BACKUPED_SERVERS:
+			return BackupedServersTable.CONTENT_TYPE;
+		case BACKUPED_SERVERS_ID:
+			return BackupedServersTable.CONTENT_ITEM_TYPE;
+		case BONJOUR_SERVERS:
+			return BonjourServersTable.CONTENT_TYPE;
+		case BONJOUR_SERVERS_ID:
+			return BonjourServersTable.CONTENT_ITEM_TYPE;
 		case IMPORTFILES:
 			return ImportFilesTable.CONTENT_TYPE;
 		case IMPORTFILES_ID:
@@ -206,12 +226,12 @@ public class SyncProvider extends ContentProvider {
 				return queueUri;
 			}
 			break;
-		case SERVERS:
-			rowId = db.insert(ServersTable.TABLE_NAME,
-					ServersTable.SERVERS_NAME, values);
+		case BACKUPED_SERVERS:
+			rowId = db.insert(BackupedServersTable.TABLE_NAME,
+					BackupedServersTable.BACKUPED_SERVERS_NAME, values);
 			if (rowId > 0) {
 				Uri queueUri = ContentUris.withAppendedId(
-						ServersTable.CONTENT_URI, rowId);
+						BackupedServersTable.CONTENT_URI, rowId);
 				getContext().getContentResolver().notifyChange(queueUri, null);
 				return queueUri;
 			}
@@ -225,8 +245,16 @@ public class SyncProvider extends ContentProvider {
 				getContext().getContentResolver().notifyChange(queueUri, null);
 				return queueUri;
 			}
+		case BONJOUR_SERVERS:
+			rowId = db.insert(BonjourServersTable.TABLE_NAME,
+					BonjourServersTable.BONJOUR_SERVERS_NAME, values);
+			if (rowId > 0) {
+				Uri queueUri = ContentUris.withAppendedId(
+						BonjourServersTable.CONTENT_URI, rowId);
+				getContext().getContentResolver().notifyChange(queueUri, null);
+				return queueUri;
+			}
 			break;
-
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -266,23 +294,41 @@ public class SyncProvider extends ContentProvider {
 			c.setNotificationUri(getContext().getContentResolver(),
 					ImportTable.CONTENT_URI);
 			break;
-		case SERVERS:
+		case BACKUPED_SERVERS:
 			if (TextUtils.isEmpty(sortOrder)) {
-				orderBy = ServersTable.DEFAULT_SORT_ORDER;
+				orderBy = BackupedServersTable.DEFAULT_SORT_ORDER;
 			} else {
 				orderBy = sortOrder;
 			}
-			c = mDb.query(ServersTable.TABLE_NAME, projection, where,
+			c = mDb.query(BackupedServersTable.TABLE_NAME, projection, where,
 					whereArgs, null, null, orderBy);
 			c.setNotificationUri(getContext().getContentResolver(),
-					ServersTable.CONTENT_URI);
+					BackupedServersTable.CONTENT_URI);
 			break;
-		case SERVERS_ID:
+		case BACKUPED_SERVERS_ID:
 			String serverId = uri.getLastPathSegment();
-			c = executeGeneralQuery(serverId, ServersTable.TABLE_NAME,
-					ServersTable.COLUMN_SERVER_ID, where, whereArgs);
+			c = executeGeneralQuery(serverId, BackupedServersTable.TABLE_NAME,
+					BackupedServersTable.COLUMN_SERVER_ID, where, whereArgs);
 			c.setNotificationUri(getContext().getContentResolver(),
-					ServersTable.CONTENT_URI);
+					BackupedServersTable.CONTENT_URI);
+			break;
+		case BONJOUR_SERVERS:
+			if (TextUtils.isEmpty(sortOrder)) {
+				orderBy = BonjourServersTable.DEFAULT_SORT_ORDER;
+			} else {
+				orderBy = sortOrder;
+			}
+			c = mDb.query(BonjourServersTable.TABLE_NAME, projection, where,
+					whereArgs, null, null, orderBy);
+			c.setNotificationUri(getContext().getContentResolver(),
+					BonjourServersTable.CONTENT_URI);
+			break;
+		case BONJOUR_SERVERS_ID:
+			String bonjourServerId = uri.getLastPathSegment();
+			c = executeGeneralQuery(bonjourServerId, BonjourServersTable.TABLE_NAME,
+					BonjourServersTable.COLUMN_SERVER_ID, where, whereArgs);
+			c.setNotificationUri(getContext().getContentResolver(),
+					BonjourServersTable.CONTENT_URI);
 			break;
 
 		case IMPORTFILES:
@@ -381,20 +427,35 @@ public class SyncProvider extends ContentProvider {
 							+ (!TextUtils.isEmpty(where) ? " AND (" + where
 									+ ")" : ""), whereArgs);
 			break;
-		case SERVERS:
-			affected = db.update(ServersTable.TABLE_NAME, values, where,
+		case BACKUPED_SERVERS:
+			affected = db.update(BackupedServersTable.TABLE_NAME, values, where,
 					whereArgs);
 			break;
-		case SERVERS_ID:
+		case BACKUPED_SERVERS_ID:
 			String serverId = uri.getPathSegments().get(1);
-			affected = db.update(ServersTable.TABLE_NAME, values,
-					ServersTable.COLUMN_SERVER_ID
+			affected = db.update(BackupedServersTable.TABLE_NAME, values,
+					BackupedServersTable.COLUMN_SERVER_ID
 							+ "='"
 							+ serverId
 							+ "'"
 							+ (!TextUtils.isEmpty(where) ? " AND (" + where
 									+ ")" : ""), whereArgs);
 			break;
+		case BONJOUR_SERVERS:
+			affected = db.update(BonjourServersTable.TABLE_NAME, values, where,
+					whereArgs);
+			break;
+		case BONJOUR_SERVERS_ID:
+			String bonjourServerId = uri.getPathSegments().get(1);
+			affected = db.update(BonjourServersTable.TABLE_NAME, values,
+					BonjourServersTable.COLUMN_SERVER_ID
+							+ "='"
+							+ bonjourServerId
+							+ "'"
+							+ (!TextUtils.isEmpty(where) ? " AND (" + where
+									+ ")" : ""), whereArgs);
+			break;
+
 		case BACKUPDETAILS:
 			affected = db.update(BackupDetailsTable.TABLE_NAME, values, where,
 					whereArgs);
@@ -471,6 +532,7 @@ public class SyncProvider extends ContentProvider {
 						+ ImportFilesTable.COLUMN_SIZE + ","
 						+ ImportFilesTable.COLUMN_MIMETYPE + ","						
 						+ ImportFilesTable.COLUMN_DATE + ","
+						+ ImportFilesTable.COLUMN_STATUS + ","
 						+ ImportFilesTable.COLUMN_FILETYPE + ","
 						+ ImportFilesTable.COLUMN_FOLDER + ","
 						+ ImportFilesTable.COLUMN_IMAGE_ID + ")"
@@ -496,35 +558,35 @@ public class SyncProvider extends ContentProvider {
 				db.endTransaction();
 			}
 			return numInserted;
-		case SERVERS:
+		case BACKUPED_SERVERS:
 			db.beginTransaction();
 			try {
 				// standard SQL insert statement, that can be reused
 				insert = db.compileStatement("INSERT INTO "
-						+ ServersTable.TABLE_NAME + "("
-						+ ServersTable.COLUMN_SERVER_ID + ","
-						+ ServersTable.COLUMN_SERVER_NAME + ","
-						+ ServersTable.COLUMN_STATUS + ","
-						+ ServersTable.COLUMN_START_DATETIME + ","
-						+ ServersTable.COLUMN_END_DATETIME + ","
-						+ ServersTable.COLUMN_FOLDER + ","
-						+ ServersTable.COLUMN_FREE_SPACE + ","
-						+ ServersTable.COLUMN_PHOTO_COUNT + ","
-						+ ServersTable.COLUMN_VIDEO_COUNT + ","
-						+ ServersTable.COLUMN_AUDIO_COUNT + ")"						
+						+ BackupedServersTable.TABLE_NAME + "("
+						+ BackupedServersTable.COLUMN_SERVER_ID + ","
+						+ BackupedServersTable.COLUMN_SERVER_NAME + ","
+						+ BackupedServersTable.COLUMN_STATUS + ","
+						+ BackupedServersTable.COLUMN_START_DATETIME + ","
+						+ BackupedServersTable.COLUMN_END_DATETIME + ","
+						+ BackupedServersTable.COLUMN_FOLDER + ","
+						+ BackupedServersTable.COLUMN_FREE_SPACE + ","
+						+ BackupedServersTable.COLUMN_PHOTO_COUNT + ","
+						+ BackupedServersTable.COLUMN_VIDEO_COUNT + ","
+						+ BackupedServersTable.COLUMN_AUDIO_COUNT + ")"						
 						+ " values (?,?,?,?,?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
-					insert.bindString(1, value.getAsString(ServersTable.COLUMN_SERVER_ID));
-					insert.bindString(2, value.getAsString(ServersTable.COLUMN_SERVER_NAME));
-					insert.bindString(3, value.getAsString(ServersTable.COLUMN_STATUS));
-					insert.bindString(4, value.getAsString(ServersTable.COLUMN_START_DATETIME));
-					insert.bindString(5, value.getAsString(ServersTable.COLUMN_END_DATETIME));
-					insert.bindString(6, value.getAsString(ServersTable.COLUMN_FOLDER));
-					insert.bindString(7, value.getAsString(ServersTable.COLUMN_FREE_SPACE));
-					insert.bindString(8, value.getAsString(ServersTable.COLUMN_PHOTO_COUNT));
-					insert.bindString(9, value.getAsString(ServersTable.COLUMN_VIDEO_COUNT));
-					insert.bindString(10, value.getAsString(ServersTable.COLUMN_AUDIO_COUNT));					
+					insert.bindString(1, value.getAsString(BackupedServersTable.COLUMN_SERVER_ID));
+					insert.bindString(2, value.getAsString(BackupedServersTable.COLUMN_SERVER_NAME));
+					insert.bindString(3, value.getAsString(BackupedServersTable.COLUMN_STATUS));
+					insert.bindString(4, value.getAsString(BackupedServersTable.COLUMN_START_DATETIME));
+					insert.bindString(5, value.getAsString(BackupedServersTable.COLUMN_END_DATETIME));
+					insert.bindString(6, value.getAsString(BackupedServersTable.COLUMN_FOLDER));
+					insert.bindString(7, value.getAsString(BackupedServersTable.COLUMN_FREE_SPACE));
+					insert.bindString(8, value.getAsString(BackupedServersTable.COLUMN_PHOTO_COUNT));
+					insert.bindString(9, value.getAsString(BackupedServersTable.COLUMN_VIDEO_COUNT));
+					insert.bindString(10, value.getAsString(BackupedServersTable.COLUMN_AUDIO_COUNT));					
 					insert.execute();
 				}
 				db.setTransactionSuccessful();
@@ -536,6 +598,35 @@ public class SyncProvider extends ContentProvider {
 				db.endTransaction();
 			}
 			return numInserted;
+		case BONJOUR_SERVERS:
+			db.beginTransaction();
+			try {
+				// standard SQL insert statement, that can be reused
+				insert = db.compileStatement("INSERT INTO "
+						+ BonjourServersTable.TABLE_NAME + "("
+						+ BonjourServersTable.COLUMN_SERVER_ID + ","
+						+ BonjourServersTable.COLUMN_SERVER_NAME + ","
+						+ BonjourServersTable.COLUMN_SERVER_OS + ","
+						+ BonjourServersTable.COLUMN_WS_LOCATION + ")"						
+						+ " values (?,?,?,?)");
+
+				for (ContentValues value : values) {
+					insert.bindString(1, value.getAsString(BonjourServersTable.COLUMN_SERVER_ID));
+					insert.bindString(2, value.getAsString(BonjourServersTable.COLUMN_SERVER_NAME));
+					insert.bindString(3, value.getAsString(BonjourServersTable.COLUMN_SERVER_OS));
+					insert.bindString(4, value.getAsString(BonjourServersTable.COLUMN_WS_LOCATION));
+					insert.execute();
+				}
+				db.setTransactionSuccessful();
+				numInserted = values.length;
+			} finally {
+				if (insert != null) {
+					insert.close();
+				}
+				db.endTransaction();
+			}
+			return numInserted;
+
 		case BACKUPDETAILS:
 			db.beginTransaction();
 			try {

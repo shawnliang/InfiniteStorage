@@ -28,7 +28,7 @@ import android.text.TextUtils;
 
 import com.google.gson.JsonSyntaxException;
 import com.waveface.sync.Constant;
-import com.waveface.sync.RuntimePlayer;
+import com.waveface.sync.RuntimeConfig;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.util.Log;
 
@@ -129,17 +129,17 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		@Override
 		public void processOpened(WebSocketClientEvent aEvent) {
 			//TODO:
-			RuntimePlayer.OnWebSocketOpened = true;
+			RuntimeConfig.OnWebSocketOpened = true;
 		}
 
 		@Override
 		public void processPacket(WebSocketClientEvent aEvent, WebSocketPacket aPacket) {
-			RuntimePlayer.OnWebSocketStation = true;
+			RuntimeConfig.OnWebSocketStation = true;
 			String jsonOutput = aPacket.getUTF8();
 			ServerEntity response = null;
 			try {
 				if(!TextUtils.isEmpty(jsonOutput))
-					response = RuntimePlayer.GSON.fromJson(jsonOutput, ServerEntity.class);
+					response = RuntimeConfig.GSON.fromJson(jsonOutput, ServerEntity.class);
 			} catch (JsonSyntaxException e) {
 				e.printStackTrace();
 				Log.e(Constant.JSON_ERROR_TAG, jsonOutput);
@@ -148,7 +148,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 			if(response.action.equals(Constant.WS_ACTION_ACCEPT)){
             	Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
             	intent.putExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT, Constant.WS_ACTION_ACCEPT);
-                intent.putExtra(Constant.PARAM_SERVER_DATA, response);
+                intent.putExtra(Constant.EXTRA_SERVER_DATA, response);
                 mContext.sendBroadcast(intent);
 
 			}else if(response.action.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
@@ -214,8 +214,8 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 //			Intent intent = new Intent(Constant.ACTION_CHANGELOGS_TIMER);
 //			intent.putExtra(Constant.PARAM_TIMER_COMMAND, Constant.PARAM_COMMAND_RESTART);
 //			mContext.sendBroadcast(intent);
-			RuntimePlayer.OnWebSocketOpened = false;
-			RuntimePlayer.OnWebSocketStation = false;
+			RuntimeConfig.OnWebSocketOpened = false;
+			RuntimeConfig.OnWebSocketStation = false;
 		}
 
 		/**

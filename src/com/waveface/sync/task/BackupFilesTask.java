@@ -16,8 +16,9 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 
 import com.waveface.sync.Constant;
-import com.waveface.sync.RuntimePlayer;
-import com.waveface.sync.db.ServerFilesView;
+import com.waveface.sync.RuntimeConfig;
+import com.waveface.sync.db.BackupedServersTable;
+import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.entity.FIleTransferEntity;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.util.StringUtil;
@@ -41,20 +42,31 @@ public class BackupFilesTask extends AsyncTask<Void, Void, Void> {
 		String filename = null;
     	SharedPreferences prefs = mContext.getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);    	
     	String serverId = prefs.getString(Constant.PREF_SERVER_ID, "");
-
+    	String lastBackupTimestamp = null;
     	//select from serverFiles 
 		Cursor cursor = null;
 		ContentResolver cr = mContext.getContentResolver();
-		cursor = cr.query(ServerFilesView.CONTENT_URI, 
+		cursor = cr.query(BackupedServersTable.CONTENT_URI, 
 				new String[]{
-				ServerFilesView.COLUMN_FILENAME,
-				ServerFilesView.COLUMN_MIMETYPE,
-				ServerFilesView.COLUMN_SIZE,
-				ServerFilesView.COLUMN_FOLDER,
-				ServerFilesView.COLUMN_DATE}, 
-				ServerFilesView.COLUMN_SERVER_ID+"=?", 
-				new String[]{serverId}, 
-				ServerFilesView.COLUMN_DATE);	
+				BackupedServersTable.COLUMN_END_DATETIME,
+				}, 
+				BackupedServersTable.COLUMN_SERVER_ID+"=?", 
+				new String[]{serverId},null);	
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			lastBackupTimestamp = cursor.getString(0); 
+		}	
+		
+		cursor = cr.query(ImportFilesTable.CONTENT_URI, 
+				new String[]{
+				ImportFilesTable.COLUMN_FILENAME,
+				ImportFilesTable.COLUMN_MIMETYPE,
+				ImportFilesTable.COLUMN_SIZE,
+				ImportFilesTable.COLUMN_FOLDER,
+				ImportFilesTable.COLUMN_DATE}, 
+				ImportFilesTable.COLUMN_DATE+">=?", 
+				new String[]{lastBackupTimestamp}, 
+				ImportFilesTable.COLUMN_DATE);	
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();
 			int count = cursor.getCount();
@@ -69,9 +81,9 @@ public class BackupFilesTask extends AsyncTask<Void, Void, Void> {
 				entity.datetime = cursor.getString(4);
 			
 				try {
-					if(RuntimePlayer.OnWebSocketOpened){
+					if(RuntimeConfig.OnWebSocketOpened){
 //						RuntimeWebClient.setDefaultFormat();
-						RuntimeWebClient.send(RuntimePlayer.GSON.toJson(entity));
+						RuntimeWebClient.send(RuntimeConfig.GSON.toJson(entity));
 						//TODO:wait for dedup information
 					}
 					else{
@@ -82,7 +94,7 @@ public class BackupFilesTask extends AsyncTask<Void, Void, Void> {
 					ios = new FileInputStream(new File(filename));
 					int read = 0;
 					while ((read = ios.read(buffer)) != -1) {
-						if(RuntimePlayer.OnWebSocketOpened){
+						if(RuntimeConfig.OnWebSocketOpened){
 							if (read != buffer.length) {
 								finalBuffer = new byte[read];
 								finalBuffer = Arrays.copyOf(buffer, read);
@@ -97,10 +109,10 @@ public class BackupFilesTask extends AsyncTask<Void, Void, Void> {
 						}
 					}
 					// send file index for end
-					if(RuntimePlayer.OnWebSocketOpened){
+					if(RuntimeConfig.OnWebSocketOpened){
 //						RuntimeWebClient.setDefaultFormat();
 						entity.action = Constant.WS_ACTION_FILE_END;
-						RuntimeWebClient.send(RuntimePlayer.GSON.toJson(entity));
+						RuntimeWebClient.send(RuntimeConfig.GSON.toJson(entity));
 					}else{
 						isSuccesed = false;
 						break;						
@@ -131,7 +143,7 @@ public class BackupFilesTask extends AsyncTask<Void, Void, Void> {
 	}
 	@Override
 	protected void onPostExecute(Void entity) {
-		RuntimePlayer.isBackuping = false;
+		RuntimeConfig.isBackuping = false;
 		super.onPostExecute(entity);
 	}
 	@Override

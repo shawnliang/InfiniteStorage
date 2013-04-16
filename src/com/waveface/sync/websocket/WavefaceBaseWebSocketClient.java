@@ -48,7 +48,7 @@ import org.jwebsocket.kit.WebSocketSubProtocol;
 
 import android.util.Log;
 
-import com.waveface.sync.RuntimePlayer;
+import com.waveface.sync.RuntimeConfig;
 
 public class WavefaceBaseWebSocketClient implements WebSocketClient {
 
@@ -284,7 +284,7 @@ public class WavefaceBaseWebSocketClient implements WebSocketClient {
 			mReceiver.start();
 			// now set official status, may listeners ask for that
 			mStatus = WebSocketStatus.OPEN;
-			RuntimePlayer.OnWebSocketOpened = true;
+			RuntimeConfig.OnWebSocketOpened = true;
 			// and finally notify listeners for OnOpen event
 			WebSocketClientEvent lEvent = new WebSocketBaseClientEvent(this,
 					EVENT_OPEN, "");

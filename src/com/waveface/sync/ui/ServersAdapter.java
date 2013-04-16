@@ -3,6 +3,7 @@ package com.waveface.sync.ui;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.entity.ServerEntity;
+import com.waveface.sync.util.StringUtil;
 
 public class ServersAdapter  extends BaseAdapter {
 	  private final Context context;
@@ -47,13 +49,20 @@ public class ServersAdapter  extends BaseAdapter {
 	    	pb.setVisibility(View.INVISIBLE);
 	    }
 	    tv = (TextView) rowView.findViewById(R.id.textBackupDays);
-	    tv.setText(context.getString(R.string.backup_period,"2010-01-01","2013-04-12"));	    
+	    if(!TextUtils.isEmpty(entity.startDatetime)){
+	    	entity.startDatetime = entity.startDatetime.substring(0, 10);
+	    }
+	    if(!TextUtils.isEmpty(entity.endDatetime)){
+	    	entity.endDatetime = entity.endDatetime.substring(0, 10);
+	    }
+
+	    tv.setText(context.getString(R.string.backup_period,entity.startDatetime,entity.endDatetime));	    
 	    tv = (TextView) rowView.findViewById(R.id.textFreespace);
-	    tv.setText(context.getString(R.string.free_space,"500TB"));
+	    tv.setText(context.getString(R.string.free_space,StringUtil.byteCountToDisplaySize(entity.freespace)));
 	    tv = (TextView) rowView.findViewById(R.id.textFolder);
-	    tv.setText(context.getString(R.string.backup_folder,"C:\\infiniteStorage"));	    
+	    tv.setText(context.getString(R.string.backup_folder,entity.Folder));	    
 	    tv = (TextView) rowView.findViewById(R.id.textBackupInfo);
-	    tv.setText(context.getString(R.string.backup_info,100,200,300));	    
+	    tv.setText(context.getString(R.string.backup_info,entity.photoCount,entity.videoCount,entity.audioCount));	    
 	    
 	    
 	    

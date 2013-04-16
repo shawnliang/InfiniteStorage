@@ -1,5 +1,6 @@
 package com.waveface.sync;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.TreeSet;
 
@@ -8,10 +9,10 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.waveface.sync.entity.ServerEntity;
 
-public class RuntimePlayer {
-	private static final String TAG = RuntimePlayer.class.getSimpleName();
-	private static RuntimePlayer instance;
-	public static TreeSet<ServerEntity> servers = new TreeSet<ServerEntity>();
+public class RuntimeConfig{
+	private static final String TAG = RuntimeConfig.class.getSimpleName();
+	public static RuntimeConfig instance;
+	private TreeSet<ServerEntity> servers = new TreeSet<ServerEntity>();
 	public static Context mContext;
 	public static boolean IsLogined = false;
 	public static boolean IsLogining = false; // should combine with is logined
@@ -21,16 +22,6 @@ public class RuntimePlayer {
 	public static boolean OnFirstUseLinkStation = false;
 	public static boolean FilterMode = false;
 	public static boolean FindStationMode = false;
-	public static boolean UploadImageQueueBackground = false;
-	public static boolean UploadOriginal = false;
-	public static boolean UploadDraftPost = false;
-	public static boolean UploadChangedPost = false;
-	public static boolean DownloadMoreBeckend = false;
-	public static boolean DownloadImageBeckend = false;
-	public static boolean DownloadImageMetaBeckend = false;
-	public static boolean DownloadImageMetaOnDemand = false;
-	public static boolean ChangeLogsBeckend = false;
-	public static boolean CheckImageCache = false;
 	public static boolean isImportProcessing = false;
 	public static boolean isDeletingPhoto = false;
 	public static boolean isRemovingPhotoFromEvent = false;
@@ -44,7 +35,6 @@ public class RuntimePlayer {
 	
 
 
-	public static boolean HasGap = false;
 	public static Gson GSON = new Gson();
 	public static boolean OutOfMemoryOccurs = false;
 	public static boolean switchMode = false;
@@ -57,12 +47,18 @@ public class RuntimePlayer {
 
 	public static int FilterType = -1;
 
-	public static RuntimePlayer getInstance() {
+	public static RuntimeConfig getInstance() {
 		if (instance == null) {
-			instance = new RuntimePlayer();
+			instance = new RuntimeConfig();
 		}
 		return instance;
 	}
-
-
+	public ArrayList<ServerEntity> getServers(){
+		ArrayList<ServerEntity> list = new ArrayList<ServerEntity>(servers.size());
+		list.addAll(servers);
+		return list;
+	}
+	public void  addServerData(ServerEntity entity){
+		servers.add(entity);	
+	}
 }
