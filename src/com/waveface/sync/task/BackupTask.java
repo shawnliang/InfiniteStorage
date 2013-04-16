@@ -52,7 +52,7 @@ public class BackupTask extends AsyncTask<Void, Void, Void> {
 
 				// send file index for start
 				FIleTransferEntity entity = new FIleTransferEntity();
-				entity.action = Constant.PARAM_FILEACTION_START;
+				entity.action = Constant.WS_ACTION_FILE_START;
 				entity.folder = foldername;
 				entity.fileName = StringUtil.getFilename(filename);
 				entity.fileSize = filesize;
@@ -96,7 +96,7 @@ public class BackupTask extends AsyncTask<Void, Void, Void> {
 				}
 				// send file index for end
 				RuntimeWebClient.setDefaultFormat();
-				entity.action = Constant.PARAM_FILEACTION_END;
+				entity.action = Constant.WS_ACTION_FILE_END;
 				jsonOuput = RuntimePlayer.GSON.toJson(entity);
 				RuntimeWebClient.send(jsonOuput);
 			}

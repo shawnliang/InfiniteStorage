@@ -16,7 +16,10 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.waveface.sync.Constant;
+import com.waveface.sync.db.BackupDetailsTable;
 import com.waveface.sync.db.ImportFilesTable;
+import com.waveface.sync.db.ServerFilesView;
+import com.waveface.sync.db.ServersTable;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.MediaFile;
 import com.waveface.sync.util.StringUtil;
@@ -325,4 +328,69 @@ public class FileBackup {
 		return cr.update(ImportFilesTable.CONTENT_URI, cv,ImportFilesTable.COLUMN_FILENAME+"=?" , new String[]{filename});
 	}
 
+	public static int addFileIndexForServer(Context context,String serverId){
+		String lastTimestamp = null;
+		ContentValues[] cvs = null;
+		ArrayList<ContentValues> datas = new ArrayList<ContentValues>();
+		ContentValues cv = new ContentValues();
+		cv.put(BackupDetailsTable.COLUMN_SERVER_ID, serverId);
+		cv.put(BackupDetailsTable.COLUMN_STATUS, Constant.IMPORT_FILE_INCLUDED);		
+		ContentResolver cr = context.getContentResolver();
+		Cursor cursor = cr.query(ServerFilesView.CONTENT_URI, 
+				new String[]{ServerFilesView.COLUMN_DATE}, 
+				ServerFilesView.COLUMN_SERVER_ID+" =? ", 
+				new String[]{serverId}, 
+				ServerFilesView.COLUMN_DATE+" DESC LIMIT 1");	
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			lastTimestamp = cursor.getString(0);
+		}		
+		String where = null;
+		String[] whereArgs = null;
+		if(TextUtils.isEmpty(lastTimestamp)){
+			where = ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
+			whereArgs = new String[]{Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
+		}
+		else{
+			where = ImportFilesTable.COLUMN_DATE+">=? "+
+					ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
+			whereArgs = new String[]{lastTimestamp,Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
+		}
+		
+		cursor = cr.query(ImportFilesTable.CONTENT_URI, 
+				new String[]{
+				ImportFilesTable.COLUMN_FILENAME}, 
+				where, 
+				whereArgs, 
+				ImportFilesTable.COLUMN_DATE);	
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			int count = cursor.getCount();
+			for(int i = 0 ; i<count ;i++){
+				cv.put(BackupDetailsTable.COLUMN_FILENAME,cursor.getString(0));
+				datas.add(cv);
+				cursor.moveToNext();
+			}
+		}
+		int result = 0;
+		if(datas.size()>0){
+			//SAVE TO DB
+			cvs = new ContentValues[datas.size()];
+			datas.toArray(cvs);
+			result = cr.bulkInsert(BackupDetailsTable.CONTENT_URI, cvs);
+			Log.d(TAG,result+ " Files Imported!");
+		}
+		datas= null;
+
+		return result;
+	}
+	public static int updateBackupStatus(Context context,String serverId,String filename,String status){
+		ContentResolver cr = context.getContentResolver();
+		ContentValues cv = new ContentValues();
+		cv.put(BackupDetailsTable.COLUMN_STATUS, status);
+		return cr.update(BackupDetailsTable.CONTENT_URI, cv,
+				BackupDetailsTable.COLUMN_SERVER_ID+" =? AND"+
+				BackupDetailsTable.COLUMN_FILENAME+" =?" , new String[]{serverId,filename});
+	}
+	
 }

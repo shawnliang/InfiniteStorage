@@ -5,12 +5,14 @@ public class Constant {
 	public final static String APP_FOLDER = "/InfiniteStorage";
 
 
+	public final static String ACTION_WS_SERVER_NOTIFY = "com.waveface.wammer.action.WS_SERVER_NOTIFY";	
 	public final static String ACTION_BONJOUR_MULTICAT_EVENT = "com.waveface.wammer.action.BONJOUR_MULTICAT_EVENT";	
 	public final static String ACTION_BACKUP_FILE = "com.waveface.wammer.action.BACKUP_FILE";
 	public final static String ACTION_SCAN_FILE = "com.waveface.wammer.action.SCAN_FILE";
 
 	//
 	public static final String EXTRA_BONJOUR_SERVICE_EVENT = "com.waveface.wammer.extra.BONJOUR_SERVICE_EVENT";
+	public final static String EXTRA_SERVER_DATA = "com.waveface.wammer.extra.SERVER_DATA";
 	
 	public static final int EVENT_BONJOUR_RESOLVED = 1;
 	public static final int EVENT_BONJOUR_REMOVED = 2;
@@ -38,23 +40,15 @@ public class Constant {
 	public final static String ACTION_STATION_NOTIFY = "com.waveface.wammer.action.STATION_NOTIFY";
 	public final static String ACTION_HAS_NOTIFY_QUEUE = "com.waveface.wammer.action.HAS_NOTIFY_QUEUE";
 	public final static String ACTION_REMOVE_UPLOAD_IMAGE_NOTIFY = "com.waveface.wammer.action.REMOVE_UPLOAD_IMAGE_NOTIFY";
-	public final static String ACTION_CHANGELOGS_TIMER = "com.waveface.wammer.action.CHANGELOGS_TIMER";
-	public final static String ACTION_FILTER_TYPE = "com.waveface.wammer.action.FILTER_TYPE";
+
 	public final static String ACTION_PHOTO_IMPORT = "com.waveface.wammer.action.PHOTO_IMPORT";
 	public final static String ACTION_PHOTO_AUTO_IMPORTING = "com.waveface.wammer.action.PHOTO_AUTO_IMPORTING";
 	public final static String ACTION_POST_IMPORT_CREATE = "com.waveface.wammer.action.POST_IMPORT_CREATE";
 	public final static String ACTION_FIRSTUSE_LINK_TO_STATION = "com.waveface.wammer.action.FIRSTUSE_LINK_TO_STATION";
-	public final static String ACTION_DOWNLOAD_IMAGE_META_EXIF = "com.waveface.wammer.action.DOWNLOAD_IMAGE_META_EXIF";
-	public final static String ACTION_COLLECTION_UPDATE = "com.waveface.wammer.action.ACTION_COLLECTION_UPDATE";
-	public final static String ACTION_CLICK_CALENDAR_DATE = "com.waveface.wammer.action.CLICK_CALENDAR_DATE";
-	public final static String ACTION_COLLECTION_COVER = "com.waveface.wammer.action.ACTION_COLLECTION_COVER";
-
-
+	
 	public final static int STATE_SUCCESS = 0;
 	public final static int STATE_FAILED = 1;
 	public final static int STATE_REFRESHING = 2;
-
-
 
 	public static final int TIMELINE_IMAGE_TOTAL_HEIGHT = 200;
 	public static final int TIMELINE_IMAGE_2CELL_TOTAL_HEIGHT = 148;
@@ -64,20 +58,31 @@ public class Constant {
 
 	public static final int RESULT_BACK = 20;
 
+	//WS ACTION
+	public final static String WS_ACTION_CONNECT = "connect";
+	public final static String WS_ACTION_FILES_INDEX = "files-index";
+	public final static String WS_ACTION_FILE_START = "file-start";
+	public final static String WS_ACTION_FILE_END = "file-end";
+	public final static String WS_ACTION_BACKUP_INFO = "backup-info";
 
+	//EXTRA DATA
+	public final static String EXTRA_SERVER_NOTIFY_CONTENT = "server_notify_content";	
+	
+	//WS NOTIFY HEADER
+	public final static String WS_ACTION_WAIT_FOR_PAIR = "wait-for-pair";
+	public final static String WS_ACTION_ACCEPT = "accept";
+	public final static String WS_ACTION_DENIED = "denied";
+
+	
 	public final static String PARAM_FOLDERNAME = "foldername";	
 	public final static String PARAM_FILENAME = "filename";
-	public final static String PARAM_FILESIZE = "filesize";
-	public final static String PARAM_FILEACTION_START = "file-start";
-	public final static String PARAM_FILEACTION_END = "file-end";
+	public final static String PARAM_FILESIZE = "filesize";	
+	
 	public final static String PARAM_SERVER_DATA = "server_data";
 	public final static String PARAM_SERVER_ID = "server_id";	
 	public final static String PARAM_SERVER_OS = "os";		
 	public final static String PARAM_RESULT = "result";
 	
-
-	
-	//
 	public final static String PARAM_CREATOR_ID = "creator_id";
 	public final static String PARAM_DEVICE_NAME = "device_name";
 	public final static String PARAM_DEVICE_ID = "device_id";
@@ -91,9 +96,6 @@ public class Constant {
 	public final static String PARAM_TIMEZONE = "timezone";
 	public final static String PARAM_COVER_ATTACH = "cover_attach";
 	public final static String PARAM_FROM_COMPOSER = "from_composer";
-	
-	
-	
 	
 	public final static String PARAM_GROUP_ID = "group_id";
 	public final static String PARAM_POST_ID = "post_id";
@@ -181,46 +183,11 @@ public class Constant {
 	public final static String PARAM_EMAIL = "email";
 	public final static String PARAM_PASSWORD = "password";
 	public final static String PARAM_NICKNAME = "nickname";
-	public final static String PARAM_QUERY_TIMESTAMP = "queryTimestamp";
 	public final static String PARAM_TOAST_MESSAGE = "toastMessage";
 	public final static String PARAM_TIMER_COMMAND = "timerCommand";
 	public final static String PARAM_COMMAND_CANCEL = "cmdCancel";
 	public final static String PARAM_COMMAND_RESTART = "cmdRestart";
 	public final static String PARAM_START = "start";
-	public final static String PARAM_VIEWS = "views";
-	public final static String PARAM_MODIFY_TIME_SINCE = "modify_time_since";
-	public final static String PARAM_MODIFY_TIME_UTIL = "modify_time_until";
-	//SUMMARY
-	public final static String PARAM_START_DATE = "start_date";
-	public final static String PARAM_OFFSET_DAYS = "offset_days";
-	public final static String PARAM_LOCAL_TIME_ZONE = "local_time_zone";
-
-
-
-	//GCM
-	public final static String PARAM_GCM_OS_TYPE = "ostype";
-	public final static String PARAM_GCM_REG_ID = "regid";
-	public final static String PARAM_GCM_ACCOUNT = "google_account";
-
-	//GPS TRACK
-	public final static String PARAM_LOCATIONS = "locations";
-
-	//Post Style
-	public enum POST_TYLE{
-		URL_HISTORY,WEB_IMAGE;
-	}
-	public final static String POST_STYLE_URL_HISTORY = "url_history";
-	public final static String POST_STYLE_WEB_IMAGE = "webimage";
-
-	// FOR QUEUE JOB ACTION FLAG
-	public final static String QUEUE_POST_NEW = "0";
-	public final static String QUEUE_COMMENT_NEW = "1";
-	public final static String QUEUE_ORI_PHOTO_UPLOAD = "2";
-	public final static String QUEUE_POST_UPDATE = "3";
-	public final static String QUEUE_POST_REMOVE = "4";
-	public final static String QUEUE_PHOTO_REMOVE = "5";
-	public final static String QUEUE_PHOTO_DELETE = "6";
-	public final static String QUEUE_PHOTO_REMOVE_FROM_EVENT = "7";
 
 	// FOR QUEUE JOB STATUS
 	public final static String QUEUE_STATUS_INIT = "";
@@ -241,31 +208,12 @@ public class Constant {
 	public final static String PREF_LATEST_ID = "latest_id";
 	public final static String PREF_LATEST_TIMESTAMP = "latest_timestamp";
 	public final static String PREF_UNREAD = "unread";
-	public static final String PREF_BROWSING_POST_ID = "browsing_post_id";
 	public final static String PREF_NOTIFICATION_ID = "notification_id";
 	public final static String PREF_STATION_WEB_SOCKET_URL = "station_websocket_url";
 
-	// OLDEST POST ID AND TIMESTAMP
-	public final static String PREF_LATESTTIME_POST_TIMESTAMP = "lastest_time_post_timestamp";
-	public final static String PREF_OLDEST_POST_ID = "oldest_post_id";
-	public final static String PREF_OLDEST_POST_TIMESTAMP = "oldest_post_timestamp";
-	// FOR CHANGE SET TIMESTAMP
-	public final static String PREF_CHANGE_SET_TIMESTAMP = "change_set_timestamp";
-	public final static String PREF_CHANGE_SET_POSTS = "change_set_posts";
-	// FOR CHANGE LOG SEQ NUM
-	public final static String PREF_NEXT_SEQ_NUM = "next_seq_num";
-	public final static String PREF_NEXT_FOOTER_SEQ_NUM = "next_footer_seq_num";
-	//FOR CUSTOMIZED SERVER
-	public final static String PREF_CUSTOMIZED_SERVER = "customized_server";
-	//FOR BONUS COLLECTION SETTING
-	public final static String PREF_BONUS_COLLECTION_TITLE = "collection_title";
-	public final static String PREF_BONUS_COLLECTION_BASE_DAY = "collection_base_day";
-	//FOR SUMMARY
-	public final static String PREF_HAS_MORE_SUMMARY = "has_more_summary";
-	public final static String PREF_NEXT_START_DAY = "next_start_day";
 
-	//DISPLAY SLIDE MENU FOR THE VERY FIRST TIME
-	public final static String PREF_DISPLAY_SLIDE_MENU_FOR_FIRST_USE = "display_slide_menu_for_first_time";
+	//DISPLAY DEVICE NAME
+	public final static String PREF_DISPLAY_DEVICE_NAME = "display_device_name";
 
 
 	//FOR SERVER
@@ -307,7 +255,8 @@ public class Constant {
 	// PREFERENCE
 	//public static String PREF_USER_STATE = "user_state";
 	public static String PREF_SERVER = "Link_Server";
-
+	public static String PREF_SERVER_ID = "Current_Server_ID";
+	
 	public final static String DEVICE_NAME = "Android";
 	public final static String DEVICE_TABLET_NAME = "AndroidTablet";
 	public final static String SHARED_URL_LINK = "SHARED_URL_LINK";

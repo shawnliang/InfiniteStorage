@@ -8,14 +8,13 @@ import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceInfo;
 import javax.jmdns.ServiceListener;
 
-import org.jwebsocket.kit.WebSocketException;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,7 +33,6 @@ import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.StringUtil;
 import com.waveface.sync.util.SystemUiHider;
-import com.waveface.sync.websocket.RuntimeWebClient;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -69,10 +67,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sync_main);
 		mDevice = (TextView) this.findViewById(R.id.textDevice);
-		String value = DeviceUtil.getEmailAccount(this);
-		value = value.split("@")[0];
-		String displayText = value +"-"+DeviceUtil.getDeviceName();
-		mDevice.setText(displayText);
+		mDevice.setText(DeviceUtil.getDeviceNameForDisplay(this));
 		mNowPeriod = (TextView) this.findViewById(R.id.textPeriod);
 		String[] periods = FileBackup.getFilePeriods(this);
 		if(TextUtils.isEmpty(periods[0])){
@@ -107,7 +102,8 @@ public class MainActivity extends Activity {
 		
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_BACKUP_FILE);
-		filter.addAction(Constant.ACTION_SCAN_FILE);		
+		filter.addAction(Constant.ACTION_SCAN_FILE);	
+		filter.addAction(Constant.ACTION_WS_SERVER_NOTIFY);		
 		registerReceiver(mReceiver, filter);
 
         mHandler.postDelayed(new Runnable() {
@@ -129,6 +125,12 @@ public class MainActivity extends Activity {
 			}
 			else if (Constant.ACTION_SCAN_FILE.equals(action)) {
 			    refresh();
+			}
+			else if(Constant.ACTION_WS_SERVER_NOTIFY.equals(action)){
+				String response = intent.getStringExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT);
+				if(response.equals(Constant.WS_ACTION_BACKUP_INFO)){
+					mAdapter.setData(ServersLogic.getServers(MainActivity.this));
+				}
 			}
 		}
 	};
@@ -161,7 +163,7 @@ public class MainActivity extends Activity {
 	                        mHandler.postDelayed(new Runnable() {
 	                            public void run() {
 	    	                    	Intent intent = new Intent(Constant.ACTION_BONJOUR_MULTICAT_EVENT);
-	    		                    intent.putExtra(Constant.PARAM_SERVER_DATA, entity);
+	    		                    intent.putExtra(Constant.EXTRA_SERVER_DATA, entity);
 	    		                    MainActivity.this.sendBroadcast(intent);
 	                            }
 	                            }, 500);
@@ -191,27 +193,47 @@ public class MainActivity extends Activity {
         }
     }
     public void startBackuping(ServerEntity entity){
-	    //SETUP WS URL ANDLink to WS
-	    boolean isConnected = false;
-	    if(RuntimePlayer.OnWebSocketOpened == false){
-	    	RuntimeWebClient.init(MainActivity.this);
-	    	RuntimeWebClient.setURL(entity.wsLocation);
-	    	try {
-	    		RuntimeWebClient.open();
-	    		//send connect cmd
-	    		isConnected = true;
-	    	} catch (WebSocketException e) {
-	    		isConnected = false;
-	    		e.printStackTrace();
-	    	}
-	    	finally{
-	    		if(isConnected){
-	    			RuntimePlayer.OnWebSocketOpened = true;
-	    			Intent intent = new Intent(Constant.ACTION_BACKUP_FILE);
-	    			sendBroadcast(intent);
-	    		}
-	    	}
-	    }
+		mAdapter.setData(ServersLogic.getServers(this));
+
+//    	//SETUP WS URL ANDLink to WS
+//	    boolean isConnected = false;
+//	    if(RuntimePlayer.OnWebSocketOpened == false){
+//	    	RuntimeWebClient.init(MainActivity.this);
+//	    	RuntimeWebClient.setURL(entity.wsLocation);
+//	    	try {
+//	    		RuntimeWebClient.open();
+//	    		//send connect cmd
+//	    		ConnectEntity connect = new ConnectEntity();
+//	    		connect.action = Constant.WS_ACTION_CONNECT;
+//	    		connect.deviceId = DeviceUtil.id(this);
+//	    		connect.deviceName = DeviceUtil.getDeviceNameForDisplay(this);
+//	    		RuntimeWebClient.send(RuntimePlayer.GSON.toJson(connect));
+//	    		isConnected = true;
+//	    	} catch (WebSocketException e) {
+//	    		isConnected = false;
+//	    		e.printStackTrace();
+//	    	}
+//	    	finally{
+//	    		if(isConnected){
+//	    			RuntimePlayer.OnWebSocketOpened = true;
+//	            	//TODO:WAIT FOR SERVER NOTIFY	            	
+//	            	entity.status = Constant.SERVER_LINKING;
+//	            	entity.startDatetime ="";
+//	            	entity.endDatetime = "";
+//	            	entity.Folder ="";
+//	            	entity.freespace = "";
+//	            	entity.photoCount ="";
+//	            	entity.videoCount ="";
+//	            	entity.audioCount ="";
+//	            	int result = ServersLogic.updateServer(this, entity);
+//	            	Log.d(TAG, "Update Server:"+result);
+//	        		mAdapter.setData(ServersLogic.getServers(this));
+//
+//	    			Intent intent = new Intent(Constant.ACTION_BACKUP_FILE);
+//	    			sendBroadcast(intent);
+//	    		}
+//	    	}
+//	    }
     }
 
     @Override
@@ -220,22 +242,15 @@ public class MainActivity extends Activity {
         if (requestCode == Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {                
-            	ServerEntity entity = (ServerEntity)data.getExtras().get(Constant.PARAM_RESULT);
-            	Log.d(TAG, "WS:"+entity.wsLocation);
-            	SharedPreferences prefs = getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);
-            	prefs.edit().putString(Constant.PREF_STATION_WEB_SOCKET_URL, entity.wsLocation).commit();
-            	entity.status = Constant.SERVER_LINKING;
-            	entity.startDatetime ="";
-            	entity.endDatetime = "";
-            	entity.Folder ="";
-            	entity.freespace = "";
-            	entity.photoCount ="";
-            	entity.videoCount ="";
-            	entity.audioCount ="";
-            	int result = ServersLogic.updateServer(this, entity);
-            	Log.d(TAG, "Update Server:"+result);
-        		mAdapter.setData(ServersLogic.getServers(this));
-            	startBackuping(entity);
+//            	ServerEntity entity = (ServerEntity)data.getExtras().get(Constant.PARAM_RESULT);
+//            	Log.d(TAG, "WS:"+entity.wsLocation);
+//            	SharedPreferences prefs = getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);
+//            	Editor editor = prefs.edit();
+//            	editor.putString(Constant.PREF_STATION_WEB_SOCKET_URL, entity.wsLocation);
+//            	editor.putString(Constant.PREF_SERVER_ID,entity.serverId);
+//            	editor.commit();
+//            	startBackuping(entity);
+            	mAdapter.setData(ServersLogic.getServers(this));
             }
         }
     }

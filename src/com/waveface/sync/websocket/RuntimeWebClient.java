@@ -56,6 +56,7 @@ public class RuntimeWebClient {
 	}
 
 	public static void send(String aString) throws WebSocketException {
+		setDefaultFormat();
 		mWebSocketClient.send(aString, DEF_ENCODING);
 	}
 

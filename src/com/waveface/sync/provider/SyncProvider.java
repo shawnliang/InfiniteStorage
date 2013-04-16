@@ -13,9 +13,11 @@ import android.database.sqlite.SQLiteStatement;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.waveface.sync.db.BackupDetailsTable;
 import com.waveface.sync.db.DatabaseHelper;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.db.ImportTable;
+import com.waveface.sync.db.ServerFilesView;
 import com.waveface.sync.db.ServersTable;
 
 public class SyncProvider extends ContentProvider {
@@ -29,7 +31,13 @@ public class SyncProvider extends ContentProvider {
 	private final static int SERVERS = 5;
 	private final static int SERVERS_ID = 6;
 
+	private final static int BACKUPDETAILS = 7;
+	private final static int BACKUPDETAILS_ID = 8;
 
+	//FOR VIEW
+	private final static int SERVERFILES_VIEW = 101;
+	private final static int SERVERFILES_VIEW_ID = 102;
+	
 	public static final String AUTHORITY = "com.waveface.sync";
 
 	private static UriMatcher sUriMatcher;
@@ -47,7 +55,15 @@ public class SyncProvider extends ContentProvider {
 		//FOR IMPORT FILES
 		sUriMatcher.addURI(AUTHORITY, ServersTable.SERVERS_NAME, SERVERS);
 		sUriMatcher.addURI(AUTHORITY, ServersTable.SERVERS_NAME + "/*", SERVERS_ID);
-		
+
+		//FOR IMPORT FILES
+		sUriMatcher.addURI(AUTHORITY, BackupDetailsTable.BACKUP_DETAILS_NAME, BACKUPDETAILS);
+		sUriMatcher.addURI(AUTHORITY, BackupDetailsTable.BACKUP_DETAILS_NAME + "/*", BACKUPDETAILS_ID);
+
+		//FOR SERVER FILES VIEW
+		sUriMatcher.addURI(AUTHORITY, ServerFilesView.SERVER_FILES_VIEW_NAME, SERVERFILES_VIEW);
+		sUriMatcher.addURI(AUTHORITY, ServerFilesView.SERVER_FILES_VIEW_NAME + "/*", SERVERFILES_VIEW_ID);
+
 	}
 
 	private DatabaseHelper mOpenHelper;
@@ -117,6 +133,14 @@ public class SyncProvider extends ContentProvider {
 			tableName = ImportTable.TABLE_NAME;
 			where = (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
 			break;
+		case BACKUPDETAILS:
+			tableName = BackupDetailsTable.TABLE_NAME;
+			break;
+		case BACKUPDETAILS_ID:
+			tableName = BackupDetailsTable.TABLE_NAME;
+			where = (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
+			break;
+
 		default:
 			throw new IllegalArgumentException("unknown post element: " + uri);
 		}
@@ -140,7 +164,10 @@ public class SyncProvider extends ContentProvider {
 			return ImportFilesTable.CONTENT_TYPE;
 		case IMPORTFILES_ID:
 			return ImportFilesTable.CONTENT_ITEM_TYPE;
-
+		case BACKUPDETAILS:
+			return BackupDetailsTable.CONTENT_TYPE;
+		case BACKUPDETAILS_ID:
+			return BackupDetailsTable.CONTENT_ITEM_TYPE;
 		default:
 			throw new IllegalArgumentException("Unknown post type: " + uri);
 		}
@@ -185,6 +212,16 @@ public class SyncProvider extends ContentProvider {
 			if (rowId > 0) {
 				Uri queueUri = ContentUris.withAppendedId(
 						ServersTable.CONTENT_URI, rowId);
+				getContext().getContentResolver().notifyChange(queueUri, null);
+				return queueUri;
+			}
+			break;
+		case BACKUPDETAILS:
+			rowId = db.insert(BackupDetailsTable.TABLE_NAME,
+					BackupDetailsTable.BACKUP_DETAILS_NAME, values);
+			if (rowId > 0) {
+				Uri queueUri = ContentUris.withAppendedId(
+						BackupDetailsTable.CONTENT_URI, rowId);
 				getContext().getContentResolver().notifyChange(queueUri, null);
 				return queueUri;
 			}
@@ -266,6 +303,43 @@ public class SyncProvider extends ContentProvider {
 			c.setNotificationUri(getContext().getContentResolver(),
 					ImportFilesTable.CONTENT_URI);
 			break;
+		case BACKUPDETAILS:
+			if (TextUtils.isEmpty(sortOrder)) {
+				orderBy = ImportFilesTable.DEFAULT_SORT_ORDER;
+			} else {
+				orderBy = sortOrder;
+			}
+			c = mDb.query(BackupDetailsTable.TABLE_NAME, projection, where,
+					whereArgs, null, null, orderBy);
+			c.setNotificationUri(getContext().getContentResolver(),
+					BackupDetailsTable.CONTENT_URI);
+			break;
+		case BACKUPDETAILS_ID:
+			String server_id = uri.getLastPathSegment();
+			c = executeGeneralQuery(server_id, BackupDetailsTable.TABLE_NAME,
+					BackupDetailsTable.COLUMN_FILENAME, where, whereArgs);
+			c.setNotificationUri(getContext().getContentResolver(),
+					BackupDetailsTable.CONTENT_URI);
+			break;
+		case SERVERFILES_VIEW:
+			if (TextUtils.isEmpty(sortOrder)) {
+				orderBy = ServerFilesView.DEFAULT_SORT_ORDER;
+			} else {
+				orderBy = sortOrder;
+			}
+			c = mDb.query(ServerFilesView.VIEW_NAME, projection, where,
+					whereArgs, null, null, orderBy);
+			c.setNotificationUri(getContext().getContentResolver(),
+					ServerFilesView.CONTENT_URI);
+			break;
+		case SERVERFILES_VIEW_ID:
+			String filename = uri.getLastPathSegment();
+			c = executeGeneralQuery(filename, ServerFilesView.VIEW_NAME,
+					ServerFilesView.COLUMN_FILENAME, where, whereArgs);
+			c.setNotificationUri(getContext().getContentResolver(),
+					ServerFilesView.CONTENT_URI);
+			break;
+
 		default:
 			c = new DummyCursor();
 			break;
@@ -317,6 +391,20 @@ public class SyncProvider extends ContentProvider {
 					ServersTable.COLUMN_SERVER_ID
 							+ "='"
 							+ serverId
+							+ "'"
+							+ (!TextUtils.isEmpty(where) ? " AND (" + where
+									+ ")" : ""), whereArgs);
+			break;
+		case BACKUPDETAILS:
+			affected = db.update(BackupDetailsTable.TABLE_NAME, values, where,
+					whereArgs);
+			break;
+		case BACKUPDETAILS_ID:
+			String server_id = uri.getPathSegments().get(1);
+			affected = db.update(BackupDetailsTable.TABLE_NAME, values,
+					BackupDetailsTable.COLUMN_SERVER_ID
+							+ "='"
+							+ server_id
 							+ "'"
 							+ (!TextUtils.isEmpty(where) ? " AND (" + where
 									+ ")" : ""), whereArgs);
@@ -383,7 +471,6 @@ public class SyncProvider extends ContentProvider {
 						+ ImportFilesTable.COLUMN_SIZE + ","
 						+ ImportFilesTable.COLUMN_MIMETYPE + ","						
 						+ ImportFilesTable.COLUMN_DATE + ","
-						+ ImportFilesTable.COLUMN_STATUS + ","
 						+ ImportFilesTable.COLUMN_FILETYPE + ","
 						+ ImportFilesTable.COLUMN_FOLDER + ","
 						+ ImportFilesTable.COLUMN_IMAGE_ID + ")"
@@ -449,6 +536,33 @@ public class SyncProvider extends ContentProvider {
 				db.endTransaction();
 			}
 			return numInserted;
+		case BACKUPDETAILS:
+			db.beginTransaction();
+			try {
+				// standard SQL insert statement, that can be reused
+				insert = db.compileStatement("INSERT INTO "
+						+ BackupDetailsTable.TABLE_NAME + "("
+						+ BackupDetailsTable.COLUMN_SERVER_ID + ","
+						+ BackupDetailsTable.COLUMN_FILENAME + ","
+						+ BackupDetailsTable.COLUMN_STATUS + ")"						
+						+ " values (?,?,?)");
+
+				for (ContentValues value : values) {
+					insert.bindString(1, value.getAsString(BackupDetailsTable.COLUMN_SERVER_ID));
+					insert.bindString(2, value.getAsString(BackupDetailsTable.COLUMN_FILENAME));
+					insert.bindString(3, value.getAsString(BackupDetailsTable.COLUMN_STATUS));
+					insert.execute();
+				}
+				db.setTransactionSuccessful();
+				numInserted = values.length;
+			} finally {
+				if (insert != null) {
+					insert.close();
+				}
+				db.endTransaction();
+			}
+			return numInserted;
+
 		default:
 			throw new UnsupportedOperationException("unsupported uri: " + uri);
 		}

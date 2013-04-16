@@ -11,15 +11,15 @@ import org.jwebsocket.kit.WebSocketException;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.RuntimePlayer;
-import com.waveface.sync.db.ImportFilesTable;
+import com.waveface.sync.db.ServerFilesView;
 import com.waveface.sync.entity.FIleTransferEntity;
-import com.waveface.sync.logic.FileBackup;
-import com.waveface.sync.util.Log;
+import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.util.StringUtil;
 import com.waveface.sync.websocket.RuntimeWebClient;
 
@@ -39,25 +39,28 @@ public class BackupFilesTask extends AsyncTask<Void, Void, Void> {
 		InputStream ios = null;
 		boolean isSuccesed = false;
 		String filename = null;
-		//select from import file 
+    	SharedPreferences prefs = mContext.getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);    	
+    	String serverId = prefs.getString(Constant.PREF_SERVER_ID, "");
+
+    	//select from serverFiles 
 		Cursor cursor = null;
 		ContentResolver cr = mContext.getContentResolver();
-		cursor = cr.query(ImportFilesTable.CONTENT_URI, 
+		cursor = cr.query(ServerFilesView.CONTENT_URI, 
 				new String[]{
-				ImportFilesTable.COLUMN_FILENAME,
-				ImportFilesTable.COLUMN_MIMETYPE,
-				ImportFilesTable.COLUMN_SIZE,
-				ImportFilesTable.COLUMN_FOLDER,
-				ImportFilesTable.COLUMN_DATE}, 
-				ImportFilesTable.COLUMN_STATUS+"!=?", 
-				new String[]{Constant.IMPORT_FILE_BACKUPED}, 
-				ImportFilesTable.COLUMN_DATE);	
+				ServerFilesView.COLUMN_FILENAME,
+				ServerFilesView.COLUMN_MIMETYPE,
+				ServerFilesView.COLUMN_SIZE,
+				ServerFilesView.COLUMN_FOLDER,
+				ServerFilesView.COLUMN_DATE}, 
+				ServerFilesView.COLUMN_SERVER_ID+"=?", 
+				new String[]{serverId}, 
+				ServerFilesView.COLUMN_DATE);	
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();
 			int count = cursor.getCount();
 			for(int i = 0 ; i<count ;i++){
 				// send file index for start
-				entity.action = Constant.PARAM_FILEACTION_START;
+				entity.action = Constant.WS_ACTION_FILE_START;
 				filename = cursor.getString(0);
 				entity.fileName = StringUtil.getFilename(filename);
 				entity.mimetype = cursor.getString(1);
@@ -67,8 +70,9 @@ public class BackupFilesTask extends AsyncTask<Void, Void, Void> {
 			
 				try {
 					if(RuntimePlayer.OnWebSocketOpened){
-						RuntimeWebClient.setDefaultFormat();
+//						RuntimeWebClient.setDefaultFormat();
 						RuntimeWebClient.send(RuntimePlayer.GSON.toJson(entity));
+						//TODO:wait for dedup information
 					}
 					else{
 						isSuccesed = true;
@@ -94,8 +98,8 @@ public class BackupFilesTask extends AsyncTask<Void, Void, Void> {
 					}
 					// send file index for end
 					if(RuntimePlayer.OnWebSocketOpened){
-						RuntimeWebClient.setDefaultFormat();
-						entity.action = Constant.PARAM_FILEACTION_END;
+//						RuntimeWebClient.setDefaultFormat();
+						entity.action = Constant.WS_ACTION_FILE_END;
 						RuntimeWebClient.send(RuntimePlayer.GSON.toJson(entity));
 					}else{
 						isSuccesed = false;
@@ -115,7 +119,8 @@ public class BackupFilesTask extends AsyncTask<Void, Void, Void> {
 					} catch (IOException e) {
 					}
 					if(isSuccesed){
-						FileBackup.updateBackupStatus(mContext, entity.fileName, Constant.IMPORT_FILE_BACKUPED);
+						ServersLogic.updateServerLastBackupTimestamp(mContext, entity.datetime, serverId);
+//						FileBackup.updateBackupStatus(mContext, entity.fileName, Constant.IMPORT_FILE_BACKUPED);
 					}
 					isSuccesed = false;
 				}

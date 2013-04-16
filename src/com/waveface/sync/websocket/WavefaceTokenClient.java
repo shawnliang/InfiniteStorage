@@ -24,9 +24,13 @@ import org.jwebsocket.util.Tools;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
+import com.google.gson.JsonSyntaxException;
 import com.waveface.sync.Constant;
 import com.waveface.sync.RuntimePlayer;
+import com.waveface.sync.entity.ServerEntity;
+import com.waveface.sync.util.Log;
 
 public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements WebSocketTokenClient {
 	private static final String TAG = WavefaceTokenClient.class.getSimpleName();
@@ -124,62 +128,44 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		 */
 		@Override
 		public void processOpened(WebSocketClientEvent aEvent) {
-			Intent intent = new Intent(Constant.ACTION_CHANGELOGS_TIMER);
-			intent.putExtra(Constant.PARAM_TIMER_COMMAND, Constant.PARAM_COMMAND_CANCEL);
-			mContext.sendBroadcast(intent);
+			//TODO:
+			RuntimePlayer.OnWebSocketOpened = true;
 		}
 
 		@Override
 		public void processPacket(WebSocketClientEvent aEvent, WebSocketPacket aPacket) {
+			RuntimePlayer.OnWebSocketStation = true;
 			String jsonOutput = aPacket.getUTF8();
-//			NotifyResponse response = null;
-//			try {
-//				if(!TextUtils.isEmpty(jsonOutput))
-//					response = RuntimePlayer.GSON.fromJson(jsonOutput, NotifyResponse.class);
-//			} catch (JsonSyntaxException e) {
-//				e.printStackTrace();
-//				Log.e(Constant.JSON_ERROR_TAG, jsonOutput);
-//				Log.e(Constant.JSON_ERROR_TAG, e.getLocalizedMessage());
-//			}
-//			if(response!=null && response.notify!=null){
-//				if(response.error!=null){
-//					//for retry 1001,1005,1006
-//					int code = response.error.code;
-//					if(code==1000){
-//						//DO NOTHING
-//					}
-//					else{
-//						RuntimePlayer.OnWebSocketOpened = false;
-//						RuntimePlayer.OnWebSocketStation = false;
-//						if(code==1001 || code==1005 || code==1006){
-//							//re Connect
-//							mCheckReconnect(aEvent);
-//						}
-//						else{
-//							close();
-//						}
-//					}
-//					if(code==3001){
-//						close();
-//						//switch to cloud
-//						RuntimePlayer.getInstance().autoStationDetect();
-//					}
-//				}
-//				else if(response.notify!=null){
-//					if(response.notify.updated){
-//						Intent intent = new Intent(Constant.ACTION_STATION_NOTIFY);
-//						mContext.sendBroadcast(intent);
-//					}
-//					else if(response.notify.connected == true){
-//						RuntimePlayer.OnWebSocketStation = true;
-//						Intent intent2 = new Intent(Constant.ACTION_SERVICE_SHOW_TOAST);
-//						intent2.putExtra(Constant.PARAM_TOAST_MESSAGE, R.string.ws_connect_successed);
-//						mContext.sendBroadcast(intent2);
-//					}
-//				}
-//			}
+			ServerEntity response = null;
+			try {
+				if(!TextUtils.isEmpty(jsonOutput))
+					response = RuntimePlayer.GSON.fromJson(jsonOutput, ServerEntity.class);
+			} catch (JsonSyntaxException e) {
+				e.printStackTrace();
+				Log.e(Constant.JSON_ERROR_TAG, jsonOutput);
+				Log.e(Constant.JSON_ERROR_TAG, e.getLocalizedMessage());
+			}
+			if(response.action.equals(Constant.WS_ACTION_ACCEPT)){
+            	Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
+            	intent.putExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT, Constant.WS_ACTION_ACCEPT);
+                intent.putExtra(Constant.PARAM_SERVER_DATA, response);
+                mContext.sendBroadcast(intent);
 
-//			Token lToken = packetToToken(aPacket);
+			}else if(response.action.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
+            	Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
+            	intent.putExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT, Constant.WS_ACTION_WAIT_FOR_PAIR);
+            	mContext.sendBroadcast(intent);
+				
+			}else if(response.action.equals(Constant.WS_ACTION_DENIED)){
+            	Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
+            	intent.putExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT, Constant.WS_ACTION_DENIED);
+                mContext.sendBroadcast(intent);					
+			}else if(response.action.equals(Constant.WS_ACTION_BACKUP_INFO)){
+            	Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
+            	intent.putExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT, Constant.WS_ACTION_DENIED);
+                mContext.sendBroadcast(intent);					
+			}
+			Token lToken = packetToToken(aPacket);
 //			String lType = lToken.getType();
 //			String lReqType = lToken.getString("reqType");
 //
@@ -211,13 +197,13 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 //					mPendingResponseQueue.remove(lUTID);
 //				}
 //			}
-//
-//			//Notifying listeners
-//			for (WebSocketClientListener lListener : getListeners()) {
-//				if (lListener instanceof WebSocketClientTokenListener) {
-//					((WebSocketClientTokenListener) lListener).processToken(aEvent, lToken);
-//				}
-//			}
+
+			//Notifying listeners
+			for (WebSocketClientListener lListener : getListeners()) {
+				if (lListener instanceof WebSocketClientTokenListener) {
+					((WebSocketClientTokenListener) lListener).processToken(aEvent, lToken);
+				}
+			}
 		}
 
 		/**
@@ -229,6 +215,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 //			intent.putExtra(Constant.PARAM_TIMER_COMMAND, Constant.PARAM_COMMAND_RESTART);
 //			mContext.sendBroadcast(intent);
 			RuntimePlayer.OnWebSocketOpened = false;
+			RuntimePlayer.OnWebSocketStation = false;
 		}
 
 		/**

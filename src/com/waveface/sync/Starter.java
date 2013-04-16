@@ -1,9 +1,11 @@
 package com.waveface.sync;
 
+import java.io.File;
+
 import android.app.Application;
 import android.content.Context;
+import android.os.Environment;
 
-import com.waveface.sync.logic.PhotoImport;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.task.ScanTask;
 import com.waveface.sync.util.ImageUtil;
@@ -21,6 +23,7 @@ public class Starter extends Application {
 		SYNC_CONTEXT = getApplicationContext();
 		ServersLogic.resetStatus(SYNC_CONTEXT);
 		new ScanTask(SYNC_CONTEXT).execute(new Void[]{});
+		initialDirectory();
 //		ScanImageFolder();
 //		ScanVideoFolder();
 	}
@@ -32,7 +35,7 @@ public class Starter extends Application {
 				imageFolders = imageFolders.substring(0, imageFolders.length()-1);
 			}
 		}
-		PhotoImport.addDefaultImportFolder(SYNC_CONTEXT, imageFolders.split(","), Constant.TYPE_IMAGE);
+//		PhotoImport.addDefaultImportFolder(SYNC_CONTEXT, imageFolders.split(","), Constant.TYPE_IMAGE);
 	}
 	private void ScanVideoFolder() {
 		//Scan Image Folder
@@ -42,7 +45,14 @@ public class Starter extends Application {
 				videoFolders = videoFolders.substring(0, videoFolders.length()-1);
 			}
 		}
-		PhotoImport.addDefaultImportFolder(SYNC_CONTEXT, videoFolders.split(","), Constant.TYPE_VIDEO);
+//		PhotoImport.addDefaultImportFolder(SYNC_CONTEXT, videoFolders.split(","), Constant.TYPE_VIDEO);
+	}
+	private void initialDirectory() {
+		File dir = Environment.getExternalStorageDirectory();
+		File imageFileDir = null;
+		imageFileDir = new File(dir, Constant.APP_FOLDER);
+		if (!imageFileDir.exists())
+			imageFileDir.mkdir();
 	}
 
 }

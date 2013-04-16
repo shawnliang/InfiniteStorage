@@ -11,8 +11,8 @@ public class ServersTable implements BaseColumns {
 	public static final Uri SERVER_URI = Uri.parse("content://"
 			+ SyncProvider.AUTHORITY + "/" + SERVERS_NAME);
 	public static final Uri CONTENT_URI = SERVER_URI;
-	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.wammer.sync.server";
-	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.wammer.sync.server";
+	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.wammer.sync.servers";
+	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.wammer.sync.servers";
 	public static final String DEFAULT_SORT_ORDER = ServersTable.COLUMN_SERVER_NAME+" DESC";
 
 	public static final String TABLE_NAME = "Servers";
