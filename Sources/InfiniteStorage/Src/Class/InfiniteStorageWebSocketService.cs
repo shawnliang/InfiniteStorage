@@ -28,7 +28,15 @@ namespace InfiniteStorage
 			// TODO: remove hard code
 			storage.setDeviceName("fakeDevName");
 
-			handler = new ProtocolHanlder(new ProtocolContext(new TempFileFactory(MyFileFolder.Temp), storage, new UnconnectedState()) { SendText = this.Send });
+			var ctx = new ProtocolContext(new TempFileFactory(MyFileFolder.Temp), storage, new UnconnectedState()) { SendText = this.Send };
+			ctx.OnConnectAccepted += new EventHandler<WebsocketEventArgs>(ctx_OnConnectAccepted);
+
+			handler = new ProtocolHanlder(ctx);
+		}
+
+		void ctx_OnConnectAccepted(object sender, WebsocketEventArgs e)
+		{
+			ConnectedClientCollection.Instance.Add(e.ctx);
 		}
 
 		private static IDirOrganizer getDirOrganizer()
@@ -59,11 +67,13 @@ namespace InfiniteStorage
 			catch (WebsocketProtocol.ProtocolErrorException err)
 			{
 				logger.Warn("Protocol error. Close connection.", err);
+				ConnectedClientCollection.Instance.Remove((ProtocolContext)handler.ctx);
 				Stop(WebSocketSharp.Frame.CloseStatusCode.PROTOCOL_ERROR, err.Message);
 			}
 			catch (Exception err)
 			{
 				logger.Warn("Error handing websocket data", err);
+				ConnectedClientCollection.Instance.Remove((ProtocolContext)handler.ctx);
 				Stop(WebSocketSharp.Frame.CloseStatusCode.SERVER_ERROR, err.Message);
 			}
 		}
@@ -77,13 +87,14 @@ namespace InfiniteStorage
 		{
 			logger.Warn("Error occured: " + e.Message);
 			handler.OnError();
+			ConnectedClientCollection.Instance.Remove((ProtocolContext)handler.ctx);
 			base.onError(sender, e);
 		}
 
 		protected override void onClose(object sender, CloseEventArgs e)
 		{
 			handler.Clear();
-			base.onClose(sender, e);
+			ConnectedClientCollection.Instance.Remove((ProtocolContext)handler.ctx);
 		}
 	}
 }

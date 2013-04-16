@@ -9,7 +9,7 @@ namespace InfiniteStorage
 {
 	public class ProtocolHanlder
 	{
-		IProtocolHandlerContext ctx;
+		public IProtocolHandlerContext ctx { get; private set; }
 
 		public ProtocolHanlder(ITempFileFactory tempfileFactory, IFileStorage storage, AbstractProtocolState initialState)
 		{

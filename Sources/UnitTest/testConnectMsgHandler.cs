@@ -34,6 +34,9 @@ namespace UnitTest
 			string sentTxt = null;
 			ctx.SendText = (txt) => sentTxt = txt;
 
+			ProtocolContext evtCtx = null;
+			ctx.OnConnectAccepted += (sr, ev) => { evtCtx = ev.ctx; };
+
 			var util = new Mock<IConnectMsgHandlerUtil>();
 			util.Setup(x => x.GetClientInfo("id1")).Returns(new Device
 			{
@@ -59,6 +62,8 @@ namespace UnitTest
 			Assert.AreEqual(100, o["photo_count"]);
 			Assert.AreEqual(200, o["video_count"]);
 			Assert.AreEqual(300, o["audio_count"]);
+
+			Assert.AreEqual(ctx, evtCtx);
 		}
 
 
@@ -67,6 +72,9 @@ namespace UnitTest
 		{
 			string sentTxt = null;
 			ctx.SendText = (txt) => sentTxt = txt;
+
+			ProtocolContext evtCtx = null;
+			ctx.OnConnectAccepted += (sr, ev) => { evtCtx = ev.ctx; };
 
 			var util = new Mock<IConnectMsgHandlerUtil>();
 			util.Setup(x => x.GetClientInfo("id1")).Returns(null as Device);
@@ -89,6 +97,8 @@ namespace UnitTest
 			Assert.AreEqual(0, o["photo_count"]);
 			Assert.AreEqual(0, o["video_count"]);
 			Assert.AreEqual(0, o["audio_count"]);
+
+			Assert.AreEqual(evtCtx, ctx);
 		}
 	}
 }

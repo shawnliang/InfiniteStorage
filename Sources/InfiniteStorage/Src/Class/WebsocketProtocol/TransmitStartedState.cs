@@ -6,7 +6,7 @@ using System.IO;
 
 namespace InfiniteStorage.WebsocketProtocol
 {
-	class TransmitStartedState : AbstractProtocolState
+	public class TransmitStartedState : AbstractProtocolState
 	{
 		public override void handleBinaryData(ProtocolContext ctx, byte[] data)
 		{
@@ -32,6 +32,7 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			log4net.LogManager.GetLogger("wsproto").Debug("file-end: " + ctx.fileCtx.file_name);
 
+			ctx.recved_files++;
 			ctx.SetState(new TransmitInitState());
 		}
 	}

@@ -16,8 +16,8 @@ namespace InfiniteStorage.WebsocketProtocol
 		public DateTime datetime { get; set; }
 		public string device_name { get; set; }
 		public string device_id { get; set; }
-		public int transfer_count { get; set; }
-
+		public long transfer_count { get; set; }
+		public long transfer_size { get; set; }
 
 		public bool isFileStartCmd()
 		{

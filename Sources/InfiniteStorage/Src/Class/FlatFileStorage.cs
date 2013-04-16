@@ -57,7 +57,7 @@ namespace InfiniteStorage
 			if (string.IsNullOrEmpty(deviceName))
 				throw new InvalidOperationException("should setDeviceName() first");
 
-			string baseDir = "photoLocation";
+			string baseDir = photoLocation;
 
 			if (!string.IsNullOrEmpty(file.mimetype))
 			{

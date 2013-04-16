@@ -47,6 +47,8 @@ namespace InfiniteStorage.WebsocketProtocol
 					video_count = clientInfo.video_count,
 					audio_count = clientInfo.audio_count
 				};
+
+			ctx.raiseOnConnectAccepted();
 			ctx.SendText(JsonConvert.SerializeObject(response));
 		}
 	}

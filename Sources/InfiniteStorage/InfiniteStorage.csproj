@@ -69,7 +69,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\Class\ConnectedClientCollection.cs" />
     <Compile Include="Src\Class\FileMover.cs" />
+    <Compile Include="Src\Class\IConnectionStatus.cs" />
     <Compile Include="Src\Class\MyFileFolder.cs" />
     <Compile Include="Src\Class\MediaLibrary.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ConnectedState.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="Src\Class\IProtocolHandlerContext.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\IConnectMsgHandlerUtil.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\UnconnectedState.cs" />
+    <Compile Include="Src\Class\WebsocketProtocol\WebsocketEventArgs.cs" />
     <Compile Include="Src\Model\Model.cs" />
     <Compile Include="Src\Model\MyDbContext.cs" />
     <Compile Include="Src\UIControl\BackupLocationControl.cs">

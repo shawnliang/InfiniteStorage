@@ -7,7 +7,7 @@ namespace InfiniteStorage.WebsocketProtocol
 {
 	public delegate void SendTextDelegate(string data);
 
-	public class ProtocolContext : IProtocolHandlerContext
+	public class ProtocolContext : IProtocolHandlerContext, IConnectionStatus
 	{
 		private AbstractProtocolState state;
 		public FileContext fileCtx { get; set; }
@@ -15,10 +15,14 @@ namespace InfiniteStorage.WebsocketProtocol
 		public string device_name { get; set; }
 		public string device_id { get; set; }
 
+		public long total_files { get; set; }
+		public long recved_files { get; set; }
+
 		public IFileStorage storage { get; private set; }
 		public ITempFileFactory factory { get; private set; }
 
 		public SendTextDelegate SendText { get; set; }
+		public event EventHandler<WebsocketEventArgs> OnConnectAccepted;
 
 		public ProtocolContext(ITempFileFactory factory, IFileStorage storage, AbstractProtocolState initialState)
 		{
@@ -66,5 +70,15 @@ namespace InfiniteStorage.WebsocketProtocol
 				temp_file = null;
 			}
 		}
+
+		public void raiseOnConnectAccepted()
+		{
+			var handler = OnConnectAccepted;
+			if (handler != null)
+			{
+				handler(this, new WebsocketEventArgs(this));
+			}
+		}
+
 	}
 }

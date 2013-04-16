@@ -193,5 +193,22 @@ namespace UnitTest
 			Assert.AreEqual("guid1", ctx.device_id);
 
 		}
+
+		[TestMethod]
+		public void IncrementRecvedFilesWhenFileEnd()
+		{
+			var tempFactory = new Mock<ITempFileFactory>();
+			var fileStorage = new Mock<IFileStorage>();
+
+			var ctx = new ProtocolContext(tempFactory.Object, fileStorage.Object, new TransmitStartedState());
+
+			var tempFile = new Mock<ITempFile>();
+			ctx.temp_file = tempFile.Object;
+			ctx.fileCtx = new FileContext { file_name = "file1.jpg" };
+
+			ctx.handleFileEndCmd(new TextCommand { action = "file-end", file_name = "file1.jpg" });
+
+			Assert.AreEqual(1, ctx.recved_files);
+		}
 	}
 }

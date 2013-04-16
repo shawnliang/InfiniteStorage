@@ -19,6 +19,7 @@ namespace InfiniteStorage
 		static BonjourService m_bonjourService;
 		static NotifyIcon m_notifyIcon;
 		static NotifyIconController m_notifyIconController;
+		static Timer m_NotifyTimer;
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -39,6 +40,13 @@ namespace InfiniteStorage
 				return;
 
 			initNotifyIcon();
+
+
+			m_NotifyTimer = new Timer();
+			m_NotifyTimer.Tick += new EventHandler(m_NotifyTimer_Tick);
+			m_NotifyTimer.Interval = 1000;
+			m_NotifyTimer.Start();
+
 
 			var port = (ushort)13895;
 			WebSocketServer<InfiniteStorageWebSocketService> ws_server = null;
@@ -72,6 +80,34 @@ namespace InfiniteStorage
 			ws_server.Stop();
 		}
 
+		static void m_NotifyTimer_Tick(object sender, EventArgs e)
+		{
+			var connections = ConnectedClientCollection.Instance.GetAll();
+
+			// remove all status items
+			List<ToolStripItem> toRemove = new List<ToolStripItem>();
+			for (int i = 0; i < m_notifyIcon.ContextMenuStrip.Items.Count; i++)
+			{
+				var item = m_notifyIcon.ContextMenuStrip.Items[i];
+				if (item.Tag != null)
+					toRemove.Add(item);
+			}
+			foreach (var item in toRemove)
+				m_notifyIcon.ContextMenuStrip.Items.Remove(item);
+
+
+
+			// add new status items
+			foreach (var conn in connections)
+			{
+				var item = new ToolStripMenuItem(string.Format("{0}: {1}/{2}", conn.device_name, conn.recved_files, conn.total_files));
+				item.Tag = conn;
+				item.Enabled = false;
+				m_notifyIcon.ContextMenuStrip.Items.Insert(2, item);
+			}
+
+		}
+
 		private static DialogResult showFirstUseWizard()
 		{
 			var firstUseDialog = new FirstUseDialog();
@@ -85,18 +121,21 @@ namespace InfiniteStorage
 			m_notifyIcon.Icon = Resources.product_icon;
 			m_notifyIconController = new NotifyIconController();
 
-			m_notifyIcon.ContextMenu = new ContextMenu(
-				new MenuItem[] {
-					new MenuItem(Resources.TrayMenuItem_OpenBackupFolder, new MenuItem[] {
-						new MenuItem("Photos", m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked),
-						new MenuItem("Videos", m_notifyIconController.OnOpenVideoBackupFolderMenuItemClicked),
-						new MenuItem("Audios", m_notifyIconController.OnOpenAudioBackupFolderMenuItemClicked)
-					}),
-					new MenuItem(Resources.TrayMenuItem_Preferences, m_notifyIconController.OnPreferencesMenuItemClicked),
-					new MenuItem(Resources.TrayMenuItem_GettingStarted, m_notifyIconController.OnGettingStartedMenuItemClicked),
-					new MenuItem("-"),
-					new MenuItem(Resources.TrayMenuItem_Quit, m_notifyIconController.OnQuitMenuItemClicked),
-				});
+			m_notifyIcon.ContextMenuStrip = new ContextMenuStrip();
+
+			var openFolderItem = new ToolStripMenuItem(Resources.TrayMenuItem_OpenBackupFolder, null, new ToolStripItem[]{
+				new ToolStripMenuItem("Photo", null, m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked),
+				new ToolStripMenuItem("Videos", null, m_notifyIconController.OnOpenVideoBackupFolderMenuItemClicked),
+				new ToolStripMenuItem("Audios", null, m_notifyIconController.OnOpenAudioBackupFolderMenuItemClicked),
+			});
+			m_notifyIcon.ContextMenuStrip.Items.Add(openFolderItem);
+
+			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Preferences, null, m_notifyIconController.OnPreferencesMenuItemClicked);
+
+			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_GettingStarted, null, m_notifyIconController.OnGettingStartedMenuItemClicked);
+
+			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Quit, null, m_notifyIconController.OnQuitMenuItemClicked);
+
 			m_notifyIcon.Visible = true;
 
 			m_notifyIcon.ShowBalloonTip(3000, Resources.ProductName, "超屌備份在此為您服務", ToolTipIcon.None);
