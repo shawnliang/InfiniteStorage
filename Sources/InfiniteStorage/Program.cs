@@ -7,6 +7,10 @@ using WebSocketSharp.Server;
 using log4net;
 using InfiniteStorage.Properties;
 using System.IO;
+using System.Configuration;
+using System.Reflection;
+using System.Data.SQLite;
+using InfiniteStorage.Model;
 
 namespace InfiniteStorage
 {
@@ -27,8 +31,9 @@ namespace InfiniteStorage
 			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
 
 			Log4netConfigure.InitLog4net();
-
 			log4net.LogManager.GetLogger("main").Debug("==== program started ====");
+
+			MyDbContext.InitialzeDatabaseSchema();
 
 			if (showFirstUseWizard() != DialogResult.OK)
 				return;

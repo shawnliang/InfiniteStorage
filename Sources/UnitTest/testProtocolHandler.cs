@@ -159,11 +159,9 @@ namespace UnitTest
 			var connectMSg =new TextCommand{ action = "connect", device_name = "de", device_id = "id"};
 
 
-			var tempFactory = new Mock<ITempFileFactory>();
-			var fileStorage = new Mock<IFileStorage>();
 			var ctx = new Mock<IProtocolHandlerContext>();
 			ctx.Setup(x=>x.handleConnectCmd(It.Is<TextCommand>( cmd => cmd.action == "connect" && cmd.device_id == "id" && cmd.device_name == "de"))).Verifiable();
-			var protoHdr = new ProtocolHanlder(tempFactory.Object, storage.Object, ctx.Object);
+			var protoHdr = new ProtocolHanlder(ctx.Object);
 
 			protoHdr.HandleMessage(new MessageEventArgs(JsonConvert.SerializeObject(connectMSg)));
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using InfiniteStorage.Model;
 
 namespace InfiniteStorage.WebsocketProtocol
 {
@@ -27,7 +28,7 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			if (clientInfo == null)
 			{
-				clientInfo = new ClientInfo
+				clientInfo = new Device
 				{
 					device_name = cmd.device_name,
 					device_id = cmd.device_id,

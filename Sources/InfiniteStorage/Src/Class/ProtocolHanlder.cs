@@ -16,7 +16,7 @@ namespace InfiniteStorage
 			this.ctx = new ProtocolContext(tempfileFactory, storage, initialState);
 		}
 
-		public ProtocolHanlder(ITempFileFactory tempfileFactory, IFileStorage storage, IProtocolHandlerContext ctx)
+		public ProtocolHanlder(IProtocolHandlerContext ctx)
 		{
 			this.ctx = ctx;
 		}

@@ -28,7 +28,7 @@ namespace InfiniteStorage
 			// TODO: remove hard code
 			storage.setDeviceName("fakeDevName");
 
-			handler = new ProtocolHanlder(new TempFileFactory(MyFileFolder.Temp), storage, new TransmitInitState());
+			handler = new ProtocolHanlder(new ProtocolContext(new TempFileFactory(MyFileFolder.Temp), storage, new UnconnectedState()) { SendText = this.Send });
 		}
 
 		private static IDirOrganizer getDirOrganizer()

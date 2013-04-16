@@ -4,14 +4,22 @@ using System.Linq;
 using System.Text;
 using InfiniteStorage.Properties;
 using System.IO;
+using InfiniteStorage.Model;
 
 namespace InfiniteStorage.WebsocketProtocol
 {
 	class ConnectMsgHandlerUtil : IConnectMsgHandlerUtil
 	{
-		public ClientInfo GetClientInfo(string device_id)
+		public Device GetClientInfo(string device_id)
 		{
-			throw new NotImplementedException();
+			using (var db = new MyDbContext())
+			{
+				var query = from dev in db.Object.Devices
+							where dev.device_id == device_id
+							select dev;
+
+				return query.FirstOrDefault();
+			}
 		}
 
 		public string GetServerId()
@@ -30,9 +38,13 @@ namespace InfiniteStorage.WebsocketProtocol
 			return drive.AvailableFreeSpace;
 		}
 
-		public void Save(ClientInfo clientInfo)
+		public void Save(Device clientInfo)
 		{
-			throw new NotImplementedException();
+			using (var db = new MyDbContext())
+			{
+				db.Object.Devices.Add(clientInfo);
+				db.Object.SaveChanges();
+			}
 		}
 	}
 }
