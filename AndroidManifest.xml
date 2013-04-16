@@ -4,12 +4,22 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-   <uses-sdk android:minSdkVersion="8"/>
-   
-   <uses-permission android:required="true" android:name="android.permission.INTERNET"/>
-   <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
-   
-   <!-- application
+    <uses-sdk android:minSdkVersion="9" />
+
+    <uses-permission
+        android:name="android.permission.INTERNET"
+        android:required="true" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!--
+    application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -25,21 +35,44 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application -->
-    
-    <application 
+    </application
+    -->
+
+    <application
+        android:name="com.waveface.sync.Starter"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".DnssdDiscovery"
-	            android:configChanges="orientation|keyboardHidden|screenSize"
-	            android:label="@string/app_name">
+        <activity
+            android:name="com.waveface.sync.ui.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.waveface.sync.ui.DnssdDiscovery"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.waveface.sync.ui.BonjourServersActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait" >
+        </activity>        
+        <provider
+            android:name="com.waveface.sync.provider.SyncProvider"
+            android:authorities="com.waveface.sync"
+            android:exported="false"
+            android:syncable="true" />
 
     </application>
+
 </manifest>

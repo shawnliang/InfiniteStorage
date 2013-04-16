@@ -1,15 +1,17 @@
 package com.waveface.sync;
 
 import java.util.Date;
+import java.util.TreeSet;
 
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.waveface.sync.entity.ServerEntity;
 
 public class RuntimePlayer {
 	private static final String TAG = RuntimePlayer.class.getSimpleName();
 	private static RuntimePlayer instance;
-
+	public static TreeSet<ServerEntity> servers = new TreeSet<ServerEntity>();
 	public static Context mContext;
 	public static boolean IsLogined = false;
 	public static boolean IsLogining = false; // should combine with is logined
@@ -38,6 +40,8 @@ public class RuntimePlayer {
 	public static boolean LocationImporting = false;
 	public static boolean NotificationForUploadThumbShow = false;
 	public static boolean SummaryRefreshing = false;
+	public static boolean isBackuping = false;
+	
 
 
 	public static boolean HasGap = false;

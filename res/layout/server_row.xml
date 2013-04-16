@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="1dp" 
+    android:layout_marginLeft="1dp" 
+    android:layout_marginRight="1dp" 
+    android:layout_marginBottom="30dp"     
+    android:background="#000000">
+    <ImageView
+        android:id="@+id/imagePC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_offline" />
+
+    <TextView
+       android:id="@+id/textBackupDays"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_below="@+id/imagePC"
+       android:layout_alignLeft="@+id/imagePC"
+       android:layout_marginTop="3dp"
+       android:layout_marginBottom="3dp"       
+       android:text="From 2009/01/01 to 2010/01/02"       
+       android:textColor="#FFFFFF"
+       />
+    
+    <TextView
+       android:id="@+id/textFreespace"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_below="@+id/textBackupDays"
+       android:layout_alignLeft="@+id/imagePC"
+       android:layout_marginTop="3dp"
+       android:layout_marginBottom="3dp"       
+       android:text="FreeSpace:500TB"       
+       android:textColor="#FFFFFF"
+       />
+    <TextView
+       android:id="@+id/textFolder"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_below="@+id/textFreespace"
+       android:layout_alignLeft="@+id/imagePC"
+       android:layout_marginTop="3dp"
+       android:layout_marginBottom="3dp"       
+       android:text="Folder:C:/infiniteStoragr/" 
+       android:textColor="#FFFFFF"      
+       />
+    <TextView
+       android:id="@+id/textBackupInfo"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_below="@+id/textFolder"
+       android:layout_alignLeft="@+id/imagePC"
+       android:layout_marginTop="3dp"
+       android:layout_marginBottom="10dp"       
+       android:text="Backuped: 300 photos,3videos,0 audio"
+       android:textColor="#FFFFFF"       
+       />
+
+    <TextView
+        android:id="@+id/textBackupPC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imagePC"
+        android:layout_alignTop="@+id/imagePC"
+        android:layout_toRightOf="@+id/imagePC"        
+        android:layout_marginLeft="5dp"
+        android:text="G-SO&apos;s PC(Backuping....)"
+        android:textSize="14sp" 
+        android:textColor="#FFFFFF"/>
+
+    <ProgressBar
+        android:id="@+id/pbBackup"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_toRightOf="@+id/textBackupPC"
+        android:layout_alignBottom="@+id/imagePC"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/imagePC" />
+
+</RelativeLayout>

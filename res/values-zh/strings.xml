@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Welcome to Infinite Storage ShaketoSync!</string>
+    <string name="app_name">大屌備份</string>
+    <string name="title_activity_bonjour_servers">BonjourServers</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="file_scanning">掃瞄檔案中..</string>
+    <string name="clean_space">清理</string>    
+    <string name="period">從 %1$s 到 %2$s</string>    
+    
+    <string name="backuping">備份中...</string>    
+    <string name="offline">離線</string>    
+    
+    <string name="total">總共</string>    
+    <string name="videos">總共 %1$d 個影像檔</string>    
+    <string name="audio">總共 %1$d 個聲音檔</string>    
+    <string name="photos">總共 %1$d 帳照片</string>        
+    
+    <!--SERVERS-->
+    <string name="backup_period">備份日期從 %1$s 到 %2$s</string>    
+    <string name="free_space">目錄空間 %1$s</string>    
+    <string name="backup_folder">備份目錄 %1$s</string>    
+    <string name="backup_info">已備份 %1$d 帳照片, %2$d 個影像檔, %3$d 個聲音檔</string>
+    <string name="choose_server">選擇一台電腦</string>
+    
+</resources>

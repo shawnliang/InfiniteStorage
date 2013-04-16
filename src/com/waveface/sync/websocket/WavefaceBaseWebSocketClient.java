@@ -46,6 +46,8 @@ import org.jwebsocket.kit.WebSocketHandshake;
 import org.jwebsocket.kit.WebSocketProtocolAbstraction;
 import org.jwebsocket.kit.WebSocketSubProtocol;
 
+import android.util.Log;
+
 import com.waveface.sync.RuntimePlayer;
 
 public class WavefaceBaseWebSocketClient implements WebSocketClient {
@@ -313,6 +315,19 @@ public class WavefaceBaseWebSocketClient implements WebSocketClient {
 		}
 	}
 
+	public void changeNegotiatedSubProtocol(boolean isBinary){
+		if(isBinary){
+			mNegotiatedSubProtocol = new WebSocketSubProtocol(
+					JWebSocketCommonConstants.WS_SUBPROT_BINARY,
+					WebSocketEncoding.BINARY);
+		}
+		else{
+			mNegotiatedSubProtocol = new WebSocketSubProtocol(
+					JWebSocketCommonConstants.WS_SUBPROT_DEFAULT,
+					JWebSocketCommonConstants.WS_ENCODING_DEFAULT);			
+		}
+	}
+	
 	@Override
 	public void send(byte[] aData) throws WebSocketException {
 		synchronized (mWriteLock) {
@@ -362,8 +377,7 @@ public class WavefaceBaseWebSocketClient implements WebSocketClient {
 		}
 		try {
 			if (isHixie()) {
-				if (WebSocketEncoding.BINARY.equals(mNegotiatedSubProtocol
-						.getEncoding())) {
+				if (WebSocketEncoding.BINARY.equals(mNegotiatedSubProtocol.getEncoding())) {
 					mOut.write(0x80);
 					// what if frame is longer than 255 characters (8bit?) Refer
 					// to IETF spec!

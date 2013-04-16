@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="libs/jWebSocketJavaSEClient-1.0.jar"/>
 	<classpathentry kind="lib" path="libs/gson-2.0.jar"/>
 	<classpathentry kind="lib" path="libs/jmdns.jar"/>
+	<classpathentry kind="lib" path="libs/joda-time-2.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
