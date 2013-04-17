@@ -177,8 +177,10 @@ namespace UnitTest
 			var tempFactory = new Mock<ITempFileFactory>();
 			var fileStorage = new Mock<IFileStorage>();
 			var connectHandler = new Mock<IConnectMsgHandler>();
-			connectHandler.Setup(x => x.HandleConnectMsg(connectMsg, It.IsAny<ProtocolContext>())).Verifiable();
-			
+			var retState = new Mock<AbstractProtocolState>();
+
+			connectHandler.Setup(x => x.HandleConnectMsg(connectMsg, It.IsAny<ProtocolContext>())).Returns(retState.Object).Verifiable();
+
 			var initState = new UnconnectedState();
 			initState.handler = connectHandler.Object;
 			var ctx = new ProtocolContext(tempFactory.Object, storage.Object, initState);
@@ -188,7 +190,7 @@ namespace UnitTest
 			ctx.handleConnectCmd(connectMsg);
 
 			connectHandler.VerifyAll();
-			Assert.IsTrue(ctx.GetState() is TransmitInitState);
+			Assert.AreEqual(retState.Object, ctx.GetState());
 			Assert.AreEqual("dev", ctx.device_name);
 			Assert.AreEqual("guid1", ctx.device_id);
 

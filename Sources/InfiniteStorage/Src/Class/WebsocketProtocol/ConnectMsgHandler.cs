@@ -9,7 +9,7 @@ namespace InfiniteStorage.WebsocketProtocol
 {
 	public interface IConnectMsgHandler
 	{
-		void HandleConnectMsg(TextCommand cmd, ProtocolContext ctx);
+		AbstractProtocolState HandleConnectMsg(TextCommand cmd, ProtocolContext ctx);
 	}
 
 	public class ConnectMsgHandler : IConnectMsgHandler
@@ -21,7 +21,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			this.Util = new ConnectMsgHandlerUtil();
 		}
 
-		public void HandleConnectMsg(TextCommand cmd, ProtocolContext ctx)
+		public AbstractProtocolState HandleConnectMsg(TextCommand cmd, ProtocolContext ctx)
 		{
 			var clientInfo = Util.GetClientInfo(cmd.device_id);
 
@@ -50,6 +50,9 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			ctx.raiseOnConnectAccepted();
 			ctx.SendText(JsonConvert.SerializeObject(response));
+
+
+			return new TransmitInitState();
 		}
 	}
 }

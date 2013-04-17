@@ -52,7 +52,7 @@ namespace UnitTest
 
 			var hdl = new ConnectMsgHandler();
 			hdl.Util = util.Object;
-			hdl.HandleConnectMsg(new TextCommand { action = "connect", device_name = "dev", device_id = "id1", transfer_count = 111 }, ctx);
+			var newState = hdl.HandleConnectMsg(new TextCommand { action = "connect", device_name = "dev", device_id = "id1", transfer_count = 111 }, ctx);
 
 			JObject o = JObject.Parse(sentTxt);
 			Assert.AreEqual("accept", o["action"]);
@@ -64,6 +64,7 @@ namespace UnitTest
 			Assert.AreEqual(300, o["audio_count"]);
 
 			Assert.AreEqual(ctx, evtCtx);
+			Assert.IsTrue(newState is TransmitInitState);
 		}
 
 
@@ -87,7 +88,7 @@ namespace UnitTest
 
 			var hdl = new ConnectMsgHandler();
 			hdl.Util = util.Object;
-			hdl.HandleConnectMsg(new TextCommand { action = "connect", device_name = "dev", device_id = "id1", transfer_count = 111 }, ctx);
+			var newState = hdl.HandleConnectMsg(new TextCommand { action = "connect", device_name = "dev", device_id = "id1", transfer_count = 111 }, ctx);
 
 			JObject o = JObject.Parse(sentTxt);
 			Assert.AreEqual("accept", o["action"]);
@@ -99,6 +100,7 @@ namespace UnitTest
 			Assert.AreEqual(0, o["audio_count"]);
 
 			Assert.AreEqual(evtCtx, ctx);
+			Assert.IsTrue(newState is TransmitInitState);
 		}
 	}
 }
