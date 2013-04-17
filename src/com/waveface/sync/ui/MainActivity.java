@@ -23,7 +23,6 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
@@ -313,6 +312,26 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
     }
+    
+	@Override
+    protected void onStop() {
+	if (jmdns != null) {
+        if (mListener != null) {
+            jmdns.removeServiceListener(Constant.INFINTE_STORAGE, mListener);
+            mListener = null;
+        }
+        jmdns.unregisterAllServices();
+        try {
+            jmdns.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        jmdns = null;
+	}
+    lock.release();
+	super.onStop();
+}
+
     
     @Override
     protected void onDestroy() {
