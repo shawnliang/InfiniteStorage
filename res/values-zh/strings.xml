@@ -15,7 +15,7 @@
     
     <string name="total">總共</string>    
     <string name="videos">總共 %1$d 個影像檔</string>    
-    <string name="audio">總共 %1$d 個聲音檔</string>    
+    <string name="audios">總共 %1$d 個聲音檔</string>    
     <string name="photos">總共 %1$d 帳照片</string>        
     
     <!--SERVERS-->

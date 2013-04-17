@@ -130,25 +130,17 @@ public class SyncProvider extends ContentProvider {
 			break;
 		case BACKUPED_SERVERS:
 			tableName = BackupedServersTable.TABLE_NAME;
-			//SEND CUMTOMIZED NOTIFY INFO
-			sendCustomizedNotifyChangedInfo(BACKUPED_SERVERS);
 			break;
 		case BACKUPED_SERVERS_ID:
 			tableName = BackupedServersTable.TABLE_NAME;
 			where = (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
-			//SEND CUMTOMIZED NOTIFY INFO
-			sendCustomizedNotifyChangedInfo(BACKUPED_SERVERS_ID);
 			break;			
 		case BONJOUR_SERVERS:
 			tableName = BonjourServersTable.TABLE_NAME;
-			//SEND CUMTOMIZED NOTIFY INFO
-			sendCustomizedNotifyChangedInfo(BONJOUR_SERVERS);
 			break;
 		case BONJOUR_SERVERS_ID:
 			tableName = BonjourServersTable.TABLE_NAME;
 			where = (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
-			//SEND CUMTOMIZED NOTIFY INFO
-			sendCustomizedNotifyChangedInfo(BONJOUR_SERVERS_ID);
 			break;			
 		case IMPORTS:
 			tableName = ImportTable.TABLE_NAME;
