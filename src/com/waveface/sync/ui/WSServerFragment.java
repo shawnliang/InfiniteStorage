@@ -172,7 +172,6 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 				    	editor.commit();
 						ServersLogic.startBackuping(context, mServer);
 						refreshUI();
-						//Toast.makeText(context, "CONNECT TO "+entity.serverName, Toast.LENGTH_LONG).show();
 					}
 					else if(response.equals(Constant.WS_ACTION_DENIED)){
 						mServerConnected = false;
@@ -181,11 +180,9 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 							mProgressDialog.dismiss();
 						}
 						openDialog(context,Constant.WS_ACTION_DENIED);
-						//Toast.makeText(context, "DENIED BY SERVER!", Toast.LENGTH_LONG).show();
 					}				
 					else if(response.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
 						openDialog(context,Constant.WS_ACTION_WAIT_FOR_PAIR);
-						//Toast.makeText(context, "WAITING FOR PAIR......", Toast.LENGTH_LONG).show();
 					}
 				}
 			}

@@ -32,7 +32,7 @@ public class RuntimeConfig{
 	public static boolean NotificationForUploadThumbShow = false;
 	public static boolean SummaryRefreshing = false;
 	public static boolean isBackuping = false;
-	
+	public static int NETWORK_STATE;
 
 
 	public static Gson GSON = new Gson();

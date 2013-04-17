@@ -140,7 +140,7 @@ public class MainActivity extends Activity {
 	            public void run() {
 	                setUp();
 	            }
-	            }, 10);        
+	            }, 100);        
 		}
 	}
 	
@@ -192,7 +192,7 @@ public class MainActivity extends Activity {
 				String response = intent.getStringExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT);
 				if(response!=null){
 					if(response.equals(Constant.WS_ACTION_BACKUP_INFO)){
-						refreshServerStatus();
+						//refreshServerStatus();
 					}
 					else if(response.equals(Constant.WS_ACTION_ACCEPT)){
 						if(mAutoConnectMode){
@@ -219,8 +219,8 @@ public class MainActivity extends Activity {
 			else if(Constant.ACTION_WS_BROKEN_NOTIFY.equals(action)){
 				//Update all Backuoed Server to offline
 				ServersLogic.setAllBackupedServersOffline(context);
-				refreshServerStatus();
 			}
+			refreshServerStatus();
 		}
 	};
     private void setUp() {

@@ -213,7 +213,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		public void processClosed(WebSocketClientEvent aEvent) {
 			RuntimeConfig.OnWebSocketOpened = false;
 			RuntimeConfig.OnWebSocketStation = false;
-        	Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
+        	Intent intent = new Intent(Constant.ACTION_WS_BROKEN_NOTIFY);
             mContext.sendBroadcast(intent);			
 		}
 

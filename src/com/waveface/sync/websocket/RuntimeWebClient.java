@@ -166,7 +166,6 @@ public class RuntimeWebClient {
 		@Override
 		public void processClosed(WebSocketClientEvent aEvent) {
 			Log.d(TAG, "processClosed");
-			RuntimeConfig.OnWebSocketOpened = false;
 		}
 
 		@Override

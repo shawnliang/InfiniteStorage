@@ -24,7 +24,7 @@ public class Constant {
 	public static final int EVENT_BONJOUR_RESOLVED = 1;
 	public static final int EVENT_BONJOUR_REMOVED = 2;
 	public static final int EVENT_BONJOUR_ADDED = 3;
-	
+
 	//SERVER STATUS
 	public static final String SERVER_LINKING = "1";
 	public static final String SERVER_OFFLINE = "2";	

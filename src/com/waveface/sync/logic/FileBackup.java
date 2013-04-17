@@ -20,6 +20,7 @@ import com.waveface.sync.db.BackupDetailsTable;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.db.ServerFilesView;
 import com.waveface.sync.db.BackupedServersTable;
+import com.waveface.sync.util.FileUtil;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.MediaFile;
 import com.waveface.sync.util.StringUtil;
@@ -159,6 +160,11 @@ public class FileBackup {
 				}
 				cursorDate = StringUtil.getConverDate(refCursorDate,StringUtil.ISO_8601_DATE_FORMAT);
 				Log.d(TAG, "cursorDate ==>" + cursorDate);
+				FileUtil.getFileCreateTime(mediaData);
+				if(cursorDate.startsWith("1970")){
+					cursorDate = FileUtil.getFileCreateTime(mediaData);
+					Log.d(TAG, "modified cursorDate ==>" + cursorDate);
+				}
 				Log.d(TAG, "Filename ==>" + mediaData);
 				
 				if(!duplicateFilename(context,mediaData) && !filenamesSet.contains(mediaData)){
