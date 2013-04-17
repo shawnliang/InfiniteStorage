@@ -25,4 +25,8 @@
     <string name="backup_info">已備份 %1$d 帳照片, %2$d 個影像檔, %3$d 個聲音檔</string>
     <string name="choose_server">選擇一台電腦</string>
     
+    
+    <!--EMAIL-->
+    <string name="email_subject">無限備份Windows APP下載網址</string>    
+    
 </resources>

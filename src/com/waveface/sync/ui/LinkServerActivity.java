@@ -1,6 +1,8 @@
 package com.waveface.sync.ui;
 
 
+import java.net.URLEncoder;
+
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -9,10 +11,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Html;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.ui.LinkFragmentBase.onLoginFragmentChangedListener;
+import com.waveface.sync.util.DeviceUtil;
 
 
 public class LinkServerActivity extends FragmentActivity implements
@@ -99,8 +103,17 @@ public class LinkServerActivity extends FragmentActivity implements
 
 	@Override
 	public void onSendEmail() {
-		Intent intent = new Intent(Intent.ACTION_SENDTO,
-				Uri.parse("mailto:support@waveface.com"));
+		String subject = this.getString(R.string.email_subject);
+		String content = Html.fromHtml(new StringBuilder()
+			.append("<p><b>Infinite Storage Station</b></p>")
+			.append("<a href=\"http://waveface.com/awesome\">http://waveface.com/awesome</a>")
+			.append("<small><p>More content</p></small>")
+			.toString()).toString();
+		String mailId = DeviceUtil.getEmailAccount(this);
+		String uriText = "mailto:"+mailId + 
+			    "?subject=" + URLEncoder.encode(subject) + 
+			    "&body=" + URLEncoder.encode(content);		
+		Intent intent = new Intent(Intent.ACTION_SENDTO,Uri.parse(uriText));
 		startActivity(intent);
 	}
 
