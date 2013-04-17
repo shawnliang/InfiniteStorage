@@ -43,7 +43,7 @@ public class BonjourServersActivity extends Activity implements OnClickListener{
 	@Override
 	protected void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
-		setContentView(R.layout.bonjour_servers);
+		setContentView(R.layout.first_use_bonjour_servers);
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_BONJOUR_MULTICAT_EVENT);
 		filter.addAction(Constant.ACTION_WS_SERVER_NOTIFY);		

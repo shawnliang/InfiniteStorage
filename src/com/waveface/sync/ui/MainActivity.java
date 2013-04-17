@@ -9,11 +9,13 @@ import javax.jmdns.ServiceInfo;
 import javax.jmdns.ServiceListener;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.ContentObserver;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -21,17 +23,19 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeConfig;
 import com.waveface.sync.db.BackupedServersTable;
-import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.FileBackup;
 import com.waveface.sync.logic.ServersLogic;
+import com.waveface.sync.task.BackupFilesTask;
 import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.util.Log;
+import com.waveface.sync.util.NetworkUtil;
 import com.waveface.sync.util.StringUtil;
 import com.waveface.sync.util.SystemUiHider;
 
@@ -48,8 +52,7 @@ public class MainActivity extends Activity {
     private Handler mHandler = new Handler();
     private JmDNS jmdns = null;
     private ServiceListener mListener = null;
-    private RuntimeConfig mRuntime = RuntimeConfig.getInstance();
-	private BackupedServerContentObserver mContentObserver;
+	private ServerObserver mContentObserver;
     //UI
 	private TextView mDevice;
 	private TextView mNowPeriod;
@@ -59,9 +62,17 @@ public class MainActivity extends Activity {
 	private TextView mVideoSize;
 	private TextView mAudioCount;
 	private TextView mAudioSize;
+	private ProgressDialog mProgressDialog;
 	
-	private static boolean mHasOpen = false;
-	private static boolean mIsBackuping = false;
+	//DATA 
+	private ArrayList<ServerEntity> mPairedServers ;
+	private ServerEntity mConnectedServer ;
+	private String mCondidateServerId ;
+	private String mCondidateWSLocation ;
+	
+	
+	private static boolean mAutoConnectMode = false;	
+	private static boolean mHasPopupFirstUse = false;
 	
 	//DATAS
 	private ServersAdapter mAdapter ;
@@ -103,35 +114,61 @@ public class MainActivity extends Activity {
 		mAdapter = new ServersAdapter(this,servers);
 		listview.setAdapter(mAdapter);
 
-		mContentObserver = new BackupedServerContentObserver();
+		mContentObserver = new ServerObserver();
 		getContentResolver().registerContentObserver(BackupedServersTable.BACKUPED_SERVER_URI, false, mContentObserver);
 
 		
 		IntentFilter filter = new IntentFilter();
-//		filter.addAction(Constant.ACTION_BACKUP_FILE);
+		filter.addAction(Constant.ACTION_BACKUP_FILE);
 		filter.addAction(Constant.ACTION_SCAN_FILE);	
 		filter.addAction(Constant.ACTION_WS_SERVER_NOTIFY);		
 		filter.addAction(Constant.ACTION_WS_BROKEN_NOTIFY);
 		registerReceiver(mReceiver, filter);
 
-        mHandler.postDelayed(new Runnable() {
-            public void run() {
-                setUp();
-            }
-            }, 100);
+		//SETUP BONJOUR
+		 setUp();
+		//GET PAIRED SERVERS
+		mPairedServers = ServersLogic.getBackupedServers(this);
+		if(NetworkUtil.isWifiNetworkAvailable(this)){
+			if(mPairedServers.size()!=0){
+				mAutoConnectMode = true ;
+				mProgressDialog = ProgressDialog.show(this, "",
+						getString(R.string.auto_connect));
+				mProgressDialog.setCancelable(true);
+			}
+			mHandler.postDelayed(new Runnable() {
+	            public void run() {
+	                setUp();
+	            }
+	            }, 10);        
+		}
 	}
-	private class BackupedServerContentObserver extends ContentObserver {
-
-		public BackupedServerContentObserver() {
+	
+	private void autoPairConnect(){
+		ServerEntity pairedServer = null;
+		ServerEntity bonjourServer = null;		
+		for(int i = 0 ; i < mPairedServers.size();i++){
+			pairedServer = mPairedServers.get(i);
+			bonjourServer = ServersLogic.getBonjourServerByServerId(this, pairedServer.serverId);
+			if(bonjourServer!=null && RuntimeConfig.OnWebSocketOpened == false){
+				mCondidateServerId = pairedServer.serverId;
+				mCondidateWSLocation = bonjourServer.wsLocation;
+				ServersLogic.startWSServerConnect(this, mCondidateWSLocation, mCondidateServerId);
+				mConnectedServer = bonjourServer;
+			}
+		}
+	}
+	
+	
+	private class ServerObserver extends ContentObserver {
+		public ServerObserver() {
 			super(new Handler());
 		}
-
 		@Override
 		public void onChange(boolean selfChange) {
 			Log.e(TAG, "selfChange:" +selfChange);
 			refreshServerStatus();
 		}
-
 	}
 
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -139,19 +176,44 @@ public class MainActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			Log.d(TAG, "action:" + intent.getAction());
-//			if (Constant.ACTION_BACKUP_FILE.equals(action)) {
-//				if(RuntimeConfig.isBackuping == false){
-//					RuntimeConfig.isBackuping = true;
-//					new BackupFilesTask(context).execute(new Void[]{});
-//				}
-//			}
+			if (Constant.ACTION_BACKUP_FILE.equals(action)) {
+				if(RuntimeConfig.isBackuping == false){
+					RuntimeConfig.isBackuping = true;
+					new BackupFilesTask(context).execute(new Void[]{});
+				}
+			}
 			if (Constant.ACTION_SCAN_FILE.equals(action)) {
 			    refreshLayout();
 			}
 			else if(Constant.ACTION_WS_SERVER_NOTIFY.equals(action)){
+				if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+					mProgressDialog.dismiss();
+				}
 				String response = intent.getStringExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT);
-				if(response.equals(Constant.WS_ACTION_BACKUP_INFO)){
-					refreshServerStatus();
+				if(response!=null){
+					if(response.equals(Constant.WS_ACTION_BACKUP_INFO)){
+						refreshServerStatus();
+					}
+					else if(response.equals(Constant.WS_ACTION_ACCEPT)){
+						if(mAutoConnectMode){
+							if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+								mProgressDialog.dismiss();
+							}
+							ServerEntity entity = (ServerEntity) intent.getExtras().get(Constant.EXTRA_SERVER_DATA);
+							entity.serverId = mConnectedServer.serverId;
+							entity.serverName = mConnectedServer.serverName;
+							entity.serverOS = mConnectedServer.serverOS;
+							entity.wsLocation = mConnectedServer.wsLocation;
+							//bonjourServer = ServersLogic.getBonjourServerByServerId(MainActivity.this, mCondidateServerId);
+							mConnectedServer = entity;
+					    	SharedPreferences prefs = getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);
+					    	Editor editor = prefs.edit();
+					    	editor.putString(Constant.PREF_STATION_WEB_SOCKET_URL, mConnectedServer.wsLocation);
+					    	editor.putString(Constant.PREF_SERVER_ID,mConnectedServer.serverId);
+					    	editor.commit();
+							ServersLogic.startBackuping(context, mConnectedServer);
+						}
+					}
 				}
 			}
 			else if(Constant.ACTION_WS_BROKEN_NOTIFY.equals(action)){
@@ -185,22 +247,25 @@ public class MainActivity extends Activity {
                     entity.wsLocation = "ws://"+si.getHostAddress()+":"+si.getPort();
                     Log.d(TAG, "SERVER NAME:"+entity.serverName);
                     ServersLogic.updateBonjourServer(MainActivity.this, entity);
-                    if(RuntimeConfig.OnWebSocketOpened == false ){
-	                    if(mHasOpen == false ){
-		                    Intent intent = new Intent(MainActivity.this, LinkServerActivity.class);	                    	
-		                    MainActivity.this.startActivityForResult(intent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
-		                    mHasOpen = true; 
+                    if(mAutoConnectMode == false){
+	                    if(RuntimeConfig.OnWebSocketOpened == false ){
+		                    if(mHasPopupFirstUse == false ){
+			                    Intent intent = new Intent(MainActivity.this, LinkServerActivity.class);	                    	
+			                    MainActivity.this.startActivityForResult(intent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
+			                    mHasPopupFirstUse = true; 
+		                    }
+		                    else{
+    	                    	Intent intent = new Intent(Constant.ACTION_BONJOUR_MULTICAT_EVENT);
+    		                    MainActivity.this.sendBroadcast(intent);
+		                    }
 	                    }
-	                    else{
-	                        mHandler.postDelayed(new Runnable() {
-	                            public void run() {
-	    	                    	Intent intent = new Intent(Constant.ACTION_BONJOUR_MULTICAT_EVENT);
-	    		                    MainActivity.this.sendBroadcast(intent);
-	    		                    
-	                            	}
-	                            }, 500);
-
-	                    }
+                    }
+                    else{
+                        mHandler.postDelayed(new Runnable() {
+                            public void run() {
+                            	autoPairConnect();  		                    
+                            	}
+                            }, 500);
                     }
                 }
 

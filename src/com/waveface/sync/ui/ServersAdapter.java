@@ -60,7 +60,7 @@ public class ServersAdapter  extends BaseAdapter {
 	    tv = (TextView) rowView.findViewById(R.id.textFreespace);
 	    tv.setText(context.getString(R.string.free_space,StringUtil.byteCountToDisplaySize(entity.freespace)));
 	    tv = (TextView) rowView.findViewById(R.id.textFolder);
-	    tv.setText(context.getString(R.string.backup_folder,entity.Folder));	    
+	    tv.setText(context.getString(R.string.backup_folder,entity.folder));	    
 	    tv = (TextView) rowView.findViewById(R.id.textBackupInfo);
 	    tv.setText(context.getString(R.string.backup_info,entity.photoCount,entity.videoCount,entity.audioCount));	    
 	    

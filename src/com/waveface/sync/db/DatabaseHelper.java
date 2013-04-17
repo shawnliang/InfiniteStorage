@@ -85,7 +85,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	      .append(BackupedServersTable.COLUMN_FREE_SPACE + " TEXT NOT NULL DEFAULT '0',")
 	      .append(BackupedServersTable.COLUMN_PHOTO_COUNT + " TEXT NOT NULL DEFAULT '0',")
 	      .append(BackupedServersTable.COLUMN_VIDEO_COUNT + " TEXT NOT NULL DEFAULT '0',")
-	      .append(BackupedServersTable.COLUMN_AUDIO_COUNT + " TEXT NOT NULL DEFAULT '0');");		
+	      .append(BackupedServersTable.COLUMN_AUDIO_COUNT + " TEXT NOT NULL DEFAULT '0',")		
+	      .append(BackupedServersTable.COLUMN_LAST_BACKUP_DATETIME+ " TEXT NOT NULL);");
 		createTable(db, sqlBuilder.toString(), BackupedServersTable.TABLE_NAME);
 
 		// Create BonjourServers table

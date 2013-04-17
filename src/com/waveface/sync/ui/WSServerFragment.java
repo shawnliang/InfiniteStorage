@@ -2,9 +2,12 @@ package com.waveface.sync.ui;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -26,8 +29,8 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
@@ -43,6 +46,11 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 	private ServerArrayAdapter mAdapter ; 
     private Handler mHandler = new Handler();
 	private BonjourServerContentObserver mContentObserver;
+	private ProgressDialog mProgressDialog;
+	private ProgressBar mProgressBar;
+	private TextView mTvSearch;
+	private boolean mIsPairing = false;
+	private boolean mServerConnected = false;
 
 	//DATA
 	private ServerEntity mServer ;
@@ -53,7 +61,11 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 
 	@Override
 	public void onBackPressed() {
-		mListener.goBack(TAG);
+		if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+			mProgressDialog.dismiss();
+		} else {
+			mListener.goBack(TAG);
+		}
 	}
 
 	private class BonjourServerContentObserver extends ContentObserver {
@@ -77,7 +89,7 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 			Bundle savedInstanceState) {
 
 		mRootView = (ViewGroup) inflater.inflate(
-				R.layout.bonjour_servers, null);
+				R.layout.first_use_bonjour_servers, null);
 		ListView listview = (ListView) mRootView.findViewById(R.id.listview);
 		mAdapter = new ServerArrayAdapter(getActivity(), ServersLogic.getBonjourServers(getActivity()));
 		listview.setAdapter(mAdapter);
@@ -97,6 +109,14 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 
 		btn = (Button) mRootView.findViewById(R.id.btnNext);
 		btn.setOnClickListener(this);
+		
+	    mProgressBar = (ProgressBar) mRootView.findViewById(R.id.pbSearch);
+	    mTvSearch = (TextView) mRootView.findViewById(R.id.tvSearch);
+		if(mAdapter.getCount()>0){
+		    mProgressBar.setVisibility(View.INVISIBLE);
+		    mTvSearch.setVisibility(View.INVISIBLE);
+		}
+		
         mHandler.postDelayed(new Runnable() {
             public void run() {
              	 mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
@@ -132,31 +152,73 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 			}
 			else if(Constant.ACTION_WS_SERVER_NOTIFY.equals(action)){
 				String response = intent.getStringExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT);
-				if(response.equals(Constant.WS_ACTION_ACCEPT)){
-					ServerEntity entity = (ServerEntity) intent.getExtras().get(Constant.EXTRA_SERVER_DATA);
-					entity.serverId = mServer.serverId;
-					entity.serverName = mServer.serverName;
-					entity.serverOS = mServer.serverOS;
-					entity.wsLocation = mServer.wsLocation;
-					mServer = entity;
-			    	SharedPreferences prefs = getActivity().getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);
-			    	Editor editor = prefs.edit();
-			    	editor.putString(Constant.PREF_STATION_WEB_SOCKET_URL, mServer.wsLocation);
-			    	editor.putString(Constant.PREF_SERVER_ID,mServer.serverId);
-			    	editor.commit();
-					ServersLogic.startBackuping(context, mServer);
-					Toast.makeText(context, "CONNECT TO "+entity.serverName, Toast.LENGTH_LONG).show();
+				if(response!=null){
+					if(response.equals(Constant.WS_ACTION_ACCEPT)){
+						mServerConnected = true;
+						mIsPairing = false;
+						if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+							mProgressDialog.dismiss();
+						}
+						ServerEntity entity = (ServerEntity) intent.getExtras().get(Constant.EXTRA_SERVER_DATA);
+						entity.serverId = mServer.serverId;
+						entity.serverName = mServer.serverName;
+						entity.serverOS = mServer.serverOS;
+						entity.wsLocation = mServer.wsLocation;
+						mServer = entity;
+				    	SharedPreferences prefs = getActivity().getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);
+				    	Editor editor = prefs.edit();
+				    	editor.putString(Constant.PREF_STATION_WEB_SOCKET_URL, mServer.wsLocation);
+				    	editor.putString(Constant.PREF_SERVER_ID,mServer.serverId);
+				    	editor.commit();
+						ServersLogic.startBackuping(context, mServer);
+						refreshUI();
+						//Toast.makeText(context, "CONNECT TO "+entity.serverName, Toast.LENGTH_LONG).show();
+					}
+					else if(response.equals(Constant.WS_ACTION_DENIED)){
+						mServerConnected = false;
+						mIsPairing = false;
+						if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+							mProgressDialog.dismiss();
+						}
+						openDialog(context,Constant.WS_ACTION_DENIED);
+						//Toast.makeText(context, "DENIED BY SERVER!", Toast.LENGTH_LONG).show();
+					}				
+					else if(response.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
+						openDialog(context,Constant.WS_ACTION_WAIT_FOR_PAIR);
+						//Toast.makeText(context, "WAITING FOR PAIR......", Toast.LENGTH_LONG).show();
+					}
 				}
-				else if(response.equals(Constant.WS_ACTION_DENIED)){
-					Toast.makeText(context, "DENIED BY SERVER!", Toast.LENGTH_LONG).show();
-				}				
-				else if(response.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
-					Toast.makeText(context, "WAITING FOR PAIR......", Toast.LENGTH_LONG).show();
-				}				
 			}
 		}
 	};
 
+	private void openDialog(Context context,String action){
+		String title = context.getString(R.string.title_pairing);
+		String message = null;
+		if(action.equals(Constant.WS_ACTION_DENIED)){
+			message = context.getString(R.string.pairing_denied);
+		}
+		else if(action.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
+			message = context.getString(R.string.pairing_wait);
+		}
+		
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context); 
+		// set title
+		alertDialogBuilder.setTitle(title);
+		// set dialog message
+		alertDialogBuilder
+			.setMessage(message)
+			.setCancelable(false)
+			.setPositiveButton(R.string.btn_ok,new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					dialog.cancel();
+				}
+			  }); 
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+		// show it
+		alertDialog.show();
+	}
 	@Override
 	public void onDestroy() {
 		getActivity().unregisterReceiver(mReceiver);
@@ -165,6 +227,9 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 		cr.unregisterContentObserver(mContentObserver);
 	}
     private void clickToLinkServer(ServerEntity entity){
+		mProgressDialog = ProgressDialog.show(getActivity(), "",getString(R.string.pairing));
+		mProgressDialog.setCancelable(true);
+		mIsPairing = true;
     	ServersLogic.startWSServerConnect(getActivity(), entity.wsLocation,entity.serverId);
     }
 	@Override
@@ -181,6 +246,10 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 	}
 	public void refreshUI(){
 		mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
+		if(mAdapter.getCount()>0){
+		    mProgressBar.setVisibility(View.INVISIBLE);
+		    mTvSearch.setVisibility(View.INVISIBLE);
+		}
 	}
 	
 	class ServerArrayAdapter extends BaseAdapter {
@@ -203,6 +272,7 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 		    TextView tv = (TextView) rowView.findViewById(R.id.textBackupPC);
 		    tv.setText( entity.serverName);
 		    ImageView iv = (ImageView) rowView.findViewById(R.id.imagePC);
+		    
 		    if(!TextUtils.isEmpty(entity.serverOS)){
 			    if(entity.serverOS.equals("OSX")){
 			    	iv.setImageResource(R.drawable.ic_apple);
@@ -210,6 +280,12 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 			    else{
 			    	iv.setImageResource(R.drawable.ic_windows);
 			    }
+		    }
+		    
+		    if(!TextUtils.isEmpty(entity.status) && entity.status.equals(Constant.SERVER_LINKING)){
+		    	iv = (ImageView) rowView.findViewById(R.id.ivConnected);
+		    	iv.setVisibility(View.VISIBLE);
+		    	tv.setTextColor(context.getResources().getColor(R.color.linked));
 		    }
 		    return rowView;
 		  }

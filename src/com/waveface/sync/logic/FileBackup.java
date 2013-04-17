@@ -392,5 +392,53 @@ public class FileBackup {
 				BackupDetailsTable.COLUMN_SERVER_ID+" =? AND"+
 				BackupDetailsTable.COLUMN_FILENAME+" =?" , new String[]{serverId,filename});
 	}
-	
+	public static int[] getBackupProgressInfo(Context context,String serverId){
+    	int totalCount = 0;
+    	int backupedCount = 0;
+		String lastBackupTimestamp = null;
+    	//select from serverFiles 
+		Cursor cursor = null;
+		ContentResolver cr = context.getContentResolver();
+		cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+				new String[]{
+				BackupedServersTable.COLUMN_END_DATETIME,
+				}, 
+				BackupedServersTable.COLUMN_SERVER_ID+"=?", 
+				new String[]{serverId},null);	
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			lastBackupTimestamp = cursor.getString(0); 
+		}	
+		String where = ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
+		String[] whereArgs = new String[]{Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
+
+		//GET TOTAL COUUNT
+		cursor = cr.query(ImportFilesTable.CONTENT_URI, 
+				new String[]{
+				ImportFilesTable.COLUMN_DATE}, 
+				where,whereArgs,null);	
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			totalCount = cursor.getCount();
+		}
+        //GET BACKUPED COUNT
+		if(!TextUtils.isEmpty(lastBackupTimestamp)){
+			where = ImportFilesTable.COLUMN_DATE+"<=? AND "+
+					ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
+			whereArgs = new String[]{lastBackupTimestamp,Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
+			cursor = cr.query(ImportFilesTable.CONTENT_URI, 
+					new String[]{
+					ImportFilesTable.COLUMN_DATE}, 
+					where, 
+					whereArgs, 
+					null);	
+			if(cursor!=null && cursor.getCount()>0){
+				cursor.moveToFirst();
+				backupedCount = cursor.getCount();
+			}
+		}
+
+		cursor.close();
+		return new int[]{backupedCount,totalCount};
+	}
 }

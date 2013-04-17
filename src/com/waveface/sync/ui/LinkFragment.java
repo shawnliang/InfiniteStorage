@@ -31,7 +31,7 @@ public class LinkFragment extends LinkFragmentBase implements OnClickListener{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		mRootView = (ViewGroup) inflater.inflate(
-				R.layout.install, null);
+				R.layout.first_use_install, null);
 
 		Button mSendLinkBtn = (Button) mRootView.findViewById(R.id.btnSendLink);
 		mSendLinkBtn.setOnClickListener(this);

@@ -1,28 +1,37 @@
 package com.waveface.sync.ui;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.ContentObserver;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
+import com.waveface.sync.db.BackupedServersTable;
+import com.waveface.sync.logic.FileBackup;
 
 public class BackupViewFragment extends LinkFragmentBase implements OnClickListener, OnCheckedChangeListener{
 	public final String TAG = BackupViewFragment.class.getSimpleName();
 
-	private boolean mImport = false;
 	private ViewGroup mRootView;
 	private boolean mHideBack = false;
-    private CheckBox mImportCB ;
-	public int getHeight() {
+//    private Handler mHandler = new Handler();
+    private TextView mTvFileTransfer;
+    private ProgressBar mProgressBar;
+	private ServerObserver mContentObserver;
+	
+    public int getHeight() {
 		return mRootView.getMeasuredHeight();
 	}
 
@@ -37,22 +46,55 @@ public class BackupViewFragment extends LinkFragmentBase implements OnClickListe
 			Bundle savedInstanceState) {
 
 		mRootView = (ViewGroup) inflater.inflate(
-				R.layout.backupview, null);
+				R.layout.firstuse_backup_view, null);
 		Button btn = (Button) mRootView.findViewById(R.id.btnConfirm);
 		btn.setOnClickListener(this);
+		
+		mTvFileTransfer = (TextView) mRootView.findViewById(R.id.tvFileTransfer);
+		mProgressBar = (ProgressBar)mRootView.findViewById(R.id.pbBackup);
+		refreshLayout();
+		
+//        mHandler.postDelayed(new Runnable() {
+//            public void run() {
+//            	refreshLayout();
+//            	}
+//            }, 300);
+
 		return mRootView;
 	}
+	private class ServerObserver extends ContentObserver {
+		public ServerObserver() {
+			super(new Handler());
+		}
+		@Override
+		public void onChange(boolean selfChange) {
+			refreshLayout();
+		}
+	}
 
+	public void refreshLayout(){
+    	SharedPreferences prefs = getActivity().getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);    	
+    	String serverId = prefs.getString(Constant.PREF_SERVER_ID, "");
+		int[] datas = FileBackup.getBackupProgressInfo(getActivity(), serverId);
+		String nowProgress = datas[0]+"/"+datas[1];
+		mProgressBar.setProgress(datas[0]);
+		mTvFileTransfer.setText(getActivity().getString(R.string.file_transfering,nowProgress));
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (Constant.PHONE) {
 			getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
+		mContentObserver = new ServerObserver();
+		getActivity().getContentResolver()
+			.registerContentObserver(BackupedServersTable.BACKUPED_SERVER_URI, false, mContentObserver);
 	}
 
 	@Override
 	public void onDestroy() {
+		getActivity().getContentResolver().unregisterContentObserver(mContentObserver);
 		super.onDestroy();
 	}
 
@@ -71,9 +113,5 @@ public class BackupViewFragment extends LinkFragmentBase implements OnClickListe
 	}
 	@Override
 	public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-		mImport = arg1;
-		mImportCB.setChecked(mImport);
-		getActivity().getSharedPreferences(Constant.PREFS_NAME,Context.MODE_PRIVATE)
-			.edit().putBoolean(Constant.PREF_AUTO_IMPORT_ENABLED, mImport).commit();
 	}
 }

@@ -20,6 +20,7 @@ import com.waveface.sync.entity.ConnectEntity;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.util.Log;
+import com.waveface.sync.util.StringUtil;
 import com.waveface.sync.websocket.RuntimeWebClient;
 
 public class ServersLogic {
@@ -46,11 +47,12 @@ public class ServersLogic {
 			entity.endDatetime = "";
 		}
 		cv.put(BackupedServersTable.COLUMN_END_DATETIME, entity.endDatetime);
-		cv.put(BackupedServersTable.COLUMN_FOLDER, entity.Folder);
+		cv.put(BackupedServersTable.COLUMN_FOLDER, entity.folder);
 		cv.put(BackupedServersTable.COLUMN_FREE_SPACE, entity.freespace);
 		cv.put(BackupedServersTable.COLUMN_PHOTO_COUNT, entity.photoCount);
 		cv.put(BackupedServersTable.COLUMN_VIDEO_COUNT, entity.videoCount);
 		cv.put(BackupedServersTable.COLUMN_AUDIO_COUNT, entity.audioCount);		
+		cv.put(BackupedServersTable.COLUMN_LAST_BACKUP_DATETIME, StringUtil.getLocalDate());
 		
 		//update
 		if(cursor!=null && cursor.getCount()>0){
@@ -89,11 +91,13 @@ public class ServersLogic {
 				entity.status = cursor.getString(2);
             	entity.startDatetime =cursor.getString(3);
             	entity.endDatetime = cursor.getString(4);
-            	entity.Folder = cursor.getString(5);
+            	entity.folder = cursor.getString(5);
             	entity.freespace = cursor.getLong(6);
             	entity.photoCount = cursor.getInt(7);
             	entity.videoCount = cursor.getInt(8);
             	entity.audioCount =cursor.getInt(9);
+            	entity.lastLocalBackupTime = cursor.getString(10);
+
             	datas.add(entity);
 				cursor.moveToNext();
 			}
@@ -156,6 +160,32 @@ public class ServersLogic {
 		cursor.close();
 		return datas;
 	}
+	public static ServerEntity getBonjourServerByServerId(Context context,String serverId){
+		ServerEntity entity = null;
+		Cursor cursor = null;
+		ContentResolver cr = context.getContentResolver();
+		cursor = cr.query(BonjourServersTable.CONTENT_URI, 
+				null, 
+				null, 
+				null, 
+				null);
+		
+		if(cursor!=null && cursor.getCount()>0){
+			int count = cursor.getCount();
+			cursor.moveToFirst();
+			for(int i = 0 ; i < count ;i++){
+				entity = new ServerEntity();
+				entity.serverId = cursor.getString(0);
+				entity.serverName = cursor.getString(1);
+				entity.serverOS = cursor.getString(2);
+            	entity.wsLocation =cursor.getString(3);
+				cursor.moveToNext();
+			}
+		}
+		cursor.close();
+		return entity;
+	}
+	
 	
 	public static int purgeAllBonjourServer(Context context){
 		ContentResolver cr = context.getContentResolver();
@@ -252,6 +282,7 @@ public class ServersLogic {
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
 		cv.put(BackupedServersTable.COLUMN_END_DATETIME, lastBackupTime);
+		cv.put(BackupedServersTable.COLUMN_LAST_BACKUP_DATETIME, StringUtil.getLocalDate());
 
 		String startBackupTimestamp = null;
 		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 

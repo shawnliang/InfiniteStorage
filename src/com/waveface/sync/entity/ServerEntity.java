@@ -32,7 +32,7 @@ public class ServerEntity implements Serializable {
 	public String endDatetime;		
 	
 	@SerializedName("backup_folder")
-	public String Folder;	
+	public String folder;	
 	
 	@SerializedName("backup_folder_free_space")
 	public long freespace;	
@@ -47,5 +47,7 @@ public class ServerEntity implements Serializable {
 	public int audioCount;
 	
 	public String wsLocation;
-		
+
+	public String lastLocalBackupTime;
+
 }

@@ -1,0 +1,115 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_pairing" />
+
+    <RelativeLayout
+	    android:id="@+id/frameSendLink"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/llBtns"
+	    android:layout_below="@+id/imageView1"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginBottom="20dp"
+	    android:layout_marginLeft="20dp"
+	    android:layout_marginRight="20dp"
+	    android:background="#3D3D3D">
+    
+    <TextView
+        android:id="@+id/tvWording11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dip"
+        android:text="第一次備份的檔案較多"
+        android:textColor="#FFFFFF" />
+    <TextView
+        android:id="@+id/tvWording12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvWording11"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dip"
+        android:text="請您耐心等待"
+        android:textColor="#FFFFFF" />
+    
+    <TextView
+        android:id="@+id/tvWording21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvWording12"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="以後每天新增的"
+        android:textColor="#FFFFFF" />
+    <TextView
+        android:id="@+id/tvWording22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvWording21"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dip"
+        android:text="照片 影片 錄音 音樂"
+        android:textColor="#FFFFFF" />
+        <TextView
+        android:id="@+id/tvWording23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvWording22"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="都會自動透過Wi-Fi回到電腦中!"
+        android:textColor="#FFFFFF" />
+    
+    <TextView
+        android:id="@+id/tvFileTransfer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
+        android:text="檔案傳輸中"
+        android:textColor="#33CCFF" />
+
+    <ProgressBar
+        android:id="@+id/pbBackup"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvWording23"
+        android:layout_margin="30dip"
+        android:max="100"
+        android:progress="@android:integer/config_mediumAnimTime" />
+    	    	    
+	</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/llBtns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="5dip"
+        android:layout_marginBottom="5dip">
+
+    <Button
+        android:id="@+id/btnConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dip"
+        android:layout_marginRight="30dip"
+        android:text="@string/btn_confirm" />
+
+	</LinearLayout>
+
+</RelativeLayout>
