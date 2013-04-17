@@ -45,7 +45,7 @@ namespace InfiniteStorage
 			}
 			catch
 			{
-				OnError();
+				Clear();
 				throw;
 			}
 		}
@@ -70,9 +70,5 @@ namespace InfiniteStorage
 			}
 		}
 
-		public void OnError()
-		{
-			Clear();
-		}
 	}
 }

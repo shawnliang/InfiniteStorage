@@ -25,34 +25,30 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			var clientInfo = Util.GetClientInfo(cmd.device_id);
 
-
 			if (clientInfo == null)
 			{
-				clientInfo = new Device
-				{
-					device_name = cmd.device_name,
-					device_id = cmd.device_id,
-				};
-
-				Util.Save(clientInfo);
+				ctx.raiseOnPairingRequired();
+				return new WaitForApproveState();
 			}
+			else
+			{
+				var response = new
+				   {
+					   action = "accept",
+					   server_id = Util.GetServerId(),
+					   backup_folder = Util.GetPhotoFolder(),
+					   backup_folder_free_space = Util.GetFreeSpace(Util.GetPhotoFolder()),
+					   photo_count = clientInfo.photo_count,
+					   video_count = clientInfo.video_count,
+					   audio_count = clientInfo.audio_count
+				   };
 
-			var response = new
-				{
-					action = "accept",
-					server_id = Util.GetServerId(),
-					backup_folder = Util.GetPhotoFolder(),
-					backup_folder_free_space = Util.GetFreeSpace(Util.GetPhotoFolder()),
-					photo_count = clientInfo.photo_count,
-					video_count = clientInfo.video_count,
-					audio_count = clientInfo.audio_count
-				};
-
-			ctx.raiseOnConnectAccepted();
-			ctx.SendText(JsonConvert.SerializeObject(response));
+				ctx.raiseOnConnectAccepted();
+				ctx.SendText(JsonConvert.SerializeObject(response));
 
 
-			return new TransmitInitState();
+				return new TransmitInitState();
+			}
 		}
 	}
 }

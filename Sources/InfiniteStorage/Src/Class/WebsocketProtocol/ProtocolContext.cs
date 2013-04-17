@@ -6,6 +6,7 @@ using System.Text;
 namespace InfiniteStorage.WebsocketProtocol
 {
 	public delegate void SendTextDelegate(string data);
+	public delegate void StopDelegate(WebSocketSharp.Frame.CloseStatusCode code, string reason);
 
 	public class ProtocolContext : IProtocolHandlerContext, IConnectionStatus
 	{
@@ -22,7 +23,10 @@ namespace InfiniteStorage.WebsocketProtocol
 		public ITempFileFactory factory { get; private set; }
 
 		public SendTextDelegate SendText { get; set; }
+		public StopDelegate Stop { get; set; }
+
 		public event EventHandler<WebsocketEventArgs> OnConnectAccepted;
+		public event EventHandler<WebsocketEventArgs> OnPairingRequired;
 
 		public ProtocolContext(ITempFileFactory factory, IFileStorage storage, AbstractProtocolState initialState)
 		{
@@ -62,6 +66,16 @@ namespace InfiniteStorage.WebsocketProtocol
 			state.handleConnectCmd(this, cmd);
 		}
 
+		public void handleApprove()
+		{
+			state.handleApprove(this);
+		}
+
+		public void handleDisapprove()
+		{
+			state.handleDisapprove(this);
+		}
+
 		public void Clear()
 		{
 			if (temp_file != null)
@@ -80,5 +94,13 @@ namespace InfiniteStorage.WebsocketProtocol
 			}
 		}
 
+		public void raiseOnPairingRequired()
+		{
+			var handler = OnPairingRequired;
+			if (handler != null)
+			{
+				handler(this, new WebsocketEventArgs(this));
+			}
+		}
 	}
 }

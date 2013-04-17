@@ -82,34 +82,22 @@ namespace InfiniteStorage
 
 		static void m_NotifyTimer_Tick(object sender, EventArgs e)
 		{
-			var connections = ConnectedClientCollection.Instance.GetAll();
+			refreshNotifyIconContextMenu();
+		}
 
-			// remove all status items
-			List<ToolStripItem> toRemove = new List<ToolStripItem>();
+		private static void refreshNotifyIconContextMenu()
+		{
 			for (int i = 0; i < m_notifyIcon.ContextMenuStrip.Items.Count; i++)
 			{
 				var item = m_notifyIcon.ContextMenuStrip.Items[i];
 				if (item.Tag != null)
-					toRemove.Add(item);
-			}
-			foreach (var item in toRemove)
-				m_notifyIcon.ContextMenuStrip.Items.Remove(item);
+				{
+					var ctx = item.Tag as WebsocketProtocol.ProtocolContext;
 
-			// add new status items
-			foreach (var conn in connections)
-			{
-				var item = new ToolStripMenuItem(string.Format("{0}: {1}/{2}", conn.device_name, conn.recved_files, conn.total_files));
-				item.Tag = conn;
-				item.Enabled = false;
-				m_notifyIcon.ContextMenuStrip.Items.Insert(2, item);
-			}
-
-
-			var oldConns = toRemove.Select(x=>(IConnectionStatus)x.Tag);
-			foreach (var newConn in connections)
-			{
-				if (!oldConns.Contains(newConn))
-					m_notifyIcon.ShowBalloonTip(3000, Resources.ProductName, string.Format("{0} 要備份 {1} 個檔案", newConn.device_name, newConn.total_files), ToolTipIcon.Info);
+					var newText = string.Format("{0}: {1}/{2}", ctx.device_name, ctx.recved_files, ctx.total_files);
+					if (newText != item.Text)
+						item.Text = newText;
+				}
 			}
 		}
 
@@ -124,7 +112,7 @@ namespace InfiniteStorage
 			m_notifyIcon = new NotifyIcon();
 			m_notifyIcon.Text = Resources.ProductName;
 			m_notifyIcon.Icon = Resources.product_icon;
-			m_notifyIconController = new NotifyIconController();
+			m_notifyIconController = new NotifyIconController(m_notifyIcon);
 
 			m_notifyIcon.ContextMenuStrip = new ContextMenuStrip();
 
@@ -144,6 +132,9 @@ namespace InfiniteStorage
 			m_notifyIcon.Visible = true;
 
 			m_notifyIcon.ShowBalloonTip(3000, Resources.ProductName, "超屌備份在此為您服務", ToolTipIcon.None);
+
+			InfiniteStorageWebSocketService.DeviceAccepted += m_notifyIconController.OnDeviceConnected;
+			InfiniteStorageWebSocketService.DeviceDisconnected += m_notifyIconController.OnDeviceDisconnected;
 		}
 
 		static void Application_ApplicationExit(object sender, EventArgs e)

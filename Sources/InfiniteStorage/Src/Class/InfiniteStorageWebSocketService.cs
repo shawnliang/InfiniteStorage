@@ -16,6 +16,10 @@ namespace InfiniteStorage
 		private static ILog logger = LogManager.GetLogger("WebsocketService");
 		private ProtocolHanlder handler;
 
+		public static event EventHandler<WebsocketEventArgs> DeviceAccepted;
+		public static event EventHandler<WebsocketEventArgs> DeviceDisconnected;
+		public static event EventHandler<WebsocketEventArgs> PairingRequesting;
+
 		public InfiniteStorageWebSocketService()
 		{
 			if (!Directory.Exists(MyFileFolder.Temp))
@@ -28,15 +32,47 @@ namespace InfiniteStorage
 			// TODO: remove hard code
 			storage.setDeviceName("fakeDevName");
 
-			var ctx = new ProtocolContext(new TempFileFactory(MyFileFolder.Temp), storage, new UnconnectedState()) { SendText = this.Send };
+			var ctx = new ProtocolContext(new TempFileFactory(MyFileFolder.Temp), storage, new UnconnectedState()) 
+			{
+				SendText = this.Send,
+				Stop = this.Stop
+			};
+
 			ctx.OnConnectAccepted += new EventHandler<WebsocketEventArgs>(ctx_OnConnectAccepted);
+			ctx.OnPairingRequired += new EventHandler<WebsocketEventArgs>(ctx_OnPairingRequired);
 
 			handler = new ProtocolHanlder(ctx);
 		}
 
+		void ctx_OnPairingRequired(object sender, WebsocketEventArgs e)
+		{
+			raisePairingRequestingEvent(e);
+		}
+
 		void ctx_OnConnectAccepted(object sender, WebsocketEventArgs e)
 		{
-			ConnectedClientCollection.Instance.Add(e.ctx);
+			raiseDeviceConnectedEvent(e);
+		}
+
+		private void raiseDeviceConnectedEvent(WebsocketEventArgs e)
+		{
+			var handler = DeviceAccepted;
+			if (handler != null)
+				handler(this, e);
+		}
+
+		private void raiseDeviceDisconnectedEvent(WebsocketEventArgs e)
+		{
+			var handler = DeviceDisconnected;
+			if (handler != null)
+				handler(this, e);
+		}
+
+		private void raisePairingRequestingEvent(WebsocketEventArgs e)
+		{
+			var handler = PairingRequesting;
+			if (handler != null)
+				handler(this, e);
 		}
 
 		private static IDirOrganizer getDirOrganizer()
@@ -67,13 +103,13 @@ namespace InfiniteStorage
 			catch (WebsocketProtocol.ProtocolErrorException err)
 			{
 				logger.Warn("Protocol error. Close connection.", err);
-				ConnectedClientCollection.Instance.Remove((ProtocolContext)handler.ctx);
+				cleanupForClose();
 				Stop(WebSocketSharp.Frame.CloseStatusCode.PROTOCOL_ERROR, err.Message);
 			}
 			catch (Exception err)
 			{
 				logger.Warn("Error handing websocket data", err);
-				ConnectedClientCollection.Instance.Remove((ProtocolContext)handler.ctx);
+				cleanupForClose();
 				Stop(WebSocketSharp.Frame.CloseStatusCode.SERVER_ERROR, err.Message);
 			}
 		}
@@ -86,15 +122,20 @@ namespace InfiniteStorage
 		protected override void onError(object sender, WebSocketSharp.ErrorEventArgs e)
 		{
 			logger.Warn("Error occured: " + e.Message);
-			handler.OnError();
-			ConnectedClientCollection.Instance.Remove((ProtocolContext)handler.ctx);
-			base.onError(sender, e);
+
+			cleanupForClose();
 		}
 
 		protected override void onClose(object sender, CloseEventArgs e)
 		{
+			cleanupForClose();
+		}
+
+		private void cleanupForClose()
+		{
 			handler.Clear();
-			ConnectedClientCollection.Instance.Remove((ProtocolContext)handler.ctx);
+
+			raiseDeviceDisconnectedEvent(new WebsocketEventArgs((ProtocolContext)handler.ctx));
 		}
 	}
 }

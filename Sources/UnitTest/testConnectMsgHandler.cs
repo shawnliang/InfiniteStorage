@@ -75,32 +75,18 @@ namespace UnitTest
 			ctx.SendText = (txt) => sentTxt = txt;
 
 			ProtocolContext evtCtx = null;
-			ctx.OnConnectAccepted += (sr, ev) => { evtCtx = ev.ctx; };
+			ctx.OnPairingRequired += (sr, ev) => { evtCtx = ev.ctx; };
 
 			var util = new Mock<IConnectMsgHandlerUtil>();
 			util.Setup(x => x.GetClientInfo("id1")).Returns(null as Device);
-			util.Setup(x => x.GetServerId()).Returns("server_id1");
-			util.Setup(x => x.GetPhotoFolder()).Returns(@"c:\folder1\");
-			util.Setup(x => x.GetFreeSpace(@"c:\folder1\")).Returns(102410241024L);
-			util.Setup(x => x.Save(It.Is<Device>((y)=>
-				y.audio_count == 0 && y.device_id == "id1" && y.device_name == "dev" && y.photo_count == 0 && y.video_count == 0 
-				))).Verifiable();
 
 			var hdl = new ConnectMsgHandler();
 			hdl.Util = util.Object;
 			var newState = hdl.HandleConnectMsg(new TextCommand { action = "connect", device_name = "dev", device_id = "id1", transfer_count = 111 }, ctx);
 
-			JObject o = JObject.Parse(sentTxt);
-			Assert.AreEqual("accept", o["action"]);
-			Assert.AreEqual("server_id1", o["server_id"]);
-			Assert.AreEqual(@"c:\folder1\", o["backup_folder"]);
-			Assert.AreEqual(102410241024L, o["backup_folder_free_space"]);
-			Assert.AreEqual(0, o["photo_count"]);
-			Assert.AreEqual(0, o["video_count"]);
-			Assert.AreEqual(0, o["audio_count"]);
-
+			
 			Assert.AreEqual(evtCtx, ctx);
-			Assert.IsTrue(newState is TransmitInitState);
+			Assert.IsTrue(newState is WaitForApproveState);
 		}
 	}
 }

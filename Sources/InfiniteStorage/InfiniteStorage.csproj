@@ -74,6 +74,7 @@
     <Compile Include="Src\Class\IConnectionStatus.cs" />
     <Compile Include="Src\Class\MyFileFolder.cs" />
     <Compile Include="Src\Class\MediaLibrary.cs" />
+    <Compile Include="Src\Class\PairingRequest.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ConnectedState.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ConnectMsgHandler.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ConnectMsgHandlerUtil.cs" />
@@ -82,7 +83,14 @@
     <Compile Include="Src\Class\IProtocolHandlerContext.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\IConnectMsgHandlerUtil.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\UnconnectedState.cs" />
+    <Compile Include="Src\Class\WebsocketProtocol\WaitForPairingState.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\WebsocketEventArgs.cs" />
+    <Compile Include="Src\Dialog\PairingRequestDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Src\Dialog\PairingRequestDialog.Designer.cs">
+      <DependentUpon>PairingRequestDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Src\Model\Model.cs" />
     <Compile Include="Src\Model\MyDbContext.cs" />
     <Compile Include="Src\UIControl\BackupLocationControl.cs">
@@ -132,6 +140,9 @@
     </Compile>
     <EmbeddedResource Include="Src\Dialog\FirstUseDialog.resx">
       <DependentUpon>FirstUseDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Src\Dialog\PairingRequestDialog.resx">
+      <DependentUpon>PairingRequestDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\PreferenceDialog.resx">
       <DependentUpon>PreferenceDialog.cs</DependentUpon>

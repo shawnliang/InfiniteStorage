@@ -60,6 +60,7 @@
     <Compile Include="testFileStorage.cs" />
     <Compile Include="testProtocolHandler.cs" />
     <Compile Include="TestTempFile.cs" />
+    <Compile Include="testWaitingForApprove.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InfiniteStorage\InfiniteStorage.csproj">
