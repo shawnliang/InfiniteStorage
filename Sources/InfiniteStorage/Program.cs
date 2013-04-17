@@ -40,7 +40,7 @@ namespace InfiniteStorage
 				return;
 
 			initNotifyIcon();
-
+			SynchronizationContextHelper.SetMainSyncContext();
 
 			m_NotifyTimer = new Timer();
 			m_NotifyTimer.Tick += new EventHandler(m_NotifyTimer_Tick);

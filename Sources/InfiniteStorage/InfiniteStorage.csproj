@@ -75,6 +75,7 @@
     <Compile Include="Src\Class\MyFileFolder.cs" />
     <Compile Include="Src\Class\MediaLibrary.cs" />
     <Compile Include="Src\Class\PairingRequest.cs" />
+    <Compile Include="Src\Class\SynchronizationContextHelper.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ConnectedState.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ConnectMsgHandler.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ConnectMsgHandlerUtil.cs" />
