@@ -8,11 +8,17 @@ namespace InfiniteStorage.WebsocketProtocol
 {
 	public class WaitForApproveState : AbstractProtocolState
 	{
-		public IConnectMsgHandlerUtil Util { get; set; }
+		public IConnectMsgHandlerUtil Util
+		{
+			get { return approveHandler.Util; }
+			set { approveHandler.Util = value; }
+		}
+
+		private ConnectMsgHandler approveHandler;
 
 		public WaitForApproveState()
 		{
-			this.Util = new ConnectMsgHandlerUtil();
+			this.approveHandler = new ConnectMsgHandler();
 		}
 
 		public override void handleApprove(ProtocolContext ctx)
@@ -20,31 +26,13 @@ namespace InfiniteStorage.WebsocketProtocol
 			var dev = new Device
 			{
 				device_id = ctx.device_id,
-				device_name = ctx.device_name,
+				device_name = ctx.device_name
 			};
 
 			Util.Save(dev);
 
-			var response = new
-				   {
-					   action = "accept",
-					   server_id = Util.GetServerId(),
-					   backup_folder = Util.GetPhotoFolder(),
-					   backup_folder_free_space = Util.GetFreeSpace(Util.GetPhotoFolder()),
-					   photo_count = 0,
-					   video_count = 0,
-					   audio_count = 0
-				   };
-			try
-			{
-				ctx.SendText(JsonConvert.SerializeObject(response));
-			}
-			catch (Exception err)
-			{
-				throw new Exception("Unable to send ws cmd: Connection is closed?", err);
-			}
-
-			ctx.SetState(new TransmitInitState());
+			var newState = approveHandler.ReplyAcceptMsgToDevice(ctx, dev);
+			ctx.SetState(newState);
 		}
 
 		public override void handleDisapprove(ProtocolContext ctx)
@@ -58,8 +46,6 @@ namespace InfiniteStorage.WebsocketProtocol
 			ctx.SendText(JsonConvert.SerializeObject(response));
 			ctx.Stop(WebSocketSharp.Frame.CloseStatusCode.POLICY_VIOLATION, "User rejected");
 			ctx.SetState(new UnconnectedState());
-
-
 		}
 	}
 }

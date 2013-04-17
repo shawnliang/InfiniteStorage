@@ -32,10 +32,11 @@ namespace UnitTest
 
 				))).Callback<Device>((dev) => { }).Verifiable();
 
+			var storage = new Mock<IFileStorage>();
+			storage.Setup(x => x.setDeviceName("na")).Verifiable();
+
 			var state = new WaitForApproveState();
-			var ctx = new ProtocolContext(null, null, state);
-			ctx.device_id = "dd";
-			ctx.device_name = "na";
+			var ctx = new ProtocolContext(null, storage.Object, state) { device_id = "dd", device_name = "na" };
 			
 			string sentData = null;
 			ctx.SendText = (t) => { sentData = t; };
@@ -54,6 +55,7 @@ namespace UnitTest
 
 			Assert.IsTrue(ctx.GetState() is TransmitInitState);
 
+			storage.VerifyAll();
 			util.VerifyAll();
 		}
 

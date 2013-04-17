@@ -29,9 +29,6 @@ namespace InfiniteStorage
 
 			var storage = new FlatFileStorage(MyFileFolder.Photo, MyFileFolder.Video, MyFileFolder.Audio, organizer);
 
-			// TODO: remove hard code
-			storage.setDeviceName("fakeDevName");
-
 			var ctx = new ProtocolContext(new TempFileFactory(MyFileFolder.Temp), storage, new UnconnectedState()) 
 			{
 				SendText = this.Send,

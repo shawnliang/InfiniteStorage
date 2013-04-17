@@ -16,14 +16,14 @@ namespace UnitTest
 	public class testConnectMsgHandler
 	{
 		ProtocolContext ctx = null;
-		
+		Mock<IFileStorage> fileStorage;
 		
 		[TestInitialize]
 		public void setup()
 		{
 			var factory = new Mock<ITempFileFactory>();
-			var fileStorage = new Mock<IFileStorage>();
 			var state = new Mock<AbstractProtocolState>();
+			fileStorage = new Mock<IFileStorage>();
 
 			ctx = new ProtocolContext(factory.Object, fileStorage.Object, state.Object);
 		}
@@ -31,11 +31,14 @@ namespace UnitTest
 		[TestMethod]
 		public void replyAcceptMsgData_HaveExistingData()
 		{
+			fileStorage.Setup(x => x.setDeviceName("dev")).Verifiable();
 			string sentTxt = null;
 			ctx.SendText = (txt) => sentTxt = txt;
 
 			ProtocolContext evtCtx = null;
 			ctx.OnConnectAccepted += (sr, ev) => { evtCtx = ev.ctx; };
+
+			ctx.device_name = "dev";
 
 			var util = new Mock<IConnectMsgHandlerUtil>();
 			util.Setup(x => x.GetClientInfo("id1")).Returns(new Device
@@ -65,11 +68,13 @@ namespace UnitTest
 
 			Assert.AreEqual(ctx, evtCtx);
 			Assert.IsTrue(newState is TransmitInitState);
+
+			fileStorage.VerifyAll();
 		}
 
 
 		[TestMethod]
-		public void replyAcceptMsgData_HaveNoData()
+		public void firstConnect__replyWaitForPairing()
 		{
 			string sentTxt = null;
 			ctx.SendText = (txt) => sentTxt = txt;
@@ -84,7 +89,11 @@ namespace UnitTest
 			hdl.Util = util.Object;
 			var newState = hdl.HandleConnectMsg(new TextCommand { action = "connect", device_name = "dev", device_id = "id1", transfer_count = 111 }, ctx);
 
-			
+
+			Assert.IsFalse(string.IsNullOrEmpty(sentTxt));
+			var o = JObject.Parse(sentTxt);
+			Assert.AreEqual("wait-for-pair", o["action"]);
+
 			Assert.AreEqual(evtCtx, ctx);
 			Assert.IsTrue(newState is WaitForApproveState);
 		}
