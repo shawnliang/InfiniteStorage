@@ -3,6 +3,7 @@ package com.waveface.sync.ui;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -98,8 +99,9 @@ public class LinkServerActivity extends FragmentActivity implements
 
 	@Override
 	public void onSendEmail() {
-		// TODO :Send Email
-		
+		Intent intent = new Intent(Intent.ACTION_SENDTO,
+				Uri.parse("mailto:support@waveface.com"));
+		startActivity(intent);
 	}
 
 
