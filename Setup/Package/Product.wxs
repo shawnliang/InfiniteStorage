@@ -43,6 +43,22 @@
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLLOCATION" Name="$(var.AppCode)">
 
+          <Component Id="EntityFramework.dll" Guid="*">
+            <File Id="EntityFramework.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\EntityFramework.dll" />
+          </Component>
+
+          <Component Id="InfiniteStorage.exe.config" Guid="*">
+            <File Id="InfiniteStorage.exe.config" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\InfiniteStorage.exe.config" />
+          </Component>
+
+          <Component Id="System.Data.SQLite.dll" Guid="*">
+            <File Id="System.Data.SQLite.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Data.SQLite.dll" />
+          </Component>
+
+          <Component Id="System.Data.SQLite.Linq.dll" Guid="*">
+            <File Id="System.Data.SQLite.Linq.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Data.SQLite.Linq.dll" />
+          </Component>
+          
           <Component Id="InfiniteStorage.exe" Guid="*">
             <File Id="InfiniteStorage.exe" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\InfiniteStorage.exe" />
           </Component>
@@ -63,6 +79,19 @@
             <File Id="websocketsharp.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\websocket-sharp.dll" />
           </Component>
 
+          <Directory Id="x86_folder" Name="x86">
+            <Component Id="SQLite.Interop.dll.x86" Guid="*">
+              <File Id="SQLite.Interop.dll.x86" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\x86\SQLite.Interop.dll" />
+            </Component>
+          </Directory>
+
+
+          <Directory Id="x64_folder" Name="x64">
+            <Component Id="SQLite.Interop.dll.x64" Guid="*">
+              <File Id="SQLite.Interop.dll.x64" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\x64\SQLite.Interop.dll" />
+            </Component>
+          </Directory>
+          
         </Directory>
       </Directory>
     </DirectoryRef>
@@ -74,6 +103,14 @@
       <ComponentRef Id="log4net.dll" />
       <ComponentRef Id="Newtonsoft.Json.dll" />
       <ComponentRef Id="websocketsharp.dll" />
+      
+      <ComponentRef Id="EntityFramework.dll" />
+      <ComponentRef Id="InfiniteStorage.exe.config" />
+      <ComponentRef Id="System.Data.SQLite.dll" />
+      <ComponentRef Id="System.Data.SQLite.Linq.dll" />
+      <ComponentRef Id="SQLite.Interop.dll.x86" />
+      <ComponentRef Id="SQLite.Interop.dll.x64" />
+      
     </Feature>
 
     <!--
