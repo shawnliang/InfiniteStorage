@@ -3,12 +3,14 @@ package com.waveface.sync.ui;
 import java.util.ArrayList;
 
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
+import android.database.ContentObserver;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -29,9 +31,8 @@ import android.widget.Toast;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
-import com.waveface.sync.RuntimeConfig;
+import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.entity.ServerEntity;
-import com.waveface.sync.logic.FileBackup;
 import com.waveface.sync.logic.ServersLogic;
 
 
@@ -41,10 +42,10 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 	private ViewGroup mRootView;
 	private ServerArrayAdapter mAdapter ; 
     private Handler mHandler = new Handler();
+	private BonjourServerContentObserver mContentObserver;
 
 	//DATA
 	private ServerEntity mServer ;
-    private RuntimeConfig mRuntime = RuntimeConfig.getInstance();
 
 	public int getHeight() {
 		return mRootView.getMeasuredHeight();
@@ -55,6 +56,22 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 		mListener.goBack(TAG);
 	}
 
+	private class BonjourServerContentObserver extends ContentObserver {
+
+		public BonjourServerContentObserver() {
+			super(new Handler());
+		}
+
+		@Override
+		public void onChange(boolean selfChange) {
+			Log.e(TAG, "selfChange:" +selfChange);
+			if(getActivity() != null) {
+				refreshUI();
+				//mAdapter.notifyDataSetChanged();
+			}
+		}
+
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -99,6 +116,11 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 		if (Constant.PHONE) {
 			getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
+//		Uri uri = Uri.withAppendedPath(BonjourServersTable.BONJOUR_UPDATE_URI, "");
+		mContentObserver = new BonjourServerContentObserver();
+		ContentResolver cr = getActivity().getContentResolver();
+		cr.registerContentObserver(BonjourServersTable.BONJOUR_SERVER_URI, false, mContentObserver);
+
 	}
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		@Override
@@ -106,9 +128,7 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 			String action = intent.getAction();
 			Log.d(TAG, "action:" + intent.getAction());
 			if (Constant.ACTION_BONJOUR_MULTICAT_EVENT.equals(action)) {		
-//				ServerEntity entity = (ServerEntity) intent.getExtras().get(Constant.EXTRA_SERVER_DATA);
-//				mAdapter.addData(entity);
-				mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
+				refreshUI();
 			}
 			else if(Constant.ACTION_WS_SERVER_NOTIFY.equals(action)){
 				String response = intent.getStringExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT);
@@ -141,6 +161,8 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 	public void onDestroy() {
 		getActivity().unregisterReceiver(mReceiver);
 		super.onDestroy();
+		ContentResolver cr = getActivity().getContentResolver();
+		cr.unregisterContentObserver(mContentObserver);
 	}
     private void clickToLinkServer(ServerEntity entity){
     	ServersLogic.startWSServerConnect(getActivity(), entity.wsLocation,entity.serverId);
@@ -157,6 +179,10 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 				break;
 		}
 	}
+	public void refreshUI(){
+		mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
+	}
+	
 	class ServerArrayAdapter extends BaseAdapter {
 		  private final Context context;
 		  private ArrayList<ServerEntity> values;

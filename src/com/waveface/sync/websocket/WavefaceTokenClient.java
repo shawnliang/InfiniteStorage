@@ -211,11 +211,10 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		 */
 		@Override
 		public void processClosed(WebSocketClientEvent aEvent) {
-//			Intent intent = new Intent(Constant.ACTION_CHANGELOGS_TIMER);
-//			intent.putExtra(Constant.PARAM_TIMER_COMMAND, Constant.PARAM_COMMAND_RESTART);
-//			mContext.sendBroadcast(intent);
 			RuntimeConfig.OnWebSocketOpened = false;
 			RuntimeConfig.OnWebSocketStation = false;
+        	Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
+            mContext.sendBroadcast(intent);			
 		}
 
 		/**

@@ -10,9 +10,11 @@ import javax.jmdns.ServiceListener;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.ContentObserver;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,10 +25,11 @@ import android.widget.TextView;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeConfig;
+import com.waveface.sync.db.BackupedServersTable;
+import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.FileBackup;
 import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.task.BackupFilesTask;
 import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.StringUtil;
@@ -46,6 +49,7 @@ public class MainActivity extends Activity {
     private JmDNS jmdns = null;
     private ServiceListener mListener = null;
     private RuntimeConfig mRuntime = RuntimeConfig.getInstance();
+	private BackupedServerContentObserver mContentObserver;
     //UI
 	private TextView mDevice;
 	private TextView mNowPeriod;
@@ -98,11 +102,16 @@ public class MainActivity extends Activity {
 		ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(this);		
 		mAdapter = new ServersAdapter(this,servers);
 		listview.setAdapter(mAdapter);
+
+		mContentObserver = new BackupedServerContentObserver();
+		getContentResolver().registerContentObserver(BackupedServersTable.BACKUPED_SERVER_URI, false, mContentObserver);
+
 		
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(Constant.ACTION_BACKUP_FILE);
+//		filter.addAction(Constant.ACTION_BACKUP_FILE);
 		filter.addAction(Constant.ACTION_SCAN_FILE);	
 		filter.addAction(Constant.ACTION_WS_SERVER_NOTIFY);		
+		filter.addAction(Constant.ACTION_WS_BROKEN_NOTIFY);
 		registerReceiver(mReceiver, filter);
 
         mHandler.postDelayed(new Runnable() {
@@ -111,25 +120,44 @@ public class MainActivity extends Activity {
             }
             }, 100);
 	}
+	private class BackupedServerContentObserver extends ContentObserver {
+
+		public BackupedServerContentObserver() {
+			super(new Handler());
+		}
+
+		@Override
+		public void onChange(boolean selfChange) {
+			Log.e(TAG, "selfChange:" +selfChange);
+			refreshServerStatus();
+		}
+
+	}
+
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			Log.d(TAG, "action:" + intent.getAction());
-			if (Constant.ACTION_BACKUP_FILE.equals(action)) {
-				if(RuntimeConfig.isBackuping == false){
-					RuntimeConfig.isBackuping = true;
-					new BackupFilesTask(context).execute(new Void[]{});
-				}
-			}
-			else if (Constant.ACTION_SCAN_FILE.equals(action)) {
-			    refresh();
+//			if (Constant.ACTION_BACKUP_FILE.equals(action)) {
+//				if(RuntimeConfig.isBackuping == false){
+//					RuntimeConfig.isBackuping = true;
+//					new BackupFilesTask(context).execute(new Void[]{});
+//				}
+//			}
+			if (Constant.ACTION_SCAN_FILE.equals(action)) {
+			    refreshLayout();
 			}
 			else if(Constant.ACTION_WS_SERVER_NOTIFY.equals(action)){
 				String response = intent.getStringExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT);
 				if(response.equals(Constant.WS_ACTION_BACKUP_INFO)){
-					mAdapter.setData(ServersLogic.getBackupedServers(MainActivity.this));
+					refreshServerStatus();
 				}
+			}
+			else if(Constant.ACTION_WS_BROKEN_NOTIFY.equals(action)){
+				//Update all Backuoed Server to offline
+				ServersLogic.setAllBackupedServersOffline(context);
+				refreshServerStatus();
 			}
 		}
 	};
@@ -160,8 +188,6 @@ public class MainActivity extends Activity {
                     if(RuntimeConfig.OnWebSocketOpened == false ){
 	                    if(mHasOpen == false ){
 		                    Intent intent = new Intent(MainActivity.this, LinkServerActivity.class);	                    	
-//		                    Intent intent = new Intent(MainActivity.this, BonjourServersActivity.class);
-//		                    intent.putExtra(Constant.PARAM_SERVER_DATA, entity);
 		                    MainActivity.this.startActivityForResult(intent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
 		                    mHasOpen = true; 
 	                    }
@@ -169,7 +195,6 @@ public class MainActivity extends Activity {
 	                        mHandler.postDelayed(new Runnable() {
 	                            public void run() {
 	    	                    	Intent intent = new Intent(Constant.ACTION_BONJOUR_MULTICAT_EVENT);
-//	    		                    intent.putExtra(Constant.EXTRA_SERVER_DATA, entity);
 	    		                    MainActivity.this.sendBroadcast(intent);
 	    		                    
 	                            	}
@@ -186,6 +211,7 @@ public class MainActivity extends Activity {
                     ServerEntity entity = new ServerEntity();
                 	entity.serverName = si.getName();
 					entity.serverId = si.getPropertyString(Constant.PARAM_SERVER_ID);
+					ServersLogic.purgeBonjourServerByServerId(MainActivity.this, entity.serverId);
                 }
 
                 @Override
@@ -199,48 +225,8 @@ public class MainActivity extends Activity {
             return;
         }
     }
-    public void startBackuping(ServerEntity entity){
+    public void refreshServerStatus(){
 		mAdapter.setData(ServersLogic.getBackupedServers(this));
-
-//    	//SETUP WS URL ANDLink to WS
-//	    boolean isConnected = false;
-//	    if(RuntimePlayer.OnWebSocketOpened == false){
-//	    	RuntimeWebClient.init(MainActivity.this);
-//	    	RuntimeWebClient.setURL(entity.wsLocation);
-//	    	try {
-//	    		RuntimeWebClient.open();
-//	    		//send connect cmd
-//	    		ConnectEntity connect = new ConnectEntity();
-//	    		connect.action = Constant.WS_ACTION_CONNECT;
-//	    		connect.deviceId = DeviceUtil.id(this);
-//	    		connect.deviceName = DeviceUtil.getDeviceNameForDisplay(this);
-//	    		RuntimeWebClient.send(RuntimePlayer.GSON.toJson(connect));
-//	    		isConnected = true;
-//	    	} catch (WebSocketException e) {
-//	    		isConnected = false;
-//	    		e.printStackTrace();
-//	    	}
-//	    	finally{
-//	    		if(isConnected){
-//	    			RuntimePlayer.OnWebSocketOpened = true;
-//	            	//TODO:WAIT FOR SERVER NOTIFY	            	
-//	            	entity.status = Constant.SERVER_LINKING;
-//	            	entity.startDatetime ="";
-//	            	entity.endDatetime = "";
-//	            	entity.Folder ="";
-//	            	entity.freespace = "";
-//	            	entity.photoCount ="";
-//	            	entity.videoCount ="";
-//	            	entity.audioCount ="";
-//	            	int result = ServersLogic.updateServer(this, entity);
-//	            	Log.d(TAG, "Update Server:"+result);
-//	        		mAdapter.setData(ServersLogic.getServers(this));
-//
-//	    			Intent intent = new Intent(Constant.ACTION_BACKUP_FILE);
-//	    			sendBroadcast(intent);
-//	    		}
-//	    	}
-//	    }
     }
 
     @Override
@@ -249,14 +235,6 @@ public class MainActivity extends Activity {
         if (requestCode == Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {                
-//            	ServerEntity entity = (ServerEntity)data.getExtras().get(Constant.PARAM_RESULT);
-//            	Log.d(TAG, "WS:"+entity.wsLocation);
-//            	SharedPreferences prefs = getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);
-//            	Editor editor = prefs.edit();
-//            	editor.putString(Constant.PREF_STATION_WEB_SOCKET_URL, entity.wsLocation);
-//            	editor.putString(Constant.PREF_SERVER_ID,entity.serverId);
-//            	editor.commit();
-//            	startBackuping(entity);
             	mAdapter.setData(ServersLogic.getBackupedServers(this));
             }
         }
@@ -273,11 +251,12 @@ public class MainActivity extends Activity {
     
     @Override
     protected void onDestroy() {
-    	ServersLogic.purgeBonjourServer(this);
+    	ServersLogic.purgeAllBonjourServer(this);
 		unregisterReceiver(mReceiver);
+		getContentResolver().unregisterContentObserver(mContentObserver);
     	super.onDestroy();
     }
-    public void refresh(){
+    public void refreshLayout(){
  		mNowPeriod = (TextView) this.findViewById(R.id.textPeriod);
 		String[] periods = FileBackup.getFilePeriods(this);
 		if(TextUtils.isEmpty(periods[0])){
@@ -297,6 +276,7 @@ public class MainActivity extends Activity {
 		datas = FileBackup.getFileInfo(this, Constant.TYPE_AUDIO);
 		mAudioCount.setText(getString(R.string.audios, datas[0]));
 		mAudioSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
-
+		//REFRESH SERVERS STATUS
+		refreshServerStatus();
     }
 }

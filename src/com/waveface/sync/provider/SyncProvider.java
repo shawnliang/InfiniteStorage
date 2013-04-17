@@ -130,17 +130,25 @@ public class SyncProvider extends ContentProvider {
 			break;
 		case BACKUPED_SERVERS:
 			tableName = BackupedServersTable.TABLE_NAME;
+			//SEND CUMTOMIZED NOTIFY INFO
+			sendCustomizedNotifyChangedInfo(BACKUPED_SERVERS);
 			break;
 		case BACKUPED_SERVERS_ID:
 			tableName = BackupedServersTable.TABLE_NAME;
 			where = (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
+			//SEND CUMTOMIZED NOTIFY INFO
+			sendCustomizedNotifyChangedInfo(BACKUPED_SERVERS_ID);
 			break;			
 		case BONJOUR_SERVERS:
 			tableName = BonjourServersTable.TABLE_NAME;
+			//SEND CUMTOMIZED NOTIFY INFO
+			sendCustomizedNotifyChangedInfo(BONJOUR_SERVERS);
 			break;
 		case BONJOUR_SERVERS_ID:
 			tableName = BonjourServersTable.TABLE_NAME;
 			where = (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
+			//SEND CUMTOMIZED NOTIFY INFO
+			sendCustomizedNotifyChangedInfo(BONJOUR_SERVERS_ID);
 			break;			
 		case IMPORTS:
 			tableName = ImportTable.TABLE_NAME;
@@ -430,6 +438,8 @@ public class SyncProvider extends ContentProvider {
 		case BACKUPED_SERVERS:
 			affected = db.update(BackupedServersTable.TABLE_NAME, values, where,
 					whereArgs);
+			//SEND CUMTOMIZED NOTIFY INFO
+			sendCustomizedNotifyChangedInfo(BACKUPED_SERVERS);
 			break;
 		case BACKUPED_SERVERS_ID:
 			String serverId = uri.getPathSegments().get(1);
@@ -440,10 +450,14 @@ public class SyncProvider extends ContentProvider {
 							+ "'"
 							+ (!TextUtils.isEmpty(where) ? " AND (" + where
 									+ ")" : ""), whereArgs);
+			//SEND CUMTOMIZED NOTIFY INFO
+			sendCustomizedNotifyChangedInfo(BACKUPED_SERVERS_ID);
 			break;
 		case BONJOUR_SERVERS:
 			affected = db.update(BonjourServersTable.TABLE_NAME, values, where,
 					whereArgs);
+			//SEND CUMTOMIZED NOTIFY INFO
+			sendCustomizedNotifyChangedInfo(BONJOUR_SERVERS);
 			break;
 		case BONJOUR_SERVERS_ID:
 			String bonjourServerId = uri.getPathSegments().get(1);
@@ -454,6 +468,8 @@ public class SyncProvider extends ContentProvider {
 							+ "'"
 							+ (!TextUtils.isEmpty(where) ? " AND (" + where
 									+ ")" : ""), whereArgs);
+			//SEND CUMTOMIZED NOTIFY INFO
+			sendCustomizedNotifyChangedInfo(BONJOUR_SERVERS_ID);
 			break;
 
 		case BACKUPDETAILS:
@@ -590,6 +606,8 @@ public class SyncProvider extends ContentProvider {
 					insert.execute();
 				}
 				db.setTransactionSuccessful();
+				//SEND CUMTOMIZED NOTIFY INFO
+				sendCustomizedNotifyChangedInfo(BACKUPED_SERVERS);
 				numInserted = values.length;
 			} finally {
 				if (insert != null) {
@@ -618,6 +636,9 @@ public class SyncProvider extends ContentProvider {
 					insert.execute();
 				}
 				db.setTransactionSuccessful();
+				//SEND CUMTOMIZED NOTIFY INFO
+				sendCustomizedNotifyChangedInfo(BONJOUR_SERVERS);
+				
 				numInserted = values.length;
 			} finally {
 				if (insert != null) {
@@ -656,6 +677,20 @@ public class SyncProvider extends ContentProvider {
 
 		default:
 			throw new UnsupportedOperationException("unsupported uri: " + uri);
+		}
+	}
+	
+	public void sendCustomizedNotifyChangedInfo(int match){
+		switch(match){
+		case BONJOUR_SERVERS:
+		case BONJOUR_SERVERS_ID:
+//			Uri bonjourUri = Uri.withAppendedPath(BonjourServersTable.BONJOUR_SERVER_URI, "");
+			getContext().getContentResolver().notifyChange(BonjourServersTable.BONJOUR_SERVER_URI, null);
+			break;
+		case BACKUPED_SERVERS:
+		case BACKUPED_SERVERS_ID:
+			getContext().getContentResolver().notifyChange(BackupedServersTable.BACKUPED_SERVER_URI, null);
+			break;
 		}
 	}
 }

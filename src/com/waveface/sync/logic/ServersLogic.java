@@ -156,18 +156,26 @@ public class ServersLogic {
 		cursor.close();
 		return datas;
 	}
-	public static int purgeBonjourServer(Context context){
+	
+	public static int purgeAllBonjourServer(Context context){
 		ContentResolver cr = context.getContentResolver();
 		return cr.delete(BonjourServersTable.CONTENT_URI, 
 				null,null);
 	}
+
+	public static int purgeBonjourServerByServerId(Context context,String serverId){
+		ContentResolver cr = context.getContentResolver();
+		return cr.delete(BonjourServersTable.CONTENT_URI, 
+				BonjourServersTable.COLUMN_SERVER_ID+"=?",new String[]{serverId});
+	}
 	
 	
-	public static void resetStatus(Context context ){
+	public static void setAllBackupedServersOffline(Context context ){
 		ContentValues cv = new ContentValues();
 		cv.put(BackupedServersTable.COLUMN_STATUS, Constant.SERVER_OFFLINE);
 		context.getContentResolver().update(BackupedServersTable.CONTENT_URI, cv, null, null);
 	}
+	
 	
     public static void startWSServerConnect(Context context,String wsLocation,String serverId){
 	    //SETUP WS URL ANDLink to WS

@@ -21,8 +21,8 @@ public class Starter extends Application {
 						+ android.os.Debug.getNativeHeapAllocatedSize());
 		super.onCreate();
 		SYNC_CONTEXT = getApplicationContext();
-		ServersLogic.resetStatus(SYNC_CONTEXT);
-		ServersLogic.purgeBonjourServer(this);
+		ServersLogic.setAllBackupedServersOffline(SYNC_CONTEXT);
+		ServersLogic.purgeAllBonjourServer(this);
 		new ScanTask(SYNC_CONTEXT).execute(new Void[]{});
 		initialDirectory();
 //		ScanImageFolder();
