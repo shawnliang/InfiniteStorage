@@ -278,25 +278,76 @@ public class ServersLogic {
 		Intent intent = new Intent(Constant.ACTION_BACKUP_FILE);
 		context.sendBroadcast(intent);
     }
-	public static int updateServerLastBackupTimestamp(Context context,String lastBackupTime,String serverId){
+	public static int updateServerStatus(Context context,String lastBackupTime,int filetype,String serverId){
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
 		cv.put(BackupedServersTable.COLUMN_END_DATETIME, lastBackupTime);
 		cv.put(BackupedServersTable.COLUMN_LAST_BACKUP_DATETIME, StringUtil.getLocalDate());
 
 		String startBackupTimestamp = null;
+		int countOfFile = 0 ;
+		String[] projection = null;
+		switch(filetype){
+			case Constant.TYPE_IMAGE:
+				projection = 
+				new String[]{
+						BackupedServersTable.COLUMN_START_DATETIME,
+						BackupedServersTable.COLUMN_PHOTO_COUNT};
+				break;
+			case Constant.TYPE_VIDEO:
+				projection = 
+				new String[]{
+						BackupedServersTable.COLUMN_START_DATETIME,
+						BackupedServersTable.COLUMN_VIDEO_COUNT};
+				break;
+			case Constant.TYPE_AUDIO:
+				projection = 
+				new String[]{
+						BackupedServersTable.COLUMN_START_DATETIME,
+						BackupedServersTable.COLUMN_AUDIO_COUNT};
+				break;
+		}
+		
 		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
-				new String[]{BackupedServersTable.COLUMN_START_DATETIME}, 
+				projection, 
 				BackupedServersTable.COLUMN_SERVER_ID+" =? ", 
 				new String[]{serverId},null);	
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();
 			startBackupTimestamp = cursor.getString(0);
+			countOfFile = cursor.getInt(1);
+			countOfFile++;
 		}		
 		cursor.close();
-		if(TextUtils.isEmpty(startBackupTimestamp)){
+		if(TextUtils.isEmpty(startBackupTimestamp) || 
+				StringUtil.day1BeforeDay2(lastBackupTime, startBackupTimestamp)){
 			cv.put(BackupedServersTable.COLUMN_START_DATETIME, lastBackupTime);
-		}		
+		}
+		switch(filetype){
+			case Constant.TYPE_IMAGE:
+				cv.put(BackupedServersTable.COLUMN_PHOTO_COUNT,countOfFile);
+				break;
+			case Constant.TYPE_VIDEO:
+				cv.put(BackupedServersTable.COLUMN_VIDEO_COUNT,countOfFile);
+				break;
+			case Constant.TYPE_AUDIO:
+				cv.put(BackupedServersTable.COLUMN_AUDIO_COUNT,countOfFile);
+				break;
+		}
 		return cr.update(BackupedServersTable.CONTENT_URI, cv,BackupedServersTable.COLUMN_SERVER_ID+"=?" , new String[]{serverId});
+	}
+	public static String getStatusByServerId(Context context,String serverId){
+		String status = null;
+		ContentResolver cr = context.getContentResolver();
+		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+				new String[]{BackupedServersTable.COLUMN_STATUS}, 
+				BackupedServersTable.COLUMN_SERVER_ID+" =? ", 
+				new String[]{serverId},null);	
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			status = cursor.getString(0);
+		}		
+		cursor.close();
+		return status;
 	}
 }

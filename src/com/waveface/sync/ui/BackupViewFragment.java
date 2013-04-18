@@ -77,6 +77,7 @@ public class BackupViewFragment extends LinkFragmentBase implements OnClickListe
     	String serverId = prefs.getString(Constant.PREF_SERVER_ID, "");
 		int[] datas = FileBackup.getBackupProgressInfo(getActivity(), serverId);
 		String nowProgress = datas[0]+"/"+datas[1];
+		mProgressBar.setMax(datas[1]);
 		mProgressBar.setProgress(datas[0]);
 		mTvFileTransfer.setText(getActivity().getString(R.string.file_transfering,nowProgress));
 	}

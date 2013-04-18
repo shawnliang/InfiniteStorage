@@ -359,7 +359,7 @@ public class StringUtil {
 		return dateFormatGmt.format(new Date()) + "";
 	}
 
-	public static boolean before(String ISO8601_DATE1, String ISO8601_DATE2) {
+	public static boolean day1BeforeDay2(String ISO8601_DATE1, String ISO8601_DATE2) {
 		if (ISO8601_DATE1 == null)
 			return true;
 		return before(parseDate(ISO8601_DATE1), parseDate(ISO8601_DATE2));

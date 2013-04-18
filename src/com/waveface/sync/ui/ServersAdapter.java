@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.entity.ServerEntity;
+import com.waveface.sync.logic.FileBackup;
 import com.waveface.sync.util.StringUtil;
 
 public class ServersAdapter  extends BaseAdapter {
@@ -37,11 +38,19 @@ public class ServersAdapter  extends BaseAdapter {
 	    ProgressBar pb = (ProgressBar) rowView.findViewById(R.id.pbBackup);
 	    TextView tv = (TextView) rowView.findViewById(R.id.textBackupPC);
 	    
-	    
 	    if(entity.status.equals(Constant.SERVER_LINKING)){
-	    	tv.setText( entity.serverName+" ( "+context.getString(R.string.backuping)+" )");
 	    	iv.setImageResource(R.drawable.ic_transfer);
-	    	pb.setVisibility(View.VISIBLE);
+	    	String wording = null;
+	    	if(FileBackup.needToBackup(context, entity.serverId)){
+	    		wording = entity.serverName+" ( "+context.getString(R.string.backuping)+" )";
+	    		pb.setVisibility(View.VISIBLE);
+	    	}
+	    	else{
+	    		wording = entity.serverName+" ( "+context.getString(R.string.backuped_completed)+" )";
+	    		pb.setVisibility(View.INVISIBLE);
+	    	}
+	    	tv.setText( wording);
+	    	
 	    }
 	    else{
 	    	tv.setText( entity.serverName+" ( "+context.getString(R.string.offline)+" )");

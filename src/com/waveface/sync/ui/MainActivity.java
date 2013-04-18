@@ -23,6 +23,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
@@ -119,6 +120,7 @@ public class MainActivity extends Activity {
 		
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_BACKUP_FILE);
+		filter.addAction(Constant.ACTION_BACKUP_DONE);
 		filter.addAction(Constant.ACTION_SCAN_FILE);	
 		filter.addAction(Constant.ACTION_WS_SERVER_NOTIFY);		
 		filter.addAction(Constant.ACTION_WS_BROKEN_NOTIFY);
@@ -156,8 +158,16 @@ public class MainActivity extends Activity {
 				mConnectedServer = bonjourServer;
 			}
 		}
+		if(RuntimeConfig.OnWebSocketOpened == false){
+			dismissProgress();
+		}
 	}
 	
+	private void dismissProgress(){
+		if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+			mProgressDialog.dismiss();
+		}		
+	}
 	
 	private class ServerObserver extends ContentObserver {
 		public ServerObserver() {
@@ -181,13 +191,14 @@ public class MainActivity extends Activity {
 					new BackupFilesTask(context).execute(new Void[]{});
 				}
 			}
-			if (Constant.ACTION_SCAN_FILE.equals(action)) {
+			else if (Constant.ACTION_BACKUP_DONE.equals(action)) {
+				Toast.makeText(context, R.string.backuped_completed, Toast.LENGTH_LONG).show();
+			}
+			else if (Constant.ACTION_SCAN_FILE.equals(action)) {
 			    refreshLayout();
 			}
 			else if(Constant.ACTION_WS_SERVER_NOTIFY.equals(action)){
-				if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
-					mProgressDialog.dismiss();
-				}
+				dismissProgress();
 				String response = intent.getStringExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT);
 				if(response!=null){
 					if(response.equals(Constant.WS_ACTION_BACKUP_INFO)){
@@ -195,9 +206,7 @@ public class MainActivity extends Activity {
 					}
 					else if(response.equals(Constant.WS_ACTION_ACCEPT)){
 						if(mAutoConnectMode){
-							if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
-								mProgressDialog.dismiss();
-							}
+							dismissProgress();
 							ServerEntity entity = (ServerEntity) intent.getExtras().get(Constant.EXTRA_SERVER_DATA);
 							entity.serverId = mConnectedServer.serverId;
 							entity.serverName = mConnectedServer.serverName;
@@ -284,8 +293,10 @@ public class MainActivity extends Activity {
                 	jmdns.requestServiceInfo(event.getType(), event.getName(), 1);
                 }
             });
-        } catch (IOException e) {
+        } 
+        catch (IOException e) {
             e.printStackTrace();
+            //TODO:BROKEN PIPE
             return;
         }
     }

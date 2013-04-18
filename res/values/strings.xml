@@ -15,6 +15,20 @@
     
     <!--MAIN-->   
     <string name="auto_connect">Connecting...</string> 
+    <string name="total">Total</string>    
+    <string name="videos">Total %1$d video(s)</string>    
+    <string name="audios">Total %1$d audio(s)</string>    
+    <string name="photos">Total %1$d photo(s)</string>        
+    
+    <!--PAIRED SERVERS-->
+    <string name="backuping">Backuping ...</string>    
+    <string name="offline">OFFLINE</string> 
+    <string name="backuped_completed">Backup Completed</string>    
+    <string name="backup_period">BACKUP FROM %1$s TO %2$s</string>    
+    <string name="free_space">Free Space %1$s</string>    
+    <string name="backup_folder">Backup Folder %1$s</string>    
+    <string name="backuped_info">Backuped %1$d photo(s), %2$d video(s), %3$d audio(s)</string>
+    
 
     <!--FIRST USE-->
     <!--INSTALL-->    
@@ -37,21 +51,6 @@
     
     <!--FILE TRANSFRING-->    
     <string name="file_transfering">%1$s transfering files</string>
-
-    <string name="backuping">Backuping ...</string>    
-    <string name="offline">OFFLINE</string>    
-
-
-    <string name="total">Total</string>    
-    <string name="videos">Total %1$d video(s)</string>    
-    <string name="audios">Total %1$d audio(s)</string>    
-    <string name="photos">Total %1$d photo(s)</string>        
-    
-    <!--SERVERS-->
-    <string name="backup_period">BACKUP FROM %1$s TO %2$s</string>    
-    <string name="free_space">Free Space %1$s</string>    
-    <string name="backup_folder">Backup Folder %1$s</string>    
-    <string name="backuped_info">Backuped %1$d photo(s), %2$d video(s), %3$d audio(s)</string>
     
     
     <!--BUTTON-->

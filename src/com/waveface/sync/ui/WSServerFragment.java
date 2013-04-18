@@ -278,8 +278,8 @@ public class WSServerFragment extends LinkFragmentBase implements OnClickListene
 			    	iv.setImageResource(R.drawable.ic_windows);
 			    }
 		    }
-		    
-		    if(!TextUtils.isEmpty(entity.status) && entity.status.equals(Constant.SERVER_LINKING)){
+		    String status = ServersLogic.getStatusByServerId(context, entity.serverId);
+		    if(!TextUtils.isEmpty(status) && status.equals(Constant.SERVER_LINKING)){
 		    	iv = (ImageView) rowView.findViewById(R.id.ivConnected);
 		    	iv.setVisibility(View.VISIBLE);
 		    	tv.setTextColor(context.getResources().getColor(R.color.linked));

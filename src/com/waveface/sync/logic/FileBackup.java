@@ -378,6 +378,7 @@ public class FileBackup {
 				cursor.moveToNext();
 			}
 		}
+		cursor.close();
 		int result = 0;
 		if(datas.size()>0){
 			//SAVE TO DB
@@ -443,8 +444,16 @@ public class FileBackup {
 				backupedCount = cursor.getCount();
 			}
 		}
-
 		cursor.close();
 		return new int[]{backupedCount,totalCount};
+	}
+	public static boolean needToBackup(Context context,String serverId){
+		int[] backupAndTotalCount = FileBackup.getBackupProgressInfo(context, serverId);
+		if(backupAndTotalCount[0]!=backupAndTotalCount[1]){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 }

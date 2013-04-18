@@ -13,6 +13,21 @@
 
     <!--MAIN-->   
     <string name="auto_connect">連線中...</string> 
+    <string name="total">總共</string>    
+    <string name="videos">總共 %1$d 個影像檔</string>    
+    <string name="audios">總共 %1$d 個聲音檔</string>    
+    <string name="photos">總共 %1$d 張照片</string>        
+    
+    
+    <!--PAIRED SERVERS-->
+    <string name="backuping">備份中...</string>    
+    <string name="offline">離線</string>    
+    <string name="backuped_completed">備份完成</string>    
+    <string name="backup_period">備份日期從 %1$s 到 %2$s</string>    
+    <string name="free_space">目錄空間 %1$s</string>    
+    <string name="backup_folder">備份目錄 %1$s</string>    
+    <string name="backup_info">已備份 %1$d 張照片, %2$d 個影像檔, %3$d 個聲音檔</string>
+    
     
     <!--FIRST USE-->
     <!--INSTALL-->    
@@ -37,20 +52,7 @@
     <!--FILE TRANSFRING-->    
     <string name="file_transfering">%1$s 個檔案傳輸中</string>
     
-    <string name="backuping">備份中...</string>    
-    <string name="offline">離線</string>    
     
-    <string name="total">總共</string>    
-    <string name="videos">總共 %1$d 個影像檔</string>    
-    <string name="audios">總共 %1$d 個聲音檔</string>    
-    <string name="photos">總共 %1$d 帳照片</string>        
-    
-    
-    <!--SERVERS-->
-    <string name="backup_period">備份日期從 %1$s 到 %2$s</string>    
-    <string name="free_space">目錄空間 %1$s</string>    
-    <string name="backup_folder">備份目錄 %1$s</string>    
-    <string name="backup_info">已備份 %1$d 帳照片, %2$d 個影像檔, %3$d 個聲音檔</string>
     
     
     

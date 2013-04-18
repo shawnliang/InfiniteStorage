@@ -11,6 +11,7 @@ import org.jwebsocket.kit.WebSocketException;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ import com.waveface.sync.RuntimeConfig;
 import com.waveface.sync.db.BackupedServersTable;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.entity.FIleTransferEntity;
+import com.waveface.sync.logic.FileBackup;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.util.StringUtil;
 import com.waveface.sync.websocket.RuntimeWebClient;
@@ -34,14 +36,22 @@ public class BackupFilesTask extends AsyncTask<Void, Void, Void> {
 	}
 	@Override
 	protected Void doInBackground(Void... params) {
+	   	SharedPreferences prefs = mContext.getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);    	
+    	String serverId = prefs.getString(Constant.PREF_SERVER_ID, "");
+    	while(FileBackup.needToBackup(mContext,serverId)){
+    		backupFIles(serverId);
+    	}
+		return null;
+	}
+	
+	private void backupFIles(String serverId) {
 		FIleTransferEntity entity = new FIleTransferEntity();
 		byte[] buffer = new byte[256 * Constant.K_BYTES];
 		byte[] finalBuffer = null;		
 		InputStream ios = null;
 		boolean isSuccesed = false;
 		String filename = null;
-    	SharedPreferences prefs = mContext.getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);    	
-    	String serverId = prefs.getString(Constant.PREF_SERVER_ID, "");
+		int filetype = 0;
     	String lastBackupTimestamp = null;
     	//select from serverFiles 
 		Cursor cursor = null;
@@ -63,7 +73,8 @@ public class BackupFilesTask extends AsyncTask<Void, Void, Void> {
 				ImportFilesTable.COLUMN_MIMETYPE,
 				ImportFilesTable.COLUMN_SIZE,
 				ImportFilesTable.COLUMN_FOLDER,
-				ImportFilesTable.COLUMN_DATE}, 
+				ImportFilesTable.COLUMN_DATE,
+				ImportFilesTable.COLUMN_FILETYPE}, 
 				ImportFilesTable.COLUMN_DATE+">=?", 
 				new String[]{lastBackupTimestamp}, 
 				ImportFilesTable.COLUMN_DATE);	
@@ -79,7 +90,7 @@ public class BackupFilesTask extends AsyncTask<Void, Void, Void> {
 				entity.fileSize = cursor.getString(2);
 				entity.folder = cursor.getString(3);				
 				entity.datetime = cursor.getString(4);
-			
+				filetype = cursor.getInt(5);
 				try {
 					if(RuntimeConfig.OnWebSocketOpened){
 //						RuntimeWebClient.setDefaultFormat();
@@ -131,19 +142,20 @@ public class BackupFilesTask extends AsyncTask<Void, Void, Void> {
 					} catch (IOException e) {
 					}
 					if(isSuccesed){
-						ServersLogic.updateServerLastBackupTimestamp(mContext, entity.datetime, serverId);
-//						FileBackup.updateBackupStatus(mContext, entity.fileName, Constant.IMPORT_FILE_BACKUPED);
+						ServersLogic.updateServerStatus(mContext, entity.datetime,filetype, serverId);
 					}
 					isSuccesed = false;
 				}
 				cursor.moveToNext();
 			}
 		}
-		return null;
+		cursor.close();
 	}
 	@Override
 	protected void onPostExecute(Void entity) {
 		RuntimeConfig.isBackuping = false;
+		Intent intent = new Intent(Constant.ACTION_BACKUP_DONE);
+		mContext.sendBroadcast(intent);
 		super.onPostExecute(entity);
 	}
 	@Override
