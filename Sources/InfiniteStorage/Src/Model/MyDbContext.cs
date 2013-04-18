@@ -46,7 +46,7 @@ namespace InfiniteStorage.Model
 					if (schemaVersion == 0L)
 					{
 						var cmd = new SQLiteCommand(
-	@"CREATE TABLE [Devices] (
+@"CREATE TABLE [Devices] (
 [device_id] NVARCHAR(36)  UNIQUE NULL PRIMARY KEY,
 [device_name] NVARCHAR(80)  NULL,
 [photo_count] INTEGER DEFAULT '0' NULL,
@@ -56,7 +56,32 @@ namespace InfiniteStorage.Model
 						cmd.ExecuteNonQuery();
 
 						updateDbSchemaVersion(conn, 1);
+						schemaVersion = 1;
 					}
+
+					if (schemaVersion == 1L)
+					{
+						var cmd = new SQLiteCommand(
+@"CREATE TABLE [Files] (
+[file_id] GUID  NOT NULL PRIMARY KEY,
+[file_name] NVARCHAR(100)  NOT NULL,
+[file_path] NVARCHAR(1024)  NOT NULL,
+[file_size] INTEGER  NULL,
+[device_id] NVARCHAR(36)  NULL,
+[mime_type] NVARCHAR(80)  NULL,
+[uti] NVARCHAR(80)  NULL,
+[event_time] TIMESTAMP  NULL
+);
+
+CREATE INDEX [idx_Files_path_1] ON [Files](
+[file_path]  ASC
+);", conn);
+						cmd.ExecuteNonQuery();
+
+						updateDbSchemaVersion(conn, 2);
+						schemaVersion = 2;
+					}
+
 
 					transaction.Commit();
 				}

@@ -69,6 +69,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\Class\WebsocketProtocol\TransmitUtility.cs" />
+    <Compile Include="Src\Class\WebsocketProtocol\ITransmitStateUtility.cs" />
     <Compile Include="Src\UIControl\DeviceListControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -145,6 +147,7 @@
     <Compile Include="Src\UIControl\TabControlEx.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Src\Class\TimeRange.cs" />
     <EmbeddedResource Include="Src\Dialog\FirstUseDialog.resx">
       <DependentUpon>FirstUseDialog.cs</DependentUpon>
     </EmbeddedResource>

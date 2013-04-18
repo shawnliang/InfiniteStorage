@@ -23,55 +23,6 @@ namespace UnitTest
 		}
 
 		[TestMethod]
-		public void testNormalRecv()
-		{
-			var data1 = new byte[] { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-			var data2 = new byte[] { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
-
-			var tempFile = new Mock<ITempFile>();
-			tempFile.Setup(x => x.Write(data1)).Verifiable();
-			tempFile.Setup(x => x.Write(data2)).Verifiable();
-			tempFile.Setup(x => x.EndWrite()).Verifiable();
-			tempFile.Setup(x=>x.Path).Returns("path").Verifiable();
-
-			var tempFactory = new Mock<ITempFileFactory>();
-			tempFactory.Setup(x => x.CreateTempFile()).Returns(tempFile.Object).Verifiable();
-
-			storage.Setup(x => x.MoveToStorage("path", It.Is<FileContext>((file)=>file.file_name.Equals("file1.jpg")))).Verifiable();
-
-			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object, new TransmitInitState());
-			
-			
-			//
-			// file-start
-			// 
-			var fileStart = new { action = "file-start", file_name = "file1.jpg", file_size= 20 };
-			protoHdler.HandleMessage(new MessageEventArgs(JsonConvert.SerializeObject(fileStart)));
-
-
-			//
-			// 2 data frames
-			// 		
-			protoHdler.HandleMessage(new MessageEventArgs(WebSocketSharp.Frame.Opcode.BINARY,
-				new WebSocketSharp.Frame.PayloadData(data1)));
-			protoHdler.HandleMessage(new MessageEventArgs(WebSocketSharp.Frame.Opcode.BINARY,
-				new WebSocketSharp.Frame.PayloadData(data2)));
-
-			//
-			// file-end
-			//
-			var fileEnd = new { action = "file-end", file_name = fileStart.file_name };
-			protoHdler.HandleMessage(new MessageEventArgs(JsonConvert.SerializeObject(fileEnd)));
-
-
-			// ---------- verify --------------
-			tempFactory.VerifyAll();
-			tempFile.VerifyAll();
-			storage.VerifyAll();
-			
-		}
-
-		[TestMethod]
 		[ExpectedException(typeof(ProtocolErrorException))]
 		public void testUnknownTxtCmd()
 		{
@@ -196,21 +147,5 @@ namespace UnitTest
 
 		}
 
-		[TestMethod]
-		public void IncrementRecvedFilesWhenFileEnd()
-		{
-			var tempFactory = new Mock<ITempFileFactory>();
-			var fileStorage = new Mock<IFileStorage>();
-
-			var ctx = new ProtocolContext(tempFactory.Object, fileStorage.Object, new TransmitStartedState());
-
-			var tempFile = new Mock<ITempFile>();
-			ctx.temp_file = tempFile.Object;
-			ctx.fileCtx = new FileContext { file_name = "file1.jpg" };
-
-			ctx.handleFileEndCmd(new TextCommand { action = "file-end", file_name = "file1.jpg" });
-
-			Assert.AreEqual(1, ctx.recved_files);
-		}
 	}
 }

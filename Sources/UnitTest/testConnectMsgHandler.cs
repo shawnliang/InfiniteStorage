@@ -52,6 +52,12 @@ namespace UnitTest
 			util.Setup(x => x.GetServerId()).Returns("server_id1");
 			util.Setup(x => x.GetPhotoFolder()).Returns(@"c:\folder1\");
 			util.Setup(x => x.GetFreeSpace(@"c:\folder1\")).Returns(102410241024L);
+			util.Setup(x => x.GetBackupRange("id1")).Returns(
+				() => 
+					{
+						return new TimeRange(new DateTime(2012, 1, 2, 0, 0, 0, DateTimeKind.Utc), new DateTime(2012, 1, 3, 0, 0, 0, DateTimeKind.Utc));
+					}
+			).Verifiable();
 
 			var hdl = new ConnectMsgHandler();
 			hdl.Util = util.Object;
@@ -65,6 +71,9 @@ namespace UnitTest
 			Assert.AreEqual(100, o["photo_count"]);
 			Assert.AreEqual(200, o["video_count"]);
 			Assert.AreEqual(300, o["audio_count"]);
+			Assert.AreEqual(new DateTime(2012, 1, 2, 0, 0, 0, DateTimeKind.Utc), o["backup_startdate"].Value<DateTime>());
+			Assert.AreEqual(new DateTime(2012, 1, 3, 0, 0, 0, DateTimeKind.Utc), o["backup_enddate"]);
+
 
 			Assert.AreEqual(ctx, evtCtx);
 			Assert.IsTrue(newState is TransmitInitState);

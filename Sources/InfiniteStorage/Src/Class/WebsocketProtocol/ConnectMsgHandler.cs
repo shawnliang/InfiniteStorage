@@ -39,6 +39,8 @@ namespace InfiniteStorage.WebsocketProtocol
 
 		public AbstractProtocolState ReplyAcceptMsgToDevice(ProtocolContext ctx, Device clientInfo)
 		{
+			var backupTimeRange = Util.GetBackupRange(clientInfo.device_id);
+
 			var response = new
 			{
 				action = "accept",
@@ -47,11 +49,14 @@ namespace InfiniteStorage.WebsocketProtocol
 				backup_folder_free_space = Util.GetFreeSpace(Util.GetPhotoFolder()),
 				photo_count = clientInfo.photo_count,
 				video_count = clientInfo.video_count,
-				audio_count = clientInfo.audio_count
+				audio_count = clientInfo.audio_count,
+
+				backup_startdate = (backupTimeRange!=null) ? (DateTime?)backupTimeRange.start : null,
+				backup_enddate = (backupTimeRange != null) ? (DateTime?)backupTimeRange.end : null
 			};
 
 			ctx.raiseOnConnectAccepted();
-			ctx.SendText(JsonConvert.SerializeObject(response));
+			ctx.SendText(JsonConvert.SerializeObject(response, new JsonSerializerSettings { DateFormatHandling = DateFormatHandling.IsoDateFormat, DateTimeZoneHandling = DateTimeZoneHandling.Utc }));
 			ctx.storage.setDeviceName(ctx.device_name);
 
 			return new TransmitInitState();

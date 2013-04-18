@@ -21,7 +21,9 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			ctx.temp_file = ctx.factory.CreateTempFile();
 
-			log4net.LogManager.GetLogger("wsproto").Debug("file-start: " + ctx.fileCtx.file_name);
+			log4net.LogManager.GetLogger("wsproto").DebugFormat("name: {0}, size: {1}, folder: {2}, mime: {3}, datetime: {4}, uti: {5}",
+				cmd.file_name, cmd.file_size, cmd.folder, cmd.mimetype, cmd.datetime, cmd.UTI);
+
 			ctx.SetState(new TransmitStartedState());
 		}
 	}

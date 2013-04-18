@@ -46,5 +46,28 @@ namespace InfiniteStorage.WebsocketProtocol
 				db.Object.SaveChanges();
 			}
 		}
+
+
+		public TimeRange GetBackupRange(string device_id)
+		{
+			using (var db = new MyDbContext())
+			{
+				var result = from f in db.Object.Files
+							 group f by device_id
+								 into g
+								 select new
+								 {
+									 min = g.Min(x=>x.event_time),
+									 max = g.Max(x=>x.event_time)
+								 };
+
+				var minMax = result.FirstOrDefault();
+
+				if (minMax != null)
+					return new TimeRange(minMax.min, minMax.max);
+				else
+					return null;
+			}
+		}
 	}
 }

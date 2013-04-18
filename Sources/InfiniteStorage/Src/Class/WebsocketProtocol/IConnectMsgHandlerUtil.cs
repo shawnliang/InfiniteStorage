@@ -17,6 +17,8 @@ namespace InfiniteStorage.WebsocketProtocol
 		long GetFreeSpace(string path);
 
 		void Save(Device clientInfo);
+
+		TimeRange GetBackupRange(string device_id);
 	}
 
 	
