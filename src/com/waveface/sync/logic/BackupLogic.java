@@ -1,11 +1,18 @@
 package com.waveface.sync.logic;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TreeSet;
+
+import org.jwebsocket.kit.WebSocketException;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -16,17 +23,21 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.waveface.sync.Constant;
+import com.waveface.sync.RuntimeConfig;
 import com.waveface.sync.db.BackupDetailsTable;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.db.ServerFilesView;
 import com.waveface.sync.db.BackupedServersTable;
+import com.waveface.sync.entity.FIleTransferEntity;
 import com.waveface.sync.util.FileUtil;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.MediaFile;
+import com.waveface.sync.util.NetworkUtil;
 import com.waveface.sync.util.StringUtil;
+import com.waveface.sync.websocket.RuntimeWebClient;
 
-public class FileBackup {
-	private static String TAG = FileBackup.class.getSimpleName();
+public class BackupLogic {
+	private static String TAG = BackupLogic.class.getSimpleName();
 	public static String DATE_FORMAT = "yyyyMMddHHmmss";
 	public static String ISO_DATE_FORMAT = "yyyy-MM-dd";
 	
@@ -448,12 +459,124 @@ public class FileBackup {
 		return new int[]{backupedCount,totalCount};
 	}
 	public static boolean needToBackup(Context context,String serverId){
-		int[] backupAndTotalCount = FileBackup.getBackupProgressInfo(context, serverId);
+		int[] backupAndTotalCount = BackupLogic.getBackupProgressInfo(context, serverId);
 		if(backupAndTotalCount[0]!=backupAndTotalCount[1]){
 			return true;
 		}
 		else{
 			return false;
 		}
+	}
+	public static boolean canBackup(Context context){
+		if(NetworkUtil.isWifiNetworkAvailable(context) && RuntimeConfig.OnWebSocketOpened){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	public static void backupFiles(Context context,String serverId) {
+		FIleTransferEntity entity = new FIleTransferEntity();
+		byte[] buffer = new byte[256 * Constant.K_BYTES];
+		byte[] finalBuffer = null;		
+		InputStream ios = null;
+		boolean isSuccesed = false;
+		String filename = null;
+		int filetype = 0;
+    	String lastBackupTimestamp = null;
+    	//select from serverFiles 
+		Cursor cursor = null;
+		ContentResolver cr = context.getContentResolver();
+		cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+				new String[]{
+				BackupedServersTable.COLUMN_END_DATETIME,
+				}, 
+				BackupedServersTable.COLUMN_SERVER_ID+"=?", 
+				new String[]{serverId},null);	
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			lastBackupTimestamp = cursor.getString(0); 
+		}	
+		
+		cursor = cr.query(ImportFilesTable.CONTENT_URI, 
+				new String[]{
+				ImportFilesTable.COLUMN_FILENAME,
+				ImportFilesTable.COLUMN_MIMETYPE,
+				ImportFilesTable.COLUMN_SIZE,
+				ImportFilesTable.COLUMN_FOLDER,
+				ImportFilesTable.COLUMN_DATE,
+				ImportFilesTable.COLUMN_FILETYPE}, 
+				ImportFilesTable.COLUMN_DATE+">=?", 
+				new String[]{lastBackupTimestamp}, 
+				ImportFilesTable.COLUMN_DATE);	
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			int count = cursor.getCount();
+			for(int i = 0 ; i<count ;i++){
+				// send file index for start
+				entity.action = Constant.WS_ACTION_FILE_START;
+				filename = cursor.getString(0);
+				entity.fileName = StringUtil.getFilename(filename);
+				entity.mimetype = cursor.getString(1);
+				entity.fileSize = cursor.getString(2);
+				entity.folder = cursor.getString(3);				
+				entity.datetime = cursor.getString(4);
+				filetype = cursor.getInt(5);
+				try {
+					if(canBackup(context)){
+						RuntimeWebClient.send(RuntimeConfig.GSON.toJson(entity));
+					}
+					else{
+						isSuccesed = true;
+						break;
+					}
+					// send file binary
+					ios = new FileInputStream(new File(filename));
+					int read = 0;
+					while ((read = ios.read(buffer)) != -1) {
+						if(canBackup(context)){
+							if (read != buffer.length) {
+								finalBuffer = new byte[read];
+								finalBuffer = Arrays.copyOf(buffer, read);
+								RuntimeWebClient.sendFile(finalBuffer);
+							} else {
+								RuntimeWebClient.sendFile(buffer);
+							}
+						}
+						else{
+							isSuccesed = false;
+							break;
+						}
+					}					
+					// send file index for end
+					if(canBackup(context)){
+						entity.action = Constant.WS_ACTION_FILE_END;
+						RuntimeWebClient.send(RuntimeConfig.GSON.toJson(entity));
+					}else{
+						isSuccesed = false;
+						break;						
+					}
+					isSuccesed = true;
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (WebSocketException e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						if (ios != null)
+							ios.close();
+					} catch (IOException e) {
+					}
+					if(isSuccesed){
+						ServersLogic.updateServerStatus(context, entity.datetime,filetype, serverId);
+					}
+					isSuccesed = false;
+				}
+				cursor.moveToNext();
+			}
+		}
+		cursor.close();
 	}
 }

@@ -30,14 +30,13 @@ import com.waveface.sync.R;
 import com.waveface.sync.RuntimeConfig;
 import com.waveface.sync.db.BackupedServersTable;
 import com.waveface.sync.entity.ServerEntity;
-import com.waveface.sync.logic.FileBackup;
+import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.task.BackupFilesTask;
 import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.NetworkUtil;
 import com.waveface.sync.util.StringUtil;
-import com.waveface.sync.util.SystemUiHider;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -83,27 +82,27 @@ public class MainActivity extends Activity {
 		mDevice = (TextView) this.findViewById(R.id.textDevice);
 		mDevice.setText(DeviceUtil.getDeviceNameForDisplay(this));
 		mNowPeriod = (TextView) this.findViewById(R.id.textPeriod);
-		String[] periods = FileBackup.getFilePeriods(this);
+		String[] periods = BackupLogic.getFilePeriods(this);
 		if(TextUtils.isEmpty(periods[0])){
 			mNowPeriod.setText(R.string.file_scanning);
 		}else{
 			mNowPeriod.setText(getString(R.string.period,periods[0],periods[1]));
 		}
 		
-		long[] datas = FileBackup.getFileInfo(this, Constant.TYPE_IMAGE);
+		long[] datas = BackupLogic.getFileInfo(this, Constant.TYPE_IMAGE);
 		mPhotoCount = (TextView) this.findViewById(R.id.textPhotoCount);
 		mPhotoSize = (TextView) this.findViewById(R.id.textPhotoSize);
 		mPhotoCount.setText(getString(R.string.photos, datas[0]));
 		mPhotoSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
 		//VIDEO
-		datas = FileBackup.getFileInfo(this, Constant.TYPE_VIDEO);
+		datas = BackupLogic.getFileInfo(this, Constant.TYPE_VIDEO);
 		mVideoCount = (TextView) this.findViewById(R.id.textVideoCount);
 		mVideoSize = (TextView) this.findViewById(R.id.textVideoSize);
 		mVideoCount.setText(getString(R.string.videos, datas[0]));
 		mVideoSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
 		
 		//AUDIO
-		datas = FileBackup.getFileInfo(this, Constant.TYPE_AUDIO);
+		datas = BackupLogic.getFileInfo(this, Constant.TYPE_AUDIO);
 		mAudioCount = (TextView) this.findViewById(R.id.textAudioCount);
 		mAudioSize = (TextView) this.findViewById(R.id.textAudioSize);
 		mAudioCount.setText(getString(R.string.audios, datas[0]));
@@ -175,7 +174,6 @@ public class MainActivity extends Activity {
 		}
 		@Override
 		public void onChange(boolean selfChange) {
-			Log.e(TAG, "selfChange:" +selfChange);
 			refreshServerStatus();
 		}
 	}
@@ -233,9 +231,9 @@ public class MainActivity extends Activity {
 	};
     private void setUp() {
         WifiManager wifi = (WifiManager) getSystemService(android.content.Context.WIFI_SERVICE);
-        lock = wifi.createMulticastLock("mylockthereturn");
-        lock.setReferenceCounted(true);
-        lock.acquire();
+//        lock = wifi.createMulticastLock("infiniteS");
+//        lock.setReferenceCounted(true);
+//        lock.acquire();
         try {
             jmdns = JmDNS.create();
             jmdns.addServiceListener(Constant.INFINTE_STORAGE, mListener = new ServiceListener() {
@@ -339,7 +337,7 @@ public class MainActivity extends Activity {
         }
         jmdns = null;
 	}
-    lock.release();
+//    lock.release();
 	super.onStop();
 }
 
@@ -353,22 +351,22 @@ public class MainActivity extends Activity {
     }
     public void refreshLayout(){
  		mNowPeriod = (TextView) this.findViewById(R.id.textPeriod);
-		String[] periods = FileBackup.getFilePeriods(this);
+		String[] periods = BackupLogic.getFilePeriods(this);
 		if(TextUtils.isEmpty(periods[0])){
 			mNowPeriod.setText(R.string.file_scanning);
 		}else{
 			mNowPeriod.setText(getString(R.string.period,periods[0],periods[1]));
 		}
 				
-		long[] datas = FileBackup.getFileInfo(this, Constant.TYPE_IMAGE);
+		long[] datas = BackupLogic.getFileInfo(this, Constant.TYPE_IMAGE);
 		mPhotoCount.setText(getString(R.string.photos, datas[0]));
 		mPhotoSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
 	
-		datas = FileBackup.getFileInfo(this, Constant.TYPE_VIDEO);
+		datas = BackupLogic.getFileInfo(this, Constant.TYPE_VIDEO);
 		mVideoCount.setText(getString(R.string.videos, datas[0]));
 		mVideoSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
 		
-		datas = FileBackup.getFileInfo(this, Constant.TYPE_AUDIO);
+		datas = BackupLogic.getFileInfo(this, Constant.TYPE_AUDIO);
 		mAudioCount.setText(getString(R.string.audios, datas[0]));
 		mAudioSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
 		//REFRESH SERVERS STATUS

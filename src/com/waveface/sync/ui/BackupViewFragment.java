@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.db.BackupedServersTable;
-import com.waveface.sync.logic.FileBackup;
+import com.waveface.sync.logic.BackupLogic;
 
 public class BackupViewFragment extends LinkFragmentBase implements OnClickListener, OnCheckedChangeListener{
 	public final String TAG = BackupViewFragment.class.getSimpleName();
@@ -75,7 +75,7 @@ public class BackupViewFragment extends LinkFragmentBase implements OnClickListe
 	public void refreshLayout(){
     	SharedPreferences prefs = getActivity().getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);    	
     	String serverId = prefs.getString(Constant.PREF_SERVER_ID, "");
-		int[] datas = FileBackup.getBackupProgressInfo(getActivity(), serverId);
+		int[] datas = BackupLogic.getBackupProgressInfo(getActivity(), serverId);
 		String nowProgress = datas[0]+"/"+datas[1];
 		mProgressBar.setMax(datas[1]);
 		mProgressBar.setProgress(datas[0]);

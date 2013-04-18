@@ -27,7 +27,7 @@ import android.widget.Toast;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.entity.ServerEntity;
-import com.waveface.sync.logic.FileBackup;
+import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
 
 public class BonjourServersActivity extends Activity implements OnClickListener{
@@ -97,7 +97,7 @@ public class BonjourServersActivity extends Activity implements OnClickListener{
 			    	editor.putString(Constant.PREF_SERVER_ID,mServer.serverId);
 			    	editor.commit();
 			    	//Add Server Id for file
-			    	FileBackup.addFileIndexForServer(context, entity.serverId);
+			    	BackupLogic.addFileIndexForServer(context, entity.serverId);
 					ServersLogic.startBackuping(context, mServer);
 				}
 				else if(response.equals(Constant.WS_ACTION_DENIED)){

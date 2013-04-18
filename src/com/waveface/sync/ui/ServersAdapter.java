@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.entity.ServerEntity;
-import com.waveface.sync.logic.FileBackup;
+import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.util.StringUtil;
 
 public class ServersAdapter  extends BaseAdapter {
@@ -41,7 +41,7 @@ public class ServersAdapter  extends BaseAdapter {
 	    if(entity.status.equals(Constant.SERVER_LINKING)){
 	    	iv.setImageResource(R.drawable.ic_transfer);
 	    	String wording = null;
-	    	if(FileBackup.needToBackup(context, entity.serverId)){
+	    	if(BackupLogic.needToBackup(context, entity.serverId)){
 	    		wording = entity.serverName+" ( "+context.getString(R.string.backuping)+" )";
 	    		pb.setVisibility(View.VISIBLE);
 	    	}

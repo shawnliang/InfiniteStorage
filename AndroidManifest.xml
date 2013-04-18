@@ -78,7 +78,7 @@
             android:authorities="com.waveface.sync"
             android:exported="false"
             android:syncable="true" />
-      	<receiver android:exported="false" android:name="com.waveface.wammer.service.ConnectivityReceiver">
+      	<receiver android:exported="false" android:name="com.waveface.sync.service.ConnectivityReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
