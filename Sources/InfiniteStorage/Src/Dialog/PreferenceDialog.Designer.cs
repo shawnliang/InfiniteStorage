@@ -32,7 +32,7 @@
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.generalPreferenceControl1 = new InfiniteStorage.GeneralPreferenceControl();
 			this.tabDevices = new System.Windows.Forms.TabPage();
-			this.deviceListControl1 = new InfiniteStorage.DeviceListControl();
+			this.deviceListControl = new InfiniteStorage.DeviceListControl();
 			this.buttonOK = new System.Windows.Forms.Button();
 			this.buttonCancel = new System.Windows.Forms.Button();
 			this.buttonApply = new System.Windows.Forms.Button();
@@ -70,6 +70,7 @@
 			// 
 			this.generalPreferenceControl1.BackColor = System.Drawing.SystemColors.ControlLightLight;
 			this.generalPreferenceControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.generalPreferenceControl1.Enabled = false;
 			this.generalPreferenceControl1.Location = new System.Drawing.Point(3, 3);
 			this.generalPreferenceControl1.Name = "generalPreferenceControl1";
 			this.generalPreferenceControl1.OrganizeMethod = InfiniteStorage.OrganizeMethod.YearMonthDay;
@@ -78,7 +79,7 @@
 			// 
 			// tabDevices
 			// 
-			this.tabDevices.Controls.Add(this.deviceListControl1);
+			this.tabDevices.Controls.Add(this.deviceListControl);
 			this.tabDevices.Location = new System.Drawing.Point(4, 22);
 			this.tabDevices.Name = "tabDevices";
 			this.tabDevices.Padding = new System.Windows.Forms.Padding(3);
@@ -87,13 +88,14 @@
 			this.tabDevices.Text = "Linked Devices";
 			this.tabDevices.UseVisualStyleBackColor = true;
 			// 
-			// deviceListControl1
+			// deviceListControl
 			// 
-			this.deviceListControl1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.deviceListControl1.Location = new System.Drawing.Point(3, 3);
-			this.deviceListControl1.Name = "deviceListControl1";
-			this.deviceListControl1.Size = new System.Drawing.Size(614, 324);
-			this.deviceListControl1.TabIndex = 0;
+			this.deviceListControl.Dock = System.Windows.Forms.DockStyle.Top;
+			this.deviceListControl.Location = new System.Drawing.Point(3, 3);
+			this.deviceListControl.Name = "deviceListControl";
+			this.deviceListControl.RejectOtherDevices = false;
+			this.deviceListControl.Size = new System.Drawing.Size(186, 324);
+			this.deviceListControl.TabIndex = 0;
 			// 
 			// buttonOK
 			// 
@@ -127,6 +129,7 @@
 			this.buttonApply.TabIndex = 3;
 			this.buttonApply.Text = "Apply";
 			this.buttonApply.UseVisualStyleBackColor = true;
+			this.buttonApply.Click += new System.EventHandler(this.buttonApply_Click);
 			// 
 			// checkboxAutoRun
 			// 
@@ -138,6 +141,7 @@
 			this.checkboxAutoRun.TabIndex = 4;
 			this.checkboxAutoRun.Text = "Auto run at system starts";
 			this.checkboxAutoRun.UseVisualStyleBackColor = true;
+			this.checkboxAutoRun.Click += new System.EventHandler(this.handleAnySettingChanged);
 			// 
 			// PreferenceDialog
 			// 
@@ -173,7 +177,7 @@
 		private System.Windows.Forms.CheckBox checkboxAutoRun;
 		private GeneralPreferenceControl generalPreferenceControl1;
 		private System.Windows.Forms.TabPage tabDevices;
-		private DeviceListControl deviceListControl1;
+		private DeviceListControl deviceListControl;
 	}
 }
 

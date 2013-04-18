@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
@@ -7,15 +8,21 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using InfiniteStorage.Model;
+using InfiniteStorage.Properties;
 
 namespace InfiniteStorage
 {
 	public partial class DeviceListControl : UserControl
 	{
+		public List<Device> DeletedDevices { get; private set; }
+		public event EventHandler SettingChanged;
+
+		private BindingSource dataSource;
+
 		public DeviceListControl()
 		{
 			InitializeComponent();
-			delCol.UseColumnTextForButtonValue = true;
+			DeletedDevices = new List<Device>();
 		}
 
 		public void RefreshData()
@@ -32,6 +39,7 @@ namespace InfiniteStorage
 			if (!DesignMode)
 			{
 				bgPopulate.RunWorkerAsync();
+				rejectOtherDevices.Checked = Settings.Default.RejectOtherDevices;
 			}
 		}
 
@@ -59,7 +67,7 @@ namespace InfiniteStorage
 
 			if (e.Result != null)
 			{
-				dataGridView1.DataSource = e.Result;
+				dataGridView1.DataSource = dataSource = new BindingSource(e.Result as List<Device>, null);
 			}
 		}
 
@@ -70,14 +78,28 @@ namespace InfiniteStorage
 
 			var device = dataGridView1.Rows[e.RowIndex].DataBoundItem as Device;
 
-			using (var db = new MyDbContext())
-			{
-				db.Object.Database.ExecuteSqlCommand("delete from Devices where device_id=?", device.device_id);
-			}
+			DeletedDevices.Add(device);
+			dataSource.Remove(device);
 
-			bgPopulate.RunWorkerAsync();
+			raiseSettingChangedEvent();
 		}
 
-		
+		public bool RejectOtherDevices
+		{
+			get { return rejectOtherDevices.Checked; }
+			set { rejectOtherDevices.Checked = value; }
+		}
+
+		private void raiseSettingChangedEvent()
+		{
+			var handler = SettingChanged;
+			if (handler != null)
+				handler(this, EventArgs.Empty);
+		}
+
+		private void rejectOtherDevices_CheckedChanged(object sender, EventArgs e)
+		{
+			raiseSettingChangedEvent();
+		}
 	}
 }

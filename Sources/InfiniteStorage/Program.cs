@@ -40,6 +40,7 @@ namespace InfiniteStorage
 				return;
 
 			initNotifyIcon();
+			initConnectedDeviceCollection();
 			SynchronizationContextHelper.SetMainSyncContext();
 
 			m_NotifyTimer = new Timer();
@@ -136,6 +137,12 @@ namespace InfiniteStorage
 			InfiniteStorageWebSocketService.DeviceAccepted += m_notifyIconController.OnDeviceConnected;
 			InfiniteStorageWebSocketService.DeviceDisconnected += m_notifyIconController.OnDeviceDisconnected;
 			InfiniteStorageWebSocketService.PairingRequesting += m_notifyIconController.OnDevicePairingRequesting;
+		}
+
+		private static void initConnectedDeviceCollection()
+		{
+			InfiniteStorageWebSocketService.DeviceAccepted += (s, e) => { ConnectedClientCollection.Instance.Add(e.ctx); };
+			InfiniteStorageWebSocketService.DeviceDisconnected += (s, e) => { ConnectedClientCollection.Instance.Remove(e.ctx); };
 		}
 
 		static void Application_ApplicationExit(object sender, EventArgs e)

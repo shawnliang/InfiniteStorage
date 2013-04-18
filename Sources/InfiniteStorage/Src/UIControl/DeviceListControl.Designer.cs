@@ -30,10 +30,11 @@
 		{
 			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.dataGridView1 = new System.Windows.Forms.DataGridView();
-			this.label1 = new System.Windows.Forms.Label();
-			this.bgPopulate = new System.ComponentModel.BackgroundWorker();
 			this.devNameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.delCol = new System.Windows.Forms.DataGridViewButtonColumn();
+			this.label1 = new System.Windows.Forms.Label();
+			this.bgPopulate = new System.ComponentModel.BackgroundWorker();
+			this.rejectOtherDevices = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -65,23 +66,9 @@
 			this.dataGridView1.ReadOnly = true;
 			this.dataGridView1.RowHeadersVisible = false;
 			this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dataGridView1.Size = new System.Drawing.Size(559, 156);
+			this.dataGridView1.Size = new System.Drawing.Size(601, 180);
 			this.dataGridView1.TabIndex = 0;
 			this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
-			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(14, 22);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(94, 13);
-			this.label1.TabIndex = 1;
-			this.label1.Text = "連結的手持裝置:";
-			// 
-			// bgPopulate
-			// 
-			this.bgPopulate.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgPopulate_DoWork);
-			this.bgPopulate.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgPopulate_RunWorkerCompleted);
 			// 
 			// devNameCol
 			// 
@@ -102,14 +89,41 @@
 			this.delCol.Text = "刪除";
 			this.delCol.UseColumnTextForButtonValue = true;
 			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(14, 22);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(94, 13);
+			this.label1.TabIndex = 1;
+			this.label1.Text = "連結的手持裝置:";
+			// 
+			// bgPopulate
+			// 
+			this.bgPopulate.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgPopulate_DoWork);
+			this.bgPopulate.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgPopulate_RunWorkerCompleted);
+			// 
+			// rejectOtherDevices
+			// 
+			this.rejectOtherDevices.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.rejectOtherDevices.AutoSize = true;
+			this.rejectOtherDevices.Location = new System.Drawing.Point(17, 246);
+			this.rejectOtherDevices.Name = "rejectOtherDevices";
+			this.rejectOtherDevices.Size = new System.Drawing.Size(350, 17);
+			this.rejectOtherDevices.TabIndex = 2;
+			this.rejectOtherDevices.Text = "僅允許以上裝置備份到此電腦，拒絕所有其他裝置的連線邀請";
+			this.rejectOtherDevices.UseVisualStyleBackColor = true;
+			this.rejectOtherDevices.CheckedChanged += new System.EventHandler(this.rejectOtherDevices_CheckedChanged);
+			// 
 			// DeviceListControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.rejectOtherDevices);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.dataGridView1);
 			this.Name = "DeviceListControl";
-			this.Size = new System.Drawing.Size(608, 222);
+			this.Size = new System.Drawing.Size(650, 278);
 			this.Load += new System.EventHandler(this.DeviceListControl_Load);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
 			this.ResumeLayout(false);
@@ -124,5 +138,6 @@
 		private System.ComponentModel.BackgroundWorker bgPopulate;
 		private System.Windows.Forms.DataGridViewTextBoxColumn devNameCol;
 		private System.Windows.Forms.DataGridViewButtonColumn delCol;
+		private System.Windows.Forms.CheckBox rejectOtherDevices;
 	}
 }

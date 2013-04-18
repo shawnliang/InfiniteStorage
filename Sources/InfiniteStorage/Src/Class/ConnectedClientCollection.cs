@@ -8,10 +8,9 @@ namespace InfiniteStorage
 	class ConnectedClientCollection
 	{
 		private static ConnectedClientCollection instance;
-		
+
 		private object cs = new object();
 		private LinkedList<IConnectionStatus> connections = new LinkedList<IConnectionStatus>();
-		private LinkedList<PairingRequestEventArgs> requests = new LinkedList<PairingRequestEventArgs>();
 
 		private ConnectedClientCollection()
 		{
@@ -46,35 +45,10 @@ namespace InfiniteStorage
 			}
 		}
 
-		public void AddPairingRequest(PairingRequestEventArgs pairingRequest)
-		{
-			lock (cs)
-			{
-				requests.AddLast(pairingRequest);
-			}
-		}
-
-		public void RemovePairingRequest(PairingRequestEventArgs pairingRequest)
-		{
-			lock (cs)
-			{
-				requests.Remove(pairingRequest);
-			}
-		}
-
-		public List<PairingRequestEventArgs> GetAllPairingRequests()
-		{
-			lock (cs)
-			{
-				return requests.ToList();
-			}
-		}
 
 		public static ConnectedClientCollection Instance
 		{
 			get { return instance; }
 		}
-
-		
 	}
 }

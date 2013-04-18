@@ -102,7 +102,9 @@
     <None Include="mainicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <SharpSetupConfigurationCompiler Include="configuration.sscf" />
+    <SharpSetupConfigurationCompiler Include="configuration.sscf">
+      <SubType>Designer</SubType>
+    </SharpSetupConfigurationCompiler>
   </ItemGroup>
   <ItemGroup>
     <SharpSetupTranslationCompiler Include="translation_overrides.sstf" />

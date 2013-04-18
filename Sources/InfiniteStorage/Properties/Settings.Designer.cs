@@ -106,5 +106,17 @@ namespace InfiniteStorage.Properties {
                 this["LocationType"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RejectOtherDevices {
+            get {
+                return ((bool)(this["RejectOtherDevices"]));
+            }
+            set {
+                this["RejectOtherDevices"] = value;
+            }
+        }
     }
 }
