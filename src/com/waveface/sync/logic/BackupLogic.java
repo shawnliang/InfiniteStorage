@@ -485,14 +485,14 @@ public class BackupLogic {
 		int filetype = 0;
     	String lastBackupTimestamp = null;
     	//select from serverFiles 
-		Cursor cursor = null;
 		ContentResolver cr = context.getContentResolver();
-		cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
 				new String[]{
 				BackupedServersTable.COLUMN_END_DATETIME,
 				}, 
 				BackupedServersTable.COLUMN_SERVER_ID+"=?", 
 				new String[]{serverId},null);	
+
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();
 			lastBackupTimestamp = cursor.getString(0); 
@@ -552,11 +552,11 @@ public class BackupLogic {
 					if(canBackup(context)){
 						entity.action = Constant.WS_ACTION_FILE_END;
 						RuntimeWebClient.send(RuntimeConfig.GSON.toJson(entity));
+						isSuccesed = true;
 					}else{
 						isSuccesed = false;
 						break;						
 					}
-					isSuccesed = true;
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -575,6 +575,9 @@ public class BackupLogic {
 					isSuccesed = false;
 				}
 				cursor.moveToNext();
+				if(!canBackup(context)){
+					break;//cut off for loop
+				}
 			}
 		}
 		cursor.close();

@@ -29,6 +29,7 @@ import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeConfig;
 import com.waveface.sync.db.BackupedServersTable;
+import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
@@ -51,7 +52,9 @@ public class MainActivity extends Activity {
     private Handler mHandler = new Handler();
     private JmDNS jmdns = null;
     private ServiceListener mListener = null;
-	private ServerObserver mContentObserver;
+    
+	private ImportFilesObserver mImportFilesObserver;    
+	private ServerObserver mServerObserver;
     //UI
 	private TextView mDevice;
 	private TextView mNowPeriod;
@@ -113,20 +116,25 @@ public class MainActivity extends Activity {
 		mAdapter = new ServersAdapter(this,servers);
 		listview.setAdapter(mAdapter);
 
-		mContentObserver = new ServerObserver();
-		getContentResolver().registerContentObserver(BackupedServersTable.BACKUPED_SERVER_URI, false, mContentObserver);
+		//RESGISTER OBSERVER
+		mImportFilesObserver = new ImportFilesObserver();
+		getContentResolver().registerContentObserver(ImportFilesTable.IMPORT_FILE_URI, false, mImportFilesObserver);
+		
+		mServerObserver = new ServerObserver();
+		getContentResolver().registerContentObserver(BackupedServersTable.BACKUPED_SERVER_URI, false, mServerObserver);
 
+		
+		
 		
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_BACKUP_FILE);
 		filter.addAction(Constant.ACTION_BACKUP_DONE);
-		filter.addAction(Constant.ACTION_SCAN_FILE);	
 		filter.addAction(Constant.ACTION_WS_SERVER_NOTIFY);		
 		filter.addAction(Constant.ACTION_WS_BROKEN_NOTIFY);
 		registerReceiver(mReceiver, filter);
 
 		//SETUP BONJOUR
-		 setUp();
+		 multiCastSetUp();
 		//GET PAIRED SERVERS
 		mPairedServers = ServersLogic.getBackupedServers(this);
 		if(NetworkUtil.isWifiNetworkAvailable(this)){
@@ -136,12 +144,12 @@ public class MainActivity extends Activity {
 						getString(R.string.auto_connect));
 				mProgressDialog.setCancelable(true);
 			}
-			mHandler.postDelayed(new Runnable() {
-	            public void run() {
-	                setUp();
-	            }
-	            }, 100);        
 		}
+		mHandler.postDelayed(new Runnable() {
+            public void run() {
+                multiCastSetUp();
+            }
+            }, 100);        
 	}
 	
 	private void autoPairConnect(){
@@ -167,6 +175,15 @@ public class MainActivity extends Activity {
 			mProgressDialog.dismiss();
 		}		
 	}
+	private class ImportFilesObserver extends ContentObserver {
+		public ImportFilesObserver() {
+			super(new Handler());
+		}
+		@Override
+		public void onChange(boolean selfChange) {
+			refreshLayout();
+		}
+	}
 	
 	private class ServerObserver extends ContentObserver {
 		public ServerObserver() {
@@ -191,9 +208,6 @@ public class MainActivity extends Activity {
 			}
 			else if (Constant.ACTION_BACKUP_DONE.equals(action)) {
 				Toast.makeText(context, R.string.backuped_completed, Toast.LENGTH_LONG).show();
-			}
-			else if (Constant.ACTION_SCAN_FILE.equals(action)) {
-			    refreshLayout();
 			}
 			else if(Constant.ACTION_WS_SERVER_NOTIFY.equals(action)){
 				dismissProgress();
@@ -229,11 +243,11 @@ public class MainActivity extends Activity {
 			refreshServerStatus();
 		}
 	};
-    private void setUp() {
+    private void multiCastSetUp() {
         WifiManager wifi = (WifiManager) getSystemService(android.content.Context.WIFI_SERVICE);
-//        lock = wifi.createMulticastLock("infiniteS");
+        lock = wifi.createMulticastLock("infiniteS");
 //        lock.setReferenceCounted(true);
-//        lock.acquire();
+        lock.acquire();
         try {
             jmdns = JmDNS.create();
             jmdns.addServiceListener(Constant.INFINTE_STORAGE, mListener = new ServiceListener() {
@@ -337,7 +351,11 @@ public class MainActivity extends Activity {
         }
         jmdns = null;
 	}
-//    lock.release();
+    try {
+    	lock.release();
+    } catch (Throwable th) {
+        // ignoring this exception, probably wakeLock was already released
+    }    
 	super.onStop();
 }
 
@@ -346,7 +364,8 @@ public class MainActivity extends Activity {
     protected void onDestroy() {
     	ServersLogic.purgeAllBonjourServer(this);
 		unregisterReceiver(mReceiver);
-		getContentResolver().unregisterContentObserver(mContentObserver);
+		getContentResolver().unregisterContentObserver(mImportFilesObserver);		
+		getContentResolver().unregisterContentObserver(mServerObserver);
     	super.onDestroy();
     }
     public void refreshLayout(){

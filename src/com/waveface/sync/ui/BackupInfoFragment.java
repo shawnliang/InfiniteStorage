@@ -21,8 +21,8 @@ import com.waveface.sync.R;
 import com.waveface.sync.db.BackupedServersTable;
 import com.waveface.sync.logic.BackupLogic;
 
-public class BackupViewFragment extends LinkFragmentBase implements OnClickListener, OnCheckedChangeListener{
-	public final String TAG = BackupViewFragment.class.getSimpleName();
+public class BackupInfoFragment extends LinkFragmentBase implements OnClickListener, OnCheckedChangeListener{
+	public final String TAG = BackupInfoFragment.class.getSimpleName();
 
 	private ViewGroup mRootView;
 	private boolean mHideBack = false;

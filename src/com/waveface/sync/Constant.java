@@ -12,6 +12,9 @@ public class Constant {
 	public final static String ACTION_WS_SERVER_NOTIFY = "com.waveface.wammer.action.WS_SERVER_NOTIFY";	
 	public final static String ACTION_WS_BROKEN_NOTIFY = "com.waveface.wammer.action.WS_BROKEN_NOTIFY";	
 
+	public final static String ACTION_BONJOUR_SERVER_MANUAL_PAIRING = "com.waveface.wammer.action.BONJOUR_SERVER_MANUAL_PAIRING";	
+	public final static String ACTION_BONJOUR_SERVER_AUTO_PAIRING = "com.waveface.wammer.action.BONJOUR_SERVER_MANUAL_PAIRING";	
+	
 	public final static String ACTION_BONJOUR_MULTICAT_EVENT = "com.waveface.wammer.action.BONJOUR_MULTICAT_EVENT";	
 	public final static String ACTION_BACKUP_FILE = "com.waveface.wammer.action.BACKUP_FILE";
 	public final static String ACTION_BACKUP_DONE = "com.waveface.wammer.action.BACKUP_DONE";	

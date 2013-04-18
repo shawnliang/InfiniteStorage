@@ -21,7 +21,7 @@ public class BackupFilesTask extends AsyncTask<Void, Void, Void> {
 	protected Void doInBackground(Void... params) {
 	   	SharedPreferences prefs = mContext.getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);    	
     	String serverId = prefs.getString(Constant.PREF_SERVER_ID, "");
-    	while(BackupLogic.needToBackup(mContext,serverId)){
+    	while(BackupLogic.needToBackup(mContext,serverId) && BackupLogic.canBackup(mContext)){
     		BackupLogic.backupFiles(mContext, serverId);
     	}
 		return null;

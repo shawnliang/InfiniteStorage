@@ -39,8 +39,8 @@ import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.ServersLogic;
 
 
-public class WSServerFragment extends LinkFragmentBase implements OnClickListener, OnCheckedChangeListener{
-	public final String TAG = WSServerFragment.class.getSimpleName();
+public class ServerChooserFragment extends LinkFragmentBase implements OnClickListener, OnCheckedChangeListener{
+	public final String TAG = ServerChooserFragment.class.getSimpleName();
 
 	private ViewGroup mRootView;
 	private ServerArrayAdapter mAdapter ; 

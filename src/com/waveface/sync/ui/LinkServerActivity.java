@@ -91,10 +91,10 @@ public class LinkServerActivity extends FragmentActivity implements
 
 	@Override
 	public void goNext(String id) {
-		if (WSServerFragment.class.getSimpleName().equals(id)) {
-			showFragment(new BackupViewFragment(), BackupViewFragment.class.getSimpleName());
+		if (ServerChooserFragment.class.getSimpleName().equals(id)) {
+			showFragment(new BackupInfoFragment(), BackupInfoFragment.class.getSimpleName());
 		}
-		else if (BackupViewFragment.class.getSimpleName().equals(id)) {
+		else if (BackupInfoFragment.class.getSimpleName().equals(id)) {
 			setResult(RESULT_OK);
 			finish();
 		}
@@ -120,6 +120,6 @@ public class LinkServerActivity extends FragmentActivity implements
 
 	@Override
 	public void onInstallNext() {
-		showFragment(new WSServerFragment(), WSServerFragment.class.getSimpleName());
+		showFragment(new ServerChooserFragment(), ServerChooserFragment.class.getSimpleName());
 	}
 }
