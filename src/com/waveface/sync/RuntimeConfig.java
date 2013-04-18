@@ -31,9 +31,15 @@ public class RuntimeConfig{
 	public static boolean LocationImporting = false;
 	public static boolean NotificationForUploadThumbShow = false;
 	public static boolean SummaryRefreshing = false;
+	public static boolean mAutoConnectMode = false;
+	public static String mWebSocketServerId ;	
 	public static boolean isBackuping = false;
+	public static boolean hasServiceCreated = false;
+	public static boolean isAppRunning = false;
+	public static boolean isPairing = false;
+	public static boolean isPaired = false;	
+	
 	public static int NETWORK_STATE;
-
 
 	public static Gson GSON = new Gson();
 	public static boolean OutOfMemoryOccurs = false;

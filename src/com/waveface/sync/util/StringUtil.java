@@ -892,6 +892,10 @@ public class StringUtil {
 		}
 		return rtnString;
 	}
+	public static String getFilepath(String fullFilename,String filename) {
+		return fullFilename.substring(0, fullFilename.length()-filename.length());
+	}
+	
 
 	public static String getEndDate(String strQueryDate) {
 		String[] result = { "" };

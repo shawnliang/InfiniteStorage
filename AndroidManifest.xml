@@ -74,12 +74,13 @@
             android:authorities="com.waveface.sync"
             android:exported="false"
             android:syncable="true" />
+        
       	<receiver android:exported="false" android:name="com.waveface.sync.service.ConnectivityReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
-        <service android:enabled="true" android:name="com.waveface.syncservice.BonjourService" />
+        <service android:enabled="true" android:name="com.waveface.sync.service.BonjourService" />
         <meta-data android:name="com.crashlytics.ApiKey" android:value="2de93f37d61a80e50febf2dfa9e0b80d5105afd0"/>
     </application>
 

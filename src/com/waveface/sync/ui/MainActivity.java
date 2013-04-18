@@ -1,12 +1,6 @@
 package com.waveface.sync.ui;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.jmdns.JmDNS;
-import javax.jmdns.ServiceEvent;
-import javax.jmdns.ServiceInfo;
-import javax.jmdns.ServiceListener;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -17,13 +11,11 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.ContentObserver;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
@@ -33,7 +25,7 @@ import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.task.BackupFilesTask;
+import com.waveface.sync.service.BonjourService;
 import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.NetworkUtil;
@@ -47,11 +39,6 @@ import com.waveface.sync.util.StringUtil;
  */
 public class MainActivity extends Activity {
 	private String TAG = MainActivity.class.getSimpleName();
-	//BONJOUR
-    private WifiManager.MulticastLock lock;
-    private Handler mHandler = new Handler();
-    private JmDNS jmdns = null;
-    private ServiceListener mListener = null;
     
 	private ImportFilesObserver mImportFilesObserver;    
 	private ServerObserver mServerObserver;
@@ -66,22 +53,19 @@ public class MainActivity extends Activity {
 	private TextView mAudioSize;
 	private ProgressDialog mProgressDialog;
 	
+	private int mServerRefreshCount = 0; 
+	private int mFileRefreshCount = 0; 
+	
 	//DATA 
 	private ArrayList<ServerEntity> mPairedServers ;
-	private ServerEntity mConnectedServer ;
-	private String mCondidateServerId ;
-	private String mCondidateWSLocation ;
-	
-	
-	private static boolean mAutoConnectMode = false;	
-	private static boolean mHasPopupFirstUse = false;
-	
-	//DATAS
 	private ServersAdapter mAdapter ;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		RuntimeConfig.isAppRunning = true;
 		setContentView(R.layout.sync_main);
+		
 		mDevice = (TextView) this.findViewById(R.id.textDevice);
 		mDevice.setText(DeviceUtil.getDeviceNameForDisplay(this));
 		mNowPeriod = (TextView) this.findViewById(R.id.textPeriod);
@@ -123,51 +107,25 @@ public class MainActivity extends Activity {
 		mServerObserver = new ServerObserver();
 		getContentResolver().registerContentObserver(BackupedServersTable.BACKUPED_SERVER_URI, false, mServerObserver);
 
-		
-		
-		
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(Constant.ACTION_BACKUP_FILE);
+		filter.addAction(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING);
+		filter.addAction(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING);		
 		filter.addAction(Constant.ACTION_BACKUP_DONE);
 		filter.addAction(Constant.ACTION_WS_SERVER_NOTIFY);		
 		filter.addAction(Constant.ACTION_WS_BROKEN_NOTIFY);
 		registerReceiver(mReceiver, filter);
 
-		//SETUP BONJOUR
-		 multiCastSetUp();
 		//GET PAIRED SERVERS
 		mPairedServers = ServersLogic.getBackupedServers(this);
 		if(NetworkUtil.isWifiNetworkAvailable(this)){
 			if(mPairedServers.size()!=0){
-				mAutoConnectMode = true ;
+				RuntimeConfig.mAutoConnectMode = true ;
 				mProgressDialog = ProgressDialog.show(this, "",
 						getString(R.string.auto_connect));
 				mProgressDialog.setCancelable(true);
 			}
 		}
-		mHandler.postDelayed(new Runnable() {
-            public void run() {
-                multiCastSetUp();
-            }
-            }, 100);        
-	}
-	
-	private void autoPairConnect(){
-		ServerEntity pairedServer = null;
-		ServerEntity bonjourServer = null;		
-		for(int i = 0 ; i < mPairedServers.size();i++){
-			pairedServer = mPairedServers.get(i);
-			bonjourServer = ServersLogic.getBonjourServerByServerId(this, pairedServer.serverId);
-			if(bonjourServer!=null && RuntimeConfig.OnWebSocketOpened == false){
-				mCondidateServerId = pairedServer.serverId;
-				mCondidateWSLocation = bonjourServer.wsLocation;
-				ServersLogic.startWSServerConnect(this, mCondidateWSLocation, mCondidateServerId);
-				mConnectedServer = bonjourServer;
-			}
-		}
-		if(RuntimeConfig.OnWebSocketOpened == false){
-			dismissProgress();
-		}
+		startService(new Intent(this, BonjourService.class));
 	}
 	
 	private void dismissProgress(){
@@ -181,7 +139,10 @@ public class MainActivity extends Activity {
 		}
 		@Override
 		public void onChange(boolean selfChange) {
-			refreshLayout();
+//			mFileRefreshCount++;
+//			if(mFileRefreshCount%10 == 1){
+				refreshLayout();
+//			}
 		}
 	}
 	
@@ -191,7 +152,10 @@ public class MainActivity extends Activity {
 		}
 		@Override
 		public void onChange(boolean selfChange) {
-			refreshServerStatus();
+//			mServerRefreshCount++;
+//			if(mServerRefreshCount%10 == 1){
+				refreshServerStatus();
+//			}
 		}
 	}
 
@@ -200,14 +164,8 @@ public class MainActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			Log.d(TAG, "action:" + intent.getAction());
-			if (Constant.ACTION_BACKUP_FILE.equals(action)) {
-				if(RuntimeConfig.isBackuping == false){
-					RuntimeConfig.isBackuping = true;
-					new BackupFilesTask(context).execute(new Void[]{});
-				}
-			}
-			else if (Constant.ACTION_BACKUP_DONE.equals(action)) {
-				Toast.makeText(context, R.string.backuped_completed, Toast.LENGTH_LONG).show();
+			if (Constant.ACTION_BACKUP_DONE.equals(action)) {
+				//TODO:???
 			}
 			else if(Constant.ACTION_WS_SERVER_NOTIFY.equals(action)){
 				dismissProgress();
@@ -217,21 +175,21 @@ public class MainActivity extends Activity {
 						//refreshServerStatus();
 					}
 					else if(response.equals(Constant.WS_ACTION_ACCEPT)){
-						if(mAutoConnectMode){
+						if(RuntimeConfig.mAutoConnectMode){
 							dismissProgress();
 							ServerEntity entity = (ServerEntity) intent.getExtras().get(Constant.EXTRA_SERVER_DATA);
-							entity.serverId = mConnectedServer.serverId;
-							entity.serverName = mConnectedServer.serverName;
-							entity.serverOS = mConnectedServer.serverOS;
-							entity.wsLocation = mConnectedServer.wsLocation;
-							//bonjourServer = ServersLogic.getBonjourServerByServerId(MainActivity.this, mCondidateServerId);
-							mConnectedServer = entity;
-					    	SharedPreferences prefs = getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);
+							ServerEntity pairedServer = ServersLogic.getBonjourServerByServerId(MainActivity.this, RuntimeConfig.mWebSocketServerId);
+							entity.serverId = pairedServer.serverId;
+							entity.serverName = pairedServer.serverName;
+							entity.serverOS = pairedServer.serverOS;
+							entity.wsLocation = pairedServer.wsLocation;
+
+							SharedPreferences prefs = getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);
 					    	Editor editor = prefs.edit();
-					    	editor.putString(Constant.PREF_STATION_WEB_SOCKET_URL, mConnectedServer.wsLocation);
-					    	editor.putString(Constant.PREF_SERVER_ID,mConnectedServer.serverId);
+					    	editor.putString(Constant.PREF_STATION_WEB_SOCKET_URL, entity.wsLocation);
+					    	editor.putString(Constant.PREF_SERVER_ID,entity.serverId);
 					    	editor.commit();
-							ServersLogic.startBackuping(context, mConnectedServer);
+							ServersLogic.startBackuping(context, entity);
 						}
 					}
 				}
@@ -240,78 +198,21 @@ public class MainActivity extends Activity {
 				//Update all Backuoed Server to offline
 				ServersLogic.setAllBackupedServersOffline(context);
 			}
+			else if(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING.equals(action)){
+                Intent startIntent = new Intent(MainActivity.this, LinkServerActivity.class);	                    	
+                startActivityForResult(startIntent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
+			}
+			else if(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING.equals(action)){
+				int status = intent.getIntExtra(Constant.EXTRA_BONJOUR_AUTO_PAIR_STATUS,Constant.BONJOUR_PAIRED);
+				switch(status){
+					case Constant.BONJOUR_PAIRED:
+						dismissProgress();
+						break;
+				}
+			}			
 			refreshServerStatus();
 		}
 	};
-    private void multiCastSetUp() {
-        WifiManager wifi = (WifiManager) getSystemService(android.content.Context.WIFI_SERVICE);
-        lock = wifi.createMulticastLock("infiniteS");
-//        lock.setReferenceCounted(true);
-        lock.acquire();
-        try {
-            jmdns = JmDNS.create();
-            jmdns.addServiceListener(Constant.INFINTE_STORAGE, mListener = new ServiceListener() {
-                @Override
-                public void serviceResolved(ServiceEvent ev) {
-                	@SuppressWarnings("deprecation")
-                	ServiceInfo si = ev.getInfo();
-                    final ServerEntity entity = new ServerEntity();
-                	entity.serverName = si.getName();
-					entity.serverId = si.getPropertyString(Constant.PARAM_SERVER_ID);
-					if(!TextUtils.isEmpty(si.getPropertyString(Constant.PARAM_SERVER_OS))){
-						entity.serverOS = si.getPropertyString(Constant.PARAM_SERVER_OS);		
-					}
-					else{
-						entity.serverOS = "WINDOWS";
-					}
-                    entity.wsLocation = "ws://"+si.getHostAddress()+":"+si.getPort();
-                    Log.d(TAG, "SERVER NAME:"+entity.serverName);
-                    ServersLogic.updateBonjourServer(MainActivity.this, entity);
-                    if(mAutoConnectMode == false){
-	                    if(RuntimeConfig.OnWebSocketOpened == false ){
-		                    if(mHasPopupFirstUse == false ){
-			                    Intent intent = new Intent(MainActivity.this, LinkServerActivity.class);	                    	
-			                    MainActivity.this.startActivityForResult(intent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
-			                    mHasPopupFirstUse = true; 
-		                    }
-		                    else{
-    	                    	Intent intent = new Intent(Constant.ACTION_BONJOUR_MULTICAT_EVENT);
-    		                    MainActivity.this.sendBroadcast(intent);
-		                    }
-	                    }
-                    }
-                    else{
-                        mHandler.postDelayed(new Runnable() {
-                            public void run() {
-                            	autoPairConnect();  		                    
-                            	}
-                            }, 500);
-                    }
-                }
-
-                @Override
-                public void serviceRemoved(ServiceEvent ev) {
-                	//TODO:
-                	ServiceInfo si = ev.getInfo();
-                    ServerEntity entity = new ServerEntity();
-                	entity.serverName = si.getName();
-					entity.serverId = si.getPropertyString(Constant.PARAM_SERVER_ID);
-					ServersLogic.purgeBonjourServerByServerId(MainActivity.this, entity.serverId);
-                }
-
-                @Override
-                public void serviceAdded(ServiceEvent event) {
-                	//TODO:
-                	jmdns.requestServiceInfo(event.getType(), event.getName(), 1);
-                }
-            });
-        } 
-        catch (IOException e) {
-            e.printStackTrace();
-            //TODO:BROKEN PIPE
-            return;
-        }
-    }
     public void refreshServerStatus(){
 		mAdapter.setData(ServersLogic.getBackupedServers(this));
     }
@@ -335,37 +236,14 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
     }
-    
-	@Override
-    protected void onStop() {
-	if (jmdns != null) {
-        if (mListener != null) {
-            jmdns.removeServiceListener(Constant.INFINTE_STORAGE, mListener);
-            mListener = null;
-        }
-        jmdns.unregisterAllServices();
-        try {
-            jmdns.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        jmdns = null;
-	}
-    try {
-    	lock.release();
-    } catch (Throwable th) {
-        // ignoring this exception, probably wakeLock was already released
-    }    
-	super.onStop();
-}
-
-    
+        
     @Override
     protected void onDestroy() {
     	ServersLogic.purgeAllBonjourServer(this);
 		unregisterReceiver(mReceiver);
 		getContentResolver().unregisterContentObserver(mImportFilesObserver);		
 		getContentResolver().unregisterContentObserver(mServerObserver);
+		RuntimeConfig.isAppRunning = false;
     	super.onDestroy();
     }
     public void refreshLayout(){

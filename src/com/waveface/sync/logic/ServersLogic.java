@@ -166,8 +166,8 @@ public class ServersLogic {
 		ContentResolver cr = context.getContentResolver();
 		cursor = cr.query(BonjourServersTable.CONTENT_URI, 
 				null, 
-				null, 
-				null, 
+				BonjourServersTable.COLUMN_SERVER_ID+"=?", 
+				new String[]{serverId}, 
 				null);
 		
 		if(cursor!=null && cursor.getCount()>0){

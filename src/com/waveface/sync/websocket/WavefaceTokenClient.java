@@ -146,17 +146,22 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 				Log.e(Constant.JSON_ERROR_TAG, e.getLocalizedMessage());
 			}
 			if(response.action.equals(Constant.WS_ACTION_ACCEPT)){
+				RuntimeConfig.isPairing = false ;
+				RuntimeConfig.isPaired = true ;
             	Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
             	intent.putExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT, Constant.WS_ACTION_ACCEPT);
                 intent.putExtra(Constant.EXTRA_SERVER_DATA, response);
+                RuntimeConfig.mWebSocketServerId = response.serverId;
                 mContext.sendBroadcast(intent);
 
 			}else if(response.action.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
-            	Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
+				Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
             	intent.putExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT, Constant.WS_ACTION_WAIT_FOR_PAIR);
             	mContext.sendBroadcast(intent);
 				
 			}else if(response.action.equals(Constant.WS_ACTION_DENIED)){
+				RuntimeConfig.isPairing = false ;
+				RuntimeConfig.isPaired = false ;
             	Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
             	intent.putExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT, Constant.WS_ACTION_DENIED);
                 mContext.sendBroadcast(intent);					
@@ -213,7 +218,9 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		public void processClosed(WebSocketClientEvent aEvent) {
 			RuntimeConfig.OnWebSocketOpened = false;
 			RuntimeConfig.OnWebSocketStation = false;
-        	Intent intent = new Intent(Constant.ACTION_WS_BROKEN_NOTIFY);
+			RuntimeConfig.isPairing = false ;
+			RuntimeConfig.isPaired = false ;
+			Intent intent = new Intent(Constant.ACTION_WS_BROKEN_NOTIFY);
             mContext.sendBroadcast(intent);			
 		}
 

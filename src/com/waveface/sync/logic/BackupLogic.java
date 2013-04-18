@@ -519,7 +519,7 @@ public class BackupLogic {
 				entity.fileName = StringUtil.getFilename(filename);
 				entity.mimetype = cursor.getString(1);
 				entity.fileSize = cursor.getString(2);
-				entity.folder = cursor.getString(3);				
+				entity.folder = StringUtil.getFilepath(filename, entity.fileName);				
 				entity.datetime = cursor.getString(4);
 				filetype = cursor.getInt(5);
 				try {

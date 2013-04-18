@@ -13,7 +13,7 @@ public class Constant {
 	public final static String ACTION_WS_BROKEN_NOTIFY = "com.waveface.wammer.action.WS_BROKEN_NOTIFY";	
 
 	public final static String ACTION_BONJOUR_SERVER_MANUAL_PAIRING = "com.waveface.wammer.action.BONJOUR_SERVER_MANUAL_PAIRING";	
-	public final static String ACTION_BONJOUR_SERVER_AUTO_PAIRING = "com.waveface.wammer.action.BONJOUR_SERVER_MANUAL_PAIRING";	
+	public final static String ACTION_BONJOUR_SERVER_AUTO_PAIRING = "com.waveface.wammer.action.BONJOUR_SERVER_AUTO_PAIRING";	
 	
 	public final static String ACTION_BONJOUR_MULTICAT_EVENT = "com.waveface.wammer.action.BONJOUR_MULTICAT_EVENT";	
 	public final static String ACTION_BACKUP_FILE = "com.waveface.wammer.action.BACKUP_FILE";
@@ -22,12 +22,17 @@ public class Constant {
 	
 
 	//
+	public static final String EXTRA_BONJOUR_AUTO_PAIR_STATUS = "com.waveface.wammer.extra.BONJOUR_AUTO_PAIR_STATUS";	
 	public static final String EXTRA_BONJOUR_SERVICE_EVENT = "com.waveface.wammer.extra.BONJOUR_SERVICE_EVENT";
 	public final static String EXTRA_SERVER_DATA = "com.waveface.wammer.extra.SERVER_DATA";
 	
 	public static final int EVENT_BONJOUR_RESOLVED = 1;
 	public static final int EVENT_BONJOUR_REMOVED = 2;
 	public static final int EVENT_BONJOUR_ADDED = 3;
+	
+	public static final int BONJOUR_PAIRING = 1;
+	public static final int BONJOUR_PAIRED = 2;
+	
 
 	//SERVER STATUS
 	public static final String SERVER_LINKING = "1";

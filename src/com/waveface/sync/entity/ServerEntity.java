@@ -11,6 +11,7 @@ public class ServerEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@SerializedName("server_id")
 	public String serverId;
 	
 	public String serverName;
