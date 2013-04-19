@@ -24,11 +24,8 @@ namespace UnitTest
 			util.Setup(x=>x.GetFreeSpace(It.IsAny<string>())).Returns(123456).Verifiable();
 			util.Setup(x => x.Save(It.Is<Device>(
 				(d) =>
-					d.audio_count == 0 &&
 					d.device_id == "dd" &&
-					d.device_name == "na" &&
-					d.photo_count == 0 &&
-					d.video_count == 0
+					d.device_name == "na"
 
 				))).Callback<Device>((dev) => { }).Verifiable();
 
@@ -49,9 +46,6 @@ namespace UnitTest
 			Assert.AreEqual("server_id1", o["server_id"]);
 			Assert.AreEqual(@"c:\folder1\", o["backup_folder"]);
 			Assert.AreEqual(123456L, o["backup_folder_free_space"]);
-			Assert.AreEqual(0, o["photo_count"]);
-			Assert.AreEqual(0, o["video_count"]);
-			Assert.AreEqual(0, o["audio_count"]);
 
 			Assert.IsTrue(ctx.GetState() is TransmitInitState);
 

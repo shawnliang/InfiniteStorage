@@ -39,7 +39,7 @@ namespace InfiniteStorage.WebsocketProtocol
 
 		public AbstractProtocolState ReplyAcceptMsgToDevice(ProtocolContext ctx, Device clientInfo)
 		{
-			var backupTimeRange = Util.GetBackupRange(clientInfo.device_id);
+			var summary = Util.GetDeviceSummary(clientInfo.device_id);
 
 			var response = new
 			{
@@ -47,12 +47,13 @@ namespace InfiniteStorage.WebsocketProtocol
 				server_id = Util.GetServerId(),
 				backup_folder = Util.GetPhotoFolder(),
 				backup_folder_free_space = Util.GetFreeSpace(Util.GetPhotoFolder()),
-				photo_count = clientInfo.photo_count,
-				video_count = clientInfo.video_count,
-				audio_count = clientInfo.audio_count,
 
-				backup_startdate = (backupTimeRange!=null) ? (DateTime?)backupTimeRange.start : null,
-				backup_enddate = (backupTimeRange != null) ? (DateTime?)backupTimeRange.end : null
+				backup_startdate = (summary != null) ? (DateTime?)summary.backup_range.start : null,
+				backup_enddate = (summary != null) ? (DateTime?)summary.backup_range.end : null,
+
+				photo_count = (summary != null) ? (long?)summary.photo_count : null,
+				video_count = (summary != null) ? (long?)summary.video_count : null,
+				audio_count = (summary != null) ? (long?)summary.audio_count : null
 			};
 
 			ctx.raiseOnConnectAccepted();

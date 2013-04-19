@@ -45,19 +45,20 @@ namespace UnitTest
 			{
 				device_id = "id1",
 				device_name = "dev",
-				photo_count = 100,
-				video_count = 200,
-				audio_count = 300
 			});
 			util.Setup(x => x.GetServerId()).Returns("server_id1");
 			util.Setup(x => x.GetPhotoFolder()).Returns(@"c:\folder1\");
 			util.Setup(x => x.GetFreeSpace(@"c:\folder1\")).Returns(102410241024L);
-			util.Setup(x => x.GetBackupRange("id1")).Returns(
-				() => 
-					{
-						return new TimeRange(new DateTime(2012, 1, 2, 0, 0, 0, DateTimeKind.Utc), new DateTime(2012, 1, 3, 0, 0, 0, DateTimeKind.Utc));
-					}
-			).Verifiable();
+			util.Setup(x => x.GetDeviceSummary("id1")).Returns(
+				new DeviceSummary
+				{
+					photo_count = 100,
+					video_count = 200,
+					audio_count = 300,
+					backup_range = new TimeRange(
+								 new DateTime(2012, 1, 2, 0, 0, 0, DateTimeKind.Utc),
+								 new DateTime(2012, 1, 3, 0, 0, 0, DateTimeKind.Utc))
+				}).Verifiable();
 
 			var hdl = new ConnectMsgHandler();
 			hdl.Util = util.Object;

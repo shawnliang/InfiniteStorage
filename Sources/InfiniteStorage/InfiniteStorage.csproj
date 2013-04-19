@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\Class\DeviceSummary.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\TransmitUtility.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ITransmitStateUtility.cs" />
     <Compile Include="Src\UIControl\DeviceListControl.cs">

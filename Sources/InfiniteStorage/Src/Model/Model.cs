@@ -15,12 +15,6 @@ namespace InfiniteStorage.Model
 
 		public string device_name { get; set; }
 
-		public int photo_count { get; set; }
-
-		public int video_count { get; set; }
-
-		public int audio_count { get; set; }
-
 		public virtual IEnumerable<FileAsset> files { get; set; }
 	}
 
@@ -44,8 +38,16 @@ namespace InfiniteStorage.Model
 
 		public DateTime event_time { get; set; }
 
+		public FileAssetType type { get; set; }
 
 		public virtual Device device { get; set; }
+	}
+
+	public enum FileAssetType
+	{
+		image = 0,
+		video = 1,
+		audio = 2,
 	}
 
 	public class InfiniteStorageContext: DbContext

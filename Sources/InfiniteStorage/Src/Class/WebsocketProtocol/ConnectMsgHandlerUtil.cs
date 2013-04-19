@@ -47,26 +47,22 @@ namespace InfiniteStorage.WebsocketProtocol
 			}
 		}
 
-
-		public TimeRange GetBackupRange(string device_id)
+		public DeviceSummary GetDeviceSummary(string device_id)
 		{
 			using (var db = new MyDbContext())
 			{
 				var result = from f in db.Object.Files
 							 group f by device_id
 								 into g
-								 select new
+								 select new DeviceSummary
 								 {
-									 min = g.Min(x=>x.event_time),
-									 max = g.Max(x=>x.event_time)
+									 photo_count = g.Count(x=>x.type== FileAssetType.image),
+									 audio_count = g.Count(x=>x.type == FileAssetType.audio),
+									 video_count = g.Count(x => x.type == FileAssetType.video),
+									 backup_range = new TimeRange( g.Min(x=>x.event_time), g.Max(x=>x.event_time))
 								 };
 
-				var minMax = result.FirstOrDefault();
-
-				if (minMax != null)
-					return new TimeRange(minMax.min, minMax.max);
-				else
-					return null;
+				return result.FirstOrDefault();
 			}
 		}
 	}

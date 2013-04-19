@@ -61,6 +61,7 @@
     <Compile Include="testFileStorage.cs" />
     <Compile Include="testProtocolHandler.cs" />
     <Compile Include="TestTempFile.cs" />
+    <Compile Include="testTransmitInitState.cs" />
     <Compile Include="testWaitingForApprove.cs" />
   </ItemGroup>
   <ItemGroup>

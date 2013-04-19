@@ -52,7 +52,7 @@ namespace UnitTest
 			//
 			// file-start
 			// 
-			var fileStart = new { action = "file-start", file_name = "file1.jpg", file_size = 20 };
+			var fileStart = new { action = "file-start", file_name = "file1.jpg", file_size = 20, type = "image" };
 			protoHdler.HandleMessage(new MessageEventArgs(JsonConvert.SerializeObject(fileStart)));
 			protoHdler.HandleMessage(new MessageEventArgs(JsonConvert.SerializeObject(fileStart)));
 		}
@@ -87,7 +87,7 @@ namespace UnitTest
 			//
 			// file-start
 			// 
-			var fileStart = new { action = "file-start", file_name = "file1.jpg", file_size = 20 };
+			var fileStart = new { action = "file-start", file_name = "file1.jpg", file_size = 20, type = "image", folder = "ff" };
 			protoHdler.HandleMessage(new MessageEventArgs(JsonConvert.SerializeObject(fileStart)));
 
 			// file-start again !!! Error
