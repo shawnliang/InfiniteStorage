@@ -21,6 +21,8 @@ namespace InfiniteStorage.WebsocketProtocol
 		string GetUniqueDeviceFolder(string device_name);
 
 		DeviceSummary GetDeviceSummary(string device_id);
+
+		bool RejectUnpairedDevices { get; }
 	}
 
 	

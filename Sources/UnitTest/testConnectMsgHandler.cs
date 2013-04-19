@@ -83,6 +83,39 @@ namespace UnitTest
 			fileStorage.VerifyAll();
 		}
 
+		[TestMethod]
+		public void reject_all_unpaired_devices()
+		{
+			string sentData = null;
+			ctx.SendText = (data) => { sentData = data; };
+
+			WebSocketSharp.Frame.CloseStatusCode opcode = WebSocketSharp.Frame.CloseStatusCode.NORMAL;
+			string reason = "";
+			ctx.Stop = (op1, re1) => { opcode = op1; reason = re1; };
+
+			var util = new Mock<IConnectMsgHandlerUtil>();
+			util.Setup(x => x.GetClientInfo("id1"));
+			util.Setup(x => x.RejectUnpairedDevices).Returns(true).Verifiable();
+
+			var handler = new ConnectMsgHandler() { Util = util.Object };
+
+			handler.HandleConnectMsg(
+				new TextCommand {
+					action = "connect",
+					device_name = "dev",
+					device_id = "id1",
+					transfer_count = 111
+				}, ctx);
+
+			var o = JObject.Parse(sentData);
+			Assert.AreEqual("denied", o["action"]);
+			Assert.AreEqual("Not allowed", o["reason"]);
+
+			Assert.AreEqual(WebSocketSharp.Frame.CloseStatusCode.POLICY_VIOLATION, opcode);
+			Assert.AreEqual("Not allowed", reason);
+
+			util.VerifyAll();
+		}
 
 		[TestMethod]
 		public void firstConnect__replyWaitForPairing()

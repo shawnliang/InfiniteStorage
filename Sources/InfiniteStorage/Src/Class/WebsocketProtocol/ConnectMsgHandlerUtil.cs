@@ -106,5 +106,11 @@ namespace InfiniteStorage.WebsocketProtocol
 			var sanitizedName = device_name;
 			return sanitizedName;
 		}
+
+
+		public bool RejectUnpairedDevices
+		{
+			get { return Settings.Default.RejectOtherDevices; }
+		}
 	}
 }

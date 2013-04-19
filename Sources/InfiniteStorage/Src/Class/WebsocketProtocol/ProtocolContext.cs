@@ -7,8 +7,8 @@ using Newtonsoft.Json;
 namespace InfiniteStorage.WebsocketProtocol
 {
 	public delegate void SendTextDelegate(string data);
-	public delegate void StopDelegate(WebSocketSharp.Frame.CloseStatusCode code, string reason);
 
+	public delegate void StopDelegate(WebSocketSharp.Frame.CloseStatusCode code, string reason);
 	public class ProtocolContext : IProtocolHandlerContext, IConnectionStatus
 	{
 		private AbstractProtocolState state;

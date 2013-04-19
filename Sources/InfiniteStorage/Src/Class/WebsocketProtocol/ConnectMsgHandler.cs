@@ -27,9 +27,18 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			if (clientInfo == null)
 			{
-				ctx.Send(new { action = "wait-for-pair" });
-				ctx.raiseOnPairingRequired();
-				return new WaitForApproveState();
+				if (Util.RejectUnpairedDevices)
+				{
+					ctx.Send(new { action = "denied", reason = "Not allowed" });
+					ctx.Stop(WebSocketSharp.Frame.CloseStatusCode.POLICY_VIOLATION, "Not allowed");
+					return new UnconnectedState();
+				}
+				else
+				{
+					ctx.Send(new { action = "wait-for-pair" });
+					ctx.raiseOnPairingRequired();
+					return new WaitForApproveState();
+				}
 			}
 			else
 			{
