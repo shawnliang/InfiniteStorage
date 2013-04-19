@@ -10,6 +10,10 @@ namespace InfiniteStorage
 		public DateTime start { get; set; }
 		public DateTime end { get; set; }
 
+		public TimeRange()
+		{
+		}
+
 		public TimeRange(DateTime start, DateTime end)
 		{
 			this.start = start;

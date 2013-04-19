@@ -26,11 +26,12 @@ namespace InfiniteStorage.WebsocketProtocol
 			var dev = new Device
 			{
 				device_id = ctx.device_id,
-				device_name = ctx.device_name
+				device_name = ctx.device_name,
+				folder_name = Util.GetUniqueDeviceFolder(ctx.device_name)
 			};
 
 			Util.Save(dev);
-
+			ctx.device_folder_name = dev.folder_name;
 			var newState = approveHandler.ReplyAcceptMsgToDevice(ctx, dev);
 			ctx.SetState(newState);
 		}

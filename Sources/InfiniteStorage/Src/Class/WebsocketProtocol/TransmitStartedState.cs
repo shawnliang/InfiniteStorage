@@ -28,9 +28,10 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			if (!Util.HasDuplicateFile(ctx.fileCtx, ctx.device_id))
 			{
+				SavedPath saved = null;
 				try
 				{
-					ctx.storage.MoveToStorage(ctx.temp_file.Path, ctx.fileCtx);
+					saved = ctx.storage.MoveToStorage(ctx.temp_file.Path, ctx.fileCtx);
 				}
 				catch (Exception e)
 				{
@@ -46,8 +47,8 @@ namespace InfiniteStorage.WebsocketProtocol
 					file_name = ctx.fileCtx.file_name,
 					file_path = Path.Combine(ctx.fileCtx.folder, ctx.fileCtx.file_name),
 					file_size = ctx.fileCtx.file_size,
-					mime_type = ctx.fileCtx.mimetype,
-					uti = ctx.fileCtx.UTI
+					type = (int)ctx.fileCtx.type,
+					saved_path = saved.relative_file_path
 				};
 				Util.SaveFileRecord(fileAsset);
 

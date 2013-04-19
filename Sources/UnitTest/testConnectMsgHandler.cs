@@ -31,7 +31,7 @@ namespace UnitTest
 		[TestMethod]
 		public void replyAcceptMsgData_HaveExistingData()
 		{
-			fileStorage.Setup(x => x.setDeviceName("dev")).Verifiable();
+			fileStorage.Setup(x => x.setDeviceName("dev123")).Verifiable();
 			string sentTxt = null;
 			ctx.SendText = (txt) => sentTxt = txt;
 
@@ -45,6 +45,7 @@ namespace UnitTest
 			{
 				device_id = "id1",
 				device_name = "dev",
+				folder_name = "dev123"
 			});
 			util.Setup(x => x.GetServerId()).Returns("server_id1");
 			util.Setup(x => x.GetPhotoFolder()).Returns(@"c:\folder1\");

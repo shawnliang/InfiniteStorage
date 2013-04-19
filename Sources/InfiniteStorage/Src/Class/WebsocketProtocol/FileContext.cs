@@ -10,8 +10,6 @@ namespace InfiniteStorage.WebsocketProtocol
 	{
 		public string file_name { get; set; }
 		public long file_size { get; set; }
-		public string mimetype { get; set; }
-		public string UTI { get; set; }
 		public string folder { get; set; }
 		public DateTime datetime { get; set; }
 		public FileAssetType type { get; set; }

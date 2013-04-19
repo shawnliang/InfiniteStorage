@@ -15,6 +15,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		public ITempFile temp_file { get; set; }
 		public string device_name { get; set; }
 		public string device_id { get; set; }
+		public string device_folder_name { get; set; }
 
 		public long total_files { get; set; }
 		public long recved_files { get; set; }

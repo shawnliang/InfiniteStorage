@@ -52,42 +52,37 @@ namespace InfiniteStorage
 				Directory.CreateDirectory(audioDir);
 		}
 
-		public void MoveToStorage(string tempfile, FileContext file)
+		public SavedPath MoveToStorage(string tempfile, FileContext file)
 		{
 			if (string.IsNullOrEmpty(deviceName))
 				throw new InvalidOperationException("should setDeviceName() first");
 
 			string baseDir = photoLocation;
 
-			if (!string.IsNullOrEmpty(file.mimetype))
+			switch (file.type)
 			{
-				if (file.mimetype.StartsWith("image", StringComparison.InvariantCultureIgnoreCase))
-				{
+				case Model.FileAssetType.image:
 					baseDir = photoLocation;
-				}
-				else if (file.mimetype.StartsWith("video", StringComparison.InvariantCultureIgnoreCase))
-				{
+					break;
+				case Model.FileAssetType.video:
 					baseDir = videoLocation;
-				}
-				else if (file.mimetype.StartsWith("audio", StringComparison.InvariantCultureIgnoreCase))
-				{
+					break;
+				case Model.FileAssetType.audio:
 					baseDir = audioLocation;
-				}
-				else
-					log4net.LogManager.GetLogger("FileStorage").WarnFormat(
-						"Unable to categorize mime type: {0}. Assume photo: {1}", file.mimetype, file.file_name);
+					break;
 			}
 
-			var baseDir2 = Path.Combine(baseDir, deviceName);
-			var baseDir3 = Path.Combine(baseDir2, dirOrganizer.GetDir(file));
+			var devDir = Path.Combine(baseDir, deviceName);
+			var relativeDir = dirOrganizer.GetDir(file);
+			var fullTargetDir = Path.Combine(devDir, relativeDir);
 
-			if (!Directory.Exists(baseDir3))
-				Directory.CreateDirectory(baseDir3);
+			if (!Directory.Exists(fullTargetDir))
+				Directory.CreateDirectory(fullTargetDir);
 
-			var saved_file = Path.Combine(baseDir3, file.file_name);
+			var saved_file = Path.Combine(fullTargetDir, file.file_name);
+			var saved_path = FileMover.Move(tempfile, saved_file);
 
-			// TODO: handle saved_file_name
-			var saved_file_name = FileMover.Move(tempfile, saved_file);
+			return new SavedPath { device_folder = devDir, relative_file_path = Path.Combine(relativeDir, Path.GetFileName(saved_path)) };
 		}
 	}
 }

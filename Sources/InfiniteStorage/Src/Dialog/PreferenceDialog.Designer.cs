@@ -90,11 +90,11 @@
 			// 
 			// deviceListControl
 			// 
-			this.deviceListControl.Dock = System.Windows.Forms.DockStyle.Top;
+			this.deviceListControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.deviceListControl.Location = new System.Drawing.Point(3, 3);
 			this.deviceListControl.Name = "deviceListControl";
 			this.deviceListControl.RejectOtherDevices = false;
-			this.deviceListControl.Size = new System.Drawing.Size(186, 324);
+			this.deviceListControl.Size = new System.Drawing.Size(614, 324);
 			this.deviceListControl.TabIndex = 0;
 			// 
 			// buttonOK

@@ -33,6 +33,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			}
 			else
 			{
+				ctx.device_folder_name = clientInfo.folder_name;
 				return ReplyAcceptMsgToDevice(ctx, clientInfo);
 			}
 		}
@@ -58,7 +59,7 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			ctx.raiseOnConnectAccepted();
 			ctx.SendText(JsonConvert.SerializeObject(response, new JsonSerializerSettings { DateFormatHandling = DateFormatHandling.IsoDateFormat, DateTimeZoneHandling = DateTimeZoneHandling.Utc }));
-			ctx.storage.setDeviceName(ctx.device_name);
+			ctx.storage.setDeviceName(ctx.device_folder_name);
 
 			return new TransmitInitState();
 		}

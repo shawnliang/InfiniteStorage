@@ -22,15 +22,16 @@ namespace UnitTest
 			util.Setup(x => x.GetServerId()).Returns("server_id1").Verifiable();
 			util.Setup(x => x.GetPhotoFolder()).Returns(@"c:\folder1\").Verifiable();
 			util.Setup(x=>x.GetFreeSpace(It.IsAny<string>())).Returns(123456).Verifiable();
+			util.Setup(x => x.GetUniqueDeviceFolder("na")).Returns("ggyyUnique_dev_name").Verifiable();
 			util.Setup(x => x.Save(It.Is<Device>(
 				(d) =>
 					d.device_id == "dd" &&
-					d.device_name == "na"
-
+					d.device_name == "na" &&
+					d.folder_name == "ggyyUnique_dev_name"
 				))).Callback<Device>((dev) => { }).Verifiable();
 
 			var storage = new Mock<IFileStorage>();
-			storage.Setup(x => x.setDeviceName("na")).Verifiable();
+			storage.Setup(x => x.setDeviceName("ggyyUnique_dev_name")).Verifiable();
 
 			var state = new WaitForApproveState();
 			var ctx = new ProtocolContext(null, storage.Object, state) { device_id = "dd", device_name = "na" };
@@ -48,6 +49,7 @@ namespace UnitTest
 			Assert.AreEqual(123456L, o["backup_folder_free_space"]);
 
 			Assert.IsTrue(ctx.GetState() is TransmitInitState);
+			Assert.AreEqual("ggyyUnique_dev_name", ctx.device_folder_name);
 
 			storage.VerifyAll();
 			util.VerifyAll();

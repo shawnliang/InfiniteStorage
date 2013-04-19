@@ -15,6 +15,8 @@ namespace InfiniteStorage.Model
 
 		public string device_name { get; set; }
 
+		public string folder_name { get; set; }
+
 		public virtual IEnumerable<FileAsset> files { get; set; }
 	}
 
@@ -32,13 +34,12 @@ namespace InfiniteStorage.Model
 		
 		public string device_id { get; set; }
 
-		public string mime_type { get; set; }
-
-		public string uti { get; set; }
-
 		public DateTime event_time { get; set; }
 
-		public FileAssetType type { get; set; }
+		// .net 4.0 does not support enum fields for entity model, so use integer instead
+		public int type { get; set; }
+
+		public string saved_path { get; set; }
 
 		public virtual Device device { get; set; }
 	}

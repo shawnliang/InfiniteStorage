@@ -31,7 +31,7 @@ namespace UnitTest
 			ctx = new ProtocolContext(fac.Object, storage.Object, null)
 			{
 				device_id = "dev_id",
-				fileCtx = new FileContext() { file_name = "n", file_size = 1000, folder = "f", mimetype = "mm", UTI = "uu", datetime = DateTime.Now },
+				fileCtx = new FileContext() { file_name = "n", file_size = 1000, folder = "f", datetime = DateTime.Now, type = FileAssetType.image},
 				temp_file = temp.Object
 			};
 		}
@@ -40,20 +40,21 @@ namespace UnitTest
 		[TestMethod]
 		public void recv_file_happy_case()
 		{
+			var saved = new SavedPath { device_folder = "fff", relative_file_path = "rrr" };
+
 			temp.Setup(x => x.EndWrite()).Verifiable();
 			temp.Setup(x=>x.Path).Returns("path1").Verifiable();
-			storage.Setup(x => x.MoveToStorage("path1", ctx.fileCtx)).Verifiable();
+			storage.Setup(x => x.MoveToStorage("path1", ctx.fileCtx)).Returns(saved).Verifiable();
 			util.Setup(x => x.SaveFileRecord(It.Is<FileAsset>(
-				f => 
+				f =>
 					f.device_id == ctx.device_id &&
 					f.event_time == ctx.fileCtx.datetime &&
 					!f.file_id.Equals(Guid.Empty) &&
 					f.file_name == ctx.fileCtx.file_name &&
 					f.file_path == Path.Combine(ctx.fileCtx.folder, ctx.fileCtx.file_name) &&
 					f.file_size == ctx.fileCtx.file_size &&
-					f.mime_type == ctx.fileCtx.mimetype &&
-					f.uti == ctx.fileCtx.UTI)
-					
+					f.type == (int)ctx.fileCtx.type &&
+					f.saved_path == saved.relative_file_path)
 				)).Verifiable();
 
 

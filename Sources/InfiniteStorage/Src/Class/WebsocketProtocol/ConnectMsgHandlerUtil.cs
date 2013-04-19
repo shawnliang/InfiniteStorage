@@ -56,14 +56,55 @@ namespace InfiniteStorage.WebsocketProtocol
 								 into g
 								 select new DeviceSummary
 								 {
-									 photo_count = g.Count(x=>x.type== FileAssetType.image),
-									 audio_count = g.Count(x=>x.type == FileAssetType.audio),
-									 video_count = g.Count(x => x.type == FileAssetType.video),
-									 backup_range = new TimeRange( g.Min(x=>x.event_time), g.Max(x=>x.event_time))
+									 photo_count = g.Count(x => x.type == (int)FileAssetType.image),
+									 audio_count = g.Count(x => x.type == (int)FileAssetType.audio),
+									 video_count = g.Count(x => x.type == (int)FileAssetType.video),
+									 backup_range = new TimeRange
+									 {
+										 start = g.Min(x => x.event_time),
+										 end = g.Max(x => x.event_time)
+									 }
 								 };
 
 				return result.FirstOrDefault();
 			}
+		}
+
+
+		public string GetUniqueDeviceFolder(string device_name)
+		{
+			var sanitizedName = sanitize(ref device_name);
+			var allNames = getAllDevFolderNames();
+			var newName = sanitizedName;
+			var n = 1;
+
+			while (allNames.Contains(newName))
+			{
+				newName = sanitizedName + string.Format("({0})", n);
+				n++;
+			}
+
+			return newName;
+		}
+
+		private static List<string> getAllDevFolderNames()
+		{
+			using (var db = new MyDbContext())
+			{
+				return db.Object.Devices.Select(x => x.device_name).ToList();
+			}
+
+		}
+
+		private static string sanitize(ref string device_name)
+		{
+			foreach (var illege_char in Path.GetInvalidFileNameChars())
+			{
+				device_name = device_name.Replace(illege_char, '-');
+			}
+
+			var sanitizedName = device_name;
+			return sanitizedName;
 		}
 	}
 }
