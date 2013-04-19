@@ -27,7 +27,7 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			if (clientInfo == null)
 			{
-				ctx.SendText(JsonConvert.SerializeObject(new { action = "wait-for-pair" }));
+				ctx.Send(new { action = "wait-for-pair" });
 				ctx.raiseOnPairingRequired();
 				return new WaitForApproveState();
 			}
@@ -46,6 +46,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			{
 				action = "accept",
 				server_id = Util.GetServerId(),
+				server_name = Environment.UserName,
 				backup_folder = Util.GetPhotoFolder(),
 				backup_folder_free_space = Util.GetFreeSpace(Util.GetPhotoFolder()),
 
@@ -58,7 +59,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			};
 
 			ctx.raiseOnConnectAccepted();
-			ctx.SendText(JsonConvert.SerializeObject(response, new JsonSerializerSettings { DateFormatHandling = DateFormatHandling.IsoDateFormat, DateTimeZoneHandling = DateTimeZoneHandling.Utc }));
+			ctx.Send(response);
 			ctx.storage.setDeviceName(ctx.device_folder_name);
 
 			return new TransmitInitState();

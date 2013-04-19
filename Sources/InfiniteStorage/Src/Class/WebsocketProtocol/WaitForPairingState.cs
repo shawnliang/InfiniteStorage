@@ -44,7 +44,7 @@ namespace InfiniteStorage.WebsocketProtocol
 				reason = "user rejected"
 			};
 
-			ctx.SendText(JsonConvert.SerializeObject(response));
+			ctx.Send(response);
 			ctx.Stop(WebSocketSharp.Frame.CloseStatusCode.POLICY_VIOLATION, "User rejected");
 			ctx.SetState(new UnconnectedState());
 		}

@@ -14,5 +14,7 @@ namespace InfiniteStorage
 		long total_files { get; }
 
 		long recved_files { get; }
+
+		void Send(object data);
 	}
 }

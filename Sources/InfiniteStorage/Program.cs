@@ -20,6 +20,7 @@ namespace InfiniteStorage
 		static NotifyIcon m_notifyIcon;
 		static NotifyIconController m_notifyIconController;
 		static Timer m_NotifyTimer;
+		static System.Timers.Timer m_BackupStatusTimer;
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -41,6 +42,9 @@ namespace InfiniteStorage
 
 			initNotifyIcon();
 			initConnectedDeviceCollection();
+			initBackupStatusTimer();
+
+
 			SynchronizationContextHelper.SetMainSyncContext();
 
 			m_NotifyTimer = new Timer();
@@ -79,6 +83,19 @@ namespace InfiniteStorage
 
 			m_bonjourService.Unregister();
 			ws_server.Stop();
+		}
+
+		private static void initBackupStatusTimer()
+		{
+			m_BackupStatusTimer = new System.Timers.Timer(10 * 1000);
+			m_BackupStatusTimer.Elapsed += (s, e) =>
+			{
+				m_BackupStatusTimer.Enabled = false;
+				var updator = new ConnectionStatusUpdator();
+				updator.UpdateStatusToPeers();
+				m_BackupStatusTimer.Enabled = true;
+			};
+			m_BackupStatusTimer.Start();
 		}
 
 		static void m_NotifyTimer_Tick(object sender, EventArgs e)

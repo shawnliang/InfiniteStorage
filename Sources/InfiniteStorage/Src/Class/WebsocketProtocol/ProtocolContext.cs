@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace InfiniteStorage.WebsocketProtocol
 {
@@ -23,7 +24,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		public IFileStorage storage { get; private set; }
 		public ITempFileFactory factory { get; private set; }
 
-		public SendTextDelegate SendText { get; set; }
+		public SendTextDelegate SendText { private get; set; }
 		public StopDelegate Stop { get; set; }
 
 		public event EventHandler<WebsocketEventArgs> OnConnectAccepted;
@@ -101,6 +102,19 @@ namespace InfiniteStorage.WebsocketProtocol
 			if (handler != null)
 			{
 				handler(this, new WebsocketEventArgs(this));
+			}
+		}
+
+		public void Send(object data)
+		{
+			if (data is string)
+			{
+				SendText((string)data);
+			}
+			else
+			{
+				var txt = JsonConvert.SerializeObject(data, new JsonSerializerSettings { DateTimeZoneHandling = DateTimeZoneHandling.Utc, NullValueHandling = NullValueHandling.Ignore, DateFormatHandling = DateFormatHandling.IsoDateFormat });
+				SendText(txt);
 			}
 		}
 	}
