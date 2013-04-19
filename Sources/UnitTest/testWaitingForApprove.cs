@@ -37,7 +37,7 @@ namespace UnitTest
 			var ctx = new ProtocolContext(null, storage.Object, state) { device_id = "dd", device_name = "na" };
 			
 			string sentData = null;
-			ctx.SendText = (t) => { sentData = t; };
+			ctx.SendFunc = (t) => { sentData = t; };
 
 			state.Util = util.Object;
 			state.handleApprove(ctx);
@@ -62,11 +62,11 @@ namespace UnitTest
 			var ctx = new ProtocolContext(null, null, state) { device_id = "dd", device_name = "na" };
 
 			string sentData = null;
-			ctx.SendText = (t) => { sentData = t; };
+			ctx.SendFunc = (t) => { sentData = t; };
 
 			CloseStatusCode code = CloseStatusCode.NORMAL;
 			string reason = null;
-			ctx.Stop = (code1, reason1) => { code = code1; reason = reason1; };
+			ctx.StopFunc = (code1, reason1) => { code = code1; reason = reason1; };
 
 			state.handleDisapprove(ctx);
 

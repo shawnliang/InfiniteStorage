@@ -33,7 +33,7 @@ namespace UnitTest
 		{
 			fileStorage.Setup(x => x.setDeviceName("dev123")).Verifiable();
 			string sentTxt = null;
-			ctx.SendText = (txt) => sentTxt = txt;
+			ctx.SendFunc = (txt) => sentTxt = txt;
 
 			ProtocolContext evtCtx = null;
 			ctx.OnConnectAccepted += (sr, ev) => { evtCtx = ev.ctx; };
@@ -87,11 +87,11 @@ namespace UnitTest
 		public void reject_all_unpaired_devices()
 		{
 			string sentData = null;
-			ctx.SendText = (data) => { sentData = data; };
+			ctx.SendFunc = (data) => { sentData = data; };
 
 			WebSocketSharp.Frame.CloseStatusCode opcode = WebSocketSharp.Frame.CloseStatusCode.NORMAL;
 			string reason = "";
-			ctx.Stop = (op1, re1) => { opcode = op1; reason = re1; };
+			ctx.StopFunc = (op1, re1) => { opcode = op1; reason = re1; };
 
 			var util = new Mock<IConnectMsgHandlerUtil>();
 			util.Setup(x => x.GetClientInfo("id1"));
@@ -121,7 +121,7 @@ namespace UnitTest
 		public void firstConnect__replyWaitForPairing()
 		{
 			string sentTxt = null;
-			ctx.SendText = (txt) => sentTxt = txt;
+			ctx.SendFunc = (txt) => sentTxt = txt;
 
 			ProtocolContext evtCtx = null;
 			ctx.OnPairingRequired += (sr, ev) => { evtCtx = ev.ctx; };

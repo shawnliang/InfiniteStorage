@@ -31,8 +31,8 @@ namespace InfiniteStorage
 
 			var ctx = new ProtocolContext(new TempFileFactory(MyFileFolder.Temp), storage, new UnconnectedState()) 
 			{
-				SendText = this.Send,
-				Stop = this.Stop
+				SendFunc = this.Send,
+				StopFunc = this.Stop
 			};
 
 			ctx.OnConnectAccepted += new EventHandler<WebsocketEventArgs>(ctx_OnConnectAccepted);

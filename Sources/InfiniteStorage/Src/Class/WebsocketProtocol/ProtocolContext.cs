@@ -24,8 +24,8 @@ namespace InfiniteStorage.WebsocketProtocol
 		public IFileStorage storage { get; private set; }
 		public ITempFileFactory factory { get; private set; }
 
-		public SendTextDelegate SendText { private get; set; }
-		public StopDelegate Stop { get; set; }
+		public SendTextDelegate SendFunc { private get; set; }
+		public StopDelegate StopFunc { private get; set; }
 
 		public event EventHandler<WebsocketEventArgs> OnConnectAccepted;
 		public event EventHandler<WebsocketEventArgs> OnPairingRequired;
@@ -109,13 +109,18 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			if (data is string)
 			{
-				SendText((string)data);
+				SendFunc((string)data);
 			}
 			else
 			{
 				var txt = JsonConvert.SerializeObject(data, new JsonSerializerSettings { DateTimeZoneHandling = DateTimeZoneHandling.Utc, NullValueHandling = NullValueHandling.Ignore, DateFormatHandling = DateFormatHandling.IsoDateFormat });
-				SendText(txt);
+				SendFunc(txt);
 			}
+		}
+
+		public void Stop(WebSocketSharp.Frame.CloseStatusCode code, string reason)
+		{
+			StopFunc(code, reason);
 		}
 	}
 }

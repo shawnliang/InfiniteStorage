@@ -83,10 +83,29 @@ namespace InfiniteStorage
 
 			using (var db = new MyDbContext())
 			{
+				
 				foreach (var dev in deviceListControl.DeletedDevices)
 				{
 					db.Object.Database.ExecuteSqlCommand("delete from Devices where device_id=?", dev.device_id);
 				}
+			}
+
+			var conns = ConnectedClientCollection.Instance.GetAllConnections();
+
+			foreach (var dev in deviceListControl.DeletedDevices)
+			{
+				var devConns = conns.Where((x) => x.device_id == dev.device_id);
+
+				devConns.ToList().ForEach(x => {
+					try
+					{
+						x.Stop(WebSocketSharp.Frame.CloseStatusCode.POLICY_VIOLATION, "Removed by user");
+					}
+					catch (Exception err)
+					{
+						log4net.LogManager.GetLogger(GetType()).Warn("Unable to send stop ws cmd to " + x.device_name, err);
+					}
+				});
 			}
 		}
 
