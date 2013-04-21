@@ -36,7 +36,7 @@
 			// 
 			// yesButton
 			// 
-			this.yesButton.Location = new System.Drawing.Point(74, 36);
+			this.yesButton.Location = new System.Drawing.Point(12, 36);
 			this.yesButton.Name = "yesButton";
 			this.yesButton.Size = new System.Drawing.Size(75, 23);
 			this.yesButton.TabIndex = 0;
@@ -46,17 +46,17 @@
 			// 
 			// neverButton
 			// 
-			this.neverButton.Location = new System.Drawing.Point(236, 36);
+			this.neverButton.Location = new System.Drawing.Point(183, 36);
 			this.neverButton.Name = "neverButton";
-			this.neverButton.Size = new System.Drawing.Size(99, 23);
+			this.neverButton.Size = new System.Drawing.Size(143, 23);
 			this.neverButton.TabIndex = 1;
-			this.neverButton.Text = "永遠拒絕此裝置";
+			this.neverButton.Text = "拒絕所有連線邀請";
 			this.neverButton.UseVisualStyleBackColor = true;
 			this.neverButton.Click += new System.EventHandler(this.neverButton_Click);
 			// 
 			// noButton
 			// 
-			this.noButton.Location = new System.Drawing.Point(155, 36);
+			this.noButton.Location = new System.Drawing.Point(93, 36);
 			this.noButton.Name = "noButton";
 			this.noButton.Size = new System.Drawing.Size(75, 23);
 			this.noButton.TabIndex = 2;

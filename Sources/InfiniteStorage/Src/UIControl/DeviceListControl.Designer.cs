@@ -66,7 +66,7 @@
 			this.dataGridView1.ReadOnly = true;
 			this.dataGridView1.RowHeadersVisible = false;
 			this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dataGridView1.Size = new System.Drawing.Size(601, 180);
+			this.dataGridView1.Size = new System.Drawing.Size(512, 206);
 			this.dataGridView1.TabIndex = 0;
 			this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
 			// 
@@ -107,7 +107,7 @@
 			// 
 			this.rejectOtherDevices.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.rejectOtherDevices.AutoSize = true;
-			this.rejectOtherDevices.Location = new System.Drawing.Point(17, 246);
+			this.rejectOtherDevices.Location = new System.Drawing.Point(17, 272);
 			this.rejectOtherDevices.Name = "rejectOtherDevices";
 			this.rejectOtherDevices.Size = new System.Drawing.Size(350, 17);
 			this.rejectOtherDevices.TabIndex = 2;
@@ -123,7 +123,7 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.dataGridView1);
 			this.Name = "DeviceListControl";
-			this.Size = new System.Drawing.Size(650, 278);
+			this.Size = new System.Drawing.Size(561, 304);
 			this.Load += new System.EventHandler(this.DeviceListControl_Load);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
 			this.ResumeLayout(false);

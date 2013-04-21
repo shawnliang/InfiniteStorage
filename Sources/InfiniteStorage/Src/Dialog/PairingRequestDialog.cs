@@ -49,7 +49,8 @@ namespace InfiniteStorage
 		private void neverButton_Click(object sender, EventArgs e)
 		{
 			takeActionAndLogError(ctx.handleDisapprove);
-			MessageBox.Show("not implemented yet");
+			Settings.Default.RejectOtherDevices = true;
+			Settings.Default.Save();
 			Close();
 		}
 
