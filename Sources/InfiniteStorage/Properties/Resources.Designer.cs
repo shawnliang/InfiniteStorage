@@ -60,6 +60,20 @@ namespace InfiniteStorage.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap app_store_badge {
+            get {
+                object obj = ResourceManager.GetObject("app_store_badge", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap get_it_on_google_play {
+            get {
+                object obj = ResourceManager.GetObject("get_it_on_google_play", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Icon product_icon {
             get {
                 object obj = ResourceManager.GetObject("product_icon", resourceCulture);
@@ -73,6 +87,13 @@ namespace InfiniteStorage.Properties {
         internal static string ProductName {
             get {
                 return ResourceManager.GetString("ProductName", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Bitmap temp_app_logo {
+            get {
+                object obj = ResourceManager.GetObject("temp_app_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

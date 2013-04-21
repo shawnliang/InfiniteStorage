@@ -69,6 +69,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\UIControl\OrganizeSelectionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Src\UIControl\OrganizeSelectionControl.Designer.cs">
+      <DependentUpon>OrganizeSelectionControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Src\Class\ConnectionStatusUpdator.cs" />
     <Compile Include="Src\Class\DeviceSummary.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\TransmitUtility.cs" />
@@ -150,6 +156,15 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Src\Class\TimeRange.cs" />
+    <Compile Include="StorageLocationControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StorageLocationControl.Designer.cs">
+      <DependentUpon>StorageLocationControl.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Src\UIControl\OrganizeSelectionControl.resx">
+      <DependentUpon>OrganizeSelectionControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\FirstUseDialog.resx">
       <DependentUpon>FirstUseDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -178,6 +193,9 @@
     <EmbeddedResource Include="Src\UIControl\GeneralPreferenceControl.resx">
       <DependentUpon>GeneralPreferenceControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="StorageLocationControl.resx">
+      <DependentUpon>StorageLocationControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -201,6 +219,9 @@
       <Link>x86\SQLite.Interop.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\AppIcon.png" />
+    <None Include="Resources\app_store_badge.png" />
+    <None Include="Resources\get_it_on_google_play.png" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Bonjour">

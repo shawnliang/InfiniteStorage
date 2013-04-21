@@ -31,20 +31,9 @@ namespace InfiniteStorage
 			{
 				DialogResult = System.Windows.Forms.DialogResult.OK;
 
-				Settings.Default.LocationType = (int)generalPreferenceControl1.LocationType;
-
-				if (generalPreferenceControl1.LocationType == LocationType.Custom)
-				{
-					Settings.Default.CustomPhotoLocation = generalPreferenceControl1.CustomPhotoLocation;
-					Settings.Default.CustomVideoLocation = generalPreferenceControl1.CustomVideoLocation;
-					Settings.Default.CustomAudioLocation = generalPreferenceControl1.CustomAudioLocation;
-				}
-				else if (generalPreferenceControl1.LocationType == LocationType.SingleFolder)
-				{
-					Settings.Default.SingleFolderLocation = generalPreferenceControl1.SingleFolderLocation;
-				}
-
-				Settings.Default.OrganizeMethod = (int)generalPreferenceControl1.OrganizeMethod;
+				Settings.Default.LocationType = (int)LocationType.SingleFolder;
+				Settings.Default.SingleFolderLocation = storageLocationControl1.StoragePath;
+				Settings.Default.OrganizeMethod = (int)organizeSelectionControl1.OrganizeBy;
 				Settings.Default.Save();
 				Close();
 			}
@@ -76,6 +65,16 @@ namespace InfiniteStorage
 		private void prevButton_Click(object sender, EventArgs e)
 		{
 			tabControlEx1.PreviousPage();
+		}
+
+		private void getItOnGooglePlay_Click(object sender, EventArgs e)
+		{
+			MessageBox.Show("Not imp yet");
+		}
+
+		private void getItOnAppStore_Click(object sender, EventArgs e)
+		{
+			MessageBox.Show("Not imp yet");
 		}
 	}
 }
