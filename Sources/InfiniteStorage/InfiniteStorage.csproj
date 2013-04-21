@@ -156,10 +156,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Src\Class\TimeRange.cs" />
-    <Compile Include="StorageLocationControl.cs">
+    <Compile Include="Src\UIControl\StorageLocationControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="StorageLocationControl.Designer.cs">
+    <Compile Include="Src\UIControl\StorageLocationControl.Designer.cs">
       <DependentUpon>StorageLocationControl.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Src\UIControl\OrganizeSelectionControl.resx">
@@ -193,7 +193,7 @@
     <EmbeddedResource Include="Src\UIControl\GeneralPreferenceControl.resx">
       <DependentUpon>GeneralPreferenceControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StorageLocationControl.resx">
+    <EmbeddedResource Include="Src\UIControl\StorageLocationControl.resx">
       <DependentUpon>StorageLocationControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />

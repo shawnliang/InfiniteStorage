@@ -20,7 +20,14 @@ namespace InfiniteStorage
 
 		private void StorageLocationControl_Load(object sender, EventArgs e)
 		{
-			storageLocationBox.Text = Path.Combine(MediaLibrary.UserFolder, Resources.ProductName);
+			if (!DesignMode)
+			{
+				var storageLocation = Settings.Default.SingleFolderLocation;
+				if (string.IsNullOrEmpty(storageLocation))
+					storageLocation = Path.Combine(MediaLibrary.UserFolder, Resources.ProductName);
+
+				storageLocationBox.Text = storageLocation;
+			}
 		}
 
 		private void changeStorageButton_Click(object sender, EventArgs e)
