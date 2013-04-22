@@ -98,6 +98,15 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} 在此為您服務.
+        /// </summary>
+        internal static string TrayBallonText {
+            get {
+                return ResourceManager.GetString("TrayBallonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Getting started....
         /// </summary>
         internal static string TrayMenuItem_GettingStarted {
@@ -107,7 +116,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open backup folder.
+        ///   Looks up a localized string similar to 開啟備份資料夾.
         /// </summary>
         internal static string TrayMenuItem_OpenBackupFolder {
             get {
@@ -116,7 +125,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Preferences....
+        ///   Looks up a localized string similar to 設定....
         /// </summary>
         internal static string TrayMenuItem_Preferences {
             get {
@@ -125,7 +134,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Quit.
+        ///   Looks up a localized string similar to 關閉.
         /// </summary>
         internal static string TrayMenuItem_Quit {
             get {
@@ -134,7 +143,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transferring files: {0} ({1}/{2}).
+        ///   Looks up a localized string similar to {0} 備份中: ({1}/{2}).
         /// </summary>
         internal static string TrayMenuItem_Transfering {
             get {

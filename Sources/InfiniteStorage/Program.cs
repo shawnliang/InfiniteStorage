@@ -143,13 +143,14 @@ namespace InfiniteStorage
 
 			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Preferences, null, m_notifyIconController.OnPreferencesMenuItemClicked);
 
-			//m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_GettingStarted, null, m_notifyIconController.OnGettingStartedMenuItemClicked);
+			m_notifyIcon.ContextMenuStrip.Items.Add("-");
 
 			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Quit, null, m_notifyIconController.OnQuitMenuItemClicked);
 
 			m_notifyIcon.Visible = true;
 
-			m_notifyIcon.ShowBalloonTip(3000, Resources.ProductName, "超屌備份在此為您服務", ToolTipIcon.None);
+			var ballonText = string.Format(Resources.TrayBallonText, Resources.ProductName);
+			m_notifyIcon.ShowBalloonTip(3000, Resources.ProductName, ballonText, ToolTipIcon.None);
 
 			m_notifyIcon.DoubleClick += m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked;
 
