@@ -63,7 +63,7 @@
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
 			this.tabPage1.Size = new System.Drawing.Size(620, 290);
 			this.tabPage1.TabIndex = 0;
-			this.tabPage1.Text = "General";
+			this.tabPage1.Text = "一般";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
 			// generalPreferenceControl1
@@ -82,9 +82,9 @@
 			this.tabDevices.Location = new System.Drawing.Point(4, 22);
 			this.tabDevices.Name = "tabDevices";
 			this.tabDevices.Padding = new System.Windows.Forms.Padding(3);
-			this.tabDevices.Size = new System.Drawing.Size(620, 266);
+			this.tabDevices.Size = new System.Drawing.Size(620, 290);
 			this.tabDevices.TabIndex = 1;
-			this.tabDevices.Text = "Linked Devices";
+			this.tabDevices.Text = "連結的裝置";
 			this.tabDevices.UseVisualStyleBackColor = true;
 			// 
 			// deviceListControl
@@ -138,9 +138,9 @@
 			this.checkboxAutoRun.AutoSize = true;
 			this.checkboxAutoRun.Location = new System.Drawing.Point(16, 338);
 			this.checkboxAutoRun.Name = "checkboxAutoRun";
-			this.checkboxAutoRun.Size = new System.Drawing.Size(141, 17);
+			this.checkboxAutoRun.Size = new System.Drawing.Size(110, 17);
 			this.checkboxAutoRun.TabIndex = 4;
-			this.checkboxAutoRun.Text = "Auto run at system starts";
+			this.checkboxAutoRun.Text = "登入後自動啟動";
 			this.checkboxAutoRun.UseVisualStyleBackColor = true;
 			this.checkboxAutoRun.Click += new System.EventHandler(this.handleAnySettingChanged);
 			// 

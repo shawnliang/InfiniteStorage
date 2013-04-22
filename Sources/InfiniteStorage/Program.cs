@@ -101,9 +101,6 @@ namespace InfiniteStorage
 			}
 
 			Application.Run();
-
-			m_bonjourService.Unregister();
-			ws_server.Stop();
 		}
 
 		private static ushort initWebsocketServer()
@@ -233,6 +230,10 @@ namespace InfiniteStorage
 
 		static void Application_ApplicationExit(object sender, EventArgs e)
 		{
+			m_bonjourService.Unregister();
+
+			ws_server.Stop();
+
 			if (m_notifyIcon != null)
 				m_notifyIcon.Dispose();
 		}
