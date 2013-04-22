@@ -3,20 +3,16 @@
   <!-- This is translation to Chinese (Traditional, Taiwan) -->
   <String Id="LANGUAGE">1028</String>
   <String Id="CULTURE">zh-TW</String>
-  <String Id="APPNAME">(zh-TW) Infinite Storage</String>
-  <String Id="SHORTCUT.UNINSTALLER.NAME">(zh-TW) Uninstaller</String>
-  <String Id="FEATURE.UNINSTALLER.TITLE">(zh-TW) Uninstaller</String>
-  <String Id="FEATURE.UNINSTALLER.DESCRIPTION">(zh-TW) Description of uninstaller</String>
-  <String Id="FEATURE.MAINFEATURE.TITLE">(zh-TW) Main feature</String>
-  <String Id="FEATURE.MAINFEATURE.DESCRIPTION">(zh-TW) This is description of the main feature of the product</String>
-  <String Id="FEATURE.SUBFEATURE.TITLE">(zh-TW) Sub feature</String>
-  <String Id="FEATURE.SUBFEATURE.DESCRIPTION">(zh-TW) This is description of one of the subfeature of the product</String>
-  <String Id="FEATURE.DOCUMENTATION.TITLE">(zh-TW) Documentation</String>
-  <String Id="FEATURE.DOCUMENTATION.DESCRIPTION">(zh-TW) These are common files for viewing documentation</String>
-  <String Id="FEATURE.ENGLISH.TITLE">(zh-TW) English</String>
-  <String Id="FEATURE.ENGLISH.DESCRIPTION">(zh-TW) English documentation</String>
-  <String Id="FEATURE.FRENCH.TITLE">(zh-TW) French</String>
-  <String Id="FEATURE.FRENCH.DESCRIPTION">(zh-TW) French documentaion</String>
-  <String Id="FEATURE.GERMAN.TITLE">(zh-TW) German</String>
-  <String Id="FEATURE.GERMAN.DESCRIPTION">(zh-TW) German documentation</String>
+  <String Id="APPNAME">超屌備份</String>
+  <String Id="SHORTCUT.UNINSTALLER.NAME">移除程式</String>
+
+  <!-- Copied from Wix 3.6 src\ext\FirewallExtension\wixlib\en-us.wxl -->
+  <String Id="msierrFirewallCannotConnect" Overridable="yes">無法連結至Windows防火牆.  ([2]   [3]   [4]   [5])</String>
+  <String Id="WixSchedFirewallExceptionsInstall" Overridable="yes">Windows防火牆設定中</String>
+  <String Id="WixSchedFirewallExceptionsUninstall" Overridable="yes">Windows防火牆設定中</String>
+  <String Id="WixRollbackFirewallExceptionsInstall" Overridable="yes">恢復Windows防火牆設定檔</String>
+  <String Id="WixExecFirewallExceptionsInstall" Overridable="yes">安裝Windows防火牆設定檔</String>
+  <String Id="WixRollbackFirewallExceptionsUninstall" Overridable="yes">恢復Windows防火牆設定檔</String>
+  <String Id="WixExecFirewallExceptionsUninstall" Overridable="yes">解除安裝Windows防火牆設定檔</String>
+  
 </WixLocalization>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:fire='http://schemas.microsoft.com/wix/FirewallExtension'>
   <?define AppCode = "InfiniteStorage" ?>
   <?define AppProductCode = "{2fc96c10-c0e0-43aa-8bc9-00c6b9cca391}" ?>
   <?define AppVersionMajor = "0" ?>
@@ -48,7 +49,8 @@
           </Component>
 
           <Component Id="InfiniteStorage.exe.config" Guid="*">
-            <File Id="InfiniteStorage.exe.config" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\InfiniteStorage.exe.config" />
+            <File Id="InfiniteStorage.exe.config" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\InfiniteStorage.exe.config"/>
+            <fire:FirewallException Id="fwrule1" Name="infiniteStorage" IgnoreFailure="yes" Scope="localSubnet" Program="[INSTALLLOCATION]InfiniteStorage.exe"/>
           </Component>
 
           <Component Id="System.Data.SQLite.dll" Guid="*">
@@ -96,7 +98,7 @@
       </Directory>
     </DirectoryRef>
 
-    <Feature Id='MainFeature' Level='1' Title='!(loc.FEATURE.MAINFEATURE.TITLE)' Description='!(loc.FEATURE.MAINFEATURE.DESCRIPTION)' Display='collapse'>
+    <Feature Id='MainFeature' Level='1' Display='collapse'>
       <ComponentRef Id='pmd'/>
       <ComponentRef Id='InfiniteStorage.exe' />
       <ComponentRef Id="Interop.Bonjour.dll" />

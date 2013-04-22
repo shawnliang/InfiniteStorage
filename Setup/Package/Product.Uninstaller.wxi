@@ -40,7 +40,7 @@
     </Directory>
   </DirectoryRef>
 
-  <Feature Id="Uninstaller" Level="1" Title="!(loc.FEATURE.UNINSTALLER.TITLE)" Description="!(loc.FEATURE.UNINSTALLER.DESCRIPTION)" Display="hidden">
+  <Feature Id="Uninstaller" Level="1" Display="hidden">
     <ComponentRef Id="UninstallerExe" />
     <ComponentRef Id="UninstallerDll" />
     <?foreach Culture in $(var.Cultures) ?>
