@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-using Bonjour;
-using WebSocketSharp.Server;
-using log4net;
-using InfiniteStorage.Properties;
-using System.IO;
-using System.Configuration;
-using System.Reflection;
-using System.Data.SQLite;
-using InfiniteStorage.Model;
 using System.Drawing;
+using System.Windows.Forms;
+using InfiniteStorage.Model;
+using InfiniteStorage.Properties;
+using InfiniteStorage.Win32;
+using WebSocketSharp.Server;
 
 namespace InfiniteStorage
 {
@@ -36,6 +29,13 @@ namespace InfiniteStorage
 			Log4netConfigure.InitLog4net();
 			log4net.LogManager.GetLogger("main").Debug("==== program started ====");
 
+			if (!SingleInstancePerUserLock.Instance.Lock())
+			{
+				invokeAnotherRunningProcess();
+				return;
+			}
+
+
 			MyDbContext.InitialzeDatabaseSchema();
 
 			if (string.IsNullOrEmpty(Settings.Default.SingleFolderLocation))
@@ -48,13 +48,20 @@ namespace InfiniteStorage
 			initConnectedDeviceCollection();
 			initBackupStatusTimer();
 
-
 			SynchronizationContextHelper.SetMainSyncContext();
 
 			m_NotifyTimer = new Timer();
 			m_NotifyTimer.Tick += new EventHandler(m_NotifyTimer_Tick);
 			m_NotifyTimer.Interval = 1000;
 			m_NotifyTimer.Start();
+
+
+
+			ProgramIPC.Instance.OnWinMsg += (s, e) =>
+			{
+				if (e.Message == ProgramIPC.MsgShowTooltip)
+					showTooltip();
+			};
 
 
 			var port = (ushort)13895;
@@ -87,6 +94,18 @@ namespace InfiniteStorage
 
 			m_bonjourService.Unregister();
 			ws_server.Stop();
+		}
+
+		private static void invokeAnotherRunningProcess()
+		{
+			try
+			{
+				ProgramIPC.SendMessageToSameUserProc(ProgramIPC.MsgShowTooltip);
+			}
+			catch (Exception e)
+			{
+				log4net.LogManager.GetLogger("main").Warn("Unable to invoke another process to show tooltips", e);
+			}
 		}
 
 		private static void initBackupStatusTimer()
@@ -149,14 +168,19 @@ namespace InfiniteStorage
 
 			m_notifyIcon.Visible = true;
 
-			var ballonText = string.Format(Resources.TrayBallonText, Resources.ProductName);
-			m_notifyIcon.ShowBalloonTip(3000, Resources.ProductName, ballonText, ToolTipIcon.None);
+			showTooltip();
 
 			m_notifyIcon.DoubleClick += m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked;
 
 			InfiniteStorageWebSocketService.DeviceAccepted += m_notifyIconController.OnDeviceConnected;
 			InfiniteStorageWebSocketService.DeviceDisconnected += m_notifyIconController.OnDeviceDisconnected;
 			InfiniteStorageWebSocketService.PairingRequesting += m_notifyIconController.OnDevicePairingRequesting;
+		}
+
+		private static void showTooltip()
+		{
+			var ballonText = string.Format(Resources.TrayBallonText, Resources.ProductName);
+			m_notifyIcon.ShowBalloonTip(3000, Resources.ProductName, ballonText, ToolTipIcon.None);
 		}
 
 		private static void initConnectedDeviceCollection()

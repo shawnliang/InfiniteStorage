@@ -69,6 +69,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProgramIPC.cs" />
+    <Compile Include="Src\Class\SingleInstancePerUserLock.cs" />
+    <Compile Include="Src\Class\Common\CopyDataStruct.cs" />
+    <Compile Include="Src\Class\Common\MessageEventArgs.cs" />
+    <Compile Include="Src\Class\Common\MessageReceiver.cs" />
+    <Compile Include="Src\Class\Common\NativeMethod.cs" />
+    <Compile Include="Src\Class\Common\WNDCLASS.cs" />
     <Compile Include="Src\UIControl\OrganizeSelectionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -91,7 +98,7 @@
     <Compile Include="Src\Class\MyFileFolder.cs" />
     <Compile Include="Src\Class\MediaLibrary.cs" />
     <Compile Include="Src\Class\PairingRequest.cs" />
-    <Compile Include="Src\Class\SynchronizationContextHelper.cs" />
+    <Compile Include="Src\Class\Common\SynchronizationContextHelper.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ConnectedState.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ConnectMsgHandler.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ConnectMsgHandlerUtil.cs" />

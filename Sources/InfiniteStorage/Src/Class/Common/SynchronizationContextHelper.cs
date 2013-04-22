@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Windows.Forms;
 
-namespace InfiniteStorage
+namespace InfiniteStorage.Win32
 {
 	public static class SynchronizationContextHelper
 	{
