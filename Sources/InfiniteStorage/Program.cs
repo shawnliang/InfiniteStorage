@@ -15,6 +15,7 @@ namespace InfiniteStorage
 		static NotifyIconController m_notifyIconController;
 		static Timer m_NotifyTimer;
 		static System.Timers.Timer m_BackupStatusTimer;
+		static WebSocketServer<InfiniteStorageWebSocketService> ws_server;
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -64,8 +65,22 @@ namespace InfiniteStorage
 			};
 
 
-			var port = (ushort)13895;
-			WebSocketServer<InfiniteStorageWebSocketService> ws_server = null;
+
+			ushort port = 0;
+
+			try
+			{
+				initWebsocketServer();
+			}
+			catch (Exception e)
+			{
+				log4net.LogManager.GetLogger("main").Error("Unable to start web socket server", e);
+				MessageBox.Show(e.Message, Resources.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+
+
+
 			try
 			{
 				m_bonjourService = new BonjourService();
@@ -77,16 +92,11 @@ namespace InfiniteStorage
 					Settings.Default.Save();
 				}
 				m_bonjourService.Register(port, Settings.Default.ServerId);
-
-				var url = string.Format("ws://0.0.0.0:{0}/", port);
-				ws_server = new WebSocketSharp.Server.WebSocketServer<InfiniteStorageWebSocketService>(url);
-				ws_server.Start();
-
-
 			}
-			catch
+			catch (Exception e)
 			{
-				MessageBox.Show("Bonjour service is not available", "Error");
+				log4net.LogManager.GetLogger("main").Error("Unable to register bonjour service", e);
+				MessageBox.Show(e.Message, "Unable to register bonjour service", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 
@@ -94,6 +104,38 @@ namespace InfiniteStorage
 
 			m_bonjourService.Unregister();
 			ws_server.Stop();
+		}
+
+		private static ushort initWebsocketServer()
+		{
+			bool addrUsedByOthers = false;
+			var port = (ushort)13895;
+
+			do
+			{
+				try
+				{
+					
+					var url = string.Format("ws://0.0.0.0:{0}/", port);
+					ws_server = new WebSocketSharp.Server.WebSocketServer<InfiniteStorageWebSocketService>(url);
+					ws_server.Start();
+					return port;
+				}
+				catch (System.Net.Sockets.SocketException e)
+				{
+					if (e.SocketErrorCode == System.Net.Sockets.SocketError.AddressAlreadyInUse)
+					{
+						addrUsedByOthers = true;
+						port++;
+					}
+					else
+						throw;
+				}
+			}
+			while (addrUsedByOthers);
+
+
+			throw new Exception("should not reach here");
 		}
 
 		private static void invokeAnotherRunningProcess()

@@ -69,7 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProgramIPC.cs" />
+    <Compile Include="Src\Class\ProgramIPC.cs" />
     <Compile Include="Src\Class\SingleInstancePerUserLock.cs" />
     <Compile Include="Src\Class\Common\CopyDataStruct.cs" />
     <Compile Include="Src\Class\Common\MessageEventArgs.cs" />
