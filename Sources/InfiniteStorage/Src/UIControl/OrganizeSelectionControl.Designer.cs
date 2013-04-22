@@ -42,7 +42,7 @@
 			this.label10.ForeColor = System.Drawing.SystemColors.ControlDark;
 			this.label10.Location = new System.Drawing.Point(3, 35);
 			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(529, 20);
+			this.label10.Size = new System.Drawing.Size(422, 38);
 			this.label10.TabIndex = 6;
 			this.label10.Text = "我們將依照您設定的方式，按照檔案的拍攝、錄影、錄音時間，自動放入不同日期的資料夾";
 			// 
@@ -59,7 +59,7 @@
 			// radioYYYYMMDD
 			// 
 			this.radioYYYYMMDD.AutoSize = true;
-			this.radioYYYYMMDD.Location = new System.Drawing.Point(6, 58);
+			this.radioYYYYMMDD.Location = new System.Drawing.Point(6, 76);
 			this.radioYYYYMMDD.Name = "radioYYYYMMDD";
 			this.radioYYYYMMDD.Size = new System.Drawing.Size(83, 17);
 			this.radioYYYYMMDD.TabIndex = 7;
@@ -71,7 +71,7 @@
 			// 
 			this.radioYYYYMM.AutoSize = true;
 			this.radioYYYYMM.Checked = true;
-			this.radioYYYYMM.Location = new System.Drawing.Point(6, 81);
+			this.radioYYYYMM.Location = new System.Drawing.Point(6, 99);
 			this.radioYYYYMM.Name = "radioYYYYMM";
 			this.radioYYYYMM.Size = new System.Drawing.Size(60, 17);
 			this.radioYYYYMM.TabIndex = 8;
@@ -82,7 +82,7 @@
 			// radioYYYY
 			// 
 			this.radioYYYY.AutoSize = true;
-			this.radioYYYY.Location = new System.Drawing.Point(6, 104);
+			this.radioYYYY.Location = new System.Drawing.Point(6, 122);
 			this.radioYYYY.Name = "radioYYYY";
 			this.radioYYYY.Size = new System.Drawing.Size(37, 17);
 			this.radioYYYY.TabIndex = 9;
@@ -101,7 +101,7 @@
 			this.Controls.Add(this.label10);
 			this.Controls.Add(this.label9);
 			this.Name = "OrganizeSelectionControl";
-			this.Size = new System.Drawing.Size(535, 141);
+			this.Size = new System.Drawing.Size(428, 155);
 			this.Load += new System.EventHandler(this.OrganizeSelectionControl_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();

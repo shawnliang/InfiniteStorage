@@ -52,7 +52,7 @@
 			this.tabControl.Location = new System.Drawing.Point(12, 12);
 			this.tabControl.Name = "tabControl";
 			this.tabControl.SelectedIndex = 0;
-			this.tabControl.Size = new System.Drawing.Size(628, 292);
+			this.tabControl.Size = new System.Drawing.Size(628, 316);
 			this.tabControl.TabIndex = 0;
 			// 
 			// tabPage1
@@ -61,7 +61,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(620, 266);
+			this.tabPage1.Size = new System.Drawing.Size(620, 290);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "General";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -73,7 +73,7 @@
 			this.generalPreferenceControl1.Enabled = false;
 			this.generalPreferenceControl1.Location = new System.Drawing.Point(3, 3);
 			this.generalPreferenceControl1.Name = "generalPreferenceControl1";
-			this.generalPreferenceControl1.Size = new System.Drawing.Size(614, 260);
+			this.generalPreferenceControl1.Size = new System.Drawing.Size(614, 284);
 			this.generalPreferenceControl1.TabIndex = 0;
 			// 
 			// tabDevices
@@ -101,7 +101,7 @@
 			// buttonOK
 			// 
 			this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonOK.Location = new System.Drawing.Point(403, 310);
+			this.buttonOK.Location = new System.Drawing.Point(403, 334);
 			this.buttonOK.Name = "buttonOK";
 			this.buttonOK.Size = new System.Drawing.Size(75, 23);
 			this.buttonOK.TabIndex = 1;
@@ -112,7 +112,7 @@
 			// buttonCancel
 			// 
 			this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonCancel.Location = new System.Drawing.Point(484, 310);
+			this.buttonCancel.Location = new System.Drawing.Point(484, 334);
 			this.buttonCancel.Name = "buttonCancel";
 			this.buttonCancel.Size = new System.Drawing.Size(75, 23);
 			this.buttonCancel.TabIndex = 2;
@@ -124,7 +124,7 @@
 			// 
 			this.buttonApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.buttonApply.Enabled = false;
-			this.buttonApply.Location = new System.Drawing.Point(565, 310);
+			this.buttonApply.Location = new System.Drawing.Point(565, 334);
 			this.buttonApply.Name = "buttonApply";
 			this.buttonApply.Size = new System.Drawing.Size(75, 23);
 			this.buttonApply.TabIndex = 3;
@@ -136,7 +136,7 @@
 			// 
 			this.checkboxAutoRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.checkboxAutoRun.AutoSize = true;
-			this.checkboxAutoRun.Location = new System.Drawing.Point(16, 314);
+			this.checkboxAutoRun.Location = new System.Drawing.Point(16, 338);
 			this.checkboxAutoRun.Name = "checkboxAutoRun";
 			this.checkboxAutoRun.Size = new System.Drawing.Size(141, 17);
 			this.checkboxAutoRun.TabIndex = 4;
@@ -149,7 +149,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-			this.ClientSize = new System.Drawing.Size(652, 342);
+			this.ClientSize = new System.Drawing.Size(652, 366);
 			this.Controls.Add(this.checkboxAutoRun);
 			this.Controls.Add(this.buttonApply);
 			this.Controls.Add(this.buttonCancel);

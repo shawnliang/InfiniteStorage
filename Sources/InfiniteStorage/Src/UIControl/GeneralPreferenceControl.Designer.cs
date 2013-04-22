@@ -63,7 +63,7 @@
 			this.Controls.Add(this.organizeSelectionControl1);
 			this.Controls.Add(this.storageLocationControl1);
 			this.Name = "GeneralPreferenceControl";
-			this.Size = new System.Drawing.Size(568, 280);
+			this.Size = new System.Drawing.Size(568, 288);
 			this.ResumeLayout(false);
 
 		}

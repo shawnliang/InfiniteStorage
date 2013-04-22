@@ -41,18 +41,18 @@
 			this.label8 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.tabInstallAppAndStart = new System.Windows.Forms.TabPage();
+			this.pictureBox3 = new System.Windows.Forms.PictureBox();
 			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.label3 = new System.Windows.Forms.Label();
-			this.pictureBox3 = new System.Windows.Forms.PictureBox();
 			this.panel1.SuspendLayout();
 			this.tabControlEx1.SuspendLayout();
 			this.tabWelcome.SuspendLayout();
 			this.tabChooseOrganizeMethod.SuspendLayout();
 			this.tabInstallAppAndStart.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// panel1
@@ -61,15 +61,15 @@
 			this.panel1.Controls.Add(this.nextButton);
 			this.panel1.Controls.Add(this.prevButton);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel1.Location = new System.Drawing.Point(0, 388);
+			this.panel1.Location = new System.Drawing.Point(0, 288);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(697, 46);
+			this.panel1.Size = new System.Drawing.Size(628, 46);
 			this.panel1.TabIndex = 0;
 			// 
 			// nextButton
 			// 
 			this.nextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.nextButton.Location = new System.Drawing.Point(610, 6);
+			this.nextButton.Location = new System.Drawing.Point(541, 6);
 			this.nextButton.Name = "nextButton";
 			this.nextButton.Size = new System.Drawing.Size(75, 32);
 			this.nextButton.TabIndex = 1;
@@ -100,7 +100,7 @@
 			this.tabControlEx1.Name = "tabControlEx1";
 			this.tabControlEx1.PageIndex = 3;
 			this.tabControlEx1.SelectedIndex = 0;
-			this.tabControlEx1.Size = new System.Drawing.Size(697, 388);
+			this.tabControlEx1.Size = new System.Drawing.Size(628, 288);
 			this.tabControlEx1.TabIndex = 1;
 			this.tabControlEx1.SelectedIndexChanged += new System.EventHandler(this.tabControlEx1_SelectedIndexChanged);
 			// 
@@ -113,7 +113,7 @@
 			this.tabWelcome.Location = new System.Drawing.Point(0, 0);
 			this.tabWelcome.Name = "tabWelcome";
 			this.tabWelcome.Padding = new System.Windows.Forms.Padding(3);
-			this.tabWelcome.Size = new System.Drawing.Size(697, 388);
+			this.tabWelcome.Size = new System.Drawing.Size(628, 288);
 			this.tabWelcome.TabIndex = 0;
 			this.tabWelcome.Text = "Infinite Storage";
 			// 
@@ -123,7 +123,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.storageLocationControl1.Location = new System.Drawing.Point(68, 102);
 			this.storageLocationControl1.Name = "storageLocationControl1";
-			this.storageLocationControl1.Size = new System.Drawing.Size(575, 103);
+			this.storageLocationControl1.Size = new System.Drawing.Size(506, 103);
 			this.storageLocationControl1.StoragePath = "C:\\Users\\shawnliang\\Infinite Storage";
 			this.storageLocationControl1.TabIndex = 2;
 			// 
@@ -134,7 +134,7 @@
 			this.hrLine.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.hrLine.Location = new System.Drawing.Point(68, 77);
 			this.hrLine.Name = "hrLine";
-			this.hrLine.Size = new System.Drawing.Size(561, 2);
+			this.hrLine.Size = new System.Drawing.Size(492, 2);
 			this.hrLine.TabIndex = 1;
 			// 
 			// label1
@@ -144,7 +144,7 @@
 			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
 			this.label1.Location = new System.Drawing.Point(12, 23);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(673, 45);
+			this.label1.Size = new System.Drawing.Size(604, 45);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "再也不怕手機照片、影片、錄音當遺書或手機空間不夠了\r\n只要電腦開著 檔案就會自己跑回來！";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -157,7 +157,7 @@
 			this.tabChooseOrganizeMethod.Location = new System.Drawing.Point(0, 0);
 			this.tabChooseOrganizeMethod.Name = "tabChooseOrganizeMethod";
 			this.tabChooseOrganizeMethod.Padding = new System.Windows.Forms.Padding(3);
-			this.tabChooseOrganizeMethod.Size = new System.Drawing.Size(697, 388);
+			this.tabChooseOrganizeMethod.Size = new System.Drawing.Size(628, 288);
 			this.tabChooseOrganizeMethod.TabIndex = 1;
 			this.tabChooseOrganizeMethod.Text = "設定備份位置";
 			this.tabChooseOrganizeMethod.UseVisualStyleBackColor = true;
@@ -167,8 +167,8 @@
 			this.organizeSelectionControl1.BackColor = System.Drawing.Color.Transparent;
 			this.organizeSelectionControl1.Location = new System.Drawing.Point(68, 97);
 			this.organizeSelectionControl1.Name = "organizeSelectionControl1";
-			this.organizeSelectionControl1.OrganizeBy = InfiniteStorage.OrganizeMethod.YearMonth;
-			this.organizeSelectionControl1.Size = new System.Drawing.Size(561, 141);
+			this.organizeSelectionControl1.OrganizeBy = InfiniteStorage.OrganizeMethod.YearMonthDay;
+			this.organizeSelectionControl1.Size = new System.Drawing.Size(436, 158);
 			this.organizeSelectionControl1.TabIndex = 3;
 			// 
 			// label8
@@ -178,7 +178,7 @@
 			this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.label8.Location = new System.Drawing.Point(68, 77);
 			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(561, 2);
+			this.label8.Size = new System.Drawing.Size(492, 2);
 			this.label8.TabIndex = 2;
 			// 
 			// label2
@@ -188,7 +188,7 @@
 			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
 			this.label2.Location = new System.Drawing.Point(12, 23);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(673, 45);
+			this.label2.Size = new System.Drawing.Size(604, 45);
 			this.label2.TabIndex = 1;
 			this.label2.Text = "不只是幫您安全把檔案送回電腦，還幫您案日期收納，壤您快速找尋跟瀏覽";
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -202,15 +202,26 @@
 			this.tabInstallAppAndStart.Location = new System.Drawing.Point(0, 0);
 			this.tabInstallAppAndStart.Name = "tabInstallAppAndStart";
 			this.tabInstallAppAndStart.Padding = new System.Windows.Forms.Padding(3);
-			this.tabInstallAppAndStart.Size = new System.Drawing.Size(697, 388);
+			this.tabInstallAppAndStart.Size = new System.Drawing.Size(628, 288);
 			this.tabInstallAppAndStart.TabIndex = 2;
 			this.tabInstallAppAndStart.Text = "安裝 App";
 			this.tabInstallAppAndStart.UseVisualStyleBackColor = true;
 			// 
+			// pictureBox3
+			// 
+			this.pictureBox3.Anchor = System.Windows.Forms.AnchorStyles.Top;
+			this.pictureBox3.Image = global::InfiniteStorage.Properties.Resources.temp_app_logo;
+			this.pictureBox3.Location = new System.Drawing.Point(228, 28);
+			this.pictureBox3.Name = "pictureBox3";
+			this.pictureBox3.Size = new System.Drawing.Size(173, 103);
+			this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.pictureBox3.TabIndex = 5;
+			this.pictureBox3.TabStop = false;
+			// 
 			// pictureBox2
 			// 
 			this.pictureBox2.Image = global::InfiniteStorage.Properties.Resources.app_store_badge;
-			this.pictureBox2.Location = new System.Drawing.Point(121, 287);
+			this.pictureBox2.Location = new System.Drawing.Point(60, 195);
 			this.pictureBox2.Name = "pictureBox2";
 			this.pictureBox2.Size = new System.Drawing.Size(198, 60);
 			this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -221,7 +232,7 @@
 			// pictureBox1
 			// 
 			this.pictureBox1.Image = global::InfiniteStorage.Properties.Resources.get_it_on_google_play;
-			this.pictureBox1.Location = new System.Drawing.Point(396, 287);
+			this.pictureBox1.Location = new System.Drawing.Point(404, 195);
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.Size = new System.Drawing.Size(172, 60);
 			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -234,28 +245,18 @@
 			this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold);
-			this.label3.Location = new System.Drawing.Point(12, 242);
+			this.label3.Location = new System.Drawing.Point(12, 150);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(673, 42);
+			this.label3.Size = new System.Drawing.Size(604, 42);
 			this.label3.TabIndex = 0;
 			this.label3.Text = "趕緊在手機上裝起 app，馬上把照片、影片、 錄音檔送回來吧！";
 			this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// pictureBox3
-			// 
-			this.pictureBox3.Image = global::InfiniteStorage.Properties.Resources.temp_app_logo;
-			this.pictureBox3.Location = new System.Drawing.Point(219, 12);
-			this.pictureBox3.Name = "pictureBox3";
-			this.pictureBox3.Size = new System.Drawing.Size(259, 227);
-			this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this.pictureBox3.TabIndex = 5;
-			this.pictureBox3.TabStop = false;
 			// 
 			// FirstUseDialog
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(697, 434);
+			this.ClientSize = new System.Drawing.Size(628, 334);
 			this.Controls.Add(this.tabControlEx1);
 			this.Controls.Add(this.panel1);
 			this.Name = "FirstUseDialog";
@@ -267,9 +268,9 @@
 			this.tabChooseOrganizeMethod.ResumeLayout(false);
 			this.tabInstallAppAndStart.ResumeLayout(false);
 			this.tabInstallAppAndStart.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
 			this.ResumeLayout(false);
 
 		}

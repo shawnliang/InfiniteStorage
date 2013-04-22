@@ -37,8 +37,11 @@ namespace InfiniteStorage
 
 			MyDbContext.InitialzeDatabaseSchema();
 
-			if (showFirstUseWizard() != DialogResult.OK)
-				return;
+			if (string.IsNullOrEmpty(Settings.Default.SingleFolderLocation))
+			{
+				if (showFirstUseWizard() != DialogResult.OK)
+					return;
+			}
 
 			initNotifyIcon();
 			initConnectedDeviceCollection();
