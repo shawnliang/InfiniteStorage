@@ -16,7 +16,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.waveface.sync.Constant;
-import com.waveface.sync.RuntimeConfig;
+import com.waveface.sync.RuntimeState;
 
 
 public class RuntimeWebClient {

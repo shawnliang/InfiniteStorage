@@ -37,7 +37,7 @@ import android.widget.ImageView.ScaleType;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
-import com.waveface.sync.RuntimeConfig;
+import com.waveface.sync.RuntimeState;
 import com.waveface.sync.db.ImportFilesTable;
 
 

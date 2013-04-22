@@ -23,12 +23,12 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.waveface.sync.Constant;
-import com.waveface.sync.RuntimeConfig;
+import com.waveface.sync.RuntimeState;
 import com.waveface.sync.db.BackupDetailsTable;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.db.ServerFilesView;
 import com.waveface.sync.db.BackupedServersTable;
-import com.waveface.sync.entity.FIleTransferEntity;
+import com.waveface.sync.entity.FileBackupEntity;
 import com.waveface.sync.util.FileUtil;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.MediaFile;
@@ -468,7 +468,9 @@ public class BackupLogic {
 		}
 	}
 	public static boolean canBackup(Context context){
-		if(NetworkUtil.isWifiNetworkAvailable(context) && RuntimeConfig.OnWebSocketOpened){
+		if(NetworkUtil.isWifiNetworkAvailable(context) 
+				&& RuntimeState.OnWebSocketOpened 
+				&& RuntimeState.OnWebSocketStation){
 			return true;
 		}
 		else{
@@ -476,14 +478,14 @@ public class BackupLogic {
 		}
 	}
 	public static void backupFiles(Context context,String serverId) {
-		FIleTransferEntity entity = new FIleTransferEntity();
+		FileBackupEntity entity = new FileBackupEntity();
 		byte[] buffer = new byte[256 * Constant.K_BYTES];
 		byte[] finalBuffer = null;		
 		InputStream ios = null;
 		boolean isSuccesed = false;
 		String filename = null;
 		int filetype = 0;
-    	String lastBackupTimestamp = null;
+    	String lastBackupTimestamp = "";
     	//select from serverFiles 
 		ContentResolver cr = context.getContentResolver();
 		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
@@ -501,11 +503,9 @@ public class BackupLogic {
 		cursor = cr.query(ImportFilesTable.CONTENT_URI, 
 				new String[]{
 				ImportFilesTable.COLUMN_FILENAME,
-				ImportFilesTable.COLUMN_MIMETYPE,
+				ImportFilesTable.COLUMN_FILETYPE,
 				ImportFilesTable.COLUMN_SIZE,
-				ImportFilesTable.COLUMN_FOLDER,
-				ImportFilesTable.COLUMN_DATE,
-				ImportFilesTable.COLUMN_FILETYPE}, 
+				ImportFilesTable.COLUMN_DATE}, 
 				ImportFilesTable.COLUMN_DATE+">=?", 
 				new String[]{lastBackupTimestamp}, 
 				ImportFilesTable.COLUMN_DATE);	
@@ -517,14 +517,26 @@ public class BackupLogic {
 				entity.action = Constant.WS_ACTION_FILE_START;
 				filename = cursor.getString(0);
 				entity.fileName = StringUtil.getFilename(filename);
-				entity.mimetype = cursor.getString(1);
+				filetype = cursor.getInt(1);
+				switch(filetype){
+					case Constant.TYPE_IMAGE:
+						entity.type = Constant.TRANSFER_TYPE_IMAGE;
+						break;
+					case Constant.TYPE_AUDIO:
+						entity.type = Constant.TRANSFER_TYPE_AUDIO;
+						break;
+					case Constant.TYPE_VIDEO:
+						entity.type = Constant.TRANSFER_TYPE_VIDEO;
+						break;
+				}
 				entity.fileSize = cursor.getString(2);
 				entity.folder = StringUtil.getFilepath(filename, entity.fileName);				
-				entity.datetime = cursor.getString(4);
-				filetype = cursor.getInt(5);
+				entity.datetime = cursor.getString(3);
+
+				Log.d(TAG, "BACKUPING:"+entity.type+",Filename:"+entity.fileName);
 				try {
 					if(canBackup(context)){
-						RuntimeWebClient.send(RuntimeConfig.GSON.toJson(entity));
+						RuntimeWebClient.send(RuntimeState.GSON.toJson(entity));
 					}
 					else{
 						isSuccesed = true;
@@ -551,7 +563,7 @@ public class BackupLogic {
 					// send file index for end
 					if(canBackup(context)){
 						entity.action = Constant.WS_ACTION_FILE_END;
-						RuntimeWebClient.send(RuntimeConfig.GSON.toJson(entity));
+						RuntimeWebClient.send(RuntimeState.GSON.toJson(entity));
 						isSuccesed = true;
 					}else{
 						isSuccesed = false;
@@ -569,17 +581,17 @@ public class BackupLogic {
 							ios.close();
 					} catch (IOException e) {
 					}
-					if(isSuccesed){
-						ServersLogic.updateServerStatus(context, entity.datetime,filetype, serverId);
-					}
-					isSuccesed = false;
+//					if(isSuccesed){
+//						ServersLogic.updateServerStatus(context, entity.datetime,filetype, serverId);
+//					}
+//					isSuccesed = false;
 				}
 				cursor.moveToNext();
 				if(!canBackup(context)){
 					break;//cut off for loop
 				}
 			}
+			cursor.close();
 		}
-		cursor.close();
 	}
 }

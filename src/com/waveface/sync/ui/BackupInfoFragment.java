@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.database.ContentObserver;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
+import com.waveface.sync.RuntimeState;
 import com.waveface.sync.db.BackupedServersTable;
 import com.waveface.sync.logic.BackupLogic;
 
@@ -26,7 +28,7 @@ public class BackupInfoFragment extends LinkFragmentBase implements OnClickListe
 
 	private ViewGroup mRootView;
 	private boolean mHideBack = false;
-//    private Handler mHandler = new Handler();
+    private Handler mHandler = new Handler();
     private TextView mTvFileTransfer;
     private ProgressBar mProgressBar;
 	private ServerObserver mContentObserver;
@@ -52,13 +54,13 @@ public class BackupInfoFragment extends LinkFragmentBase implements OnClickListe
 		
 		mTvFileTransfer = (TextView) mRootView.findViewById(R.id.tvFileTransfer);
 		mProgressBar = (ProgressBar)mRootView.findViewById(R.id.pbBackup);
-		refreshLayout();
+//		refreshLayout();
 		
-//        mHandler.postDelayed(new Runnable() {
-//            public void run() {
-//            	refreshLayout();
-//            	}
-//            }, 300);
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+            	refreshLayout();
+            	}
+            }, 300);
 
 		return mRootView;
 	}
@@ -73,13 +75,15 @@ public class BackupInfoFragment extends LinkFragmentBase implements OnClickListe
 	}
 
 	public void refreshLayout(){
-    	SharedPreferences prefs = getActivity().getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);    	
-    	String serverId = prefs.getString(Constant.PREF_SERVER_ID, "");
-		int[] datas = BackupLogic.getBackupProgressInfo(getActivity(), serverId);
-		String nowProgress = datas[0]+"/"+datas[1];
-		mProgressBar.setMax(datas[1]);
-		mProgressBar.setProgress(datas[0]);
-		mTvFileTransfer.setText(getActivity().getString(R.string.file_transfering,nowProgress));
+		if(getActivity()!=null){
+	    	if(!TextUtils.isEmpty(RuntimeState.mWebSocketServerId)){
+		    	int[] datas = BackupLogic.getBackupProgressInfo(getActivity(), RuntimeState.mWebSocketServerId);
+				String nowProgress = datas[0]+"/"+datas[1];
+				mProgressBar.setMax(datas[1]);
+				mProgressBar.setProgress(datas[0]);
+				mTvFileTransfer.setText(getActivity().getString(R.string.file_transfering,nowProgress));
+	    	}
+		}
 	}
 	
 	@Override
@@ -107,10 +111,6 @@ public class BackupInfoFragment extends LinkFragmentBase implements OnClickListe
 				mListener.goNext(TAG);
 				break;
 		}
-	}
-	public interface AutoImportListener {
-		public void importNow();
-		public void notImportNow();
 	}
 	@Override
 	public void onCheckedChanged(CompoundButton arg0, boolean arg1) {

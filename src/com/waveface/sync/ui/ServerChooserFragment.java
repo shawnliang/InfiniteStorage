@@ -10,8 +10,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.database.ContentObserver;
 import android.os.Bundle;
@@ -34,12 +32,16 @@ import android.widget.TextView;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
+import com.waveface.sync.RuntimeState;
+import com.waveface.sync.callback.EventCallback;
+import com.waveface.sync.callback.WSCallbackManager;
 import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.ServersLogic;
 
 
-public class ServerChooserFragment extends LinkFragmentBase implements OnClickListener, OnCheckedChangeListener{
+public class ServerChooserFragment extends LinkFragmentBase 
+	implements OnClickListener, OnCheckedChangeListener,EventCallback{
 	public final String TAG = ServerChooserFragment.class.getSimpleName();
 
 	private ViewGroup mRootView;
@@ -49,11 +51,11 @@ public class ServerChooserFragment extends LinkFragmentBase implements OnClickLi
 	private ProgressDialog mProgressDialog;
 	private ProgressBar mProgressBar;
 	private TextView mTvSearch;
-	private boolean mIsPairing = false;
-	private boolean mServerConnected = false;
 
 	//DATA
 	private ServerEntity mServer ;
+
+	private WSCallbackManager mEventCBManager = WSCallbackManager.getInstance();
 
 	public int getHeight() {
 		return mRootView.getMeasuredHeight();
@@ -76,10 +78,8 @@ public class ServerChooserFragment extends LinkFragmentBase implements OnClickLi
 
 		@Override
 		public void onChange(boolean selfChange) {
-			Log.e(TAG, "selfChange:" +selfChange);
 			if(getActivity() != null) {
 				refreshUI();
-				//mAdapter.notifyDataSetChanged();
 			}
 		}
 
@@ -128,6 +128,7 @@ public class ServerChooserFragment extends LinkFragmentBase implements OnClickLi
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mEventCBManager.register(this);
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_BONJOUR_MULTICAT_EVENT);
 		filter.addAction(Constant.ACTION_WS_SERVER_NOTIFY);		
@@ -142,6 +143,11 @@ public class ServerChooserFragment extends LinkFragmentBase implements OnClickLi
 		cr.registerContentObserver(BonjourServersTable.BONJOUR_SERVER_URI, false, mContentObserver);
 
 	}
+	private void dismissProgress(){
+		if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+			mProgressDialog.dismiss();
+		}		
+	}
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -151,34 +157,14 @@ public class ServerChooserFragment extends LinkFragmentBase implements OnClickLi
 				refreshUI();
 			}
 			else if(Constant.ACTION_WS_SERVER_NOTIFY.equals(action)){
-				String response = intent.getStringExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT);
+				String response = intent.getStringExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT);
 				if(response!=null){
 					if(response.equals(Constant.WS_ACTION_ACCEPT)){
-						mServerConnected = true;
-						mIsPairing = false;
-						if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
-							mProgressDialog.dismiss();
-						}
-						ServerEntity entity = (ServerEntity) intent.getExtras().get(Constant.EXTRA_SERVER_DATA);
-						entity.serverId = mServer.serverId;
-						entity.serverName = mServer.serverName;
-						entity.serverOS = mServer.serverOS;
-						entity.wsLocation = mServer.wsLocation;
-						mServer = entity;
-				    	SharedPreferences prefs = getActivity().getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);
-				    	Editor editor = prefs.edit();
-				    	editor.putString(Constant.PREF_STATION_WEB_SOCKET_URL, mServer.wsLocation);
-				    	editor.putString(Constant.PREF_SERVER_ID,mServer.serverId);
-				    	editor.commit();
-						ServersLogic.startBackuping(context, mServer);
+						dismissProgress();
 						refreshUI();
 					}
 					else if(response.equals(Constant.WS_ACTION_DENIED)){
-						mServerConnected = false;
-						mIsPairing = false;
-						if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
-							mProgressDialog.dismiss();
-						}
+						dismissProgress();
 						openDialog(context,Constant.WS_ACTION_DENIED);
 					}				
 					else if(response.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
@@ -218,6 +204,7 @@ public class ServerChooserFragment extends LinkFragmentBase implements OnClickLi
 	}
 	@Override
 	public void onDestroy() {
+		mEventCBManager.unregister(this);
 		getActivity().unregisterReceiver(mReceiver);
 		super.onDestroy();
 		ContentResolver cr = getActivity().getContentResolver();
@@ -226,7 +213,6 @@ public class ServerChooserFragment extends LinkFragmentBase implements OnClickLi
     private void clickToLinkServer(ServerEntity entity){
 		mProgressDialog = ProgressDialog.show(getActivity(), "",getString(R.string.pairing));
 		mProgressDialog.setCancelable(true);
-		mIsPairing = true;
     	ServersLogic.startWSServerConnect(getActivity(), entity.wsLocation,entity.serverId);
     }
 	@Override
@@ -278,8 +264,9 @@ public class ServerChooserFragment extends LinkFragmentBase implements OnClickLi
 			    	iv.setImageResource(R.drawable.ic_windows);
 			    }
 		    }
-		    String status = ServersLogic.getStatusByServerId(context, entity.serverId);
-		    if(!TextUtils.isEmpty(status) && status.equals(Constant.SERVER_LINKING)){
+//		    String status = ServersLogic.getStatusByServerId(context, entity.serverId);
+		    if(!TextUtils.isEmpty(entity.serverId) 
+		    		&& entity.serverId.equals(RuntimeState.mWebSocketServerId)){
 		    	iv = (ImageView) rowView.findViewById(R.id.ivConnected);
 		    	iv.setVisibility(View.VISIBLE);
 		    	tv.setTextColor(context.getResources().getColor(R.color.linked));
@@ -315,11 +302,14 @@ public class ServerChooserFragment extends LinkFragmentBase implements OnClickLi
 		
 	}
 
-	public interface AutoImportListener {
-		public void importNow();
-		public void notImportNow();
-	}
 	@Override
 	public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+	}
+
+	@Override
+	public void fired(String action, String content) {
+    	Intent intent = new Intent(action);
+    	intent.putExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT, content);
+        getActivity().sendBroadcast(intent);					
 	}
 }

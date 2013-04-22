@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.waveface.sync.Constant;
+import com.waveface.sync.RuntimeState;
 import com.waveface.sync.logic.BackupLogic;
 
 public class ScanTask extends AsyncTask<Void, Void, Void> {
@@ -14,9 +15,15 @@ public class ScanTask extends AsyncTask<Void, Void, Void> {
 	}
 	@Override
 	protected Void doInBackground(Void... params) {
+		RuntimeState.isScaning = true ;
 		BackupLogic.scanFileForBackup(mContext, Constant.TYPE_AUDIO);
 		BackupLogic.scanFileForBackup(mContext, Constant.TYPE_VIDEO);
 		BackupLogic.scanFileForBackup(mContext, Constant.TYPE_IMAGE);
 		return null;
+	}
+	@Override
+	protected void onPostExecute(Void entity) {
+		RuntimeState.isScaning = false ;
+		super.onPostExecute(entity);
 	}
 }

@@ -4,6 +4,7 @@ import java.io.File;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -12,13 +13,15 @@ import android.os.Environment;
 
 import com.crashlytics.android.Crashlytics;
 import com.waveface.sync.logic.ServersLogic;
+import com.waveface.sync.service.InfiniteService;
 import com.waveface.sync.task.ScanTask;
-import com.waveface.sync.util.ImageUtil;
+import com.waveface.sync.ui.MainActivity;
+import com.waveface.sync.util.AppUtil;
 import com.waveface.sync.util.Log;
 
 public class Starter extends Application {
-	private static final String TAG = Starter.class.getSimpleName();
-	public static Context SYNC_CONTEXT;
+	private static final String TAG = Starter.class.getSimpleName();	
+	
 	@Override
 	public void onCreate() {
 		Log.d(TAG,
@@ -29,35 +32,17 @@ public class Starter extends Application {
 			setupCrashlytics();
 		}
 		
-		super.onCreate();
-		SYNC_CONTEXT = getApplicationContext();
-		ServersLogic.setAllBackupedServersOffline(SYNC_CONTEXT);
-		ServersLogic.purgeAllBonjourServer(this);
-		new ScanTask(SYNC_CONTEXT).execute(new Void[]{});
 		initialDirectory();
-//		ScanImageFolder();
-//		ScanVideoFolder();
+		
+		ServersLogic.updateAllBackedServer(this);
+		ServersLogic.purgeAllBonjourServer(this);
+		new ScanTask(this).execute(new Void[]{});
+//		 if(AppUtil.isThisServiceRunning(this,InfiniteService.class.getName())==false){
+//			startService(new Intent(this, InfiniteService.class)); 
+//		}
+		super.onCreate();
 	}
-	private void ScanImageFolder() {
-		//Scan Image Folder
-		String imageFolders = ImageUtil.findFolders(SYNC_CONTEXT,Constant.TYPE_IMAGE);
-		if(imageFolders.length()>0){
-			if(imageFolders.endsWith(",")){
-				imageFolders = imageFolders.substring(0, imageFolders.length()-1);
-			}
-		}
-//		PhotoImport.addDefaultImportFolder(SYNC_CONTEXT, imageFolders.split(","), Constant.TYPE_IMAGE);
-	}
-	private void ScanVideoFolder() {
-		//Scan Image Folder
-		String videoFolders = ImageUtil.findFolders(SYNC_CONTEXT,Constant.TYPE_VIDEO);
-		if(videoFolders.length()>0){
-			if(videoFolders.endsWith(",")){
-				videoFolders = videoFolders.substring(0, videoFolders.length()-1);
-			}
-		}
-//		PhotoImport.addDefaultImportFolder(SYNC_CONTEXT, videoFolders.split(","), Constant.TYPE_VIDEO);
-	}
+
 	private void initialDirectory() {
 		File dir = Environment.getExternalStorageDirectory();
 		File imageFileDir = null;

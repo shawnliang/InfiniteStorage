@@ -8,35 +8,59 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.waveface.sync.Constant;
-import com.waveface.sync.RuntimeConfig;
+import com.waveface.sync.RuntimeState;
 import com.waveface.sync.db.BackupedServersTable;
 import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.entity.ConnectEntity;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.util.DeviceUtil;
-import com.waveface.sync.util.Log;
 import com.waveface.sync.util.StringUtil;
 import com.waveface.sync.websocket.RuntimeWebClient;
 
 public class ServersLogic {
 	private static String TAG = ServersLogic.class.getSimpleName();
 	
+	public static int updateBackupedServerStatus(Context context ,String serverId,String status){
+		ContentResolver cr = context.getContentResolver();
+		ContentValues cv = new ContentValues();
+		cv.put(BackupedServersTable.COLUMN_STATUS, status);
+		//update
+		return cr.update(BackupedServersTable.CONTENT_URI, 
+				 cv, 
+			 	 BackupedServersTable.COLUMN_SERVER_ID+"=?", new String[]{serverId});
+	}
+	   
+	public static void updateBackupedServerByServerNotify(Context context ,ServerEntity entity,boolean accept){
+		//Update Server Info
+		ServerEntity pairedServer = getBonjourServerByServerId(context, RuntimeState.mWebSocketServerId);
+		if(TextUtils.isEmpty(entity.serverName)){
+			entity.serverName = pairedServer.serverName;
+		}
+		entity.serverOS = pairedServer.serverOS;
+		entity.wsLocation = pairedServer.wsLocation;
+		entity.status = Constant.SERVER_LINKING;
+		if(accept){
+		    SharedPreferences mPrefs = context.getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);
+			Editor mEditor = mPrefs.edit();
+		    mEditor.putString(Constant.PREF_STATION_WEB_SOCKET_URL, entity.wsLocation);
+	    	mEditor.commit();
+		}
+	    updateBackupedServer(context, entity);
+	}
+	
 	public static int updateBackupedServer(Context context ,ServerEntity entity){
 		int result = 0;
 		Cursor cursor = null;
 		ContentResolver cr = context.getContentResolver();
-		cursor = cr.query(BackupedServersTable.CONTENT_URI, 
-				new String[]{BackupedServersTable.COLUMN_SERVER_ID}, 
-				BackupedServersTable.COLUMN_SERVER_ID+"=?", 
-				new String[]{entity.serverId}, 
-				null);
 		ContentValues cv = new ContentValues();
-		cv.put(BackupedServersTable.COLUMN_SERVER_ID, entity.serverId);
+		cv.put(BackupedServersTable.COLUMN_SERVER_ID, entity.serverId);		
 		cv.put(BackupedServersTable.COLUMN_SERVER_NAME, entity.serverName);
 		cv.put(BackupedServersTable.COLUMN_STATUS, entity.status);
 		if(TextUtils.isEmpty(entity.startDatetime)){
@@ -53,13 +77,23 @@ public class ServersLogic {
 		cv.put(BackupedServersTable.COLUMN_VIDEO_COUNT, entity.videoCount);
 		cv.put(BackupedServersTable.COLUMN_AUDIO_COUNT, entity.audioCount);		
 		cv.put(BackupedServersTable.COLUMN_LAST_BACKUP_DATETIME, StringUtil.getLocalDate());
-		
+
+		cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+				new String[]{BackupedServersTable.COLUMN_SERVER_ID}, 
+				BackupedServersTable.COLUMN_SERVER_ID+"=?", 
+				new String[]{entity.serverId}, 
+				null);
 		//update
 		if(cursor!=null && cursor.getCount()>0){
-			result = cr.update(BackupedServersTable.CONTENT_URI, cv, BackupedServersTable.COLUMN_SERVER_ID+"=?", new String[]{entity.serverId});
+			result = cr.update(BackupedServersTable.CONTENT_URI, 
+					 cv, 
+				 	 BackupedServersTable.COLUMN_SERVER_ID+"=?", new String[]{entity.serverId});
 			cv = new ContentValues();
 			cv.put(BackupedServersTable.COLUMN_STATUS, Constant.SERVER_OFFLINE);
-			cr.update(BackupedServersTable.CONTENT_URI, cv, BackupedServersTable.COLUMN_SERVER_ID+"!=?", new String[]{entity.serverId});
+			result = cr.update(BackupedServersTable.CONTENT_URI, 
+					cv, 
+					BackupedServersTable.COLUMN_SERVER_ID+"!=? AND "+BackupedServersTable.COLUMN_STATUS+"!=?", 
+					new String[]{entity.serverId,Constant.SERVER_DENIED});
 		}
 		//insert
 		else{
@@ -77,8 +111,8 @@ public class ServersLogic {
 		ContentResolver cr = context.getContentResolver();
 		cursor = cr.query(BackupedServersTable.CONTENT_URI, 
 				null, 
-				null, 
-				null, 
+				BackupedServersTable.COLUMN_STATUS+"!=?", 
+				new String[]{Constant.SERVER_DENIED}, 
 				null);
 		
 		if(cursor!=null && cursor.getCount()>0){
@@ -186,6 +220,13 @@ public class ServersLogic {
 		return entity;
 	}
 	
+	public static int updateAllBackedServer(Context context){
+		ContentResolver cr = context.getContentResolver();
+		ContentValues cv = new ContentValues();
+		cv.put(BackupedServersTable.COLUMN_STATUS, Constant.SERVER_OFFLINE);
+		return cr.update(BackupedServersTable.CONTENT_URI, 
+				cv,BackupedServersTable.COLUMN_STATUS+"!=?",new String[]{Constant.SERVER_DENIED});
+	}
 	
 	public static int purgeAllBonjourServer(Context context){
 		ContentResolver cr = context.getContentResolver();
@@ -197,19 +238,11 @@ public class ServersLogic {
 		ContentResolver cr = context.getContentResolver();
 		return cr.delete(BonjourServersTable.CONTENT_URI, 
 				BonjourServersTable.COLUMN_SERVER_ID+"=?",new String[]{serverId});
-	}
-	
-	
-	public static void setAllBackupedServersOffline(Context context ){
-		ContentValues cv = new ContentValues();
-		cv.put(BackupedServersTable.COLUMN_STATUS, Constant.SERVER_OFFLINE);
-		context.getContentResolver().update(BackupedServersTable.CONTENT_URI, cv, null, null);
-	}
-	
+	}	
 	
     public static void startWSServerConnect(Context context,String wsLocation,String serverId){
 	    //SETUP WS URL ANDLink to WS
-	    if(RuntimeConfig.OnWebSocketOpened == false){
+	    if(RuntimeState.OnWebSocketOpened == false){
 	    	RuntimeWebClient.init(context);
 	    	RuntimeWebClient.setURL(wsLocation);
 	    	try {
@@ -222,7 +255,7 @@ public class ServersLogic {
 	    		long[] countAndSize = getTransferCountAndSize(context, serverId);
 	    		connect.transferCount = countAndSize[0];
 	    		connect.transferSize = countAndSize[1];
-	    		RuntimeWebClient.send(RuntimeConfig.GSON.toJson(connect));
+	    		RuntimeWebClient.send(RuntimeState.GSON.toJson(connect));
 	    	} catch (WebSocketException e) {
 	    		e.printStackTrace();
 	    	}
@@ -269,15 +302,22 @@ public class ServersLogic {
 		cursor.close();
 		return new long[]{count,totalSize};
 	}
-
-    public static void startBackuping(Context context,ServerEntity entity){
-		RuntimeConfig.OnWebSocketOpened = true;	            	
-    	entity.status = Constant.SERVER_LINKING;
-    	int result = ServersLogic.updateBackupedServer(context, entity);
-    	Log.d(TAG, "Update Server:"+result);
-		Intent intent = new Intent(Constant.ACTION_BACKUP_FILE);
-		context.sendBroadcast(intent);
-    }
+    
+	public static int deniedPairedServer(Context context,String serverId){
+		int result = 0;
+		ContentResolver cr = context.getContentResolver();
+		ContentValues cv = new ContentValues();
+		cv.put(BackupedServersTable.COLUMN_STATUS, Constant.SERVER_DENIED);
+		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+				new String[]{BackupedServersTable.COLUMN_SERVER_ID}, 
+				BackupedServersTable.COLUMN_SERVER_ID+" =? ", 
+				new String[]{serverId},null);	
+		if(cursor!=null && cursor.getCount()>0){
+			result=cr.update(BackupedServersTable.CONTENT_URI, cv, BackupedServersTable.COLUMN_SERVER_ID+"=?", new String[]{serverId});
+		}
+		cursor.close();
+		return result;
+	}    
 	public static int updateServerStatus(Context context,String lastBackupTime,int filetype,String serverId){
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
@@ -285,28 +325,31 @@ public class ServersLogic {
 		cv.put(BackupedServersTable.COLUMN_LAST_BACKUP_DATETIME, StringUtil.getLocalDate());
 
 		String startBackupTimestamp = null;
-		int countOfFile = 0 ;
-		String[] projection = null;
-		switch(filetype){
-			case Constant.TYPE_IMAGE:
-				projection = 
-				new String[]{
-						BackupedServersTable.COLUMN_START_DATETIME,
-						BackupedServersTable.COLUMN_PHOTO_COUNT};
-				break;
-			case Constant.TYPE_VIDEO:
-				projection = 
-				new String[]{
-						BackupedServersTable.COLUMN_START_DATETIME,
-						BackupedServersTable.COLUMN_VIDEO_COUNT};
-				break;
-			case Constant.TYPE_AUDIO:
-				projection = 
-				new String[]{
-						BackupedServersTable.COLUMN_START_DATETIME,
-						BackupedServersTable.COLUMN_AUDIO_COUNT};
-				break;
-		}
+		
+		String[] projection = new String[]{
+				BackupedServersTable.COLUMN_START_DATETIME};
+
+//		int countOfFile = 0 ;
+//		switch(filetype){
+//			case Constant.TYPE_IMAGE:
+//				projection = 
+//				new String[]{
+//						BackupedServersTable.COLUMN_START_DATETIME,
+//						BackupedServersTable.COLUMN_PHOTO_COUNT};
+//				break;
+//			case Constant.TYPE_VIDEO:
+//				projection = 
+//				new String[]{
+//						BackupedServersTable.COLUMN_START_DATETIME,
+//						BackupedServersTable.COLUMN_VIDEO_COUNT};
+//				break;
+//			case Constant.TYPE_AUDIO:
+//				projection = 
+//				new String[]{
+//						BackupedServersTable.COLUMN_START_DATETIME,
+//						BackupedServersTable.COLUMN_AUDIO_COUNT};
+//				break;
+//		}
 		
 		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
 				projection, 
@@ -315,39 +358,45 @@ public class ServersLogic {
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();
 			startBackupTimestamp = cursor.getString(0);
-			countOfFile = cursor.getInt(1);
-			countOfFile++;
+//			countOfFile = cursor.getInt(1);
+//			countOfFile++;
 		}		
 		cursor.close();
 		if(TextUtils.isEmpty(startBackupTimestamp) || 
 				StringUtil.day1BeforeDay2(lastBackupTime, startBackupTimestamp)){
 			cv.put(BackupedServersTable.COLUMN_START_DATETIME, lastBackupTime);
 		}
-		switch(filetype){
-			case Constant.TYPE_IMAGE:
-				cv.put(BackupedServersTable.COLUMN_PHOTO_COUNT,countOfFile);
-				break;
-			case Constant.TYPE_VIDEO:
-				cv.put(BackupedServersTable.COLUMN_VIDEO_COUNT,countOfFile);
-				break;
-			case Constant.TYPE_AUDIO:
-				cv.put(BackupedServersTable.COLUMN_AUDIO_COUNT,countOfFile);
-				break;
-		}
+//		switch(filetype){
+//			case Constant.TYPE_IMAGE:
+//				cv.put(BackupedServersTable.COLUMN_PHOTO_COUNT,countOfFile);
+//				break;
+//			case Constant.TYPE_VIDEO:
+//				cv.put(BackupedServersTable.COLUMN_VIDEO_COUNT,countOfFile);
+//				break;
+//			case Constant.TYPE_AUDIO:
+//				cv.put(BackupedServersTable.COLUMN_AUDIO_COUNT,countOfFile);
+//				break;
+//		}
 		return cr.update(BackupedServersTable.CONTENT_URI, cv,BackupedServersTable.COLUMN_SERVER_ID+"=?" , new String[]{serverId});
 	}
 	public static String getStatusByServerId(Context context,String serverId){
-		String status = null;
-		ContentResolver cr = context.getContentResolver();
-		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
-				new String[]{BackupedServersTable.COLUMN_STATUS}, 
-				BackupedServersTable.COLUMN_SERVER_ID+" =? ", 
-				new String[]{serverId},null);	
-		if(cursor!=null && cursor.getCount()>0){
-			cursor.moveToFirst();
-			status = cursor.getString(0);
-		}		
-		cursor.close();
-		return status;
+		if(serverId.equals(RuntimeState.mWebSocketServerId)){
+			return Constant.SERVER_LINKING;
+		}
+		else{
+			return Constant.SERVER_OFFLINE;
+		}
+//		String status = null;
+//		ContentResolver cr = context.getContentResolver();
+//		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+//				new String[]{BackupedServersTable.COLUMN_STATUS}, 
+//				BackupedServersTable.COLUMN_SERVER_ID+" =? ", 
+//				new String[]{serverId},null);	
+//		if(cursor!=null && cursor.getCount()>0){
+//			cursor.moveToFirst();
+//			status = cursor.getString(0);
+//		}		
+//		cursor.close();
+//		return status;
 	}
 }

@@ -2,7 +2,7 @@ package com.waveface.sync.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-public class FIleTransferEntity {
+public class FileBackupEntity {
 	
 	@SerializedName("action")
 	public String action;
@@ -16,9 +16,9 @@ public class FIleTransferEntity {
 	@SerializedName("folder")
 	public String folder;
 	
-	@SerializedName("mimetype")
-	public String mimetype;
-
+	@SerializedName("type")
+	public String type;
+	
 	@SerializedName("datetime")
 	public String datetime;
 }

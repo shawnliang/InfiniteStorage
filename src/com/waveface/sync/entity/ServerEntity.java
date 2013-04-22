@@ -13,7 +13,8 @@ public class ServerEntity implements Serializable {
 
 	@SerializedName("server_id")
 	public String serverId;
-	
+
+	@SerializedName("server_name")
 	public String serverName;
 	
 	public String serverOS;	
