@@ -52,6 +52,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			using (var db = new MyDbContext())
 			{
 				var result = from f in db.Object.Files
+							 where f.device_id == device_id
 							 group f by device_id
 								 into g
 								 select new DeviceSummary
