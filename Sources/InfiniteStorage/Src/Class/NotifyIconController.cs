@@ -83,7 +83,7 @@ namespace InfiniteStorage
 				deviceStipItems.Add(evt.ctx, item);
 
 				notifyIcon.ContextMenuStrip.Items.Insert(2, item);
-				notifyIcon.ShowBalloonTip(3000, Resources.ProductName, string.Format("{0} 正在備份 {1} 個擋案", evt.ctx.device_name, evt.ctx.total_files), ToolTipIcon.Info);
+				notifyIcon.ShowBalloonTip(3000, Resources.ProductName, string.Format(Resources.BallonText_Transferring, evt.ctx.device_name, evt.ctx.total_files), ToolTipIcon.Info);
 			}
 		}
 

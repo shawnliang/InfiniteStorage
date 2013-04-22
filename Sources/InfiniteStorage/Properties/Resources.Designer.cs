@@ -67,6 +67,24 @@ namespace InfiniteStorage.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to {0} 在此為您服務.
+        /// </summary>
+        internal static string BallonText_AtService {
+            get {
+                return ResourceManager.GetString("BallonText_AtService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} 正在傳送 {1} 個檔案.
+        /// </summary>
+        internal static string BallonText_Transferring {
+            get {
+                return ResourceManager.GetString("BallonText_Transferring", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap get_it_on_google_play {
             get {
                 object obj = ResourceManager.GetObject("get_it_on_google_play", resourceCulture);
@@ -94,15 +112,6 @@ namespace InfiniteStorage.Properties {
             get {
                 object obj = ResourceManager.GetObject("temp_app_logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} 在此為您服務.
-        /// </summary>
-        internal static string TrayBallonText {
-            get {
-                return ResourceManager.GetString("TrayBallonText", resourceCulture);
             }
         }
         

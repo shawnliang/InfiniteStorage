@@ -61,7 +61,7 @@ namespace InfiniteStorage
 			ProgramIPC.Instance.OnWinMsg += (s, e) =>
 			{
 				if (e.Message == ProgramIPC.MsgShowTooltip)
-					showTooltip();
+					showProgramIsAtServiceBallonTips();
 			};
 
 
@@ -207,7 +207,7 @@ namespace InfiniteStorage
 
 			m_notifyIcon.Visible = true;
 
-			showTooltip();
+			showProgramIsAtServiceBallonTips();
 
 			m_notifyIcon.DoubleClick += m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked;
 
@@ -216,9 +216,9 @@ namespace InfiniteStorage
 			InfiniteStorageWebSocketService.PairingRequesting += m_notifyIconController.OnDevicePairingRequesting;
 		}
 
-		private static void showTooltip()
+		private static void showProgramIsAtServiceBallonTips()
 		{
-			var ballonText = string.Format(Resources.TrayBallonText, Resources.ProductName);
+			var ballonText = string.Format(Resources.BallonText_AtService, Resources.ProductName);
 			m_notifyIcon.ShowBalloonTip(3000, Resources.ProductName, ballonText, ToolTipIcon.None);
 		}
 
