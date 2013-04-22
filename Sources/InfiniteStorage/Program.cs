@@ -70,7 +70,7 @@ namespace InfiniteStorage
 
 			try
 			{
-				initWebsocketServer();
+				port = initWebsocketServer();
 			}
 			catch (Exception e)
 			{
