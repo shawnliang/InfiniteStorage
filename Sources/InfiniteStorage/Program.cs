@@ -11,6 +11,7 @@ using System.Configuration;
 using System.Reflection;
 using System.Data.SQLite;
 using InfiniteStorage.Model;
+using System.Drawing;
 
 namespace InfiniteStorage
 {
@@ -137,12 +138,8 @@ namespace InfiniteStorage
 
 			m_notifyIcon.ContextMenuStrip = new ContextMenuStrip();
 
-			var openFolderItem = new ToolStripMenuItem(Resources.TrayMenuItem_OpenBackupFolder, null, new ToolStripItem[]{
-				new ToolStripMenuItem("Photo", null, m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked),
-				new ToolStripMenuItem("Videos", null, m_notifyIconController.OnOpenVideoBackupFolderMenuItemClicked),
-				new ToolStripMenuItem("Audios", null, m_notifyIconController.OnOpenAudioBackupFolderMenuItemClicked),
-			});
-			m_notifyIcon.ContextMenuStrip.Items.Add(openFolderItem);
+			var openStorageItem = m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_OpenBackupFolder, null, m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked);
+			openStorageItem.Font = new Font(openStorageItem.Font, FontStyle.Bold);
 
 			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Preferences, null, m_notifyIconController.OnPreferencesMenuItemClicked);
 
@@ -153,6 +150,8 @@ namespace InfiniteStorage
 			m_notifyIcon.Visible = true;
 
 			m_notifyIcon.ShowBalloonTip(3000, Resources.ProductName, "超屌備份在此為您服務", ToolTipIcon.None);
+
+			m_notifyIcon.DoubleClick += m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked;
 
 			InfiniteStorageWebSocketService.DeviceAccepted += m_notifyIconController.OnDeviceConnected;
 			InfiniteStorageWebSocketService.DeviceDisconnected += m_notifyIconController.OnDeviceDisconnected;
