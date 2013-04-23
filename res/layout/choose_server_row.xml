@@ -5,7 +5,7 @@
     android:layout_margin="10dp"
     android:layout_marginTop="20dp"
     android:layout_marginBottom="20dp"
-    android:background="#3D3D3D" >
+    android:background="#000000" >
 
     <ImageView
         android:id="@+id/imagePC"
@@ -27,5 +27,14 @@
         android:text="nfejkfeknk"
         android:textColor="#FFFFFF"
         android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/ivConnected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/textBackupPC"
+        android:src="@android:drawable/btn_star_big_on"
+        android:visibility="invisible" />
 
 </RelativeLayout>

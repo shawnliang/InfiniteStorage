@@ -1,0 +1,118 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_dialog" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="5dp"
+        android:src="@drawable/ic_pairing" />
+
+    <RelativeLayout
+	    android:id="@+id/frameSendLink"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/llBtns"
+	    android:layout_below="@+id/imageView1"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginLeft="10dp"
+	    android:layout_marginRight="20dp"
+	    android:background="#000000">
+    
+    <TextView
+        android:id="@+id/tvWording11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dip"
+        android:text="@string/backup_view_descript11"
+        android:textColor="#FFFFFF" />
+    <TextView
+        android:id="@+id/tvWording12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvWording11"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dip"
+        android:text="@string/backup_view_descript12"
+        android:textColor="#FFFFFF" />
+    
+    <TextView
+        android:id="@+id/tvWording21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvWording12"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="@string/backup_view_descript21"
+        android:textColor="#FFFFFF" />
+    <TextView
+        android:id="@+id/tvWording22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvWording21"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dip"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:text="@string/backup_view_descript22"
+        android:textColor="#FFFFFF" />
+     <TextView
+        android:id="@+id/tvWording23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvWording22"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:text="@string/backup_view_descript23"
+        android:textColor="#FFFFFF" />
+    
+    <TextView
+        android:id="@+id/tvFileTransfer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
+        android:text="@string/file_transfering"
+        android:textColor="#33CCFF" />
+
+    <ProgressBar
+        android:id="@+id/pbBackup"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvWording23"
+        android:layout_margin="30dip"
+        android:max="100"
+        android:progress="@android:integer/config_mediumAnimTime" />
+    	    	    
+	</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/llBtns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
+
+    <Button
+        android:id="@+id/btnConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="@string/btn_confirm" />
+
+	</LinearLayout>
+
+</RelativeLayout>

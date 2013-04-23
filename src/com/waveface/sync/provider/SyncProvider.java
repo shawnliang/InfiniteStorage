@@ -398,7 +398,8 @@ public class SyncProvider extends ContentProvider {
 			String[] whereArgs) {
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		int affected;
-		switch (sUriMatcher.match(uri)) {
+		int matchUri = sUriMatcher.match(uri);
+		switch (matchUri) {
 		case IMPORTS:
 			affected = db.update(ImportTable.TABLE_NAME, values, where,
 					whereArgs);
@@ -416,6 +417,8 @@ public class SyncProvider extends ContentProvider {
 		case IMPORTFILES:
 			affected = db.update(ImportFilesTable.TABLE_NAME, values, where,
 					whereArgs);
+			//SEND CUMTOMIZED NOTIFY INFO
+			sendCustomizedNotifyChangedInfo(matchUri);
 			break;
 		case IMPORTFILES_ID:
 			String filename = uri.getPathSegments().get(1);
@@ -426,10 +429,14 @@ public class SyncProvider extends ContentProvider {
 							+ "'"
 							+ (!TextUtils.isEmpty(where) ? " AND (" + where
 									+ ")" : ""), whereArgs);
+			//SEND CUMTOMIZED NOTIFY INFO
+			sendCustomizedNotifyChangedInfo(matchUri);
 			break;
 		case BACKUPED_SERVERS:
 			affected = db.update(BackupedServersTable.TABLE_NAME, values, where,
 					whereArgs);
+			//SEND CUMTOMIZED NOTIFY INFO
+			sendCustomizedNotifyChangedInfo(matchUri);
 			break;
 		case BACKUPED_SERVERS_ID:
 			String serverId = uri.getPathSegments().get(1);
@@ -440,10 +447,14 @@ public class SyncProvider extends ContentProvider {
 							+ "'"
 							+ (!TextUtils.isEmpty(where) ? " AND (" + where
 									+ ")" : ""), whereArgs);
+			//SEND CUMTOMIZED NOTIFY INFO
+			sendCustomizedNotifyChangedInfo(matchUri);
 			break;
 		case BONJOUR_SERVERS:
 			affected = db.update(BonjourServersTable.TABLE_NAME, values, where,
 					whereArgs);
+			//SEND CUMTOMIZED NOTIFY INFO
+			sendCustomizedNotifyChangedInfo(matchUri);
 			break;
 		case BONJOUR_SERVERS_ID:
 			String bonjourServerId = uri.getPathSegments().get(1);
@@ -454,6 +465,8 @@ public class SyncProvider extends ContentProvider {
 							+ "'"
 							+ (!TextUtils.isEmpty(where) ? " AND (" + where
 									+ ")" : ""), whereArgs);
+			//SEND CUMTOMIZED NOTIFY INFO
+			sendCustomizedNotifyChangedInfo(matchUri);
 			break;
 
 		case BACKUPDETAILS:
@@ -550,6 +563,8 @@ public class SyncProvider extends ContentProvider {
 					insert.execute();
 				}
 				db.setTransactionSuccessful();
+				//SEND CUMTOMIZED NOTIFY INFO
+				sendCustomizedNotifyChangedInfo(IMPORTFILES);
 				numInserted = values.length;
 			} finally {
 				if (insert != null) {
@@ -573,8 +588,9 @@ public class SyncProvider extends ContentProvider {
 						+ BackupedServersTable.COLUMN_FREE_SPACE + ","
 						+ BackupedServersTable.COLUMN_PHOTO_COUNT + ","
 						+ BackupedServersTable.COLUMN_VIDEO_COUNT + ","
-						+ BackupedServersTable.COLUMN_AUDIO_COUNT + ")"						
-						+ " values (?,?,?,?,?,?,?,?,?,?)");
+						+ BackupedServersTable.COLUMN_AUDIO_COUNT + ","	
+						+ BackupedServersTable.COLUMN_LAST_BACKUP_DATETIME + ")"	
+						+ " values (?,?,?,?,?,?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
 					insert.bindString(1, value.getAsString(BackupedServersTable.COLUMN_SERVER_ID));
@@ -586,10 +602,13 @@ public class SyncProvider extends ContentProvider {
 					insert.bindString(7, value.getAsString(BackupedServersTable.COLUMN_FREE_SPACE));
 					insert.bindString(8, value.getAsString(BackupedServersTable.COLUMN_PHOTO_COUNT));
 					insert.bindString(9, value.getAsString(BackupedServersTable.COLUMN_VIDEO_COUNT));
-					insert.bindString(10, value.getAsString(BackupedServersTable.COLUMN_AUDIO_COUNT));					
+					insert.bindString(10, value.getAsString(BackupedServersTable.COLUMN_AUDIO_COUNT));			
+					insert.bindString(11, value.getAsString(BackupedServersTable.COLUMN_LAST_BACKUP_DATETIME));
 					insert.execute();
 				}
 				db.setTransactionSuccessful();
+				//SEND CUMTOMIZED NOTIFY INFO
+				sendCustomizedNotifyChangedInfo(BACKUPED_SERVERS);
 				numInserted = values.length;
 			} finally {
 				if (insert != null) {
@@ -618,6 +637,9 @@ public class SyncProvider extends ContentProvider {
 					insert.execute();
 				}
 				db.setTransactionSuccessful();
+				//SEND CUMTOMIZED NOTIFY INFO
+				sendCustomizedNotifyChangedInfo(BONJOUR_SERVERS);
+				
 				numInserted = values.length;
 			} finally {
 				if (insert != null) {
@@ -656,6 +678,26 @@ public class SyncProvider extends ContentProvider {
 
 		default:
 			throw new UnsupportedOperationException("unsupported uri: " + uri);
+		}
+	}
+	
+	public void sendCustomizedNotifyChangedInfo(int match){
+		
+		switch(match){
+		case IMPORTFILES:
+		case IMPORTFILES_ID:
+			getContext().getContentResolver().notifyChange(ImportFilesTable.IMPORT_FILE_URI, null);
+			break;
+
+		case BONJOUR_SERVERS:
+		case BONJOUR_SERVERS_ID:
+//			Uri bonjourUri = Uri.withAppendedPath(BonjourServersTable.BONJOUR_SERVER_URI, "");
+			getContext().getContentResolver().notifyChange(BonjourServersTable.BONJOUR_SERVER_URI, null);
+			break;
+		case BACKUPED_SERVERS:
+		case BACKUPED_SERVERS_ID:
+			getContext().getContentResolver().notifyChange(BackupedServersTable.BACKUPED_SERVER_URI, null);
+			break;
 		}
 	}
 }

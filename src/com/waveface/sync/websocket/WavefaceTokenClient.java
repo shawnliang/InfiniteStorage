@@ -28,8 +28,9 @@ import android.text.TextUtils;
 
 import com.google.gson.JsonSyntaxException;
 import com.waveface.sync.Constant;
-import com.waveface.sync.RuntimeConfig;
+import com.waveface.sync.RuntimeState;
 import com.waveface.sync.entity.ServerEntity;
+import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.util.Log;
 
 public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements WebSocketTokenClient {
@@ -56,6 +57,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 	private final ScheduledThreadPoolExecutor mResponseQueueExecutor =
 			new ScheduledThreadPoolExecutor(1);
 	private static Context mContext;
+	
 	
 	/**
 	 * Default constructor
@@ -128,76 +130,52 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		 */
 		@Override
 		public void processOpened(WebSocketClientEvent aEvent) {
-			//TODO:
-			RuntimeConfig.OnWebSocketOpened = true;
+			RuntimeState.setServerStatus(Constant.WS_ACTION_SOCKET_OPENED);
 		}
 
 		@Override
 		public void processPacket(WebSocketClientEvent aEvent, WebSocketPacket aPacket) {
-			RuntimeConfig.OnWebSocketStation = true;
 			String jsonOutput = aPacket.getUTF8();
-			ServerEntity response = null;
+			ServerEntity entity = null;
+			String notifyContent = null;
 			try {
 				if(!TextUtils.isEmpty(jsonOutput))
-					response = RuntimeConfig.GSON.fromJson(jsonOutput, ServerEntity.class);
+					entity = RuntimeState.GSON.fromJson(jsonOutput, ServerEntity.class);
 			} catch (JsonSyntaxException e) {
 				e.printStackTrace();
 				Log.e(Constant.JSON_ERROR_TAG, jsonOutput);
 				Log.e(Constant.JSON_ERROR_TAG, e.getLocalizedMessage());
 			}
-			if(response.action.equals(Constant.WS_ACTION_ACCEPT)){
-            	Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
-            	intent.putExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT, Constant.WS_ACTION_ACCEPT);
-                intent.putExtra(Constant.EXTRA_SERVER_DATA, response);
-                mContext.sendBroadcast(intent);
-
-			}else if(response.action.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
-            	Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
-            	intent.putExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT, Constant.WS_ACTION_WAIT_FOR_PAIR);
-            	mContext.sendBroadcast(intent);
-				
-			}else if(response.action.equals(Constant.WS_ACTION_DENIED)){
-            	Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
-            	intent.putExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT, Constant.WS_ACTION_DENIED);
-                mContext.sendBroadcast(intent);					
-			}else if(response.action.equals(Constant.WS_ACTION_BACKUP_INFO)){
-            	Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
-            	intent.putExtra(Constant.EXTRA_SERVER_NOTIFY_CONTENT, Constant.WS_ACTION_DENIED);
-                mContext.sendBroadcast(intent);					
+			if(entity.action.equals(Constant.WS_ACTION_ACCEPT)){
+				RuntimeState.mWebSocketServerId = entity.serverId;
+				RuntimeState.mWebSocketServerName = entity.serverName;
+				RuntimeState.setServerStatus(entity.action);
+				ServersLogic.updateBackupedServerByServerNotify(mContext, entity,true);
+				notifyContent = Constant.WS_ACTION_ACCEPT;
 			}
-			Token lToken = packetToToken(aPacket);
-//			String lType = lToken.getType();
-//			String lReqType = lToken.getString("reqType");
-//
-//			//Notifying pending OnResponse callbacks if exists
-//			synchronized (mPendingResponseQueue) {
-//				// check if the response token is part of the pending responses queue
-//				Integer lUTID = lToken.getInteger("utid");
-//				Integer lCode = lToken.getInteger("code");
-//				// is there unique token id available in the response
-//				// and is there a matching pending response at all?
-//				PendingResponseQueueItem lPRQI =
-//						(lUTID != null ? mPendingResponseQueue.get(lUTID) : null);
-//				if (lPRQI != null) {
-//					// if so start analyzing
-//					WebSocketResponseTokenListener lWSRTL = lPRQI.getListener();
-//					if (lWSRTL != null) {
-//						// fire on response
-//						lWSRTL.OnResponse(lToken);
-//						// usable response code available?
-//						if (lCode != null) {
-//							if (lCode == 0) {
-//								lWSRTL.OnSuccess(lToken);
-//							} else {
-//								lWSRTL.OnFailure(lToken);
-//							}
-//						}
-//					}
-//					// and drop the pending queue item
-//					mPendingResponseQueue.remove(lUTID);
-//				}
-//			}
+			else if(entity.action.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
+				RuntimeState.setServerStatus(entity.action);
+                notifyContent = Constant.WS_ACTION_WAIT_FOR_PAIR;                				
+			}
+			else if(entity.action.equals(Constant.WS_ACTION_DENIED)){
+				if(!TextUtils.isEmpty(RuntimeState.mWebSocketServerId)){
+					ServersLogic.deniedPairedServer(mContext, RuntimeState.mWebSocketServerId);
+				}
+				RuntimeState.setServerStatus(entity.action);
+                notifyContent = Constant.WS_ACTION_DENIED;                				
+			}
+			else if(entity.action.equals(Constant.WS_ACTION_BACKUP_INFO)){				
+				RuntimeState.setServerStatus(entity.action);
+				ServersLogic.updateBackupedServerByServerNotify(mContext, entity,false);               
+				notifyContent = Constant.WS_ACTION_BACKUP_INFO;
+			}
+			//SEND BROADCAST
+			Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
+			intent.putExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT, notifyContent);
+        	mContext.sendBroadcast(intent);
 
+			//ORIGINAL Web Socket Code
+			Token lToken = packetToToken(aPacket);
 			//Notifying listeners
 			for (WebSocketClientListener lListener : getListeners()) {
 				if (lListener instanceof WebSocketClientTokenListener) {
@@ -211,11 +189,11 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		 */
 		@Override
 		public void processClosed(WebSocketClientEvent aEvent) {
-//			Intent intent = new Intent(Constant.ACTION_CHANGELOGS_TIMER);
-//			intent.putExtra(Constant.PARAM_TIMER_COMMAND, Constant.PARAM_COMMAND_RESTART);
-//			mContext.sendBroadcast(intent);
-			RuntimeConfig.OnWebSocketOpened = false;
-			RuntimeConfig.OnWebSocketStation = false;
+			RuntimeState.setServerStatus(Constant.WS_ACTION_SOCKET_CLOSED);
+			ServersLogic.updateAllBackedServerOffline(mContext);
+			Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
+			intent.putExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT, Constant.WS_ACTION_SOCKET_CLOSED);
+			mContext.sendBroadcast(intent);			
 		}
 
 		/**

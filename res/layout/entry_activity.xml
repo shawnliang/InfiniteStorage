@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#33FFFFFF" >
-
-    <FrameLayout
-        android:id="@+id/entry_main"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="50dp"
-        android:paddingBottom="50dp"
+        android:background="#33FFFFFF"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
         android:paddingRight="30dp"
-        android:paddingLeft="30dp" 
-        >
-    </FrameLayout>
+        android:paddingLeft="30dp"          
 
-</FrameLayout>
+        >    
+    	<FrameLayout
+	        android:id="@+id/entry_main"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"    
+            > 
+	        
+	    </FrameLayout>
+</RelativeLayout>

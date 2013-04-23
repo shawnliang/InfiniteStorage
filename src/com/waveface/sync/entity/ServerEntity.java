@@ -11,8 +11,10 @@ public class ServerEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@SerializedName("server_id")
 	public String serverId;
-	
+
+	@SerializedName("server_name")
 	public String serverName;
 	
 	public String serverOS;	
@@ -32,7 +34,7 @@ public class ServerEntity implements Serializable {
 	public String endDatetime;		
 	
 	@SerializedName("backup_folder")
-	public String Folder;	
+	public String folder;	
 	
 	@SerializedName("backup_folder_free_space")
 	public long freespace;	
@@ -47,5 +49,7 @@ public class ServerEntity implements Serializable {
 	public int audioCount;
 	
 	public String wsLocation;
-		
+
+	public String lastLocalBackupTime;
+
 }

@@ -2,27 +2,77 @@
 <resources>
 
     <string name="hello">Welcome to Infinite Storage ShaketoSync!</string>
-    <string name="app_name">大屌備份</string>
+    <string name="app_name">無限備份</string>
     <string name="title_activity_bonjour_servers">BonjourServers</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="file_scanning">掃瞄檔案中..</string>
+    <string name="server_searching">搜尋電腦中..</string>
     <string name="clean_space">清理</string>    
     <string name="period">從 %1$s 到 %2$s</string>    
-    
-    <string name="backuping">備份中...</string>    
-    <string name="offline">離線</string>    
-    
+
+    <!--MAIN-->   
+    <string name="auto_connect">連線中...</string> 
     <string name="total">總共</string>    
     <string name="videos">總共 %1$d 個影像檔</string>    
-    <string name="audio">總共 %1$d 個聲音檔</string>    
-    <string name="photos">總共 %1$d 帳照片</string>        
+    <string name="audios">總共 %1$d 個聲音檔</string>    
+    <string name="photos">總共 %1$d 張照片</string>        
     
-    <!--SERVERS-->
+    
+    <!--PAIRED SERVERS-->
+    <string name="backuping">備份中...</string>    
+    <string name="offline">離線</string>    
+    <string name="backuped_completed">備份完成</string>    
     <string name="backup_period">備份日期從 %1$s 到 %2$s</string>    
     <string name="free_space">目錄空間 %1$s</string>    
     <string name="backup_folder">備份目錄 %1$s</string>    
-    <string name="backup_info">已備份 %1$d 帳照片, %2$d 個影像檔, %3$d 個聲音檔</string>
-    <string name="choose_server">選擇一台電腦</string>
+    <string name="backup_info">已備份 %1$d 張照片, %2$d 個影像檔, %3$d 個聲音檔</string>
     
+    
+    <!--FIRST USE-->
+    <!--INSTALL-->    
+    <string name="simple_description">是最便利的照片 音樂 影片備份app</string>
+    <string name="simple_description1">以後回到家,手機放著充電</string>
+    <string name="simple_description2">內容就會直接會到電腦備份好</string>
+    <string name="download_windows">立刻下載windows版</string>
+    <string name="download_url">waveface.com/awesome</string>
+    <string name="email_description">Email下載網址給我</string>
+    <!--EMAIL-->
+    <string name="email_subject">無限備份Windows APP下載網址</string>    
+    
+    <!--BONHOUR SERVER CHOOSE-->    
+    <string name="choose_server">選擇一台電腦</string>
+    <string name="pairing">配對中...</string> 
+    <string name="title_pairing">配對訊息</string> 
+    <string name="pairing_wait">請開啓你的Windows APP</string> 
+    <string name="pairing_denied">此一設備不得配對</string> 
+    
+    <!--FILE TRANSFRING-->    
+    <string name="file_transfering">%1$s 個檔案傳輸中</string>
+    <string name="backup_view_descript11">第一次備份的檔案較多</string>
+    <string name="backup_view_descript12">請您耐心等待</string>
+    <string name="backup_view_descript21">以後每天新增的</string>
+    <string name="backup_view_descript22">照片 影片 錄音 音樂</string>
+    <string name="backup_view_descript23">都會自動透過Wi-Fi回到電腦中!</string>
+    
+    
+    
+    
+    
+    
+    
+    
+    <!--BUTTON-->
+    <string name="btn_back">上一步</string>
+    <string name="btn_next">下一步</string>
+    <string name="btn_confirm">確定</string>
+    <string name="btn_backup">開始備份</string>
+    <string name="btn_ok">確定</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_yes">確定</string>
+    <string name="btn_no">取消</string>        
+    
+    <!--NOTIFICATION-->    
+    <string name="notify_link_server">正在備份到%1$s</string>    
+    <string name="notify_backup_status"> %1$d 檔案已經備份完成</string>
 </resources>
