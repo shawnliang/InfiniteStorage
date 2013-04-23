@@ -50,6 +50,11 @@
     
     <!--FILE TRANSFRING-->    
     <string name="file_transfering">%1$s transfering files</string>
+    <string name="backup_view_descript11">There\'re lots of files backup for the first time</string>
+    <string name="backup_view_descript12">please be patient</string>
+    <string name="backup_view_descript21">Form now on all your</string>
+    <string name="backup_view_descript22">photos(s) videos(s) audio(s)</string>
+    <string name="backup_view_descript23">backup to your PC automatically through Wi-Fi Network!</string>
     
     
     <!--BUTTON-->

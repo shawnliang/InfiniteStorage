@@ -49,6 +49,18 @@
     
     <!--FILE TRANSFRING-->    
     <string name="file_transfering">%1$s 個檔案傳輸中</string>
+    <string name="backup_view_descript11">第一次備份的檔案較多</string>
+    <string name="backup_view_descript12">請您耐心等待</string>
+    <string name="backup_view_descript21">以後每天新增的</string>
+    <string name="backup_view_descript22">照片 影片 錄音 音樂</string>
+    <string name="backup_view_descript23">都會自動透過Wi-Fi回到電腦中!</string>
+    
+    
+    
+    
+    
+    
+    
     
     <!--BUTTON-->
     <string name="btn_back">上一步</string>

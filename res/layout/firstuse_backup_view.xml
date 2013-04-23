@@ -21,7 +21,7 @@
 	    android:layout_centerHorizontal="true"
 	    android:layout_marginLeft="10dp"
 	    android:layout_marginRight="20dp"
-	    android:background="#3D3D3D">
+	    android:background="#000000">
     
     <TextView
         android:id="@+id/tvWording11"
@@ -30,7 +30,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dip"
-        android:text="第一次備份的檔案較多"
+        android:text="@string/backup_view_descript11"
         android:textColor="#FFFFFF" />
     <TextView
         android:id="@+id/tvWording12"
@@ -39,7 +39,7 @@
         android:layout_below="@+id/tvWording11"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dip"
-        android:text="請您耐心等待"
+        android:text="@string/backup_view_descript12"
         android:textColor="#FFFFFF" />
     
     <TextView
@@ -49,7 +49,7 @@
         android:layout_below="@+id/tvWording12"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:text="以後每天新增的"
+        android:text="@string/backup_view_descript21"
         android:textColor="#FFFFFF" />
     <TextView
         android:id="@+id/tvWording22"
@@ -58,16 +58,20 @@
         android:layout_below="@+id/tvWording21"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dip"
-        android:text="照片 影片 錄音 音樂"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:text="@string/backup_view_descript22"
         android:textColor="#FFFFFF" />
-        <TextView
+     <TextView
         android:id="@+id/tvWording23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvWording22"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        android:text="都會自動透過Wi-Fi回到電腦中!"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:text="@string/backup_view_descript23"
         android:textColor="#FFFFFF" />
     
     <TextView
@@ -77,7 +81,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="14dp"
-        android:text="檔案傳輸中"
+        android:text="@string/file_transfering"
         android:textColor="#33CCFF" />
 
     <ProgressBar
