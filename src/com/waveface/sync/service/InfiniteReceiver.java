@@ -41,7 +41,7 @@ public class InfiniteReceiver extends BroadcastReceiver {
 				}				
 			}
 			else if(RuntimeState.LastTimeNetworkState == Constant.NETWORK_WIFI){
-				if(!NetworkUtil.isNetworkAvailable(context)){
+				if(!NetworkUtil.isWifiNetworkAvailable(context)){
 					RuntimeState.LastTimeNetworkState = Constant.NETWORK_UNAVAILABLE;
 					RuntimeState.setServerStatus(Constant.NETWORK_ACTION_BROKEN);
 					ServersLogic.updateAllBackedServer(context);					

@@ -13,6 +13,9 @@
 	        android:id="@+id/entry_main"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
-	        >
+	        android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"    
+            > 
+	        
 	    </FrameLayout>
 </RelativeLayout>

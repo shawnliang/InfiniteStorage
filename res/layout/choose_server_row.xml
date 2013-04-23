@@ -5,7 +5,7 @@
     android:layout_margin="10dp"
     android:layout_marginTop="20dp"
     android:layout_marginBottom="20dp"
-    android:background="#3D3D3D" >
+    android:background="#000000" >
 
     <ImageView
         android:id="@+id/imagePC"

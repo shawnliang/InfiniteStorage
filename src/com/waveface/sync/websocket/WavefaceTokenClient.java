@@ -24,18 +24,13 @@ import org.jwebsocket.util.Tools;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
 import com.google.gson.JsonSyntaxException;
 import com.waveface.sync.Constant;
 import com.waveface.sync.RuntimeState;
-import com.waveface.sync.Starter;
-import com.waveface.sync.callback.WSCallbackManager;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.ui.MainActivity;
 import com.waveface.sync.util.Log;
 
 public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements WebSocketTokenClient {
@@ -63,8 +58,6 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 			new ScheduledThreadPoolExecutor(1);
 	private static Context mContext;
 	
-	private WSCallbackManager mEventCBManager = WSCallbackManager.getInstance();
-
 	
 	/**
 	 * Default constructor
@@ -180,8 +173,6 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 			Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
 			intent.putExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT, notifyContent);
         	mContext.sendBroadcast(intent);
-        	//Fire Event
-			mEventCBManager.fireEvent(Constant.ACTION_WS_SERVER_NOTIFY, notifyContent);                
 
 			//ORIGINAL Web Socket Code
 			Token lToken = packetToToken(aPacket);
@@ -202,7 +193,6 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 			Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
 			intent.putExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT, Constant.WS_ACTION_SOCKET_CLOSED);
 			mContext.sendBroadcast(intent);			
-            mEventCBManager.fireEvent(Constant.ACTION_WS_SERVER_NOTIFY, Constant.WS_ACTION_SOCKET_CLOSED);                				   
 		}
 
 		/**

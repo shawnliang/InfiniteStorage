@@ -70,9 +70,9 @@ public class LinkServerActivity extends FragmentActivity implements
 			fragment.setArguments(data);
 		FragmentTransaction transaction = getSupportFragmentManager()
 				.beginTransaction();
-//		transaction.setCustomAnimations(R.anim.slide_in_right_left,
-//				R.anim.slide_out_right_left, R.anim.slide_in_left_right,
-//				R.anim.slide_out_left_right);
+		transaction.setCustomAnimations(R.anim.slide_in_right_left,
+				R.anim.slide_out_right_left, R.anim.slide_in_left_right,
+				R.anim.slide_out_left_right);
 		transaction.replace(R.id.entry_main, fragment, tag);
 		transaction.addToBackStack(tag);
 		transaction.commit();
