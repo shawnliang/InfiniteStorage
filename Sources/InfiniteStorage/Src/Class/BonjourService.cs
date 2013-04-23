@@ -40,7 +40,7 @@ namespace InfiniteStorage
 			txt.SetValue("server_id", Encoding.UTF8.GetBytes(server_id));
 			txt.SetValue("ws_port", Encoding.UTF8.GetBytes(port.ToString()));
 			txt.SetValue("version", Encoding.UTF8.GetBytes("1.0"));
-			m_register = m_service.Register(0, 0, Environment.UserName, "_infinite-storage._tcp", null, null, port, txt, m_eventManager);
+			m_register = m_service.Register(0, 0, Environment.UserName + "-" + Environment.MachineName, "_infinite-storage._tcp", null, null, port, txt, m_eventManager);
 		}
 
 		public void Unregister()

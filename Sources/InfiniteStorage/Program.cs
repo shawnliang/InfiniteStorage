@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Linq;
 using InfiniteStorage.Model;
 using InfiniteStorage.Properties;
 using InfiniteStorage.Win32;
 using WebSocketSharp.Server;
+using System.IO;
+using System.Management;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace InfiniteStorage
 {
@@ -89,7 +94,7 @@ namespace InfiniteStorage
 
 				if (string.IsNullOrEmpty(Settings.Default.ServerId))
 				{
-					Settings.Default.ServerId = Guid.NewGuid().ToString();
+					Settings.Default.ServerId = generateSameServerIdForSameUserOnSamePC();
 					Settings.Default.Save();
 				}
 				m_bonjourService.Register(port, Settings.Default.ServerId);
@@ -106,6 +111,25 @@ namespace InfiniteStorage
 			}
 
 			Application.Run();
+		}
+
+		private static string generateSameServerIdForSameUserOnSamePC()
+		{
+			string serialNum = getMachineSerialNo();
+
+			var md5 = MD5.Create().ComputeHash(Encoding.Default.GetBytes(serialNum + Environment.UserName + Environment.MachineName));
+			return new Guid(md5).ToString();
+		}
+
+		private static string getMachineSerialNo()
+		{
+			string serialNum = null;
+			ManagementObjectSearcher MOS = new ManagementObjectSearcher("Select * From Win32_BaseBoard");
+			foreach (ManagementObject getserial in MOS.Get())
+			{
+				serialNum = getserial["SerialNumber"].ToString();
+			}
+			return serialNum;
 		}
 
 		private static void registerBonjourServicePeriodically(ushort port)

@@ -57,6 +57,7 @@
     <Reference Include="System.Data.SQLite.Linq">
       <HintPath>..\..\Libs\System.Data.SQLite.1.0.84.0\net40\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -97,7 +98,6 @@
     <Compile Include="Src\Class\IConnectionStatus.cs" />
     <Compile Include="Src\Class\MyFileFolder.cs" />
     <Compile Include="Src\Class\MediaLibrary.cs" />
-    <Compile Include="Src\Class\PairingRequest.cs" />
     <Compile Include="Src\Class\Common\SynchronizationContextHelper.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ConnectedState.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ConnectMsgHandler.cs" />
