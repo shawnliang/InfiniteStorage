@@ -29,7 +29,7 @@ public class Starter extends Application {
 		
 		initialDirectory();
 		
-		ServersLogic.updateAllBackedServer(this);
+		ServersLogic.updateAllBackedServerOffline(this);
 		ServersLogic.purgeAllBonjourServer(this);
 //		new ScanTask(this).execute(new Void[]{});
 		super.onCreate();

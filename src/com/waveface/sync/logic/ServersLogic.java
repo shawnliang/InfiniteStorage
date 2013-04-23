@@ -220,7 +220,7 @@ public class ServersLogic {
 		return entity;
 	}
 	
-	public static int updateAllBackedServer(Context context){
+	public static int updateAllBackedServerOffline(Context context){
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
 		cv.put(BackupedServersTable.COLUMN_STATUS, Constant.SERVER_OFFLINE);

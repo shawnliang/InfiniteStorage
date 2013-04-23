@@ -190,6 +190,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		@Override
 		public void processClosed(WebSocketClientEvent aEvent) {
 			RuntimeState.setServerStatus(Constant.WS_ACTION_SOCKET_CLOSED);
+			ServersLogic.updateAllBackedServerOffline(mContext);
 			Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
 			intent.putExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT, Constant.WS_ACTION_SOCKET_CLOSED);
 			mContext.sendBroadcast(intent);			

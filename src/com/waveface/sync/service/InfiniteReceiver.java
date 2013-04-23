@@ -44,7 +44,7 @@ public class InfiniteReceiver extends BroadcastReceiver {
 				if(!NetworkUtil.isWifiNetworkAvailable(context)){
 					RuntimeState.LastTimeNetworkState = Constant.NETWORK_UNAVAILABLE;
 					RuntimeState.setServerStatus(Constant.NETWORK_ACTION_BROKEN);
-					ServersLogic.updateAllBackedServer(context);					
+					ServersLogic.updateAllBackedServerOffline(context);					
 					Intent inte = new Intent(Constant.ACTION_NETWORK_STATE_CHANGE);
 					inte.putExtra(Constant.EXTRA_NETWROK_STATE, Constant.NETWORK_ACTION_BROKEN);
 		        	context.sendBroadcast(inte);
