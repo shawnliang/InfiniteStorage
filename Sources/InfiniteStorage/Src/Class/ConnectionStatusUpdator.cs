@@ -21,19 +21,22 @@ namespace InfiniteStorage
 				{
 					var summary = util.GetDeviceSummary(peer.device_id);
 
-					peer.Send(new
+					if (summary != null)
 					{
-						action = "backup-info",
-						server_id = Settings.Default.ServerId,
-						server_name = Environment.UserName,
-						backup_startdate = (summary != null) ? (DateTime?)summary.backup_range.start : null,
-						backup_enddate = (summary != null) ? (DateTime?)summary.backup_range.end : null,
-						backup_folder = MyFileFolder.Photo,
-						backup_folder_free_space = getStorageFreeSpace(),
-						photo_count = summary.photo_count,
-						video_count = summary.video_count,
-						audio_count = summary.audio_count
-					});
+						peer.Send(new
+							{
+								action = "backup-info",
+								server_id = Settings.Default.ServerId,
+								server_name = Environment.UserName,
+								backup_startdate = summary.backup_range.start,
+								backup_enddate = summary.backup_range.end,
+								backup_folder = MyFileFolder.Photo,
+								backup_folder_free_space = getStorageFreeSpace(),
+								photo_count = summary.photo_count,
+								video_count = summary.video_count,
+								audio_count = summary.audio_count
+							});
+					}
 				}
 				catch (Exception e)
 				{
