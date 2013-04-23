@@ -19,9 +19,12 @@ public class Constant {
 	public final static String ACTION_SCAN_FILE = "com.waveface.sync.action.SCAN_FILE";
 	
 
-	//
+	//EXTRA DATA
 	public static final String EXTRA_BONJOUR_AUTO_PAIR_STATUS = "com.waveface.sync.extra.BONJOUR_AUTO_PAIR_STATUS";	
 	public static final String EXTRA_BONJOUR_SERVICE_EVENT = "com.waveface.sync.extra.BONJOUR_SERVICE_EVENT";
+	public final static String EXTRA_WEB_SOCKET_EVENT_CONTENT = "com.waveface.sync.extra.WEB_SOCKET_EVENT_CONTENT";	
+	public final static String EXTRA_NETWROK_STATE = "com.waveface.sync.extra.NETWROK_STATE";	
+	public final static String EXTRA_NOTIFICATION_ID = "com.waveface.sync.extra.NOTIFICATION_ID";
 	
 	public static final int EVENT_BONJOUR_RESOLVED = 1;
 	public static final int EVENT_BONJOUR_REMOVED = 2;
@@ -68,6 +71,7 @@ public class Constant {
 	
 	//WS INFINITE STORAGE PROTOCOL
 	public final static String WS_ACTION_CONNECT = "connect";
+	public final static String WS_ACTION_UPDATE_COUNT = "update-count";	
 	public final static String WS_ACTION_FILES_INDEX = "files-index";
 	public final static String WS_ACTION_FILE_START = "file-start";
 	public final static String WS_ACTION_FILE_END = "file-end";
@@ -78,9 +82,7 @@ public class Constant {
 	public final static String WS_ACTION_DENIED = "denied";
 
 	
-	//EXTRA DATA
-	public final static String EXTRA_WEB_SOCKET_EVENT_CONTENT = "web_socket_event_content";	
-	public final static String EXTRA_NETWROK_STATE = "network_state";	
+
 	
 	
 	public final static String PARAM_FOLDERNAME = "foldername";	

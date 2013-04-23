@@ -3,8 +3,6 @@ package com.waveface.sync;
 import java.io.File;
 
 import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -13,10 +11,7 @@ import android.os.Environment;
 
 import com.crashlytics.android.Crashlytics;
 import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.service.InfiniteService;
 import com.waveface.sync.task.ScanTask;
-import com.waveface.sync.ui.MainActivity;
-import com.waveface.sync.util.AppUtil;
 import com.waveface.sync.util.Log;
 
 public class Starter extends Application {
@@ -36,10 +31,7 @@ public class Starter extends Application {
 		
 		ServersLogic.updateAllBackedServer(this);
 		ServersLogic.purgeAllBonjourServer(this);
-		new ScanTask(this).execute(new Void[]{});
-//		 if(AppUtil.isThisServiceRunning(this,InfiniteService.class.getName())==false){
-//			startService(new Intent(this, InfiniteService.class)); 
-//		}
+//		new ScanTask(this).execute(new Void[]{});
 		super.onCreate();
 	}
 

@@ -2,44 +2,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-     android:background="#000000">
+    android:background="@drawable/ic_dialog">
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:src="@drawable/ic_pairing" />
-
+    
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:text="@string/choose_server"
+        android:textColor="#33CCFF"
+        android:textSize="18sp" />
+    
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/pbSearch"
+        android:layout_above="@+id/llpb"
         android:layout_below="@+id/textView1"
-        android:layout_margin="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"        
         android:divider="#00FF00"
-        android:dividerHeight="2px" >
+        android:dividerHeight="2dp" >
     </ListView>
 
-    <ProgressBar
-        android:id="@+id/pbSearch"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_above="@+id/llBtns"
-        android:layout_alignLeft="@+id/listview" />
-
-    <TextView
-        android:id="@+id/tvSearch"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/llpb"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/pbSearch"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/pbSearch"
-        android:text="@string/server_searching"
-        android:textColor="#33CCFF" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_above="@+id/llBtns" 
+        android:layout_alignLeft="@+id/listview"
+        >
+    
+	    <ProgressBar
+	        android:id="@+id/pbSearch"
+	        android:layout_width="30dp"
+	        android:layout_height="30dp" />
 
+	    <TextView
+	        android:id="@+id/tvSearch"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="10dp"
+	        android:text="@string/server_searching"
+	        android:textColor="#33CCFF"
+	        android:textSize="25sp" />
+
+    </LinearLayout>
+    
     <LinearLayout
         android:id="@+id/llBtns"
         android:layout_width="match_parent"
@@ -62,17 +86,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/btn_backup" />
+            android:text="@string/btn_next" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
-        android:layout_centerHorizontal="true"
-        android:text="@string/choose_server"
-        android:textColor="#33CCFF"
-        android:textSize="18sp" />
 
 </RelativeLayout>

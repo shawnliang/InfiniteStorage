@@ -2,9 +2,6 @@ package com.waveface.sync.ui;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -21,21 +18,15 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
-import com.waveface.sync.callback.EventCallback;
-import com.waveface.sync.callback.WSCallbackManager;
-import com.waveface.sync.db.BackupedServersTable;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.service.InfiniteReceiver;
 import com.waveface.sync.service.InfiniteService;
-import com.waveface.sync.util.AppUtil;
 import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.NetworkUtil;
@@ -47,7 +38,7 @@ import com.waveface.sync.util.StringUtil;
  * 
  * @see SystemUiHider
  */
-public class MainActivity extends Activity implements EventCallback{
+public class MainActivity extends Activity{
 	private String TAG = MainActivity.class.getSimpleName();
     
 	private ImportFilesObserver mImportFilesObserver;    
@@ -72,15 +63,14 @@ public class MainActivity extends Activity implements EventCallback{
 	private ArrayList<ServerEntity> mPairedServers ;
 	private ServersAdapter mAdapter ;
 	
-	//
-	private WSCallbackManager mEventCBManager = WSCallbackManager.getInstance();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		RuntimeState.isAppLaunching = true;
+		
 		Log.d(TAG, "onCreate");
 		setContentView(R.layout.sync_main);
-//		mEventCBManager.register(this);
 		
 		mPrefs = getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);
 		mEditor = mPrefs.edit();
@@ -129,20 +119,8 @@ public class MainActivity extends Activity implements EventCallback{
 			setAlarmWakeUpService(this);
 			mEditor.putBoolean(Constant.PREF_BONJOUR_SERVER_ALRM_ENNABLED, true).commit();
 		}
-//		 if(AppUtil.isThisServiceRunning(this,InfiniteService.class.getName())==false){
-				startService(new Intent(MainActivity.this, InfiniteService.class)); 
-//		}
-	}
-	private void startProgress(){
-		mPairedServers = ServersLogic.getBackupedServers(this);
-		if(NetworkUtil.isWifiNetworkAvailable(this) && RuntimeState.OnWebSocketStation == false ){
-			if(mPairedServers.size()!=0 ){
-				RuntimeState.mAutoConnectMode = true ;
-				mProgressDialog = ProgressDialog.show(this, "",
-						getString(R.string.auto_connect));
-				mProgressDialog.setCancelable(true);
-			}
-		}
+		startService(new Intent(MainActivity.this, InfiniteService.class)); 
+		
 	}
 	
 	private void dismissProgress(){
@@ -151,8 +129,8 @@ public class MainActivity extends Activity implements EventCallback{
 		}		
 	}
 	private void displayProgress(){
+		mPairedServers = ServersLogic.getBackupedServers(this);
 		if (mProgressDialog == null ) {
-			mPairedServers = ServersLogic.getBackupedServers(this);
 			if(NetworkUtil.isWifiNetworkAvailable(this) && RuntimeState.OnWebSocketStation == false ){
 				if(mPairedServers.size()!=0 ){
 					RuntimeState.mAutoConnectMode = true ;
@@ -162,6 +140,10 @@ public class MainActivity extends Activity implements EventCallback{
 				}
 			}
 		}		
+		if(mPairedServers.size()==0 ){
+            Intent startIntent = new Intent(MainActivity.this, LinkServerActivity.class);	                    	
+            startActivityForResult(startIntent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
+		}
 	}
 	
 	private class ImportFilesObserver extends ContentObserver {
@@ -211,10 +193,10 @@ public class MainActivity extends Activity implements EventCallback{
 					}
 				}
 			}
-			else if(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING.equals(action)){
-                Intent startIntent = new Intent(MainActivity.this, LinkServerActivity.class);	                    	
-                startActivityForResult(startIntent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
-			}
+//			else if(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING.equals(action)){
+//                Intent startIntent = new Intent(MainActivity.this, LinkServerActivity.class);	                    	
+//                startActivityForResult(startIntent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
+//			}
 			else if(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING.equals(action)){
 				displayProgress();
 			}			
@@ -249,12 +231,12 @@ public class MainActivity extends Activity implements EventCallback{
         
     @Override
     protected void onDestroy() {
+    	RuntimeState.isAppLaunching = false;
     	Log.d(TAG, "onDestroy");
  		unregisterReceiver(mReceiver);
-// 		mEventCBManager.unregister(this);
 		getContentResolver().unregisterContentObserver(mImportFilesObserver);		
 //		getContentResolver().unregisterContentObserver(mServerObserver);
-		stopService(new Intent(MainActivity.this, InfiniteService.class)); 
+//		stopService(new Intent(MainActivity.this, InfiniteService.class)); 
     	super.onDestroy();
     }
     public void refreshLayout(){
@@ -284,20 +266,10 @@ public class MainActivity extends Activity implements EventCallback{
     	AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(System.currentTimeMillis());
-        cal.add(Calendar.MILLISECOND, 10);
+        cal.add(Calendar.SECOND, 2);
 		long interval = 1 *30 * 1000;
 		Intent intent = new Intent(context, InfiniteReceiver.class);
 		PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarmManager.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(),interval, sender);
     }
-	@Override
-	public void fired(String action, String content) {
-		if(content.equals(Constant.WS_ACTION_ACCEPT) || content.equals(Constant.WS_ACTION_BACKUP_INFO)){
-			Log.d(TAG, "GET CALLBACK");
-			refreshServerStatus();
-		}
-//    	Intent intent = new Intent(action);
-//    	intent.putExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT, content);
-//        sendBroadcast(intent);					
-	}
 }

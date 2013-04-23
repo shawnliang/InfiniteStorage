@@ -47,14 +47,8 @@
     <string name="pairing_wait">請開啓你的Windows APP</string> 
     <string name="pairing_denied">此一設備不得配對</string> 
     
-    
-    
     <!--FILE TRANSFRING-->    
     <string name="file_transfering">%1$s 個檔案傳輸中</string>
-    
-    
-    
-    
     
     <!--BUTTON-->
     <string name="btn_back">上一步</string>
@@ -63,5 +57,10 @@
     <string name="btn_backup">開始備份</string>
     <string name="btn_ok">確定</string>
     <string name="btn_cancel">取消</string>
+    <string name="btn_yes">確定</string>
+    <string name="btn_no">取消</string>        
     
+    <!--NOTIFICATION-->    
+    <string name="notify_link_server">正在備份到%1$s</string>    
+    <string name="notify_backup_status"> %1$d 檔案已經備份完成</string>
 </resources>

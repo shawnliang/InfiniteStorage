@@ -41,7 +41,7 @@ import com.waveface.sync.logic.ServersLogic;
 
 
 public class ServerChooserFragment extends LinkFragmentBase 
-	implements OnClickListener, OnCheckedChangeListener,EventCallback{
+	implements OnClickListener, OnCheckedChangeListener{
 	public final String TAG = ServerChooserFragment.class.getSimpleName();
 
 	private ViewGroup mRootView;
@@ -51,11 +51,11 @@ public class ServerChooserFragment extends LinkFragmentBase
 	private ProgressDialog mProgressDialog;
 	private ProgressBar mProgressBar;
 	private TextView mTvSearch;
+	private Button mBtnBackup;
+
 
 	//DATA
 	private ServerEntity mServer ;
-
-	private WSCallbackManager mEventCBManager = WSCallbackManager.getInstance();
 
 	public int getHeight() {
 		return mRootView.getMeasuredHeight();
@@ -107,8 +107,14 @@ public class ServerChooserFragment extends LinkFragmentBase
 		Button btn = (Button) mRootView.findViewById(R.id.btnPre);
 		btn.setOnClickListener(this);
 
-		btn = (Button) mRootView.findViewById(R.id.btnNext);
-		btn.setOnClickListener(this);
+		mBtnBackup = (Button) mRootView.findViewById(R.id.btnNext);
+		mBtnBackup.setOnClickListener(this);
+		if(TextUtils.isEmpty(RuntimeState.mWebSocketServerId)){
+			mBtnBackup.setEnabled(false);
+		}
+		else{
+			mBtnBackup.setEnabled(true);
+		}
 		
 	    mProgressBar = (ProgressBar) mRootView.findViewById(R.id.pbSearch);
 	    mTvSearch = (TextView) mRootView.findViewById(R.id.tvSearch);
@@ -128,7 +134,6 @@ public class ServerChooserFragment extends LinkFragmentBase
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mEventCBManager.register(this);
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_BONJOUR_MULTICAT_EVENT);
 		filter.addAction(Constant.ACTION_WS_SERVER_NOTIFY);		
@@ -162,6 +167,7 @@ public class ServerChooserFragment extends LinkFragmentBase
 					if(response.equals(Constant.WS_ACTION_ACCEPT)){
 						dismissProgress();
 						refreshUI();
+						mBtnBackup.setEnabled(true);
 					}
 					else if(response.equals(Constant.WS_ACTION_DENIED)){
 						dismissProgress();
@@ -204,7 +210,6 @@ public class ServerChooserFragment extends LinkFragmentBase
 	}
 	@Override
 	public void onDestroy() {
-		mEventCBManager.unregister(this);
 		getActivity().unregisterReceiver(mReceiver);
 		super.onDestroy();
 		ContentResolver cr = getActivity().getContentResolver();
@@ -304,12 +309,5 @@ public class ServerChooserFragment extends LinkFragmentBase
 
 	@Override
 	public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-	}
-
-	@Override
-	public void fired(String action, String content) {
-    	Intent intent = new Intent(action);
-    	intent.putExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT, content);
-        getActivity().sendBroadcast(intent);					
 	}
 }

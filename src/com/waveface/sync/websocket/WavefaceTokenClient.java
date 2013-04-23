@@ -155,6 +155,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 			}
 			if(entity.action.equals(Constant.WS_ACTION_ACCEPT)){
 				RuntimeState.mWebSocketServerId = entity.serverId;
+				RuntimeState.mWebSocketServerName = entity.serverName;
 				RuntimeState.setServerStatus(entity.action);
 				ServersLogic.updateBackupedServerByServerNotify(mContext, entity,true);
 				notifyContent = Constant.WS_ACTION_ACCEPT;

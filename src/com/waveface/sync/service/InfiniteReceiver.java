@@ -15,15 +15,17 @@ public class InfiniteReceiver extends BroadcastReceiver {
 	private static final String TAG = InfiniteReceiver.class.getSimpleName();
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		boolean isServiceRunnng = 
+		RuntimeState.isServiceRunnng = 
 				AppUtil.isThisServiceRunning(context,InfiniteService.class.getName());
-//		Toast.makeText(context, "context is "+context+",isServiceRunnng:"+isServiceRunnng, Toast.LENGTH_LONG).show();
+//		Toast.makeText(context, "context is "+context+",isServiceRunnng:"+RuntimeState.isServiceRunnng, Toast.LENGTH_LONG).show();
 		if(context!= null){ 
-			 if(NetworkUtil.isWifiNetworkAvailable(context) && isServiceRunnng == false){
+			 if(NetworkUtil.isWifiNetworkAvailable(context) 
+					 && RuntimeState.isServiceRunnng == false){
 				Toast.makeText(context, "START Bonjour Service ON WIFI", Toast.LENGTH_LONG).show();   
 				context.startService(new Intent(context, InfiniteService.class));
 			}
-			else if(!NetworkUtil.isNetworkAvailable(context) && isServiceRunnng){
+			else if(!NetworkUtil.isNetworkAvailable(context) 
+					&& RuntimeState.isServiceRunnng){
 			    Toast.makeText(context, "STOP Bonjour Service FOR WITHOUT NETWORK", Toast.LENGTH_LONG).show();   
 				context.stopService(new Intent(context, InfiniteService.class));
 			}
@@ -31,13 +33,16 @@ public class InfiniteReceiver extends BroadcastReceiver {
 		if(context!= null){
 			if(RuntimeState.LastTimeNetworkState == Constant.NETWORK_UNAVAILABLE){
 				if(NetworkUtil.isWifiNetworkAvailable(context)){
+					RuntimeState.LastTimeNetworkState = Constant.NETWORK_WIFI;
 					Intent inte = new Intent(Constant.ACTION_NETWORK_STATE_CHANGE);
 					inte.putExtra(Constant.EXTRA_NETWROK_STATE, Constant.NETWORK_ACTION_WIFI_CONNECTED);
 		        	context.sendBroadcast(inte);
+		        	RuntimeState.LastTimeNetworkState = Constant.NETWORK_WIFI;
 				}				
 			}
 			else if(RuntimeState.LastTimeNetworkState == Constant.NETWORK_WIFI){
-				if(!NetworkUtil.isWifiNetworkAvailable(context)){
+				if(!NetworkUtil.isNetworkAvailable(context)){
+					RuntimeState.LastTimeNetworkState = Constant.NETWORK_UNAVAILABLE;
 					RuntimeState.setServerStatus(Constant.NETWORK_ACTION_BROKEN);
 					ServersLogic.updateAllBackedServer(context);					
 					Intent inte = new Intent(Constant.ACTION_NETWORK_STATE_CHANGE);

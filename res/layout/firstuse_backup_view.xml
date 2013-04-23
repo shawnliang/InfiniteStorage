@@ -2,14 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="@drawable/ic_dialog" >
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:src="@drawable/ic_pairing" />
 
     <RelativeLayout
@@ -19,8 +19,7 @@
 	    android:layout_above="@+id/llBtns"
 	    android:layout_below="@+id/imageView1"
 	    android:layout_centerHorizontal="true"
-	    android:layout_marginBottom="20dp"
-	    android:layout_marginLeft="20dp"
+	    android:layout_marginLeft="10dp"
 	    android:layout_marginRight="20dp"
 	    android:background="#3D3D3D">
     
@@ -99,15 +98,15 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="5dip"
-        android:layout_marginBottom="5dip">
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
 
     <Button
         android:id="@+id/btnConfirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dip"
-        android:layout_marginRight="30dip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:text="@string/btn_confirm" />
 
 	</LinearLayout>

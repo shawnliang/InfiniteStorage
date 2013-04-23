@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Welcome to Infinite Storage ShaketoSync!</string>
-    <string name="app_name">Easy Sync</string>
+    <string name="app_name">A.Backup</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_bonjour_servers">BonjourServers</string>
@@ -27,9 +27,8 @@
     <string name="backup_period">BACKUP FROM %1$s TO %2$s</string>    
     <string name="free_space">Free Space %1$s</string>    
     <string name="backup_folder">Backup Folder %1$s</string>    
-    <string name="backuped_info">Backuped %1$d photo(s), %2$d video(s), %3$d audio(s)</string>
+    <string name="backup_info">Backuped %1$d photo(s), %2$d video(s), %3$d audio(s)</string>
     
-
     <!--FIRST USE-->
     <!--INSTALL-->    
     <string name="simple_description">EASIEST BACKUP APP</string>
@@ -60,5 +59,10 @@
     <string name="btn_backup">Go Backup</string>
     <string name="btn_ok">OK</string>
     <string name="btn_cancel">CANCEL</string>
+    <string name="btn_yes">YES</string>
+    <string name="btn_no">NO</string>        
     
+    <!--NOTIFICATION-->    
+    <string name="notify_link_server">Backuping to %1$s</string>    
+    <string name="notify_backup_status"> %1$d file(s) Backuped.</string>
 </resources>

@@ -353,11 +353,15 @@ public class StringUtil {
 	 * Format a date as an ISO 8601 string, return "" for a null date
 	 */
 	public static String getLocalDate() {
-		SimpleDateFormat dateFormatGmt = new SimpleDateFormat(
-				ISO_8601_DATE_FORMAT);
-		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
-		return dateFormatGmt.format(new Date()) + "";
+		return getLocalDate(System.currentTimeMillis());
 	}
+	
+	public static String getLocalDate(long millsecond) {
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat(ISO_8601_DATE_FORMAT);
+		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+		return dateFormatGmt.format(new Date(millsecond))+"";
+	}
+
 
 	public static boolean day1BeforeDay2(String ISO8601_DATE1, String ISO8601_DATE2) {
 		if (ISO8601_DATE1 == null)
@@ -937,7 +941,6 @@ public class StringUtil {
 
 	public static String getConverDate(Long date, String format) {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
-		// DateFormat df = DateFormat.getDateInstance();
 		return sdf.format(new Date(date * 1000));
 	}
 

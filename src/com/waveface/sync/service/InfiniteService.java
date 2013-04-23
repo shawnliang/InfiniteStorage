@@ -15,23 +15,29 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.text.TextUtils;
 
 import com.waveface.sync.Constant;
+import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.ui.LinkServerActivity;
-import com.waveface.sync.ui.MainActivity;
+import com.waveface.sync.task.ScanTask;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.NetworkUtil;
+import com.waveface.sync.util.SyncNotificationManager;
 
 public class InfiniteService extends Service{
 	private static final String TAG = InfiniteService.class.getSimpleName();
 	private Context mContext;
+	private static SharedPreferences mPrefs ;
+	private Editor mEditor;
+
 	private WifiManager.MulticastLock mLock;
 	private JmDNS mJMDNS = null;
     private ServiceListener mListener = null;
@@ -44,6 +50,11 @@ public class InfiniteService extends Service{
 	//TIMER
     private final int UPDATE_INTERVAL = 10 * 1000;
     private Timer timer = new Timer();
+    
+    //
+	private SyncNotificationManager mNotificationManager;
+	private static boolean mDisplaying = false;
+	private String mNotoficationId;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -55,21 +66,29 @@ public class InfiniteService extends Service{
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+            	//SCAN FILES
+            	BackupLogic.scanAllFiles(mContext);            	
 		    	String serverId = RuntimeState.mWebSocketServerId;
             	if(!TextUtils.isEmpty(serverId)
+            			&& RuntimeState.isScaning == false
             			&& BackupLogic.canBackup(mContext) 
         				&& RuntimeState.isBackuping == false
         				&& BackupLogic.needToBackup(mContext,serverId)){
 					Log.d(TAG, "START BACKUP FILE");
 					RuntimeState.isBackuping = true;
-			    	while(BackupLogic.canBackup(mContext) && BackupLogic.needToBackup(mContext,serverId)){
+					ServersLogic.updateCount(mContext, serverId);
+					removeNotification();
+					displaySyncInfo(false);
+					while(BackupLogic.canBackup(mContext) && BackupLogic.needToBackup(mContext,serverId)){
 			    		BackupLogic.backupFiles(mContext, serverId);
 			    	}
 					Intent intent = new Intent(Constant.ACTION_BACKUP_DONE);
 					mContext.sendBroadcast(intent);
-				}
-				RuntimeState.isBackuping = false;
-                // Check if there are updates here and notify if true
+					RuntimeState.isBackuping = false;
+					removeNotification();
+					displaySyncInfo(true);
+            	}
+				// Check if there are updates here and notify if true
             }
         }, 0, UPDATE_INTERVAL);
 	    return Service.START_NOT_STICKY;
@@ -78,16 +97,74 @@ public class InfiniteService extends Service{
 	@Override
 	public void onCreate() {
 		mContext = getApplicationContext();
+		mPrefs = mContext.getSharedPreferences(
+				Constant.PREFS_NAME, Context.MODE_PRIVATE);
+		mEditor = mPrefs.edit();
+
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);
+		registerReceiver(mReceiver, filter);
+
 		mPairedServers = ServersLogic.getBackupedServers(this);
 		if(mPairedServers.size()!=0){
 			RuntimeState.mAutoConnectMode = true ;
 		}
 		multiCastSetUp();
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);
-		registerReceiver(mReceiver, filter);
+		//Notification 
+		mNotificationManager = SyncNotificationManager
+				.getInstance(getApplicationContext());
+		//removeNotification(mContext);
 		Log.d(TAG, "onCreate");
 	}
+
+	private void displaySyncInfo(boolean backupedCompleted) {
+		mNotoficationId = mPrefs.getString(Constant.PREF_NOTIFICATION_ID, "");
+		if(TextUtils.isEmpty(mNotoficationId)){
+			mNotoficationId = System.currentTimeMillis()+"";
+			mEditor.putString(Constant.PREF_NOTIFICATION_ID, mNotoficationId);
+			mEditor.commit();
+		}
+		if(RuntimeState.isAppLaunching == false){
+			if(mDisplaying == false ){
+				String content = null;
+				if(!backupedCompleted){
+					content = mContext.getString(R.string.notify_link_server,RuntimeState.mWebSocketServerName);
+				}
+				else{
+					int count = ServersLogic.getServerBackupedCountById(mContext, RuntimeState.mWebSocketServerId);		
+					content = mContext.getString(R.string.notify_backup_status, count);				
+				}
+				mNotificationManager.createTextNotification(
+						mNotoficationId,
+						mContext.getString(R.string.app_name),
+						content,null);
+				mDisplaying = true ;
+			}	
+		}
+	}
+	
+	private void removeNotification(){
+		if(mContext == null){
+			return;
+		}
+		if(mPrefs==null){
+			mPrefs = mContext.getSharedPreferences(
+					Constant.PREFS_NAME, Context.MODE_PRIVATE);
+		}
+		if(mNotificationManager == null){
+			mNotificationManager = SyncNotificationManager
+					.getInstance(mContext);
+		}
+		String notificationId = mPrefs.getString(Constant.PREF_NOTIFICATION_ID, "");
+		if(!TextUtils.isEmpty(notificationId) && mDisplaying){
+			mNotificationManager.cancelNotification(notificationId);
+			//mNotificationManager.cancelAll();
+			mDisplaying = false;
+		}
+
+//		mNotificationManager.cancelAll();
+	}
+
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -97,10 +174,10 @@ public class InfiniteService extends Service{
 				String actionContent = intent.getStringExtra(Constant.EXTRA_NETWROK_STATE);
 				if(actionContent!=null){
 					if(actionContent.equals(Constant.NETWORK_ACTION_BROKEN)){
-						//
+						//TODO:?
 					}
 					else if(actionContent.equals(Constant.NETWORK_ACTION_WIFI_CONNECTED)){
-						//TO RECREATE
+						//TODO:?
 					}
 				}
 			}
@@ -109,6 +186,7 @@ public class InfiniteService extends Service{
 
 	@Override
 	public void onDestroy() {
+ 		unregisterReceiver(mReceiver);
 		if(timer!=null){
 			timer.cancel();
 		}

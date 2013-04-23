@@ -7,7 +7,6 @@ import org.jwebsocket.kit.WebSocketException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
@@ -20,6 +19,7 @@ import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.entity.ConnectEntity;
 import com.waveface.sync.entity.ServerEntity;
+import com.waveface.sync.entity.UpdateCountEntity;
 import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.util.StringUtil;
 import com.waveface.sync.websocket.RuntimeWebClient;
@@ -261,7 +261,54 @@ public class ServersLogic {
 	    	}
 	    }
     }
-	public static long[] getTransferCountAndSize(Context context,String serverId){
+    public static void updateCount(Context context,String serverId){
+    	try {
+    		//send connect cmd
+    		UpdateCountEntity entity = new UpdateCountEntity();
+    		entity.action = Constant.WS_ACTION_UPDATE_COUNT;
+    		entity.transferCount = getTransferCount(context, serverId);
+    		RuntimeWebClient.send(RuntimeState.GSON.toJson(entity));
+    	} catch (WebSocketException e) {
+    		e.printStackTrace();
+    	}
+    }    
+	public static long getTransferCount(Context context,String serverId){
+		long count = 0;
+		String lastTimestamp = null;
+		ContentResolver cr = context.getContentResolver();
+		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+				new String[]{BackupedServersTable.COLUMN_END_DATETIME}, 
+				BackupedServersTable.COLUMN_SERVER_ID+" =? ", 
+				new String[]{serverId},null);	
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			lastTimestamp = cursor.getString(0);
+		}		
+		String where = null;
+		String[] whereArgs = null;
+		if(TextUtils.isEmpty(lastTimestamp)){
+			where = ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
+			whereArgs = new String[]{Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
+		}
+		else{
+			where = ImportFilesTable.COLUMN_DATE+">=? AND "+
+					ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
+			whereArgs = new String[]{lastTimestamp,Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
+		}
+		
+		cursor = cr.query(ImportFilesTable.CONTENT_URI, 
+				new String[]{
+				ImportFilesTable.COLUMN_SIZE}, 
+				where, 
+				whereArgs,null);	
+		if(cursor!=null && cursor.getCount()>0){			
+			count = cursor.getCount();
+		}
+		cursor.close();
+		return count;
+	}
+
+    public static long[] getTransferCountAndSize(Context context,String serverId){
 		long count = 0;
 		long totalSize = 0 ;
 		String lastTimestamp = null;
@@ -329,27 +376,6 @@ public class ServersLogic {
 		String[] projection = new String[]{
 				BackupedServersTable.COLUMN_START_DATETIME};
 
-//		int countOfFile = 0 ;
-//		switch(filetype){
-//			case Constant.TYPE_IMAGE:
-//				projection = 
-//				new String[]{
-//						BackupedServersTable.COLUMN_START_DATETIME,
-//						BackupedServersTable.COLUMN_PHOTO_COUNT};
-//				break;
-//			case Constant.TYPE_VIDEO:
-//				projection = 
-//				new String[]{
-//						BackupedServersTable.COLUMN_START_DATETIME,
-//						BackupedServersTable.COLUMN_VIDEO_COUNT};
-//				break;
-//			case Constant.TYPE_AUDIO:
-//				projection = 
-//				new String[]{
-//						BackupedServersTable.COLUMN_START_DATETIME,
-//						BackupedServersTable.COLUMN_AUDIO_COUNT};
-//				break;
-//		}
 		
 		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
 				projection, 
@@ -358,25 +384,12 @@ public class ServersLogic {
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();
 			startBackupTimestamp = cursor.getString(0);
-//			countOfFile = cursor.getInt(1);
-//			countOfFile++;
 		}		
 		cursor.close();
 		if(TextUtils.isEmpty(startBackupTimestamp) || 
 				StringUtil.day1BeforeDay2(lastBackupTime, startBackupTimestamp)){
 			cv.put(BackupedServersTable.COLUMN_START_DATETIME, lastBackupTime);
 		}
-//		switch(filetype){
-//			case Constant.TYPE_IMAGE:
-//				cv.put(BackupedServersTable.COLUMN_PHOTO_COUNT,countOfFile);
-//				break;
-//			case Constant.TYPE_VIDEO:
-//				cv.put(BackupedServersTable.COLUMN_VIDEO_COUNT,countOfFile);
-//				break;
-//			case Constant.TYPE_AUDIO:
-//				cv.put(BackupedServersTable.COLUMN_AUDIO_COUNT,countOfFile);
-//				break;
-//		}
 		return cr.update(BackupedServersTable.CONTENT_URI, cv,BackupedServersTable.COLUMN_SERVER_ID+"=?" , new String[]{serverId});
 	}
 	public static String getStatusByServerId(Context context,String serverId){
@@ -386,17 +399,52 @@ public class ServersLogic {
 		else{
 			return Constant.SERVER_OFFLINE;
 		}
-//		String status = null;
-//		ContentResolver cr = context.getContentResolver();
-//		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
-//				new String[]{BackupedServersTable.COLUMN_STATUS}, 
-//				BackupedServersTable.COLUMN_SERVER_ID+" =? ", 
-//				new String[]{serverId},null);	
-//		if(cursor!=null && cursor.getCount()>0){
-//			cursor.moveToFirst();
-//			status = cursor.getString(0);
-//		}		
-//		cursor.close();
-//		return status;
 	}
+	public static ServerEntity getServerById(Context context,String serverId){
+		ServerEntity entity = null;
+		ContentResolver cr = context.getContentResolver();
+		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+				null, 
+				BackupedServersTable.COLUMN_STATUS+"!=?", 
+				new String[]{Constant.SERVER_DENIED}, 
+				null);
+		
+		cursor.moveToFirst();
+			entity = new ServerEntity();
+			entity.serverId = cursor.getString(0);
+			entity.serverName = cursor.getString(1);
+			entity.status = cursor.getString(2);
+        	entity.startDatetime =cursor.getString(3);
+        	entity.endDatetime = cursor.getString(4);
+        	entity.folder = cursor.getString(5);
+        	entity.freespace = cursor.getLong(6);
+        	entity.photoCount = cursor.getInt(7);
+        	entity.videoCount = cursor.getInt(8);
+        	entity.audioCount =cursor.getInt(9);
+        	entity.lastLocalBackupTime = cursor.getString(10);
+        cursor.close();	
+		return entity;
+	}
+	public static int getServerBackupedCountById(Context context,String serverId){
+		int count = 0;
+		ContentResolver cr = context.getContentResolver();
+		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+				new String[]{
+					BackupedServersTable.COLUMN_PHOTO_COUNT,
+					BackupedServersTable.COLUMN_VIDEO_COUNT,
+					BackupedServersTable.COLUMN_AUDIO_COUNT
+				}, 
+				BackupedServersTable.COLUMN_STATUS+"!=?", 
+				new String[]{Constant.SERVER_DENIED}, 
+				null);
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+        	count += cursor.getInt(0);
+        	count += cursor.getInt(1);
+        	count += cursor.getInt(2);
+		}
+        cursor.close();	
+		return count;
+	}
+	
 }

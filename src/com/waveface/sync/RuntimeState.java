@@ -11,9 +11,14 @@ public class RuntimeState{
 	
 	public static boolean mAutoConnectMode = false;
 	public static String mWebSocketServerId ;	
+	public static String mWebSocketServerName ;	
 	
 	public static boolean isScaning = false;
 	public static boolean isBackuping = false;
+
+	public static boolean isServiceRunnng = false;
+	public static boolean isAppLaunching = false;
+
 	
 	public static int LastTimeNetworkState = 0;
 		

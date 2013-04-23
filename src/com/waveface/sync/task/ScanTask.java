@@ -15,15 +15,11 @@ public class ScanTask extends AsyncTask<Void, Void, Void> {
 	}
 	@Override
 	protected Void doInBackground(Void... params) {
-		RuntimeState.isScaning = true ;
-		BackupLogic.scanFileForBackup(mContext, Constant.TYPE_AUDIO);
-		BackupLogic.scanFileForBackup(mContext, Constant.TYPE_VIDEO);
-		BackupLogic.scanFileForBackup(mContext, Constant.TYPE_IMAGE);
+		BackupLogic.scanAllFiles(mContext);
 		return null;
 	}
 	@Override
 	protected void onPostExecute(Void entity) {
-		RuntimeState.isScaning = false ;
 		super.onPostExecute(entity);
 	}
 }

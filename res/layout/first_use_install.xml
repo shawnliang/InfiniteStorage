@@ -2,14 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000" >
+    android:background="@drawable/ic_dialog">
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:src="@drawable/ic_pairing" />
     <TextView
         android:id="@+id/textView1"
@@ -29,8 +29,8 @@
         android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true"
         android:text="@string/simple_description"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
         android:textColor="#33CCFF"
         android:textSize="18sp" />
 
@@ -47,8 +47,8 @@
             android:id="@+id/btnNext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dip"
-            android:layout_marginRight="30dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
             android:text="@string/btn_next" />
 
 	</LinearLayout>
@@ -60,7 +60,7 @@
         android:layout_below="@+id/textView2"
         android:layout_above="@+id/llBtns"
         android:layout_alignParentRight="true"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:background="#3D3D3D" >
 
         <Button
@@ -69,8 +69,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:text="@string/email_description" />
 
         <TextView

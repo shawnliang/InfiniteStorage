@@ -75,6 +75,7 @@ public class BackupLogic {
 		String selectionArgs[] = { currentDate };
 		
 		if(type == Constant.TYPE_IMAGE){//IMAGES
+			Log.d(TAG, "SCAN IMAGE");
 			projection = new String[]{
 					MediaStore.Images.Media.DATA,
 					MediaStore.Images.Media.DATE_TAKEN,
@@ -85,13 +86,13 @@ public class BackupLogic {
 					MediaStore.Images.Media.MIME_TYPE,
 					MediaStore.Images.Media._ID};
 			selection =  getImageSelection(context,currentDate);
-			Log.d(TAG, "selection => " + selection);
 			cursor =cr.query(
 					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
 					selection, selectionArgs,
 					MediaStore.Images.Media.DATE_TAKEN+" DESC");
 		}
 		else if(type == Constant.TYPE_VIDEO){//VIDEO
+			Log.d(TAG, "SCAN VIDEO");
 			projection = new String[]{
 					MediaStore.Video.Media.DATA,
 					MediaStore.Video.Media.DATE_TAKEN,
@@ -103,13 +104,13 @@ public class BackupLogic {
 					MediaStore.Video.Media._ID};
 	
 			selection =  getVideoSelection(context,currentDate);
-			Log.d(TAG, "selection => " + selection);
 			cursor =cr.query(
 					MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection,
 					selection, selectionArgs,
 					MediaStore.Video.Media.DATE_TAKEN+" DESC");
 		}
 		else if(type == Constant.TYPE_AUDIO){//AUDIO
+			Log.d(TAG, "SCAN AUDIO");
 			projection = new String[]{
 					MediaStore.Audio.Media.DATA,
 					MediaStore.Audio.Media.DISPLAY_NAME,
@@ -122,12 +123,14 @@ public class BackupLogic {
 	
 			selection =  getAudioSelection(context,currentDate);
 	
-			Log.d(TAG, "selection => " + selection);
 			cursor = cr.query(
 					MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection,
 					selection, selectionArgs,
 					MediaStore.Audio.Media.DATE_ADDED+" DESC");
 		}
+//		if(!TextUtils.isEmpty(currentDate)){
+//			Log.d(TAG, "selection => " + selection+",currentDate:"+StringUtil.getConverDate(Long.parseLong(currentDate),StringUtil.ISO_8601_DATE_FORMAT));
+//		}
 		if(cursor!=null && cursor.getCount()>0){
 			ContentValues[] cvs = null;
 			ContentValues cv = null;
@@ -169,14 +172,17 @@ public class BackupLogic {
 				} else if (dateAdded != -1) {
 					refCursorDate = dateAdded ;
 				}
-				cursorDate = StringUtil.getConverDate(refCursorDate,StringUtil.ISO_8601_DATE_FORMAT);
-				Log.d(TAG, "cursorDate ==>" + cursorDate);
-				FileUtil.getFileCreateTime(mediaData);
+				if(refCursorDate>0){
+					cursorDate = StringUtil.getLocalDate(refCursorDate);
+				}
+				else{
+					cursorDate = FileUtil.getFileCreateTime(mediaData);
+				}
 				if(cursorDate.startsWith("1970")){
 					cursorDate = FileUtil.getFileCreateTime(mediaData);
-					Log.d(TAG, "modified cursorDate ==>" + cursorDate);
 				}
-				Log.d(TAG, "Filename ==>" + mediaData);
+//				Log.d(TAG, "Filename ==>" + mediaData);
+//				Log.d(TAG, "cursorDate ==>" + cursorDate);
 				
 				if(!duplicateFilename(context,mediaData) && !filenamesSet.contains(mediaData)){
 					cv = new ContentValues();
@@ -246,9 +252,8 @@ public class BackupLogic {
 			selection += " <= ? ";
 		}
 		else{
-			selection += " >= ? ";
+			selection += " > ? ";
 		}
-		//IMPORT ALL
 		selection += " AND "+ MediaStore.Images.Media.DISPLAY_NAME
 				+" NOT LIKE '%.jps%' )";
 		return selection;
@@ -259,12 +264,8 @@ public class BackupLogic {
 			selection += " <= ? ";
 		}
 		else{
-			selection += " >= ? ";
+			selection += " > ? ";
 		}
-
-		//IMPORT ALL
-//		selection += " AND "+ MediaStore.Video.Media.DISPLAY_NAME
-//				+" NOT LIKE '%.jps%' )";
 		return selection;
 	}
 	public static String getAudioSelection(Context context,String date){
@@ -273,9 +274,8 @@ public class BackupLogic {
 			selection += " <= ? ";
 		}
 		else{
-			selection += " >= ? ";
+			selection += " > ? ";
 		}
-		//IMPORT ALL
 		return selection;
 	}
 	public static String[] getFilePeriods(Context context){
@@ -477,6 +477,34 @@ public class BackupLogic {
 			return false;
 		}
 	}
+	
+	public static void updateCount(Context context,String serverId) {
+		FileBackupEntity entity = new FileBackupEntity();
+		byte[] buffer = new byte[256 * Constant.K_BYTES];
+	}
+
+	public static void detectFile(Context context){
+    	//select from serverFiles 
+		ContentResolver cr = context.getContentResolver();
+		Cursor cursor = cr.query(ImportFilesTable.CONTENT_URI, 
+				new String[]{
+				ImportFilesTable.COLUMN_FILENAME,
+				ImportFilesTable.COLUMN_DATE}, 
+				ImportFilesTable.COLUMN_FILENAME+" like '%.ogg%'", 
+				null, 
+				null);
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			int count = cursor.getCount();
+			for(int i = 0 ; i<count ;i++){
+				Log.d(TAG, "Filename:"+cursor.getString(0));
+				Log.d(TAG, "Datetime:"+cursor.getString(1));
+				cursor.moveToNext();		
+			}
+		}
+		cursor.close();
+	
+	}
 	public static void backupFiles(Context context,String serverId) {
 		FileBackupEntity entity = new FileBackupEntity();
 		byte[] buffer = new byte[256 * Constant.K_BYTES];
@@ -499,7 +527,7 @@ public class BackupLogic {
 			cursor.moveToFirst();
 			lastBackupTimestamp = cursor.getString(0); 
 		}	
-		
+				
 		cursor = cr.query(ImportFilesTable.CONTENT_URI, 
 				new String[]{
 				ImportFilesTable.COLUMN_FILENAME,
@@ -594,4 +622,15 @@ public class BackupLogic {
 			cursor.close();
 		}
 	}
+	public static void scanAllFiles(Context context){
+    	if(RuntimeState.isBackuping == false && RuntimeState.isScaning == false){
+			RuntimeState.isScaning = true ;
+			scanFileForBackup(context, Constant.TYPE_AUDIO);
+			scanFileForBackup(context, Constant.TYPE_VIDEO);
+			scanFileForBackup(context, Constant.TYPE_IMAGE);
+			RuntimeState.isScaning = false ;
+    	}
+	}
+	
+	
 }
