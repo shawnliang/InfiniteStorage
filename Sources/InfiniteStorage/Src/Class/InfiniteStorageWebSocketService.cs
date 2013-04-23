@@ -19,6 +19,7 @@ namespace InfiniteStorage
 		public static event EventHandler<WebsocketEventArgs> DeviceAccepted;
 		public static event EventHandler<WebsocketEventArgs> DeviceDisconnected;
 		public static event EventHandler<WebsocketEventArgs> PairingRequesting;
+		public static event EventHandler<WebsocketEventArgs> TotalCountUpdated;
 
 		public InfiniteStorageWebSocketService()
 		{
@@ -37,8 +38,14 @@ namespace InfiniteStorage
 
 			ctx.OnConnectAccepted += new EventHandler<WebsocketEventArgs>(ctx_OnConnectAccepted);
 			ctx.OnPairingRequired += new EventHandler<WebsocketEventArgs>(ctx_OnPairingRequired);
+			ctx.OnTotalCountUpdated += new EventHandler<WebsocketEventArgs>(ctx_OnTotalCountUpdated);
 
 			handler = new ProtocolHanlder(ctx);
+		}
+
+		void ctx_OnTotalCountUpdated(object sender, WebsocketEventArgs e)
+		{
+			raiseTotalCountUpdatedEvent(e);
 		}
 
 		void ctx_OnPairingRequired(object sender, WebsocketEventArgs e)
@@ -68,6 +75,13 @@ namespace InfiniteStorage
 		private void raisePairingRequestingEvent(WebsocketEventArgs e)
 		{
 			var handler = PairingRequesting;
+			if (handler != null)
+				handler(this, e);
+		}
+
+		private void raiseTotalCountUpdatedEvent(WebsocketEventArgs e)
+		{
+			var handler = TotalCountUpdated;
 			if (handler != null)
 				handler(this, e);
 		}

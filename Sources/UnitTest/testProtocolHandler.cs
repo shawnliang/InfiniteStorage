@@ -147,5 +147,27 @@ namespace UnitTest
 
 		}
 
+		[TestMethod]
+		public void handle_update_count_cmd()
+		{
+			var ctx = new Mock<IProtocolHandlerContext>();
+			ctx.Setup(x => x.handleUpdateCountCmd(It.Is<TextCommand>(c => c.action == "update-count" && c.transfer_count == 1000))).Verifiable();
+			var handler = new ProtocolHanlder(ctx.Object);
+
+			var cmd = new { action = "update-count", transfer_count = 1000 };
+			handler.HandleMessage(new MessageEventArgs(JsonConvert.SerializeObject(cmd)));
+		}
+
+		[TestMethod]
+		public void call_state_handle_upcate_count()
+		{
+			var state = new Mock<AbstractProtocolState>();
+			var ctx = new ProtocolContext(null, null, state.Object);
+
+			state.Setup(x => x.handleUpdateCountCmd(ctx, It.Is<TextCommand>(t => t.action == "update-count" && t.transfer_count == 1000))).Verifiable();
+
+
+			ctx.handleUpdateCountCmd(new TextCommand { action = "update-count", transfer_count = 1000 });
+		}
 	}
 }

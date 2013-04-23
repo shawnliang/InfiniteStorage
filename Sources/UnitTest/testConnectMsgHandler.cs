@@ -57,7 +57,7 @@ namespace UnitTest
 					video_count = 200,
 					audio_count = 300,
 					backup_range = new TimeRange(
-								 new DateTime(2012, 1, 2, 0, 0, 0, DateTimeKind.Utc),
+								 new DateTime(2012, 1, 2, 0, 0, 0, DateTimeKind.Utc).ToLocalTime(),
 								 new DateTime(2012, 1, 3, 0, 0, 0, DateTimeKind.Utc))
 				}).Verifiable();
 

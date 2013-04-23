@@ -38,5 +38,11 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			ctx.SetState(new TransmitStartedState());
 		}
+
+		public override void handleUpdateCountCmd(ProtocolContext ctx, TextCommand cmd)
+		{
+			ctx.total_files = cmd.transfer_count;
+			ctx.raiseOnTotalCountUpdated();
+		}
 	}
 }

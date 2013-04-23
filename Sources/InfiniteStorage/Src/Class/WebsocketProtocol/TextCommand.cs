@@ -28,9 +28,14 @@ namespace InfiniteStorage.WebsocketProtocol
 			return "file-end".Equals(action);
 		}
 
-		public bool isConnectCmd(TextCommand cmd)
+		public bool isConnectCmd()
 		{
 			return "connect".Equals(action);
+		}
+
+		public bool isUpdatecountCmd()
+		{
+			return "update-count".Equals(action);
 		}
 	}
 }

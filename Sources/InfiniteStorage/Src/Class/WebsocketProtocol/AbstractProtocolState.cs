@@ -27,6 +27,11 @@ namespace InfiniteStorage.WebsocketProtocol
 			throw new ProtocolErrorException(errorMsg(cmd.action));
 		}
 
+		public virtual void handleUpdateCountCmd(ProtocolContext ctx, TextCommand cmd)
+		{
+			throw new ProtocolErrorException(errorMsg(cmd.action));
+		}
+
 		private string errorMsg(string somethingUnexepected)
 		{
 			return string.Format("{0} is not expected in {1}", somethingUnexepected, this.ToString());

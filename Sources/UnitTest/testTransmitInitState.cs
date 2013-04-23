@@ -92,5 +92,27 @@ namespace UnitTest
 
 			ctx.handleFileStartCmd(cmd);
 		}
+
+		[TestMethod]
+		public void update_count()
+		{
+
+			var state = new TransmitInitState();
+			var ctx = new ProtocolContext(fac.Object, storage.Object, state);
+			long newTotal = -1;
+			ctx.OnTotalCountUpdated += (s, e) => { newTotal = e.ctx.total_files; };
+
+			var cmd = new TextCommand
+			{
+				action = "update-count",
+				transfer_count = 3322
+			};
+
+			ctx.handleUpdateCountCmd(cmd);
+
+			Assert.AreEqual(cmd.transfer_count, ctx.total_files);
+			Assert.AreEqual(state, ctx.GetState());
+			Assert.AreEqual(cmd.transfer_count, newTotal);
+		}
 	}
 }

@@ -17,5 +17,7 @@ namespace InfiniteStorage
 		void handleConnectCmd(TextCommand cmd);
 
 		void Clear();
+
+		void handleUpdateCountCmd(TextCommand textCommand);
 	}
 }

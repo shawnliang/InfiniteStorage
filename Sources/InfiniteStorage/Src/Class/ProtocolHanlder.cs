@@ -27,14 +27,18 @@ namespace InfiniteStorage
 			{
 				if (e.Type == WebSocketSharp.Frame.Opcode.TEXT)
 				{
+					log4net.LogManager.GetLogger("wsproto").Debug(e.Data);
+
 					TextCommand cmd = parseTextCommand(e);
 
 					if (cmd.isFileStartCmd())
 						ctx.handleFileStartCmd(cmd);
 					else if (cmd.isFileEndCmd())
 						ctx.handleFileEndCmd(cmd);
-					else if (cmd.isConnectCmd(cmd))
+					else if (cmd.isConnectCmd())
 						ctx.handleConnectCmd(cmd);
+					else if (cmd.isUpdatecountCmd())
+						ctx.handleUpdateCountCmd(cmd);
 					else
 						throw new ProtocolErrorException("Unknown action: " + cmd.action);
 				}

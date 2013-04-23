@@ -66,6 +66,11 @@ namespace InfiniteStorage
 
 		public void OnDeviceConnected(object sender, WebsocketEventArgs evt)
 		{
+			if (evt.ctx.total_files == 0 || evt.ctx.total_files == evt.ctx.recved_files)
+			{
+				return;
+			}
+
 			if (notifyIcon.ContextMenuStrip.InvokeRequired)
 			{
 				notifyIcon.ContextMenuStrip.Invoke(
@@ -76,15 +81,47 @@ namespace InfiniteStorage
 			}
 			else
 			{
-				var item = new ToolStripMenuItem();
-				item.Text = string.Format("{0}: {1}/{2}", evt.ctx.device_name, evt.ctx.recved_files, evt.ctx.total_files);
-				item.Tag = evt.ctx;
-				item.Enabled = false;
-				deviceStipItems.Add(evt.ctx, item);
+				ToolStripItem itemFound = findMenuItemInNotifyContextMenu(evt);
 
-				notifyIcon.ContextMenuStrip.Items.Insert(2, item);
-				notifyIcon.ShowBalloonTip(3000, Resources.ProductName, string.Format(Resources.BallonText_Transferring, evt.ctx.device_name, evt.ctx.total_files), ToolTipIcon.Info);
+				var itemText = string.Format("{0}: {1}/{2}", evt.ctx.device_name, evt.ctx.recved_files, evt.ctx.total_files);
+
+				if (itemFound != null)
+				{
+					itemFound.Text = itemText;
+				}
+				else
+				{
+					var item = new ToolStripMenuItem();
+					item.Text = itemText;
+					item.Tag = evt.ctx;
+					item.Enabled = false;
+					deviceStipItems.Add(evt.ctx, item);
+
+					notifyIcon.ContextMenuStrip.Items.Insert(2, item);
+					notifyIcon.ShowBalloonTip(3000, Resources.ProductName, string.Format(Resources.BallonText_Transferring, evt.ctx.device_name, evt.ctx.total_files), ToolTipIcon.Info);
+				}
 			}
+		}
+
+		private ToolStripItem findMenuItemInNotifyContextMenu(WebsocketEventArgs evt)
+		{
+			ToolStripItem itemFound = null;
+
+			foreach (var it in notifyIcon.ContextMenuStrip.Items)
+			{
+				var stripItem = it as ToolStripItem;
+				if (stripItem != null && stripItem.Tag is ProtocolContext)
+				{
+					var ctx = stripItem.Tag as ProtocolContext;
+
+					if (ctx == evt.ctx)
+					{
+						itemFound = stripItem;
+						break;
+					}
+				}
+			}
+			return itemFound;
 		}
 
 		public void OnDeviceDisconnected(object sender, WebsocketEventArgs evt)
@@ -105,7 +142,8 @@ namespace InfiniteStorage
 			if (deviceStipItems.ContainsKey(key))
 			{
 				var item = deviceStipItems[key];
-				notifyIcon.ContextMenuStrip.Items.Remove(item);
+				if (notifyIcon.ContextMenuStrip.Items.Contains(item))
+					notifyIcon.ContextMenuStrip.Items.Remove(item);
 
 				deviceStipItems.Remove(key);
 			}
