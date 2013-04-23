@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
-     xmlns:fire='http://schemas.microsoft.com/wix/FirewallExtension'>
+     xmlns:fire='http://schemas.microsoft.com/wix/FirewallExtension'
+     xmlns:util='http://schemas.microsoft.com/wix/UtilExtension'>
   <?define AppCode = "InfiniteStorage" ?>
   <?define AppProductCode = "{2fc96c10-c0e0-43aa-8bc9-00c6b9cca391}" ?>
   <?define AppVersionMajor = "0" ?>
@@ -51,6 +52,8 @@
           <Component Id="InfiniteStorage.exe.config" Guid="*">
             <File Id="InfiniteStorage.exe.config" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\InfiniteStorage.exe.config"/>
             <fire:FirewallException Id="fwrule1" Name="infiniteStorage" IgnoreFailure="yes" Scope="localSubnet" Program="[INSTALLLOCATION]InfiniteStorage.exe"/>
+            <fire:FirewallException Id="fwrule2" Name="bonjour.fw.1" Program="$(env.PROGRAMFILES)Bonjour\mDNSResponder.exe" IgnoreFailure="yes" Scope="localSubnet" />
+            <fire:FirewallException Id="fwrule3" Name="bonjour.fw.2" Program="$(env.PROGRAMFILES(X86))Bonjour\mDNSResponder.exe" IgnoreFailure="yes" Scope="localSubnet" />
           </Component>
 
           <Component Id="System.Data.SQLite.dll" Guid="*">
@@ -112,7 +115,7 @@
       <ComponentRef Id="System.Data.SQLite.Linq.dll" />
       <ComponentRef Id="SQLite.Interop.dll.x86" />
       <ComponentRef Id="SQLite.Interop.dll.x64" />
-      
+
     </Feature>
 
     <!--
