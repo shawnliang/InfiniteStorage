@@ -154,4 +154,11 @@
   <data name="BallonText_Transferring" xml:space="preserve">
     <value>{0} 正在傳送 {1} 個檔案</value>
   </data>
+  <data name="DeleteDevice_Description" xml:space="preserve">
+    <value>刪除您的裝置以後，已存入的檔案不會被刪除。
+往後這台裝置中的照片、影片、錄音檔案將不會再送回此電腦中。</value>
+  </data>
+  <data name="DeleteDevice_Title" xml:space="preserve">
+    <value>刪除裝置</value>
+  </data>
 </root>

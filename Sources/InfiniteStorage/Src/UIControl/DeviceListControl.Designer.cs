@@ -34,7 +34,9 @@
 			this.delCol = new System.Windows.Forms.DataGridViewButtonColumn();
 			this.label1 = new System.Windows.Forms.Label();
 			this.bgPopulate = new System.ComponentModel.BackgroundWorker();
-			this.rejectOtherDevices = new System.Windows.Forms.CheckBox();
+			this.label2 = new System.Windows.Forms.Label();
+			this.radioAllow = new System.Windows.Forms.RadioButton();
+			this.radioDisallow = new System.Windows.Forms.RadioButton();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -66,7 +68,7 @@
 			this.dataGridView1.ReadOnly = true;
 			this.dataGridView1.RowHeadersVisible = false;
 			this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dataGridView1.Size = new System.Drawing.Size(512, 206);
+			this.dataGridView1.Size = new System.Drawing.Size(568, 191);
 			this.dataGridView1.TabIndex = 0;
 			this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
 			// 
@@ -103,27 +105,53 @@
 			this.bgPopulate.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgPopulate_DoWork);
 			this.bgPopulate.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgPopulate_RunWorkerCompleted);
 			// 
-			// rejectOtherDevices
+			// label2
 			// 
-			this.rejectOtherDevices.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.rejectOtherDevices.AutoSize = true;
-			this.rejectOtherDevices.Location = new System.Drawing.Point(17, 272);
-			this.rejectOtherDevices.Name = "rejectOtherDevices";
-			this.rejectOtherDevices.Size = new System.Drawing.Size(350, 17);
-			this.rejectOtherDevices.TabIndex = 2;
-			this.rejectOtherDevices.Text = "僅允許以上裝置備份到此電腦，拒絕所有其他裝置的連線邀請";
-			this.rejectOtherDevices.UseVisualStyleBackColor = true;
-			this.rejectOtherDevices.CheckedChanged += new System.EventHandler(this.rejectOtherDevices_CheckedChanged);
+			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(14, 254);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(151, 13);
+			this.label2.TabIndex = 3;
+			this.label2.Text = "允許行動裝置連結到此電腦";
+			// 
+			// radioAllow
+			// 
+			this.radioAllow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.radioAllow.AutoSize = true;
+			this.radioAllow.Checked = true;
+			this.radioAllow.Location = new System.Drawing.Point(17, 275);
+			this.radioAllow.Name = "radioAllow";
+			this.radioAllow.Size = new System.Drawing.Size(49, 17);
+			this.radioAllow.TabIndex = 4;
+			this.radioAllow.TabStop = true;
+			this.radioAllow.Text = "允許";
+			this.radioAllow.UseVisualStyleBackColor = true;
+			this.radioAllow.CheckedChanged += new System.EventHandler(this.rejectOtherDevices_CheckedChanged);
+			// 
+			// radioDisallow
+			// 
+			this.radioDisallow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.radioDisallow.AutoSize = true;
+			this.radioDisallow.Location = new System.Drawing.Point(17, 298);
+			this.radioDisallow.Name = "radioDisallow";
+			this.radioDisallow.Size = new System.Drawing.Size(301, 17);
+			this.radioDisallow.TabIndex = 5;
+			this.radioDisallow.Text = "關閉：關閉這項功能後，行動裝置無法偵測到此電腦";
+			this.radioDisallow.UseVisualStyleBackColor = true;
+			this.radioDisallow.CheckedChanged += new System.EventHandler(this.rejectOtherDevices_CheckedChanged);
 			// 
 			// DeviceListControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.rejectOtherDevices);
+			this.Controls.Add(this.radioDisallow);
+			this.Controls.Add(this.radioAllow);
+			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.dataGridView1);
 			this.Name = "DeviceListControl";
-			this.Size = new System.Drawing.Size(561, 304);
+			this.Size = new System.Drawing.Size(617, 330);
 			this.Load += new System.EventHandler(this.DeviceListControl_Load);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
 			this.ResumeLayout(false);
@@ -138,6 +166,8 @@
 		private System.ComponentModel.BackgroundWorker bgPopulate;
 		private System.Windows.Forms.DataGridViewTextBoxColumn devNameCol;
 		private System.Windows.Forms.DataGridViewButtonColumn delCol;
-		private System.Windows.Forms.CheckBox rejectOtherDevices;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.RadioButton radioAllow;
+		private System.Windows.Forms.RadioButton radioDisallow;
 	}
 }

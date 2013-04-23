@@ -39,7 +39,9 @@ namespace InfiniteStorage
 			if (!DesignMode)
 			{
 				bgPopulate.RunWorkerAsync();
-				rejectOtherDevices.Checked = Settings.Default.RejectOtherDevices;
+				
+				radioAllow.Checked = !Settings.Default.RejectOtherDevices;
+				radioDisallow.Checked = Settings.Default.RejectOtherDevices;
 			}
 		}
 
@@ -76,18 +78,21 @@ namespace InfiniteStorage
 			if (e.RowIndex < 0 || e.ColumnIndex != dataGridView1.Columns["delCol"].Index)
 				return;
 
-			var device = dataGridView1.Rows[e.RowIndex].DataBoundItem as Device;
+			if (MessageBox.Show(Resources.DeleteDevice_Description, Resources.DeleteDevice_Title, MessageBoxButtons.OKCancel) == DialogResult.OK)
+			{
+				var device = dataGridView1.Rows[e.RowIndex].DataBoundItem as Device;
 
-			DeletedDevices.Add(device);
-			dataSource.Remove(device);
+				DeletedDevices.Add(device);
+				dataSource.Remove(device);
 
-			raiseSettingChangedEvent();
+				raiseSettingChangedEvent();
+			}
 		}
 
 		public bool RejectOtherDevices
 		{
-			get { return rejectOtherDevices.Checked; }
-			set { rejectOtherDevices.Checked = value; }
+			get { return radioDisallow.Checked; }
+			set { radioDisallow.Checked = value; }
 		}
 
 		private void raiseSettingChangedEvent()

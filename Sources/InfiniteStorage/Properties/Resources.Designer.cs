@@ -85,6 +85,25 @@ namespace InfiniteStorage.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to 刪除您的裝置以後，已存入的檔案不會被刪除。
+        ///往後這台裝置中的照片、影片、錄音檔案將不會再送回此電腦中。.
+        /// </summary>
+        internal static string DeleteDevice_Description {
+            get {
+                return ResourceManager.GetString("DeleteDevice_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 刪除裝置.
+        /// </summary>
+        internal static string DeleteDevice_Title {
+            get {
+                return ResourceManager.GetString("DeleteDevice_Title", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap get_it_on_google_play {
             get {
                 object obj = ResourceManager.GetObject("get_it_on_google_play", resourceCulture);

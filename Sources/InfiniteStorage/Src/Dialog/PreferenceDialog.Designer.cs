@@ -84,7 +84,7 @@
 			this.tabDevices.Padding = new System.Windows.Forms.Padding(3);
 			this.tabDevices.Size = new System.Drawing.Size(620, 290);
 			this.tabDevices.TabIndex = 1;
-			this.tabDevices.Text = "連結的裝置";
+			this.tabDevices.Text = "連結裝置";
 			this.tabDevices.UseVisualStyleBackColor = true;
 			// 
 			// deviceListControl
@@ -140,7 +140,7 @@
 			this.checkboxAutoRun.Name = "checkboxAutoRun";
 			this.checkboxAutoRun.Size = new System.Drawing.Size(110, 17);
 			this.checkboxAutoRun.TabIndex = 4;
-			this.checkboxAutoRun.Text = "登入後自動啟動";
+			this.checkboxAutoRun.Text = "開機時自動啟動";
 			this.checkboxAutoRun.UseVisualStyleBackColor = true;
 			this.checkboxAutoRun.Click += new System.EventHandler(this.handleAnySettingChanged);
 			// 
