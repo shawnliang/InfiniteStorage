@@ -27,7 +27,7 @@ namespace InfiniteStorage
 							{
 								action = "backup-info",
 								server_id = Settings.Default.ServerId,
-								server_name = Environment.UserName,
+								server_name = BonjourService.ServiceName,
 								backup_startdate = summary.backup_range.start,
 								backup_enddate = summary.backup_range.end,
 								backup_folder = MyFileFolder.Photo,

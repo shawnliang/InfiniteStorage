@@ -35,7 +35,7 @@ namespace InfiniteStorage
 
 		public void Register(ushort port, string server_id)
 		{
-			m_svc.Name = Environment.UserName + "-" + Environment.MachineName;
+			m_svc.Name = ServiceName;
 			m_svc.Port = (short)port;
 			m_svc.RegType = SVC_TYPE;
 			m_svc.ReplyDomain = "local.";
@@ -47,6 +47,14 @@ namespace InfiniteStorage
 
 			m_svc.TxtRecord = txt;
 			m_svc.Register();
+		}
+
+		public static string ServiceName
+		{
+			get
+			{
+				return Environment.UserName + "-" + Environment.MachineName;
+			}
 		}
 
 		public void Dispose()
