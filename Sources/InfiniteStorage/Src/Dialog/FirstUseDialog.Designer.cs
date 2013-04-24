@@ -190,7 +190,7 @@
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(604, 45);
 			this.label2.TabIndex = 1;
-			this.label2.Text = "不只是幫您安全把檔案送回電腦，還幫您案日期收納，壤您快速找尋跟瀏覽";
+			this.label2.Text = "不只是幫您安全把檔案送回電腦，還幫您按照日期收納，讓您快速找尋跟瀏覽";
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// tabInstallAppAndStart
@@ -235,7 +235,7 @@
 			this.pictureBox1.Location = new System.Drawing.Point(404, 195);
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.Size = new System.Drawing.Size(172, 60);
-			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.pictureBox1.TabIndex = 3;
 			this.pictureBox1.TabStop = false;
 			this.pictureBox1.Click += new System.EventHandler(this.getItOnGooglePlay_Click);
@@ -267,7 +267,6 @@
 			this.tabWelcome.ResumeLayout(false);
 			this.tabChooseOrganizeMethod.ResumeLayout(false);
 			this.tabInstallAppAndStart.ResumeLayout(false);
-			this.tabInstallAppAndStart.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
