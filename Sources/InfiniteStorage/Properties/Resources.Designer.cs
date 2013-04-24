@@ -77,7 +77,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} 正在傳送 {1} 個檔案.
+        ///   Looks up a localized string similar to {0} 正在備份中....
         /// </summary>
         internal static string BallonText_Transferring {
             get {

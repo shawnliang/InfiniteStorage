@@ -152,7 +152,7 @@
     <value>{0} 在此為您服務</value>
   </data>
   <data name="BallonText_Transferring" xml:space="preserve">
-    <value>{0} 正在傳送 {1} 個檔案</value>
+    <value>{0} 正在備份中...</value>
   </data>
   <data name="DeleteDevice_Description" xml:space="preserve">
     <value>刪除您的裝置以後，已存入的檔案不會被刪除。
