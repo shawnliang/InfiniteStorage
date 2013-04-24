@@ -76,6 +76,10 @@
             <File Id="Mono.Zeroconf.Providers.Bonjour.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Mono.Zeroconf.Providers.Bonjour.dll" />
           </Component>
 
+          <Component Id="MZClient.exe" Guid="*">
+            <File Id="MZClient.exe" KeyPath="yes" Source="$(var.SolutionDir)\Libs\Mono.Zeroconf\MZClient.exe" />
+          </Component>
+
           <Component Id="log4net.dll" Guid="*">
             <File Id="log4net.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\log4net.dll" />
           </Component>
@@ -110,6 +114,7 @@
       <ComponentRef Id='InfiniteStorage.exe' />
       <ComponentRef Id="Mono.Zeroconf.dll" />
       <ComponentRef Id="Mono.Zeroconf.Providers.Bonjour.dll" />
+      <ComponentRef Id="MZClient.exe" />
       <ComponentRef Id="log4net.dll" />
       <ComponentRef Id="Newtonsoft.Json.dll" />
       <ComponentRef Id="websocketsharp.dll" />

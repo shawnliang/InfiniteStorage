@@ -48,6 +48,11 @@ namespace InfiniteStorage
 			m_svc.TxtRecord = txt;
 			m_svc.Register();
 		}
+
+		public void Dispose()
+		{
+			m_svc.Dispose();
+		}
 	}
 
 	class BonjourErrorEventArgs : EventArgs
