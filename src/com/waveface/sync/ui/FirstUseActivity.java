@@ -15,13 +15,13 @@ import android.text.Html;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
-import com.waveface.sync.ui.LinkFragmentBase.onLoginFragmentChangedListener;
+import com.waveface.sync.ui.FragmentBase.onFragmentChangedListener;
 import com.waveface.sync.util.DeviceUtil;
 
 
-public class LinkServerActivity extends FragmentActivity implements
-		LinkFragment.InstallFragmentListener, onLoginFragmentChangedListener {
-	public final String TAG = LinkServerActivity.class.getSimpleName();
+public class FirstUseActivity extends FragmentActivity implements
+		InstallFragment.InstallFragmentListener, onFragmentChangedListener {
+	public final String TAG = FirstUseActivity.class.getSimpleName();
 
 	/**
 	 * @see android.app.Activity#onCreate(Bundle)
@@ -30,8 +30,6 @@ public class LinkServerActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
-			// Activity was brought to front and not created,
-			// Thus finishing this will get us to the last viewed activity
 			finish();
 			return;
 		}
@@ -41,9 +39,9 @@ public class LinkServerActivity extends FragmentActivity implements
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
 		if (savedInstanceState == null) {
-			LinkFragment fragment = new LinkFragment();
+			InstallFragment fragment = new InstallFragment();
 			getSupportFragmentManager().beginTransaction()
-					.add(R.id.entry_main, fragment, LinkFragment.class.getSimpleName()).commit();
+					.add(R.id.entry_main, fragment, InstallFragment.class.getSimpleName()).commit();
 		}
 	}
 
@@ -57,8 +55,8 @@ public class LinkServerActivity extends FragmentActivity implements
 			FragmentManager.BackStackEntry backEntry=getSupportFragmentManager().getBackStackEntryAt(index);
 		    String str=backEntry.getName();
 		    Fragment fragment=getSupportFragmentManager().findFragmentByTag(str);
-		    if(fragment instanceof LinkFragmentBase) {
-		    	((LinkFragmentBase)fragment).onBackPressed();
+		    if(fragment instanceof FragmentBase) {
+		    	((FragmentBase)fragment).onBackPressed();
 		    } else {
 				super.onBackPressed();
 		    }
@@ -95,10 +93,9 @@ public class LinkServerActivity extends FragmentActivity implements
 			showFragment(new BackupInfoFragment(), BackupInfoFragment.class.getSimpleName());
 		}
 		else if (BackupInfoFragment.class.getSimpleName().equals(id)) {
-			setResult(RESULT_OK);
+			setResult(RESULT_OK,new Intent());
 			finish();
-		}
-		
+		}		
 	}
 
 	@Override

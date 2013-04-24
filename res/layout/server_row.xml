@@ -48,7 +48,7 @@
         android:layout_marginLeft="15dip"
         android:layout_marginBottom="3dp"
         android:layout_marginTop="3dp"
-        android:text="From 2009/01/01 to 2010/01/02"
+        android:text="@string/backup_period"
         android:textColor="#FFFFFF" />
 
     <TextView
@@ -59,7 +59,7 @@
         android:layout_below="@+id/textBackupDays"
         android:layout_marginBottom="3dp"
         android:layout_marginTop="3dp"
-        android:text="FreeSpace:500TB"
+        android:text="@string/free_space"
         android:textColor="#FFFFFF" />
 
     <TextView
@@ -70,7 +70,7 @@
         android:layout_below="@+id/textFreespace"
         android:layout_marginBottom="3dp"
         android:layout_marginTop="3dp"
-        android:text="Folder:C:/infiniteStoragr/"
+        android:text="@string/backup_folder"
         android:textColor="#FFFFFF" />
 
     <TextView
@@ -79,10 +79,20 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textBackupDays"
         android:layout_below="@+id/textFolder"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="3dp"
         android:layout_marginTop="3dp"
-        android:text="Backuped: 300 photos,3videos,0 audio"
+        android:text="@string/backup_info"
         android:textColor="#FFFFFF" />
 
-
+    <TextView
+        android:id="@+id/textLastBackupTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textBackupInfo"
+        android:layout_below="@+id/textBackupInfo"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="3dp"
+        android:text="@string/backup_last_local_time"
+        android:textColor="#FFFFFF" />
+    
 </RelativeLayout>

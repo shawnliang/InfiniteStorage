@@ -68,6 +68,9 @@ public class InfiniteService extends Service{
             	//SCAN FILES
             	BackupLogic.scanAllFiles(mContext);            	
 		    	String serverId = RuntimeState.mWebSocketServerId;
+		    	if(RuntimeState.isBackuping && mDisplaying==false){
+		    		displaySyncInfo(false);
+		    	}
             	if(!TextUtils.isEmpty(serverId)
             			&& RuntimeState.isScaning == false
             			&& BackupLogic.canBackup(mContext) 
@@ -123,7 +126,7 @@ public class InfiniteService extends Service{
 			mEditor.putString(Constant.PREF_NOTIFICATION_ID, mNotoficationId);
 			mEditor.commit();
 		}
-		if(RuntimeState.isAppLaunching == false){
+//		if(RuntimeState.isAppLaunching == false){
 			if(mDisplaying == false ){
 				String content = null;
 				if(!backupedCompleted){
@@ -139,7 +142,7 @@ public class InfiniteService extends Service{
 						content,null);
 				mDisplaying = true ;
 			}	
-		}
+//		}
 	}
 	
 	private void removeNotification(){

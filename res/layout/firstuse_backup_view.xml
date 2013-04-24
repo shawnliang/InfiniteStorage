@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/ic_dialog" >
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imageView1"
@@ -82,7 +81,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="14dp"
         android:text="@string/file_transfering"
-        android:textColor="#33CCFF" />
+        style="@style/HighlightText" />
 
     <ProgressBar
         android:id="@+id/pbBackup"

@@ -11,11 +11,11 @@ import android.view.inputmethod.InputMethodManager;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.ViewUtil;
 
-public class LinkFragmentBase extends Fragment {
-	public static final String TAG = LinkFragmentBase.class.getSimpleName();
-	protected onLoginFragmentChangedListener mListener;
+public class FragmentBase extends Fragment {
+	public static final String TAG = FragmentBase.class.getSimpleName();
+	protected onFragmentChangedListener mListener;
 
-	public interface onLoginFragmentChangedListener {
+	public interface onFragmentChangedListener {
 		public void goBack(String id);
 		public void goNext(String id);
 	}
@@ -39,10 +39,10 @@ public class LinkFragmentBase extends Fragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-			mListener = (onLoginFragmentChangedListener) activity;
+			mListener = (onFragmentChangedListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
-					+ " must implement onLoginFragmentChangedListener");
+					+ " must implement onFragmentChangedListener");
 		}
 	}
 

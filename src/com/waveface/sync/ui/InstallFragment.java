@@ -11,8 +11,8 @@ import android.widget.Button;
 
 import com.waveface.sync.R;
 
-public class LinkFragment extends LinkFragmentBase implements OnClickListener{
-	public final String TAG = LinkFragment.class.getSimpleName();
+public class InstallFragment extends FragmentBase implements OnClickListener{
+	public final String TAG = InstallFragment.class.getSimpleName();
 	private ViewGroup mRootView;
 	private InstallFragmentListener mListener;
 
@@ -68,15 +68,4 @@ public class LinkFragment extends LinkFragmentBase implements OnClickListener{
 				break;
 		}
 	}
-	private void startAcctivityWithAnimation(Intent intent) {
-		startActivity(intent);
-		getActivity().overridePendingTransition(android.R.anim.fade_in,
-				android.R.anim.fade_out);
-	}
-	public void gotoTimeline() {
-		Intent intent = new Intent(getActivity(), MainActivity.class);
-		startAcctivityWithAnimation(intent);
-		getActivity().finish();
-	}
-
 }

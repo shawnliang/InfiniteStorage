@@ -365,31 +365,10 @@ public class ServersLogic {
 		cursor.close();
 		return result;
 	}    
-	public static int updateServerStatus(Context context,String lastBackupTime,int filetype,String serverId){
+	public static int updateServerLastBackupTime(Context context,String serverId){
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
-		cv.put(BackupedServersTable.COLUMN_END_DATETIME, lastBackupTime);
 		cv.put(BackupedServersTable.COLUMN_LAST_BACKUP_DATETIME, StringUtil.getLocalDate());
-
-		String startBackupTimestamp = null;
-		
-		String[] projection = new String[]{
-				BackupedServersTable.COLUMN_START_DATETIME};
-
-		
-		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
-				projection, 
-				BackupedServersTable.COLUMN_SERVER_ID+" =? ", 
-				new String[]{serverId},null);	
-		if(cursor!=null && cursor.getCount()>0){
-			cursor.moveToFirst();
-			startBackupTimestamp = cursor.getString(0);
-		}		
-		cursor.close();
-		if(TextUtils.isEmpty(startBackupTimestamp) || 
-				StringUtil.day1BeforeDay2(lastBackupTime, startBackupTimestamp)){
-			cv.put(BackupedServersTable.COLUMN_START_DATETIME, lastBackupTime);
-		}
 		return cr.update(BackupedServersTable.CONTENT_URI, cv,BackupedServersTable.COLUMN_SERVER_ID+"=?" , new String[]{serverId});
 	}
 	public static String getStatusByServerId(Context context,String serverId){

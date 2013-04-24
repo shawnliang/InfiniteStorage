@@ -19,6 +19,9 @@ public class Constant {
 	public final static String ACTION_SCAN_FILE = "com.waveface.sync.action.SCAN_FILE";
 	
 
+	//BUNDLE DATA
+	public static final String BUNDLE_FILE_TYPE = "FILE_TYPE";	
+	
 	//EXTRA DATA
 	public static final String EXTRA_BONJOUR_AUTO_PAIR_STATUS = "com.waveface.sync.extra.BONJOUR_AUTO_PAIR_STATUS";	
 	public static final String EXTRA_BONJOUR_SERVICE_EVENT = "com.waveface.sync.extra.BONJOUR_SERVICE_EVENT";
@@ -124,6 +127,8 @@ public class Constant {
 	
 	//REQUEST CODE
 	public static final int REQUEST_CODE_OPEN_SERVER_CHOOSER = 0;
+	public static final int REQUEST_CODE_CLEAN_STORAGE = 1;
+	
 
 	//RESULT CODE
 	public static final int RESULT_CODE_FINISH = 1;

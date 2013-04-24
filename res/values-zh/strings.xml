@@ -17,6 +17,7 @@
     <string name="videos">總共 %1$d 個影像檔</string>    
     <string name="audios">總共 %1$d 個聲音檔</string>    
     <string name="photos">總共 %1$d 張照片</string>        
+    <string name="can_not_find_server">現在找不到你的配對PC,待會找到後會當你自動連線!</string>
     
     
     <!--PAIRED SERVERS-->
@@ -27,6 +28,8 @@
     <string name="free_space">目錄空間 %1$s</string>    
     <string name="backup_folder">備份目錄 %1$s</string>    
     <string name="backup_info">已備份 %1$d 張照片, %2$d 個影像檔, %3$d 個聲音檔</string>
+    <string name="backup_last_local_time">最後備份時間 %1$s</string>
+    
     
     
     <!--FIRST USE-->
@@ -56,10 +59,16 @@
     <string name="backup_view_descript23">都會自動透過Wi-Fi回到電腦中!</string>
     
     
+    <!--CLEAN STORAGE--> 
+    <string name="clean_title">選擇保留方式(%1$s)</string>
+    <string name="clean_keep_three_months">保留最近三個月</string>
+    <string name="clean_keep_six_months">保留最近半年</string>
+    <string name="clean_setting_time">自訂保留時間</string>
+    <string name="clean_freespace">可以清理出 %1$s 的空間</string>
     
-    
-    
-    
+    <string name="video">影像檔</string>    
+    <string name="audio">聲音檔</string>    
+    <string name="photo">照片</string>        
     
     
     <!--BUTTON-->

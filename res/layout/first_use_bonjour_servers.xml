@@ -17,8 +17,7 @@
         android:layout_below="@+id/imageView1"
         android:layout_centerHorizontal="true"
         android:text="@string/choose_server"
-        android:textColor="#33CCFF"
-        android:textSize="18sp" />
+        style="@style/HighlightText"/>
     
     <RelativeLayout 
         android:id="@+id/rlServer"

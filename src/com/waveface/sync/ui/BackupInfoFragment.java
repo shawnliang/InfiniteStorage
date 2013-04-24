@@ -23,7 +23,7 @@ import com.waveface.sync.RuntimeState;
 import com.waveface.sync.db.BackupedServersTable;
 import com.waveface.sync.logic.BackupLogic;
 
-public class BackupInfoFragment extends LinkFragmentBase implements OnClickListener, OnCheckedChangeListener{
+public class BackupInfoFragment extends FragmentBase implements OnClickListener, OnCheckedChangeListener{
 	public final String TAG = BackupInfoFragment.class.getSimpleName();
 
 	private ViewGroup mRootView;
