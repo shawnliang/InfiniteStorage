@@ -10,27 +10,27 @@ namespace InfiniteStorage.WebsocketProtocol
 		string GetDir(FileContext file);
 	}
 
-	class DirOrganizerByYYYY : IDirOrganizer
+	public class DirOrganizerByYYYY : IDirOrganizer
 	{
 		public string GetDir(FileContext file)
 		{
-			return file.datetime.Year.ToString("d4");
+			return file.datetime.ToString("yyyy");
 		}
 	}
 
-	class DirOrganizerByYYYYMM : IDirOrganizer
+	public class DirOrganizerByYYYYMM : IDirOrganizer
 	{
 		public string GetDir(FileContext file)
 		{
-			return file.datetime.Year.ToString("d4") + @"\" + file.datetime.Month.ToString("d2");
+			return file.datetime.ToString(@"yyyy\\yyyy-MM");
 		}
 	}
 
-	class DirOrganizerByYYYYMMDD : IDirOrganizer
+	public class DirOrganizerByYYYYMMDD : IDirOrganizer
 	{
 		public string GetDir(FileContext file)
 		{
-			return file.datetime.Year.ToString("d4") + @"\" + file.datetime.Month.ToString("d2") + @"\" + file.datetime.Day.ToString("d2");
+			return file.datetime.ToString(@"yyyy\\yyyy-MM\\yyyy-MM-dd");
 		}
 	}
 }
