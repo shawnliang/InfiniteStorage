@@ -2,6 +2,7 @@ package com.waveface.sync.ui;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -16,11 +17,19 @@ import android.database.ContentObserver;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
+import com.waveface.sync.db.BackupedServersTable;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.BackupLogic;
@@ -38,12 +47,13 @@ import com.waveface.sync.util.StringUtil;
  * 
  * @see SystemUiHider
  */
-public class MainActivity extends Activity{
+public class MainActivity extends Activity implements OnClickListener{
 	private String TAG = MainActivity.class.getSimpleName();
     
 	private ImportFilesObserver mImportFilesObserver;    
 	private ServerObserver mServerObserver;
-	
+    private Handler mHandler = new Handler();
+
     //UI
 	private TextView mDevice;
 	private TextView mNowPeriod;
@@ -53,6 +63,12 @@ public class MainActivity extends Activity{
 	private TextView mVideoSize;
 	private TextView mAudioCount;
 	private TextView mAudioSize;
+	private Button mDeletePhotoBtn;
+	private Button mDeleteVideoBtn;
+	private Button mDeleteAudioBtn;
+	private RelativeLayout mRLSetting;
+	private ImageView mIvAddPc;
+	
 	private ProgressDialog mProgressDialog;
 
 
@@ -61,7 +77,7 @@ public class MainActivity extends Activity{
 
 	//DATA 
 	private ArrayList<ServerEntity> mPairedServers ;
-	private ServersAdapter mAdapter ;
+	private PairedServersAdapter mAdapter ;
 	
 
 	@Override
@@ -90,18 +106,30 @@ public class MainActivity extends Activity{
 		mAudioCount = (TextView) this.findViewById(R.id.textAudioCount);
 		mAudioSize = (TextView) this.findViewById(R.id.textAudioSize);
 		
+		mDeletePhotoBtn = (Button) this.findViewById(R.id.btnDeletePhoto);
+		mDeletePhotoBtn.setOnClickListener(this);
+		mDeleteVideoBtn = (Button) this.findViewById(R.id.btnDeleteVideo);
+		mDeleteVideoBtn.setOnClickListener(this);
+		mDeleteAudioBtn = (Button) this.findViewById(R.id.btnDeleteAudio);
+		mDeleteAudioBtn.setOnClickListener(this);
+		
 		ListView listview = (ListView) findViewById(R.id.listview);
 		ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(this);		
-		mAdapter = new ServersAdapter(this,servers);
+		mAdapter = new PairedServersAdapter(this,servers);
 		listview.setAdapter(mAdapter);
 
+	    mRLSetting = (RelativeLayout) findViewById(R.id.rlSetting);
+	    
+	    mIvAddPc = (ImageView) findViewById(R.id.ivAddpc);
+	    mIvAddPc.setOnClickListener(this);
+	    
 		refreshLayout();
 		//RESGISTER OBSERVER
 		mImportFilesObserver = new ImportFilesObserver();
 		getContentResolver().registerContentObserver(ImportFilesTable.IMPORT_FILE_URI, false, mImportFilesObserver);
 		
-//		mServerObserver = new ServerObserver();
-//		getContentResolver().registerContentObserver(BackupedServersTable.BACKUPED_SERVER_URI, false, mServerObserver);
+		mServerObserver = new ServerObserver();
+		getContentResolver().registerContentObserver(BackupedServersTable.BACKUPED_SERVER_URI, false, mServerObserver);
 
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING);
@@ -112,7 +140,7 @@ public class MainActivity extends Activity{
 		registerReceiver(mReceiver, filter);
 
 		//GET PAIRED SERVERS
-		displayProgress();
+		firsttimeDispaly();
 		
 		boolean alarmEnable = mPrefs.getBoolean(Constant.PREF_BONJOUR_SERVER_ALRM_ENNABLED, false);
 		if(alarmEnable == false){
@@ -128,7 +156,7 @@ public class MainActivity extends Activity{
 			mProgressDialog.dismiss();
 		}		
 	}
-	private void displayProgress(){
+	private void firsttimeDispaly(){
 		mPairedServers = ServersLogic.getBackupedServers(this);
 		if (mProgressDialog == null ) {
 			if(NetworkUtil.isWifiNetworkAvailable(this) && RuntimeState.OnWebSocketStation == false ){
@@ -137,12 +165,23 @@ public class MainActivity extends Activity{
 					mProgressDialog = ProgressDialog.show(this, "",
 							getString(R.string.auto_connect));
 					mProgressDialog.setCancelable(true);
+			        mHandler.postDelayed(new Runnable() {
+			            public void run() {
+			            	if(NetworkUtil.isWifiNetworkAvailable(MainActivity.this) && RuntimeState.OnWebSocketStation == false ){
+			            		dismissProgress();
+			            		Toast.makeText(MainActivity.this, R.string.can_not_find_server, Toast.LENGTH_LONG).show();
+			            	}
+			            }
+			         }, 10000);
 				}
 			}
 		}		
 		if(mPairedServers.size()==0 ){
-            Intent startIntent = new Intent(MainActivity.this, LinkServerActivity.class);	                    	
+            Intent startIntent = new Intent(MainActivity.this, FirstUseActivity.class);	                    	
             startActivityForResult(startIntent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
+		}
+		else{
+			mRLSetting.setVisibility(View.INVISIBLE);
 		}
 	}
 	
@@ -193,18 +232,17 @@ public class MainActivity extends Activity{
 					}
 				}
 			}
-//			else if(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING.equals(action)){
-//                Intent startIntent = new Intent(MainActivity.this, LinkServerActivity.class);	                    	
-//                startActivityForResult(startIntent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
-//			}
 			else if(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING.equals(action)){
-				displayProgress();
+				firsttimeDispaly();
 			}			
 			refreshServerStatus();
 		}
 	};
     public void refreshServerStatus(){
 		mAdapter.setData(ServersLogic.getBackupedServers(this));
+		if(RuntimeState.OnWebSocketStation){
+			mRLSetting.setVisibility(View.INVISIBLE);
+		}
     }
 
     @Override
@@ -212,10 +250,12 @@ public class MainActivity extends Activity{
         // Check which request we're responding to
         if (requestCode == Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER) {
             // Make sure the request was successful
-            if (resultCode == RESULT_OK) {                
+            if (resultCode == RESULT_OK) {         
+            	mRLSetting.setVisibility(View.INVISIBLE);
             	mAdapter.setData(ServersLogic.getBackupedServers(this));
             }
         }
+        
     }
     @Override
     protected void onPause() {
@@ -272,4 +312,31 @@ public class MainActivity extends Activity{
 		PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarmManager.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(),interval, sender);
     }
+
+	@Override
+	public void onClick(View v) {
+		Intent startIntent = null;
+ 		switch(v.getId()){
+			case R.id.ivAddpc:
+	            startIntent = new Intent(MainActivity.this, FirstUseActivity.class);	                    	
+	            startActivityForResult(startIntent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
+				break;		
+			case R.id.btnDeletePhoto:
+	            startIntent = new Intent(MainActivity.this, CleanActivity.class);
+	            startIntent.putExtra(Constant.BUNDLE_FILE_TYPE, Constant.TRANSFER_TYPE_IMAGE);
+	            startActivityForResult(startIntent, Constant.REQUEST_CODE_CLEAN_STORAGE);
+				break;
+			case R.id.btnDeleteVideo:
+	            startIntent = new Intent(MainActivity.this, CleanActivity.class);	                    	
+	            startIntent.putExtra(Constant.BUNDLE_FILE_TYPE, Constant.TRANSFER_TYPE_VIDEO);
+	            startActivityForResult(startIntent, Constant.REQUEST_CODE_CLEAN_STORAGE);
+				break;
+			case R.id.btnDeleteAudio:
+	            startIntent = new Intent(MainActivity.this, CleanActivity.class);	          
+	            startIntent.putExtra(Constant.BUNDLE_FILE_TYPE, Constant.TRANSFER_TYPE_AUDIO);
+	            startActivityForResult(startIntent, Constant.REQUEST_CODE_CLEAN_STORAGE);
+				break;
+		}
+	}
+	
 }

@@ -1,15 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/ic_dialog" >
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_margin="5dp"
+        android:layout_margin="0dp"
         android:src="@drawable/ic_pairing" />
 
     <RelativeLayout
@@ -19,8 +18,8 @@
 	    android:layout_above="@+id/llBtns"
 	    android:layout_below="@+id/imageView1"
 	    android:layout_centerHorizontal="true"
-	    android:layout_marginLeft="10dp"
-	    android:layout_marginRight="20dp"
+	    android:layout_marginLeft="0dp"
+	    android:layout_marginRight="0dp"
 	    android:background="#000000">
     
     <TextView
@@ -69,8 +68,8 @@
         android:layout_below="@+id/tvWording22"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dip"
-        android:layout_marginRight="5dip"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:text="@string/backup_view_descript23"
         android:textColor="#FFFFFF" />
     
@@ -82,7 +81,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="14dp"
         android:text="@string/file_transfering"
-        android:textColor="#33CCFF" />
+        style="@style/HighlightText" />
 
     <ProgressBar
         android:id="@+id/pbBackup"
@@ -91,8 +90,10 @@
         android:layout_height="30dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/tvWording23"
-        android:layout_margin="30dip"
-        android:max="100"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"        
         android:progress="@android:integer/config_mediumAnimTime" />
     	    	    
 	</RelativeLayout>
@@ -102,15 +103,14 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginTop="5dp">
 
     <Button
         android:id="@+id/btnConfirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:text="@string/btn_confirm" />
 
 	</LinearLayout>

@@ -23,6 +23,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.waveface.sync.Constant;
+import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
 import com.waveface.sync.db.BackupDetailsTable;
 import com.waveface.sync.db.ImportFilesTable;
@@ -609,10 +610,10 @@ public class BackupLogic {
 							ios.close();
 					} catch (IOException e) {
 					}
-//					if(isSuccesed){
-//						ServersLogic.updateServerStatus(context, entity.datetime,filetype, serverId);
-//					}
-//					isSuccesed = false;
+					if(isSuccesed){
+						ServersLogic.updateServerLastBackupTime(context, serverId);
+					}
+					isSuccesed = false;
 				}
 				cursor.moveToNext();
 				if(!canBackup(context)){
@@ -630,6 +631,39 @@ public class BackupLogic {
 			scanFileForBackup(context, Constant.TYPE_IMAGE);
 			RuntimeState.isScaning = false ;
     	}
+	}
+	public static String getSpaceByType(Context context,String type,String startDate,String endDate){
+
+		int DataType = 0 ; 
+		if(type.equals(Constant.TRANSFER_TYPE_IMAGE)){
+			DataType = Constant.TYPE_IMAGE;
+		}
+		else if(type.equals(Constant.TRANSFER_TYPE_VIDEO)){
+			DataType = Constant.TYPE_VIDEO;
+		}
+		else if(type.equals(Constant.TRANSFER_TYPE_AUDIO)){
+			DataType = Constant.TYPE_AUDIO;
+		}
+		long totalSize = 0 ; 
+		ContentResolver cr = context.getContentResolver();
+		long count = 0;		
+		Cursor cursor = cr.query(ImportFilesTable.CONTENT_URI, 
+				new String[]{ImportFilesTable.COLUMN_SIZE}, 
+				ImportFilesTable.COLUMN_FILETYPE+"=? AND "+
+				ImportFilesTable.COLUMN_DATE+"<? AND "+
+				ImportFilesTable.COLUMN_DATE+">=? ", 
+				new String[]{String.valueOf(DataType),startDate,endDate}, 
+				null);	
+		if(cursor!=null && cursor.getCount()>0){
+			count = cursor.getCount();
+			cursor.moveToFirst();
+			for(int i = 0 ; i < count ; i++){
+				totalSize += cursor.getLong(0);
+				cursor.moveToNext();
+			}
+		}
+		cursor.close();
+    	return StringUtil.byteCountToDisplaySize(totalSize);
 	}
 	
 	

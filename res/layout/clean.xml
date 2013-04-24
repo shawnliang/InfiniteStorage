@@ -1,0 +1,121 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/tvTitle"
+        style="@style/HighlightText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/clean_title" />
+
+    <LinearLayout
+        android:id="@+id/rlPatterns"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvTitle"
+        android:layout_above="@+id/llBtns"                
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="15dp"
+        android:background="#1BBFE0" 
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/llFirstPattren"
+            android:layout_weight="1.5"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="1dp"
+            android:background="#136B7D" >
+
+            <TextView
+                android:id="@+id/tv3Month"
+                style="@style/WhiteNormalText"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:text="@string/clean_keep_three_months" />
+
+            <TextView
+                android:id="@+id/tv3MonthFreeSpace"
+                style="@style/WhiteNormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv3Month"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="@string/clean_freespace" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/llSecondPattren"
+            android:layout_width="match_parent"
+            android:layout_weight="1.5"
+            android:layout_height="0dp"
+            android:layout_marginTop="1dp"
+            android:background="#136B7D" >
+
+            <TextView
+                android:id="@+id/tv6Month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:text="@string/clean_keep_six_months"
+                style="@style/WhiteNormalText"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/tv6MonthFreeSpace"
+                style="@style/WhiteNormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv6Month"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="@string/clean_freespace" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/llThirdPattren"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:background="#136B7D" >
+
+            <TextView
+                android:id="@+id/tvSetting"
+                style="@style/WhiteNormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/clean_setting_time"
+                android:textSize="20sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llBtns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="15dp" >
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/btn_cancel" />
+    </LinearLayout>
+
+</RelativeLayout>

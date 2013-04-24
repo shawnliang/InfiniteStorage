@@ -10,54 +10,66 @@
     <string name="hello_world">Hello world!</string>
     <string name="file_scanning">Scaning Files..</string>
     <string name="server_searching">Searching PC..</string>
-    <string name="clean_space">Clear</string>    
-    <string name="period">FROM %1$s TO %2$s</string> 
+    <string name="clean_space">Clear</string>
+    <string name="period">FROM %1$s TO %2$s</string>
+
+    <!-- MAIN -->
+    <string name="auto_connect">Connecting...</string>
+    <string name="total">Total</string>
+    <string name="videos">Total %1$d video(s)</string>
+    <string name="audios">Total %1$d audio(s)</string>
+    <string name="photos">Total %1$d photo(s)</string>
+    <string name="can_not_find_server">Cann\'t Find Server Now, We will connect to your PC automatically later!</string>
     
-    <!--MAIN-->   
-    <string name="auto_connect">Connecting...</string> 
-    <string name="total">Total</string>    
-    <string name="videos">Total %1$d video(s)</string>    
-    <string name="audios">Total %1$d audio(s)</string>    
-    <string name="photos">Total %1$d photo(s)</string>        
-    
-    <!--PAIRED SERVERS-->
-    <string name="backuping">Backuping ...</string>    
-    <string name="offline">OFFLINE</string> 
-    <string name="backuped_completed">Backup Completed</string>    
-    <string name="backup_period">BACKUP FROM %1$s TO %2$s</string>    
-    <string name="free_space">Free Space %1$s</string>    
-    <string name="backup_folder">Backup Folder %1$s</string>    
+
+    <!-- PAIRED SERVERS -->
+    <string name="backuping">Backuping ...</string>
+    <string name="offline">OFFLINE</string>
+    <string name="backuped_completed">Backup Completed</string>
+    <string name="backup_period">BACKUP FROM %1$s TO %2$s</string>
+    <string name="free_space">Free Space %1$s</string>
+    <string name="backup_folder">Backup Folder %1$s</string>
     <string name="backup_info">Backuped %1$d photo(s), %2$d video(s), %3$d audio(s)</string>
-    
-    <!--FIRST USE-->
-    <!--INSTALL-->    
+    <string name="backup_last_local_time">LastBackup Time %1$s</string>
+
+    <!-- FIRST USE -->
+    <!-- INSTALL -->
     <string name="simple_description">EASIEST BACKUP APP</string>
     <string name="simple_description1">When you\'re home</string>
     <string name="simple_description2">all contents will be backuped automatically.</string>
     <string name="download_windows">download windows version</string>
     <string name="download_url">waveface.com/awesome</string>
     <string name="email_description">Email Me download URL</string>
-    <!--EMAIL-->
-    <string name="email_subject">InfiniteStorage Windows Download URL</string>    
+    <!-- EMAIL -->
+    <string name="email_subject">InfiniteStorage Windows Download URL</string>
 
-   <!--BONHOUR SERVER CHOOSE-->    
+    <!-- BONHOUR SERVER CHOOSE -->
     <string name="choose_server">Select a PC</string>
-    <string name="pairing">Pairing with Server...</string> 
-    <string name="title_pairing">Message</string> 
-    <string name="pairing_wait">Please open your Windows APP</string> 
-    <string name="pairing_denied">This device has been denied.</string> 
-    
-    
-    <!--FILE TRANSFRING-->    
+    <string name="pairing">Pairing with Server...</string>
+    <string name="title_pairing">Message</string>
+    <string name="pairing_wait">Please open your Windows APP</string>
+    <string name="pairing_denied">This device has been denied.</string>
+
+    <!-- FILE TRANSFRING -->
     <string name="file_transfering">%1$s transfering files</string>
     <string name="backup_view_descript11">There\'re lots of files backup for the first time</string>
     <string name="backup_view_descript12">please be patient</string>
     <string name="backup_view_descript21">Form now on all your</string>
     <string name="backup_view_descript22">photos(s) videos(s) audio(s)</string>
     <string name="backup_view_descript23">backup to your PC automatically through Wi-Fi Network!</string>
-    
-    
-    <!--BUTTON-->
+
+    <!--CLEAN STORAGE--> 
+    <string name="clean_title">Choose Keep Pattern(%1$s)</string>
+    <string name="clean_keep_three_months">Keep recent 3 Months</string>
+    <string name="clean_keep_six_months">Keep recent half year</string>
+    <string name="clean_setting_time">Setup Keep Time</string>
+    <string name="clean_freespace">You\'ll get more %1$s space</string>
+
+    <string name="video">Video</string>    
+    <string name="audio">Audio</string>    
+    <string name="photo">Photo</string>        
+
+    <!-- BUTTON -->
     <string name="btn_back">Back</string>
     <string name="btn_next">Next</string>
     <string name="btn_confirm">Sure</string>
@@ -65,9 +77,11 @@
     <string name="btn_ok">OK</string>
     <string name="btn_cancel">CANCEL</string>
     <string name="btn_yes">YES</string>
-    <string name="btn_no">NO</string>        
-    
-    <!--NOTIFICATION-->    
-    <string name="notify_link_server">Backuping to %1$s</string>    
+    <string name="btn_no">NO</string>
+
+    <!-- NOTIFICATION -->
+    <string name="notify_link_server">Backuping to %1$s</string>
     <string name="notify_backup_status"> %1$d file(s) Backuped.</string>
+    <string name="title_activity_clean_storage">CleanStorageActivity</string>
+
 </resources>

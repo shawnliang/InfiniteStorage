@@ -19,11 +19,11 @@ import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.util.StringUtil;
 
-public class ServersAdapter  extends BaseAdapter {
+public class PairedServersAdapter  extends BaseAdapter {
 	  private final Context context;
 	  private ArrayList<ServerEntity> mServers;
 
-	  public ServersAdapter(Context context, ArrayList<ServerEntity> servers) {
+	  public PairedServersAdapter(Context context, ArrayList<ServerEntity> servers) {
 	    super();
 	    this.context = context;
 	    this.mServers = servers;
@@ -36,6 +36,7 @@ public class ServersAdapter  extends BaseAdapter {
 		    TextView tvFreespace;
 		    TextView tvFolder;
 		    TextView tvBackupInfo;		    
+		    TextView tvLastBackupTime;
 	  }
 	  
 	  @Override
@@ -53,6 +54,7 @@ public class ServersAdapter  extends BaseAdapter {
 		    viewHolder.tvFreespace = (TextView) v.findViewById(R.id.textFreespace);
 		    viewHolder.tvFolder = (TextView) v.findViewById(R.id.textFolder);
 		    viewHolder.tvBackupInfo = (TextView) v.findViewById(R.id.textBackupInfo);
+		    viewHolder.tvLastBackupTime = (TextView) v.findViewById(R.id.textLastBackupTime);
 		    
 		    v.setTag(viewHolder);
 		  }
@@ -93,7 +95,9 @@ public class ServersAdapter  extends BaseAdapter {
 			    viewHolder.tvFreespace.setText(context.getString(R.string.free_space,StringUtil.byteCountToDisplaySize(entity.freespace)));
 			    viewHolder.tvFolder.setText(context.getString(R.string.backup_folder,entity.folder));	    
 			    viewHolder.tvBackupInfo.setText(context.getString(R.string.backup_info,entity.photoCount,entity.videoCount,entity.audioCount));	 
-	       }
+			    String lastBackupTime = StringUtil.displayLocalTime(entity.lastLocalBackupTime,StringUtil.DATE_FORMAT);
+			    viewHolder.tvLastBackupTime.setText(context.getString(R.string.backup_last_local_time,lastBackupTime));
+		  }
 	    return v;
 	  }
 

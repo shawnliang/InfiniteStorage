@@ -38,7 +38,7 @@ import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.ServersLogic;
 
 
-public class ServerChooserFragment extends LinkFragmentBase 
+public class ServerChooserFragment extends FragmentBase 
 	implements OnClickListener, OnCheckedChangeListener{
 	public final String TAG = ServerChooserFragment.class.getSimpleName();
 
@@ -50,6 +50,8 @@ public class ServerChooserFragment extends LinkFragmentBase
 	private ProgressBar mProgressBar;
 	private TextView mTvSearch;
 	private Button mBtnBackup;
+	
+	private AlertDialog mAlertDialog;
 
 
 	//DATA
@@ -116,10 +118,10 @@ public class ServerChooserFragment extends LinkFragmentBase
 		
 	    mProgressBar = (ProgressBar) mRootView.findViewById(R.id.pbSearch);
 	    mTvSearch = (TextView) mRootView.findViewById(R.id.tvSearch);
-		if(mAdapter.getCount()>0){
-		    mProgressBar.setVisibility(View.INVISIBLE);
-		    mTvSearch.setVisibility(View.INVISIBLE);
-		}
+//		if(mAdapter.getCount()>0){
+//		    mProgressBar.setVisibility(View.INVISIBLE);
+//		    mTvSearch.setVisibility(View.INVISIBLE);
+//		}
 		
         mHandler.postDelayed(new Runnable() {
             public void run() {
@@ -166,6 +168,10 @@ public class ServerChooserFragment extends LinkFragmentBase
 						dismissProgress();
 						refreshUI();
 						mBtnBackup.setEnabled(true);
+						if(mAlertDialog!=null && mAlertDialog.isShowing()){
+							mAlertDialog.dismiss();
+						}
+						getActivity().setResult(getActivity().RESULT_OK,new Intent());
 					}
 					else if(response.equals(Constant.WS_ACTION_DENIED)){
 						dismissProgress();
@@ -180,6 +186,9 @@ public class ServerChooserFragment extends LinkFragmentBase
 	};
 
 	private void openDialog(Context context,String action){
+		if(mAlertDialog!=null && mAlertDialog.isShowing()){
+			mAlertDialog.dismiss();
+		}
 		String title = context.getString(R.string.title_pairing);
 		String message = null;
 		if(action.equals(Constant.WS_ACTION_DENIED)){
@@ -202,9 +211,9 @@ public class ServerChooserFragment extends LinkFragmentBase
 				}
 			  }); 
 		// create alert dialog
-		AlertDialog alertDialog = alertDialogBuilder.create();
+		mAlertDialog = alertDialogBuilder.create();
 		// show it
-		alertDialog.show();
+		mAlertDialog.show();
 	}
 	@Override
 	public void onDestroy() {
@@ -232,10 +241,10 @@ public class ServerChooserFragment extends LinkFragmentBase
 	}
 	public void refreshUI(){
 		mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
-		if(mAdapter.getCount()>0){
-		    mProgressBar.setVisibility(View.INVISIBLE);
-		    mTvSearch.setVisibility(View.INVISIBLE);
-		}
+//		if(mAdapter.getCount()>0){
+//		    mProgressBar.setVisibility(View.INVISIBLE);
+//		    mTvSearch.setVisibility(View.INVISIBLE);
+//		}
 	}
 	
 	class ServerArrayAdapter extends BaseAdapter {
