@@ -27,7 +27,6 @@ import com.waveface.sync.RuntimeState;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.task.ScanTask;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.NetworkUtil;
 import com.waveface.sync.util.SyncNotificationManager;
@@ -48,7 +47,7 @@ public class InfiniteService extends Service{
 	private String mCondidateWSLocation ;
 
 	//TIMER
-    private final int UPDATE_INTERVAL = 10 * 1000;
+    private final int UPDATE_INTERVAL = 30 * 1000;
     private Timer timer = new Timer();
     
     //

@@ -116,10 +116,10 @@ public class ServerChooserFragment extends LinkFragmentBase
 		
 	    mProgressBar = (ProgressBar) mRootView.findViewById(R.id.pbSearch);
 	    mTvSearch = (TextView) mRootView.findViewById(R.id.tvSearch);
-		if(mAdapter.getCount()>0){
-		    mProgressBar.setVisibility(View.INVISIBLE);
-		    mTvSearch.setVisibility(View.INVISIBLE);
-		}
+//		if(mAdapter.getCount()>0){
+//		    mProgressBar.setVisibility(View.INVISIBLE);
+//		    mTvSearch.setVisibility(View.INVISIBLE);
+//		}
 		
         mHandler.postDelayed(new Runnable() {
             public void run() {
@@ -232,10 +232,10 @@ public class ServerChooserFragment extends LinkFragmentBase
 	}
 	public void refreshUI(){
 		mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
-		if(mAdapter.getCount()>0){
-		    mProgressBar.setVisibility(View.INVISIBLE);
-		    mTvSearch.setVisibility(View.INVISIBLE);
-		}
+//		if(mAdapter.getCount()>0){
+//		    mProgressBar.setVisibility(View.INVISIBLE);
+//		    mTvSearch.setVisibility(View.INVISIBLE);
+//		}
 	}
 	
 	class ServerArrayAdapter extends BaseAdapter {

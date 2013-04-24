@@ -1,14 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/ic_dialog">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_margin="5dp"
+        android:layout_margin="0dp"
         android:src="@drawable/ic_pairing" />
     <TextView
         android:id="@+id/textView1"
@@ -28,8 +27,8 @@
         android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true"
         android:text="@string/simple_description"
-        android:layout_marginLeft="5dip"
-        android:layout_marginRight="5dip"
+        android:layout_marginLeft="0dip"
+        android:layout_marginRight="0dip"
         android:textColor="#33CCFF"
         android:textSize="18sp" />
 
@@ -39,15 +38,14 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginTop="5dp">
 
         <Button
             android:id="@+id/btnNext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
             android:text="@string/btn_next" />
 
 	</LinearLayout>
@@ -59,7 +57,9 @@
         android:layout_below="@+id/textView2"
         android:layout_above="@+id/llBtns"
         android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"        
         android:background="#000000" >
 
         <Button
@@ -68,8 +68,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:text="@string/email_description" />
 
         <TextView

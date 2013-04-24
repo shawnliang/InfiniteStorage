@@ -2,6 +2,7 @@ package com.waveface.sync.ui;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -16,8 +17,13 @@ import android.database.ContentObserver;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
@@ -38,7 +44,7 @@ import com.waveface.sync.util.StringUtil;
  * 
  * @see SystemUiHider
  */
-public class MainActivity extends Activity{
+public class MainActivity extends Activity implements OnClickListener{
 	private String TAG = MainActivity.class.getSimpleName();
     
 	private ImportFilesObserver mImportFilesObserver;    
@@ -53,6 +59,10 @@ public class MainActivity extends Activity{
 	private TextView mVideoSize;
 	private TextView mAudioCount;
 	private TextView mAudioSize;
+	private Button mDeletePhotoBtn;
+	private Button mDeleteVideoBtn;
+	private Button mDeleteAudioBtn;
+	
 	private ProgressDialog mProgressDialog;
 
 
@@ -89,6 +99,13 @@ public class MainActivity extends Activity{
 		//AUDIO
 		mAudioCount = (TextView) this.findViewById(R.id.textAudioCount);
 		mAudioSize = (TextView) this.findViewById(R.id.textAudioSize);
+		
+		mDeletePhotoBtn = (Button) this.findViewById(R.id.btnDeletePhoto);
+		mDeletePhotoBtn.setOnClickListener(this);
+		mDeleteVideoBtn = (Button) this.findViewById(R.id.btnDeleteVideo);
+		mDeleteVideoBtn.setOnClickListener(this);
+		mDeleteAudioBtn = (Button) this.findViewById(R.id.btnDeleteAudio);
+		mDeleteAudioBtn.setOnClickListener(this);
 		
 		ListView listview = (ListView) findViewById(R.id.listview);
 		ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(this);		
@@ -272,4 +289,19 @@ public class MainActivity extends Activity{
 		PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		alarmManager.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(),interval, sender);
     }
+
+	@Override
+	public void onClick(View v) {
+		switch(v.getId()){
+			case R.id.btnDeletePhoto:
+				Toast.makeText(this, "Coming Soon!", Toast.LENGTH_LONG).show();
+				break;
+			case R.id.btnDeleteVideo:
+				Toast.makeText(this, "Coming Soon!", Toast.LENGTH_LONG).show();
+				break;
+			case R.id.btnDeleteAudio:
+				Toast.makeText(this, "Coming Soon!", Toast.LENGTH_LONG).show();
+				break;
+		}
+	}
 }
