@@ -3,55 +3,55 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Bonjour;
+using Mono.Zeroconf;
+
 
 namespace InfiniteStorage
 {
 	class BonjourService
 	{
-		Bonjour.DNSSDService m_service;
-		Bonjour.DNSSDService m_register;
-		Bonjour.DNSSDEventManager m_eventManager;
+		private const string SVC_TYPE = "_infinite-storage._tcp";
+
+		private RegisterService m_svc;
 
 		public event EventHandler<BonjourErrorEventArgs> Error;
 
 		public BonjourService()
 		{
-			m_service = new DNSSDService();
-			m_eventManager = new DNSSDEventManager();
-			m_eventManager.ServiceRegistered += new _IDNSSDEvents_ServiceRegisteredEventHandler(m_eventManager_ServiceRegistered);
-			m_eventManager.OperationFailed += new _IDNSSDEvents_OperationFailedEventHandler(m_eventManager_OperationFailed);
+			m_svc = new RegisterService();
+
+			m_svc.Response += new RegisterServiceEventHandler(m_svc_Response);
 		}
 
-		void m_eventManager_OperationFailed(DNSSDService service, DNSSDError error)
+		void m_svc_Response(object o, RegisterServiceEventArgs args)
 		{
-			var handler = Error;
-			if (handler != null)
-				handler(this, new BonjourErrorEventArgs { error = error });
-		}
-
-		void m_eventManager_ServiceRegistered(DNSSDService service, DNSSDFlags flags, string name, string regtype, string domain)
-		{
+			if (!args.IsRegistered)
+			{
+				var handler = Error;
+				if (handler != null)
+					handler(this, new BonjourErrorEventArgs { error = args.ServiceError });
+			}
 		}
 
 		public void Register(ushort port, string server_id)
 		{
-			var txt = new TXTRecord();
-			txt.SetValue("server_id", Encoding.UTF8.GetBytes(server_id));
-			txt.SetValue("ws_port", Encoding.UTF8.GetBytes(port.ToString()));
-			txt.SetValue("version", Encoding.UTF8.GetBytes("1.0"));
-			m_register = m_service.Register(0, 0, Environment.UserName + "-" + Environment.MachineName, "_infinite-storage._tcp", null, null, port, txt, m_eventManager);
-		}
+			m_svc.Name = Environment.UserName + "-" + Environment.MachineName;
+			m_svc.Port = (short)port;
+			m_svc.RegType = SVC_TYPE;
+			m_svc.ReplyDomain = "local.";
 
-		public void Unregister()
-		{
-			if (m_register != null)
-				m_register.Stop();
+			var txt = new TxtRecord();
+			txt.Add("server_id", server_id);
+			txt.Add("ws_port", port.ToString());
+			txt.Add("version", "1.0");
+
+			m_svc.TxtRecord = txt;
+			m_svc.Register();
 		}
 	}
 
 	class BonjourErrorEventArgs : EventArgs
 	{
-		public DNSSDError error { get; set; }
+		public Mono.Zeroconf.ServiceErrorCode error { get; set; }
 	}
 }

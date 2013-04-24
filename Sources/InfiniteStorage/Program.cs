@@ -21,7 +21,6 @@ namespace InfiniteStorage
 		static Timer m_NotifyTimer;
 		static System.Timers.Timer m_BackupStatusTimer;
 		static WebSocketServer<InfiniteStorageWebSocketService> ws_server;
-		static System.Timers.Timer m_updateBonjourTimer;
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -98,10 +97,6 @@ namespace InfiniteStorage
 					Settings.Default.Save();
 				}
 				m_bonjourService.Register(port, Settings.Default.ServerId);
-
-				// sometimes the service record is missing after some time.
-				// work around it by periodically register with bonjour service
-				registerBonjourServicePeriodically(port);
 			}
 			catch (Exception e)
 			{
@@ -130,30 +125,6 @@ namespace InfiniteStorage
 				serialNum = getserial["SerialNumber"].ToString();
 			}
 			return serialNum;
-		}
-
-		private static void registerBonjourServicePeriodically(ushort port)
-		{
-			m_updateBonjourTimer = new System.Timers.Timer(60 * 1000);
-			m_updateBonjourTimer.AutoReset = true;
-			m_updateBonjourTimer.Elapsed += (s, e) =>
-			{
-				try
-				{
-					m_updateBonjourTimer.Enabled = false;
-					m_bonjourService.Register(port, Settings.Default.ServerId);
-
-				}
-				catch (Exception err)
-				{
-					log4net.LogManager.GetLogger("main").Warn("unable to register bonjour svc", err);
-				}
-				finally
-				{
-					m_updateBonjourTimer.Enabled = true;
-				}
-			};
-			m_updateBonjourTimer.Start();
 		}
 
 		private static ushort initWebsocketServer()
@@ -284,8 +255,6 @@ namespace InfiniteStorage
 
 		static void Application_ApplicationExit(object sender, EventArgs e)
 		{
-			m_bonjourService.Unregister();
-
 			ws_server.Stop();
 
 			if (m_notifyIcon != null)

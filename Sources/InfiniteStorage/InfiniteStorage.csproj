@@ -43,6 +43,9 @@
     <Reference Include="log4net">
       <HintPath>..\..\Libs\log4net-1.2.11\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Zeroconf">
+      <HintPath>..\..\Libs\Mono.Zeroconf\Mono.Zeroconf.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\Libs\Newtonsoft.Json.4.5.10\lib\net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -218,6 +221,10 @@
     <None Include="Resources\product.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\Libs\Mono.Zeroconf\Mono.Zeroconf.Providers.Bonjour.dll">
+      <Link>Mono.Zeroconf.Providers.Bonjour.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\..\Libs\System.Data.SQLite.1.0.84.0\net40\x64\SQLite.Interop.dll">
       <Link>x64\SQLite.Interop.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -229,17 +236,6 @@
     <None Include="Resources\AppIcon.png" />
     <None Include="Resources\app_store_badge.png" />
     <None Include="Resources\get_it_on_google_play.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="Bonjour">
-      <Guid>{18FBED6D-F2B7-4EC8-A4A4-46282E635308}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
