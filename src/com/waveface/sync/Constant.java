@@ -152,6 +152,12 @@ public class Constant {
 	public static final int NETWORK_3G = 1;
 	public static final int NETWORK_WIFI = 2;
 
+	//NOTIFICATION CODE
+	public static final int NOTIFICATION_BACK_UP_START = 0;
+	public static final int NOTIFICATION_BACK_UP_ON_PROGRESS = 1;
+	public static final int NOTIFICATION_BACKED_UP = 2;
+	
+	
 	//IMPORTED FILE STATUS
 	public static final String IMPORT_FILE_INCLUDED = "0";
 	public static final String IMPORT_FILE_BACKUPED = "3";

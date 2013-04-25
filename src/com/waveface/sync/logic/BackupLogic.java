@@ -632,6 +632,7 @@ public class BackupLogic {
 					}
 					if(isSuccesed){
 						ServersLogic.updateServerLastBackupTime(context, serverId,fileDatetime);
+						RuntimeState.FileBackedUp(context);
 					}
 					isSuccesed = false;
 				}

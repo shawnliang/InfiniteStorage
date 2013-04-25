@@ -209,7 +209,7 @@ public class MainActivity extends Activity implements OnClickListener{
 			String action = intent.getAction();
 			Log.d(TAG, "action:" + intent.getAction());
 			if (Constant.ACTION_BACKUP_DONE.equals(action)) {
-				//TODO:???
+				//Toast.makeText(MainActivity.this, R.string.action_settings, Toast.LENGTH_LONG).show();
 			}
 			else if (Constant.ACTION_NETWORK_STATE_CHANGE.equals(action)) {
 				//TODO:???

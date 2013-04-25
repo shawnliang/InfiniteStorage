@@ -1,9 +1,9 @@
 package com.waveface.sync;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.google.gson.Gson;
-import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.util.NetworkUtil;
 
 public class RuntimeState{
@@ -89,6 +89,9 @@ public class RuntimeState{
 		else{
 			return false;
 		}
-
+	}	
+	public static void FileBackedUp(Context context){
+		Intent intent = new Intent(Constant.ACTION_BACKUP_FILE);
+		context.sendBroadcast(intent);
 	}
 }
