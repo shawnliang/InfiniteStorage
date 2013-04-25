@@ -157,8 +157,8 @@ public class ServerChooserFragment extends FragmentBase
 				String response = intent.getStringExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT);
 				if(response!=null){
 					if(response.equals(Constant.WS_ACTION_ACCEPT)){
-						dismissProgress();
 						refreshUI();
+						dismissProgress();
 						if(mAlertDialog!=null && mAlertDialog.isShowing()){
 							mAlertDialog.dismiss();
 						}

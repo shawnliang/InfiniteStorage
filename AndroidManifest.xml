@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.waveface.sync"
-    android:installLocation="preferExternal"
     android:versionCode="3"
     android:versionName="1.0.2" >
 
-    <uses-sdk android:minSdkVersion="9" />
+    <uses-sdk android:minSdkVersion="9"/>
 
     <supports-screens
         android:largeScreens="true"
@@ -13,9 +12,8 @@
         android:smallScreens="false"
         android:xlargeScreens="true" />
 
-    <uses-permission
-        android:name="android.permission.INTERNET"
-        android:required="true" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" android:required="true" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -23,7 +21,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.BATTERY_STATS" />
 
     <!--
@@ -90,14 +87,15 @@
             android:exported="false"
             android:syncable="true" />
 
-        <receiver
-            android:name="com.waveface.sync.service.InfiniteReceiver"
-            android:enabled="true"
-            android:exported="false" >
+        <receiver 
+            android:enabled="true" 
+            android:exported="false" 
+             android:name="com.waveface.sync.service.InfiniteReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.TIME_TICK" />
-                <!-- action android:name="android.net.conn.CONNECTIVITY_CHANGE"/ -->
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="com.waveface.sync.action.INFINITE_STORAGE_ALARM"/>
             </intent-filter>
         </receiver>
 

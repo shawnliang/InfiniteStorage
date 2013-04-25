@@ -8,31 +8,36 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TreeSet;
 
 import org.jwebsocket.kit.WebSocketException;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.RuntimeState;
 import com.waveface.sync.db.BackupDetailsTable;
+import com.waveface.sync.db.BackupedServersTable;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.db.ServerFilesView;
-import com.waveface.sync.db.BackupedServersTable;
 import com.waveface.sync.entity.FileBackupEntity;
+import com.waveface.sync.service.InfiniteReceiver;
 import com.waveface.sync.util.FileUtil;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.MediaFile;
-import com.waveface.sync.util.NetworkUtil;
 import com.waveface.sync.util.StringUtil;
 import com.waveface.sync.websocket.RuntimeWebClient;
 
@@ -413,19 +418,22 @@ public class BackupLogic {
 	public static int[] getBackupProgressInfo(Context context,String serverId){
     	int totalCount = 0;
     	int backupedCount = 0;
-		String lastBackupTimestamp = null;
+		String lastfileBackupTimestamp = null;
     	//select from serverFiles 
 		Cursor cursor = null;
 		ContentResolver cr = context.getContentResolver();
 		cursor = cr.query(BackupedServersTable.CONTENT_URI, 
 				new String[]{
-				BackupedServersTable.COLUMN_END_DATETIME,
+					BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME
 				}, 
 				BackupedServersTable.COLUMN_SERVER_ID+"=?", 
 				new String[]{serverId},null);	
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();
-			lastBackupTimestamp = cursor.getString(0); 
+			lastfileBackupTimestamp = cursor.getString(0); 
+//			lastBackupTimestamp = cursor.getString(1); 			
+//		    Log.d("CHECK", "server BackupTimestamp:"+cursor.getString(0));
+//		    Log.d("CHECK", "local lastest file Timestamp:"+cursor.getString(1));		    
 		}	
 		String where = ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
 		String[] whereArgs = new String[]{Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
@@ -436,53 +444,65 @@ public class BackupLogic {
 				ImportFilesTable.COLUMN_DATE}, 
 				where,whereArgs,null);	
 		if(cursor!=null && cursor.getCount()>0){
-			cursor.moveToFirst();
 			totalCount = cursor.getCount();
 		}
         //GET BACKUPED COUNT
-		if(!TextUtils.isEmpty(lastBackupTimestamp)){
+		if(!TextUtils.isEmpty(lastfileBackupTimestamp)){
 			where = ImportFilesTable.COLUMN_DATE+"<=? AND "+
 					ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
-			whereArgs = new String[]{lastBackupTimestamp,Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
+			whereArgs = new String[]{lastfileBackupTimestamp,Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
 			cursor = cr.query(ImportFilesTable.CONTENT_URI, 
 					new String[]{
-					ImportFilesTable.COLUMN_DATE}, 
+					ImportFilesTable.COLUMN_FILENAME,ImportFilesTable.COLUMN_DATE}, 
 					where, 
 					whereArgs, 
 					null);	
 			if(cursor!=null && cursor.getCount()>0){
-				cursor.moveToFirst();
 				backupedCount = cursor.getCount();
+//				for(int i = 0 ; i < backupedCount ; i++){
+//				    Log.d("CHECK", "Filename:"+cursor.getString(0));
+//				    Log.d("CHECK", "Date:"+cursor.getString(1));				   
+//					cursor.moveToNext();
+//				}
 			}
 		}
 		cursor.close();
 		return new int[]{backupedCount,totalCount};
 	}
 	public static boolean needToBackup(Context context,String serverId){
-		int[] backupAndTotalCount = BackupLogic.getBackupProgressInfo(context, serverId);
-		if(backupAndTotalCount[0]!=backupAndTotalCount[1]){
+		String lastBackupTimestamp = null;
+		String lastImportFileTimestamp = null;		
+		Cursor cursor = null;
+		ContentResolver cr = context.getContentResolver();
+		cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+				new String[]{
+				BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME
+				}, 
+				BackupedServersTable.COLUMN_SERVER_ID+"=?", 
+				new String[]{serverId},null);	
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			lastBackupTimestamp = cursor.getString(0); 			
+		}	
+		String where = ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
+		String[] whereArgs = new String[]{Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
+		cursor = cr.query(ImportFilesTable.CONTENT_URI, 
+				new String[]{
+				ImportFilesTable.COLUMN_DATE}, 
+				where,whereArgs,null);	
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			lastImportFileTimestamp = cursor.getString(0);			
+		}
+		cursor.close();
+		if(!lastImportFileTimestamp.equals(lastBackupTimestamp)){
 			return true;
 		}
 		else{
 			return false;
 		}
-	}
-	public static boolean canBackup(Context context){
-		if(NetworkUtil.isWifiNetworkAvailable(context) 
-				&& RuntimeState.OnWebSocketOpened 
-				&& RuntimeState.OnWebSocketStation){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
+	}	
 	
-	public static void updateCount(Context context,String serverId) {
-		FileBackupEntity entity = new FileBackupEntity();
-		byte[] buffer = new byte[256 * Constant.K_BYTES];
-	}
-
 	public static void detectFile(Context context){
     	//select from serverFiles 
 		ContentResolver cr = context.getContentResolver();
@@ -513,12 +533,13 @@ public class BackupLogic {
 		boolean isSuccesed = false;
 		String filename = null;
 		int filetype = 0;
+		String fileDatetime = null;
     	String lastBackupTimestamp = "";
     	//select from serverFiles 
 		ContentResolver cr = context.getContentResolver();
 		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
 				new String[]{
-				BackupedServersTable.COLUMN_END_DATETIME,
+				BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME,
 				}, 
 				BackupedServersTable.COLUMN_SERVER_ID+"=?", 
 				new String[]{serverId},null);	
@@ -560,10 +581,10 @@ public class BackupLogic {
 				entity.fileSize = cursor.getString(2);
 				entity.folder = StringUtil.getFilepath(filename, entity.fileName);				
 				entity.datetime = cursor.getString(3);
-
+				fileDatetime = entity.datetime;
 				Log.d(TAG, "BACKUPING:"+entity.type+",Filename:"+entity.fileName);
 				try {
-					if(canBackup(context)){
+					if(RuntimeState.isWebSocketAvaliable(context)){
 						RuntimeWebClient.send(RuntimeState.GSON.toJson(entity));
 					}
 					else{
@@ -574,7 +595,7 @@ public class BackupLogic {
 					ios = new FileInputStream(new File(filename));
 					int read = 0;
 					while ((read = ios.read(buffer)) != -1) {
-						if(canBackup(context)){
+						if(RuntimeState.isWebSocketAvaliable(context)){
 							if (read != buffer.length) {
 								finalBuffer = new byte[read];
 								finalBuffer = Arrays.copyOf(buffer, read);
@@ -589,7 +610,7 @@ public class BackupLogic {
 						}
 					}					
 					// send file index for end
-					if(canBackup(context)){
+					if(RuntimeState.isWebSocketAvaliable(context)){
 						entity.action = Constant.WS_ACTION_FILE_END;
 						RuntimeWebClient.send(RuntimeState.GSON.toJson(entity));
 						isSuccesed = true;
@@ -610,12 +631,12 @@ public class BackupLogic {
 					} catch (IOException e) {
 					}
 					if(isSuccesed){
-						ServersLogic.updateServerLastBackupTime(context, serverId);
+						ServersLogic.updateServerLastBackupTime(context, serverId,fileDatetime);
 					}
 					isSuccesed = false;
 				}
 				cursor.moveToNext();
-				if(!canBackup(context)){
+				if(!RuntimeState.isWebSocketAvaliable(context)){
 					break;//cut off for loop
 				}
 			}
@@ -664,6 +685,23 @@ public class BackupLogic {
 		cursor.close();
     	return StringUtil.byteCountToDisplaySize(totalSize);
 	}
-	
+    public static void setAlarmWakeUpService(Context context){
+    	AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        //ORIGINAL
+//      Calendar cal = Calendar.getInstance();
+//      cal.setTimeInMillis(System.currentTimeMillis());
+//      cal.add(Calendar.SECOND, 10);
+//      int type = AlarmManager.RTC_WAKEUP;        
+//    	long triggerTime = cal.getTimeInMillis();
+//    	Intent intent = new Intent(context, InfiniteReceiver.class);
+    	//NEW
+    	int type = AlarmManager.ELAPSED_REALTIME_WAKEUP;
+    	long triggerTime = SystemClock.elapsedRealtime();    	
+    	Intent intent = new Intent(Constant.ACTION_INFINITE_STORAGE_ALARM);
+		PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//		alarmManager.setRepeating(type, triggerTime,interval, sender);
+		alarmManager.setInexactRepeating(type, triggerTime,Constant.ALARM_INTERVAL, sender);
+    }
+
 	
 }

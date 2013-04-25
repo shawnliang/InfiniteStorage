@@ -56,6 +56,7 @@ public class MainActivity extends Activity implements OnClickListener{
 
     //UI
 	private TextView mDevice;
+	private TextView mTotalInfo;	
 	private TextView mNowPeriod;
 	private TextView mPhotoCount;
 	private TextView mPhotoSize;
@@ -93,6 +94,8 @@ public class MainActivity extends Activity implements OnClickListener{
 		
 		mDevice = (TextView) this.findViewById(R.id.textDevice);
 		mDevice.setText(DeviceUtil.getDeviceNameForDisplay(this));
+		
+		mTotalInfo = (TextView) this.findViewById(R.id.textTotolInfo);
 		mNowPeriod = (TextView) this.findViewById(R.id.textPeriod);
 
 		//PHOTO
@@ -142,7 +145,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		
 		boolean alarmEnable = mPrefs.getBoolean(Constant.PREF_BONJOUR_SERVER_ALRM_ENNABLED, false);
 		if(alarmEnable == false){
-			setAlarmWakeUpService(this);
+			BackupLogic.setAlarmWakeUpService(this);
 			mEditor.putBoolean(Constant.PREF_BONJOUR_SERVER_ALRM_ENNABLED, true).commit();
 		}
 		startService(new Intent(MainActivity.this, InfiniteService.class)); 
@@ -281,32 +284,34 @@ public class MainActivity extends Activity implements OnClickListener{
 		}else{
 			mNowPeriod.setText(getString(R.string.period,periods[0],periods[1]));
 		}
-				
+		long totalCount = 0;
+		long totalSize = 0;
+		
+		
 		long[] datas = BackupLogic.getFileInfo(this, Constant.TYPE_IMAGE);
 		mPhotoCount.setText(getString(R.string.photos, datas[0]));
 		mPhotoSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
-	
+		totalCount += datas[0]; 
+		totalSize += datas[1];
+				
 		datas = BackupLogic.getFileInfo(this, Constant.TYPE_VIDEO);
 		mVideoCount.setText(getString(R.string.videos, datas[0]));
 		mVideoSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
+		totalCount += datas[0]; 
+		totalSize += datas[1];
+
 		
 		datas = BackupLogic.getFileInfo(this, Constant.TYPE_AUDIO);
 		mAudioCount.setText(getString(R.string.audios, datas[0]));
 		mAudioSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
+		totalCount += datas[0]; 
+		totalSize += datas[1];
+
+		mTotalInfo.setText(getString(R.string.total_info, totalCount,StringUtil.byteCountToDisplaySize(totalSize)));
 		//REFRESH SERVERS STATUS
 		refreshServerStatus();
     }
     
-    private void setAlarmWakeUpService(Context context){
-    	AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(System.currentTimeMillis());
-        cal.add(Calendar.SECOND, 2);
-		long interval = 1 *30 * 1000;
-		Intent intent = new Intent(context, InfiniteReceiver.class);
-		PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarmManager.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(),interval, sender);
-    }
 
 	@Override
 	public void onClick(View v) {

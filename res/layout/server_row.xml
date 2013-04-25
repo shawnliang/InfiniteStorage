@@ -2,11 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="30dp"
     android:layout_marginLeft="1dp"
     android:layout_marginRight="1dp"
-    android:layout_marginTop="1dp"
-    android:background="#000000" >
+    android:background="#05435A" >
 
     <LinearLayout
         android:id="@+id/ll"
@@ -82,14 +80,104 @@
         android:layout_marginBottom="3dp"
         android:layout_marginTop="3dp"
         android:text="@string/backup_info"
-        android:textColor="#FFFFFF" />
+        android:textColor="#FFFFFF" 
+        android:visibility="invisible"/>
+     <LinearLayout 
+        android:id="@+id/llTotalContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textFolder"
+        android:orientation="horizontal" >
+
+     <RelativeLayout
+        android:id="@+id/rl1"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" 
+            android:layout_centerHorizontal="true"           
+            android:src="@drawable/ic_photo" />
+
+        <TextView
+            android:id="@+id/textPhotoCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView1"
+            android:layout_centerHorizontal="true"
+            android:text="100 photos"
+            android:textColor="#FFFFFF" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl2"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp" >
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_centerHorizontal="true"            
+            android:src="@drawable/ic_video" />
+
+        <TextView
+            android:id="@+id/textVideoCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView2"
+            android:layout_centerHorizontal="true"
+            android:text="total 10 videos" 
+            android:textColor="#FFFFFF"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl3"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp" >
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"     
+            android:layout_centerHorizontal="true"       
+            android:src="@drawable/ic_audio" />
+
+        <TextView
+            android:id="@+id/textAudioCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView3"
+            android:layout_centerHorizontal="true"
+            android:text="total 5 audios" 
+            android:textColor="#FFFFFF"/>
+
+
+    </RelativeLayout>
+    </LinearLayout>
+    
 
     <TextView
         android:id="@+id/textLastBackupTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textBackupInfo"
-        android:layout_below="@+id/textBackupInfo"
+        android:layout_below="@+id/llTotalContent"
         android:layout_marginTop="3dp"
         android:text="@string/backup_last_local_time"
         android:textColor="#FFFFFF" />

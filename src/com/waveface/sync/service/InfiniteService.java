@@ -47,12 +47,11 @@ public class InfiniteService extends Service{
 	private String mCondidateWSLocation ;
 
 	//TIMER
-    private final int UPDATE_INTERVAL = 10 * 1000;
+    private final int UPDATE_INTERVAL = 30 * 1000;
     private Timer timer = new Timer();
     
     //
 	private SyncNotificationManager mNotificationManager;
-	private static boolean mDisplaying = false;
 	private String mNotoficationId;
 	private boolean mBackupNotoficationCreated;
 	
@@ -70,25 +69,23 @@ public class InfiniteService extends Service{
             	//SCAN FILES
             	BackupLogic.scanAllFiles(mContext);            	
 		    	String serverId = RuntimeState.mWebSocketServerId;
-		    	if(RuntimeState.isBackuping){
-		    		displaySyncInfo(false);
-		    	}
+//		    	if(RuntimeState.isBackuping){
+//		    		displaySyncInfo(false);
+//		    	}
             	if(!TextUtils.isEmpty(serverId)
-            			&& RuntimeState.isScaning == false
-            			&& BackupLogic.canBackup(mContext) 
-        				&& RuntimeState.isBackuping == false
+            			&& RuntimeState.canBackup(mContext)
         				&& BackupLogic.needToBackup(mContext,serverId)){
 					Log.d(TAG, "START BACKUP FILE");
-					RuntimeState.isBackuping = true;
+					RuntimeState.setServerStatus(Constant.WS_ACTION_START_BACKUP);
 					ServersLogic.updateCount(mContext, serverId);
 					removeNotification();
 					displaySyncInfo(false);
-					while(BackupLogic.canBackup(mContext) && BackupLogic.needToBackup(mContext,serverId)){
+					while(RuntimeState.isWebSocketAvaliable(mContext) && BackupLogic.needToBackup(mContext,serverId)){
 			    		BackupLogic.backupFiles(mContext, serverId);
 			    	}
 					Intent intent = new Intent(Constant.ACTION_BACKUP_DONE);
 					mContext.sendBroadcast(intent);
-					RuntimeState.isBackuping = false;
+					RuntimeState.setServerStatus(Constant.WS_ACTION_END_BACKUP);
 					removeNotification();
 					displaySyncInfo(true);
             	}
@@ -150,7 +147,7 @@ public class InfiniteService extends Service{
 
 		}
 
-		if(mDisplaying == false ){
+		if(RuntimeState.isNotificationShowing == false ){
 			if(backupedCompleted ){
 				mBackupNotoficationCreated = false;
 				int count = ServersLogic.getServerBackupedCountById(mContext, RuntimeState.mWebSocketServerId);		
@@ -160,7 +157,7 @@ public class InfiniteService extends Service{
 						mContext.getString(R.string.app_name),
 						content,null);
 			}
-			mDisplaying = true ;
+			RuntimeState.isNotificationShowing = true ;
 		}	
 	}
 	
@@ -177,10 +174,10 @@ public class InfiniteService extends Service{
 					.getInstance(mContext);
 		}
 		String notificationId = mPrefs.getString(Constant.PREF_NOTIFICATION_ID, "");
-		if(!TextUtils.isEmpty(notificationId) && mDisplaying){
+		if(!TextUtils.isEmpty(notificationId) && RuntimeState.isNotificationShowing){
 			mNotificationManager.cancelNotification(notificationId);
 			//mNotificationManager.cancelAll();
-			mDisplaying = false;
+			RuntimeState.isNotificationShowing = false;
 		}
 
 //		mNotificationManager.cancelAll();

@@ -36,7 +36,11 @@ public class PairedServersAdapter  extends BaseAdapter {
 		    TextView tvFreespace;
 		    TextView tvFolder;
 		    TextView tvBackupInfo;		    
+		    TextView textPhotoCount;		    
+		    TextView textVideoCount;		    
+		    TextView textAudioCount;		    		 
 		    TextView tvLastBackupTime;
+		    
 	  }
 	  
 	  @Override
@@ -54,6 +58,9 @@ public class PairedServersAdapter  extends BaseAdapter {
 		    viewHolder.tvFreespace = (TextView) v.findViewById(R.id.textFreespace);
 		    viewHolder.tvFolder = (TextView) v.findViewById(R.id.textFolder);
 		    viewHolder.tvBackupInfo = (TextView) v.findViewById(R.id.textBackupInfo);
+		    viewHolder.textPhotoCount = (TextView) v.findViewById(R.id.textPhotoCount);
+		    viewHolder.textVideoCount = (TextView) v.findViewById(R.id.textVideoCount);
+		    viewHolder.textAudioCount = (TextView) v.findViewById(R.id.textAudioCount);		    		 		 
 		    viewHolder.tvLastBackupTime = (TextView) v.findViewById(R.id.textLastBackupTime);
 		    
 		    v.setTag(viewHolder);
@@ -94,7 +101,10 @@ public class PairedServersAdapter  extends BaseAdapter {
 			    viewHolder.tvBackupDays.setText(context.getString(R.string.backup_period,entity.startDatetime,entity.endDatetime));	    
 			    viewHolder.tvFreespace.setText(context.getString(R.string.free_space,StringUtil.byteCountToDisplaySize(entity.freespace)));
 			    viewHolder.tvFolder.setText(context.getString(R.string.backup_folder,entity.folder));	    
-			    viewHolder.tvBackupInfo.setText(context.getString(R.string.backup_info,entity.photoCount,entity.videoCount,entity.audioCount));	 
+//			    viewHolder.tvBackupInfo.setText(context.getString(R.string.backup_info,entity.photoCount,entity.videoCount,entity.audioCount));	 
+			    viewHolder.textPhotoCount.setText(context.getString(R.string.photos,entity.photoCount));
+			    viewHolder.textVideoCount.setText(context.getString(R.string.videos,entity.videoCount));
+			    viewHolder.textAudioCount.setText(context.getString(R.string.audios,entity.audioCount));		    		 		 
 			    String lastBackupTime = StringUtil.displayLocalTime(entity.lastLocalBackupTime,StringUtil.DATE_FORMAT);
 			    viewHolder.tvLastBackupTime.setText(context.getString(R.string.backup_last_local_time,lastBackupTime));
 		  }

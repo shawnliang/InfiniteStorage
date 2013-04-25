@@ -17,6 +17,8 @@ public class Constant {
 	public final static String ACTION_BACKUP_FILE = "com.waveface.sync.action.BACKUP_FILE";
 	public final static String ACTION_BACKUP_DONE = "com.waveface.sync.action.BACKUP_DONE";	
 	public final static String ACTION_SCAN_FILE = "com.waveface.sync.action.SCAN_FILE";
+	public final static String ACTION_INFINITE_STORAGE_ALARM = "com.waveface.sync.action.INFINITE_STORAGE_ALARM";
+	
 	
 
 	//BUNDLE DATA
@@ -36,6 +38,9 @@ public class Constant {
 	public static final int BONJOUR_PAIRING = 1;
 	public static final int BONJOUR_PAIRED = 2;
 	
+	//ALARM INTERVAL
+	public static final long ALARM_INTERVAL =  1 *60 * 1000;
+
 
 	//SERVER STATUS
 	public static final String SERVER_LINKING = "1";
@@ -71,6 +76,9 @@ public class Constant {
 	//WS ACTION
 	public final static String WS_ACTION_SOCKET_OPENED = "socket_opened";	
 	public final static String WS_ACTION_SOCKET_CLOSED = "socket_closed";
+	public final static String WS_ACTION_START_BACKUP = "start_backup";	
+	public final static String WS_ACTION_END_BACKUP = "end_backup";
+	
 	
 	//WS INFINITE STORAGE PROTOCOL
 	public final static String WS_ACTION_CONNECT = "connect";
