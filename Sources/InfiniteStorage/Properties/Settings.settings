@@ -26,5 +26,8 @@
     <Setting Name="RejectOtherDevices" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="LogLevel" Type="System.String" Scope="User">
+      <Value Profile="(Default)">WARN</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -73,6 +73,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\UIControl\AboutControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Src\UIControl\AboutControl.Designer.cs">
+      <DependentUpon>AboutControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Src\Class\ProgramIPC.cs" />
     <Compile Include="Src\Class\SingleInstancePerUserLock.cs" />
     <Compile Include="Src\Class\Common\CopyDataStruct.cs" />
@@ -172,6 +178,9 @@
     <Compile Include="Src\UIControl\StorageLocationControl.Designer.cs">
       <DependentUpon>StorageLocationControl.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Src\UIControl\AboutControl.resx">
+      <DependentUpon>AboutControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\OrganizeSelectionControl.resx">
       <DependentUpon>OrganizeSelectionControl.cs</DependentUpon>
     </EmbeddedResource>

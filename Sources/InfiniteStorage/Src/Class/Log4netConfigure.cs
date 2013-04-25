@@ -11,23 +11,33 @@ namespace InfiniteStorage
 	{
 		public static void InitLog4net()
 		{
+			var configFile = getLog4netConfigFilePath();
+
+			var configFileInfo = new FileInfo(configFile);
+
+			if (!configFileInfo.Exists || configFileInfo.Length == 0)
+#if DEBUG
+				createDefaulConfigFile(configFile, DebugLevel.DEBUG);
+#else
+				createDefaulConfigFile(configFile, DebugLevel.WARN);
+#endif
+
+
+			log4net.Config.XmlConfigurator.ConfigureAndWatch(configFileInfo);
+		}
+
+		private static string getLog4netConfigFilePath()
+		{
 			var appdataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 			var productFolder = Path.Combine(appdataFolder, Resources.ProductName);
 
 			if (!Directory.Exists(productFolder))
 				Directory.CreateDirectory(productFolder);
 
-			var configFile = Path.Combine(productFolder, "log4net.config");
-
-			var configFileInfo = new FileInfo(configFile);
-
-			if (!configFileInfo.Exists || configFileInfo.Length == 0)
-				createDefaulConfigFile(configFile);
-
-			log4net.Config.XmlConfigurator.ConfigureAndWatch(configFileInfo);
+			return Path.Combine(productFolder, "log4net.config");
 		}
 
-		private static void createDefaulConfigFile(string configFile)
+		private static void createDefaulConfigFile(string configFile, DebugLevel level)
 		{
 			using (var writer = new StreamWriter(configFile))
 			{
@@ -46,11 +56,18 @@ namespace InfiniteStorage
 	</appender>
 
 	<root>
-		<level value='DEBUG' />
+		<level value='" + level.ToString() + @"' />
 		<appender-ref ref='RollingFile' />
 	</root>
 </log4net>");
 			}
+		}
+
+
+		public static void SetLevel(DebugLevel level)
+		{
+			var log4netCfgFile = getLog4netConfigFilePath();
+			createDefaulConfigFile(log4netCfgFile, level);
 		}
 	}
 }

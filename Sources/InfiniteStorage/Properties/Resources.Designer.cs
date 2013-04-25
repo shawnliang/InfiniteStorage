@@ -60,6 +60,15 @@ namespace InfiniteStorage.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to 關於{0}.
+        /// </summary>
+        internal static string AboutTab {
+            get {
+                return ResourceManager.GetString("AboutTab", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap app_store_badge {
             get {
                 object obj = ResourceManager.GetObject("app_store_badge", resourceCulture);
@@ -171,11 +180,20 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} 備份中: ({1}/{2}).
+        ///   Looks up a localized string similar to {0} 備份中：({1}/{2}).
         /// </summary>
         internal static string TrayMenuItem_Transfering {
             get {
                 return ResourceManager.GetString("TrayMenuItem_Transfering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 版本：{0}.
+        /// </summary>
+        internal static string VersionLable {
+            get {
+                return ResourceManager.GetString("VersionLable", resourceCulture);
             }
         }
     }

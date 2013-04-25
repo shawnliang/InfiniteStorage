@@ -33,6 +33,8 @@
 			this.generalPreferenceControl1 = new InfiniteStorage.GeneralPreferenceControl();
 			this.tabDevices = new System.Windows.Forms.TabPage();
 			this.deviceListControl = new InfiniteStorage.DeviceListControl();
+			this.tabAbout = new System.Windows.Forms.TabPage();
+			this.aboutControl1 = new InfiniteStorage.AboutControl();
 			this.buttonOK = new System.Windows.Forms.Button();
 			this.buttonCancel = new System.Windows.Forms.Button();
 			this.buttonApply = new System.Windows.Forms.Button();
@@ -40,6 +42,7 @@
 			this.tabControl.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabDevices.SuspendLayout();
+			this.tabAbout.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl
@@ -49,6 +52,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.tabControl.Controls.Add(this.tabPage1);
 			this.tabControl.Controls.Add(this.tabDevices);
+			this.tabControl.Controls.Add(this.tabAbout);
 			this.tabControl.Location = new System.Drawing.Point(12, 12);
 			this.tabControl.Name = "tabControl";
 			this.tabControl.SelectedIndex = 0;
@@ -95,6 +99,26 @@
 			this.deviceListControl.RejectOtherDevices = false;
 			this.deviceListControl.Size = new System.Drawing.Size(614, 284);
 			this.deviceListControl.TabIndex = 0;
+			// 
+			// tabAbout
+			// 
+			this.tabAbout.Controls.Add(this.aboutControl1);
+			this.tabAbout.Location = new System.Drawing.Point(4, 22);
+			this.tabAbout.Name = "tabAbout";
+			this.tabAbout.Padding = new System.Windows.Forms.Padding(3);
+			this.tabAbout.Size = new System.Drawing.Size(620, 290);
+			this.tabAbout.TabIndex = 2;
+			this.tabAbout.Text = "關於";
+			this.tabAbout.UseVisualStyleBackColor = true;
+			// 
+			// aboutControl1
+			// 
+			this.aboutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.aboutControl1.Location = new System.Drawing.Point(3, 3);
+			this.aboutControl1.LogLevel = InfiniteStorage.DebugLevel.WARN;
+			this.aboutControl1.Name = "aboutControl1";
+			this.aboutControl1.Size = new System.Drawing.Size(614, 284);
+			this.aboutControl1.TabIndex = 0;
 			// 
 			// buttonOK
 			// 
@@ -161,6 +185,7 @@
 			this.tabControl.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			this.tabDevices.ResumeLayout(false);
+			this.tabAbout.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -177,6 +202,8 @@
 		private GeneralPreferenceControl generalPreferenceControl1;
 		private System.Windows.Forms.TabPage tabDevices;
 		private DeviceListControl deviceListControl;
+		private System.Windows.Forms.TabPage tabAbout;
+		private AboutControl aboutControl1;
 	}
 }
 

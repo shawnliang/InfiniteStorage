@@ -23,6 +23,8 @@ namespace InfiniteStorage
 			Icon = Resources.product_icon;
 
 			deviceListControl.SettingChanged += new EventHandler(handleAnySettingChanged);
+			aboutControl1.SettingsChanged += new EventHandler(handleAnySettingChanged);
+			tabAbout.Text = string.Format(Resources.AboutTab, Resources.ProductName);
 		}
 
 		void handleAnySettingChanged(object sender, EventArgs e)
@@ -62,6 +64,7 @@ namespace InfiniteStorage
 			{
 				saveDeviceListChanges();
 				setAutoStartValue();
+				saveLogLevel();
 				return true;
 			}
 			catch (Exception err)
@@ -70,6 +73,21 @@ namespace InfiniteStorage
 				MessageBox.Show(err.Message, "Unable to save settings", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
 				return false;
+			}
+		}
+
+		private void saveLogLevel()
+		{
+			try
+			{
+				Settings.Default.LogLevel = aboutControl1.LogLevel.ToString();
+				Settings.Default.Save();
+
+				Log4netConfigure.SetLevel(aboutControl1.LogLevel);
+			}
+			catch (Exception e)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("Unable to set debug log level: " + aboutControl1.LogLevel.ToString(), e);
 			}
 		}
 
