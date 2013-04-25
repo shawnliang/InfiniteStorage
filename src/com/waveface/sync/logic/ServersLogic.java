@@ -1,6 +1,7 @@
 package com.waveface.sync.logic;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import org.jwebsocket.kit.WebSocketException;
 
@@ -194,6 +195,50 @@ public class ServersLogic {
 		cursor.close();
 		return datas;
 	}
+	public static ArrayList<ServerEntity> getBonjourServersExportPaired(Context context){
+		ArrayList<ServerEntity> datas = new ArrayList<ServerEntity>();
+		ServerEntity entity = null;
+		TreeSet<String> pairedServerId = new TreeSet<String>();
+		ContentResolver cr = context.getContentResolver();
+		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+				new String[]{BackupedServersTable.COLUMN_SERVER_ID}, 
+				null, 
+				null, 
+				null);
+		
+		if(cursor!=null && cursor.getCount()>0){
+			int count = cursor.getCount();
+			cursor.moveToFirst();
+			for(int i = 0 ; i < count ;i++){
+				pairedServerId.add(cursor.getString(0));
+				cursor.moveToNext();
+			}
+		}
+		cursor = cr.query(BonjourServersTable.CONTENT_URI, 
+				null, 
+				null, 
+				null, 
+				null);
+		
+		if(cursor!=null && cursor.getCount()>0){
+			int count = cursor.getCount();
+			cursor.moveToFirst();
+			for(int i = 0 ; i < count ;i++){
+				if(!pairedServerId.contains(cursor.getString(0))){
+					entity = new ServerEntity();
+					entity.serverId = cursor.getString(0);
+					entity.serverName = cursor.getString(1);
+					entity.serverOS = cursor.getString(2);
+	            	entity.wsLocation =cursor.getString(3);
+	             	datas.add(entity);
+				}
+				cursor.moveToNext();
+			}
+		}
+		cursor.close();
+		return datas;
+	}
+
 	public static ServerEntity getBonjourServerByServerId(Context context,String serverId){
 		ServerEntity entity = null;
 		Cursor cursor = null;

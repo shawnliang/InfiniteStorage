@@ -117,8 +117,6 @@ public class MainActivity extends Activity implements OnClickListener{
 		ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(this);		
 		mAdapter = new PairedServersAdapter(this,servers);
 		listview.setAdapter(mAdapter);
-
-	    mRLSetting = (RelativeLayout) findViewById(R.id.rlSetting);
 	    
 	    mIvAddPc = (ImageView) findViewById(R.id.ivAddpc);
 	    mIvAddPc.setOnClickListener(this);
@@ -180,9 +178,6 @@ public class MainActivity extends Activity implements OnClickListener{
             Intent startIntent = new Intent(MainActivity.this, FirstUseActivity.class);	                    	
             startActivityForResult(startIntent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
 		}
-		else{
-			mRLSetting.setVisibility(View.INVISIBLE);
-		}
 	}
 	
 	private class ImportFilesObserver extends ContentObserver {
@@ -240,9 +235,6 @@ public class MainActivity extends Activity implements OnClickListener{
 	};
     public void refreshServerStatus(){
 		mAdapter.setData(ServersLogic.getBackupedServers(this));
-		if(RuntimeState.OnWebSocketStation){
-			mRLSetting.setVisibility(View.INVISIBLE);
-		}
     }
 
     @Override
@@ -251,11 +243,14 @@ public class MainActivity extends Activity implements OnClickListener{
         if (requestCode == Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {         
-            	mRLSetting.setVisibility(View.INVISIBLE);
             	mAdapter.setData(ServersLogic.getBackupedServers(this));
             }
         }
-        
+        else if(requestCode == Constant.REQUEST_CODE_ADD_SERVER){
+            if (resultCode == RESULT_OK) {         
+            	mAdapter.setData(ServersLogic.getBackupedServers(this));
+            }        	
+        }
     }
     @Override
     protected void onPause() {
@@ -318,8 +313,15 @@ public class MainActivity extends Activity implements OnClickListener{
 		Intent startIntent = null;
  		switch(v.getId()){
 			case R.id.ivAddpc:
-	            startIntent = new Intent(MainActivity.this, FirstUseActivity.class);	                    	
-	            startActivityForResult(startIntent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
+				mPairedServers = ServersLogic.getBackupedServers(this);
+				if(mPairedServers.size()==0){
+		            startIntent = new Intent(MainActivity.this, FirstUseActivity.class);	                    	
+		            startActivityForResult(startIntent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
+				}
+				else{
+		            startIntent = new Intent(MainActivity.this, AddServerActivity.class);	                    	
+		            startActivityForResult(startIntent, Constant.REQUEST_CODE_ADD_SERVER);					
+				}
 				break;		
 			case R.id.btnDeletePhoto:
 	            startIntent = new Intent(MainActivity.this, CleanActivity.class);

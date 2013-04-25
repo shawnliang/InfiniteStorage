@@ -20,7 +20,6 @@
     <string name="audios">Total %1$d audio(s)</string>
     <string name="photos">Total %1$d photo(s)</string>
     <string name="can_not_find_server">Cann\'t Find Server Now, We will connect to your PC automatically later!</string>
-    
 
     <!-- PAIRED SERVERS -->
     <string name="backuping">Backuping ...</string>
@@ -45,10 +44,11 @@
 
     <!-- BONHOUR SERVER CHOOSE -->
     <string name="choose_server">Select a PC</string>
-    <string name="pairing">Pairing with Server...</string>
+    <string name="pairing">Please open your Windows APP for pairing with your phone</string>
     <string name="title_pairing">Message</string>
     <string name="pairing_wait">Please open your Windows APP</string>
     <string name="pairing_denied">This device has been denied.</string>
+    <string name="pairing_starting_backup">Backup Your files Now.</string>
 
     <!-- FILE TRANSFRING -->
     <string name="file_transfering">%1$s transfering files</string>
@@ -58,16 +58,20 @@
     <string name="backup_view_descript22">photos(s) videos(s) audio(s)</string>
     <string name="backup_view_descript23">backup to your PC automatically through Wi-Fi Network!</string>
 
-    <!--CLEAN STORAGE--> 
+    <!-- CLEAN STORAGE -->
     <string name="clean_title">Choose Keep Pattern(%1$s)</string>
     <string name="clean_keep_three_months">Keep recent 3 Months</string>
     <string name="clean_keep_six_months">Keep recent half year</string>
     <string name="clean_setting_time">Setup Keep Time</string>
     <string name="clean_freespace">You\'ll get more %1$s space</string>
+    <string name="video">Video</string>
+    <string name="audio">Audio</string>
+    <string name="photo">Photo</string>
 
-    <string name="video">Video</string>    
-    <string name="audio">Audio</string>    
-    <string name="photo">Photo</string>        
+    <!-- ADD SERVER -->
+    <string name="add_new_pc">Add a new PC</string>
+    <string name="paired_pc">Paired PC</string>
+
 
     <!-- BUTTON -->
     <string name="btn_back">Back</string>
@@ -83,5 +87,6 @@
     <string name="notify_link_server">Backuping to %1$s</string>
     <string name="notify_backup_status"> %1$d file(s) Backuped.</string>
     <string name="title_activity_clean_storage">CleanStorageActivity</string>
+    <string name="title_activity_add_server">AddServerActivity</string>
 
 </resources>

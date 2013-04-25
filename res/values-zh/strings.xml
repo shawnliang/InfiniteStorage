@@ -45,10 +45,12 @@
     
     <!--BONHOUR SERVER CHOOSE-->    
     <string name="choose_server">選擇一台電腦</string>
-    <string name="pairing">配對中...</string> 
+    <string name="pairing">請開啓你的Windows App與你的手機配對</string> 
     <string name="title_pairing">配對訊息</string> 
     <string name="pairing_wait">請開啓你的Windows APP</string> 
     <string name="pairing_denied">此一設備不得配對</string> 
+    <string name="pairing_starting_backup">現在開始進行備份工作</string> 
+    
     
     <!--FILE TRANSFRING-->    
     <string name="file_transfering">%1$s 個檔案傳輸中</string>
@@ -69,6 +71,10 @@
     <string name="video">影像檔</string>    
     <string name="audio">聲音檔</string>    
     <string name="photo">照片</string>        
+    
+    <!-- ADD SERVER -->
+    <string name="add_new_pc">選擇一台電腦</string>
+    <string name="paired_pc">已經配對的電腦</string>
     
     
     <!--BUTTON-->

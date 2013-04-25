@@ -90,9 +90,12 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textBackupInfo"
         android:layout_below="@+id/textBackupInfo"
-        android:layout_marginBottom="30dp"
         android:layout_marginTop="3dp"
         android:text="@string/backup_last_local_time"
         android:textColor="#FFFFFF" />
-    
+   	 <View 
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@+id/textLastBackupTime"
+   	     />	 
 </RelativeLayout>

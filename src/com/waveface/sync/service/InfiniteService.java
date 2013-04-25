@@ -47,13 +47,15 @@ public class InfiniteService extends Service{
 	private String mCondidateWSLocation ;
 
 	//TIMER
-    private final int UPDATE_INTERVAL = 30 * 1000;
+    private final int UPDATE_INTERVAL = 10 * 1000;
     private Timer timer = new Timer();
     
     //
 	private SyncNotificationManager mNotificationManager;
 	private static boolean mDisplaying = false;
 	private String mNotoficationId;
+	private boolean mBackupNotoficationCreated;
+	
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -68,7 +70,7 @@ public class InfiniteService extends Service{
             	//SCAN FILES
             	BackupLogic.scanAllFiles(mContext);            	
 		    	String serverId = RuntimeState.mWebSocketServerId;
-		    	if(RuntimeState.isBackuping && mDisplaying==false){
+		    	if(RuntimeState.isBackuping){
 		    		displaySyncInfo(false);
 		    	}
             	if(!TextUtils.isEmpty(serverId)
@@ -126,23 +128,40 @@ public class InfiniteService extends Service{
 			mEditor.putString(Constant.PREF_NOTIFICATION_ID, mNotoficationId);
 			mEditor.commit();
 		}
-//		if(RuntimeState.isAppLaunching == false){
-			if(mDisplaying == false ){
-				String content = null;
-				if(!backupedCompleted){
-					content = mContext.getString(R.string.notify_link_server,RuntimeState.mWebSocketServerName);
-				}
-				else{
-					int count = ServersLogic.getServerBackupedCountById(mContext, RuntimeState.mWebSocketServerId);		
-					content = mContext.getString(R.string.notify_backup_status, count);				
-				}
+		String content = null;
+		if(!backupedCompleted && RuntimeState.OnWebSocketStation ){
+			content = mContext.getString(R.string.notify_link_server,RuntimeState.mWebSocketServerName);
+			mNotificationManager.createProgressNotification(mNotoficationId, content, content, 90);
+			int[] backupAndTotalCount = BackupLogic.getBackupProgressInfo(mContext, RuntimeState.mWebSocketServerId);
+			int progress = (int) ((backupAndTotalCount[0])/ (float) backupAndTotalCount[1] * 100);
+			content += "("+backupAndTotalCount[0]+"/"+backupAndTotalCount[1]+"),"+progress+"%";
+			
+			if(!mBackupNotoficationCreated){
+				mNotificationManager.createProgressNotification(
+					mNotoficationId,
+					mContext.getString(R.string.app_name),
+					content,progress);
+				mBackupNotoficationCreated = true ;
+			}
+			else{
+				mNotificationManager.updateProgressNotification(mNotoficationId,
+						content,progress);
+			}
+
+		}
+
+		if(mDisplaying == false ){
+			if(backupedCompleted ){
+				mBackupNotoficationCreated = false;
+				int count = ServersLogic.getServerBackupedCountById(mContext, RuntimeState.mWebSocketServerId);		
+				content = mContext.getString(R.string.notify_backup_status, count);				
 				mNotificationManager.createTextNotification(
 						mNotoficationId,
 						mContext.getString(R.string.app_name),
 						content,null);
-				mDisplaying = true ;
-			}	
-//		}
+			}
+			mDisplaying = true ;
+		}	
 	}
 	
 	private void removeNotification(){

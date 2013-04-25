@@ -2,6 +2,8 @@ package com.waveface.sync.ui;
 
 import java.util.ArrayList;
 
+import org.jwebsocket.kit.WebSocketException;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -23,13 +25,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
@@ -37,23 +35,25 @@ import com.waveface.sync.RuntimeState;
 import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.ServersLogic;
+import com.waveface.sync.websocket.RuntimeWebClient;
 
 
-public class ServerChooserFragment extends FragmentBase 
-	implements OnClickListener, OnCheckedChangeListener{
-	public final String TAG = ServerChooserFragment.class.getSimpleName();
+public class AddServerFragment extends FragmentBase implements OnClickListener{
+	public final String TAG = AddServerFragment.class.getSimpleName();
 
 	private ViewGroup mRootView;
-	private ServerArrayAdapter mAdapter ; 
+	
+	private ServerArrayAdapter mNewServerAdapter ;
+	private ServerArrayAdapter mPairedAdapter ;	
+	
     private Handler mHandler = new Handler();
 	private BonjourServerContentObserver mContentObserver;
 	private ProgressDialog mProgressDialog;
-	private ProgressBar mProgressBar;
-	private TextView mTvSearch;
-	private Button mBtnBackup;
+	private Button mBtnCancel;
 	
 	private AlertDialog mAlertDialog;
-
+	private ListView mAddServerListview ;
+	private ListView mPairedServerListview ;
 
 	//DATA
 	private ServerEntity mServer ;
@@ -64,11 +64,8 @@ public class ServerChooserFragment extends FragmentBase
 
 	@Override
 	public void onBackPressed() {
-		if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
-			mProgressDialog.dismiss();
-		} else {
-			mListener.goBack(TAG);
-		}
+		getActivity().finish();
+		
 	}
 
 	private class BonjourServerContentObserver extends ContentObserver {
@@ -90,34 +87,50 @@ public class ServerChooserFragment extends FragmentBase
 			Bundle savedInstanceState) {
 
 		mRootView = (ViewGroup) inflater.inflate(
-				R.layout.first_use_bonjour_servers, null);
-		ListView listview = (ListView) mRootView.findViewById(R.id.listview);
-		mAdapter = new ServerArrayAdapter(getActivity(), ServersLogic.getBonjourServers(getActivity()));
-		listview.setAdapter(mAdapter);
-		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				R.layout.add_server, null);
+		mAddServerListview = (ListView) mRootView.findViewById(R.id.newServerListview);
+		mNewServerAdapter = new ServerArrayAdapter(getActivity(), ServersLogic.getBonjourServersExportPaired(getActivity()));
+		mAddServerListview.setAdapter(mNewServerAdapter);
+		mAddServerListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 		      @Override
 		      public void onItemClick(AdapterView<?> parent, final View view,
 		          int position, long id) {
-		        Log.d(TAG, "position:"+position);
-		        mServer = mAdapter.getItem(position);
-		        clickToLinkServer(mServer);
+		    	  mServer = mNewServerAdapter.getItem(position);
+		    	  if(RuntimeState.OnWebSocketStation){
+		    		  try {
+						RuntimeWebClient.close();
+					} catch (WebSocketException e) {
+						e.printStackTrace();
+					}
+		    	  }
+		    	  ServersLogic.updateAllBackedServerOffline(getActivity());
+		    	  clickToLinkServer(mServer);
 		      }
 		});
+		
+		
+		mPairedServerListview = (ListView) mRootView.findViewById(R.id.pairedServerListview);
+		mPairedAdapter = new ServerArrayAdapter(getActivity(), ServersLogic.getBackupedServers(getActivity()));
+		mPairedServerListview.setAdapter(mPairedAdapter);
+//		mPairedServerListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//		      @Override
+//		      public void onItemClick(AdapterView<?> parent, final View view,
+//		          int position, long id) {
+//		        Log.d(TAG, "position:"+position);
+//		        mServer = mPairedAdapter.getItem(position);
+//		        clickToLinkServer(mServer);
+//		      }
+//		});
 
-		Button btn = (Button) mRootView.findViewById(R.id.btnPre);
-		btn.setOnClickListener(this);
-		
-	    mProgressBar = (ProgressBar) mRootView.findViewById(R.id.pbSearch);
-	    mTvSearch = (TextView) mRootView.findViewById(R.id.tvSearch);
-//		if(mAdapter.getCount()>0){
-//		    mProgressBar.setVisibility(View.INVISIBLE);
-//		    mTvSearch.setVisibility(View.INVISIBLE);
-//		}
-		
+
+		mBtnCancel = (Button) mRootView.findViewById(R.id.btnCancel);
+		mBtnCancel.setOnClickListener(this);
+				
         mHandler.postDelayed(new Runnable() {
             public void run() {
-             	 mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
+             	 mNewServerAdapter.setData(ServersLogic.getBonjourServersExportPaired(getActivity()));
             	}
             }, 300);
 		return mRootView;
@@ -134,7 +147,6 @@ public class ServerChooserFragment extends FragmentBase
 		if (Constant.PHONE) {
 			getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
-
 		mContentObserver = new BonjourServerContentObserver();
 		ContentResolver cr = getActivity().getContentResolver();
 		cr.registerContentObserver(BonjourServersTable.BONJOUR_SERVER_URI, false, mContentObserver);
@@ -159,12 +171,11 @@ public class ServerChooserFragment extends FragmentBase
 					if(response.equals(Constant.WS_ACTION_ACCEPT)){
 						dismissProgress();
 						refreshUI();
+						mBtnCancel.setEnabled(true);
 						if(mAlertDialog!=null && mAlertDialog.isShowing()){
 							mAlertDialog.dismiss();
 						}
-//						Toast.makeText(getActivity(), R.string.pairing_starting_backup, Toast.LENGTH_LONG).show();
 						getActivity().setResult(getActivity().RESULT_OK,new Intent());
-						mListener.goNext(TAG);
 					}
 					else if(response.equals(Constant.WS_ACTION_DENIED)){
 						dismissProgress();
@@ -221,17 +232,14 @@ public class ServerChooserFragment extends FragmentBase
 	public void onClick(View v) {
 		int viewId = v.getId();
 		switch (viewId) {
-			case R.id.btnPre:
-				mListener.goBack(TAG);
+			case R.id.btnCancel:
+				getActivity().finish();
 				break;
 		}
 	}
 	public void refreshUI(){
-		mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
-//		if(mAdapter.getCount()>0){
-//		    mProgressBar.setVisibility(View.INVISIBLE);
-//		    mTvSearch.setVisibility(View.INVISIBLE);
-//		}
+		mNewServerAdapter.setData(ServersLogic.getBonjourServersExportPaired(getActivity()));
+		mPairedAdapter.setData(ServersLogic.getBackupedServers(getActivity()));
 	}
 	
 	class ServerArrayAdapter extends BaseAdapter {
@@ -297,11 +305,5 @@ public class ServerChooserFragment extends FragmentBase
 			values = entities;
 			this.notifyDataSetChanged();
 		}
-		
-		
-	}
-
-	@Override
-	public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 	}
 }

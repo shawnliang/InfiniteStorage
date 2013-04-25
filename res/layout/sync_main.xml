@@ -191,20 +191,22 @@
     </RelativeLayout>
     
     <View
-            android:id="@+id/btnVideoPhoto"        
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:layout_margin="10dp"
-            android:layout_below="@+id/rl3"
-  			android:background="#00FF00"
-    />
+        android:id="@+id/btnVideoPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@+id/rl3"
+        android:layout_margin="10dp"
+        android:background="#1BBFE0" />
 
     <ListView
   		android:id="@+id/listview"
+        android:layout_above="@+id/rlSetting" 
         android:layout_below="@+id/btnVideoPhoto"        
   		android:layout_width="match_parent"
   		android:layout_height="wrap_content"
-  		android:background="#00FF00">
+  		android:listSelector="@android:color/transparent"
+  		android:cacheColorHint="@android:color/transparent"
+  		android:background="#000000">
 
 	</ListView> 	
 	
@@ -215,15 +217,18 @@
   		android:layout_alignParentBottom="true"
   		android:background="#000000"
         >
-        <View 
+        <View
+            android:id="@+id/vLine"
         	android:layout_width="match_parent"
   			android:layout_height="1dp"
-  			android:background="#FFFFFF"
+  			android:background="#1BBFE0"
+  			android:layout_margin="10dp"
             />
         <ImageView
         	android:id="@+id/ivAddpc"
         	android:layout_width="match_parent"
   			android:layout_height="wrap_content"
+  			android:layout_below="@+id/vLine"
   			android:layout_margin="1dp"
             android:src="@drawable/ic_add_pc"/>
     </RelativeLayout>

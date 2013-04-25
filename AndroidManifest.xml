@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.waveface.sync"
     android:installLocation="preferExternal"
-    android:versionCode="2"
-    android:versionName="1.0.1" >
+    android:versionCode="3"
+    android:versionName="1.0.2" >
 
     <uses-sdk android:minSdkVersion="9" />
 
@@ -73,11 +73,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent" >
         </activity>
-       <activity
+        <activity
             android:name="com.waveface.sync.ui.CleanActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent" /> 
+            android:theme="@style/Theme.Transparent" />
+        <activity
+            android:name="com.waveface.sync.ui.AddServerActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent" />
+        
         <provider
             android:name="com.waveface.sync.provider.SyncProvider"
             android:authorities="com.waveface.sync"
@@ -103,5 +109,7 @@
         <meta-data
             android:name="com.crashlytics.ApiKey"
             android:value="2de93f37d61a80e50febf2dfa9e0b80d5105afd0" />
+
     </application>
+
 </manifest>

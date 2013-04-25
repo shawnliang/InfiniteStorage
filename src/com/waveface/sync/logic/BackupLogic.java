@@ -23,7 +23,6 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.waveface.sync.Constant;
-import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
 import com.waveface.sync.db.BackupDetailsTable;
 import com.waveface.sync.db.ImportFilesTable;

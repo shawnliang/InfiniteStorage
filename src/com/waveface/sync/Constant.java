@@ -127,7 +127,8 @@ public class Constant {
 	
 	//REQUEST CODE
 	public static final int REQUEST_CODE_OPEN_SERVER_CHOOSER = 0;
-	public static final int REQUEST_CODE_CLEAN_STORAGE = 1;
+	public static final int REQUEST_CODE_ADD_SERVER = 1;
+	public static final int REQUEST_CODE_CLEAN_STORAGE = 2;
 	
 
 	//RESULT CODE
