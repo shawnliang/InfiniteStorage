@@ -89,13 +89,11 @@
 			// 
 			// deviceListControl
 			// 
-			this.deviceListControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.deviceListControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.deviceListControl.Location = new System.Drawing.Point(3, 3);
 			this.deviceListControl.Name = "deviceListControl";
 			this.deviceListControl.RejectOtherDevices = false;
-			this.deviceListControl.Size = new System.Drawing.Size(614, 257);
+			this.deviceListControl.Size = new System.Drawing.Size(614, 284);
 			this.deviceListControl.TabIndex = 0;
 			// 
 			// buttonOK
@@ -146,8 +144,8 @@
 			// 
 			// PreferenceDialog
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.BackColor = System.Drawing.SystemColors.ControlLightLight;
 			this.ClientSize = new System.Drawing.Size(652, 366);
 			this.Controls.Add(this.checkboxAutoRun);
