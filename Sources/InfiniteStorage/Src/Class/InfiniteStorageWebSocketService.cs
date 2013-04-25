@@ -24,7 +24,11 @@ namespace InfiniteStorage
 		public InfiniteStorageWebSocketService()
 		{
 			if (!Directory.Exists(MyFileFolder.Temp))
+			{
 				Directory.CreateDirectory(MyFileFolder.Temp);
+				var dir = new DirectoryInfo(MyFileFolder.Temp);
+				dir.Attributes = FileAttributes.Hidden | dir.Attributes;
+			}
 
 			IDirOrganizer organizer = getDirOrganizer();
 
