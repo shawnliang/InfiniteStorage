@@ -91,6 +91,8 @@ namespace InfiniteStorage.WebsocketProtocol
 				temp_file.Delete();
 				temp_file = null;
 			}
+
+			SetState(new UnconnectedState());
 		}
 
 		public void raiseOnConnectAccepted()
