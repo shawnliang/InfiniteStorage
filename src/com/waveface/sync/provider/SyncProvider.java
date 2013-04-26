@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.waveface.sync.db.BackupDetailsTable;
 import com.waveface.sync.db.BackupedServersTable;
@@ -589,8 +590,9 @@ public class SyncProvider extends ContentProvider {
 						+ BackupedServersTable.COLUMN_PHOTO_COUNT + ","
 						+ BackupedServersTable.COLUMN_VIDEO_COUNT + ","
 						+ BackupedServersTable.COLUMN_AUDIO_COUNT + ","	
-						+ BackupedServersTable.COLUMN_LAST_BACKUP_DATETIME + ")"	
-						+ " values (?,?,?,?,?,?,?,?,?,?,?)");
+						+ BackupedServersTable.COLUMN_LAST_DISPLAY_BACKUP_DATETIME + ","
+						+ BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME + ")"
+						+ " values (?,?,?,?,?,?,?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
 					insert.bindString(1, value.getAsString(BackupedServersTable.COLUMN_SERVER_ID));
@@ -603,7 +605,8 @@ public class SyncProvider extends ContentProvider {
 					insert.bindString(8, value.getAsString(BackupedServersTable.COLUMN_PHOTO_COUNT));
 					insert.bindString(9, value.getAsString(BackupedServersTable.COLUMN_VIDEO_COUNT));
 					insert.bindString(10, value.getAsString(BackupedServersTable.COLUMN_AUDIO_COUNT));			
-					insert.bindString(11, value.getAsString(BackupedServersTable.COLUMN_LAST_BACKUP_DATETIME));
+					insert.bindString(11, value.getAsString(BackupedServersTable.COLUMN_LAST_DISPLAY_BACKUP_DATETIME));
+					insert.bindString(12, value.getAsString(BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME));				
 					insert.execute();
 				}
 				db.setTransactionSuccessful();

@@ -9,14 +9,14 @@
     <string name="file_scanning">掃瞄檔案中..</string>
     <string name="server_searching">搜尋電腦中..</string>
     <string name="clean_space">清理</string>    
-    <string name="period">從 %1$s 到 %2$s</string>    
 
     <!--MAIN-->   
     <string name="auto_connect">連線中...</string> 
-    <string name="total">總共</string>    
-    <string name="videos">總共 %1$d 個影像檔</string>    
-    <string name="audios">總共 %1$d 個聲音檔</string>    
-    <string name="photos">總共 %1$d 張照片</string>        
+    <string name="total_info">共有 %1$s 個檔案, %2$s</string>
+    <string name="period">時間從 %1$s 到 %2$s</string>    
+    <string name="videos">%1$d 個影像檔</string>    
+    <string name="audios">%1$d 個聲音檔</string>    
+    <string name="photos">%1$d 張照片</string>        
     <string name="can_not_find_server">現在找不到你的配對PC,待會找到後會當你自動連線!</string>
     
     

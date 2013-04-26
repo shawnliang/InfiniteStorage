@@ -1,11 +1,8 @@
 package com.waveface.sync.ui;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,6 +16,8 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -34,7 +33,6 @@ import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.service.InfiniteReceiver;
 import com.waveface.sync.service.InfiniteService;
 import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.util.Log;
@@ -56,6 +54,7 @@ public class MainActivity extends Activity implements OnClickListener{
 
     //UI
 	private TextView mDevice;
+	private TextView mTotalInfo;	
 	private TextView mNowPeriod;
 	private TextView mPhotoCount;
 	private TextView mPhotoSize;
@@ -93,6 +92,8 @@ public class MainActivity extends Activity implements OnClickListener{
 		
 		mDevice = (TextView) this.findViewById(R.id.textDevice);
 		mDevice.setText(DeviceUtil.getDeviceNameForDisplay(this));
+		
+		mTotalInfo = (TextView) this.findViewById(R.id.textTotolInfo);
 		mNowPeriod = (TextView) this.findViewById(R.id.textPeriod);
 
 		//PHOTO
@@ -117,7 +118,6 @@ public class MainActivity extends Activity implements OnClickListener{
 		ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(this);		
 		mAdapter = new PairedServersAdapter(this,servers);
 		listview.setAdapter(mAdapter);
-	    
 	    mIvAddPc = (ImageView) findViewById(R.id.ivAddpc);
 	    mIvAddPc.setOnClickListener(this);
 	    
@@ -142,7 +142,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		
 		boolean alarmEnable = mPrefs.getBoolean(Constant.PREF_BONJOUR_SERVER_ALRM_ENNABLED, false);
 		if(alarmEnable == false){
-			setAlarmWakeUpService(this);
+			BackupLogic.setAlarmWakeUpService(this);
 			mEditor.putBoolean(Constant.PREF_BONJOUR_SERVER_ALRM_ENNABLED, true).commit();
 		}
 		startService(new Intent(MainActivity.this, InfiniteService.class)); 
@@ -206,7 +206,7 @@ public class MainActivity extends Activity implements OnClickListener{
 			String action = intent.getAction();
 			Log.d(TAG, "action:" + intent.getAction());
 			if (Constant.ACTION_BACKUP_DONE.equals(action)) {
-				//TODO:???
+				//Toast.makeText(MainActivity.this, R.string.action_settings, Toast.LENGTH_LONG).show();
 			}
 			else if (Constant.ACTION_NETWORK_STATE_CHANGE.equals(action)) {
 				//TODO:???
@@ -281,32 +281,34 @@ public class MainActivity extends Activity implements OnClickListener{
 		}else{
 			mNowPeriod.setText(getString(R.string.period,periods[0],periods[1]));
 		}
-				
+		long totalCount = 0;
+		long totalSize = 0;
+		
+		
 		long[] datas = BackupLogic.getFileInfo(this, Constant.TYPE_IMAGE);
 		mPhotoCount.setText(getString(R.string.photos, datas[0]));
 		mPhotoSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
-	
+		totalCount += datas[0]; 
+		totalSize += datas[1];
+				
 		datas = BackupLogic.getFileInfo(this, Constant.TYPE_VIDEO);
 		mVideoCount.setText(getString(R.string.videos, datas[0]));
 		mVideoSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
+		totalCount += datas[0]; 
+		totalSize += datas[1];
+
 		
 		datas = BackupLogic.getFileInfo(this, Constant.TYPE_AUDIO);
 		mAudioCount.setText(getString(R.string.audios, datas[0]));
 		mAudioSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
+		totalCount += datas[0]; 
+		totalSize += datas[1];
+
+		mTotalInfo.setText(getString(R.string.total_info, totalCount,StringUtil.byteCountToDisplaySize(totalSize)));
 		//REFRESH SERVERS STATUS
 		refreshServerStatus();
     }
     
-    private void setAlarmWakeUpService(Context context){
-    	AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(System.currentTimeMillis());
-        cal.add(Calendar.SECOND, 2);
-		long interval = 1 *30 * 1000;
-		Intent intent = new Intent(context, InfiniteReceiver.class);
-		PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		alarmManager.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(),interval, sender);
-    }
 
 	@Override
 	public void onClick(View v) {

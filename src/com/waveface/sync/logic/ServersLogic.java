@@ -22,6 +22,7 @@ import com.waveface.sync.entity.ConnectEntity;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.entity.UpdateCountEntity;
 import com.waveface.sync.util.DeviceUtil;
+import com.waveface.sync.util.NetworkUtil;
 import com.waveface.sync.util.StringUtil;
 import com.waveface.sync.websocket.RuntimeWebClient;
 
@@ -77,15 +78,19 @@ public class ServersLogic {
 		cv.put(BackupedServersTable.COLUMN_PHOTO_COUNT, entity.photoCount);
 		cv.put(BackupedServersTable.COLUMN_VIDEO_COUNT, entity.videoCount);
 		cv.put(BackupedServersTable.COLUMN_AUDIO_COUNT, entity.audioCount);		
-		cv.put(BackupedServersTable.COLUMN_LAST_BACKUP_DATETIME, StringUtil.getLocalDate());
+		cv.put(BackupedServersTable.COLUMN_LAST_DISPLAY_BACKUP_DATETIME, StringUtil.getLocalDate());
+		cv.put(BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME, "");			
 
+		
 		cursor = cr.query(BackupedServersTable.CONTENT_URI, 
-				new String[]{BackupedServersTable.COLUMN_SERVER_ID}, 
+				new String[]{BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME}, 
 				BackupedServersTable.COLUMN_SERVER_ID+"=?", 
 				new String[]{entity.serverId}, 
 				null);
 		//update
 		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			cv.put(BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME, cursor.getString(0));			
 			result = cr.update(BackupedServersTable.CONTENT_URI, 
 					 cv, 
 				 	 BackupedServersTable.COLUMN_SERVER_ID+"=?", new String[]{entity.serverId});
@@ -410,10 +415,11 @@ public class ServersLogic {
 		cursor.close();
 		return result;
 	}    
-	public static int updateServerLastBackupTime(Context context,String serverId){
+	public static int updateServerLastBackupTime(Context context,String serverId,String fileDateTime){
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
-		cv.put(BackupedServersTable.COLUMN_LAST_BACKUP_DATETIME, StringUtil.getLocalDate());
+		cv.put(BackupedServersTable.COLUMN_LAST_DISPLAY_BACKUP_DATETIME, StringUtil.getLocalDate());
+		cv.put(BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME, fileDateTime);		
 		return cr.update(BackupedServersTable.CONTENT_URI, cv,BackupedServersTable.COLUMN_SERVER_ID+"=?" , new String[]{serverId});
 	}
 	public static String getStatusByServerId(Context context,String serverId){
@@ -470,5 +476,4 @@ public class ServersLogic {
         cursor.close();	
 		return count;
 	}
-	
 }

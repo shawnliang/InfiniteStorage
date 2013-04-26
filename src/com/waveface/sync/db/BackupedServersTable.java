@@ -13,7 +13,7 @@ public class BackupedServersTable implements BaseColumns {
 	public static final Uri CONTENT_URI = BACKUPED_SERVER_URI;
 	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.wammer.sync.backupedServers";
 	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.wammer.sync.backupedServers";
-	public static final String DEFAULT_SORT_ORDER = BackupedServersTable.COLUMN_LAST_BACKUP_DATETIME+" DESC";
+	public static final String DEFAULT_SORT_ORDER = BackupedServersTable.COLUMN_LAST_DISPLAY_BACKUP_DATETIME+" DESC";
 
 	public static final String TABLE_NAME = "BackupedServers";
 	public static final String COLUMN_SERVER_ID = "id";	
@@ -26,8 +26,8 @@ public class BackupedServersTable implements BaseColumns {
 	public static final String COLUMN_PHOTO_COUNT = "photoCount";
 	public static final String COLUMN_VIDEO_COUNT = "videoCount";	
 	public static final String COLUMN_AUDIO_COUNT = "audioCount";
-	public static final String COLUMN_LAST_BACKUP_DATETIME = "lastBackupTime";
-	
+	public static final String COLUMN_LAST_DISPLAY_BACKUP_DATETIME = "lastDisplayBackupTime";	
+	public static final String COLUMN_LAST_FILE_BACKUP_DATETIME = "lastFileBackupTime";		
 	
 	private BackupedServersTable() {
 

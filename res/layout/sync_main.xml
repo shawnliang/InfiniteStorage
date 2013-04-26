@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000" >
+    android:background="#061E30" >
 
     <ImageView
         android:id="@+id/imageDevice"
@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:src="@drawable/ic_phone" />
 
     <TextView
@@ -21,56 +21,68 @@
         android:layout_centerHorizontal="true"
         android:text="lmichael-Nexus S"
         android:textColor="#FFFFFF"
-        android:textSize="18sp" />
+        android:textSize="22sp" />
 
     <TextView
-        android:id="@+id/textPeriod"
+        android:id="@+id/textTotolInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textDevice"
         android:layout_centerHorizontal="true"
-        android:text="2009-01-01~20130409"
+        android:text="@string/total_info"
         android:textColor="#FFFFFF"
         android:textSize="16sp" />
-
-    <RelativeLayout
-        android:id="@+id/rl1"
+    <TextView
+        android:id="@+id/textPeriod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textTotolInfo"
+        android:layout_centerHorizontal="true"
+        android:text="@string/period"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp" />
+    
+    <LinearLayout 
+        android:id="@+id/llTotalContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textPeriod"
-        android:layout_margin="5dp" >
+        android:layout_margin="5dp"
+        android:orientation="horizontal" >
+
+     <RelativeLayout
+        android:id="@+id/rl1"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp" >
 
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="60dp"
             android:layout_height="40dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"            
+            android:layout_marginBottom="5dp" 
+            android:layout_centerHorizontal="true"           
             android:src="@drawable/ic_photo" />
 
         <TextView
             android:id="@+id/textPhotoCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/imageView1"
-            android:layout_toRightOf="@+id/imageView1"
-            android:layout_marginLeft="2dp"
-            android:text="total 100 photos"
+            android:layout_below="@+id/imageView1"
+            android:layout_centerHorizontal="true"
+            android:text="100 photos"
             android:textColor="#FFFFFF" />
 
         <TextView
             android:id="@+id/textPhotoSize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textPhotoCount"
-            android:layout_alignRight="@+id/textPhotoCount"
             android:layout_below="@+id/textPhotoCount"
-            android:layout_marginLeft="2dp"
+            android:layout_centerHorizontal="true"
             android:text="7GB" 
             android:textColor="#FFFFFF"/>
 
@@ -78,39 +90,34 @@
             android:id="@+id/btnDeletePhoto"
             android:layout_width="75dp"
             android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/imageView1"
-            android:layout_alignBottom="@+id/imageView1"
+            android:layout_below="@+id/textPhotoSize"
             android:text="@string/clean_space"
-            android:textSize="14sp" />
-    </RelativeLayout>
+            android:textSize="14sp"
+            android:visibility="gone" />
 
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/rl2"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rl1"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="5dp" >
+        android:layout_margin="2dp" >
 
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="60dp"
             android:layout_height="40dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"            
+            android:layout_marginBottom="5dp"
+            android:layout_centerHorizontal="true"            
             android:src="@drawable/ic_video" />
 
         <TextView
             android:id="@+id/textVideoCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/imageView2"
-            android:layout_toRightOf="@+id/imageView2"
-            android:layout_marginLeft="2dp"
+            android:layout_below="@+id/imageView2"
+            android:layout_centerHorizontal="true"
             android:text="total 10 videos" 
             android:textColor="#FFFFFF"/>
 
@@ -118,10 +125,8 @@
             android:id="@+id/textVideoSize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textVideoCount"
-            android:layout_alignRight="@+id/textVideoCount"
             android:layout_below="@+id/textVideoCount"
-            android:layout_marginLeft="2dp"
+            android:layout_centerHorizontal="true"
             android:text="7GB" 
             android:textColor="#FFFFFF"/>
 
@@ -129,51 +134,43 @@
             android:id="@+id/btnDeleteVideo"
             android:layout_width="75dp"
             android:layout_height="50dp"
-            android:layout_alignLeft="@+id/btnDeletePhoto"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/imageView2"
-            android:layout_alignBottom="@+id/imageView2"
+            android:layout_below="@+id/textVideoSize"
             android:text="@string/clean_space"
-            android:textSize="14sp" />
+            android:textSize="14sp" 
+            android:visibility="gone"/>
 
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/rl3"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rl2"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="5dp" >
+        android:layout_margin="2dp" >
 
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="60dp"
             android:layout_height="40dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"            
+            android:layout_marginBottom="5dp"     
+            android:layout_centerHorizontal="true"       
             android:src="@drawable/ic_audio" />
 
         <TextView
             android:id="@+id/textAudioCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/imageView3"
-            android:layout_toRightOf="@+id/imageView3"
-            android:layout_marginLeft="2dp"
-            android:text="" 
+            android:layout_below="@+id/imageView3"
+            android:layout_centerHorizontal="true"
+            android:text="total 5 audios" 
             android:textColor="#FFFFFF"/>
 
         <TextView
             android:id="@+id/textAudioSize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textAudioCount"
-            android:layout_alignRight="@+id/textAudioCount"
             android:layout_below="@+id/textAudioCount"
-            android:layout_marginLeft="2dp"
+            android:layout_centerHorizontal="true"
             android:text="7GB" 
             android:textColor="#FFFFFF"/>
 
@@ -181,32 +178,33 @@
             android:id="@+id/btnDeleteAudio"
             android:layout_width="75dp"
             android:layout_height="50dp"
-            android:layout_alignLeft="@+id/btnDeletePhoto"
-            android:layout_alignBottom="@+id/imageView3"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/imageView3"
+            android:layout_below="@+id/textAudioSize"
             android:text="@string/clean_space"
-            android:textSize="14sp" />
+            android:textSize="14sp" 
+            android:visibility="gone"/>
 
     </RelativeLayout>
-    
+    </LinearLayout>
     <View
-        android:id="@+id/btnVideoPhoto"
+        android:id="@+id/vLine1"
         android:layout_width="wrap_content"
         android:layout_height="1dp"
-        android:layout_below="@+id/rl3"
-        android:layout_margin="10dp"
+        android:layout_below="@+id/llTotalContent"
+        android:layout_margin="3dp"
         android:background="#1BBFE0" />
 
     <ListView
   		android:id="@+id/listview"
         android:layout_above="@+id/rlSetting" 
-        android:layout_below="@+id/btnVideoPhoto"        
+        android:layout_below="@+id/vLine1"        
   		android:layout_width="match_parent"
   		android:layout_height="wrap_content"
+  		android:layout_marginLeft="3dp"
+  		android:layout_marginRight="3dp"
+  		android:drawSelectorOnTop="false"
   		android:listSelector="@android:color/transparent"
   		android:cacheColorHint="@android:color/transparent"
-  		android:background="#000000">
+  		android:clickable="true">
 
 	</ListView> 	
 	
@@ -215,20 +213,19 @@
         android:layout_width="match_parent"
   		android:layout_height="wrap_content"
   		android:layout_alignParentBottom="true"
-  		android:background="#000000"
         >
         <View
-            android:id="@+id/vLine"
+            android:id="@+id/vLine2"
         	android:layout_width="match_parent"
   			android:layout_height="1dp"
   			android:background="#1BBFE0"
-  			android:layout_margin="10dp"
+  			android:layout_margin="3dp"
             />
         <ImageView
         	android:id="@+id/ivAddpc"
         	android:layout_width="match_parent"
   			android:layout_height="wrap_content"
-  			android:layout_below="@+id/vLine"
+  			android:layout_below="@+id/vLine2"
   			android:layout_margin="1dp"
             android:src="@drawable/ic_add_pc"/>
     </RelativeLayout>

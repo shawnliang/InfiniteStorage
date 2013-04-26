@@ -43,8 +43,8 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 
 	private ViewGroup mRootView;
 	
-	private ServerArrayAdapter mNewServerAdapter ;
-	private ServerArrayAdapter mPairedAdapter ;	
+	private ServerChooseAdapter mNewServerAdapter ;
+	private ServerChooseAdapter mPairedAdapter ;	
 	
     private Handler mHandler = new Handler();
 	private BonjourServerContentObserver mContentObserver;
@@ -89,7 +89,7 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 		mRootView = (ViewGroup) inflater.inflate(
 				R.layout.add_server, null);
 		mAddServerListview = (ListView) mRootView.findViewById(R.id.newServerListview);
-		mNewServerAdapter = new ServerArrayAdapter(getActivity(), ServersLogic.getBonjourServersExportPaired(getActivity()));
+		mNewServerAdapter = new ServerChooseAdapter(getActivity(), ServersLogic.getBonjourServersExportPaired(getActivity()));
 		mAddServerListview.setAdapter(mNewServerAdapter);
 		mAddServerListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -111,19 +111,8 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 		
 		
 		mPairedServerListview = (ListView) mRootView.findViewById(R.id.pairedServerListview);
-		mPairedAdapter = new ServerArrayAdapter(getActivity(), ServersLogic.getBackupedServers(getActivity()));
+		mPairedAdapter = new ServerChooseAdapter(getActivity(), ServersLogic.getBackupedServers(getActivity()));
 		mPairedServerListview.setAdapter(mPairedAdapter);
-//		mPairedServerListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//		      @Override
-//		      public void onItemClick(AdapterView<?> parent, final View view,
-//		          int position, long id) {
-//		        Log.d(TAG, "position:"+position);
-//		        mServer = mPairedAdapter.getItem(position);
-//		        clickToLinkServer(mServer);
-//		      }
-//		});
-
 
 		mBtnCancel = (Button) mRootView.findViewById(R.id.btnCancel);
 		mBtnCancel.setOnClickListener(this);
@@ -240,70 +229,5 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 	public void refreshUI(){
 		mNewServerAdapter.setData(ServersLogic.getBonjourServersExportPaired(getActivity()));
 		mPairedAdapter.setData(ServersLogic.getBackupedServers(getActivity()));
-	}
-	
-	class ServerArrayAdapter extends BaseAdapter {
-		  private final Context context;
-		  private ArrayList<ServerEntity> values;
-
-		  public ServerArrayAdapter(Context context, ArrayList<ServerEntity> datas) {
-		    super();
-		    this.context = context;
-		    this.values = datas;
-		  }
-
-		  @Override
-		  public View getView(int position, View convertView, ViewGroup parent) {
-			  ServerEntity entity = values.get(position);
-
-			  LayoutInflater inflater = (LayoutInflater) context
-		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		    View rowView = inflater.inflate(R.layout.choose_server_row, parent, false);
-		    TextView tv = (TextView) rowView.findViewById(R.id.textBackupPC);
-		    tv.setText( entity.serverName);
-		    ImageView iv = (ImageView) rowView.findViewById(R.id.imagePC);
-		    
-		    if(!TextUtils.isEmpty(entity.serverOS)){
-			    if(entity.serverOS.equals("OSX")){
-			    	iv.setImageResource(R.drawable.ic_apple);
-			    }
-			    else{
-			    	iv.setImageResource(R.drawable.ic_windows);
-			    }
-		    }
-//		    String status = ServersLogic.getStatusByServerId(context, entity.serverId);
-		    if(!TextUtils.isEmpty(entity.serverId) 
-		    		&& entity.serverId.equals(RuntimeState.mWebSocketServerId)){
-		    	iv = (ImageView) rowView.findViewById(R.id.ivConnected);
-		    	iv.setVisibility(View.VISIBLE);
-		    	tv.setTextColor(context.getResources().getColor(R.color.linked));
-		    }
-		    return rowView;
-		  }
-
-		  
-		@Override
-		public int getCount() {
-			return values.size();
-		}
-
-		@Override
-		public ServerEntity getItem(int position) {
-			return values.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-		public void addData(ServerEntity entity) {
-			values.add(entity);
-			this.notifyDataSetChanged();
-		}
-		public void setData(ArrayList<ServerEntity> entities) {
-			values = entities;
-			this.notifyDataSetChanged();
-		}
 	}
 }

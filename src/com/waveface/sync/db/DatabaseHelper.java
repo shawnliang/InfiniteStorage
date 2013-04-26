@@ -14,7 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String DATABASE_NAME = "infinites.db";
 
 	private static final String TAG = DatabaseHelper.class.getSimpleName();
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 	private static final String[] TABLE_NAME_LIST = {
 			ImportTable.TABLE_NAME,
 			ImportFilesTable.TABLE_NAME,
@@ -86,7 +86,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	      .append(BackupedServersTable.COLUMN_PHOTO_COUNT + " TEXT NOT NULL DEFAULT '0',")
 	      .append(BackupedServersTable.COLUMN_VIDEO_COUNT + " TEXT NOT NULL DEFAULT '0',")
 	      .append(BackupedServersTable.COLUMN_AUDIO_COUNT + " TEXT NOT NULL DEFAULT '0',")		
-	      .append(BackupedServersTable.COLUMN_LAST_BACKUP_DATETIME+ " TEXT NOT NULL);");
+	      .append(BackupedServersTable.COLUMN_LAST_DISPLAY_BACKUP_DATETIME+ " TEXT NOT NULL,")
+	      .append(BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME+ " TEXT );");
+		
 		createTable(db, sqlBuilder.toString(), BackupedServersTable.TABLE_NAME);
 
 		// Create BonjourServers table

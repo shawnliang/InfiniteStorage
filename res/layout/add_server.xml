@@ -31,13 +31,18 @@
         android:layout_below="@+id/textView1"
  
         android:layout_centerHorizontal="true">
+    
     <ListView
         android:id="@+id/newServerListview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:listSelector="@android:color/transparent"
-        android:divider="#00FF00"
+  		android:drawSelectorOnTop="false"
+  		android:listSelector="@drawable/server_chosed"
+  		android:cacheColorHint="@android:color/transparent"
+  		android:clickable="true"
+  		android:divider="#00FF00"
         android:dividerHeight="2dp" />
+    
     </RelativeLayout>
     
     <TextView
@@ -67,9 +72,13 @@
         android:id="@+id/pairedServerListview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:listSelector="@android:color/transparent"
-        android:divider="#00FF00"
-        android:dividerHeight="2dp" />
+  		android:drawSelectorOnTop="false"
+  		android:listSelector="@drawable/server_chosed"
+  		android:cacheColorHint="@android:color/transparent"
+  		android:clickable="true"
+  		android:divider="#00FF00"
+        android:dividerHeight="2dp"/>
+    
     </RelativeLayout>
     
     

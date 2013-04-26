@@ -9,7 +9,6 @@
         android:paddingRight="30dp"
         android:paddingLeft="30dp"         
         android:baselineAligned="false" 
-
         >    
     	<FrameLayout
 	        android:id="@+id/entry_main"
