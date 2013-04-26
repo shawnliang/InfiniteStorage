@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.waveface.sync.db.BackupDetailsTable;
 import com.waveface.sync.db.BackupedServersTable;

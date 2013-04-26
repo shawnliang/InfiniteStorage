@@ -44,7 +44,7 @@ public class ServerChooserFragment extends FragmentBase
 	public final String TAG = ServerChooserFragment.class.getSimpleName();
 
 	private ViewGroup mRootView;
-	private ServerArrayAdapter mAdapter ; 
+	private ServerChooseAdapter mAdapter ; 
     private Handler mHandler = new Handler();
 	private BonjourServerContentObserver mContentObserver;
 	private ProgressDialog mProgressDialog;
@@ -92,14 +92,13 @@ public class ServerChooserFragment extends FragmentBase
 		mRootView = (ViewGroup) inflater.inflate(
 				R.layout.first_use_bonjour_servers, null);
 		ListView listview = (ListView) mRootView.findViewById(R.id.listview);
-		mAdapter = new ServerArrayAdapter(getActivity(), ServersLogic.getBonjourServers(getActivity()));
+		mAdapter = new ServerChooseAdapter(getActivity(), ServersLogic.getBonjourServers(getActivity()));
 		listview.setAdapter(mAdapter);
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 		      @Override
 		      public void onItemClick(AdapterView<?> parent, final View view,
 		          int position, long id) {
-		        Log.d(TAG, "position:"+position);
 		        mServer = mAdapter.getItem(position);
 		        clickToLinkServer(mServer);
 		      }
@@ -234,73 +233,6 @@ public class ServerChooserFragment extends FragmentBase
 //		}
 	}
 	
-	class ServerArrayAdapter extends BaseAdapter {
-		  private final Context context;
-		  private ArrayList<ServerEntity> values;
-
-		  public ServerArrayAdapter(Context context, ArrayList<ServerEntity> datas) {
-		    super();
-		    this.context = context;
-		    this.values = datas;
-		  }
-
-		  @Override
-		  public View getView(int position, View convertView, ViewGroup parent) {
-			  ServerEntity entity = values.get(position);
-
-			  LayoutInflater inflater = (LayoutInflater) context
-		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		    View rowView = inflater.inflate(R.layout.choose_server_row, parent, false);
-		    TextView tv = (TextView) rowView.findViewById(R.id.textBackupPC);
-		    tv.setText( entity.serverName);
-		    ImageView iv = (ImageView) rowView.findViewById(R.id.imagePC);
-		    
-		    if(!TextUtils.isEmpty(entity.serverOS)){
-			    if(entity.serverOS.equals("OSX")){
-			    	iv.setImageResource(R.drawable.ic_apple);
-			    }
-			    else{
-			    	iv.setImageResource(R.drawable.ic_windows);
-			    }
-		    }
-//		    String status = ServersLogic.getStatusByServerId(context, entity.serverId);
-		    if(!TextUtils.isEmpty(entity.serverId) 
-		    		&& entity.serverId.equals(RuntimeState.mWebSocketServerId)){
-		    	iv = (ImageView) rowView.findViewById(R.id.ivConnected);
-		    	iv.setVisibility(View.VISIBLE);
-		    	tv.setTextColor(context.getResources().getColor(R.color.linked));
-		    }
-		    return rowView;
-		  }
-
-		  
-		@Override
-		public int getCount() {
-			return values.size();
-		}
-
-		@Override
-		public ServerEntity getItem(int position) {
-			return values.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-		public void addData(ServerEntity entity) {
-			values.add(entity);
-			this.notifyDataSetChanged();
-		}
-		public void setData(ArrayList<ServerEntity> entities) {
-			values = entities;
-			this.notifyDataSetChanged();
-		}
-		
-		
-	}
-
 	@Override
 	public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 	}

@@ -39,7 +39,7 @@ public class Constant {
 	public static final int BONJOUR_PAIRED = 2;
 	
 	//ALARM INTERVAL
-	public static final long ALARM_INTERVAL =  1 *60 * 1000;
+	public static final long ALARM_INTERVAL =  1 *30 * 1000;
 
 
 	//SERVER STATUS

@@ -177,7 +177,7 @@ public class BackupLogic {
 				} else if (dateAdded != -1) {
 					refCursorDate = dateAdded ;
 				}
-				if(refCursorDate>0){
+				if(refCursorDate>0 || cursorDate == null ){
 					cursorDate = StringUtil.getLocalDate(refCursorDate);
 				}
 				else{

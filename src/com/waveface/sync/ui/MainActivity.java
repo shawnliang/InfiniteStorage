@@ -1,11 +1,8 @@
 package com.waveface.sync.ui;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,6 +16,8 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -34,7 +33,6 @@ import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.service.InfiniteReceiver;
 import com.waveface.sync.service.InfiniteService;
 import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.util.Log;
@@ -120,7 +118,6 @@ public class MainActivity extends Activity implements OnClickListener{
 		ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(this);		
 		mAdapter = new PairedServersAdapter(this,servers);
 		listview.setAdapter(mAdapter);
-	    
 	    mIvAddPc = (ImageView) findViewById(R.id.ivAddpc);
 	    mIvAddPc.setOnClickListener(this);
 	    

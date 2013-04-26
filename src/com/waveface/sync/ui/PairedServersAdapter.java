@@ -22,12 +22,30 @@ import com.waveface.sync.util.StringUtil;
 public class PairedServersAdapter  extends BaseAdapter {
 	  private final Context context;
 	  private ArrayList<ServerEntity> mServers;
-
+      private static boolean[] isFocused ;  
+      private static int whichClick = -1;  
+	  
 	  public PairedServersAdapter(Context context, ArrayList<ServerEntity> servers) {
 	    super();
 	    this.context = context;
 	    this.mServers = servers;
+	    setFocus();
 	  }
+
+	  public void setFocus(){
+	    isFocused = new boolean[this.mServers.size()];  
+        for(int i=0;i< isFocused.length;i++){            
+                isFocused[i] = false;  
+        }  
+	  }
+	  
+	  public void changeBackGround(int position){  
+             isFocused[whichClick==-1?0:whichClick] = false;  
+             whichClick = position;  
+             isFocused[position] = true;  
+             notifyDataSetChanged();  
+      }  
+	  
 	  static class ViewHolder {
 		    ImageView iv ;
 		    ProgressBar pb ;
@@ -68,6 +86,8 @@ public class PairedServersAdapter  extends BaseAdapter {
 		  else{
 			  viewHolder = (ViewHolder) v.getTag();
 		  }
+		  v.setBackgroundColor(isFocused[position]?
+				  R.color.bonjour_serve_click:R.color.bonjour_serve_click);
 		  
 		  //DATA FOR DISPLAY
 		  ServerEntity entity = mServers.get(position);
@@ -129,10 +149,12 @@ public class PairedServersAdapter  extends BaseAdapter {
 	}
 	public void addData(ServerEntity entity) {
 		mServers.add(entity);
+		setFocus();
 		this.notifyDataSetChanged();
 	}
 	public void setData(ArrayList<ServerEntity> servers) {
 		mServers = servers;
+		setFocus();
 		this.notifyDataSetChanged();
 	}	
 }
