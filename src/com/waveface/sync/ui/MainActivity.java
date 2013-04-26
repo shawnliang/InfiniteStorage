@@ -16,8 +16,6 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -120,6 +118,8 @@ public class MainActivity extends Activity implements OnClickListener{
 		listview.setAdapter(mAdapter);
 	    mIvAddPc = (ImageView) findViewById(R.id.ivAddpc);
 	    mIvAddPc.setOnClickListener(this);
+	    
+	    mRLSetting = (RelativeLayout) findViewById(R.id.rlSetting);	    
 	    
 		refreshLayout();
 		//RESGISTER OBSERVER
@@ -235,6 +235,9 @@ public class MainActivity extends Activity implements OnClickListener{
 	};
     public void refreshServerStatus(){
 		mAdapter.setData(ServersLogic.getBackupedServers(this));
+		if(ServersLogic.hasBackupedServers(this)){
+			mRLSetting.setVisibility(View.GONE);
+		}
     }
 
     @Override
@@ -315,15 +318,14 @@ public class MainActivity extends Activity implements OnClickListener{
 		Intent startIntent = null;
  		switch(v.getId()){
 			case R.id.ivAddpc:
-				mPairedServers = ServersLogic.getBackupedServers(this);
-				if(mPairedServers.size()==0){
+				if(ServersLogic.hasBackupedServers(this)){
 		            startIntent = new Intent(MainActivity.this, FirstUseActivity.class);	                    	
 		            startActivityForResult(startIntent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
 				}
-				else{
-		            startIntent = new Intent(MainActivity.this, AddServerActivity.class);	                    	
-		            startActivityForResult(startIntent, Constant.REQUEST_CODE_ADD_SERVER);					
-				}
+//				else{
+//		            startIntent = new Intent(MainActivity.this, AddServerActivity.class);	                    	
+//		            startActivityForResult(startIntent, Constant.REQUEST_CODE_ADD_SERVER);					
+//				}
 				break;		
 			case R.id.btnDeletePhoto:
 	            startIntent = new Intent(MainActivity.this, CleanActivity.class);

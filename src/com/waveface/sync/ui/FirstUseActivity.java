@@ -89,7 +89,10 @@ public class FirstUseActivity extends FragmentActivity implements
 
 	@Override
 	public void goNext(String id) {
-		if (ServerChooserFragment.class.getSimpleName().equals(id)) {
+		if (InstallFragment.class.getSimpleName().equals(id)) {
+			finish();
+		}
+		else if (ServerChooserFragment.class.getSimpleName().equals(id)) {
 			showFragment(new BackupInfoFragment(), BackupInfoFragment.class.getSimpleName());
 		}
 		else if (BackupInfoFragment.class.getSimpleName().equals(id)) {

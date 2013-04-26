@@ -109,7 +109,20 @@ public class ServersLogic {
 		return result;
 	}
 	
-	
+	public static boolean hasBackupedServers(Context context){
+		boolean hasServer = false;
+		ContentResolver cr = context.getContentResolver();
+		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+				null, 
+				BackupedServersTable.COLUMN_STATUS+"!=?", 
+				new String[]{Constant.SERVER_DENIED}, 
+				BackupedServersTable.COLUMN_SERVER_ID+" LIMIT 1");
+		if(cursor!=null && cursor.getCount()>0){
+			hasServer = true; 
+		}
+		cursor.close();
+		return hasServer;
+	}	
 	public static ArrayList<ServerEntity> getBackupedServers(Context context){
 		ArrayList<ServerEntity> datas = new ArrayList<ServerEntity>();
 		ServerEntity entity = null;
@@ -171,7 +184,22 @@ public class ServersLogic {
 		cursor.close();
 		return result;
 	}
-	
+	public static boolean hasBonjourServers(Context context){
+		boolean hasServer = false;
+		ContentResolver cr = context.getContentResolver();
+		Cursor cursor = cr.query(BonjourServersTable.CONTENT_URI, 
+				new String[]{BonjourServersTable.COLUMN_SERVER_ID}, 
+				null, 
+				null, 
+				BonjourServersTable.COLUMN_SERVER_ID+" LIMIT 1");
+		
+		if(cursor!=null && cursor.getCount()>0){
+			hasServer = true;
+		}
+		cursor.close();
+		return hasServer;
+	}
+
 	
 	public static ArrayList<ServerEntity> getBonjourServers(Context context){
 		ArrayList<ServerEntity> datas = new ArrayList<ServerEntity>();

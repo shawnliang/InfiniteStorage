@@ -38,7 +38,12 @@
     <string name="simple_description2">all contents will be backuped automatically.</string>
     <string name="download_windows">download windows version</string>
     <string name="download_url">waveface.com/awesome</string>
-    <string name="email_description">Email Me download URL</string>
+    <string name="email_description">Email Link to Me</string>
+    <string name="install_finding_server">Finding PCs.....</string>
+    <string name="install_dialog_title">Cann\'t Find PC</string>
+    <string name="install_dialog_send_mail">Have you install Windows App？</string>
+    <string name="install_dialog_go_install">Receive Email at your PC 上, download from the link and install.</string>
+    
     <!-- EMAIL -->
     <string name="email_subject">InfiniteStorage Windows Download URL</string>
 

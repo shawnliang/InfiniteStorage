@@ -72,7 +72,6 @@ public class ServerChooserFragment extends FragmentBase
 	}
 
 	private class BonjourServerContentObserver extends ContentObserver {
-
 		public BonjourServerContentObserver() {
 			super(new Handler());
 		}
@@ -83,7 +82,6 @@ public class ServerChooserFragment extends FragmentBase
 				refreshUI();
 			}
 		}
-
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,10 +107,10 @@ public class ServerChooserFragment extends FragmentBase
 		
 	    mProgressBar = (ProgressBar) mRootView.findViewById(R.id.pbSearch);
 	    mTvSearch = (TextView) mRootView.findViewById(R.id.tvSearch);
-//		if(mAdapter.getCount()>0){
-//		    mProgressBar.setVisibility(View.INVISIBLE);
-//		    mTvSearch.setVisibility(View.INVISIBLE);
-//		}
+		if(mAdapter.getCount()>0){
+		    mProgressBar.setVisibility(View.INVISIBLE);
+		    mTvSearch.setVisibility(View.INVISIBLE);
+		}
 		
         mHandler.postDelayed(new Runnable() {
             public void run() {
@@ -227,10 +225,10 @@ public class ServerChooserFragment extends FragmentBase
 	}
 	public void refreshUI(){
 		mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
-//		if(mAdapter.getCount()>0){
-//		    mProgressBar.setVisibility(View.INVISIBLE);
-//		    mTvSearch.setVisibility(View.INVISIBLE);
-//		}
+		if(mAdapter.getCount()>0){
+		    mProgressBar.setVisibility(View.INVISIBLE);
+		    mTvSearch.setVisibility(View.INVISIBLE);
+		}
 	}
 	
 	@Override
