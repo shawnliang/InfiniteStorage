@@ -69,6 +69,15 @@ namespace InfiniteStorage.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to 允許 {0} 備份檔案到這台電腦?.
+        /// </summary>
+        internal static string AllowPairingRequest {
+            get {
+                return ResourceManager.GetString("AllowPairingRequest", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap app_store_badge {
             get {
                 object obj = ResourceManager.GetObject("app_store_badge", resourceCulture);
@@ -113,9 +122,43 @@ namespace InfiniteStorage.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to 檔案：{0}   {1} bytes.
+        /// </summary>
+        internal static string FirstUse_FileLabel {
+            get {
+                return ResourceManager.GetString("FirstUse_FileLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 請回到手機，指定備份到這台電腦 - {0}.
+        /// </summary>
+        internal static string FirstUse_Instruction1 {
+            get {
+                return ResourceManager.GetString("FirstUse_Instruction1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 進度：{0}/{1}.
+        /// </summary>
+        internal static string FirstUse_ProgressLabel {
+            get {
+                return ResourceManager.GetString("FirstUse_ProgressLabel", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap get_it_on_google_play {
             get {
                 object obj = ResourceManager.GetObject("get_it_on_google_play", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap mobile_icon {
+            get {
+                object obj = ResourceManager.GetObject("mobile_icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,6 +176,13 @@ namespace InfiniteStorage.Properties {
         internal static string ProductName {
             get {
                 return ResourceManager.GetString("ProductName", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Tea_Cup1 {
+            get {
+                object obj = ResourceManager.GetObject("Tea_Cup1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

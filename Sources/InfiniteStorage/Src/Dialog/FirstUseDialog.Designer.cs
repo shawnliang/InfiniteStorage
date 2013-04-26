@@ -32,27 +32,28 @@
 			this.nextButton = new System.Windows.Forms.Button();
 			this.prevButton = new System.Windows.Forms.Button();
 			this.tabControlEx1 = new InfiniteStorage.TabControlEx();
-			this.tabWelcome = new System.Windows.Forms.TabPage();
-			this.storageLocationControl1 = new InfiniteStorage.StorageLocationControl();
+			this.tabWelcomeAndWaitConnect = new System.Windows.Forms.TabPage();
+			this.pictureBox4 = new System.Windows.Forms.PictureBox();
+			this.instruction1 = new System.Windows.Forms.Label();
 			this.hrLine = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
+			this.tabChooseLocation = new System.Windows.Forms.TabPage();
+			this.label4 = new System.Windows.Forms.Label();
+			this.label5 = new System.Windows.Forms.Label();
+			this.storageLocationControl1 = new InfiniteStorage.StorageLocationControl();
 			this.tabChooseOrganizeMethod = new System.Windows.Forms.TabPage();
 			this.organizeSelectionControl1 = new InfiniteStorage.OrganizeSelectionControl();
 			this.label8 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
-			this.tabInstallAppAndStart = new System.Windows.Forms.TabPage();
-			this.pictureBox3 = new System.Windows.Forms.PictureBox();
-			this.pictureBox2 = new System.Windows.Forms.PictureBox();
-			this.pictureBox1 = new System.Windows.Forms.PictureBox();
-			this.label3 = new System.Windows.Forms.Label();
+			this.tabInstalledSuccess = new System.Windows.Forms.TabPage();
+			this.transferringControl1 = new InfiniteStorage.TransferringControl();
 			this.panel1.SuspendLayout();
 			this.tabControlEx1.SuspendLayout();
-			this.tabWelcome.SuspendLayout();
+			this.tabWelcomeAndWaitConnect.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+			this.tabChooseLocation.SuspendLayout();
 			this.tabChooseOrganizeMethod.SuspendLayout();
-			this.tabInstallAppAndStart.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+			this.tabInstalledSuccess.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// panel1
@@ -90,42 +91,53 @@
 			// 
 			// tabControlEx1
 			// 
-			this.tabControlEx1.Controls.Add(this.tabWelcome);
+			this.tabControlEx1.Controls.Add(this.tabWelcomeAndWaitConnect);
+			this.tabControlEx1.Controls.Add(this.tabChooseLocation);
 			this.tabControlEx1.Controls.Add(this.tabChooseOrganizeMethod);
-			this.tabControlEx1.Controls.Add(this.tabInstallAppAndStart);
+			this.tabControlEx1.Controls.Add(this.tabInstalledSuccess);
 			this.tabControlEx1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControlEx1.HideTabs = true;
 			this.tabControlEx1.Location = new System.Drawing.Point(0, 0);
 			this.tabControlEx1.Multiline = true;
 			this.tabControlEx1.Name = "tabControlEx1";
-			this.tabControlEx1.PageIndex = 3;
+			this.tabControlEx1.PageIndex = 4;
 			this.tabControlEx1.SelectedIndex = 0;
 			this.tabControlEx1.Size = new System.Drawing.Size(628, 288);
 			this.tabControlEx1.TabIndex = 1;
 			this.tabControlEx1.SelectedIndexChanged += new System.EventHandler(this.tabControlEx1_SelectedIndexChanged);
 			// 
-			// tabWelcome
+			// tabWelcomeAndWaitConnect
 			// 
-			this.tabWelcome.BackColor = System.Drawing.SystemColors.ControlLightLight;
-			this.tabWelcome.Controls.Add(this.storageLocationControl1);
-			this.tabWelcome.Controls.Add(this.hrLine);
-			this.tabWelcome.Controls.Add(this.label1);
-			this.tabWelcome.Location = new System.Drawing.Point(0, 0);
-			this.tabWelcome.Name = "tabWelcome";
-			this.tabWelcome.Padding = new System.Windows.Forms.Padding(3);
-			this.tabWelcome.Size = new System.Drawing.Size(628, 288);
-			this.tabWelcome.TabIndex = 0;
-			this.tabWelcome.Text = "Infinite Storage";
+			this.tabWelcomeAndWaitConnect.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.tabWelcomeAndWaitConnect.Controls.Add(this.pictureBox4);
+			this.tabWelcomeAndWaitConnect.Controls.Add(this.instruction1);
+			this.tabWelcomeAndWaitConnect.Controls.Add(this.hrLine);
+			this.tabWelcomeAndWaitConnect.Controls.Add(this.label1);
+			this.tabWelcomeAndWaitConnect.Location = new System.Drawing.Point(0, 0);
+			this.tabWelcomeAndWaitConnect.Name = "tabWelcomeAndWaitConnect";
+			this.tabWelcomeAndWaitConnect.Padding = new System.Windows.Forms.Padding(3);
+			this.tabWelcomeAndWaitConnect.Size = new System.Drawing.Size(628, 288);
+			this.tabWelcomeAndWaitConnect.TabIndex = 0;
+			this.tabWelcomeAndWaitConnect.Text = "歡迎使用 Infinite Storage";
 			// 
-			// storageLocationControl1
+			// pictureBox4
 			// 
-			this.storageLocationControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.storageLocationControl1.Location = new System.Drawing.Point(68, 102);
-			this.storageLocationControl1.Name = "storageLocationControl1";
-			this.storageLocationControl1.Size = new System.Drawing.Size(506, 103);
-			this.storageLocationControl1.StoragePath = "C:\\Users\\shawnliang\\Infinite Storage";
-			this.storageLocationControl1.TabIndex = 2;
+			this.pictureBox4.Image = global::InfiniteStorage.Properties.Resources.mobile_icon;
+			this.pictureBox4.Location = new System.Drawing.Point(84, 121);
+			this.pictureBox4.Name = "pictureBox4";
+			this.pictureBox4.Size = new System.Drawing.Size(187, 130);
+			this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.pictureBox4.TabIndex = 3;
+			this.pictureBox4.TabStop = false;
+			// 
+			// instruction1
+			// 
+			this.instruction1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.instruction1.Location = new System.Drawing.Point(277, 157);
+			this.instruction1.Name = "instruction1";
+			this.instruction1.Size = new System.Drawing.Size(281, 77);
+			this.instruction1.TabIndex = 2;
+			this.instruction1.Text = "請到手機上選擇要備份到這台PC: shawnliangmbp";
 			// 
 			// hrLine
 			// 
@@ -134,7 +146,7 @@
 			this.hrLine.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.hrLine.Location = new System.Drawing.Point(68, 77);
 			this.hrLine.Name = "hrLine";
-			this.hrLine.Size = new System.Drawing.Size(492, 2);
+			this.hrLine.Size = new System.Drawing.Size(484, 2);
 			this.hrLine.TabIndex = 1;
 			// 
 			// label1
@@ -144,10 +156,53 @@
 			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
 			this.label1.Location = new System.Drawing.Point(12, 23);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(604, 45);
+			this.label1.Size = new System.Drawing.Size(596, 45);
 			this.label1.TabIndex = 0;
-			this.label1.Text = "再也不怕手機照片、影片、錄音當遺書或手機空間不夠了\r\n只要電腦開著 檔案就會自己跑回來！";
+			this.label1.Text = "再也不怕手機照片、影片、錄音檔遺失或手機空間不夠了\r\n只要電腦開著，檔案就會自己跑回來！";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// tabChooseLocation
+			// 
+			this.tabChooseLocation.Controls.Add(this.label4);
+			this.tabChooseLocation.Controls.Add(this.label5);
+			this.tabChooseLocation.Controls.Add(this.storageLocationControl1);
+			this.tabChooseLocation.Location = new System.Drawing.Point(0, 0);
+			this.tabChooseLocation.Name = "tabChooseLocation";
+			this.tabChooseLocation.Padding = new System.Windows.Forms.Padding(3);
+			this.tabChooseLocation.Size = new System.Drawing.Size(628, 288);
+			this.tabChooseLocation.TabIndex = 3;
+			this.tabChooseLocation.Text = "選擇備份資料夾位置";
+			this.tabChooseLocation.UseVisualStyleBackColor = true;
+			// 
+			// label4
+			// 
+			this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.label4.Location = new System.Drawing.Point(68, 77);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(492, 2);
+			this.label4.TabIndex = 3;
+			// 
+			// label5
+			// 
+			this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+			this.label5.Location = new System.Drawing.Point(12, 23);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(604, 45);
+			this.label5.TabIndex = 2;
+			this.label5.Text = "再也不怕手機照片、影片、錄音檔遺失或手機空間不夠了\r\n只要電腦開著，檔案就會自己跑回來！";
+			this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
+			// storageLocationControl1
+			// 
+			this.storageLocationControl1.Location = new System.Drawing.Point(68, 114);
+			this.storageLocationControl1.Name = "storageLocationControl1";
+			this.storageLocationControl1.Size = new System.Drawing.Size(492, 95);
+			this.storageLocationControl1.StoragePath = "";
+			this.storageLocationControl1.TabIndex = 0;
 			// 
 			// tabChooseOrganizeMethod
 			// 
@@ -178,7 +233,7 @@
 			this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.label8.Location = new System.Drawing.Point(68, 77);
 			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(492, 2);
+			this.label8.Size = new System.Drawing.Size(484, 2);
 			this.label8.TabIndex = 2;
 			// 
 			// label2
@@ -188,69 +243,30 @@
 			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
 			this.label2.Location = new System.Drawing.Point(12, 23);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(604, 45);
+			this.label2.Size = new System.Drawing.Size(596, 45);
 			this.label2.TabIndex = 1;
 			this.label2.Text = "不只是幫您安全把檔案送回電腦，還幫您按照日期收納，讓您快速找尋跟瀏覽";
 			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// tabInstallAppAndStart
+			// tabInstalledSuccess
 			// 
-			this.tabInstallAppAndStart.Controls.Add(this.pictureBox3);
-			this.tabInstallAppAndStart.Controls.Add(this.pictureBox2);
-			this.tabInstallAppAndStart.Controls.Add(this.pictureBox1);
-			this.tabInstallAppAndStart.Controls.Add(this.label3);
-			this.tabInstallAppAndStart.Location = new System.Drawing.Point(0, 0);
-			this.tabInstallAppAndStart.Name = "tabInstallAppAndStart";
-			this.tabInstallAppAndStart.Padding = new System.Windows.Forms.Padding(3);
-			this.tabInstallAppAndStart.Size = new System.Drawing.Size(628, 288);
-			this.tabInstallAppAndStart.TabIndex = 2;
-			this.tabInstallAppAndStart.Text = "安裝 App";
-			this.tabInstallAppAndStart.UseVisualStyleBackColor = true;
+			this.tabInstalledSuccess.Controls.Add(this.transferringControl1);
+			this.tabInstalledSuccess.Location = new System.Drawing.Point(0, 0);
+			this.tabInstalledSuccess.Name = "tabInstalledSuccess";
+			this.tabInstalledSuccess.Padding = new System.Windows.Forms.Padding(3);
+			this.tabInstalledSuccess.Size = new System.Drawing.Size(628, 288);
+			this.tabInstalledSuccess.TabIndex = 2;
+			this.tabInstalledSuccess.Text = "安裝 App";
+			this.tabInstalledSuccess.UseVisualStyleBackColor = true;
 			// 
-			// pictureBox3
+			// transferringControl1
 			// 
-			this.pictureBox3.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.pictureBox3.Image = global::InfiniteStorage.Properties.Resources.temp_app_logo;
-			this.pictureBox3.Location = new System.Drawing.Point(228, 28);
-			this.pictureBox3.Name = "pictureBox3";
-			this.pictureBox3.Size = new System.Drawing.Size(173, 103);
-			this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this.pictureBox3.TabIndex = 5;
-			this.pictureBox3.TabStop = false;
-			// 
-			// pictureBox2
-			// 
-			this.pictureBox2.Image = global::InfiniteStorage.Properties.Resources.app_store_badge;
-			this.pictureBox2.Location = new System.Drawing.Point(60, 195);
-			this.pictureBox2.Name = "pictureBox2";
-			this.pictureBox2.Size = new System.Drawing.Size(198, 60);
-			this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this.pictureBox2.TabIndex = 4;
-			this.pictureBox2.TabStop = false;
-			this.pictureBox2.Click += new System.EventHandler(this.getItOnAppStore_Click);
-			// 
-			// pictureBox1
-			// 
-			this.pictureBox1.Image = global::InfiniteStorage.Properties.Resources.get_it_on_google_play;
-			this.pictureBox1.Location = new System.Drawing.Point(404, 195);
-			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(172, 60);
-			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this.pictureBox1.TabIndex = 3;
-			this.pictureBox1.TabStop = false;
-			this.pictureBox1.Click += new System.EventHandler(this.getItOnGooglePlay_Click);
-			// 
-			// label3
-			// 
-			this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold);
-			this.label3.Location = new System.Drawing.Point(12, 150);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(604, 42);
-			this.label3.TabIndex = 0;
-			this.label3.Text = "趕緊在手機上裝起 app，馬上把照片、影片、 錄音檔送回來吧！";
-			this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.transferringControl1.WebSocketContext = null;
+			this.transferringControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.transferringControl1.Location = new System.Drawing.Point(3, 3);
+			this.transferringControl1.Name = "transferringControl1";
+			this.transferringControl1.Size = new System.Drawing.Size(622, 282);
+			this.transferringControl1.TabIndex = 0;
 			// 
 			// FirstUseDialog
 			// 
@@ -260,16 +276,16 @@
 			this.Controls.Add(this.tabControlEx1);
 			this.Controls.Add(this.panel1);
 			this.Name = "FirstUseDialog";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "[product name]";
 			this.Load += new System.EventHandler(this.FirstUseDialog_Load);
 			this.panel1.ResumeLayout(false);
 			this.tabControlEx1.ResumeLayout(false);
-			this.tabWelcome.ResumeLayout(false);
+			this.tabWelcomeAndWaitConnect.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+			this.tabChooseLocation.ResumeLayout(false);
 			this.tabChooseOrganizeMethod.ResumeLayout(false);
-			this.tabInstallAppAndStart.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+			this.tabInstalledSuccess.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -278,20 +294,22 @@
 
 		private System.Windows.Forms.Panel panel1;
 		private TabControlEx tabControlEx1;
-		private System.Windows.Forms.TabPage tabWelcome;
+		private System.Windows.Forms.TabPage tabWelcomeAndWaitConnect;
 		private System.Windows.Forms.Button nextButton;
 		private System.Windows.Forms.Button prevButton;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.TabPage tabChooseOrganizeMethod;
-		private System.Windows.Forms.TabPage tabInstallAppAndStart;
-		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.TabPage tabInstalledSuccess;
 		private System.Windows.Forms.Label hrLine;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label8;
 		private OrganizeSelectionControl organizeSelectionControl1;
+		private System.Windows.Forms.Label instruction1;
+		private System.Windows.Forms.PictureBox pictureBox4;
+		private System.Windows.Forms.TabPage tabChooseLocation;
+		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.Label label5;
 		private StorageLocationControl storageLocationControl1;
-		private System.Windows.Forms.PictureBox pictureBox1;
-		private System.Windows.Forms.PictureBox pictureBox2;
-		private System.Windows.Forms.PictureBox pictureBox3;
+		private TransferringControl transferringControl1;
 	}
 }

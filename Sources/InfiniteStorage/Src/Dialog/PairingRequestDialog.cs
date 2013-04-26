@@ -29,21 +29,22 @@ namespace InfiniteStorage
 		{
 			if (!DesignMode)
 			{
-				questionLabel.Text = string.Format("允許 {0} 備份檔案到這台電腦?", ctx.device_name);
+				questionLabel.Text = string.Format(Resources.AllowPairingRequest, ctx.device_name);
 			}
 		}
 
 		private void yesButton_Click(object sender, EventArgs e)
 		{
 			takeActionAndLogError(ctx.handleApprove);
+			DialogResult = System.Windows.Forms.DialogResult.Yes;
 			Close();
 		}
 
 		private void noButton_Click(object sender, EventArgs e)
 		{
 			takeActionAndLogError(ctx.handleDisapprove);
+			DialogResult = System.Windows.Forms.DialogResult.No;
 			Close();
-
 		}
 
 		private void neverButton_Click(object sender, EventArgs e)

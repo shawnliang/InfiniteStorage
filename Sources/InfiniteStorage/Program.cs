@@ -42,8 +42,47 @@ namespace InfiniteStorage
 				return;
 			}
 
-
 			MyDbContext.InitialzeDatabaseSchema();
+
+			ushort port = 0;
+
+			try
+			{
+				port = initWebsocketServer();
+			}
+			catch (Exception e)
+			{
+				log4net.LogManager.GetLogger("main").Error("Unable to start web socket server", e);
+				MessageBox.Show(e.Message, Resources.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+
+			try
+			{
+				m_bonjourService = new BonjourService();
+				m_bonjourService.Error += new EventHandler<BonjourErrorEventArgs>(m_bonjourService_Error);
+
+				if (string.IsNullOrEmpty(Settings.Default.ServerId))
+				{
+					Settings.Default.ServerId = generateSameServerIdForSameUserOnSamePC();
+					Settings.Default.Save();
+				}
+				m_bonjourService.Register(port, Settings.Default.ServerId);
+
+				// bonjour record sometimes disappear for unknown reason.
+				// to workaround this, we just periodically re-register with
+				// bonjour
+				startTimerToReRegisterWithBonjour(port);
+
+			}
+			catch (Exception e)
+			{
+				log4net.LogManager.GetLogger("main").Error("Unable to register bonjour service", e);
+				MessageBox.Show(e.Message, "Unable to register bonjour service", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+
+
 
 			if (string.IsNullOrEmpty(Settings.Default.SingleFolderLocation))
 			{
@@ -70,47 +109,7 @@ namespace InfiniteStorage
 					showProgramIsAtServiceBallonTips();
 			};
 
-
-
-			ushort port = 0;
-
-			try
-			{
-				port = initWebsocketServer();
-			}
-			catch (Exception e)
-			{
-				log4net.LogManager.GetLogger("main").Error("Unable to start web socket server", e);
-				MessageBox.Show(e.Message, Resources.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
-			}
-
-
-
-			try
-			{
-				m_bonjourService = new BonjourService();
-				m_bonjourService.Error += new EventHandler<BonjourErrorEventArgs>(m_bonjourService_Error);
-
-				if (string.IsNullOrEmpty(Settings.Default.ServerId))
-				{
-					Settings.Default.ServerId = generateSameServerIdForSameUserOnSamePC();
-					Settings.Default.Save();
-				}
-				m_bonjourService.Register(port, Settings.Default.ServerId);
-
-				// bonjour record sometimes disappear for unknown reason.
-				// to workaround this, we just periodically re-register with
-				// bonjour
-				startTimerToReRegisterWithBonjour(port);
-
-			}
-			catch (Exception e)
-			{
-				log4net.LogManager.GetLogger("main").Error("Unable to register bonjour service", e);
-				MessageBox.Show(e.Message, "Unable to register bonjour service", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
-			}
+			
 
 			Application.Run();
 		}
@@ -247,7 +246,24 @@ namespace InfiniteStorage
 		private static DialogResult showFirstUseWizard()
 		{
 			var firstUseDialog = new FirstUseDialog();
-			return firstUseDialog.ShowDialog();
+
+			try
+			{
+				InfiniteStorageWebSocketService.PairingRequesting += firstUseDialog.OnPairingRequesting;
+				return firstUseDialog.ShowDialog();
+			}
+			catch (Exception err)
+			{
+				MessageBox.Show(err.Message, Resources.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				log4net.LogManager.GetLogger("main").Error("Error showing first use wizard", err);
+
+				return DialogResult.Cancel;
+			}
+			finally
+			{
+				InfiniteStorageWebSocketService.PairingRequesting -= firstUseDialog.OnPairingRequesting;
+			}
+
 		}
 
 		private static void initNotifyIcon()

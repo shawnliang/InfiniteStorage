@@ -55,7 +55,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			{
 				action = "accept",
 				server_id = Util.GetServerId(),
-				server_name = Environment.UserName,
+				server_name = BonjourService.ServiceName,
 				backup_folder = Util.GetPhotoFolder(),
 				backup_folder_free_space = Util.GetFreeSpace(Util.GetPhotoFolder()),
 

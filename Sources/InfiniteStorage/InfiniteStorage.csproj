@@ -73,6 +73,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\Class\IFileStorageLocationProvider.cs" />
     <Compile Include="Src\UIControl\AboutControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -178,6 +179,12 @@
     <Compile Include="Src\UIControl\StorageLocationControl.Designer.cs">
       <DependentUpon>StorageLocationControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Src\UIControl\TransferringControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Src\UIControl\TransferringControl.Designer.cs">
+      <DependentUpon>TransferringControl.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Src\UIControl\AboutControl.resx">
       <DependentUpon>AboutControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -215,6 +222,9 @@
     <EmbeddedResource Include="Src\UIControl\StorageLocationControl.resx">
       <DependentUpon>StorageLocationControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Src\UIControl\TransferringControl.resx">
+      <DependentUpon>TransferringControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -242,6 +252,8 @@
       <Link>x86\SQLite.Interop.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\mobile-icon.png" />
+    <None Include="Resources\Tea-Cup1.png" />
     <None Include="Resources\AppIcon.png" />
     <None Include="Resources\app_store_badge.png" />
     <None Include="Resources\get_it_on_google_play.png" />

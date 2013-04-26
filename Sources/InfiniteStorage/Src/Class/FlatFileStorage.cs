@@ -9,21 +9,17 @@ namespace InfiniteStorage
 {
 	public class FlatFileStorage: IFileStorage
 	{
-		private string photoLocation;
-		private string videoLocation;
-		private string audioLocation;
 		private string deviceName;
 		private IDirOrganizer dirOrganizer;
 
 		public IFileMove FileMover { get; set; }
+		public IFileStorageLocationProvider StorageLocationProvider { get; set; }
 
-		public FlatFileStorage(string photoLocation, string videoLocation, string audioLocation, IDirOrganizer dirOrganizer)
+		public FlatFileStorage(IDirOrganizer dirOrganizer)
 		{
-			this.photoLocation = photoLocation;
-			this.videoLocation = videoLocation;
-			this.audioLocation = audioLocation;
 			this.dirOrganizer = dirOrganizer;
 			this.FileMover = new FileMover();
+			this.StorageLocationProvider = new FileStorageLocationProvider();
 		}
 
 		public void setDeviceName(string deviceName)
@@ -39,15 +35,15 @@ namespace InfiniteStorage
 				this.deviceName = this.deviceName.Replace(inv, '-');
 			}
 
-			var photoDir = Path.Combine(photoLocation, this.deviceName);
+			var photoDir = Path.Combine(StorageLocationProvider.PhotoLocation, this.deviceName);
 			if (!Directory.Exists(photoDir))
 				Directory.CreateDirectory(photoDir);
 
-			var videoDir = Path.Combine(videoLocation, this.deviceName);
+			var videoDir = Path.Combine(StorageLocationProvider.VideoLocation, this.deviceName);
 			if (!Directory.Exists(videoDir))
 				Directory.CreateDirectory(videoDir);
 
-			var audioDir = Path.Combine(audioLocation, this.deviceName);
+			var audioDir = Path.Combine(StorageLocationProvider.AudioLocation, this.deviceName);
 			if (!Directory.Exists(audioDir))
 				Directory.CreateDirectory(audioDir);
 		}
@@ -57,18 +53,18 @@ namespace InfiniteStorage
 			if (string.IsNullOrEmpty(deviceName))
 				throw new InvalidOperationException("should setDeviceName() first");
 
-			string baseDir = photoLocation;
+			string baseDir = StorageLocationProvider.PhotoLocation;
 
 			switch (file.type)
 			{
 				case Model.FileAssetType.image:
-					baseDir = photoLocation;
+					baseDir = StorageLocationProvider.PhotoLocation;
 					break;
 				case Model.FileAssetType.video:
-					baseDir = videoLocation;
+					baseDir = StorageLocationProvider.VideoLocation;
 					break;
 				case Model.FileAssetType.audio:
-					baseDir = audioLocation;
+					baseDir = StorageLocationProvider.AudioLocation;
 					break;
 			}
 

@@ -32,7 +32,7 @@ namespace InfiniteStorage
 
 			IDirOrganizer organizer = getDirOrganizer();
 
-			var storage = new FlatFileStorage(MyFileFolder.Photo, MyFileFolder.Video, MyFileFolder.Audio, organizer);
+			var storage = new FlatFileStorage(organizer);
 
 			var ctx = new ProtocolContext(new TempFileFactory(MyFileFolder.Temp), storage, new UnconnectedState()) 
 			{
