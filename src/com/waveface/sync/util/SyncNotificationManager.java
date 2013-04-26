@@ -89,18 +89,8 @@ public class SyncNotificationManager {
 				title, System.currentTimeMillis());
 		final PendingIntent pendingIntent = PendingIntent.getActivity(mContext,
 				0, intent, 0);
-//		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-//		notification.setLatestEventInfo(mContext, content, null, pendingIntent);
-//		mNotificationManager.notify(id.hashCode(), notification);
-//		mNotifications.put(id, notification);
-//		Log.d(TAG, "create: notification id.hashCode():" + id.hashCode());
-//		Log.d(TAG, "create: notification id:" + id);
 
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-//		notification.flags = notification.flags
-//				| Notification.FLAG_ONLY_ALERT_ONCE
-//				| Notification.FLAG_ONGOING_EVENT
-//				| Notification.FLAG_AUTO_CANCEL;
 		notification.contentView = new RemoteViews(mContext.getPackageName(),
 				R.layout.text_notification);
 		notification.contentIntent = pendingIntent;
@@ -149,10 +139,6 @@ public class SyncNotificationManager {
 		Notification notification = new Notification(R.drawable.ic_launcher,
 				title, System.currentTimeMillis());
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-//		notification.flags = notification.flags
-//				| Notification.FLAG_ONLY_ALERT_ONCE
-//				| Notification.FLAG_ONGOING_EVENT
-//				| Notification.FLAG_AUTO_CANCEL;
 		notification.contentView = new RemoteViews(mContext.getPackageName(),
 				R.layout.progress_notification);
 		notification.contentIntent = pendingIntent;
