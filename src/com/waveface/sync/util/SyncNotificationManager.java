@@ -95,11 +95,12 @@ public class SyncNotificationManager {
 //		mNotifications.put(id, notification);
 //		Log.d(TAG, "create: notification id.hashCode():" + id.hashCode());
 //		Log.d(TAG, "create: notification id:" + id);
-		
-		notification.flags = notification.flags
-				| Notification.FLAG_ONLY_ALERT_ONCE
-				| Notification.FLAG_ONGOING_EVENT
-				| Notification.FLAG_AUTO_CANCEL;
+
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+//		notification.flags = notification.flags
+//				| Notification.FLAG_ONLY_ALERT_ONCE
+//				| Notification.FLAG_ONGOING_EVENT
+//				| Notification.FLAG_AUTO_CANCEL;
 		notification.contentView = new RemoteViews(mContext.getPackageName(),
 				R.layout.text_notification);
 		notification.contentIntent = pendingIntent;
@@ -113,7 +114,8 @@ public class SyncNotificationManager {
 
 	public void createProgressNotification(String id, String title,
 			String content) {
-		Intent intent = new Intent(mContext, CancelNotification.class);
+//		Intent intent = new Intent(mContext, CancelNotification.class);
+		Intent intent = new Intent();
 		intent.putExtra(Constant.EXTRA_NOTIFICATION_ID, id);
 		final PendingIntent pendingIntent = PendingIntent.getActivity(mContext,
 				0, intent, 0);
@@ -122,7 +124,9 @@ public class SyncNotificationManager {
 
 	public void createProgressNotification(String id, String title,
 			String content,int progress) {
-		Intent intent = new Intent(mContext, CancelNotification.class);
+//		Intent intent = new Intent(mContext, CancelNotification.class);
+		Intent intent = new Intent();
+		
 		intent.putExtra(Constant.EXTRA_NOTIFICATION_ID, id);
 		final PendingIntent pendingIntent = PendingIntent.getActivity(mContext,
 				0, intent, 0);
@@ -144,10 +148,11 @@ public class SyncNotificationManager {
 
 		Notification notification = new Notification(R.drawable.ic_launcher,
 				title, System.currentTimeMillis());
-		notification.flags = notification.flags
-				| Notification.FLAG_ONLY_ALERT_ONCE
-				| Notification.FLAG_ONGOING_EVENT
-				| Notification.FLAG_AUTO_CANCEL;
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+//		notification.flags = notification.flags
+//				| Notification.FLAG_ONLY_ALERT_ONCE
+//				| Notification.FLAG_ONGOING_EVENT
+//				| Notification.FLAG_AUTO_CANCEL;
 		notification.contentView = new RemoteViews(mContext.getPackageName(),
 				R.layout.progress_notification);
 		notification.contentIntent = pendingIntent;
