@@ -169,5 +169,16 @@ namespace UnitTest
 
 			ctx.handleUpdateCountCmd(new TextCommand { action = "update-count", transfer_count = 1000 });
 		}
+
+		[TestMethod]
+		public void do_not_handle_closed_ctx()
+		{
+			var ctx = new Mock<IProtocolHandlerContext>();
+			ctx.Setup(x=>x.IsClosed).Returns(true);
+
+			var handler = new ProtocolHanlder(ctx.Object);
+
+			handler.HandleMessage(new MessageEventArgs("12345"));
+		}
 	}
 }

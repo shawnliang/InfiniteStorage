@@ -49,8 +49,11 @@ namespace InfiniteStorage
 			}
 			catch
 			{
-				Clear();
-				throw;
+				if (!ctx.IsClosed)
+				{
+					Clear();
+					throw;
+				}
 			}
 		}
 

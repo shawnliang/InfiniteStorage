@@ -88,6 +88,8 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			SetState(new UnconnectedState());
 
+			IsClosed = true;
+
 			if (temp_file != null)
 			{
 				temp_file.Delete();
@@ -139,5 +141,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			StopFunc(code, reason);
 		}
+
+		public bool IsClosed { get; set; }
 	}
 }

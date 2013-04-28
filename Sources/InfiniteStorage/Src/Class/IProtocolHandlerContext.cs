@@ -19,5 +19,7 @@ namespace InfiniteStorage
 		void Clear();
 
 		void handleUpdateCountCmd(TextCommand textCommand);
+
+		bool IsClosed { get; set; }
 	}
 }

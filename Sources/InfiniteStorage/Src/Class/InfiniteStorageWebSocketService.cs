@@ -137,7 +137,6 @@ namespace InfiniteStorage
 		protected override void onError(object sender, WebSocketSharp.ErrorEventArgs e)
 		{
 			logger.Warn("Error occured: " + e.Message);
-
 			cleanupForClose();
 		}
 
