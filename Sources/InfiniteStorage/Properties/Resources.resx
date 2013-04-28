@@ -185,4 +185,7 @@
   <data name="FirstUse_ProgressLabel" xml:space="preserve">
     <value>進度：{0}/{1}</value>
   </data>
+  <data name="FirstUse_TransferStopped" xml:space="preserve">
+    <value>{0} 備份了 {1} 個檔案</value>
+  </data>
 </root>

@@ -149,6 +149,15 @@ namespace InfiniteStorage.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to {0} 備份了 {1} 個檔案.
+        /// </summary>
+        internal static string FirstUse_TransferStopped {
+            get {
+                return ResourceManager.GetString("FirstUse_TransferStopped", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap get_it_on_google_play {
             get {
                 object obj = ResourceManager.GetObject("get_it_on_google_play", resourceCulture);

@@ -25,17 +25,26 @@ namespace InfiniteStorage
 		{
 			if (WebSocketContext != null)
 			{
-				progressLabel.Text = string.Format(Resources.FirstUse_ProgressLabel, WebSocketContext.recved_files, WebSocketContext.total_files);
-				
 
-				var fileInfo = WebSocketContext.fileCtx;
-				if (fileInfo != null)
+				if (!WebSocketContext.IsClosed)
 				{
-					fileLable.Text = string.Format(Resources.FirstUse_FileLabel, fileInfo.file_name, fileInfo.file_size);
-					progressBar.Style = ProgressBarStyle.Blocks;
-					progressBar.Minimum = 0;
-					progressBar.Maximum = (int)fileInfo.file_size;
-					progressBar.Value = WebSocketContext.temp_file.BytesWritten;
+					progressLabel.Text = string.Format(Resources.FirstUse_ProgressLabel, WebSocketContext.recved_files, WebSocketContext.total_files);
+
+
+					var fileInfo = WebSocketContext.fileCtx;
+					if (fileInfo != null)
+					{
+						fileLable.Text = string.Format(Resources.FirstUse_FileLabel, fileInfo.file_name, fileInfo.file_size);
+						progressBar.Style = ProgressBarStyle.Blocks;
+						progressBar.Minimum = 0;
+						progressBar.Maximum = (int)fileInfo.file_size;
+						progressBar.Value = WebSocketContext.temp_file.BytesWritten;
+					}
+				}
+				else
+				{
+					progressLabel.Text = string.Format(Resources.FirstUse_TransferStopped, WebSocketContext.device_name, WebSocketContext.recved_files);
+					progressBar.Visible = fileLable.Visible = false;
 				}
 			}
 		}

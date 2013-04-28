@@ -41,7 +41,7 @@
 			// progressLabel
 			// 
 			this.progressLabel.AutoSize = true;
-			this.progressLabel.Location = new System.Drawing.Point(318, 176);
+			this.progressLabel.Location = new System.Drawing.Point(272, 169);
 			this.progressLabel.Name = "progressLabel";
 			this.progressLabel.Size = new System.Drawing.Size(106, 13);
 			this.progressLabel.TabIndex = 9;
@@ -50,7 +50,7 @@
 			// fileLable
 			// 
 			this.fileLable.AutoSize = true;
-			this.fileLable.Location = new System.Drawing.Point(318, 192);
+			this.fileLable.Location = new System.Drawing.Point(272, 189);
 			this.fileLable.Name = "fileLable";
 			this.fileLable.Size = new System.Drawing.Size(106, 13);
 			this.fileLable.TabIndex = 8;
@@ -70,10 +70,10 @@
 			// 
 			this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.progressBar.Location = new System.Drawing.Point(321, 208);
+			this.progressBar.Location = new System.Drawing.Point(275, 208);
 			this.progressBar.Maximum = 2000;
 			this.progressBar.Name = "progressBar";
-			this.progressBar.Size = new System.Drawing.Size(183, 23);
+			this.progressBar.Size = new System.Drawing.Size(217, 23);
 			this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
 			this.progressBar.TabIndex = 6;
 			// 

@@ -82,17 +82,17 @@ namespace InfiniteStorage
 				return;
 			}
 
+			initConnectedDeviceCollection();
+			initBackupStatusTimer();
 
-			WebsocketProtocol.ProtocolContext firstConn = null;
 			if (string.IsNullOrEmpty(Settings.Default.SingleFolderLocation))
 			{
-				if (showFirstUseWizard(out firstConn) != DialogResult.OK)
+				if (showFirstUseWizard() != DialogResult.OK)
 					return;
 			}
 
-			initNotifyIcon(firstConn);
-			initConnectedDeviceCollection();
-			initBackupStatusTimer();
+			initNotifyIcon();
+			
 
 			SynchronizationContextHelper.SetMainSyncContext();
 
@@ -243,9 +243,8 @@ namespace InfiniteStorage
 			}
 		}
 
-		private static DialogResult showFirstUseWizard(out WebsocketProtocol.ProtocolContext firstConn)
+		private static DialogResult showFirstUseWizard()
 		{
-			firstConn = null;
 			var firstUseDialog = new FirstUseDialog();
 
 			try
@@ -263,12 +262,11 @@ namespace InfiniteStorage
 			finally
 			{
 				InfiniteStorageWebSocketService.PairingRequesting -= firstUseDialog.OnPairingRequesting;
-				firstConn = firstUseDialog.FirstConnection;
 			}
 
 		}
 
-		private static void initNotifyIcon(WebsocketProtocol.ProtocolContext firstConn)
+		private static void initNotifyIcon()
 		{
 			m_notifyIcon = new NotifyIcon();
 			m_notifyIcon.Text = Resources.ProductName;
@@ -297,8 +295,10 @@ namespace InfiniteStorage
 			InfiniteStorageWebSocketService.PairingRequesting += m_notifyIconController.OnDevicePairingRequesting;
 			InfiniteStorageWebSocketService.TotalCountUpdated += m_notifyIconController.OnDeviceConnected;
 
-			if (firstConn != null)
-				m_notifyIconController.OnDeviceConnected(firstConn, new WebsocketProtocol.WebsocketEventArgs(firstConn));
+			foreach (var conn in ConnectedClientCollection.Instance.GetAllConnections())
+			{
+				m_notifyIconController.OnDeviceConnected(conn, new WebsocketProtocol.WebsocketEventArgs((WebsocketProtocol.ProtocolContext)conn));
+			}
 		}
 
 		private static void showProgramIsAtServiceBallonTips()
