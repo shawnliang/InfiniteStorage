@@ -14,7 +14,7 @@ namespace InfiniteStorage
 {
 	public partial class FirstUseDialog : Form
 	{
-		private ProtocolContext pendingCtx;
+		public ProtocolContext FirstConnection { get; private set; }
 
 		public FirstUseDialog()
 		{
@@ -39,8 +39,8 @@ namespace InfiniteStorage
 				Settings.Default.OrganizeMethod = (int)organizeSelectionControl1.OrganizeBy;
 				Settings.Default.Save();
 
-				if (pendingCtx != null)
-					pendingCtx.handleApprove();
+				if (FirstConnection != null)
+					FirstConnection.handleApprove();
 
 				tabControlEx1.NextPage();
 			}
@@ -112,7 +112,7 @@ namespace InfiniteStorage
 				{
 					if (MessageBox.Show(string.Format(Resources.AllowPairingRequest, e.ctx.device_name), Resources.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
 					{
-						pendingCtx = e.ctx;
+						FirstConnection = e.ctx;
 						transferringControl1.WebSocketContext = e.ctx;
 						tabControlEx1.NextPage();
 					}

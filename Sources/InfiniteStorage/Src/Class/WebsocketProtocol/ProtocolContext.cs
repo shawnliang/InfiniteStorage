@@ -86,13 +86,13 @@ namespace InfiniteStorage.WebsocketProtocol
 
 		public void Clear()
 		{
+			SetState(new UnconnectedState());
+
 			if (temp_file != null)
 			{
 				temp_file.Delete();
 				temp_file = null;
 			}
-
-			SetState(new UnconnectedState());
 		}
 
 		public void raiseOnConnectAccepted()
