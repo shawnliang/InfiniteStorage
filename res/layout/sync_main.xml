@@ -193,6 +193,64 @@
         android:layout_margin="3dp"
         android:background="#1BBFE0" />
 
+    <RelativeLayout 
+  		android:id="@+id/rlBackupContent"
+        android:layout_above="@+id/rlSetting" 
+        android:layout_below="@+id/vLine1"        
+  		android:layout_width="match_parent"
+  		android:layout_height="wrap_content"
+        >
+    	<ImageView
+    	        android:id="@+id/imagePC"
+    	        android:layout_width="wrap_content"
+    	        android:layout_height="wrap_content"
+    	        android:layout_alignParentLeft="true"
+    	        android:layout_marginLeft="40dp"
+    	        android:layout_marginTop="20dp"
+    	        android:src="@drawable/ic_offline" />
+        
+        <TextView
+        	android:id="@+id/tvBackupPC"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginTop="30dp"
+        	android:layout_marginLeft="10dp"
+        	android:layout_toRightOf="@+id/imagePC"
+        	android:text="G-SO"
+        	android:textColor="#FFFFFF"
+        	android:textSize="14sp" />
+
+    	<TextView
+    	    android:id="@+id/tvContent"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:layout_alignLeft="@+id/imagePC"
+    	    android:layout_below="@+id/imagePC"
+    	    android:layout_marginTop="10dp"
+    	    android:text="@string/backup_progress"
+    	    android:textColor="#FFFFFF"
+    	    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    	<ProgressBar
+    	        android:id="@+id/pbFileBackup"
+    	        style="?android:attr/progressBarStyleHorizontal"
+    	        android:layout_width="match_parent"
+    	        android:layout_height="30dp"
+    	        android:layout_alignLeft="@+id/tvContent"
+    	        android:layout_below="@+id/tvContent"
+    	        android:layout_marginRight="40dp"
+    	        android:layout_marginTop="10dp"
+    	        android:progress="@android:integer/config_mediumAnimTime" />
+
+    	<TextView
+    	        android:id="@+id/tvDetail"
+    	        android:layout_width="wrap_content"
+    	        android:layout_height="wrap_content"
+    	        android:layout_alignLeft="@+id/pbFileBackup"
+    	        android:layout_below="@+id/pbFileBackup"
+    	        android:textColor="#FFFFFF"
+    	        android:text="@string/backup_last_local_time" />
+    </RelativeLayout>
     <ListView
   		android:id="@+id/listview"
         android:layout_above="@+id/rlSetting" 
@@ -204,7 +262,8 @@
   		android:drawSelectorOnTop="false"
   		android:listSelector="@android:color/transparent"
   		android:cacheColorHint="@android:color/transparent"
-  		android:clickable="true">
+  		android:clickable="true"
+  		android:visibility="gone">
 
 	</ListView> 	
 	

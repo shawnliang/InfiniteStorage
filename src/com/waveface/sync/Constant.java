@@ -14,7 +14,8 @@ public class Constant {
 	public final static String ACTION_BONJOUR_SERVER_AUTO_PAIRING = "com.waveface.sync.action.BONJOUR_SERVER_AUTO_PAIRING";	
 	
 	public final static String ACTION_BONJOUR_MULTICAT_EVENT = "com.waveface.sync.action.BONJOUR_MULTICAT_EVENT";	
-	public final static String ACTION_BACKUP_FILE = "com.waveface.sync.action.BACKUP_FILE";
+	public final static String ACTION_UPLOADING_FILE = "com.waveface.sync.action.UPLOADING_FILE";		
+	public final static String ACTION_BACKUP_FILE = "com.waveface.sync.action.BACKUP_FILE";	
 	public final static String ACTION_BACKUP_DONE = "com.waveface.sync.action.BACKUP_DONE";	
 	public final static String ACTION_SCAN_FILE = "com.waveface.sync.action.SCAN_FILE";
 	public final static String ACTION_INFINITE_STORAGE_ALARM = "com.waveface.sync.action.INFINITE_STORAGE_ALARM";
@@ -30,6 +31,8 @@ public class Constant {
 	public final static String EXTRA_WEB_SOCKET_EVENT_CONTENT = "com.waveface.sync.extra.WEB_SOCKET_EVENT_CONTENT";	
 	public final static String EXTRA_NETWROK_STATE = "com.waveface.sync.extra.NETWROK_STATE";	
 	public final static String EXTRA_NOTIFICATION_ID = "com.waveface.sync.extra.NOTIFICATION_ID";
+	public final static String EXTRA_BACKING_UP_FILE_STATE = "com.waveface.sync.extra.BACKING_UP_FILE_STATE";
+	
 	
 	public static final int EVENT_BONJOUR_RESOLVED = 1;
 	public static final int EVENT_BONJOUR_REMOVED = 2;
@@ -46,6 +49,12 @@ public class Constant {
 	public static final String SERVER_LINKING = "1";
 	public static final String SERVER_OFFLINE = "2";	
 	public static final String SERVER_DENIED = "3";	
+
+	//FILE BACKUP STATE
+	
+	public static final int FILE_START = 1;
+	public static final int FILE_SEND = 2;	
+	public static final int FILE_END = 3;		
 	
 	//SERVICE SETTING
     public static String INFINTE_STORAGE = "_infinite-storage._tcp.local.";

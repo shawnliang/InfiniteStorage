@@ -8,7 +8,7 @@
     <string name="title_activity_bonjour_servers">BonjourServers</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="file_scanning">Scaning Files..</string>
+    <string name="file_scanning">Scanning Files..</string>
     <string name="server_searching">Searching PC..</string>
     <string name="clean_space">Clear</string>
 
@@ -19,28 +19,34 @@
     <string name="videos">%1$d video(s)</string>
     <string name="audios">%1$d audio(s)</string>
     <string name="photos">%1$d photo(s)</string>
-    <string name="can_not_find_server">Cann\'t Find Server Now, We will connect to your PC automatically later!</string>
+    <string name="can_not_find_server">Can\'t Find Server Now, We will connect to your PC automatically later!</string>
 
     <!-- PAIRED SERVERS -->
-    <string name="backuping">Backuping ...</string>
+    <string name="backuping">Backing Up ...</string>
     <string name="offline">OFFLINE</string>
     <string name="backuped_completed">Backup Completed</string>
     <string name="backup_period">BACKUP FROM %1$s TO %2$s</string>
     <string name="free_space">Free Space %1$s</string>
     <string name="backup_folder">Backup Folder %1$s</string>
-    <string name="backup_info">Backuped %1$d photo(s), %2$d video(s), %3$d audio(s)</string>
-    <string name="backup_last_local_time">LastBackup Time %1$s</string>
+    <string name="backup_info">Backed-up %1$d photo(s), %2$d video(s), %3$d audio(s)</string>
+    <string name="backup_last_local_time">Last Backup Time %1$s</string>
+
+    <!-- PROGRESS INFO -->
+    <string name="backup_progress">Backing Up %1$d /%2$d</string>
+    <string name="backup_done">Backed Up to newest files</string>
+    <string name="backup_uncompleted">Backed Up Uncompleted</string>
+    
 
     <!-- FIRST USE -->
     <!-- INSTALL -->
     <string name="simple_description">EASIEST BACKUP APP</string>
     <string name="simple_description1">When you\'re home</string>
-    <string name="simple_description2">all contents will be backuped automatically.</string>
+    <string name="simple_description2">all contents will be backed-up automatically.</string>
     <string name="download_windows">download windows version</string>
     <string name="download_url">waveface.com/awesome</string>
     <string name="email_description">Email Link to Me</string>
     <string name="install_finding_server">Finding PCs.....</string>
-    <string name="install_dialog_title">Cann\'t Find PC</string>
+    <string name="install_dialog_title">Can\'t Find Your PC</string>
     <string name="install_dialog_send_mail">Have you install Windows App？</string>
     <string name="install_dialog_go_install">Receive Email at your PC 上, download from the link and install.</string>
     
@@ -89,9 +95,6 @@
     <string name="btn_no">NO</string>
 
     <!-- NOTIFICATION -->
-    <string name="notify_link_server">Backuping to %1$s</string>
-    <string name="notify_backup_status"> %1$d file(s) Backuped.</string>
-    <string name="title_activity_clean_storage">CleanStorageActivity</string>
-    <string name="title_activity_add_server">AddServerActivity</string>
-
+    <string name="notify_link_server">Backing Up to %1$s</string>
+    <string name="notify_backup_status"> %1$d file(s) Backed-up.</string>
 </resources>

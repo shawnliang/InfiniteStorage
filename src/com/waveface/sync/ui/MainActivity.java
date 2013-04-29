@@ -1,8 +1,6 @@
 package com.waveface.sync.ui;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -11,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.ContentObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,7 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +25,6 @@ import android.widget.Toast;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
-import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
@@ -66,7 +62,13 @@ public class MainActivity extends Activity implements OnClickListener{
 	private Button mDeleteAudioBtn;
 	private RelativeLayout mRLSetting;
 	private ImageView mIvAddPc;
-	
+	private RelativeLayout rlBackupContent;
+	private ImageView ivPC ;
+	private ProgressBar pbFilebackup;
+    private TextView tvBackupPC ;		    
+    private TextView tvContent ;
+    private TextView tvDetail ;
+
 	private ProgressDialog mProgressDialog;
 
 
@@ -113,14 +115,24 @@ public class MainActivity extends Activity implements OnClickListener{
 		mDeleteAudioBtn = (Button) this.findViewById(R.id.btnDeleteAudio);
 		mDeleteAudioBtn.setOnClickListener(this);
 		
-		ListView listview = (ListView) findViewById(R.id.listview);
-		ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(this);		
-		mAdapter = new PairedServersAdapter(this,servers);
-		listview.setAdapter(mAdapter);
-	    mIvAddPc = (ImageView) findViewById(R.id.ivAddpc);
+		//progress Content Area
+		rlBackupContent = (RelativeLayout) findViewById(R.id.rlBackupContent);
+	    ivPC = (ImageView) findViewById(R.id.imagePC);
+	    pbFilebackup = (ProgressBar) findViewById(R.id.pbFileBackup);
+	    tvBackupPC = (TextView) findViewById(R.id.tvBackupPC);		    
+	    tvContent = (TextView) findViewById(R.id.tvContent);
+	    tvDetail = (TextView) findViewById(R.id.tvDetail);
+		
+		//PAIRED SERVERS
+//		ListView listview = (ListView) findViewById(R.id.listview);
+//		ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(this);		
+//		mAdapter = new PairedServersAdapter(this,servers);
+//		listview.setAdapter(mAdapter);
+
+	    mRLSetting = (RelativeLayout) findViewById(R.id.rlSetting);	    
+		mIvAddPc = (ImageView) findViewById(R.id.ivAddpc);
 	    mIvAddPc.setOnClickListener(this);
 	    
-	    mRLSetting = (RelativeLayout) findViewById(R.id.rlSetting);	    
 	    
 		refreshLayout();
 		//RESGISTER OBSERVER
@@ -137,6 +149,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		filter.addAction(Constant.ACTION_SCAN_FILE);		
 		filter.addAction(Constant.ACTION_WS_SERVER_NOTIFY);
 		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);
+		filter.addAction(Constant.ACTION_UPLOADING_FILE);
 		registerReceiver(mReceiver, filter);
 
 		//GET PAIRED SERVERS
@@ -234,16 +247,13 @@ public class MainActivity extends Activity implements OnClickListener{
 			}
 			else if(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING.equals(action)){
 				firsttimeDispaly();
-			}			
-			refreshServerStatus();
+			}	
+			else if(Constant.ACTION_UPLOADING_FILE.equals(action)){
+				int state = intent.getIntExtra(Constant.EXTRA_BACKING_UP_FILE_STATE, -1);
+				refreshFileContent(state);
+			}
 		}
 	};
-    public void refreshServerStatus(){
-		mAdapter.setData(ServersLogic.getBackupedServers(this));
-		if(ServersLogic.hasBackupedServers(this)){
-			mRLSetting.setVisibility(View.GONE);
-		}
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -251,12 +261,12 @@ public class MainActivity extends Activity implements OnClickListener{
         if (requestCode == Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {         
-            	mAdapter.setData(ServersLogic.getBackupedServers(this));
+//            	mAdapter.setData(ServersLogic.getBackupedServers(this));
             }
         }
         else if(requestCode == Constant.REQUEST_CODE_ADD_SERVER){
             if (resultCode == RESULT_OK) {         
-            	mAdapter.setData(ServersLogic.getBackupedServers(this));
+//            	mAdapter.setData(ServersLogic.getBackupedServers(this));
             }        	
         }
     }
@@ -313,10 +323,79 @@ public class MainActivity extends Activity implements OnClickListener{
 		totalSize += datas[1];
 
 		mTotalInfo.setText(getString(R.string.total_info, totalCount,StringUtil.byteCountToDisplaySize(totalSize)));
+		
+		//REFRESH PROGRESS INFO
+		refreshProgressFile();
+		
 		//REFRESH SERVERS STATUS
-		refreshServerStatus();
+		//refreshServerStatus();
+    }
+    public void refreshProgressFile(){
+    	if(ServersLogic.hasBackupedServers(this)){
+    		rlBackupContent.setVisibility(View.VISIBLE);
+    		int[] counts = BackupLogic.getBackupProgressInfo(this, RuntimeState.mWebSocketServerId);
+	    	if(RuntimeState.OnWebSocketStation){
+				rlBackupContent = (RelativeLayout) findViewById(R.id.rlBackupContent);
+			    ivPC.setImageResource(R.drawable.ic_transfer);
+			    String wording = null;
+			    if(RuntimeState.isBackuping){
+			    	wording = RuntimeState.mWebSocketServerName+" ( "+getString(R.string.backuping)+" )";
+			    	pbFilebackup.setVisibility(View.VISIBLE);
+				    tvContent.setText(getString(R.string.backup_progress,counts[0],counts[1]));
+				    tvDetail.setText(RuntimeState.mBackupingFilename);
+			    }
+			    else{
+			    	wording = RuntimeState.mWebSocketServerName;		
+			    	pbFilebackup.setVisibility(View.INVISIBLE);
+				    tvContent.setText(getString(R.string.backup_done));
+				    String time = ServersLogic.getLastBackupTime(this, RuntimeState.mWebSocketServerId);
+				    tvDetail.setText( getString(R.string.backup_last_local_time,time));
+			    }
+			    tvBackupPC.setText(wording);
+			}
+	    	else{
+	    		ivPC.setImageResource(R.drawable.ic_offline);
+		    	pbFilebackup.setVisibility(View.INVISIBLE);
+		    	if(counts[0]== counts[1]){
+		    		tvContent.setText(getString(R.string.backup_done));
+		    	}
+		    	else{
+		    		tvContent.setText(getString(R.string.backup_uncompleted));
+		    	}
+			    String time = ServersLogic.getLastBackupTime(this, RuntimeState.mWebSocketServerId);
+			    tvDetail.setText( getString(R.string.backup_last_local_time,time));
+	    	}
+    	}
+    	else{
+    		rlBackupContent.setVisibility(View.INVISIBLE);
+    	}
     }
     
+    public void refreshFileContent(int state){
+   		pbFilebackup.setVisibility(View.VISIBLE);   	   	
+    	switch(state){
+    		case Constant.FILE_START:
+        		int[] counts = BackupLogic.getBackupProgressInfo(this, RuntimeState.mWebSocketServerId);
+			    tvContent.setText(getString(R.string.backup_progress,counts[0],counts[1]));
+			    pbFilebackup.setProgress(0);
+			    
+    		break;
+    		case Constant.FILE_SEND:
+    			int progress = (int) (RuntimeState.mBackupingUploadFilesize/ (float) RuntimeState.mBackupingFilesize * 100);
+    			pbFilebackup.setProgress(progress);
+    		break;
+    		case Constant.FILE_END:
+    			pbFilebackup.setProgress(100);
+    		break;
+    	}
+    }
+    public void refreshServerStatus(){
+		mAdapter.setData(ServersLogic.getBackupedServers(this));
+		if(ServersLogic.hasBackupedServers(this)){
+			mRLSetting.setVisibility(View.GONE);
+		}
+    }
+
 
 	@Override
 	public void onClick(View v) {

@@ -186,6 +186,34 @@ public class ServersLogic {
 		}
 		return datas;
 	}
+	public static String getLastBackupTime(Context context,String serverId){
+		String time = null ;
+		Cursor cursor = null;
+		ContentResolver cr = context.getContentResolver();
+		try {
+			cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+					new String[]{BackupedServersTable.COLUMN_LAST_DISPLAY_BACKUP_DATETIME}, 
+					BackupedServersTable.COLUMN_SERVER_ID+"=?", 
+					new String[]{serverId}, 
+					null);
+			
+			if(cursor!=null && cursor.getCount()>0){
+				int count = cursor.getCount();
+				cursor.moveToFirst();
+				time = cursor.getString(0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(cursor!=null){
+				cursor.close();
+				cursor = null;
+			}
+		}
+		return time;
+	}
+
 	public static int updateBonjourServer(Context context ,ServerEntity entity){
 		int result = 0;
 		Cursor cursor = null;

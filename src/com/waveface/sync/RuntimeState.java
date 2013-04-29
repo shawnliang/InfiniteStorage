@@ -17,6 +17,10 @@ public class RuntimeState{
 	public static String mWebSocketServerId ;	
 	public static String mWebSocketServerName ;	
 	
+	public static String mBackupingFilename ;	
+	public static long mBackupingFilesize ;
+	public static long mBackupingUploadFilesize ;
+	
 	public static boolean isScaning = false;
 	public static boolean isBackuping = false;
 
