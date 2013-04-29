@@ -1,6 +1,6 @@
 package com.waveface.sync.ui;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -12,30 +12,27 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.database.ContentObserver;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
-import com.waveface.sync.RuntimeState;
 import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.entity.ServerEntity;
+import com.waveface.sync.logic.FlowLogic;
 import com.waveface.sync.logic.ServersLogic;
 
 
@@ -53,6 +50,8 @@ public class ServerChooserFragment extends FragmentBase
 	private Button mBtnBackup;
 	
 	private AlertDialog mAlertDialog;
+	private AlertDialog mSendEmailDialog;
+	
 
 
 	//DATA
@@ -91,6 +90,7 @@ public class ServerChooserFragment extends FragmentBase
 				R.layout.first_use_bonjour_servers, null);
 		ListView listview = (ListView) mRootView.findViewById(R.id.listview);
 		mAdapter = new ServerChooseAdapter(getActivity(), ServersLogic.getBonjourServers(getActivity()));
+    	mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
 		listview.setAdapter(mAdapter);
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -107,16 +107,17 @@ public class ServerChooserFragment extends FragmentBase
 		
 	    mProgressBar = (ProgressBar) mRootView.findViewById(R.id.pbSearch);
 	    mTvSearch = (TextView) mRootView.findViewById(R.id.tvSearch);
-		if(mAdapter.getCount()>0){
-		    mProgressBar.setVisibility(View.INVISIBLE);
-		    mTvSearch.setVisibility(View.INVISIBLE);
+//		if(mAdapter.getCount()>0){
+//		    mProgressBar.setVisibility(View.INVISIBLE);
+//		    mTvSearch.setVisibility(View.INVISIBLE);
+//		}
+		if(!ServersLogic.hasBonjourServers(getActivity())){
+	        mHandler.postDelayed(new Runnable() {
+	            public void run() {
+	            	  openSendDialog(getActivity());
+	            	}
+	            }, 300);
 		}
-		
-        mHandler.postDelayed(new Runnable() {
-            public void run() {
-             	 mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
-            	}
-            }, 300);
 		return mRootView;
 	}
 
@@ -154,8 +155,8 @@ public class ServerChooserFragment extends FragmentBase
 				String response = intent.getStringExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT);
 				if(response!=null){
 					if(response.equals(Constant.WS_ACTION_ACCEPT)){
-						refreshUI();
 						dismissProgress();
+						refreshUI();
 						if(mAlertDialog!=null && mAlertDialog.isShowing()){
 							mAlertDialog.dismiss();
 						}
@@ -167,11 +168,45 @@ public class ServerChooserFragment extends FragmentBase
 						dismissProgress();
 						openDialog(context,Constant.WS_ACTION_DENIED);
 					}				
+					else if(response.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
+						openDialog(context,Constant.WS_ACTION_WAIT_FOR_PAIR);
+					}									
 				}
 			}
 		}
 	};
-
+	private void openSendDialog(Context context){
+		if(mSendEmailDialog!=null && mSendEmailDialog.isShowing()){
+			mSendEmailDialog.dismiss();
+		}
+		String title = context.getString(R.string.install_dialog_title);
+		String message = context.getString(R.string.install_dialog_send_mail);
+		
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context); 
+		// set title
+		alertDialogBuilder.setTitle(title);
+		// set dialog message
+		alertDialogBuilder
+			.setMessage(message)
+			.setCancelable(false)
+			.setPositiveButton(R.string.email_description,new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					FlowLogic.onSendEmail(getActivity());
+					dialog.cancel();
+				}
+			  })
+			.setNegativeButton(R.string.btn_no,new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					dialog.cancel();
+				}
+			  }); 
+		
+		// create alert dialog
+		mSendEmailDialog = alertDialogBuilder.create();
+		// show it
+		mSendEmailDialog.show();
+	}
+	
 	private void openDialog(Context context,String action){
 		if(mAlertDialog!=null && mAlertDialog.isShowing()){
 			mAlertDialog.dismiss();
@@ -212,26 +247,51 @@ public class ServerChooserFragment extends FragmentBase
     private void clickToLinkServer(ServerEntity entity){
 		mProgressDialog = ProgressDialog.show(getActivity(), "",getString(R.string.pairing));
 		mProgressDialog.setCancelable(true);
-    	ServersLogic.startWSServerConnect(getActivity(), entity.wsLocation,entity.serverId);
+		
+		HashMap<String,String> param = new HashMap<String,String>();
+		param.put(Constant.PARAM_SERVER_WS_LOCATION, entity.wsLocation);
+		param.put(Constant.PARAM_SERVER_ID, entity.serverId);
+		new LinkBonjourServer().execute(param);
+//    	ServersLogic.startWSServerConnect(getActivity(), entity.wsLocation,entity.serverId);
     }
 	@Override
 	public void onClick(View v) {
 		int viewId = v.getId();
 		switch (viewId) {
 			case R.id.btnPre:
-				mListener.goBack(TAG);
+				getActivity().finish();
+//				mListener.goBack(TAG);
 				break;
 		}
 	}
-	public void refreshUI(){
-		mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
-		if(mAdapter.getCount()>0){
-		    mProgressBar.setVisibility(View.INVISIBLE);
-		    mTvSearch.setVisibility(View.INVISIBLE);
+	public void refreshUI(){		
+		if(ServersLogic.hasBonjourServers(getActivity())){
+			if(mSendEmailDialog !=null && mSendEmailDialog.isShowing()){
+				mSendEmailDialog.dismiss();
+			}
 		}
+		mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
+//		if(mAdapter.getCount()>0){
+//		    mProgressBar.setVisibility(View.INVISIBLE);
+//		    mTvSearch.setVisibility(View.INVISIBLE);
+//		}
 	}
 	
 	@Override
 	public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+	}
+	
+	class LinkBonjourServer extends AsyncTask<HashMap<String,String>,Void,Void>{
+
+		@Override
+		protected Void doInBackground(HashMap<String,String>... params) {
+			
+			String wsLocation = params[0].get(Constant.PARAM_SERVER_WS_LOCATION);
+			String serverId = params[0].get(Constant.PARAM_SERVER_ID);
+			
+			ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId);
+			return null;
+		}
+		
 	}
 }

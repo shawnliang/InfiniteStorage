@@ -1,6 +1,7 @@
 package com.waveface.sync.ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -11,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.ContentObserver;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -26,7 +28,6 @@ import android.widget.Toast;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
-import com.waveface.sync.db.BackupedServersTable;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.BackupLogic;
@@ -46,8 +47,8 @@ import com.waveface.sync.util.StringUtil;
 public class MainActivity extends Activity implements OnClickListener{
 	private String TAG = MainActivity.class.getSimpleName();
     
-	private ImportFilesObserver mImportFilesObserver;    
-	private ServerObserver mServerObserver;
+//	private ImportFilesObserver mImportFilesObserver;    
+//	private ServerObserver mServerObserver;
     private Handler mHandler = new Handler();
 
     //UI
@@ -123,16 +124,17 @@ public class MainActivity extends Activity implements OnClickListener{
 	    
 		refreshLayout();
 		//RESGISTER OBSERVER
-		mImportFilesObserver = new ImportFilesObserver();
-		getContentResolver().registerContentObserver(ImportFilesTable.IMPORT_FILE_URI, false, mImportFilesObserver);
+//		mImportFilesObserver = new ImportFilesObserver();
+//		getContentResolver().registerContentObserver(ImportFilesTable.IMPORT_FILE_URI, false, mImportFilesObserver);
 		
-		mServerObserver = new ServerObserver();
-		getContentResolver().registerContentObserver(BackupedServersTable.BACKUPED_SERVER_URI, false, mServerObserver);
+//		mServerObserver = new ServerObserver();
+//		getContentResolver().registerContentObserver(BackupedServersTable.BACKUPED_SERVER_URI, false, mServerObserver);
 
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING);
 		filter.addAction(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING);		
 		filter.addAction(Constant.ACTION_BACKUP_DONE);
+		filter.addAction(Constant.ACTION_SCAN_FILE);		
 		filter.addAction(Constant.ACTION_WS_SERVER_NOTIFY);
 		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);
 		registerReceiver(mReceiver, filter);
@@ -145,8 +147,8 @@ public class MainActivity extends Activity implements OnClickListener{
 			BackupLogic.setAlarmWakeUpService(this);
 			mEditor.putBoolean(Constant.PREF_BONJOUR_SERVER_ALRM_ENNABLED, true).commit();
 		}
-		startService(new Intent(MainActivity.this, InfiniteService.class)); 
-		
+//		startService(new Intent(MainActivity.this, InfiniteService.class)); 
+		new StartServiceTask().execute(new Void[]{});
 	}
 	
 	private void dismissProgress(){
@@ -180,32 +182,35 @@ public class MainActivity extends Activity implements OnClickListener{
 		}
 	}
 	
-	private class ImportFilesObserver extends ContentObserver {
-		public ImportFilesObserver() {
-			super(new Handler());
-		}
-		@Override
-		public void onChange(boolean selfChange) {
-			refreshLayout();
-		}
-	}
-	
-	private class ServerObserver extends ContentObserver {
-		public ServerObserver() {
-			super(new Handler());
-		}
-		@Override
-		public void onChange(boolean selfChange) {
-			refreshServerStatus();
-		}
-	}
+//	private class ImportFilesObserver extends ContentObserver {
+//		public ImportFilesObserver() {
+//			super(new Handler());
+//		}
+//		@Override
+//		public void onChange(boolean selfChange) {
+//			refreshLayout();
+//		}
+//	}
+//	
+//	private class ServerObserver extends ContentObserver {
+//		public ServerObserver() {
+//			super(new Handler());
+//		}
+//		@Override
+//		public void onChange(boolean selfChange) {
+//			refreshServerStatus();
+//		}
+//	}
 
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			Log.d(TAG, "action:" + intent.getAction());
-			if (Constant.ACTION_BACKUP_DONE.equals(action)) {
+			if (Constant.ACTION_SCAN_FILE.equals(action)) {
+				refreshLayout();
+			}
+			else if (Constant.ACTION_BACKUP_DONE.equals(action)) {
 				//Toast.makeText(MainActivity.this, R.string.action_settings, Toast.LENGTH_LONG).show();
 			}
 			else if (Constant.ACTION_NETWORK_STATE_CHANGE.equals(action)) {
@@ -272,7 +277,7 @@ public class MainActivity extends Activity implements OnClickListener{
     	RuntimeState.isAppLaunching = false;
     	Log.d(TAG, "onDestroy");
  		unregisterReceiver(mReceiver);
-		getContentResolver().unregisterContentObserver(mImportFilesObserver);		
+//		getContentResolver().unregisterContentObserver(mImportFilesObserver);		
 //		getContentResolver().unregisterContentObserver(mServerObserver);
 //		stopService(new Intent(MainActivity.this, InfiniteService.class)); 
     	super.onDestroy();
@@ -318,7 +323,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		Intent startIntent = null;
  		switch(v.getId()){
 			case R.id.ivAddpc:
-				if(ServersLogic.hasBackupedServers(this)){
+				if(!ServersLogic.hasBackupedServers(this)){
 		            startIntent = new Intent(MainActivity.this, FirstUseActivity.class);	                    	
 		            startActivityForResult(startIntent, Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
 				}
@@ -344,5 +349,12 @@ public class MainActivity extends Activity implements OnClickListener{
 				break;
 		}
 	}
-	
+	class StartServiceTask extends AsyncTask<Void,Void,Void>{
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			startService(new Intent(MainActivity.this, InfiniteService.class)); 
+			return null;
+		}		
+	}
 }

@@ -15,6 +15,7 @@ import android.text.Html;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
+import com.waveface.sync.logic.FlowLogic;
 import com.waveface.sync.ui.FragmentBase.onFragmentChangedListener;
 import com.waveface.sync.util.DeviceUtil;
 
@@ -39,9 +40,9 @@ public class FirstUseActivity extends FragmentActivity implements
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
 		if (savedInstanceState == null) {
-			InstallFragment fragment = new InstallFragment();
+			ServerChooserFragment fragment = new ServerChooserFragment();
 			getSupportFragmentManager().beginTransaction()
-					.add(R.id.entry_main, fragment, InstallFragment.class.getSimpleName()).commit();
+					.add(R.id.entry_main, fragment, ServerChooserFragment.class.getSimpleName()).commit();
 		}
 	}
 
@@ -103,18 +104,7 @@ public class FirstUseActivity extends FragmentActivity implements
 
 	@Override
 	public void onSendEmail() {
-		String subject = this.getString(R.string.email_subject);
-		String content = Html.fromHtml(new StringBuilder()
-			.append("<p><b>Infinite Storage Station</b></p>")
-			.append("<a href=\"http://waveface.com/awesome\">http://waveface.com/awesome</a>")
-			.append("<small><p>More content</p></small>")
-			.toString()).toString();
-		String mailId = DeviceUtil.getEmailAccount(this);
-		String uriText = "mailto:"+mailId + 
-			    "?subject=" + URLEncoder.encode(subject) + 
-			    "&body=" + URLEncoder.encode(content);		
-		Intent intent = new Intent(Intent.ACTION_SENDTO,Uri.parse(uriText));
-		startActivity(intent);
+		FlowLogic.onSendEmail(this);
 	}
 
 

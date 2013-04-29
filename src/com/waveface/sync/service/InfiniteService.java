@@ -47,14 +47,12 @@ public class InfiniteService extends Service{
 	private String mCondidateWSLocation ;
 
 	//TIMER
-    private final int UPDATE_INTERVAL = 30 * 1000;
+    private final int UPDATE_INTERVAL = 60 * 1000;
     private Timer timer = new Timer();
     
     //
 	private SyncNotificationManager mNotificationManager;
-	private String mNotoficationId;
-	private boolean mBackupNotoficationCreated;
-	
+	private String mNotoficationId;	
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -278,8 +276,8 @@ public class InfiniteService extends Service{
     	        			RuntimeState.mAutoConnectMode = true ;
     	        		}
     	                if(RuntimeState.mAutoConnectMode == false && RuntimeState.OnWebSocketOpened == false ){	                    
-    	                    Intent intent = new Intent(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING);
-    	                    mContext.sendBroadcast(intent);
+//    	                    Intent intent = new Intent(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING);
+//    	                    mContext.sendBroadcast(intent);
     	                }
     	                else{
     	                	if(NetworkUtil.isWifiNetworkAvailable(mContext) && RuntimeState.OnWebSocketOpened == false){

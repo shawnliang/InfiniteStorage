@@ -20,7 +20,6 @@ import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.db.DatabaseHelper;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.db.ImportTable;
-import com.waveface.sync.db.ServerFilesView;
 
 public class SyncProvider extends ContentProvider {
 
@@ -70,9 +69,6 @@ public class SyncProvider extends ContentProvider {
 		sUriMatcher.addURI(AUTHORITY, BackupDetailsTable.BACKUP_DETAILS_NAME, BACKUPDETAILS);
 		sUriMatcher.addURI(AUTHORITY, BackupDetailsTable.BACKUP_DETAILS_NAME + "/*", BACKUPDETAILS_ID);
 
-		//FOR SERVER FILES VIEW
-		sUriMatcher.addURI(AUTHORITY, ServerFilesView.SERVER_FILES_VIEW_NAME, SERVERFILES_VIEW);
-		sUriMatcher.addURI(AUTHORITY, ServerFilesView.SERVER_FILES_VIEW_NAME + "/*", SERVERFILES_VIEW_ID);
 
 	}
 
@@ -368,25 +364,6 @@ public class SyncProvider extends ContentProvider {
 			c.setNotificationUri(getContext().getContentResolver(),
 					BackupDetailsTable.CONTENT_URI);
 			break;
-		case SERVERFILES_VIEW:
-			if (TextUtils.isEmpty(sortOrder)) {
-				orderBy = ServerFilesView.DEFAULT_SORT_ORDER;
-			} else {
-				orderBy = sortOrder;
-			}
-			c = mDb.query(ServerFilesView.VIEW_NAME, projection, where,
-					whereArgs, null, null, orderBy);
-			c.setNotificationUri(getContext().getContentResolver(),
-					ServerFilesView.CONTENT_URI);
-			break;
-		case SERVERFILES_VIEW_ID:
-			String filename = uri.getLastPathSegment();
-			c = executeGeneralQuery(filename, ServerFilesView.VIEW_NAME,
-					ServerFilesView.COLUMN_FILENAME, where, whereArgs);
-			c.setNotificationUri(getContext().getContentResolver(),
-					ServerFilesView.CONTENT_URI);
-			break;
-
 		default:
 			c = new DummyCursor();
 			break;

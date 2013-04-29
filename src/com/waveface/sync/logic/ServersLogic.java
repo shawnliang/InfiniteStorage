@@ -82,45 +82,64 @@ public class ServersLogic {
 		cv.put(BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME, "");			
 
 		
-		cursor = cr.query(BackupedServersTable.CONTENT_URI, 
-				new String[]{BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME}, 
-				BackupedServersTable.COLUMN_SERVER_ID+"=?", 
-				new String[]{entity.serverId}, 
-				null);
-		//update
-		if(cursor!=null && cursor.getCount()>0){
-			cursor.moveToFirst();
-			cv.put(BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME, cursor.getString(0));			
-			result = cr.update(BackupedServersTable.CONTENT_URI, 
-					 cv, 
-				 	 BackupedServersTable.COLUMN_SERVER_ID+"=?", new String[]{entity.serverId});
-			cv = new ContentValues();
-			cv.put(BackupedServersTable.COLUMN_STATUS, Constant.SERVER_OFFLINE);
-			result = cr.update(BackupedServersTable.CONTENT_URI, 
-					cv, 
-					BackupedServersTable.COLUMN_SERVER_ID+"!=? AND "+BackupedServersTable.COLUMN_STATUS+"!=?", 
-					new String[]{entity.serverId,Constant.SERVER_DENIED});
+		try {
+			cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+					new String[]{BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME}, 
+					BackupedServersTable.COLUMN_SERVER_ID+"=?", 
+					new String[]{entity.serverId}, 
+					null);
+			//update
+			if(cursor!=null && cursor.getCount()>0){
+				cursor.moveToFirst();
+				cv.put(BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME, cursor.getString(0));			
+				result = cr.update(BackupedServersTable.CONTENT_URI, 
+						 cv, 
+					 	 BackupedServersTable.COLUMN_SERVER_ID+"=?", new String[]{entity.serverId});
+				cv = new ContentValues();
+				cv.put(BackupedServersTable.COLUMN_STATUS, Constant.SERVER_OFFLINE);
+				result = cr.update(BackupedServersTable.CONTENT_URI, 
+						cv, 
+						BackupedServersTable.COLUMN_SERVER_ID+"!=? AND "+BackupedServersTable.COLUMN_STATUS+"!=?", 
+						new String[]{entity.serverId,Constant.SERVER_DENIED});
+			}
+			//insert
+			else{
+				result = cr.bulkInsert(BackupedServersTable.CONTENT_URI,new ContentValues[]{cv});
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		//insert
-		else{
-			result = cr.bulkInsert(BackupedServersTable.CONTENT_URI,new ContentValues[]{cv});
+		finally{
+			if(cursor!=null){
+				cursor.close();
+				cursor = null;
+			}
 		}
-		cursor.close();
 		return result;
 	}
 	
 	public static boolean hasBackupedServers(Context context){
 		boolean hasServer = false;
 		ContentResolver cr = context.getContentResolver();
-		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
-				null, 
-				BackupedServersTable.COLUMN_STATUS+"!=?", 
-				new String[]{Constant.SERVER_DENIED}, 
-				BackupedServersTable.COLUMN_SERVER_ID+" LIMIT 1");
-		if(cursor!=null && cursor.getCount()>0){
-			hasServer = true; 
+		Cursor cursor = null ;
+		try {
+			cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+					null, 
+					BackupedServersTable.COLUMN_STATUS+"!=?", 
+					new String[]{Constant.SERVER_DENIED}, 
+					BackupedServersTable.COLUMN_SERVER_ID+" LIMIT 1");
+			if(cursor!=null && cursor.getCount()>0){
+				hasServer = true; 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		cursor.close();
+		finally{
+			if(cursor!=null){
+				cursor.close();
+				cursor = null;
+			}
+		}
 		return hasServer;
 	}	
 	public static ArrayList<ServerEntity> getBackupedServers(Context context){
@@ -128,75 +147,103 @@ public class ServersLogic {
 		ServerEntity entity = null;
 		Cursor cursor = null;
 		ContentResolver cr = context.getContentResolver();
-		cursor = cr.query(BackupedServersTable.CONTENT_URI, 
-				null, 
-				BackupedServersTable.COLUMN_STATUS+"!=?", 
-				new String[]{Constant.SERVER_DENIED}, 
-				null);
-		
-		if(cursor!=null && cursor.getCount()>0){
-			int count = cursor.getCount();
-			cursor.moveToFirst();
-			for(int i = 0 ; i < count ;i++){
-				entity = new ServerEntity();
-				entity.serverId = cursor.getString(0);
-				entity.serverName = cursor.getString(1);
-				entity.status = cursor.getString(2);
-            	entity.startDatetime =cursor.getString(3);
-            	entity.endDatetime = cursor.getString(4);
-            	entity.folder = cursor.getString(5);
-            	entity.freespace = cursor.getLong(6);
-            	entity.photoCount = cursor.getInt(7);
-            	entity.videoCount = cursor.getInt(8);
-            	entity.audioCount =cursor.getInt(9);
-            	entity.lastLocalBackupTime = cursor.getString(10);
+		try {
+			cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+					null, 
+					BackupedServersTable.COLUMN_STATUS+"!=?", 
+					new String[]{Constant.SERVER_DENIED}, 
+					null);
+			
+			if(cursor!=null && cursor.getCount()>0){
+				int count = cursor.getCount();
+				cursor.moveToFirst();
+				for(int i = 0 ; i < count ;i++){
+					entity = new ServerEntity();
+					entity.serverId = cursor.getString(0);
+					entity.serverName = cursor.getString(1);
+					entity.status = cursor.getString(2);
+			    	entity.startDatetime =cursor.getString(3);
+			    	entity.endDatetime = cursor.getString(4);
+			    	entity.folder = cursor.getString(5);
+			    	entity.freespace = cursor.getLong(6);
+			    	entity.photoCount = cursor.getInt(7);
+			    	entity.videoCount = cursor.getInt(8);
+			    	entity.audioCount =cursor.getInt(9);
+			    	entity.lastLocalBackupTime = cursor.getString(10);
 
-            	datas.add(entity);
-				cursor.moveToNext();
+			    	datas.add(entity);
+					cursor.moveToNext();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(cursor!=null){
+				cursor.close();
+				cursor = null;
 			}
 		}
-		cursor.close();
 		return datas;
 	}
 	public static int updateBonjourServer(Context context ,ServerEntity entity){
 		int result = 0;
 		Cursor cursor = null;
 		ContentResolver cr = context.getContentResolver();
-		cursor = cr.query(BonjourServersTable.CONTENT_URI, 
-				new String[]{BonjourServersTable.COLUMN_SERVER_ID}, 
-				BonjourServersTable.COLUMN_SERVER_ID+"=?", 
-				new String[]{entity.serverId}, 
-				null);
-		ContentValues cv = new ContentValues();
-		cv.put(BonjourServersTable.COLUMN_SERVER_ID, entity.serverId);
-		cv.put(BonjourServersTable.COLUMN_SERVER_NAME, entity.serverName);
-		cv.put(BonjourServersTable.COLUMN_SERVER_OS, entity.serverOS);
-		cv.put(BonjourServersTable.COLUMN_WS_LOCATION, entity.wsLocation);
-		
-		//update
-		if(cursor!=null && cursor.getCount()>0){
-			result = cr.update(BonjourServersTable.CONTENT_URI, cv, BonjourServersTable.COLUMN_SERVER_ID+"=?", new String[]{entity.serverId});
+		try {
+			cursor = cr.query(BonjourServersTable.CONTENT_URI, 
+					new String[]{BonjourServersTable.COLUMN_SERVER_ID}, 
+					BonjourServersTable.COLUMN_SERVER_ID+"=?", 
+					new String[]{entity.serverId}, 
+					null);
+			ContentValues cv = new ContentValues();
+			cv.put(BonjourServersTable.COLUMN_SERVER_ID, entity.serverId);
+			cv.put(BonjourServersTable.COLUMN_SERVER_NAME, entity.serverName);
+			cv.put(BonjourServersTable.COLUMN_SERVER_OS, entity.serverOS);
+			cv.put(BonjourServersTable.COLUMN_WS_LOCATION, entity.wsLocation);
+			
+			//update
+			if(cursor!=null && cursor.getCount()>0){
+				result = cr.update(BonjourServersTable.CONTENT_URI, cv, BonjourServersTable.COLUMN_SERVER_ID+"=?", new String[]{entity.serverId});
+			}
+			//insert
+			else{
+				result = cr.bulkInsert(BonjourServersTable.CONTENT_URI,new ContentValues[]{cv});
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		//insert
-		else{
-			result = cr.bulkInsert(BonjourServersTable.CONTENT_URI,new ContentValues[]{cv});
+		finally{
+			if(cursor!=null){
+				cursor.close();
+				cursor = null;
+			}
 		}
-		cursor.close();
 		return result;
 	}
 	public static boolean hasBonjourServers(Context context){
 		boolean hasServer = false;
 		ContentResolver cr = context.getContentResolver();
-		Cursor cursor = cr.query(BonjourServersTable.CONTENT_URI, 
-				new String[]{BonjourServersTable.COLUMN_SERVER_ID}, 
-				null, 
-				null, 
-				BonjourServersTable.COLUMN_SERVER_ID+" LIMIT 1");
-		
-		if(cursor!=null && cursor.getCount()>0){
-			hasServer = true;
+		Cursor cursor = null ;
+		try {
+			cursor = cr.query(BonjourServersTable.CONTENT_URI, 
+					new String[]{BonjourServersTable.COLUMN_SERVER_ID}, 
+					null, 
+					null, 
+					BonjourServersTable.COLUMN_SERVER_ID+" LIMIT 1");
+			
+			if(cursor!=null && cursor.getCount()>0){
+				hasServer = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		cursor.close();
+		finally{
+			if(cursor!=null){
+				cursor.close();
+				cursor = null;
+			}
+		}
 		return hasServer;
 	}
 
@@ -206,26 +253,35 @@ public class ServersLogic {
 		ServerEntity entity = null;
 		Cursor cursor = null;
 		ContentResolver cr = context.getContentResolver();
-		cursor = cr.query(BonjourServersTable.CONTENT_URI, 
-				null, 
-				null, 
-				null, 
-				null);
-		
-		if(cursor!=null && cursor.getCount()>0){
-			int count = cursor.getCount();
-			cursor.moveToFirst();
-			for(int i = 0 ; i < count ;i++){
-				entity = new ServerEntity();
-				entity.serverId = cursor.getString(0);
-				entity.serverName = cursor.getString(1);
-				entity.serverOS = cursor.getString(2);
-            	entity.wsLocation =cursor.getString(3);
-             	datas.add(entity);
-				cursor.moveToNext();
+		try {
+			cursor = cr.query(BonjourServersTable.CONTENT_URI, 
+					null, 
+					null, 
+					null, 
+					null);
+			
+			if(cursor!=null && cursor.getCount()>0){
+				int count = cursor.getCount();
+				cursor.moveToFirst();
+				for(int i = 0 ; i < count ;i++){
+					entity = new ServerEntity();
+					entity.serverId = cursor.getString(0);
+					entity.serverName = cursor.getString(1);
+					entity.serverOS = cursor.getString(2);
+			    	entity.wsLocation =cursor.getString(3);
+			     	datas.add(entity);
+					cursor.moveToNext();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(cursor!=null){
+				cursor.close();
+				cursor = null;
 			}
 		}
-		cursor.close();
 		return datas;
 	}
 	public static ArrayList<ServerEntity> getBonjourServersExportPaired(Context context){
@@ -233,42 +289,52 @@ public class ServersLogic {
 		ServerEntity entity = null;
 		TreeSet<String> pairedServerId = new TreeSet<String>();
 		ContentResolver cr = context.getContentResolver();
-		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
-				new String[]{BackupedServersTable.COLUMN_SERVER_ID}, 
-				null, 
-				null, 
-				null);
-		
-		if(cursor!=null && cursor.getCount()>0){
-			int count = cursor.getCount();
-			cursor.moveToFirst();
-			for(int i = 0 ; i < count ;i++){
-				pairedServerId.add(cursor.getString(0));
-				cursor.moveToNext();
-			}
-		}
-		cursor = cr.query(BonjourServersTable.CONTENT_URI, 
-				null, 
-				null, 
-				null, 
-				null);
-		
-		if(cursor!=null && cursor.getCount()>0){
-			int count = cursor.getCount();
-			cursor.moveToFirst();
-			for(int i = 0 ; i < count ;i++){
-				if(!pairedServerId.contains(cursor.getString(0))){
-					entity = new ServerEntity();
-					entity.serverId = cursor.getString(0);
-					entity.serverName = cursor.getString(1);
-					entity.serverOS = cursor.getString(2);
-	            	entity.wsLocation =cursor.getString(3);
-	             	datas.add(entity);
+		Cursor cursor = null;
+		try {
+			cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+					new String[]{BackupedServersTable.COLUMN_SERVER_ID}, 
+					null, 
+					null, 
+					null);
+			
+			if(cursor!=null && cursor.getCount()>0){
+				int count = cursor.getCount();
+				cursor.moveToFirst();
+				for(int i = 0 ; i < count ;i++){
+					pairedServerId.add(cursor.getString(0));
+					cursor.moveToNext();
 				}
-				cursor.moveToNext();
+			}
+			cursor = cr.query(BonjourServersTable.CONTENT_URI, 
+					null, 
+					null, 
+					null, 
+					null);
+			
+			if(cursor!=null && cursor.getCount()>0){
+				int count = cursor.getCount();
+				cursor.moveToFirst();
+				for(int i = 0 ; i < count ;i++){
+					if(!pairedServerId.contains(cursor.getString(0))){
+						entity = new ServerEntity();
+						entity.serverId = cursor.getString(0);
+						entity.serverName = cursor.getString(1);
+						entity.serverOS = cursor.getString(2);
+			        	entity.wsLocation =cursor.getString(3);
+			         	datas.add(entity);
+					}
+					cursor.moveToNext();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(cursor!=null){
+				cursor.close();
+				cursor = null;
 			}
 		}
-		cursor.close();
 		return datas;
 	}
 
@@ -276,25 +342,34 @@ public class ServersLogic {
 		ServerEntity entity = null;
 		Cursor cursor = null;
 		ContentResolver cr = context.getContentResolver();
-		cursor = cr.query(BonjourServersTable.CONTENT_URI, 
-				null, 
-				BonjourServersTable.COLUMN_SERVER_ID+"=?", 
-				new String[]{serverId}, 
-				null);
-		
-		if(cursor!=null && cursor.getCount()>0){
-			int count = cursor.getCount();
-			cursor.moveToFirst();
-			for(int i = 0 ; i < count ;i++){
-				entity = new ServerEntity();
-				entity.serverId = cursor.getString(0);
-				entity.serverName = cursor.getString(1);
-				entity.serverOS = cursor.getString(2);
-            	entity.wsLocation =cursor.getString(3);
-				cursor.moveToNext();
+		try {
+			cursor = cr.query(BonjourServersTable.CONTENT_URI, 
+					null, 
+					BonjourServersTable.COLUMN_SERVER_ID+"=?", 
+					new String[]{serverId}, 
+					null);
+			
+			if(cursor!=null && cursor.getCount()>0){
+				int count = cursor.getCount();
+				cursor.moveToFirst();
+				for(int i = 0 ; i < count ;i++){
+					entity = new ServerEntity();
+					entity.serverId = cursor.getString(0);
+					entity.serverName = cursor.getString(1);
+					entity.serverOS = cursor.getString(2);
+			    	entity.wsLocation =cursor.getString(3);
+					cursor.moveToNext();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(cursor!=null){
+				cursor.close();
+				cursor = null;
 			}
 		}
-		cursor.close();
 		return entity;
 	}
 	
@@ -354,35 +429,46 @@ public class ServersLogic {
 		long count = 0;
 		String lastTimestamp = null;
 		ContentResolver cr = context.getContentResolver();
-		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
-				new String[]{BackupedServersTable.COLUMN_END_DATETIME}, 
-				BackupedServersTable.COLUMN_SERVER_ID+" =? ", 
-				new String[]{serverId},null);	
-		if(cursor!=null && cursor.getCount()>0){
-			cursor.moveToFirst();
-			lastTimestamp = cursor.getString(0);
-		}		
-		String where = null;
-		String[] whereArgs = null;
-		if(TextUtils.isEmpty(lastTimestamp)){
-			where = ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
-			whereArgs = new String[]{Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
+		Cursor cursor = null;
+		try {
+			cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+					new String[]{BackupedServersTable.COLUMN_END_DATETIME}, 
+					BackupedServersTable.COLUMN_SERVER_ID+" =? ", 
+					new String[]{serverId},null);	
+			if(cursor!=null && cursor.getCount()>0){
+				cursor.moveToFirst();
+				lastTimestamp = cursor.getString(0);
+			}		
+			String where = null;
+			String[] whereArgs = null;
+			if(TextUtils.isEmpty(lastTimestamp)){
+				where = ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
+				whereArgs = new String[]{Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
+			}
+			else{
+				where = ImportFilesTable.COLUMN_DATE+">=? AND "+
+						ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
+				whereArgs = new String[]{lastTimestamp,Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
+			}
+			
+			cursor = cr.query(ImportFilesTable.CONTENT_URI, 
+					new String[]{
+					ImportFilesTable.COLUMN_SIZE}, 
+					where, 
+					whereArgs,null);	
+			if(cursor!=null && cursor.getCount()>0){			
+				count = cursor.getCount();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		else{
-			where = ImportFilesTable.COLUMN_DATE+">=? AND "+
-					ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
-			whereArgs = new String[]{lastTimestamp,Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
+		finally{
+			if(cursor!=null){
+				cursor.close();
+				cursor = null;
+			}
 		}
-		
-		cursor = cr.query(ImportFilesTable.CONTENT_URI, 
-				new String[]{
-				ImportFilesTable.COLUMN_SIZE}, 
-				where, 
-				whereArgs,null);	
-		if(cursor!=null && cursor.getCount()>0){			
-			count = cursor.getCount();
-		}
-		cursor.close();
 		return count;
 	}
 
@@ -391,40 +477,51 @@ public class ServersLogic {
 		long totalSize = 0 ;
 		String lastTimestamp = null;
 		ContentResolver cr = context.getContentResolver();
-		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
-				new String[]{BackupedServersTable.COLUMN_END_DATETIME}, 
-				BackupedServersTable.COLUMN_SERVER_ID+" =? ", 
-				new String[]{serverId},null);	
-		if(cursor!=null && cursor.getCount()>0){
-			cursor.moveToFirst();
-			lastTimestamp = cursor.getString(0);
-		}		
-		String where = null;
-		String[] whereArgs = null;
-		if(TextUtils.isEmpty(lastTimestamp)){
-			where = ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
-			whereArgs = new String[]{Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
+		Cursor cursor = null ;
+		try {
+			cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+					new String[]{BackupedServersTable.COLUMN_END_DATETIME}, 
+					BackupedServersTable.COLUMN_SERVER_ID+" =? ", 
+					new String[]{serverId},null);	
+			if(cursor!=null && cursor.getCount()>0){
+				cursor.moveToFirst();
+				lastTimestamp = cursor.getString(0);
+			}		
+			String where = null;
+			String[] whereArgs = null;
+			if(TextUtils.isEmpty(lastTimestamp)){
+				where = ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
+				whereArgs = new String[]{Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
+			}
+			else{
+				where = ImportFilesTable.COLUMN_DATE+">=? AND "+
+						ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
+				whereArgs = new String[]{lastTimestamp,Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
+			}
+			
+			cursor = cr.query(ImportFilesTable.CONTENT_URI, 
+					new String[]{
+					ImportFilesTable.COLUMN_SIZE}, 
+					where, 
+					whereArgs,null);	
+			if(cursor!=null && cursor.getCount()>0){			
+				count = cursor.getCount();
+				cursor.moveToFirst();
+				for(int i =0; i < count ;i++){
+					totalSize += cursor.getLong(0);
+					cursor.moveToNext();
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		else{
-			where = ImportFilesTable.COLUMN_DATE+">=? AND "+
-					ImportFilesTable.COLUMN_STATUS+"!=? AND "+ImportFilesTable.COLUMN_STATUS+"!=? ";
-			whereArgs = new String[]{lastTimestamp,Constant.IMPORT_FILE_DELETED,Constant.IMPORT_FILE_EXCLUDE};
-		}
-		
-		cursor = cr.query(ImportFilesTable.CONTENT_URI, 
-				new String[]{
-				ImportFilesTable.COLUMN_SIZE}, 
-				where, 
-				whereArgs,null);	
-		if(cursor!=null && cursor.getCount()>0){			
-			count = cursor.getCount();
-			cursor.moveToFirst();
-			for(int i =0; i < count ;i++){
-				totalSize += cursor.getLong(0);
-				cursor.moveToNext();
+		finally{
+			if(cursor!=null){
+				cursor.close();
+				cursor = null;
 			}
 		}
-		cursor.close();
 		return new long[]{count,totalSize};
 	}
     
@@ -433,14 +530,24 @@ public class ServersLogic {
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
 		cv.put(BackupedServersTable.COLUMN_STATUS, Constant.SERVER_DENIED);
-		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
-				new String[]{BackupedServersTable.COLUMN_SERVER_ID}, 
-				BackupedServersTable.COLUMN_SERVER_ID+" =? ", 
-				new String[]{serverId},null);	
-		if(cursor!=null && cursor.getCount()>0){
-			result=cr.update(BackupedServersTable.CONTENT_URI, cv, BackupedServersTable.COLUMN_SERVER_ID+"=?", new String[]{serverId});
+		Cursor cursor = null ;
+		try {
+			cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+					new String[]{BackupedServersTable.COLUMN_SERVER_ID}, 
+					BackupedServersTable.COLUMN_SERVER_ID+" =? ", 
+					new String[]{serverId},null);	
+			if(cursor!=null && cursor.getCount()>0){
+				result = cr.update(BackupedServersTable.CONTENT_URI, cv, BackupedServersTable.COLUMN_SERVER_ID+"=?", new String[]{serverId});
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		finally{
+			if(cursor!=null){
+				cursor.close();
+				cursor = null;
+			}
 		}
-		cursor.close();
 		return result;
 	}    
 	public static int updateServerLastBackupTime(Context context,String serverId,String fileDateTime){
@@ -461,47 +568,68 @@ public class ServersLogic {
 	public static ServerEntity getServerById(Context context,String serverId){
 		ServerEntity entity = null;
 		ContentResolver cr = context.getContentResolver();
-		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
-				null, 
-				BackupedServersTable.COLUMN_STATUS+"!=?", 
-				new String[]{Constant.SERVER_DENIED}, 
-				null);
-		
-		cursor.moveToFirst();
-			entity = new ServerEntity();
-			entity.serverId = cursor.getString(0);
-			entity.serverName = cursor.getString(1);
-			entity.status = cursor.getString(2);
-        	entity.startDatetime =cursor.getString(3);
-        	entity.endDatetime = cursor.getString(4);
-        	entity.folder = cursor.getString(5);
-        	entity.freespace = cursor.getLong(6);
-        	entity.photoCount = cursor.getInt(7);
-        	entity.videoCount = cursor.getInt(8);
-        	entity.audioCount =cursor.getInt(9);
-        	entity.lastLocalBackupTime = cursor.getString(10);
-        cursor.close();	
+		Cursor cursor = null ;
+		try {
+			cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+					null, 
+					BackupedServersTable.COLUMN_STATUS+"!=?", 
+					new String[]{Constant.SERVER_DENIED}, 
+					null);
+			if(cursor!=null && cursor.getCount()>0){		
+				cursor.moveToFirst();
+					entity = new ServerEntity();
+					entity.serverId = cursor.getString(0);
+					entity.serverName = cursor.getString(1);
+					entity.status = cursor.getString(2);
+			    	entity.startDatetime =cursor.getString(3);
+			    	entity.endDatetime = cursor.getString(4);
+			    	entity.folder = cursor.getString(5);
+			    	entity.freespace = cursor.getLong(6);
+			    	entity.photoCount = cursor.getInt(7);
+			    	entity.videoCount = cursor.getInt(8);
+			    	entity.audioCount =cursor.getInt(9);
+			    	entity.lastLocalBackupTime = cursor.getString(10);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(cursor!=null){
+				cursor.close();
+				cursor = null;
+			}
+		}
 		return entity;
 	}
 	public static int getServerBackupedCountById(Context context,String serverId){
 		int count = 0;
 		ContentResolver cr = context.getContentResolver();
-		Cursor cursor = cr.query(BackupedServersTable.CONTENT_URI, 
-				new String[]{
-					BackupedServersTable.COLUMN_PHOTO_COUNT,
-					BackupedServersTable.COLUMN_VIDEO_COUNT,
-					BackupedServersTable.COLUMN_AUDIO_COUNT
-				}, 
-				BackupedServersTable.COLUMN_STATUS+"!=?", 
-				new String[]{Constant.SERVER_DENIED}, 
-				null);
-		if(cursor!=null && cursor.getCount()>0){
-			cursor.moveToFirst();
-        	count += cursor.getInt(0);
-        	count += cursor.getInt(1);
-        	count += cursor.getInt(2);
+		Cursor cursor = null;
+		try {
+			cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+					new String[]{
+						BackupedServersTable.COLUMN_PHOTO_COUNT,
+						BackupedServersTable.COLUMN_VIDEO_COUNT,
+						BackupedServersTable.COLUMN_AUDIO_COUNT
+					}, 
+					BackupedServersTable.COLUMN_STATUS+"!=?", 
+					new String[]{Constant.SERVER_DENIED}, 
+					null);
+			if(cursor!=null && cursor.getCount()>0){
+				cursor.moveToFirst();
+				count += cursor.getInt(0);
+				count += cursor.getInt(1);
+				count += cursor.getInt(2);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-        cursor.close();	
+		finally{
+			if(cursor!=null){
+				cursor.close();
+				cursor = null;
+			}
+		}
 		return count;
 	}
 }

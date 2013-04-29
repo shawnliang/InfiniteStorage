@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 
 import com.waveface.sync.R;
 import com.waveface.sync.db.BonjourServersTable;
