@@ -83,22 +83,60 @@ namespace InfiniteStorage
 			{
 				ToolStripItem itemFound = findMenuItemInNotifyContextMenu(evt);
 
-				var itemText = string.Format("{0}: {1}/{2}", evt.ctx.device_name, evt.ctx.recved_files, evt.ctx.total_files);
-
 				if (itemFound != null)
 				{
-					itemFound.Text = itemText;
+					itemFound.Text = getOverallProgressText(evt.ctx);
+
+					var nextIdx = notifyIcon.ContextMenuStrip.Items.IndexOf(itemFound) + 1;
+					notifyIcon.ContextMenuStrip.Items[nextIdx].Text = getSingleFileText(evt.ctx);
 				}
 				else
 				{
 					var item = new ToolStripMenuItem();
-					item.Text = itemText;
+					item.Text = getOverallProgressText(evt.ctx);
 					item.Tag = evt.ctx;
 					item.Enabled = false;
 					deviceStipItems.Add(evt.ctx, item);
 
+
+					var item2 = new ToolStripMenuItem();
+					item2.Text = getSingleFileText(evt.ctx);
+					item2.Enabled = false;
+
+
 					notifyIcon.ContextMenuStrip.Items.Insert(2, item);
+					notifyIcon.ContextMenuStrip.Items.Insert(3, item2);
 					notifyIcon.ShowBalloonTip(3000, Resources.ProductName, string.Format(Resources.BallonText_Transferring, evt.ctx.device_name, evt.ctx.total_files), ToolTipIcon.Info);
+				}
+			}
+		}
+
+		private static string getSingleFileText(ProtocolContext ctx)
+		{
+			return ctx.temp_file != null ?
+							string.Format("  - {0} : {1}%", ctx.fileCtx.file_name, 100 * ctx.temp_file.BytesWritten / ctx.fileCtx.file_size) :
+							"準備傳送中...";
+		}
+
+		private static string getOverallProgressText(ProtocolContext ctx)
+		{
+			return string.Format("{0}: {1}/{2}", ctx.device_name, ctx.recved_files, ctx.total_files);
+		}
+
+		public void refreshNotifyIconContextMenu()
+		{
+			for (int i = 0; i < notifyIcon.ContextMenuStrip.Items.Count; i++)
+			{
+				var item = notifyIcon.ContextMenuStrip.Items[i];
+				if (item.Tag != null)
+				{
+					var ctx = item.Tag as WebsocketProtocol.ProtocolContext;
+
+					var overallProgress = getOverallProgressText(ctx);
+					if (overallProgress != item.Text)
+						item.Text = overallProgress;
+
+					notifyIcon.ContextMenuStrip.Items[i + 1].Text = getSingleFileText(ctx);
 				}
 			}
 		}
@@ -143,7 +181,13 @@ namespace InfiniteStorage
 			{
 				var item = deviceStipItems[key];
 				if (notifyIcon.ContextMenuStrip.Items.Contains(item))
+				{
+					var nextIdx = notifyIcon.ContextMenuStrip.Items.IndexOf(item) + 1;
+					var item2 = notifyIcon.ContextMenuStrip.Items[nextIdx];
+
 					notifyIcon.ContextMenuStrip.Items.Remove(item);
+					notifyIcon.ContextMenuStrip.Items.Remove(item2);
+				}
 
 				deviceStipItems.Remove(key);
 			}
@@ -164,5 +208,7 @@ namespace InfiniteStorage
 			dialog.TopMost = true;
 			dialog.Show();
 		}
+
+		
 	}
 }

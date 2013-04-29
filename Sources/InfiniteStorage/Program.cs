@@ -98,7 +98,7 @@ namespace InfiniteStorage
 
 			m_NotifyTimer = new Timer();
 			m_NotifyTimer.Tick += new EventHandler(m_NotifyTimer_Tick);
-			m_NotifyTimer.Interval = 1000;
+			m_NotifyTimer.Interval = 200;
 			m_NotifyTimer.Start();
 
 
@@ -224,23 +224,7 @@ namespace InfiniteStorage
 
 		static void m_NotifyTimer_Tick(object sender, EventArgs e)
 		{
-			refreshNotifyIconContextMenu();
-		}
-
-		private static void refreshNotifyIconContextMenu()
-		{
-			for (int i = 0; i < m_notifyIcon.ContextMenuStrip.Items.Count; i++)
-			{
-				var item = m_notifyIcon.ContextMenuStrip.Items[i];
-				if (item.Tag != null)
-				{
-					var ctx = item.Tag as WebsocketProtocol.ProtocolContext;
-
-					var newText = string.Format("{0}: {1}/{2}", ctx.device_name, ctx.recved_files, ctx.total_files);
-					if (newText != item.Text)
-						item.Text = newText;
-				}
-			}
+			m_notifyIconController.refreshNotifyIconContextMenu();
 		}
 
 		private static DialogResult showFirstUseWizard()
