@@ -66,7 +66,9 @@ public class InstallFragment extends FragmentBase implements OnClickListener{
 		public void onChange(boolean selfChange) {
 			if(getActivity() != null) {
 				if(ServersLogic.hasBonjourServers(getActivity())){
-					mAlertDialog.dismiss();
+					if(mAlertDialog!=null && mAlertDialog.isShowing()){
+						mAlertDialog.dismiss();
+					}
 					mListener.onInstallNext();
 				}
 			}
