@@ -16,6 +16,27 @@ namespace InfiniteStorage
 	{
 		public ProtocolContext FirstConnection { get; private set; }
 
+		static FirstUseDialog instance;
+
+		public Action ApproveFunc { get; set; }
+
+		static FirstUseDialog()
+		{
+			instance = new FirstUseDialog();
+		}
+
+
+		public static FirstUseDialog Instance
+		{
+			get
+			{
+				if (instance.IsDisposed)
+					instance = new FirstUseDialog();
+
+				return instance;
+			}
+		}
+
 		public FirstUseDialog()
 		{
 			InitializeComponent();
@@ -30,6 +51,13 @@ namespace InfiniteStorage
 			UpdateUI();
 		}
 
+		public void ShowSetupPage(WebsocketProtocol.ProtocolContext ctx)
+		{
+			tabControlEx1.PageIndex = 2;
+			transferringControl1.WebSocketContext = ctx;
+			Show();
+		}
+
 		private void nextButton_Click(object sender, EventArgs e)
 		{
 			if (tabControlEx1.SelectedTab == tabChooseOrganizeMethod)
@@ -39,8 +67,8 @@ namespace InfiniteStorage
 				Settings.Default.OrganizeMethod = (int)organizeSelectionControl1.OrganizeBy;
 				Settings.Default.Save();
 
-				if (FirstConnection != null)
-					FirstConnection.handleApprove();
+				if (ApproveFunc != null)
+					ApproveFunc();
 
 				tabControlEx1.NextPage();
 			}
@@ -48,6 +76,7 @@ namespace InfiniteStorage
 			{
 				transferringControl1.StopUpdateUI();
 				DialogResult = System.Windows.Forms.DialogResult.OK;
+				Close();
 			}
 			else
 				tabControlEx1.NextPage();
@@ -85,50 +114,6 @@ namespace InfiniteStorage
 		private void prevButton_Click(object sender, EventArgs e)
 		{
 			tabControlEx1.PreviousPage();
-		}
-
-		private void getItOnGooglePlay_Click(object sender, EventArgs e)
-		{
-			MessageBox.Show("Not imp yet");
-		}
-
-		private void getItOnAppStore_Click(object sender, EventArgs e)
-		{
-			MessageBox.Show("Not imp yet");
-		}
-
-		public void OnPairingRequesting(object sender, WebsocketEventArgs e)
-		{
-			if (InvokeRequired)
-			{
-				Invoke(new MethodInvoker(() =>
-				{
-					OnPairingRequesting(sender, e);
-				}));
-			}
-			else
-			{
-				if (tabControlEx1.SelectedTab == tabWelcomeAndWaitConnect)
-				{
-					if (MessageBox.Show(string.Format(Resources.AllowPairingRequest, e.ctx.device_name), Resources.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
-					{
-						FirstConnection = e.ctx;
-						transferringControl1.WebSocketContext = e.ctx;
-						tabControlEx1.NextPage();
-					}
-					else
-					{
-						try
-						{
-							e.ctx.handleDisapprove();
-						}
-						catch (Exception err)
-						{
-							log4net.LogManager.GetLogger(GetType()).Warn("Unable to disapprove pairing request from " + e.ctx.device_name, err);
-						}
-					}
-				}
-			}
 		}
 	}
 }

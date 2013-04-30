@@ -23,7 +23,7 @@ namespace InfiniteStorage
 			if (!DesignMode)
 			{
 				var storageLocation = Settings.Default.SingleFolderLocation;
-				if (string.IsNullOrEmpty(storageLocation))
+				if (string.IsNullOrEmpty(storageLocation) || Settings.Default.IsFirstUse)
 					storageLocation = Path.Combine(MediaLibrary.UserFolder, Resources.ProductName);
 
 				storageLocationBox.Text = storageLocation;

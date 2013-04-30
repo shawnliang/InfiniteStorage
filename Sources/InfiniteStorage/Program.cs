@@ -10,6 +10,7 @@ using System.IO;
 using System.Management;
 using System.Security.Cryptography;
 using System.Text;
+using InfiniteStorage.WebsocketProtocol;
 
 namespace InfiniteStorage
 {
@@ -42,7 +43,28 @@ namespace InfiniteStorage
 				return;
 			}
 
+			if (string.IsNullOrEmpty(Settings.Default.ServerId))
+			{
+				Settings.Default.ServerId = generateSameServerIdForSameUserOnSamePC();
+				Settings.Default.SingleFolderLocation = MediaLibrary.UserFolder;
+				Settings.Default.OrganizeMethod = (int)OrganizeMethod.YearMonth;
+				Settings.Default.LocationType = (int)LocationType.SingleFolder;
+				Settings.Default.Save();
+			}
+
+
+			SynchronizationContextHelper.SetMainSyncContext();
 			MyDbContext.InitialzeDatabaseSchema();
+
+			initNotifyIcon();
+
+			m_NotifyTimer = new Timer();
+			m_NotifyTimer.Tick += new EventHandler(m_NotifyTimer_Tick);
+			m_NotifyTimer.Interval = 200;
+			m_NotifyTimer.Start();
+
+			initConnectedDeviceCollection();
+			initBackupStatusTimer();
 
 			ushort port = 0;
 
@@ -62,11 +84,7 @@ namespace InfiniteStorage
 				m_bonjourService = new BonjourService();
 				m_bonjourService.Error += new EventHandler<BonjourErrorEventArgs>(m_bonjourService_Error);
 
-				if (string.IsNullOrEmpty(Settings.Default.ServerId))
-				{
-					Settings.Default.ServerId = generateSameServerIdForSameUserOnSamePC();
-					Settings.Default.Save();
-				}
+				
 				m_bonjourService.Register(port, Settings.Default.ServerId);
 
 				// bonjour record sometimes disappear for unknown reason.
@@ -82,24 +100,13 @@ namespace InfiniteStorage
 				return;
 			}
 
-			initConnectedDeviceCollection();
-			initBackupStatusTimer();
 
-			if (string.IsNullOrEmpty(Settings.Default.SingleFolderLocation))
+
+			if (Settings.Default.IsFirstUse)
 			{
-				if (showFirstUseWizard() != DialogResult.OK)
-					return;
+				FirstUseDialog.Instance.Show();
 			}
 
-			initNotifyIcon();
-			
-
-			SynchronizationContextHelper.SetMainSyncContext();
-
-			m_NotifyTimer = new Timer();
-			m_NotifyTimer.Tick += new EventHandler(m_NotifyTimer_Tick);
-			m_NotifyTimer.Interval = 200;
-			m_NotifyTimer.Start();
 
 
 
@@ -227,29 +234,6 @@ namespace InfiniteStorage
 			m_notifyIconController.refreshNotifyIconContextMenu();
 		}
 
-		private static DialogResult showFirstUseWizard()
-		{
-			var firstUseDialog = new FirstUseDialog();
-
-			try
-			{
-				InfiniteStorageWebSocketService.PairingRequesting += firstUseDialog.OnPairingRequesting;
-				return firstUseDialog.ShowDialog();
-			}
-			catch (Exception err)
-			{
-				MessageBox.Show(err.Message, Resources.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-				log4net.LogManager.GetLogger("main").Error("Error showing first use wizard", err);
-
-				return DialogResult.Cancel;
-			}
-			finally
-			{
-				InfiniteStorageWebSocketService.PairingRequesting -= firstUseDialog.OnPairingRequesting;
-			}
-
-		}
-
 		private static void initNotifyIcon()
 		{
 			m_notifyIcon = new NotifyIcon();
@@ -273,16 +257,10 @@ namespace InfiniteStorage
 			showProgramIsAtServiceBallonTips();
 
 			m_notifyIcon.DoubleClick += m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked;
-
 			InfiniteStorageWebSocketService.DeviceAccepted += m_notifyIconController.OnDeviceConnected;
 			InfiniteStorageWebSocketService.DeviceDisconnected += m_notifyIconController.OnDeviceDisconnected;
 			InfiniteStorageWebSocketService.PairingRequesting += m_notifyIconController.OnDevicePairingRequesting;
 			InfiniteStorageWebSocketService.TotalCountUpdated += m_notifyIconController.OnDeviceConnected;
-
-			foreach (var conn in ConnectedClientCollection.Instance.GetAllConnections())
-			{
-				m_notifyIconController.OnDeviceConnected(conn, new WebsocketProtocol.WebsocketEventArgs((WebsocketProtocol.ProtocolContext)conn));
-			}
 		}
 
 		private static void showProgramIsAtServiceBallonTips()

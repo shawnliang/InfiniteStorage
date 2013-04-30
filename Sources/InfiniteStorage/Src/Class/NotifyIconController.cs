@@ -195,20 +195,35 @@ namespace InfiniteStorage
 
 		private void showApproveDialog(WebsocketProtocol.WebsocketEventArgs args)
 		{
-			var dialog = new PairingRequestDialog(args.ctx);
+			var result = MessageBox.Show(string.Format(Resources.AllowPairingRequest, args.ctx.device_name), Resources.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+			if (result == DialogResult.No)
+			{
+				args.ctx.handleDisapprove();
+			}
+			else
+			{
 
-			dialog.StartPosition = FormStartPosition.Manual;
+				if (Settings.Default.IsFirstUse)
+				{
+					if (FirstUseDialog.Instance.Visible)
+						FirstUseDialog.Instance.Close();
 
-			var paddingHeight = Screen.PrimaryScreen.Bounds.Height - Screen.PrimaryScreen.WorkingArea.Height + 10;
+					FirstUseDialog.Instance.ApproveFunc = () => {
+						args.ctx.handleApprove();
+					};
 
-			var workingArea = Screen.PrimaryScreen.Bounds;
-			dialog.Left = workingArea.Left + workingArea.Width - dialog.Width;
-			dialog.Top = workingArea.Top + workingArea.Height - dialog.Height - paddingHeight;
-			dialog.StartPosition = FormStartPosition.Manual;
-			dialog.TopMost = true;
-			dialog.Show();
+
+					FirstUseDialog.Instance.ShowSetupPage(args.ctx);
+						
+					Settings.Default.IsFirstUse = false;
+					Settings.Default.Save();
+				}
+				else
+				{
+					args.ctx.handleApprove();
+				}
+			}
 		}
-
 		
 	}
 }

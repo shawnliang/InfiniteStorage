@@ -36,7 +36,9 @@ namespace InfiniteStorage.WebsocketProtocol
 				else
 				{
 					ctx.Send(new { action = "wait-for-pair" });
-					ctx.raiseOnPairingRequired();
+					ctx.SetState(new WaitForApproveState());
+
+					ctx.raiseOnPairingRequired(); // TODO: this should be called after state is changed!!!!!!!!!
 					return new WaitForApproveState();
 				}
 			}
