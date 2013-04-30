@@ -47,7 +47,7 @@ public class InfiniteService extends Service{
 	private String mCondidateWSLocation ;
 
 	//TIMER
-    private final int UPDATE_INTERVAL = 60 * 1000;
+    private final int UPDATE_INTERVAL = 30 * 1000;
     private Timer timer = new Timer();
     
     //
@@ -77,8 +77,15 @@ public class InfiniteService extends Service{
 //					showSyncNotification(false);
 					showSyncNotification(Constant.NOTIFICATION_BACK_UP_START);
 					while(RuntimeState.isWebSocketAvaliable(mContext) && BackupLogic.needToBackup(mContext,serverId)){
+						if(RuntimeState.isBackuping==false){
+							Intent intent = new Intent(Constant.ACTION_UPLOADING_FILE);
+							intent.putExtra(Constant.EXTRA_BACKING_UP_FILE_STATE, Constant.JOB_START);
+							mContext.sendBroadcast(intent);
+							RuntimeState.isBackuping = true;
+						}
 			    		BackupLogic.backupFiles(mContext, serverId);
 			    	}
+					RuntimeState.isBackuping = false;
 					Intent intent = new Intent(Constant.ACTION_BACKUP_DONE);
 					mContext.sendBroadcast(intent);
 					RuntimeState.setServerStatus(Constant.WS_ACTION_END_BACKUP);

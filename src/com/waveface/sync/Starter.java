@@ -28,10 +28,11 @@ public class Starter extends Application {
 		}
 		
 		initialDirectory();
-		
+//		new ScanTask(this).execute(new Void[]{});		
 		ServersLogic.updateAllBackedServerOffline(this);
 		ServersLogic.purgeAllBonjourServer(this);
-//		new ScanTask(this).execute(new Void[]{});
+		//GET LAST BACKED UP FILE TO RUNTIME STATE
+		ServersLogic.getLastBackupState(getApplicationContext());
 		super.onCreate();
 	}
 

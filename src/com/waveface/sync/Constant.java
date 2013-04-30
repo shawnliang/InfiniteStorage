@@ -19,7 +19,7 @@ public class Constant {
 	public final static String ACTION_BACKUP_DONE = "com.waveface.sync.action.BACKUP_DONE";	
 	public final static String ACTION_SCAN_FILE = "com.waveface.sync.action.SCAN_FILE";
 	public final static String ACTION_INFINITE_STORAGE_ALARM = "com.waveface.sync.action.INFINITE_STORAGE_ALARM";
-	
+	public final static String ACTION_WEB_SOCKET_SERVER_CONNECTED = "com.waveface.sync.action.WEB_SOCKET_SERVER_CONNECTED";
 	
 
 	//BUNDLE DATA
@@ -51,10 +51,8 @@ public class Constant {
 	public static final String SERVER_DENIED = "3";	
 
 	//FILE BACKUP STATE
-	
+	public static final int JOB_START = 0;	
 	public static final int FILE_START = 1;
-	public static final int FILE_SEND = 2;	
-	public static final int FILE_END = 3;		
 	
 	//SERVICE SETTING
     public static String INFINTE_STORAGE = "_infinite-storage._tcp.local.";

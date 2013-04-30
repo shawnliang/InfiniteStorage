@@ -22,7 +22,6 @@ import com.waveface.sync.entity.ConnectEntity;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.entity.UpdateCountEntity;
 import com.waveface.sync.util.DeviceUtil;
-import com.waveface.sync.util.NetworkUtil;
 import com.waveface.sync.util.StringUtil;
 import com.waveface.sync.websocket.RuntimeWebClient;
 
@@ -187,7 +186,7 @@ public class ServersLogic {
 		return datas;
 	}
 	public static String getLastBackupTime(Context context,String serverId){
-		String time = null ;
+		String time = "" ;
 		Cursor cursor = null;
 		ContentResolver cr = context.getContentResolver();
 		try {
@@ -659,5 +658,50 @@ public class ServersLogic {
 			}
 		}
 		return count;
+	}
+	public static void getLastBackupState(Context context){
+		Cursor cursor = null;
+		ContentResolver cr = context.getContentResolver();
+		String lastFilebackupDatetime = null;
+		try {			
+			cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+					new String[]{
+					BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME
+					}, 
+					BackupedServersTable.COLUMN_STATUS+"!=?", 
+					new String[]{Constant.SERVER_DENIED}, 
+					null);
+			
+			if(cursor!=null && cursor.getCount()>0){
+				cursor.moveToFirst();
+				lastFilebackupDatetime = cursor.getString(0);
+			}
+			if(!TextUtils.isEmpty(lastFilebackupDatetime)){
+				cursor = cr.query(ImportFilesTable.CONTENT_URI, 
+						new String[]{
+						ImportFilesTable.COLUMN_FILENAME,
+						ImportFilesTable.COLUMN_FILETYPE,
+						ImportFilesTable.COLUMN_IMAGE_ID
+						}, 
+						ImportFilesTable.COLUMN_DATE+"=?", 
+						new String[]{lastFilebackupDatetime}, 
+						null);
+				
+				if(cursor!=null && cursor.getCount()>0){
+					cursor.moveToFirst();
+					RuntimeState.mFilename = cursor.getString(0);
+					RuntimeState.mFileType = cursor.getInt(1);
+					RuntimeState.mMediaID = cursor.getLong(2);				
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally{
+			if(cursor!=null){
+				cursor.close();
+				cursor = null;
+			}
+		}	
 	}
 }

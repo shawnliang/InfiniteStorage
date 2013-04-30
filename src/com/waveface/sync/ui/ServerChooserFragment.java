@@ -2,6 +2,7 @@ package com.waveface.sync.ui;
 
 import java.util.HashMap;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -155,22 +156,21 @@ public class ServerChooserFragment extends FragmentBase
 				String response = intent.getStringExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT);
 				if(response!=null){
 					if(response.equals(Constant.WS_ACTION_ACCEPT)){
-						dismissProgress();
+						Intent i = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
+						getActivity().sendBroadcast(i);
 						refreshUI();
 						if(mAlertDialog!=null && mAlertDialog.isShowing()){
 							mAlertDialog.dismiss();
 						}
-//						Toast.makeText(getActivity(), R.string.pairing_starting_backup, Toast.LENGTH_LONG).show();
-						getActivity().setResult(getActivity().RESULT_OK,new Intent());
+						//Toast.makeText(getActivity(), R.string.pairing_starting_backup, Toast.LENGTH_LONG).show();
 						mListener.goNext(TAG);
 					}
 					else if(response.equals(Constant.WS_ACTION_DENIED)){
-						dismissProgress();
 						openDialog(context,Constant.WS_ACTION_DENIED);
 					}				
-					else if(response.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
-						openDialog(context,Constant.WS_ACTION_WAIT_FOR_PAIR);
-					}									
+//					else if(response.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
+//						openDialog(context,Constant.WS_ACTION_WAIT_FOR_PAIR);
+//					}									
 				}
 			}
 		}
@@ -245,14 +245,14 @@ public class ServerChooserFragment extends FragmentBase
 		cr.unregisterContentObserver(mContentObserver);
 	}
     private void clickToLinkServer(ServerEntity entity){
-		mProgressDialog = ProgressDialog.show(getActivity(), "",getString(R.string.pairing));
-		mProgressDialog.setCancelable(true);
+//		mProgressDialog = ProgressDialog.show(getActivity(), "",getString(R.string.pairing));
+//		mProgressDialog.setCancelable(true);
+		openDialog(getActivity(),Constant.WS_ACTION_WAIT_FOR_PAIR);
 		
 		HashMap<String,String> param = new HashMap<String,String>();
 		param.put(Constant.PARAM_SERVER_WS_LOCATION, entity.wsLocation);
 		param.put(Constant.PARAM_SERVER_ID, entity.serverId);
 		new LinkBonjourServer().execute(param);
-//    	ServersLogic.startWSServerConnect(getActivity(), entity.wsLocation,entity.serverId);
     }
 	@Override
 	public void onClick(View v) {

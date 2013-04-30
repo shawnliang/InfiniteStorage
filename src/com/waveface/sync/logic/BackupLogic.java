@@ -565,7 +565,9 @@ public class BackupLogic {
 					ImportFilesTable.COLUMN_FILENAME,
 					ImportFilesTable.COLUMN_FILETYPE,
 					ImportFilesTable.COLUMN_SIZE,
-					ImportFilesTable.COLUMN_DATE}, 
+					ImportFilesTable.COLUMN_DATE,
+					ImportFilesTable.COLUMN_IMAGE_ID
+					}, 
 					ImportFilesTable.COLUMN_DATE+">=?", 
 					new String[]{lastBackupTimestamp}, 
 					ImportFilesTable.COLUMN_DATE);	
@@ -593,13 +595,16 @@ public class BackupLogic {
 					entity.folder = StringUtil.getFilepath(filename, entity.fileName);				
 					entity.datetime = cursor.getString(3);
 					fileDatetime = entity.datetime;
-					RuntimeState.mBackupingFilename = entity.fileName;
-					RuntimeState.mBackupingFilesize = Long.parseLong(entity.fileSize);
-					RuntimeState.mBackupingUploadFilesize = 0 ;
-					intent.putExtra(Constant.EXTRA_BACKING_UP_FILE_STATE, Constant.FILE_START);
-					context.sendBroadcast(intent);
 					
-					Log.d(TAG, "BACKUPING:"+entity.type+",Filename:"+entity.fileName);
+					//FOR UI DISPLAY
+					RuntimeState.mFilename = entity.fileName;
+					RuntimeState.mFileType = filetype;
+					RuntimeState.mFilename = filename;
+					RuntimeState.mMediaID = cursor.getLong(4);
+					intent.putExtra(Constant.EXTRA_BACKING_UP_FILE_STATE, Constant.FILE_START);
+					context.sendBroadcast(intent);					
+					Log.d(TAG, "BACKUPING: type:"+entity.type+",Filename:"+entity.fileName);
+					//FOR UI DISPLAY
 					
 					try {
 						if(RuntimeState.isWebSocketAvaliable(context)){
@@ -619,25 +624,19 @@ public class BackupLogic {
 									finalBuffer = new byte[read];
 									finalBuffer = Arrays.copyOf(buffer, read);
 									RuntimeWebClient.sendFile(finalBuffer);
-									RuntimeState.mBackupingUploadFilesize += finalBuffer.length;
 								} else {
 									RuntimeWebClient.sendFile(buffer);
-									RuntimeState.mBackupingUploadFilesize += buffer.length;
 								}
-								intent.putExtra(Constant.EXTRA_BACKING_UP_FILE_STATE, Constant.FILE_SEND);
 							}
 							else{
 								isSuccesed = false;
 								break;
 							}
 						}					
-						context.sendBroadcast(intent);
 						// send file index for end
 						if(RuntimeState.isWebSocketAvaliable(context)){
 							entity.action = Constant.WS_ACTION_FILE_END;
 							RuntimeWebClient.send(RuntimeState.GSON.toJson(entity));
-							intent.putExtra(Constant.EXTRA_BACKING_UP_FILE_STATE, Constant.FILE_END);
-							context.sendBroadcast(intent);
 							isSuccesed = true;
 						}else{
 							isSuccesed = false;

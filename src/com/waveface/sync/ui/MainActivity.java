@@ -1,6 +1,7 @@
 package com.waveface.sync.ui;
 
 import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -9,6 +10,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,7 +20,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +32,7 @@ import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.service.InfiniteService;
 import com.waveface.sync.util.DeviceUtil;
+import com.waveface.sync.util.ImageUtil;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.NetworkUtil;
 import com.waveface.sync.util.StringUtil;
@@ -43,8 +46,6 @@ import com.waveface.sync.util.StringUtil;
 public class MainActivity extends Activity implements OnClickListener{
 	private String TAG = MainActivity.class.getSimpleName();
     
-//	private ImportFilesObserver mImportFilesObserver;    
-//	private ServerObserver mServerObserver;
     private Handler mHandler = new Handler();
 
     //UI
@@ -64,17 +65,21 @@ public class MainActivity extends Activity implements OnClickListener{
 	private ImageView mIvAddPc;
 	private RelativeLayout rlBackupContent;
 	private ImageView ivPC ;
-	private ProgressBar pbFilebackup;
+	private ImageView ivFile ;	
+	private ImageView ivPlay ;		
     private TextView tvBackupPC ;		    
     private TextView tvContent ;
     private TextView tvDetail ;
-
+    private TextView tvLastBackupTime ;
+    
 	private ProgressDialog mProgressDialog;
-
+    private MediaStoreImage mMediaImage;
 
 	private SharedPreferences mPrefs ;
 	private Editor mEditor ;
-
+	
+	private final static int IMAGE_HEIGHT = 110; 
+	private final static int IMAGE_WIDTH = 110;
 	//DATA 
 	private ArrayList<ServerEntity> mPairedServers ;
 	private PairedServersAdapter mAdapter ;
@@ -90,6 +95,8 @@ public class MainActivity extends Activity implements OnClickListener{
 		
 		mPrefs = getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);
 		mEditor = mPrefs.edit();
+		
+		mMediaImage = new MediaStoreImage(this,IMAGE_WIDTH,IMAGE_HEIGHT);
 		
 		mDevice = (TextView) this.findViewById(R.id.textDevice);
 		mDevice.setText(DeviceUtil.getDeviceNameForDisplay(this));
@@ -118,10 +125,12 @@ public class MainActivity extends Activity implements OnClickListener{
 		//progress Content Area
 		rlBackupContent = (RelativeLayout) findViewById(R.id.rlBackupContent);
 	    ivPC = (ImageView) findViewById(R.id.imagePC);
-	    pbFilebackup = (ProgressBar) findViewById(R.id.pbFileBackup);
+	    ivFile = (ImageView) findViewById(R.id.ivFile);
+	    ivPlay = (ImageView) findViewById(R.id.ivPlay);	    
 	    tvBackupPC = (TextView) findViewById(R.id.tvBackupPC);		    
 	    tvContent = (TextView) findViewById(R.id.tvContent);
 	    tvDetail = (TextView) findViewById(R.id.tvDetail);
+	    tvLastBackupTime = (TextView) findViewById(R.id.tvLastBackupTime);
 		
 		//PAIRED SERVERS
 //		ListView listview = (ListView) findViewById(R.id.listview);
@@ -129,18 +138,11 @@ public class MainActivity extends Activity implements OnClickListener{
 //		mAdapter = new PairedServersAdapter(this,servers);
 //		listview.setAdapter(mAdapter);
 
-	    mRLSetting = (RelativeLayout) findViewById(R.id.rlSetting);	    
+	    mRLSetting = (RelativeLayout) findViewById(R.id.rlSetting);
+	    
 		mIvAddPc = (ImageView) findViewById(R.id.ivAddpc);
-	    mIvAddPc.setOnClickListener(this);
-	    
-	    
+	    mIvAddPc.setOnClickListener(this);	    	    
 		refreshLayout();
-		//RESGISTER OBSERVER
-//		mImportFilesObserver = new ImportFilesObserver();
-//		getContentResolver().registerContentObserver(ImportFilesTable.IMPORT_FILE_URI, false, mImportFilesObserver);
-		
-//		mServerObserver = new ServerObserver();
-//		getContentResolver().registerContentObserver(BackupedServersTable.BACKUPED_SERVER_URI, false, mServerObserver);
 
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING);
@@ -148,6 +150,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		filter.addAction(Constant.ACTION_BACKUP_DONE);
 		filter.addAction(Constant.ACTION_SCAN_FILE);		
 		filter.addAction(Constant.ACTION_WS_SERVER_NOTIFY);
+		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
 		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);
 		filter.addAction(Constant.ACTION_UPLOADING_FILE);
 		registerReceiver(mReceiver, filter);
@@ -160,7 +163,6 @@ public class MainActivity extends Activity implements OnClickListener{
 			BackupLogic.setAlarmWakeUpService(this);
 			mEditor.putBoolean(Constant.PREF_BONJOUR_SERVER_ALRM_ENNABLED, true).commit();
 		}
-//		startService(new Intent(MainActivity.this, InfiniteService.class)); 
 		new StartServiceTask().execute(new Void[]{});
 	}
 	
@@ -195,60 +197,45 @@ public class MainActivity extends Activity implements OnClickListener{
 		}
 	}
 	
-//	private class ImportFilesObserver extends ContentObserver {
-//		public ImportFilesObserver() {
-//			super(new Handler());
-//		}
-//		@Override
-//		public void onChange(boolean selfChange) {
-//			refreshLayout();
-//		}
-//	}
-//	
-//	private class ServerObserver extends ContentObserver {
-//		public ServerObserver() {
-//			super(new Handler());
-//		}
-//		@Override
-//		public void onChange(boolean selfChange) {
-//			refreshServerStatus();
-//		}
-//	}
-
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			Log.d(TAG, "action:" + intent.getAction());
-			if (Constant.ACTION_SCAN_FILE.equals(action)) {
+			if (Constant.ACTION_SCAN_FILE.equals(action) || 
+					Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED.equals(action)) {
 				refreshLayout();
 			}
 			else if (Constant.ACTION_BACKUP_DONE.equals(action)) {
-				//Toast.makeText(MainActivity.this, R.string.action_settings, Toast.LENGTH_LONG).show();
+				displayProgressingInfo();
 			}
 			else if (Constant.ACTION_NETWORK_STATE_CHANGE.equals(action)) {
-				//TODO:???
+				displayProgressingInfo();
 			}
 			else if(Constant.ACTION_WS_SERVER_NOTIFY.equals(action)){
 				dismissProgress();
 				String actionContent = intent.getStringExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT);
 				if(actionContent!=null){
-					if(actionContent.equals(Constant.WS_ACTION_BACKUP_INFO)){
-						//refreshServerStatus();
-					}
-					else if(actionContent.equals(Constant.WS_ACTION_ACCEPT)){
+//					if(actionContent.equals(Constant.WS_ACTION_BACKUP_INFO)){
+//						//refreshServerStatus();
+//					}
+//					else if(actionContent.equals(Constant.WS_ACTION_ACCEPT)){
+					if(actionContent.equals(Constant.WS_ACTION_ACCEPT)){
 						if(RuntimeState.mAutoConnectMode){
 							dismissProgress();
 						}
 					}
 					else if(actionContent.equals(Constant.WS_ACTION_SOCKET_CLOSED)){
+						displayProgressingInfo();
 					}
 				}
 			}
 			else if(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING.equals(action)){
 				firsttimeDispaly();
+				displayProgressingInfo();
 			}	
 			else if(Constant.ACTION_UPLOADING_FILE.equals(action)){
+				displayProgressingInfo();
 				int state = intent.getIntExtra(Constant.EXTRA_BACKING_UP_FILE_STATE, -1);
 				refreshFileContent(state);
 			}
@@ -257,10 +244,9 @@ public class MainActivity extends Activity implements OnClickListener{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
         if (requestCode == Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER) {
-            // Make sure the request was successful
             if (resultCode == RESULT_OK) {         
+            	refreshLayout();
 //            	mAdapter.setData(ServersLogic.getBackupedServers(this));
             }
         }
@@ -287,9 +273,6 @@ public class MainActivity extends Activity implements OnClickListener{
     	RuntimeState.isAppLaunching = false;
     	Log.d(TAG, "onDestroy");
  		unregisterReceiver(mReceiver);
-//		getContentResolver().unregisterContentObserver(mImportFilesObserver);		
-//		getContentResolver().unregisterContentObserver(mServerObserver);
-//		stopService(new Intent(MainActivity.this, InfiniteService.class)); 
     	super.onDestroy();
     }
     public void refreshLayout(){
@@ -324,77 +307,125 @@ public class MainActivity extends Activity implements OnClickListener{
 
 		mTotalInfo.setText(getString(R.string.total_info, totalCount,StringUtil.byteCountToDisplaySize(totalSize)));
 		
+		
+		
 		//REFRESH PROGRESS INFO
-		refreshProgressFile();
+		displayProgressingInfo();
 		
 		//REFRESH SERVERS STATUS
 		//refreshServerStatus();
+		
+		//REFRESH SETTING AREA
+		if(ServersLogic.hasBackupedServers(this)){
+			mRLSetting.setVisibility(View.GONE);
+		}
+		else{
+			mRLSetting.setVisibility(View.VISIBLE);
+		}
     }
-    public void refreshProgressFile(){
+    public void displayProgressingInfo(){
     	if(ServersLogic.hasBackupedServers(this)){
+    		ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(this);
+    		ServerEntity entity = servers.get(0);
+    		String displayTime= StringUtil.displayLocalTime(entity.lastLocalBackupTime, StringUtil.DATE_FORMAT);
     		rlBackupContent.setVisibility(View.VISIBLE);
-    		int[] counts = BackupLogic.getBackupProgressInfo(this, RuntimeState.mWebSocketServerId);
+    		int[] counts = BackupLogic.getBackupProgressInfo(this, entity.serverId);
 	    	if(RuntimeState.OnWebSocketStation){
-				rlBackupContent = (RelativeLayout) findViewById(R.id.rlBackupContent);
-			    ivPC.setImageResource(R.drawable.ic_transfer);
-			    String wording = null;
+			    tvBackupPC.setText(entity.serverName);			    
 			    if(RuntimeState.isBackuping){
-			    	wording = RuntimeState.mWebSocketServerName+" ( "+getString(R.string.backuping)+" )";
-			    	pbFilebackup.setVisibility(View.VISIBLE);
-				    tvContent.setText(getString(R.string.backup_progress,counts[0],counts[1]));
-				    tvDetail.setText(RuntimeState.mBackupingFilename);
+			    	ivPC.setImageResource(R.drawable.ic_processing);
+				    tvContent.setText(getString(R.string.backup_progress,counts[0],counts[1]));					    
 			    }
-			    else{
-			    	wording = RuntimeState.mWebSocketServerName;		
-			    	pbFilebackup.setVisibility(View.INVISIBLE);
-				    tvContent.setText(getString(R.string.backup_done));
-				    String time = ServersLogic.getLastBackupTime(this, RuntimeState.mWebSocketServerId);
-				    tvDetail.setText( getString(R.string.backup_last_local_time,time));
-			    }
-			    tvBackupPC.setText(wording);
+			    else {
+			    	ivPC.setImageResource(R.drawable.ic_transfer);
+			    	if(counts[0] == counts[1] && counts[1]!=0 ){
+			    		tvContent.setText(getString(R.string.backup_done));
+			    	}
+			    	else {
+			    		tvContent.setText(getString(R.string.backup_info_empty));
+			    	}
+		    	}
 			}
 	    	else{
+	    		tvBackupPC.setText(entity.serverName);
 	    		ivPC.setImageResource(R.drawable.ic_offline);
-		    	pbFilebackup.setVisibility(View.INVISIBLE);
-		    	if(counts[0]== counts[1]){
+		    	
+		    	if(counts[0]== counts[1] && counts[1]!=0 ){
 		    		tvContent.setText(getString(R.string.backup_done));
 		    	}
 		    	else{
 		    		tvContent.setText(getString(R.string.backup_uncompleted));
-		    	}
-			    String time = ServersLogic.getLastBackupTime(this, RuntimeState.mWebSocketServerId);
-			    tvDetail.setText( getString(R.string.backup_last_local_time,time));
+		    	}		    	
 	    	}
+	    	if(!TextUtils.isEmpty(displayTime)){
+	    		tvLastBackupTime.setText( getString(R.string.backup_last_local_time,displayTime));
+	    	}
+		    tvDetail.setText(StringUtil.getFilename(RuntimeState.mFilename));
     	}
     	else{
     		rlBackupContent.setVisibility(View.INVISIBLE);
     	}
+    	displayBackingUpImage();
     }
     
     public void refreshFileContent(int state){
-   		pbFilebackup.setVisibility(View.VISIBLE);   	   	
     	switch(state){
+			case Constant.JOB_START:
+				displayProgressingInfo();
+				break;
     		case Constant.FILE_START:
         		int[] counts = BackupLogic.getBackupProgressInfo(this, RuntimeState.mWebSocketServerId);
+//    			int progress = (int) (counts[0]/ (float) counts[1] * 100);
+//			    tvContent.setText(getString(R.string.backup_progress,counts[0],counts[1],progress));
 			    tvContent.setText(getString(R.string.backup_progress,counts[0],counts[1]));
-			    pbFilebackup.setProgress(0);
-			    
-    		break;
-    		case Constant.FILE_SEND:
-    			int progress = (int) (RuntimeState.mBackupingUploadFilesize/ (float) RuntimeState.mBackupingFilesize * 100);
-    			pbFilebackup.setProgress(progress);
-    		break;
-    		case Constant.FILE_END:
-    			pbFilebackup.setProgress(100);
-    		break;
+			    tvDetail.setText(StringUtil.getFilename(RuntimeState.mFilename));
+			    displayBackingUpImage();
+			    break;
     	}
     }
-    public void refreshServerStatus(){
-		mAdapter.setData(ServersLogic.getBackupedServers(this));
-		if(ServersLogic.hasBackupedServers(this)){
-			mRLSetting.setVisibility(View.GONE);
+//    public void refreshServerStatus(){
+//		mAdapter.setData(ServersLogic.getBackupedServers(this));
+//		if(ServersLogic.hasBackupedServers(this)){
+//			mRLSetting.setVisibility(View.GONE);
+//		}
+//    }
+
+	private void displayBackingUpImage() {
+		if(!TextUtils.isEmpty(RuntimeState.mFilename)){
+			switch(RuntimeState.mFileType){
+				case Constant.TYPE_AUDIO:
+				case Constant.TYPE_VIDEO:
+					ivPlay.setVisibility(View.VISIBLE);
+					break;
+				case Constant.TYPE_IMAGE:
+					ivPlay.setVisibility(View.INVISIBLE);
+					break;
+			}
+			if(RuntimeState.mFileType != Constant.TYPE_AUDIO){
+				Bitmap b = mMediaImage.getBitmap(RuntimeState.mMediaID, RuntimeState.mFileType);
+				float rotation = ImageUtil.rotationForImage(RuntimeState.mFilename);
+				if (rotation != 0f) {
+					Matrix matrix = new Matrix();
+					matrix.preRotate(rotation);
+					try{
+						b = Bitmap.createBitmap(b, 0, 0, IMAGE_WIDTH,IMAGE_HEIGHT,matrix, true);
+					}
+					catch(Exception ex){
+						ex.printStackTrace();
+					}
+				}
+				if(b!=null){
+					ivFile.setImageBitmap(b);
+				}
+				else{
+					ivFile.setImageResource(R.drawable.ic_photos);
+				}
+			}
 		}
-    }
+		else{
+			ivFile.setImageResource(R.drawable.ic_photos);
+		}
+	}
 
 
 	@Override

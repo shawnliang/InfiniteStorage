@@ -29,10 +29,11 @@
     <string name="free_space">Free Space %1$s</string>
     <string name="backup_folder">Backup Folder %1$s</string>
     <string name="backup_info">Backed-up %1$d photo(s), %2$d video(s), %3$d audio(s)</string>
-    <string name="backup_last_local_time">Last Backup Time %1$s</string>
+    <string name="backup_last_local_time">Last Sync Time %1$s</string>
 
     <!-- PROGRESS INFO -->
-    <string name="backup_progress">Backing Up %1$d /%2$d</string>
+    <string name="backup_info_empty">Backing Up ....</string>    
+    <string name="backup_progress">Backing Up %1$d/%2$d</string>
     <string name="backup_done">Backed Up to newest files</string>
     <string name="backup_uncompleted">Backed Up Uncompleted</string>
     
