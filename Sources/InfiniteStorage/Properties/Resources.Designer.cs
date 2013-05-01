@@ -78,13 +78,6 @@ namespace InfiniteStorage.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap app_store_badge {
-            get {
-                object obj = ResourceManager.GetObject("app_store_badge", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         /// <summary>
         ///   Looks up a localized string similar to {0} 在此為您服務.
         /// </summary>
@@ -100,6 +93,13 @@ namespace InfiniteStorage.Properties {
         internal static string BallonText_Transferring {
             get {
                 return ResourceManager.GetString("BallonText_Transferring", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ChooseThisPCOnYourPhone {
+            get {
+                object obj = ResourceManager.GetObject("ChooseThisPCOnYourPhone", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -141,6 +141,15 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 下一步.
+        /// </summary>
+        internal static string FirstUse_Next {
+            get {
+                return ResourceManager.GetString("FirstUse_Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 進度：{0}/{1}.
         /// </summary>
         internal static string FirstUse_ProgressLabel {
@@ -150,25 +159,29 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 縮到狀態列.
+        /// </summary>
+        internal static string FirstUse_ShrinkToSystemTray {
+            get {
+                return ResourceManager.GetString("FirstUse_ShrinkToSystemTray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 開始備份.
+        /// </summary>
+        internal static string FirstUse_Start {
+            get {
+                return ResourceManager.GetString("FirstUse_Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} 備份了 {1} 個檔案.
         /// </summary>
         internal static string FirstUse_TransferStopped {
             get {
                 return ResourceManager.GetString("FirstUse_TransferStopped", resourceCulture);
-            }
-        }
-        
-        internal static System.Drawing.Bitmap get_it_on_google_play {
-            get {
-                object obj = ResourceManager.GetObject("get_it_on_google_play", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap mobile_icon {
-            get {
-                object obj = ResourceManager.GetObject("mobile_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -191,13 +204,6 @@ namespace InfiniteStorage.Properties {
         internal static System.Drawing.Bitmap Tea_Cup1 {
             get {
                 object obj = ResourceManager.GetObject("Tea_Cup1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap temp_app_logo {
-            get {
-                object obj = ResourceManager.GetObject("temp_app_logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

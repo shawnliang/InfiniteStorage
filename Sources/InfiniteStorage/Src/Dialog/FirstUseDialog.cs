@@ -74,7 +74,6 @@ namespace InfiniteStorage
 			}
 			else if (tabControlEx1.IsLastPage)
 			{
-				transferringControl1.StopUpdateUI();
 				DialogResult = System.Windows.Forms.DialogResult.OK;
 				Close();
 			}
@@ -94,13 +93,13 @@ namespace InfiniteStorage
 
 			prevButton.Visible = selectedTab == tabChooseOrganizeMethod;
 
-			nextButton.Text = "Next";
+			nextButton.Text = Resources.FirstUse_Next;
 
 			if (selectedTab == tabChooseOrganizeMethod)
-				nextButton.Text = "開始備份";
+				nextButton.Text = Resources.FirstUse_Start;
 
 			if (selectedTab == tabInstalledSuccess)
-				nextButton.Text = "縮到狀態列";
+				nextButton.Text = Resources.FirstUse_ShrinkToSystemTray;
 
 
 			nextButton.Enabled = (selectedTab != tabWelcomeAndWaitConnect);
@@ -114,6 +113,11 @@ namespace InfiniteStorage
 		private void prevButton_Click(object sender, EventArgs e)
 		{
 			tabControlEx1.PreviousPage();
+		}
+
+		private void FirstUseDialog_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			transferringControl1.StopUpdateUI();
 		}
 	}
 }

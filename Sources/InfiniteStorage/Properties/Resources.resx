@@ -139,15 +139,6 @@
   <data name="TrayMenuItem_Transfering" xml:space="preserve">
     <value>{0} 備份中：({1}/{2})</value>
   </data>
-  <data name="app_store_badge" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\app_store_badge.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="get_it_on_google_play" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\get_it_on_google_play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="temp_app_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\AppIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="BallonText_AtService" xml:space="preserve">
     <value>{0} 在此為您服務</value>
   </data>
@@ -176,9 +167,6 @@
   <data name="Tea_Cup1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Tea-Cup1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="mobile_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\mobile-icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="FirstUse_FileLabel" xml:space="preserve">
     <value>檔案：{0}   {1} bytes</value>
   </data>
@@ -187,5 +175,17 @@
   </data>
   <data name="FirstUse_TransferStopped" xml:space="preserve">
     <value>{0} 備份了 {1} 個檔案</value>
+  </data>
+  <data name="ChooseThisPCOnYourPhone" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ChooseThisPCOnYourPhone.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FirstUse_Next" xml:space="preserve">
+    <value>下一步</value>
+  </data>
+  <data name="FirstUse_ShrinkToSystemTray" xml:space="preserve">
+    <value>縮到狀態列</value>
+  </data>
+  <data name="FirstUse_Start" xml:space="preserve">
+    <value>開始備份</value>
   </data>
 </root>

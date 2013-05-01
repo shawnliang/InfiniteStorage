@@ -252,6 +252,7 @@
       <Link>x86\SQLite.Interop.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\ChooseThisPCOnYourPhone.png" />
     <None Include="Resources\mobile-icon.png" />
     <None Include="Resources\Tea-Cup1.png" />
     <None Include="Resources\AppIcon.png" />

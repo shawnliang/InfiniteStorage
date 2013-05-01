@@ -100,7 +100,7 @@
 			this.tabControlEx1.Location = new System.Drawing.Point(0, 0);
 			this.tabControlEx1.Multiline = true;
 			this.tabControlEx1.Name = "tabControlEx1";
-			this.tabControlEx1.PageIndex = 4;
+			this.tabControlEx1.PageIndex = 2;
 			this.tabControlEx1.SelectedIndex = 0;
 			this.tabControlEx1.Size = new System.Drawing.Size(628, 288);
 			this.tabControlEx1.TabIndex = 1;
@@ -122,10 +122,10 @@
 			// 
 			// pictureBox4
 			// 
-			this.pictureBox4.Image = global::InfiniteStorage.Properties.Resources.mobile_icon;
-			this.pictureBox4.Location = new System.Drawing.Point(84, 121);
+			this.pictureBox4.Image = global::InfiniteStorage.Properties.Resources.ChooseThisPCOnYourPhone;
+			this.pictureBox4.Location = new System.Drawing.Point(24, 107);
 			this.pictureBox4.Name = "pictureBox4";
-			this.pictureBox4.Size = new System.Drawing.Size(187, 130);
+			this.pictureBox4.Size = new System.Drawing.Size(297, 200);
 			this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.pictureBox4.TabIndex = 3;
 			this.pictureBox4.TabStop = false;
@@ -133,7 +133,7 @@
 			// instruction1
 			// 
 			this.instruction1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.instruction1.Location = new System.Drawing.Point(277, 157);
+			this.instruction1.Location = new System.Drawing.Point(327, 158);
 			this.instruction1.Name = "instruction1";
 			this.instruction1.Size = new System.Drawing.Size(281, 77);
 			this.instruction1.TabIndex = 2;
@@ -261,12 +261,12 @@
 			// 
 			// transferringControl1
 			// 
-			this.transferringControl1.WebSocketContext = null;
 			this.transferringControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.transferringControl1.Location = new System.Drawing.Point(3, 3);
 			this.transferringControl1.Name = "transferringControl1";
 			this.transferringControl1.Size = new System.Drawing.Size(622, 282);
 			this.transferringControl1.TabIndex = 0;
+			this.transferringControl1.WebSocketContext = null;
 			// 
 			// FirstUseDialog
 			// 
@@ -278,6 +278,7 @@
 			this.Name = "FirstUseDialog";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "[product name]";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FirstUseDialog_FormClosing);
 			this.Load += new System.EventHandler(this.FirstUseDialog_Load);
 			this.panel1.ResumeLayout(false);
 			this.tabControlEx1.ResumeLayout(false);
