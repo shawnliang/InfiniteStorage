@@ -188,4 +188,7 @@
   <data name="FirstUse_Start" xml:space="preserve">
     <value>開始備份</value>
   </data>
+  <data name="FirstUse_NoExitBeforeAcceptComplete" xml:space="preserve">
+    <value>您尚未完成設定程序，請按下一步</value>
+  </data>
 </root>

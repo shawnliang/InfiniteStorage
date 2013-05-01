@@ -117,6 +117,16 @@ namespace InfiniteStorage
 
 		private void FirstUseDialog_FormClosing(object sender, FormClosingEventArgs e)
 		{
+			var curTab = tabControlEx1.SelectedTab;
+
+			if (e.CloseReason == CloseReason.UserClosing &&
+				(curTab == tabChooseLocation || curTab == tabChooseOrganizeMethod))
+			{
+				MessageBox.Show(Resources.FirstUse_NoExitBeforeAcceptComplete, Resources.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				e.Cancel = true;
+				return;
+			}
+
 			transferringControl1.StopUpdateUI();
 		}
 	}

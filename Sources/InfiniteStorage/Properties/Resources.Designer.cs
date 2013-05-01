@@ -150,6 +150,15 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 您尚未完成設定程序，請按下一步.
+        /// </summary>
+        internal static string FirstUse_NoExitBeforeAcceptComplete {
+            get {
+                return ResourceManager.GetString("FirstUse_NoExitBeforeAcceptComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 進度：{0}/{1}.
         /// </summary>
         internal static string FirstUse_ProgressLabel {
