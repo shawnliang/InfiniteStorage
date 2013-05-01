@@ -14,11 +14,7 @@ namespace InfiniteStorage
 {
 	public partial class FirstUseDialog : Form
 	{
-		public ProtocolContext FirstConnection { get; private set; }
-
 		static FirstUseDialog instance;
-
-		public Action ApproveFunc { get; set; }
 
 		static FirstUseDialog()
 		{
@@ -67,8 +63,14 @@ namespace InfiniteStorage
 				Settings.Default.OrganizeMethod = (int)organizeSelectionControl1.OrganizeBy;
 				Settings.Default.Save();
 
-				if (ApproveFunc != null)
-					ApproveFunc();
+				try
+				{
+					transferringControl1.WebSocketContext.handleApprove();
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn("Unable to send approve msg", err);
+				}
 
 				tabControlEx1.NextPage();
 			}

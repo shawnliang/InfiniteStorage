@@ -208,11 +208,6 @@ namespace InfiniteStorage
 					if (FirstUseDialog.Instance.Visible)
 						FirstUseDialog.Instance.Close();
 
-					FirstUseDialog.Instance.ApproveFunc = () => {
-						args.ctx.handleApprove();
-					};
-
-
 					FirstUseDialog.Instance.ShowSetupPage(args.ctx);
 						
 					Settings.Default.IsFirstUse = false;
