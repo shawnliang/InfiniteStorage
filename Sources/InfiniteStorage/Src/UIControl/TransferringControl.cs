@@ -23,29 +23,44 @@ namespace InfiniteStorage
 
 		private void timer1_Tick(object sender, EventArgs e)
 		{
-			if (WebSocketContext != null)
+			try
 			{
 
-				if (!WebSocketContext.IsClosed)
+				if (WebSocketContext != null)
 				{
-					progressLabel.Text = string.Format(Resources.FirstUse_ProgressLabel, WebSocketContext.recved_files, WebSocketContext.total_files);
 
-
-					var fileInfo = WebSocketContext.fileCtx;
-					if (fileInfo != null)
+					if (!WebSocketContext.IsClosed)
 					{
-						fileLable.Text = string.Format(Resources.FirstUse_FileLabel, fileInfo.file_name, fileInfo.file_size);
-						progressBar.Style = ProgressBarStyle.Blocks;
-						progressBar.Minimum = 0;
-						progressBar.Maximum = (int)fileInfo.file_size;
-						progressBar.Value = WebSocketContext.temp_file.BytesWritten;
+						progressLabel.Text = string.Format(Resources.FirstUse_ProgressLabel, WebSocketContext.recved_files, WebSocketContext.total_files);
+
+
+						// TODO: accessing member properties of WebScokectContext without locking
+						// may cause race condition. Best practice is to use a critical section to 
+						// ensure the consistency of fileCtx and temp_file. But due to this status 
+						// is transient, catching exception to recover from transient fault is also
+						// "OK" right now.
+
+
+						var fileInfo = WebSocketContext.fileCtx;
+						if (fileInfo != null)
+						{
+							fileLable.Text = string.Format(Resources.FirstUse_FileLabel, fileInfo.file_name, fileInfo.file_size);
+							progressBar.Style = ProgressBarStyle.Blocks;
+							progressBar.Minimum = 0;
+							progressBar.Maximum = (int)fileInfo.file_size;
+							progressBar.Value = WebSocketContext.temp_file.BytesWritten;
+						}
+					}
+					else
+					{
+						progressLabel.Text = string.Format(Resources.FirstUse_TransferStopped, WebSocketContext.device_name, WebSocketContext.recved_files);
+						progressBar.Visible = fileLable.Visible = false;
 					}
 				}
-				else
-				{
-					progressLabel.Text = string.Format(Resources.FirstUse_TransferStopped, WebSocketContext.device_name, WebSocketContext.recved_files);
-					progressBar.Visible = fileLable.Visible = false;
-				}
+			}
+			catch (Exception error)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("Unable to update backup progress", error);
 			}
 		}
 
