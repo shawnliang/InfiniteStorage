@@ -227,7 +227,7 @@ public class BackupLogic {
 			ex.printStackTrace();
 		}
 		finally{
-			if(!cursor.isClosed() || cursor!=null){
+			if(cursor!=null ||!cursor.isClosed()){
 				cursor.close();	
 				cursor = null ;
 			}			
@@ -547,6 +547,7 @@ public class BackupLogic {
     	//select from serverFiles 
 		ContentResolver cr = context.getContentResolver();
 		Cursor cursor = null;
+		Intent intent = new Intent(Constant.ACTION_UPLOADING_FILE);
 		try {
 			cursor = cr.query(BackupedServersTable.CONTENT_URI, 
 					new String[]{
@@ -564,7 +565,9 @@ public class BackupLogic {
 					ImportFilesTable.COLUMN_FILENAME,
 					ImportFilesTable.COLUMN_FILETYPE,
 					ImportFilesTable.COLUMN_SIZE,
-					ImportFilesTable.COLUMN_DATE}, 
+					ImportFilesTable.COLUMN_DATE,
+					ImportFilesTable.COLUMN_IMAGE_ID
+					}, 
 					ImportFilesTable.COLUMN_DATE+">=?", 
 					new String[]{lastBackupTimestamp}, 
 					ImportFilesTable.COLUMN_DATE);	
@@ -592,10 +595,21 @@ public class BackupLogic {
 					entity.folder = StringUtil.getFilepath(filename, entity.fileName);				
 					entity.datetime = cursor.getString(3);
 					fileDatetime = entity.datetime;
-					Log.d(TAG, "BACKUPING:"+entity.type+",Filename:"+entity.fileName);
+					
+					//FOR UI DISPLAY
+					RuntimeState.mFilename = entity.fileName;
+					RuntimeState.mFileType = filetype;
+					RuntimeState.mFilename = filename;
+					RuntimeState.mMediaID = cursor.getLong(4);
+					intent.putExtra(Constant.EXTRA_BACKING_UP_FILE_STATE, Constant.FILE_START);
+					context.sendBroadcast(intent);					
+					Log.d(TAG, "BACKUPING: type:"+entity.type+",Filename:"+entity.fileName);
+					//FOR UI DISPLAY
+					
 					try {
 						if(RuntimeState.isWebSocketAvaliable(context)){
 							RuntimeWebClient.send(RuntimeState.GSON.toJson(entity));
+							
 						}
 						else{
 							isSuccesed = true;

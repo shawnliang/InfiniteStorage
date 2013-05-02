@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Welcome to Infinite Storage ShaketoSync!</string>
-    <string name="app_name">無限備份</string>
+    <string name="app_name">Bunny</string>
     <string name="title_activity_bonjour_servers">BonjourServers</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
@@ -27,8 +27,13 @@
     <string name="free_space">目錄空間 %1$s</string>    
     <string name="backup_folder">備份目錄 %1$s</string>    
     <string name="backup_info">已備份 %1$d 張照片, %2$d 個影像檔, %3$d 個聲音檔</string>
-    <string name="backup_last_local_time">最後備份時間 %1$s</string>
+    <string name="backup_last_local_time">上次更新時間 %1$s</string>
     
+    <!-- PROGRESS INFO -->
+    <string name="backup_info_empty">整理資料中 ....</string>
+    <string name="backup_progress">正在備份檔案 %1$d/%2$d</string>
+    <string name="backup_done">已經備份到最新</string>
+    <string name="backup_uncompleted">備份尚未完成</string>
     
     
     <!--FIRST USE-->
@@ -93,6 +98,6 @@
     <string name="btn_no">取消</string>        
     
     <!--NOTIFICATION-->    
-    <string name="notify_link_server">正在備份到%1$s</string>    
+    <string name="notify_link_server">正在備份到 %1$s</string>    
     <string name="notify_backup_status"> %1$d 檔案已經備份完成</string>
 </resources>

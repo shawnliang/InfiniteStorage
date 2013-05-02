@@ -17,6 +17,10 @@ public class RuntimeState{
 	public static String mWebSocketServerId ;	
 	public static String mWebSocketServerName ;	
 	
+	public static String mFilename ;	
+	public static long mMediaID ;
+	public static int mFileType ;	
+	
 	public static boolean isScaning = false;
 	public static boolean isBackuping = false;
 
@@ -24,6 +28,8 @@ public class RuntimeState{
 	public static boolean isAppLaunching = false;
 	public static boolean isNotificationShowing = false;
 
+	public static boolean isMDNSSetUped = false;
+	
 	
 	public static int LastTimeNetworkState = 0;
 		

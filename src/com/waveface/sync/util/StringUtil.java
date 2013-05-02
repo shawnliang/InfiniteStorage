@@ -28,6 +28,7 @@ import org.joda.time.format.ISODateTimeFormat;
 
 import android.content.Context;
 import android.net.Uri;
+import android.text.TextUtils;
 
 import com.google.gson.stream.JsonReader;
 import com.waveface.sync.R;
@@ -888,11 +889,13 @@ public class StringUtil {
 	}
 
 	public static String getFilename(String fullFilename) {
-		String rtnString = fullFilename;
-		fullFilename = fullFilename.replaceAll("\\\\", "/");
-		int pos = fullFilename.lastIndexOf(File.separator);
-		if (pos != -1) {
-			rtnString = fullFilename.substring(pos + 1);
+		String rtnString = "";
+		if(!TextUtils.isEmpty(fullFilename)){
+			fullFilename = fullFilename.replaceAll("\\\\", "/");
+			int pos = fullFilename.lastIndexOf(File.separator);
+			if (pos != -1) {
+				rtnString = fullFilename.substring(pos + 1);
+			}
 		}
 		return rtnString;
 	}

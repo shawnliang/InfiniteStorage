@@ -276,7 +276,7 @@ public class ImageUtil {
 			rotation = (int) exifOrientationToDegrees(exif.getAttributeInt(
 					ExifInterface.TAG_ORIENTATION,
 					ExifInterface.ORIENTATION_NORMAL));
-			Log.d("ORI", rotation + ",filename:" + filename);
+//			Log.d("ORI", rotation + ",filename:" + filename);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
