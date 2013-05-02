@@ -126,17 +126,14 @@ public class Constant {
     //FOR BONJOUR SERVER ALARM SETTING
 	public final static String PREF_BONJOUR_SERVER_ALRM_ENNABLED = "bonjour_alarm_enabled";
 
-	//FOR PHOTO Import
-	public final static String PREF_AUTO_IMPORTING = "auto_importing";
+	//FOR MEDIA Import
 	public final static String PREF_AUTO_IMPORT_ENABLED = "auto_import_enabled";
 	public final static String PREF_AUTO_IMPORT_BORN_TIME ="auto_import_born_time";
 	public final static String PREF_AUTO_IMPORT_HOUR = "auto_import_hour";
 	public final static String PREF_AUTO_IMPORT_MINUTE = "auto_import_minute";
 	public final static String PREF_AUTO_IMPORT_NETWORK = "auto_import_network";
 	public final static String PREF_AUTO_IMPORT_TIME_SETTINGS = "auto_import_time_settings";
-	public final static String PREF_AUTO_IMPORT_FIRST_TIME_DONE = "auto_import_first_time_done";
-	public final static String PREF_AUTO_IMPORT_OLDEST_FILE = "auto_import_oldest_file";
-
+	public final static String PREF_FILE_IMPORT_FIRST_TIME_DONE = "file_import_first_time_done";
 
 	//SYNC STATUS
 	public final static String PREF_SYNC_STATUS_THUMB_UPLOAD_ID = "sync_status_thumb_upload_id";

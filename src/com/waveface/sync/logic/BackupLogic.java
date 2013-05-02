@@ -57,7 +57,7 @@ public class BackupLogic {
 		String folderName = null;
 		String mediaData = null;
 		String mimetype = null;
-		String imageId = null;		
+		long mediaId = -1;		
 		String[] projection = null;
 		String selection =  null;
 		Cursor cursor = null;
@@ -143,29 +143,38 @@ public class BackupLogic {
 				cursor.moveToFirst();
 				int count = cursor.getCount();			
 				for(int i = 0 ; i < count; i++){
+					mediaId = cursor.getLong(7);
 					if(type == Constant.TYPE_IMAGE){
 						mediaData = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
 						dateTaken = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_TAKEN));
 						dateModified = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED));
 						dateAdded = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED));					
+						if(mediaId > RuntimeState.maxImageId){
+							RuntimeState.maxImageId = mediaId;
+						}
 					}
 					else if(type == Constant.TYPE_AUDIO){
 						mediaData = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
 						dateModified = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED));
 						dateAdded = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DATE_ADDED));
+						if(mediaId > RuntimeState.maxAudioId){
+							RuntimeState.maxAudioId = mediaId;
+						}					
 					}
 					else if(type == Constant.TYPE_VIDEO){
 						mediaData = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
 						dateTaken = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media.DATE_TAKEN));
 						dateModified = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media.DATE_MODIFIED));
 						dateAdded = cursor.getLong(cursor.getColumnIndex(MediaStore.Video.Media.DATE_ADDED));
+						if(mediaId > RuntimeState.maxVideoId){
+							RuntimeState.maxVideoId = mediaId;
+						}
 					}
 					fileSize = cursor.getString(5);
 					mimetype = cursor.getString(6);
 					if(TextUtils.isEmpty(mimetype)){
 						mimetype = MediaFile.getMimetype(mediaData);
 					}
-					imageId = cursor.getString(7);		
 					folderName =  getFoldername(mediaData);
 					
 					if (dateTaken != -1) {
@@ -196,7 +205,7 @@ public class BackupLogic {
 						cv.put(ImportFilesTable.COLUMN_FILETYPE, type);		
 						cv.put(ImportFilesTable.COLUMN_MIMETYPE, mimetype);							
 						cv.put(ImportFilesTable.COLUMN_FOLDER, folderName);
-						cv.put(ImportFilesTable.COLUMN_IMAGE_ID, imageId);
+						cv.put(ImportFilesTable.COLUMN_IMAGE_ID, mediaId);
 						filenamesSet.add(mediaData);
 						datas.add(cv);
 					}
@@ -227,7 +236,7 @@ public class BackupLogic {
 			ex.printStackTrace();
 		}
 		finally{
-			if(cursor!=null ||!cursor.isClosed()){
+			if(cursor!=null){
 				cursor.close();	
 				cursor = null ;
 			}			
@@ -677,13 +686,11 @@ public class BackupLogic {
 		}
 	}
 	public static void scanAllFiles(Context context){
-    	if(RuntimeState.isBackuping == false && RuntimeState.isScaning == false){
-			RuntimeState.isScaning = true ;
-			scanFileForBackup(context, Constant.TYPE_AUDIO);
-			scanFileForBackup(context, Constant.TYPE_VIDEO);
-			scanFileForBackup(context, Constant.TYPE_IMAGE);
-			RuntimeState.isScaning = false ;
-    	}
+		RuntimeState.isScaning = true ;
+		scanFileForBackup(context, Constant.TYPE_AUDIO);
+		scanFileForBackup(context, Constant.TYPE_VIDEO);
+		scanFileForBackup(context, Constant.TYPE_IMAGE);
+		RuntimeState.isScaning = false ;
 	}
 	public static String getSpaceByType(Context context,String type,String startDate,String endDate){
 
@@ -746,5 +753,66 @@ public class BackupLogic {
 		alarmManager.setInexactRepeating(type, triggerTime,Constant.ALARM_INTERVAL, sender);
     }
 
-	
+	  public static long getMaxIdFromMediaDB(Context context,int type)
+	  {
+		  long maxMediaId = 0;  
+		String columnName = MediaStore.Audio.Media._ID;  
+	    String columns[] = new String[]{ columnName};
+	    Uri mediaUri = null;
+	    switch(type){
+	      	case Constant.TYPE_IMAGE:
+	      		mediaUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+	      		break;
+	      	case Constant.TYPE_VIDEO:
+	      		mediaUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+	      		break;
+	      	case Constant.TYPE_AUDIO:
+	      		mediaUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+	      		break;
+	    }
+	    Cursor cursor = context.getContentResolver().query(mediaUri, columns, null, null, MediaStore.Images.Media._ID+" DESC");
+	    maxMediaId = cursor.moveToFirst() ? cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID)) : -1;
+	    cursor.close();
+	    return maxMediaId;
+	  }
+	  
+
+	  public static void setLastMediaSate(Context context){
+		  int[] types = {Constant.TYPE_IMAGE,
+				  		Constant.TYPE_VIDEO,
+				  		Constant.TYPE_AUDIO};
+		  	Cursor cursor = null;
+			ContentResolver cr = context.getContentResolver();
+			try {
+				for(int i = 0 ; i < types.length ; i++){
+				cursor = cr.query(ImportFilesTable.CONTENT_URI, 
+						new String[]{ImportFilesTable.COLUMN_IMAGE_ID}, 
+						ImportFilesTable.COLUMN_FILETYPE+"=?", 
+						new String[]{String.valueOf(types[i])}, 
+						null);	
+				if(cursor!=null && cursor.getCount()>0){
+					cursor.moveToFirst();
+				    switch(types[i]){
+			      	case Constant.TYPE_IMAGE:
+			      		RuntimeState.maxImageId = cursor.getLong(0);
+			      		break;
+			      	case Constant.TYPE_VIDEO:
+			      		RuntimeState.maxVideoId = cursor.getLong(0);
+			      		break;
+			      	case Constant.TYPE_AUDIO:
+			      		RuntimeState.maxAudioId = cursor.getLong(0);
+			      		break;
+				    }
+				}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			finally{
+				if(cursor!=null){
+					cursor.close();
+					cursor = null;
+				}
+			}
+	  }
 }

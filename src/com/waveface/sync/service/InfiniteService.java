@@ -17,10 +17,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.ContentObserver;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
 import android.os.IBinder;
+import android.provider.MediaStore;
 import android.text.TextUtils;
-
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
@@ -54,6 +56,11 @@ public class InfiniteService extends Service{
 	private SyncNotificationManager mNotificationManager;
 	private String mNotoficationId;	
 	
+	//Observers
+	private ImageTableObserver mCamera;
+	private VideoTableObserver mVideo;
+	private AudioTableObserver mAudio;
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -68,11 +75,18 @@ public class InfiniteService extends Service{
             @Override
             public void run() {
 				Log.d(TAG, "START SACN NEW FILE");
-            	//SCAN FILES
-            	BackupLogic.scanAllFiles(mContext);            	
+            	//SCAN ALL FILES
+//				SharedPreferences prefs = mContext.getSharedPreferences(
+//						Constant.PREFS_NAME, Context.MODE_PRIVATE);
+//				boolean firstTimeScanDone = prefs.getBoolean(Constant.PREF_FILE_IMPORT_FIRST_TIME_DONE, false);
+//		    	if(firstTimeScanDone == false){
+//		    		BackupLogic.scanAllFiles(mContext);
+//					prefs.edit().putBoolean(Constant.PREF_FILE_IMPORT_FIRST_TIME_DONE, true).commit();
+//		    	}
 		    	String serverId = RuntimeState.mWebSocketServerId;
             	if(!TextUtils.isEmpty(serverId)
-            			&& RuntimeState.canBackup(mContext)
+            			&& RuntimeState.wasFirstTimeImportScanDone
+            			&& RuntimeState.canBackup(mContext) 
         				&& BackupLogic.needToBackup(mContext,serverId)){
 					Log.d(TAG, "START BACKUP FILE");
 					RuntimeState.setServerStatus(Constant.WS_ACTION_START_BACKUP);
@@ -119,7 +133,25 @@ public class InfiniteService extends Service{
 		//Notification 
 		mNotificationManager = SyncNotificationManager
 				.getInstance(getApplicationContext());
-		//removeNotification(mContext);
+		//SCAN ALL FILES FOR THE FIRST TIME
+		RuntimeState.wasFirstTimeImportScanDone = 
+				mPrefs.getBoolean(Constant.PREF_FILE_IMPORT_FIRST_TIME_DONE, false);
+    	if(RuntimeState.wasFirstTimeImportScanDone == false){
+    		BackupLogic.scanAllFiles(mContext);
+    		RuntimeState.wasFirstTimeImportScanDone = true ;
+    		mPrefs.edit()
+    			.putBoolean(Constant.PREF_FILE_IMPORT_FIRST_TIME_DONE, 
+    					RuntimeState.wasFirstTimeImportScanDone)
+    			.commit();
+    	}
+		// register camera observer
+	    mCamera = new ImageTableObserver(new Handler());
+	    getContentResolver().registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, true, mCamera);
+	    mVideo = new VideoTableObserver(new Handler());
+	    getContentResolver().registerContentObserver(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, true, mVideo);
+	    mAudio = new AudioTableObserver(new Handler());
+	    getContentResolver().registerContentObserver(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, true, mAudio);
+
 		Log.d(TAG, "onCreate");
 	}
 
@@ -225,6 +257,10 @@ public class InfiniteService extends Service{
 	@Override
 	public void onDestroy() {
  		unregisterReceiver(mReceiver);
+		getContentResolver().unregisterContentObserver(mCamera);
+		getContentResolver().unregisterContentObserver(mVideo);
+		getContentResolver().unregisterContentObserver(mAudio);
+
 		if(timer!=null){
 			timer.cancel();
 		}
@@ -272,9 +308,9 @@ public class InfiniteService extends Service{
         try {
             mJMDNS = JmDNS.create();
             mJMDNS.addServiceListener(Constant.INFINTE_STORAGE,		mListener = new ServiceListener() {
-                @Override
+                @SuppressWarnings("deprecation")
+				@Override
                 public void serviceResolved(ServiceEvent ev) {
-                	@SuppressWarnings("deprecation")
                 	ServiceInfo si = ev.getInfo();
                 	if(!TextUtils.isEmpty(si.getPropertyString(Constant.PARAM_SERVER_ID))){
     	                final ServerEntity entity = new ServerEntity();
@@ -302,7 +338,7 @@ public class InfiniteService extends Service{
     		                	Intent intent = new Intent(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING);
     		                	intent.putExtra(Constant.EXTRA_BONJOUR_AUTO_PAIR_STATUS, Constant.BONJOUR_PAIRING);
     		                	mContext.sendBroadcast(intent);
-    		                	autoPairConnect();
+    		                	autoPairingConnect();
     	                	}
     	                }
                 	}
@@ -334,7 +370,7 @@ public class InfiniteService extends Service{
             return;
         }
     }
-	private void autoPairConnect(){
+	private void autoPairingConnect(){
 		ServerEntity pairedServer = null;
 		ServerEntity bonjourServer = null;		
 		mPairedServers = ServersLogic.getBackupedServers(this);
@@ -359,5 +395,56 @@ public class InfiniteService extends Service{
 				break;
 			}
 		}
-	}	 
+	}
+	//Observers
+    class ImageTableObserver extends ContentObserver
+    {
+  	  public ImageTableObserver(Handler handler)
+  	  {
+  	    super(handler);
+  	  }
+  	  @Override
+  	  public void onChange(boolean selfChange)
+  	  {
+  		long maxId = BackupLogic.getMaxIdFromMediaDB(mContext, Constant.TYPE_IMAGE);
+//		Toast.makeText(getApplicationContext(), "Image:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxImageId, Toast.LENGTH_LONG).show();
+  		if(maxId > RuntimeState.maxImageId){
+  			BackupLogic.scanFileForBackup(mContext, Constant.TYPE_IMAGE);
+  		}
+  	  }
+   }
+    class VideoTableObserver extends ContentObserver
+    {
+  	  public VideoTableObserver(Handler handler)
+  	  {
+  	    super(handler);
+  	  }
+  	  @Override
+  	  public void onChange(boolean selfChange)
+  	  {
+  		long maxId = BackupLogic.getMaxIdFromMediaDB(mContext, Constant.TYPE_VIDEO);
+  		Log.d(TAG, "Video MaxId:"+maxId);
+  		if(maxId > RuntimeState.maxVideoId){
+//  			Toast.makeText(getApplicationContext(), "Video:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxVideoId, Toast.LENGTH_LONG).show();
+  			BackupLogic.scanFileForBackup(mContext, Constant.TYPE_VIDEO);
+  		}
+  	  }
+   }
+    class AudioTableObserver extends ContentObserver
+    {
+  	  public AudioTableObserver(Handler handler)
+  	  {
+  	    super(handler);
+  	  }
+  	  @Override
+  	  public void onChange(boolean selfChange)
+  	  {
+  		long maxId = BackupLogic.getMaxIdFromMediaDB(mContext, Constant.TYPE_AUDIO);
+  		Log.d(TAG, "Audio MaxId:"+maxId);
+  		if(maxId > RuntimeState.maxAudioId){
+//  			Toast.makeText(getApplicationContext(), "Audioo:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxAudioId, Toast.LENGTH_LONG).show();
+  			BackupLogic.scanFileForBackup(mContext, Constant.TYPE_AUDIO);
+  		}
+  	  }
+   }
 }

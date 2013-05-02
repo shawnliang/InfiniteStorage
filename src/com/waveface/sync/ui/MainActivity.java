@@ -403,17 +403,6 @@ public class MainActivity extends Activity implements OnClickListener{
 			}
 			if(RuntimeState.mFileType != Constant.TYPE_AUDIO){
 				Bitmap b = mMediaImage.getBitmap(RuntimeState.mMediaID, RuntimeState.mFileType);
-				float rotation = ImageUtil.rotationForImage(RuntimeState.mFilename);
-				if (rotation != 0f) {
-					Matrix matrix = new Matrix();
-					matrix.preRotate(rotation);
-					try{
-						b = Bitmap.createBitmap(b, 0, 0, IMAGE_WIDTH,IMAGE_HEIGHT,matrix, true);
-					}
-					catch(Exception ex){
-						ex.printStackTrace();
-					}
-				}
 				if(b!=null){
 					ivFile.setImageBitmap(b);
 				}

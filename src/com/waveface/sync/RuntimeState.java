@@ -22,6 +22,7 @@ public class RuntimeState{
 	public static int mFileType ;	
 	
 	public static boolean isScaning = false;
+	public static boolean wasFirstTimeImportScanDone = false;	
 	public static boolean isBackuping = false;
 
 	public static boolean isServiceRunnng = false;
@@ -30,6 +31,9 @@ public class RuntimeState{
 
 	public static boolean isMDNSSetUped = false;
 	
+	public static long maxImageId = -1;
+	public static long maxVideoId = -1;
+	public static long maxAudioId = -1;
 	
 	public static int LastTimeNetworkState = 0;
 		
@@ -87,8 +91,10 @@ public class RuntimeState{
 		}
 	}	
 	public static boolean canBackup(Context context){
-		if(RuntimeState.isScaning == false
-    			&& isWebSocketAvaliable(context) 
+//		if(RuntimeState.isScaning == false
+//    			&& isWebSocketAvaliable(context) 
+//				&& RuntimeState.isBackuping == false){
+		if(isWebSocketAvaliable(context) 
 				&& RuntimeState.isBackuping == false){
 			return true;
 		}
