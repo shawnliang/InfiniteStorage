@@ -73,6 +73,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\Dialog\BackupProgressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Src\Dialog\BackupProgressDialog.Designer.cs">
+      <DependentUpon>BackupProgressDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Src\Class\IFileStorageLocationProvider.cs" />
     <Compile Include="Src\UIControl\AboutControl.cs">
       <SubType>UserControl</SubType>
@@ -185,6 +191,9 @@
     <Compile Include="Src\UIControl\TransferringControl.Designer.cs">
       <DependentUpon>TransferringControl.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Src\Dialog\BackupProgressDialog.resx">
+      <DependentUpon>BackupProgressDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\AboutControl.resx">
       <DependentUpon>AboutControl.cs</DependentUpon>
     </EmbeddedResource>

@@ -142,5 +142,17 @@ namespace InfiniteStorage.Properties {
                 this["IsFirstUse"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowBackupProgressDialog {
+            get {
+                return ((bool)(this["ShowBackupProgressDialog"]));
+            }
+            set {
+                this["ShowBackupProgressDialog"] = value;
+            }
+        }
     }
 }

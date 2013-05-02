@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
 			this.dataGridView1 = new System.Windows.Forms.DataGridView();
 			this.devNameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.delCol = new System.Windows.Forms.DataGridViewButtonColumn();
@@ -37,6 +37,7 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.radioAllow = new System.Windows.Forms.RadioButton();
 			this.radioDisallow = new System.Windows.Forms.RadioButton();
+			this.showBackupProgress = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -54,21 +55,21 @@
 			this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.devNameCol,
             this.delCol});
-			dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-			dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-			dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Window;
-			dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-			dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-			this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle4;
+			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+			dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+			dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Window;
+			dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+			dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+			this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
 			this.dataGridView1.Location = new System.Drawing.Point(17, 49);
 			this.dataGridView1.MultiSelect = false;
 			this.dataGridView1.Name = "dataGridView1";
 			this.dataGridView1.ReadOnly = true;
 			this.dataGridView1.RowHeadersVisible = false;
 			this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dataGridView1.Size = new System.Drawing.Size(568, 193);
+			this.dataGridView1.Size = new System.Drawing.Size(568, 201);
 			this.dataGridView1.TabIndex = 0;
 			this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
 			// 
@@ -141,10 +142,23 @@
 			this.radioDisallow.UseVisualStyleBackColor = true;
 			this.radioDisallow.CheckedChanged += new System.EventHandler(this.rejectOtherDevices_CheckedChanged);
 			// 
+			// showBackupProgress
+			// 
+			this.showBackupProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.showBackupProgress.AutoSize = true;
+			this.showBackupProgress.Location = new System.Drawing.Point(379, 255);
+			this.showBackupProgress.Name = "showBackupProgress";
+			this.showBackupProgress.Size = new System.Drawing.Size(110, 17);
+			this.showBackupProgress.TabIndex = 6;
+			this.showBackupProgress.Text = "通知我備份進度";
+			this.showBackupProgress.UseVisualStyleBackColor = true;
+			this.showBackupProgress.Click += new System.EventHandler(this.showBackupProgress_Click);
+			// 
 			// DeviceListControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+			this.Controls.Add(this.showBackupProgress);
 			this.Controls.Add(this.radioDisallow);
 			this.Controls.Add(this.radioAllow);
 			this.Controls.Add(this.label2);
@@ -169,5 +183,6 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.RadioButton radioAllow;
 		private System.Windows.Forms.RadioButton radioDisallow;
+		private System.Windows.Forms.CheckBox showBackupProgress;
 	}
 }

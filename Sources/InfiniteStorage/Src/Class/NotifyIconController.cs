@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,8 +15,8 @@ namespace InfiniteStorage
 		private PreferenceDialog preferenceForm = new PreferenceDialog();
 		private NotifyIcon notifyIcon;
 		private Dictionary<ProtocolContext, ToolStripItem> deviceStipItems = new Dictionary<ProtocolContext, ToolStripItem>();
-		private List<PairingRequestDialog> approveDialogs = new List<PairingRequestDialog>();
-		
+		private List<BackupProgressDialog> progressDialogs = new List<BackupProgressDialog>();
+		private object cs = new object();
 
 		public NotifyIconController(NotifyIcon notifyIcon)
 		{
@@ -71,42 +72,75 @@ namespace InfiniteStorage
 				return;
 			}
 
-			if (notifyIcon.ContextMenuStrip.InvokeRequired)
+
+			SynchronizationContextHelper.SendMainSyncContext(() => {
+				updateNotifyIconMenu(evt.ctx);
+				updateProgressDialog(evt.ctx);
+			});
+		}
+
+		private void updateNotifyIconMenu(ProtocolContext ctx)
+		{
+			ToolStripItem itemFound = findMenuItemInNotifyContextMenu(ctx);
+
+			if (itemFound != null)
 			{
-				notifyIcon.ContextMenuStrip.Invoke(
-					new MethodInvoker(() =>
-					{
-						OnDeviceConnected(sender, evt);
-					}));
+				itemFound.Text = getOverallProgressText(ctx);
+
+				var nextIdx = notifyIcon.ContextMenuStrip.Items.IndexOf(itemFound) + 1;
+				notifyIcon.ContextMenuStrip.Items[nextIdx].Text = getSingleFileText(ctx);
 			}
 			else
 			{
-				ToolStripItem itemFound = findMenuItemInNotifyContextMenu(evt);
+				var item = new ToolStripMenuItem();
+				item.Text = getOverallProgressText(ctx);
+				item.Tag = ctx;
+				item.Enabled = false;
+				deviceStipItems.Add(ctx, item);
 
-				if (itemFound != null)
+
+				var item2 = new ToolStripMenuItem();
+				item2.Text = getSingleFileText(ctx);
+				item2.Enabled = false;
+
+
+				notifyIcon.ContextMenuStrip.Items.Insert(2, item);
+				notifyIcon.ContextMenuStrip.Items.Insert(3, item2);
+				notifyIcon.ShowBalloonTip(3000, Resources.ProductName, string.Format(Resources.BallonText_Transferring, ctx.device_name, ctx.total_files), ToolTipIcon.Info);
+			}
+		}
+
+		private void updateProgressDialog(ProtocolContext ctx)
+		{
+			if (!Settings.Default.ShowBackupProgressDialog)
+				return;
+
+			lock (cs)
+			{
+				var dupConnDialog = progressDialogs.Find(x => x.WSCtx.device_id == ctx.device_id);
+				if (dupConnDialog != null)
 				{
-					itemFound.Text = getOverallProgressText(evt.ctx);
-
-					var nextIdx = notifyIcon.ContextMenuStrip.Items.IndexOf(itemFound) + 1;
-					notifyIcon.ContextMenuStrip.Items[nextIdx].Text = getSingleFileText(evt.ctx);
+					dupConnDialog.WSCtx = ctx;
 				}
 				else
 				{
-					var item = new ToolStripMenuItem();
-					item.Text = getOverallProgressText(evt.ctx);
-					item.Tag = evt.ctx;
-					item.Enabled = false;
-					deviceStipItems.Add(evt.ctx, item);
+					var dialog = new BackupProgressDialog(ctx);
+					dialog.FormClosed += onProgressDialogClosed;
+					dialog.StartPosition = FormStartPosition.CenterScreen;
+					dialog.Show();
 
+					progressDialogs.Add(dialog);
+				}
+			}
+		}
 
-					var item2 = new ToolStripMenuItem();
-					item2.Text = getSingleFileText(evt.ctx);
-					item2.Enabled = false;
-
-
-					notifyIcon.ContextMenuStrip.Items.Insert(2, item);
-					notifyIcon.ContextMenuStrip.Items.Insert(3, item2);
-					notifyIcon.ShowBalloonTip(3000, Resources.ProductName, string.Format(Resources.BallonText_Transferring, evt.ctx.device_name, evt.ctx.total_files), ToolTipIcon.Info);
+		private void onProgressDialogClosed(object sender, FormClosedEventArgs args)
+		{
+			lock (cs)
+			{
+				if (sender is BackupProgressDialog)
+				{
+					progressDialogs.Remove(sender as BackupProgressDialog);
 				}
 			}
 		}
@@ -115,7 +149,7 @@ namespace InfiniteStorage
 		{
 			return ctx.temp_file != null ?
 							string.Format("  - {0} : {1}%", ctx.fileCtx.file_name, 100 * ctx.temp_file.BytesWritten / ctx.fileCtx.file_size) :
-							"準備傳送中...";
+							"  - 準備傳送中...";
 		}
 
 		private static string getOverallProgressText(ProtocolContext ctx)
@@ -141,7 +175,7 @@ namespace InfiniteStorage
 			}
 		}
 
-		private ToolStripItem findMenuItemInNotifyContextMenu(WebsocketEventArgs evt)
+		private ToolStripItem findMenuItemInNotifyContextMenu(ProtocolContext targetCtx)
 		{
 			ToolStripItem itemFound = null;
 
@@ -152,7 +186,7 @@ namespace InfiniteStorage
 				{
 					var ctx = stripItem.Tag as ProtocolContext;
 
-					if (ctx == evt.ctx)
+					if (ctx == targetCtx)
 					{
 						itemFound = stripItem;
 						break;

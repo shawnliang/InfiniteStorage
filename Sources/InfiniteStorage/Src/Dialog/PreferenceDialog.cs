@@ -94,6 +94,7 @@ namespace InfiniteStorage
 		private void saveDeviceListChanges()
 		{
 			Settings.Default.RejectOtherDevices = deviceListControl.RejectOtherDevices;
+			Settings.Default.ShowBackupProgressDialog = deviceListControl.ShowBackupProgress;
 			Settings.Default.Save();
 
 			if (!deviceListControl.DeletedDevices.Any())

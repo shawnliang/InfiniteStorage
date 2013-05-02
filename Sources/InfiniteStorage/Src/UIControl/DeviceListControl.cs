@@ -42,6 +42,8 @@ namespace InfiniteStorage
 				
 				radioAllow.Checked = !Settings.Default.RejectOtherDevices;
 				radioDisallow.Checked = Settings.Default.RejectOtherDevices;
+
+				showBackupProgress.Checked = Settings.Default.ShowBackupProgressDialog;
 			}
 		}
 
@@ -95,6 +97,12 @@ namespace InfiniteStorage
 			set { radioDisallow.Checked = value; }
 		}
 
+		public bool ShowBackupProgress
+		{
+			get { return showBackupProgress.Checked; }
+			set { showBackupProgress.Checked = value; }
+		}
+
 		private void raiseSettingChangedEvent()
 		{
 			var handler = SettingChanged;
@@ -103,6 +111,11 @@ namespace InfiniteStorage
 		}
 
 		private void rejectOtherDevices_CheckedChanged(object sender, EventArgs e)
+		{
+			raiseSettingChangedEvent();
+		}
+
+		private void showBackupProgress_Click(object sender, EventArgs e)
 		{
 			raiseSettingChangedEvent();
 		}

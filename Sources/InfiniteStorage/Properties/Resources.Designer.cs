@@ -79,6 +79,33 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 檔案：準備中.
+        /// </summary>
+        internal static string BackupProgressFile_Preparing {
+            get {
+                return ResourceManager.GetString("BackupProgressFile_Preparing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} 已結束備份.
+        /// </summary>
+        internal static string BackupProgressTitle_Finished {
+            get {
+                return ResourceManager.GetString("BackupProgressTitle_Finished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} 正在備份到這台電腦.
+        /// </summary>
+        internal static string BackupProgressTitle_InProgress {
+            get {
+                return ResourceManager.GetString("BackupProgressTitle_InProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} 在此為您服務.
         /// </summary>
         internal static string BallonText_AtService {
