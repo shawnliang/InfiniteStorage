@@ -25,7 +25,7 @@
 
     <application
         android:name="com.waveface.sync.Starter"
-        android:debuggable="false"
+        android:debuggable="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
