@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="wammer" default="help">
+<property name="devServiceFolder" location="${basedir}/src/com/waveface/photojournal/dev/service/"/>
+<property name="proServiceFolder" location="${basedir}/src/com/waveface/photojournal/service/"/>
+<target name="help">
+	<echo message="ant -f publish.xml product -- change develop mode to product mode"/>
+	<echo message="The build home path is: ${basedir}"/>
+</target>		
+<target name="product">
+	<echo><![CDATA[remove Log debug flag]]></echo>
+    <replace file="${basedir}/src/com/waveface/sync/util/Log.java">
+        <replacetoken><![CDATA[static final boolean LOG = true;]]></replacetoken>
+        <replacevalue><![CDATA[static final boolean LOG = false;]]></replacevalue>
+    </replace>
+	<echo><![CDATA[remove xml debug flag]]></echo>
+    <replace file="${basedir}/AndroidManifest.xml">
+        <replacetoken><![CDATA[android:debuggable="true"]]></replacetoken>
+        <replacevalue><![CDATA[android:debuggable="false"]]></replacevalue>
+    </replace>
+</target>
+<target name="develop">
+	<echo><![CDATA[reset Log debug flag]]></echo>
+    <replace file="${basedir}/src/com/waveface/sync/util/Log.java">
+        <replacetoken><![CDATA[static final boolean LOG = false;]]></replacetoken>
+        <replacevalue><![CDATA[static final boolean LOG = true;]]></replacevalue>
+    </replace>
+	<echo><![CDATA[remove xml debug flag]]></echo>
+    <replace file="${basedir}/AndroidManifest.xml">
+        <replacetoken><![CDATA[android:debuggable="false"]]></replacetoken>
+        <replacevalue><![CDATA[android:debuggable="true"]]></replacevalue>
+    </replace>
+</target>
+</project>	

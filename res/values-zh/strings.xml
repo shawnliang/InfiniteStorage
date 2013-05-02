@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Welcome to Infinite Storage ShaketoSync!</string>
-    <string name="app_name">無限備份</string>
+    <string name="app_name">Bunny</string>
     <string name="title_activity_bonjour_servers">BonjourServers</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
@@ -98,6 +98,6 @@
     <string name="btn_no">取消</string>        
     
     <!--NOTIFICATION-->    
-    <string name="notify_link_server">正在備份到%1$s</string>    
+    <string name="notify_link_server">正在備份到 %1$s</string>    
     <string name="notify_backup_status"> %1$d 檔案已經備份完成</string>
 </resources>

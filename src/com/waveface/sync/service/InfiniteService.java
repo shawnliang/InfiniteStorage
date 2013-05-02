@@ -61,9 +61,13 @@ public class InfiniteService extends Service{
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		if(timer==null){
+			timer = new Timer();
+		}
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+				Log.d(TAG, "START SACN NEW FILE");
             	//SCAN FILES
             	BackupLogic.scanAllFiles(mContext);            	
 		    	String serverId = RuntimeState.mWebSocketServerId;
@@ -73,8 +77,6 @@ public class InfiniteService extends Service{
 					Log.d(TAG, "START BACKUP FILE");
 					RuntimeState.setServerStatus(Constant.WS_ACTION_START_BACKUP);
 					ServersLogic.updateCount(mContext, serverId);
-//					removeNotification();
-//					showSyncNotification(false);
 					showSyncNotification(Constant.NOTIFICATION_BACK_UP_START);
 					while(RuntimeState.isWebSocketAvaliable(mContext) && BackupLogic.needToBackup(mContext,serverId)){
 						if(RuntimeState.isBackuping==false){
@@ -89,8 +91,6 @@ public class InfiniteService extends Service{
 					Intent intent = new Intent(Constant.ACTION_BACKUP_DONE);
 					mContext.sendBroadcast(intent);
 					RuntimeState.setServerStatus(Constant.WS_ACTION_END_BACKUP);
-//					removeNotification();
-//					showSyncNotification(true);
 					showSyncNotification(Constant.NOTIFICATION_BACKED_UP);
             	}
 				// Check if there are updates here and notify if true
@@ -115,7 +115,7 @@ public class InfiniteService extends Service{
 		if(mPairedServers.size()!=0){
 			RuntimeState.mAutoConnectMode = true ;
 		}
-		multiCastSetUp();
+		setupMDNS();
 		//Notification 
 		mNotificationManager = SyncNotificationManager
 				.getInstance(getApplicationContext());
@@ -201,15 +201,18 @@ public class InfiniteService extends Service{
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			Log.d(TAG, "action:" + intent.getAction());
 			if (Constant.ACTION_NETWORK_STATE_CHANGE.equals(action)) {
 				String actionContent = intent.getStringExtra(Constant.EXTRA_NETWROK_STATE);
 				if(actionContent!=null){
 					if(actionContent.equals(Constant.NETWORK_ACTION_BROKEN)){
-						//TODO:?
+						Log.d(TAG, "release MDNS");
+						releaseMDNS();
 					}
 					else if(actionContent.equals(Constant.NETWORK_ACTION_WIFI_CONNECTED)){
-						//TODO:?
+						if(NetworkUtil.isWifiNetworkAvailable(mContext) && RuntimeState.isMDNSSetUped== false){
+							Log.d(TAG, "reset MDNS");
+							setupMDNS();
+						}
 					}
 				}
 			}
@@ -225,6 +228,12 @@ public class InfiniteService extends Service{
 		if(timer!=null){
 			timer.cancel();
 		}
+		releaseMDNS();    
+		Log.d(TAG, "onDestroy");
+		super.onDestroy();
+	}
+
+	private void releaseMDNS() {
 	   	ServersLogic.purgeAllBonjourServer(mContext);
 		if (mJMDNS != null) {
 	        if (mListener != null) {
@@ -242,10 +251,12 @@ public class InfiniteService extends Service{
 	    try {
 	    	mLock.release();
 	    } catch (Throwable th) {
+	    	Log.e(TAG, th.getMessage());
 	        // ignoring this exception, probably wakeLock was already released
-	    }    
-		Log.d(TAG, "onDestroy");
-		super.onDestroy();
+	    }
+	    finally{
+	    	RuntimeState.isMDNSSetUped = false;
+	    }
 	}
 	
 	@Override
@@ -253,7 +264,7 @@ public class InfiniteService extends Service{
 		Log.d(TAG, "onStart");
 	}
 
-    private void multiCastSetUp() {
+    private void setupMDNS() {
         WifiManager wifi = (WifiManager) getSystemService(android.content.Context.WIFI_SERVICE);
         mLock = wifi.createMulticastLock("infiniteS");
 //        lock.setReferenceCounted(true);
@@ -315,9 +326,11 @@ public class InfiniteService extends Service{
                 	mJMDNS.requestServiceInfo(event.getType(), event.getName(), 1);
                 }
             });
+            RuntimeState.isMDNSSetUped = true;
         } 
-        catch (IOException e) {
-            e.printStackTrace();
+        catch (Exception e) {
+        	RuntimeState.isMDNSSetUped = false;
+        	Log.e(TAG, e.getMessage());
             return;
         }
     }
@@ -325,12 +338,14 @@ public class InfiniteService extends Service{
 		ServerEntity pairedServer = null;
 		ServerEntity bonjourServer = null;		
 		mPairedServers = ServersLogic.getBackupedServers(this);
+		Log.d(TAG, "START PAIRING LOOP");
 		for(int i = 0 ; i < mPairedServers.size();i++){
 			pairedServer = mPairedServers.get(i);
 			bonjourServer = ServersLogic.getBonjourServerByServerId(this, pairedServer.serverId);
 			if(bonjourServer!=null && RuntimeState.OnWebSocketOpened == false){
 				mCondidateServerId = pairedServer.serverId;
 				mCondidateWSLocation = bonjourServer.wsLocation;
+				Log.d(TAG, "PAIRING WITH "+pairedServer.serverName+","+bonjourServer.wsLocation);
 				ServersLogic.startWSServerConnect(this, mCondidateWSLocation, mCondidateServerId);
 				while(RuntimeState.OnWebSocketOpened){
 					try {

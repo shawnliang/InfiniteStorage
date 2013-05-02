@@ -28,6 +28,8 @@ public class RuntimeState{
 	public static boolean isAppLaunching = false;
 	public static boolean isNotificationShowing = false;
 
+	public static boolean isMDNSSetUped = false;
+	
 	
 	public static int LastTimeNetworkState = 0;
 		

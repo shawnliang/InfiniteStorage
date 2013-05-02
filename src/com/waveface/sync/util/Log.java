@@ -2,7 +2,7 @@ package com.waveface.sync.util;
 
 
 public class Log {
-	static final boolean LOG = true;
+	static final boolean LOG = false;
 
 	public static void i(String tag, String string) {
 		if (LOG)

@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Welcome to Infinite Storage ShaketoSync!</string>
-    <string name="app_name">A.Backup</string>
+    <string name="app_name">Bunny</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_bonjour_servers">BonjourServers</string>

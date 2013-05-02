@@ -227,7 +227,7 @@ public class BackupLogic {
 			ex.printStackTrace();
 		}
 		finally{
-			if(!cursor.isClosed() || cursor!=null){
+			if(cursor!=null ||!cursor.isClosed()){
 				cursor.close();	
 				cursor = null ;
 			}			
