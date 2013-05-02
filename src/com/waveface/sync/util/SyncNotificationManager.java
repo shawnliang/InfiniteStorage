@@ -7,11 +7,13 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
-import com.waveface.sync.ui.CancelNotification;
+import com.waveface.sync.RuntimeState;
+import com.waveface.sync.ui.MediaStoreImage;
 
 public class SyncNotificationManager {
 	private volatile static SyncNotificationManager mInstance;
@@ -84,20 +86,29 @@ public class SyncNotificationManager {
 		if (intent == null)
 			intent = new Intent();
 
-		@SuppressWarnings("deprecation")
-		Notification notification = new Notification(R.drawable.ic_launcher,
-				title, System.currentTimeMillis());
 		final PendingIntent pendingIntent = PendingIntent.getActivity(mContext,
 				0, intent, 0);
 
+		MediaStoreImage mediaImage = new MediaStoreImage(mContext,120,120); 
+		
+		Notification notification = new NotificationCompat.Builder(mContext)        
+				.setContentTitle(title)
+		        .setContentText(content)
+		        .setSmallIcon(R.drawable.ic_launcher)
+		        .setLargeIcon(mediaImage.getBitmap(RuntimeState.mMediaID, RuntimeState.mFileType))
+		        .setContentIntent(pendingIntent).build();
+				
+//		Notification notification = new Notification(R.drawable.ic_launcher,
+//				title, System.currentTimeMillis());
+				
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-		notification.contentView = new RemoteViews(mContext.getPackageName(),
-				R.layout.text_notification);
-		notification.contentIntent = pendingIntent;
-		notification.contentView.setImageViewResource(R.id.status_icon,
-				R.drawable.ic_launcher);
-		notification.contentView.setTextViewText(R.id.subject_text, title);
-		notification.contentView.setTextViewText(R.id.content_text, content);
+//		notification.contentView = new RemoteViews(mContext.getPackageName(),
+//				R.layout.text_notification);
+//		notification.contentIntent = pendingIntent;
+//		notification.contentView.setImageViewResource(R.id.status_icon,
+//				R.drawable.ic_launcher);
+//		notification.contentView.setTextViewText(R.id.subject_text, title);
+//		notification.contentView.setTextViewText(R.id.content_text, content);
 		mNotificationManager.notify(id.hashCode(), notification);
 		mNotifications.put(id, notification);
 	}
@@ -135,10 +146,17 @@ public class SyncNotificationManager {
 			mNotifications.remove(id);
 		}
 		cancelNotification(id);
-
-		Notification notification = new Notification(R.drawable.ic_launcher,
-				title, System.currentTimeMillis());
+		
+		Notification notification = new NotificationCompat.Builder(mContext)        
+//		.setContentTitle(title)
+//        .setContentText(content)
+        .setSmallIcon(R.drawable.ic_launcher)
+        .setContentIntent(pendingIntent).build();
+//
+//		Notification notification = new Notification(R.drawable.ic_launcher,
+//				title, System.currentTimeMillis());
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+		
 		notification.contentView = new RemoteViews(mContext.getPackageName(),
 				R.layout.progress_notification);
 		notification.contentIntent = pendingIntent;
