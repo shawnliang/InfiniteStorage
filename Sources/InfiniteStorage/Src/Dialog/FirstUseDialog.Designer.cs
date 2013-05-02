@@ -100,7 +100,7 @@
 			this.tabControlEx1.Location = new System.Drawing.Point(0, 0);
 			this.tabControlEx1.Multiline = true;
 			this.tabControlEx1.Name = "tabControlEx1";
-			this.tabControlEx1.PageIndex = 2;
+			this.tabControlEx1.PageIndex = 3;
 			this.tabControlEx1.SelectedIndex = 0;
 			this.tabControlEx1.Size = new System.Drawing.Size(628, 288);
 			this.tabControlEx1.TabIndex = 1;
@@ -118,7 +118,7 @@
 			this.tabWelcomeAndWaitConnect.Padding = new System.Windows.Forms.Padding(3);
 			this.tabWelcomeAndWaitConnect.Size = new System.Drawing.Size(628, 288);
 			this.tabWelcomeAndWaitConnect.TabIndex = 0;
-			this.tabWelcomeAndWaitConnect.Text = "歡迎使用 Infinite Storage";
+			this.tabWelcomeAndWaitConnect.Text = "歡迎使用 Bunny";
 			// 
 			// pictureBox4
 			// 
@@ -214,7 +214,7 @@
 			this.tabChooseOrganizeMethod.Padding = new System.Windows.Forms.Padding(3);
 			this.tabChooseOrganizeMethod.Size = new System.Drawing.Size(628, 288);
 			this.tabChooseOrganizeMethod.TabIndex = 1;
-			this.tabChooseOrganizeMethod.Text = "設定備份位置";
+			this.tabChooseOrganizeMethod.Text = "設定檔案分類方式";
 			this.tabChooseOrganizeMethod.UseVisualStyleBackColor = true;
 			// 
 			// organizeSelectionControl1
@@ -256,7 +256,7 @@
 			this.tabInstalledSuccess.Padding = new System.Windows.Forms.Padding(3);
 			this.tabInstalledSuccess.Size = new System.Drawing.Size(628, 288);
 			this.tabInstalledSuccess.TabIndex = 2;
-			this.tabInstalledSuccess.Text = "安裝 App";
+			this.tabInstalledSuccess.Text = "設定完成";
 			this.tabInstalledSuccess.UseVisualStyleBackColor = true;
 			// 
 			// transferringControl1

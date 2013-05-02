@@ -128,12 +128,12 @@
     <value>496, 357</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Infinite Storage Installation Wizard</value>
+    <value>Bunny Installation Wizard</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>SetupWizard</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>SharpSetup.UI.Forms.Modern.ModernWizard, SharpSetup, Version=1.4.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>SharpSetup.UI.Forms.Modern.ModernWizard, SharpSetup, Version=1.4.1.158, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

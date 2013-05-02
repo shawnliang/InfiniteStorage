@@ -151,7 +151,7 @@
     <value>2</value>
   </data>
   <data name="lblWelcome.Text" xml:space="preserve">
-    <value>Welcome to Infinite Storage installer</value>
+    <value>Welcome to Bunny installer</value>
   </data>
   <data name="&gt;&gt;lblWelcome.Name" xml:space="preserve">
     <value>lblWelcome</value>
@@ -181,7 +181,7 @@
     <value>3</value>
   </data>
   <data name="lblMode.Text" xml:space="preserve">
-    <value>The wizard will configure Infinite Storage on your computer.</value>
+    <value>The wizard will configure Bunny on your computer.</value>
   </data>
   <data name="&gt;&gt;lblMode.Name" xml:space="preserve">
     <value>lblMode</value>
@@ -265,6 +265,6 @@
     <value>WelcomeStep</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>SharpSetup.UI.Forms.Modern.ModernInfoStep, SharpSetup, Version=1.4.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>SharpSetup.UI.Forms.Modern.ModernInfoStep, SharpSetup, Version=1.4.1.158, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

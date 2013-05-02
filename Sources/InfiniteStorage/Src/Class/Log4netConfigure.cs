@@ -45,7 +45,7 @@ namespace InfiniteStorage
 
 <log4net>
 	<appender name='RollingFile' type='log4net.Appender.RollingFileAppender'>
-		<file value='${APPDATA}\Infinite Storage\server.log' />
+		<file value='${APPDATA}\Bunny\server.log' />
 		<appendToFile value='true' />
 		<maximumFileSize value='10MB' />
 		<maxSizeRollBackups value='10' />

@@ -154,7 +154,7 @@
     <value>7</value>
   </data>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>Infinite Storage installation error</value>
+    <value>Bunny installation error</value>
   </data>
   <data name="&gt;&gt;lblTitle.Name" xml:space="preserve">
     <value>lblTitle</value>
@@ -244,6 +244,6 @@
     <value>FatalErrorStep</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>SharpSetup.UI.Forms.Modern.ModernInfoStep, SharpSetup, Version=1.4.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>SharpSetup.UI.Forms.Modern.ModernInfoStep, SharpSetup, Version=1.4.1.158, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

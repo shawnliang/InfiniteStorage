@@ -220,7 +220,7 @@
     <value>6</value>
   </data>
   <data name="lblWelcome.Text" xml:space="preserve">
-    <value>Welcome to Infinite Storage installer</value>
+    <value>Welcome to Bunny installer</value>
   </data>
   <data name="&gt;&gt;lblWelcome.Name" xml:space="preserve">
     <value>lblWelcome</value>
@@ -253,7 +253,7 @@
     <value>imsModes</value>
   </data>
   <data name="&gt;&gt;imsModes.Type" xml:space="preserve">
-    <value>SharpSetup.UI.Controls.InstallationModeSelector, SharpSetup, Version=1.4.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>SharpSetup.UI.Controls.InstallationModeSelector, SharpSetup, Version=1.4.1.158, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;imsModes.Parent" xml:space="preserve">
     <value>$this</value>
@@ -271,6 +271,6 @@
     <value>InstallationModeStep</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>SharpSetup.UI.Forms.Modern.ModernInfoStep, SharpSetup, Version=1.4.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>SharpSetup.UI.Forms.Modern.ModernInfoStep, SharpSetup, Version=1.4.1.158, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

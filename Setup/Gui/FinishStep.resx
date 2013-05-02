@@ -244,13 +244,13 @@
     <value>20, 10, 10, 10</value>
   </data>
   <data name="cbRunNow.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 17</value>
+    <value>79, 17</value>
   </data>
   <data name="cbRunNow.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="cbRunNow.Text" xml:space="preserve">
-    <value>Run application now</value>
+    <value>Run Bunny</value>
   </data>
   <data name="&gt;&gt;cbRunNow.Name" xml:space="preserve">
     <value>cbRunNow</value>
@@ -280,6 +280,6 @@
     <value>FinishStep</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>SharpSetup.UI.Forms.Modern.ModernInfoStep, SharpSetup, Version=1.4.1.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>SharpSetup.UI.Forms.Modern.ModernInfoStep, SharpSetup, Version=1.4.1.158, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

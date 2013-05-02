@@ -8,7 +8,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <ProjectGuid>{38A37A25-0F69-41E6-B9BC-3139C59489B8}</ProjectGuid>
-    <AssemblyName>InfiniteStorage-installer</AssemblyName>
+    <AssemblyName>Bunny-installer</AssemblyName>
     <OutputPath>..\$(Configuration)\</OutputPath>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

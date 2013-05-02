@@ -53,5 +53,29 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ResourceOverride Include="en-US\SharpSetup.UI.Controls.DestinationPath.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceOverride Include="en-US\SharpSetup.UI.Controls.DiskCostList.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceOverride Include="en-US\SharpSetup.UI.Controls.FeatureTree.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceOverride Include="en-US\SharpSetup.UI.Controls.InstallationModeSelector.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceOverride Include="en-US\SharpSetup.UI.Controls.InstallationProgress.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceOverride Include="en-US\SharpSetup.UI.Forms.Modern.ModernActionStep.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceOverride Include="en-US\SharpSetup.UI.Forms.Modern.ModernFilesInUseDialog.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceOverride Include="en-US\SharpSetup.UI.Forms.Modern.ModernWizard.resx" />
+  </ItemGroup>
   <Import Project="$(SharpSetupTargetsPath)\SharpSetup.LibTranslation.targets" />
 </Project>

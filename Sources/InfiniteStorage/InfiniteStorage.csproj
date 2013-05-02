@@ -262,11 +262,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\ChooseThisPCOnYourPhone.png" />
-    <None Include="Resources\mobile-icon.png" />
     <None Include="Resources\Tea-Cup1.png" />
     <None Include="Resources\AppIcon.png" />
-    <None Include="Resources\app_store_badge.png" />
-    <None Include="Resources\get_it_on_google_play.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
