@@ -9,12 +9,14 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
 
 import com.waveface.sync.Constant;
+import com.waveface.sync.RuntimeState;
 import com.waveface.sync.util.ImageUtil;
 
 public class MediaStoreImage  {
@@ -62,6 +64,17 @@ public class MediaStoreImage  {
 	    	// we don't need the image to big, but hence android Thumbnails.MICRO_KIND
 	    	// will have problem to retrieve right image, we need to re-scale bitmap
 	    	b = ImageUtil.extractThumbnail(b, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
+			float rotation = ImageUtil.rotationForImage(RuntimeState.mFilename);
+			if (rotation != 0f) {
+				Matrix matrix = new Matrix();
+				matrix.preRotate(rotation);
+				try{
+					b = Bitmap.createBitmap(b, 0, 0, IMAGE_MAX_WIDTH,IMAGE_MAX_HEIGHT,matrix, true);
+				}
+				catch(Exception ex){
+					ex.printStackTrace();
+				}
+			}
 	    }
 	    return b;
 	}
