@@ -44,7 +44,7 @@
     <string name="simple_description1">When you\'re home</string>
     <string name="simple_description2">all contents will be backed-up automatically.</string>
     <string name="download_windows">download windows version</string>
-    <string name="download_url">waveface.com/awesome</string>
+    <string name="download_url">http://cdn.waveface.com/WindowsStation/Bunny-installer.exe</string>
     <string name="email_description">Email Link to Me</string>
     <string name="install_finding_server">Finding PCs.....</string>
     <string name="install_dialog_title">Can\'t Find Your PC</string>
@@ -52,7 +52,16 @@
     <string name="install_dialog_go_install">Receive Email at your PC 上, download from the link and install.</string>
     
     <!-- EMAIL -->
-    <string name="email_subject">InfiniteStorage Windows Download URL</string>
+    <string name="email_subject">Bunny backup app Windows Free download link</string>    
+    <string name="email_content"><![CDATA[
+            <p>Please visit our website to download our FREE Windows app<p>
+			<p><a href="http://cdn.waveface.com/WindowsStation/Bunny-installer.exe">http://waveface.com/bunny</a><p>
+			<p>Once you install the Windows version, connect your phone and it’s done.<p> 
+			<p>If you bump into any problems or have further questions please contact: support@waveface.com<p>
+			<p>Cheers,<p>
+			<p>Waveface Team<p>]]></string>   
+
+
 
     <!-- BONHOUR SERVER CHOOSE -->
     <string name="choose_server">Select a PC</string>

@@ -170,6 +170,7 @@ public class BackupLogic {
 							RuntimeState.maxVideoId = mediaId;
 						}
 					}
+					Log.d(TAG, "cursorDate ==>" + cursorDate);
 					fileSize = cursor.getString(5);
 					mimetype = cursor.getString(6);
 					if(TextUtils.isEmpty(mimetype)){
@@ -190,9 +191,13 @@ public class BackupLogic {
 					else{
 						cursorDate = FileUtil.getFileCreateTime(mediaData);
 					}
-					if(cursorDate.startsWith("1970")){
-						cursorDate = FileUtil.getFileCreateTime(mediaData);
+					if(!TextUtils.isEmpty(cursorDate)){
+						int year = Integer.parseInt(cursorDate.substring(0,4));
+						if(year<=1970){
+							cursorDate = FileUtil.getFileCreateTime(mediaData);
+						}
 					}
+
 					Log.d(TAG, "Filename ==>" + mediaData);
 					Log.d(TAG, "cursorDate ==>" + cursorDate);
 					

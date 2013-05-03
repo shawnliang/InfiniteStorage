@@ -15,9 +15,7 @@ public class FlowLogic {
 	public static void onSendEmail(Context context) {
 		String subject = context.getString(R.string.email_subject);
 		String content = Html.fromHtml(new StringBuilder()
-			.append("<p><b>Infinite Storage Station</b></p>")
-			.append("<a href=\"http://waveface.com/awesome\">http://waveface.com/awesome</a>")
-			.append("<small><p>More content</p></small>")
+			.append(context.getString(R.string.email_content))
 			.toString()).toString();
 		String mailId = DeviceUtil.getEmailAccount(context);
 		String uriText = "mailto:"+mailId + 
