@@ -30,9 +30,7 @@ namespace InfiniteStorage
 				dir.Attributes = FileAttributes.Hidden | dir.Attributes;
 			}
 
-			IDirOrganizer organizer = getDirOrganizer();
-
-			var storage = new FlatFileStorage(organizer);
+			var storage = new FlatFileStorage(new DirOrganizerProxy());
 
 			var ctx = new ProtocolContext(new TempFileFactory(MyFileFolder.Temp), storage, new UnconnectedState()) 
 			{
@@ -88,24 +86,6 @@ namespace InfiniteStorage
 			var handler = TotalCountUpdated;
 			if (handler != null)
 				handler(this, e);
-		}
-
-		private static IDirOrganizer getDirOrganizer()
-		{
-			switch ((OrganizeMethod)Settings.Default.OrganizeMethod)
-			{
-				case OrganizeMethod.Year:
-					return new DirOrganizerByYYYY();
-
-				case OrganizeMethod.YearMonth:
-					return new DirOrganizerByYYYYMM();
-
-				case OrganizeMethod.YearMonthDay:
-					return new DirOrganizerByYYYYMMDD();
-
-				default:
-					throw new NotImplementedException();
-			}
 		}
 
 		protected override void onMessage(object sender, MessageEventArgs e)

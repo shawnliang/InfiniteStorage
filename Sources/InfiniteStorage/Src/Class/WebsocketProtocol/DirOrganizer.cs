@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using InfiniteStorage.Properties;
 
 namespace InfiniteStorage.WebsocketProtocol
 {
@@ -9,6 +10,40 @@ namespace InfiniteStorage.WebsocketProtocol
 	{
 		string GetDir(FileContext file);
 	}
+
+	class DirOrganizerProxy : IDirOrganizer
+	{
+		private IDirOrganizer organizer;
+
+		public string GetDir(FileContext file)
+		{
+			if (organizer == null)
+			{
+				organizer = getDirOrganizerFromSetting();
+			}
+
+			return organizer.GetDir(file);
+		}
+
+		private static IDirOrganizer getDirOrganizerFromSetting()
+		{
+			switch ((OrganizeMethod)Settings.Default.OrganizeMethod)
+			{
+				case OrganizeMethod.Year:
+					return new DirOrganizerByYYYY();
+
+				case OrganizeMethod.YearMonth:
+					return new DirOrganizerByYYYYMM();
+
+				case OrganizeMethod.YearMonthDay:
+					return new DirOrganizerByYYYYMMDD();
+
+				default:
+					throw new NotImplementedException();
+			}
+		}
+	}
+
 
 	public class DirOrganizerByYYYY : IDirOrganizer
 	{
