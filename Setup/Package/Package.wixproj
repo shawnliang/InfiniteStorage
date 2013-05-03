@@ -61,6 +61,6 @@
 	-->
   <Import Condition="" Project="$(SharpSetupTargetsPath)\SharpSetup.WixTranslation.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Release signtool.exe sign /f "$(SolutionDir)Tools\WavefaceCert.pfx" /p waveface /t http://timestamp.verisign.com/scripts/timstamp.dll /v "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent />
   </PropertyGroup>
 </Project>

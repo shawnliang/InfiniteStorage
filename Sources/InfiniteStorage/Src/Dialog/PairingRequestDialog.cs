@@ -14,7 +14,6 @@ namespace InfiniteStorage
 	public partial class PairingRequestDialog : Form
 	{
 		private ProtocolContext ctx;
-		private bool actionTaken;
 
 		public PairingRequestDialog(ProtocolContext ctx)
 		{
