@@ -7,18 +7,13 @@ namespace InfiniteStorage
 {
 	class ConnectedClientCollection
 	{
-		private static ConnectedClientCollection instance;
+		private static ConnectedClientCollection instance = new ConnectedClientCollection();
 
 		private object cs = new object();
 		private LinkedList<IConnectionStatus> connections = new LinkedList<IConnectionStatus>();
 
 		private ConnectedClientCollection()
 		{
-		}
-
-		static ConnectedClientCollection()
-		{
-			instance = new ConnectedClientCollection();
 		}
 
 		public void Add(IConnectionStatus status)

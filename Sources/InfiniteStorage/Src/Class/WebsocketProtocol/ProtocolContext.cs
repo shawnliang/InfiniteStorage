@@ -126,15 +126,11 @@ namespace InfiniteStorage.WebsocketProtocol
 
 		public void Send(object data)
 		{
-			if (data is string)
-			{
-				SendFunc((string)data);
-			}
-			else
-			{
-				var txt = JsonConvert.SerializeObject(data, new JsonSerializerSettings { DateTimeZoneHandling = DateTimeZoneHandling.Utc, NullValueHandling = NullValueHandling.Ignore, DateFormatHandling = DateFormatHandling.IsoDateFormat });
-				SendFunc(txt);
-			}
+			var msg = data as string;
+			if(msg == null)
+				msg = JsonConvert.SerializeObject(data, new JsonSerializerSettings { DateTimeZoneHandling = DateTimeZoneHandling.Utc, NullValueHandling = NullValueHandling.Ignore, DateFormatHandling = DateFormatHandling.IsoDateFormat });
+
+			SendFunc(msg);
 		}
 
 		public void Stop(WebSocketSharp.Frame.CloseStatusCode code, string reason)

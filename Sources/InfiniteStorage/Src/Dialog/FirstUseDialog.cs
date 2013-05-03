@@ -14,12 +14,7 @@ namespace InfiniteStorage
 {
 	public partial class FirstUseDialog : Form
 	{
-		static FirstUseDialog instance;
-
-		static FirstUseDialog()
-		{
-			instance = new FirstUseDialog();
-		}
+		static FirstUseDialog instance = new FirstUseDialog();
 
 
 		public static FirstUseDialog Instance
