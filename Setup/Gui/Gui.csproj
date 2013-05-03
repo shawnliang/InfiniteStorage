@@ -164,4 +164,7 @@
   </Target>
   -->
   <Import Condition="" Project="$(SharpSetupTargetsPath)\SharpSetup.AppTranslation.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if $(ConfigurationName) == Release signtool.exe sign /f "$(SolutionDir)Tools\WavefaceCert.pfx" /p waveface /t http://timestamp.verisign.com/scripts/timstamp.dll /v "$(TargetPath)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

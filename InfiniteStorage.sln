@@ -38,6 +38,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembler", "Setup\Assemble
 		{F0DECDFF-6141-4B97-83E9-A23DA38FF135} = {F0DECDFF-6141-4B97-83E9-A23DA38FF135}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignFinalProduct", "Setup\SignFinalProduct\SignFinalProduct.csproj", "{0EAAA03A-EBCA-475A-AB35-ADC12F218141}"
+	ProjectSection(ProjectDependencies) = postProject
+		{38A37A25-0F69-41E6-B9BC-3139C59489B8} = {38A37A25-0F69-41E6-B9BC-3139C59489B8}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = InfiniteStorage.vsmdi
@@ -74,7 +79,6 @@ Global
 		{2F0068A2-9D6F-4BD3-AB5C-FE46BE870E7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F0068A2-9D6F-4BD3-AB5C-FE46BE870E7C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2F0068A2-9D6F-4BD3-AB5C-FE46BE870E7C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{2F0068A2-9D6F-4BD3-AB5C-FE46BE870E7C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{2F0068A2-9D6F-4BD3-AB5C-FE46BE870E7C}.Release|Win32.ActiveCfg = Release|Any CPU
 		{2F0068A2-9D6F-4BD3-AB5C-FE46BE870E7C}.Release|x86.ActiveCfg = Release|Any CPU
 		{679E4139-4D6A-452A-88A7-EA49161E7671}.Debug|Any CPU.ActiveCfg = Debug|x86
@@ -135,6 +139,18 @@ Global
 		{38A37A25-0F69-41E6-B9BC-3139C59489B8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{38A37A25-0F69-41E6-B9BC-3139C59489B8}.Release|Win32.ActiveCfg = Release|Any CPU
 		{38A37A25-0F69-41E6-B9BC-3139C59489B8}.Release|x86.ActiveCfg = Release|Any CPU
+		{0EAAA03A-EBCA-475A-AB35-ADC12F218141}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{0EAAA03A-EBCA-475A-AB35-ADC12F218141}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{0EAAA03A-EBCA-475A-AB35-ADC12F218141}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{0EAAA03A-EBCA-475A-AB35-ADC12F218141}.Debug|Win32.ActiveCfg = Debug|x86
+		{0EAAA03A-EBCA-475A-AB35-ADC12F218141}.Debug|x86.ActiveCfg = Debug|x86
+		{0EAAA03A-EBCA-475A-AB35-ADC12F218141}.Debug|x86.Build.0 = Debug|x86
+		{0EAAA03A-EBCA-475A-AB35-ADC12F218141}.Release|Any CPU.ActiveCfg = Release|x86
+		{0EAAA03A-EBCA-475A-AB35-ADC12F218141}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{0EAAA03A-EBCA-475A-AB35-ADC12F218141}.Release|Mixed Platforms.Build.0 = Release|x86
+		{0EAAA03A-EBCA-475A-AB35-ADC12F218141}.Release|Win32.ActiveCfg = Release|x86
+		{0EAAA03A-EBCA-475A-AB35-ADC12F218141}.Release|x86.ActiveCfg = Release|x86
+		{0EAAA03A-EBCA-475A-AB35-ADC12F218141}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -145,5 +161,6 @@ Global
 		{FBE97A3C-CFEC-496E-BB4E-957001D8A6E9} = {93B083BA-1A19-4F52-8EEA-BC41BF334831}
 		{1862710D-9C9F-4894-B6F2-EBFFF4717DD1} = {93B083BA-1A19-4F52-8EEA-BC41BF334831}
 		{38A37A25-0F69-41E6-B9BC-3139C59489B8} = {93B083BA-1A19-4F52-8EEA-BC41BF334831}
+		{0EAAA03A-EBCA-475A-AB35-ADC12F218141} = {93B083BA-1A19-4F52-8EEA-BC41BF334831}
 	EndGlobalSection
 EndGlobal

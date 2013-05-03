@@ -78,4 +78,7 @@
     <ResourceOverride Include="en-US\SharpSetup.UI.Forms.Modern.ModernWizard.resx" />
   </ItemGroup>
   <Import Project="$(SharpSetupTargetsPath)\SharpSetup.LibTranslation.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if $(ConfigurationName) == Release signtool.exe sign /f "$(SolutionDir)Tools\WavefaceCert.pfx" /p waveface /t http://timestamp.verisign.com/scripts/timstamp.dll /v "$(TargetPath)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -22,10 +22,10 @@
   </PropertyGroup>
   <Import Project="$(SharpSetupTargetsPath)\SharpSetup.Assembler.targets" />
   <ItemGroup>
-    <IncludeInCab Include="..\Debug\Gui.exe">
+    <IncludeInCab Include="..\$(Configuration)\Gui.exe">
       <Link>Gui.exe</Link>
     </IncludeInCab>
-    <IncludeInCab Include="..\Debug\IntermediateBootstrapper.dll">
+    <IncludeInCab Include="..\$(Configuration)\IntermediateBootstrapper.dll">
       <Link>IntermediateBootstrapper.dll</Link>
     </IncludeInCab>
     <IncludeInCab Include="..\..\Libs\bonjourSdk\bonjour.msi">
@@ -34,22 +34,26 @@
     <IncludeInCab Include="..\..\Libs\bonjourSdk\bonjour64.msi">
       <Link>bonjour64.msi</Link>
     </IncludeInCab>
-    <IncludeInCab Include="..\Debug\media1.cab">
+    <IncludeInCab Include="..\$(Configuration)\media1.cab">
       <Link>media1.cab</Link>
     </IncludeInCab>
-    <IncludeInCab Include="..\Debug\Package.msi">
+    <IncludeInCab Include="..\$(Configuration)\Package.msi">
       <Link>Package.msi</Link>
     </IncludeInCab>
-    <IncludeInCab Include="..\Debug\SharpSetup.dll">
+    <IncludeInCab Include="..\$(Configuration)\SharpSetup.dll">
       <Link>SharpSetup.dll</Link>
     </IncludeInCab>
   </ItemGroup>
   <ItemGroup>
-    <IncludeInCabExtracted Include="..\Debug\Gui.translations.cab">
+    <IncludeInCabExtracted Include="..\$(Configuration)\Gui.translations.cab">
       <Link>Gui.translations.cab</Link>
     </IncludeInCabExtracted>
-    <IncludeInCabExtracted Include="..\Debug\SharpSetup.translations.cab">
+    <IncludeInCabExtracted Include="..\$(Configuration)\SharpSetup.translations.cab">
       <Link>SharpSetup.translations.cab</Link>
     </IncludeInCabExtracted>
   </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

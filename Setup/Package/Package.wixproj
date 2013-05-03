@@ -21,6 +21,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <CompilerAdditionalOptions>-ext WixFirewallExtension</CompilerAdditionalOptions>
+    <LinkerAdditionalOptions>-ext WixFirewallExtension</LinkerAdditionalOptions>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>..\Debug</OutputPath>
@@ -58,4 +60,7 @@
 	</Target>
 	-->
   <Import Condition="" Project="$(SharpSetupTargetsPath)\SharpSetup.WixTranslation.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if $(ConfigurationName) == Release signtool.exe sign /f "$(SolutionDir)Tools\WavefaceCert.pfx" /p waveface /t http://timestamp.verisign.com/scripts/timstamp.dll /v "$(TargetPath)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
