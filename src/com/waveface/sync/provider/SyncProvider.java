@@ -526,8 +526,9 @@ public class SyncProvider extends ContentProvider {
 						+ ImportFilesTable.COLUMN_STATUS + ","
 						+ ImportFilesTable.COLUMN_FILETYPE + ","
 						+ ImportFilesTable.COLUMN_FOLDER + ","
-						+ ImportFilesTable.COLUMN_IMAGE_ID + ")"
-						+ " values (?,?,?,?,?,?,?,?)");
+						+ ImportFilesTable.COLUMN_IMAGE_ID + ","
+						+ ImportFilesTable.COLUMN_UPDATE_TIME + ")"
+						+ " values (?,?,?,?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
 					insert.bindString(1, value.getAsString(ImportFilesTable.COLUMN_FILENAME));
@@ -538,6 +539,7 @@ public class SyncProvider extends ContentProvider {
 					insert.bindString(6, value.getAsString(ImportFilesTable.COLUMN_FILETYPE));
 					insert.bindString(7, value.getAsString(ImportFilesTable.COLUMN_FOLDER));
 					insert.bindString(8, value.getAsString(ImportFilesTable.COLUMN_IMAGE_ID));
+					insert.bindString(9, value.getAsString(ImportFilesTable.COLUMN_UPDATE_TIME));					
 					insert.execute();
 				}
 				db.setTransactionSuccessful();

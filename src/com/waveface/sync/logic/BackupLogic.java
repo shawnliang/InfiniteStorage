@@ -61,7 +61,7 @@ public class BackupLogic {
 		String[] projection = null;
 		String selection =  null;
 		Cursor cursor = null;
-		
+
 		ContentResolver cr = context.getContentResolver();
 		try{
 			cursor = cr.query(ImportFilesTable.CONTENT_URI, 
@@ -206,6 +206,7 @@ public class BackupLogic {
 						cv.put(ImportFilesTable.COLUMN_MIMETYPE, mimetype);							
 						cv.put(ImportFilesTable.COLUMN_FOLDER, folderName);
 						cv.put(ImportFilesTable.COLUMN_IMAGE_ID, mediaId);
+						cv.put(ImportFilesTable.COLUMN_UPDATE_TIME,StringUtil.getLocalDate());
 						filenamesSet.add(mediaData);
 						datas.add(cv);
 					}

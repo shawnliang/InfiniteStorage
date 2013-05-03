@@ -74,7 +74,7 @@ public class InfiniteService extends Service{
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-				Log.d(TAG, "START SACN NEW FILE");
+//				Log.d(TAG, "START SACN NEW FILE");
             	//SCAN ALL FILES
 //				SharedPreferences prefs = mContext.getSharedPreferences(
 //						Constant.PREFS_NAME, Context.MODE_PRIVATE);

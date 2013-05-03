@@ -24,6 +24,7 @@ public class ImportFilesTable implements BaseColumns {
 	public static final String COLUMN_FILETYPE = "file_type";	
 	public static final String COLUMN_FOLDER = "folder";
 	public static final String COLUMN_IMAGE_ID = "imageId";
+	public static final String COLUMN_UPDATE_TIME = "update_time";
 	
 	private ImportFilesTable() {
 
