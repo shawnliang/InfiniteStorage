@@ -14,10 +14,10 @@
     <string name="auto_connect">連線中...</string> 
     <string name="total_info">共有 %1$s 個檔案, %2$s</string>
     <string name="period">時間從 %1$s 到 %2$s</string>    
-    <string name="videos">%1$d 個影像檔</string>    
+    <string name="videos">%1$d 個影片檔</string>    
     <string name="audios">%1$d 個聲音檔</string>    
     <string name="photos">%1$d 張照片</string>        
-    <string name="can_not_find_server">現在找不到你的配對PC,待會找到後會當你自動連線!</string>    
+    <string name="can_not_find_server">目前找不到配對的PC,稍後會嘗試幫你自動連線!</string>    
     
     <!--PAIRED SERVERS-->
     <string name="backuping">備份中...</string>    
@@ -26,7 +26,7 @@
     <string name="backup_period">備份日期從 %1$s 到 %2$s</string>    
     <string name="free_space">目錄空間 %1$s</string>    
     <string name="backup_folder">備份目錄 %1$s</string>    
-    <string name="backup_info">已備份 %1$d 張照片, %2$d 個影像檔, %3$d 個聲音檔</string>
+    <string name="backup_info">已備份 %1$d 張照片, %2$d 個影片檔, %3$d 個聲音檔</string>
     <string name="backup_last_local_time">上次更新時間 %1$s</string>
     
     <!-- PROGRESS INFO -->
@@ -42,8 +42,8 @@
     <string name="simple_description1">以後回到家,手機放著充電</string>
     <string name="simple_description2">內容就會直接會到電腦備份好</string>
     <string name="download_windows">立刻下載windows版</string>
-    <string name="download_url">waveface.com/awesome</string>
-    <string name="email_description">Email網址給我</string>
+    <string name="download_url">waveface.com/bunny</string>
+    <string name="email_description">寄下載網址給我</string>
     <string name="install_finding_server">尋找你的PC.....</string>
     <string name="install_dialog_title">找不到PC</string>
     <string name="install_dialog_send_mail">尚未安裝PC版嗎？</string>
@@ -57,9 +57,9 @@
     <string name="choose_server">選擇一台電腦</string>
     <string name="pairing">請開啓你的Windows App與你的手機配對</string> 
     <string name="title_pairing">配對訊息</string> 
-    <string name="pairing_wait">請開啓你的Windows APP</string> 
-    <string name="pairing_denied">此一設備不得配對</string> 
-    <string name="pairing_starting_backup">現在開始進行備份工作</string> 
+    <string name="pairing_wait">請到電腦上同意連接這支手機</string> 
+    <string name="pairing_denied">拒絕連接</string> 
+    <string name="pairing_starting_backup">現在開始進行備份</string> 
     <string name="network_state">沒有無線網路</string>    
     <string name="without_wifi">您必須將無線網路開啟</string>
     
@@ -68,7 +68,7 @@
     <string name="file_transfering">%1$s 個檔案傳輸中</string>
     <string name="backup_view_descript11">第一次備份的檔案較多</string>
     <string name="backup_view_descript12">請您耐心等待</string>
-    <string name="backup_view_descript21">以後每天新增的</string>
+    <string name="backup_view_descript21">往後每天新增的</string>
     <string name="backup_view_descript22">照片 影片 錄音 音樂</string>
     <string name="backup_view_descript23">都會自動透過Wi-Fi回到電腦中!</string>
     
