@@ -92,6 +92,14 @@
             <File Id="websocketsharp.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\websocket-sharp.dll" />
           </Component>
 
+          <Component Id="NBug.dll" Guid="*">
+            <File Id="NBug.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\NBug.dll" />
+          </Component>
+
+          <Component Id="NBug.config" Guid="*">
+            <File Id="NBug.config" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\NBug.config" />
+          </Component>
+
           <Directory Id="x86_folder" Name="x86">
             <Component Id="SQLite.Interop.dll.x86" Guid="*">
               <File Id="SQLite.Interop.dll.x86" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\x86\SQLite.Interop.dll" />
@@ -118,6 +126,8 @@
       <ComponentRef Id="log4net.dll" />
       <ComponentRef Id="Newtonsoft.Json.dll" />
       <ComponentRef Id="websocketsharp.dll" />
+      <ComponentRef Id="NBug.dll" />
+      <ComponentRef Id="NBug.config" />
       
       <ComponentRef Id="EntityFramework.dll" />
       <ComponentRef Id="InfiniteStorage.exe.config" />

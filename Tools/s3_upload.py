@@ -19,4 +19,4 @@ if __name__ == "__main__":
 	target_name = sys.argv[2]
 
     #print "Upload {0} to S3 as {1}".format(source_name, target_name)
-	#upload_s3(source_name, target_name)
+	upload_s3(source_name, target_name)
