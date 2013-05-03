@@ -32,8 +32,7 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			Util.Save(dev);
 			ctx.device_folder_name = dev.folder_name;
-			var newState = approveHandler.ReplyAcceptMsgToDevice(ctx, dev);
-			ctx.SetState(newState);
+			approveHandler.ReplyAcceptMsgToDevice(ctx, dev);
 		}
 
 		public override void handleDisapprove(ProtocolContext ctx)

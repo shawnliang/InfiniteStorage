@@ -130,13 +130,12 @@ namespace UnitTest
 			var connectHandler = new Mock<IConnectMsgHandler>();
 			var retState = new Mock<AbstractProtocolState>();
 
-			connectHandler.Setup(x => x.HandleConnectMsg(connectMsg, It.IsAny<ProtocolContext>())).Returns(retState.Object).Verifiable();
 
 			var initState = new UnconnectedState();
 			initState.handler = connectHandler.Object;
 			var ctx = new ProtocolContext(tempFactory.Object, storage.Object, initState);
 
-			
+			connectHandler.Setup(x => x.HandleConnectMsg(connectMsg, It.IsAny<ProtocolContext>())).Callback(() => { ctx.SetState(retState.Object); }).Verifiable();
 
 			ctx.handleConnectCmd(connectMsg);
 

@@ -20,9 +20,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			ctx.device_name = cmd.device_name;
 			ctx.total_files = cmd.transfer_count;
 
-			var newState = handler.HandleConnectMsg(cmd, ctx);
-
-			ctx.SetState(newState);
+			handler.HandleConnectMsg(cmd, ctx);
 		}
 	}
 }

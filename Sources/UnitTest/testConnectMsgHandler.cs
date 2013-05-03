@@ -63,7 +63,7 @@ namespace UnitTest
 
 			var hdl = new ConnectMsgHandler();
 			hdl.Util = util.Object;
-			var newState = hdl.HandleConnectMsg(new TextCommand { action = "connect", device_name = "dev", device_id = "id1", transfer_count = 111 }, ctx);
+			hdl.HandleConnectMsg(new TextCommand { action = "connect", device_name = "dev", device_id = "id1", transfer_count = 111 }, ctx);
 
 			JObject o = JObject.Parse(sentTxt);
 			Assert.AreEqual("accept", o["action"]);
@@ -78,7 +78,7 @@ namespace UnitTest
 
 
 			Assert.AreEqual(ctx, evtCtx);
-			Assert.IsTrue(newState is TransmitInitState);
+			Assert.IsTrue(ctx.GetState() is TransmitInitState);
 
 			fileStorage.VerifyAll();
 		}
@@ -115,6 +115,8 @@ namespace UnitTest
 			Assert.AreEqual("Not allowed", reason);
 
 			util.VerifyAll();
+
+			Assert.IsTrue(ctx.GetState() is UnconnectedState);
 		}
 
 		[TestMethod]
@@ -131,7 +133,7 @@ namespace UnitTest
 
 			var hdl = new ConnectMsgHandler();
 			hdl.Util = util.Object;
-			var newState = hdl.HandleConnectMsg(new TextCommand { action = "connect", device_name = "dev", device_id = "id1", transfer_count = 111 }, ctx);
+			hdl.HandleConnectMsg(new TextCommand { action = "connect", device_name = "dev", device_id = "id1", transfer_count = 111 }, ctx);
 
 
 			Assert.IsFalse(string.IsNullOrEmpty(sentTxt));
@@ -139,7 +141,7 @@ namespace UnitTest
 			Assert.AreEqual("wait-for-pair", o["action"]);
 
 			Assert.AreEqual(evtCtx, ctx);
-			Assert.IsTrue(newState is WaitForApproveState);
+			Assert.IsTrue(ctx.GetState() is WaitForApproveState);
 		}
 	}
 }

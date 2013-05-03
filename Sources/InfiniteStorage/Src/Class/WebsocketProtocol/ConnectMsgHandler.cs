@@ -9,7 +9,7 @@ namespace InfiniteStorage.WebsocketProtocol
 {
 	public interface IConnectMsgHandler
 	{
-		AbstractProtocolState HandleConnectMsg(TextCommand cmd, ProtocolContext ctx);
+		void HandleConnectMsg(TextCommand cmd, ProtocolContext ctx);
 	}
 
 	public class ConnectMsgHandler : IConnectMsgHandler
@@ -21,7 +21,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			this.Util = new ConnectMsgHandlerUtil();
 		}
 
-		public AbstractProtocolState HandleConnectMsg(TextCommand cmd, ProtocolContext ctx)
+		public void HandleConnectMsg(TextCommand cmd, ProtocolContext ctx)
 		{
 			var clientInfo = Util.GetClientInfo(cmd.device_id);
 
@@ -29,27 +29,25 @@ namespace InfiniteStorage.WebsocketProtocol
 			{
 				if (Util.RejectUnpairedDevices)
 				{
+					ctx.SetState(new UnconnectedState());
 					ctx.Send(new { action = "denied", reason = "Not allowed" });
 					ctx.Stop(WebSocketSharp.Frame.CloseStatusCode.POLICY_VIOLATION, "Not allowed");
-					return new UnconnectedState();
 				}
 				else
 				{
 					ctx.Send(new { action = "wait-for-pair" });
 					ctx.SetState(new WaitForApproveState());
-
-					ctx.raiseOnPairingRequired(); // TODO: this should be called after state is changed!!!!!!!!!
-					return new WaitForApproveState();
+					ctx.raiseOnPairingRequired();
 				}
 			}
 			else
 			{
 				ctx.device_folder_name = clientInfo.folder_name;
-				return ReplyAcceptMsgToDevice(ctx, clientInfo);
+				ReplyAcceptMsgToDevice(ctx, clientInfo);
 			}
 		}
 
-		public AbstractProtocolState ReplyAcceptMsgToDevice(ProtocolContext ctx, Device clientInfo)
+		public void ReplyAcceptMsgToDevice(ProtocolContext ctx, Device clientInfo)
 		{
 			var summary = Util.GetDeviceSummary(clientInfo.device_id);
 
@@ -69,11 +67,10 @@ namespace InfiniteStorage.WebsocketProtocol
 				audio_count = (summary != null) ? (long?)summary.audio_count : null
 			};
 
+			ctx.SetState(new TransmitInitState());
 			ctx.raiseOnConnectAccepted();
 			ctx.Send(response);
 			ctx.storage.setDeviceName(ctx.device_folder_name);
-
-			return new TransmitInitState();
 		}
 	}
 }
