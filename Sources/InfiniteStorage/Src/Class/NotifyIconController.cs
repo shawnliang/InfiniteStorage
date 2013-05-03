@@ -138,10 +138,10 @@ namespace InfiniteStorage
 		{
 			lock (cs)
 			{
-				if (sender is BackupProgressDialog)
-				{
-					progressDialogs.Remove(sender as BackupProgressDialog);
-				}
+				var dialog = sender as BackupProgressDialog;
+				if (dialog == null)
+					return;
+				progressDialogs.Remove(dialog);
 			}
 		}
 
