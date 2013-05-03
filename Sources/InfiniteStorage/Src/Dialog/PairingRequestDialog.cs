@@ -22,7 +22,7 @@ namespace InfiniteStorage
 			InitializeComponent();
 			Text = Resources.ProductName;
 			Icon = Resources.product_icon;
-
+			DialogResult = System.Windows.Forms.DialogResult.Cancel;
 		}
 
 		private void PairingRequestDialog_Load(object sender, EventArgs e)
@@ -35,46 +35,26 @@ namespace InfiniteStorage
 
 		private void yesButton_Click(object sender, EventArgs e)
 		{
-			takeActionAndLogError(ctx.handleApprove);
 			DialogResult = System.Windows.Forms.DialogResult.Yes;
 			Close();
 		}
 
 		private void noButton_Click(object sender, EventArgs e)
 		{
-			takeActionAndLogError(ctx.handleDisapprove);
 			DialogResult = System.Windows.Forms.DialogResult.No;
 			Close();
 		}
 
 		private void neverButton_Click(object sender, EventArgs e)
 		{
-			takeActionAndLogError(ctx.handleDisapprove);
 			Settings.Default.RejectOtherDevices = true;
 			Settings.Default.Save();
+			DialogResult = System.Windows.Forms.DialogResult.No;
 			Close();
 		}
 
 		private void PairingRequestDialog_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (!actionTaken)
-			{
-				takeActionAndLogError(ctx.handleDisapprove);
-			}
-		}
-
-		private void takeActionAndLogError(Action act)
-		{
-			try
-			{
-				act();
-			}
-			catch (Exception e)
-			{
-				log4net.LogManager.GetLogger(GetType()).Warn("Uable to approve/disapprove for " + ctx.device_name, e);
-			}
-
-			actionTaken = true;
 		}
 	}
 }

@@ -84,7 +84,9 @@
 			this.Controls.Add(this.yesButton);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "PairingRequestDialog";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "PairingRequestDialog";
+			this.TopMost = true;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PairingRequestDialog_FormClosing);
 			this.Load += new System.EventHandler(this.PairingRequestDialog_Load);
 			this.ResumeLayout(false);

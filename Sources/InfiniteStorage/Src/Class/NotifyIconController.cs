@@ -236,11 +236,26 @@ namespace InfiniteStorage
 
 		private void showApproveDialog(WebsocketProtocol.WebsocketEventArgs args)
 		{
-			var result = MessageBox.Show(string.Format(Resources.AllowPairingRequest, args.ctx.device_name), Resources.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+			var dialog = new PairingRequestDialog(args.ctx);
+
+			if (FirstUseDialog.Instance.Visible)
+			{
+				dialog.StartPosition = FormStartPosition.CenterParent;
+			}
+			else
+			{
+				dialog.StartPosition = FormStartPosition.Manual;
+
+				var x = Screen.PrimaryScreen.WorkingArea.Width - dialog.Width;
+				var y = Screen.PrimaryScreen.WorkingArea.Height - dialog.Height;
+				dialog.Location = new System.Drawing.Point(x, y);
+			}
+
+			var result = dialog.ShowDialog();
 
 			try
 			{
-				if (result == DialogResult.No)
+				if (result != DialogResult.Yes)
 				{
 					args.ctx.handleDisapprove();
 				}
