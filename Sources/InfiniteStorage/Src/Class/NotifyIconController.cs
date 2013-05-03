@@ -209,48 +209,63 @@ namespace InfiniteStorage
 
 		private void removeDeviceFromNotifyIconMenu(WebsocketEventArgs evt)
 		{
-			var key = evt.ctx;
-
-			if (deviceStipItems.ContainsKey(key))
+			try
 			{
-				var item = deviceStipItems[key];
-				if (notifyIcon.ContextMenuStrip.Items.Contains(item))
+				var key = evt.ctx;
+
+				if (deviceStipItems.ContainsKey(key))
 				{
-					var nextIdx = notifyIcon.ContextMenuStrip.Items.IndexOf(item) + 1;
-					var item2 = notifyIcon.ContextMenuStrip.Items[nextIdx];
+					var item = deviceStipItems[key];
+					if (notifyIcon.ContextMenuStrip.Items.Contains(item))
+					{
+						var nextIdx = notifyIcon.ContextMenuStrip.Items.IndexOf(item) + 1;
+						var item2 = notifyIcon.ContextMenuStrip.Items[nextIdx];
 
-					notifyIcon.ContextMenuStrip.Items.Remove(item);
-					notifyIcon.ContextMenuStrip.Items.Remove(item2);
+						notifyIcon.ContextMenuStrip.Items.Remove(item);
+						notifyIcon.ContextMenuStrip.Items.Remove(item2);
+					}
+
+					deviceStipItems.Remove(key);
 				}
-
-				deviceStipItems.Remove(key);
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("Error in removeDeviceFromNotifyIconMenu", err);
 			}
 		}
 
 		private void showApproveDialog(WebsocketProtocol.WebsocketEventArgs args)
 		{
 			var result = MessageBox.Show(string.Format(Resources.AllowPairingRequest, args.ctx.device_name), Resources.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-			if (result == DialogResult.No)
-			{
-				args.ctx.handleDisapprove();
-			}
-			else
-			{
 
-				if (Settings.Default.IsFirstUse)
+			try
+			{
+				if (result == DialogResult.No)
 				{
-					if (FirstUseDialog.Instance.Visible)
-						FirstUseDialog.Instance.Close();
-
-					FirstUseDialog.Instance.ShowSetupPage(args.ctx);
-						
-					Settings.Default.IsFirstUse = false;
-					Settings.Default.Save();
+					args.ctx.handleDisapprove();
 				}
 				else
 				{
-					args.ctx.handleApprove();
+
+					if (Settings.Default.IsFirstUse)
+					{
+						if (FirstUseDialog.Instance.Visible)
+							FirstUseDialog.Instance.Close();
+
+						FirstUseDialog.Instance.ShowSetupPage(args.ctx);
+
+						Settings.Default.IsFirstUse = false;
+						Settings.Default.Save();
+					}
+					else
+					{
+						args.ctx.handleApprove();
+					}
 				}
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("Error in showApproveDialog", err);
 			}
 		}
 		
