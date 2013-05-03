@@ -36,7 +36,7 @@ namespace InfiniteStorage
 		{
 			Boolean bCreatedNew;
 
-			m_InstanceMutex = new System.Threading.Mutex(false, Application.ProductName, out bCreatedNew);
+			m_InstanceMutex = new System.Threading.Mutex(false, Application.ProductName + Environment.UserName, out bCreatedNew);
 
 			if (!bCreatedNew)
 			{
