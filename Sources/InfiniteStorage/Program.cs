@@ -24,12 +24,26 @@ namespace InfiniteStorage
 		static System.Timers.Timer m_ReRegBonjourTimer;
 		static WebSocketServer<InfiniteStorageWebSocketService> ws_server;
 
+
+		private static System.Threading.Mutex m_InstanceMutex { get; set; }
+
+
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
 		[STAThread]
 		static void Main()
 		{
+			Boolean bCreatedNew;
+
+			m_InstanceMutex = new System.Threading.Mutex(false, Application.ProductName, out bCreatedNew);
+
+			if (!bCreatedNew)
+			{
+				invokeAnotherRunningProcess();
+				return;
+			}
+
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
@@ -37,11 +51,6 @@ namespace InfiniteStorage
 			Log4netConfigure.InitLog4net();
 			log4net.LogManager.GetLogger("main").Debug("==== program started ====");
 
-			if (!SingleInstancePerUserLock.Instance.Lock())
-			{
-				invokeAnotherRunningProcess();
-				return;
-			}
 
 			if (string.IsNullOrEmpty(Settings.Default.ServerId))
 			{
