@@ -200,4 +200,7 @@
   <data name="BackupProgressFile_Preparing" xml:space="preserve">
     <value>檔案：準備中</value>
   </data>
+  <data name="AlreadyLastestVersion" xml:space="preserve">
+    <value>您的 Bunny 已經是最新的版本</value>
+  </data>
 </root>

@@ -24,7 +24,6 @@ namespace InfiniteStorage
 		static System.Timers.Timer m_ReRegBonjourTimer;
 		static WebSocketServer<InfiniteStorageWebSocketService> ws_server;
 
-
 		private static System.Threading.Mutex m_InstanceMutex { get; set; }
 
 
@@ -128,7 +127,8 @@ namespace InfiniteStorage
 					showProgramIsAtServiceBallonTips();
 			};
 
-			
+			var updator = new Waveface.Common.AutoUpdate(false);
+			updator.StartLoop();
 
 			Application.Run();
 		}

@@ -79,5 +79,23 @@ namespace InfiniteStorage
 				Process.Start(file);
 
 		}
+
+		private void checkForUpdateButton_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				var update = new Waveface.Common.AutoUpdate(false);
+
+				if (update.IsUpdateRequired())
+					update.ShowUpdateNeededUI();
+				else
+					MessageBox.Show(Resources.AlreadyLastestVersion, Resources.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+			catch (Exception err)
+			{
+				MessageBox.Show(err.Message, Resources.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				log4net.LogManager.GetLogger(GetType()).Error("Unable to check for update", err);
+			}
+		}
 	}
 }

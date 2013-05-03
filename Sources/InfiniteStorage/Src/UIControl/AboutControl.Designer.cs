@@ -55,13 +55,13 @@
 			// checkForUpdateButton
 			// 
 			this.checkForUpdateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.checkForUpdateButton.Enabled = false;
 			this.checkForUpdateButton.Location = new System.Drawing.Point(446, 18);
 			this.checkForUpdateButton.Name = "checkForUpdateButton";
 			this.checkForUpdateButton.Size = new System.Drawing.Size(117, 23);
 			this.checkForUpdateButton.TabIndex = 1;
 			this.checkForUpdateButton.Text = "檢查更新";
 			this.checkForUpdateButton.UseVisualStyleBackColor = true;
+			this.checkForUpdateButton.Click += new System.EventHandler(this.checkForUpdateButton_Click);
 			// 
 			// versionLabel
 			// 

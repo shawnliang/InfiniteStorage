@@ -79,6 +79,15 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 您的 Bunny 已經是最新的版本.
+        /// </summary>
+        internal static string AlreadyLastestVersion {
+            get {
+                return ResourceManager.GetString("AlreadyLastestVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 檔案：準備中.
         /// </summary>
         internal static string BackupProgressFile_Preparing {

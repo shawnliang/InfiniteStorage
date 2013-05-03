@@ -100,12 +100,22 @@
             <File Id="NBug.config" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\NBug.config" />
           </Component>
 
+          <Component Id="AppLimit.NetSparkle.dll" Guid="*">
+            <File Id="AppLimit.NetSparkle.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\AppLimit.NetSparkle.dll" />
+          </Component>
+
+
+          <Directory Id="zhTW" Name="zh-TW">
+            <Component Id="AppLimit.NetSparkle.resources.dll_zhTW" Guid="*">
+              <File Id="AppLimit.NetSparkle.resources.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\zh-TW\AppLimit.NetSparkle.resources.dll" />
+            </Component>
+          </Directory>
+          
           <Directory Id="x86_folder" Name="x86">
             <Component Id="SQLite.Interop.dll.x86" Guid="*">
               <File Id="SQLite.Interop.dll.x86" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\x86\SQLite.Interop.dll" />
             </Component>
           </Directory>
-
 
           <Directory Id="x64_folder" Name="x64">
             <Component Id="SQLite.Interop.dll.x64" Guid="*">
@@ -128,7 +138,10 @@
       <ComponentRef Id="websocketsharp.dll" />
       <ComponentRef Id="NBug.dll" />
       <ComponentRef Id="NBug.config" />
-      
+      <ComponentRef Id="AppLimit.NetSparkle.dll" />
+      <ComponentRef Id="AppLimit.NetSparkle.resources.dll_zhTW" />
+
+
       <ComponentRef Id="EntityFramework.dll" />
       <ComponentRef Id="InfiniteStorage.exe.config" />
       <ComponentRef Id="System.Data.SQLite.dll" />

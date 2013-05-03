@@ -37,6 +37,9 @@
     <ApplicationIcon>Resources\product.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AppLimit.NetSparkle">
+      <HintPath>..\..\Libs\NetSparkle-1.0.83\AppLimit.NetSparkle.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\..\Libs\EntityFramework.5.0.0\net40\EntityFramework.dll</HintPath>
     </Reference>
@@ -76,6 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\Class\Common\AutoUpdator.cs" />
     <Compile Include="Src\Dialog\BackupProgressDialog.cs">
       <SubType>Form</SubType>
     </Compile>
