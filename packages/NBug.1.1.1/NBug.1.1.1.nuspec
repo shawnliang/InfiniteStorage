@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>NBug</id>
+    <version>1.1.1</version>
+    <title>NBug</title>
+    <authors>Teoman Soygul</authors>
+    <owners>Teoman Soygul</owners>
+    <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
+    <projectUrl>http://www.nbusy.com/projects/nbug</projectUrl>
+    <iconUrl>http://www.nbusy.com/images/stories/projects/nbug/NBug_icon_128.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>NBug is a .NET library created to automate the bug reporting process. It automatically creates and sends:
+* Bug reports,
+* Crash reports with minidump,
+* Error/exception reports with stack trace + extended application/system information.
+It can also be set up as a user feedback system (i.e. for sending feature requests from within your application). For Quickstart, read this article: http://www.soygul.com/projects/nbug/
+ For documentation and updates, see project web site: http://www.nbusy.com/projects/nbug</description>
+    <summary>NBug is a .NET library created to automate the bug reporting process. It automatically creates and sends:* Bug reports,* Crash reports with minidump,* Error/exception reports with stack trace + extended application/system information.It can also be set up as a user feedback system (i.e. for sending feature requests from within your application).For documentation and updates, see project web site: http://www.nbusy.com/projects/nbug</summary>
+    <releaseNotes />
+    <copyright>Teoman Soygul</copyright>
+    <language />
+    <tags>bug bugreport minidump exception</tags>
+    <references>
+      <reference file="NBug.dll" />
+    </references>
+  </metadata>
+</package>
