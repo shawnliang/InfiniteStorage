@@ -61,6 +61,8 @@
     <string name="pairing_wait">Please open your Windows APP</string>
     <string name="pairing_denied">This device has been denied.</string>
     <string name="pairing_starting_backup">Backup Your files Now.</string>
+    <string name="network_state">No Wi-Fi Network</string>    
+    <string name="without_wifi">You have to turn on Wi-Fi Network</string>
 
     <!-- FILE TRANSFRING -->
     <string name="file_transfering">%1$s transfering files</string>

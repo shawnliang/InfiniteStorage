@@ -74,15 +74,15 @@ public class InfiniteService extends Service{
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-//				Log.d(TAG, "START SACN NEW FILE");
-            	//SCAN ALL FILES
-//				SharedPreferences prefs = mContext.getSharedPreferences(
-//						Constant.PREFS_NAME, Context.MODE_PRIVATE);
-//				boolean firstTimeScanDone = prefs.getBoolean(Constant.PREF_FILE_IMPORT_FIRST_TIME_DONE, false);
-//		    	if(firstTimeScanDone == false){
-//		    		BackupLogic.scanAllFiles(mContext);
-//					prefs.edit().putBoolean(Constant.PREF_FILE_IMPORT_FIRST_TIME_DONE, true).commit();
-//		    	}
+        		//SCAN ALL FILES FOR THE FIRST TIME
+            	if(RuntimeState.wasFirstTimeImportScanDone == false){
+            		BackupLogic.scanAllFiles(mContext);
+            		RuntimeState.wasFirstTimeImportScanDone = true ;
+            		mPrefs.edit()
+            			.putBoolean(Constant.PREF_FILE_IMPORT_FIRST_TIME_DONE, 
+            					RuntimeState.wasFirstTimeImportScanDone)
+            			.commit();
+            	}
 		    	String serverId = RuntimeState.mWebSocketServerId;
             	if(!TextUtils.isEmpty(serverId)
             			&& RuntimeState.wasFirstTimeImportScanDone
@@ -133,17 +133,6 @@ public class InfiniteService extends Service{
 		//Notification 
 		mNotificationManager = SyncNotificationManager
 				.getInstance(getApplicationContext());
-		//SCAN ALL FILES FOR THE FIRST TIME
-		RuntimeState.wasFirstTimeImportScanDone = 
-				mPrefs.getBoolean(Constant.PREF_FILE_IMPORT_FIRST_TIME_DONE, false);
-    	if(RuntimeState.wasFirstTimeImportScanDone == false){
-    		BackupLogic.scanAllFiles(mContext);
-    		RuntimeState.wasFirstTimeImportScanDone = true ;
-    		mPrefs.edit()
-    			.putBoolean(Constant.PREF_FILE_IMPORT_FIRST_TIME_DONE, 
-    					RuntimeState.wasFirstTimeImportScanDone)
-    			.commit();
-    	}
 		// register camera observer
 	    mCamera = new ImageTableObserver(new Handler());
 	    getContentResolver().registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, true, mCamera);
@@ -151,7 +140,9 @@ public class InfiniteService extends Service{
 	    getContentResolver().registerContentObserver(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, true, mVideo);
 	    mAudio = new AudioTableObserver(new Handler());
 	    getContentResolver().registerContentObserver(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, true, mAudio);
-
+		//SCAN ALL FILES FOR THE FIRST TIME
+		RuntimeState.wasFirstTimeImportScanDone = 
+				mPrefs.getBoolean(Constant.PREF_FILE_IMPORT_FIRST_TIME_DONE, false);
 		Log.d(TAG, "onCreate");
 	}
 
@@ -323,7 +314,7 @@ public class InfiniteService extends Service{
     						entity.serverOS = "WINDOWS";
     					}
     	                entity.wsLocation = "ws://"+si.getHostAddress()+":"+si.getPort();
-    	                Log.d(TAG, "SERVER NAME:"+entity.serverName);
+    	                Log.d(TAG, "Resolved SERVER NAME:"+entity.serverName);
     	                ServersLogic.updateBonjourServer(mContext, entity);
     	        		mPairedServers = ServersLogic.getBackupedServers(mContext);
     	        		if(mPairedServers.size()!=0){
@@ -358,7 +349,6 @@ public class InfiniteService extends Service{
 
                 @Override
                 public void serviceAdded(ServiceEvent event) {
-                	//TODO:
                 	mJMDNS.requestServiceInfo(event.getType(), event.getName(), 1);
                 }
             });
@@ -399,51 +389,81 @@ public class InfiniteService extends Service{
 	//Observers
     class ImageTableObserver extends ContentObserver
     {
+        private Handler mHandler;	
+
   	  public ImageTableObserver(Handler handler)
   	  {
   	    super(handler);
+  	    mHandler = handler;
   	  }
   	  @Override
   	  public void onChange(boolean selfChange)
   	  {
   		long maxId = BackupLogic.getMaxIdFromMediaDB(mContext, Constant.TYPE_IMAGE);
-//		Toast.makeText(getApplicationContext(), "Image:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxImageId, Toast.LENGTH_LONG).show();
-  		if(maxId > RuntimeState.maxImageId){
+  		Log.d(TAG, "Photo:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxImageId);
+
+  		//Toast.makeText(getApplicationContext(), "Image:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxImageId, Toast.LENGTH_LONG).show();
+  		if(maxId > RuntimeState.maxImageId && RuntimeState.isPhotoScaning){
   			BackupLogic.scanFileForBackup(mContext, Constant.TYPE_IMAGE);
+  			mHandler.postDelayed(new Runnable() {
+  		        public void run() {
+  		        	RuntimeState.isPhotoScaning = true;
+  		        	BackupLogic.scanFileForBackup(mContext, Constant.TYPE_IMAGE);
+  		        	RuntimeState.isPhotoScaning = false;
+  		        	}
+  		        }, 1000);
+
   		}
   	  }
    }
     class VideoTableObserver extends ContentObserver
     {
+      private Handler mHandler;	
+	
   	  public VideoTableObserver(Handler handler)
   	  {
   	    super(handler);
+  	    mHandler = handler;
   	  }
   	  @Override
   	  public void onChange(boolean selfChange)
   	  {
   		long maxId = BackupLogic.getMaxIdFromMediaDB(mContext, Constant.TYPE_VIDEO);
-  		Log.d(TAG, "Video MaxId:"+maxId);
-  		if(maxId > RuntimeState.maxVideoId){
+  		Log.d(TAG, "Video:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxVideoId);
+  		if(maxId > RuntimeState.maxVideoId && RuntimeState.isVideoScaning){
 //  			Toast.makeText(getApplicationContext(), "Video:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxVideoId, Toast.LENGTH_LONG).show();
-  			BackupLogic.scanFileForBackup(mContext, Constant.TYPE_VIDEO);
+  			mHandler.postDelayed(new Runnable() {
+	        public void run() {
+	        	RuntimeState.isVideoScaning = true;
+	        	BackupLogic.scanFileForBackup(mContext, Constant.TYPE_VIDEO);
+	        	RuntimeState.isVideoScaning = false;
+	        	}
+	        }, 3000);
   		}
   	  }
    }
     class AudioTableObserver extends ContentObserver
     {
+      private Handler mHandler;	
   	  public AudioTableObserver(Handler handler)
   	  {
   	    super(handler);
+  	    mHandler = handler;
   	  }
   	  @Override
   	  public void onChange(boolean selfChange)
   	  {
   		long maxId = BackupLogic.getMaxIdFromMediaDB(mContext, Constant.TYPE_AUDIO);
-  		Log.d(TAG, "Audio MaxId:"+maxId);
-  		if(maxId > RuntimeState.maxAudioId){
+  		Log.d(TAG, "Audioo:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxAudioId);
+  		if(maxId > RuntimeState.maxAudioId && RuntimeState.isAudioScaning){  			
 //  			Toast.makeText(getApplicationContext(), "Audioo:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxAudioId, Toast.LENGTH_LONG).show();
-  			BackupLogic.scanFileForBackup(mContext, Constant.TYPE_AUDIO);
+  			mHandler.postDelayed(new Runnable() {
+	        public void run() {
+	        	RuntimeState.isAudioScaning = true;
+	        	BackupLogic.scanFileForBackup(mContext, Constant.TYPE_AUDIO);
+	        	RuntimeState.isAudioScaning = false;
+	        	}
+	        }, 2000);
   		}
   	  }
    }

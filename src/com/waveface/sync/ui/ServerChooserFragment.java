@@ -2,7 +2,6 @@ package com.waveface.sync.ui;
 
 import java.util.HashMap;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -16,6 +15,7 @@ import android.database.ContentObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +35,7 @@ import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.FlowLogic;
 import com.waveface.sync.logic.ServersLogic;
+import com.waveface.sync.util.NetworkUtil;
 
 
 public class ServerChooserFragment extends FragmentBase 
@@ -108,18 +109,37 @@ public class ServerChooserFragment extends FragmentBase
 		
 	    mProgressBar = (ProgressBar) mRootView.findViewById(R.id.pbSearch);
 	    mTvSearch = (TextView) mRootView.findViewById(R.id.tvSearch);
-//		if(mAdapter.getCount()>0){
-//		    mProgressBar.setVisibility(View.INVISIBLE);
-//		    mTvSearch.setVisibility(View.INVISIBLE);
-//		}
-		if(!ServersLogic.hasBonjourServers(getActivity())){
-	        mHandler.postDelayed(new Runnable() {
-	            public void run() {
-	            	  openSendDialog(getActivity());
-	            	}
-	            }, 300);
+		displayProgressBar();
+		
+		if(!NetworkUtil.isWifiNetworkAvailable(getActivity())){
+			
+			openDialog(getActivity(),Constant.NETWORK_IS_NOT_WIFI);
+		}
+		else{
+			detectInstall();
 		}
 		return mRootView;
+	}
+
+	private void detectInstall() {
+		if(!ServersLogic.hasBonjourServers(getActivity())){
+		    mHandler.postDelayed(new Runnable() {
+		        public void run() {
+		        	  openSendDialog(getActivity());
+		        	}
+		        }, 300);
+		}
+	}
+
+	private void displayProgressBar() {
+		if(mAdapter.getCount()>0){
+		    mProgressBar.setVisibility(View.GONE);
+		    mTvSearch.setVisibility(View.GONE);
+		}
+		else{
+		    mProgressBar.setVisibility(View.VISIBLE);
+		    mTvSearch.setVisibility(View.VISIBLE);			
+		}
 	}
 
 	@Override
@@ -207,7 +227,7 @@ public class ServerChooserFragment extends FragmentBase
 		mSendEmailDialog.show();
 	}
 	
-	private void openDialog(Context context,String action){
+	private void openDialog(Context context,final String action){
 		if(mAlertDialog!=null && mAlertDialog.isShowing()){
 			mAlertDialog.dismiss();
 		}
@@ -219,7 +239,10 @@ public class ServerChooserFragment extends FragmentBase
 		else if(action.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
 			message = context.getString(R.string.pairing_wait);
 		}
-		
+		else if(action.equals(Constant.NETWORK_IS_NOT_WIFI)){
+			title = context.getString(R.string.network_state);
+			message = context.getString(R.string.without_wifi);
+		}
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context); 
 		// set title
 		alertDialogBuilder.setTitle(title);
@@ -229,7 +252,14 @@ public class ServerChooserFragment extends FragmentBase
 			.setCancelable(false)
 			.setPositiveButton(R.string.btn_ok,new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog,int id) {
-					dialog.cancel();
+					if(action.equals(Constant.NETWORK_IS_NOT_WIFI)){
+						startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+						dialog.cancel();
+						detectInstall();
+					}
+					else{
+						dialog.cancel();
+					}
 				}
 			  }); 
 		// create alert dialog
@@ -271,10 +301,7 @@ public class ServerChooserFragment extends FragmentBase
 			}
 		}
 		mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
-//		if(mAdapter.getCount()>0){
-//		    mProgressBar.setVisibility(View.INVISIBLE);
-//		    mTvSearch.setVisibility(View.INVISIBLE);
-//		}
+		displayProgressBar();
 	}
 	
 	@Override

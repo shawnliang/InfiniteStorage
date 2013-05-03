@@ -60,6 +60,8 @@
     <string name="pairing_wait">請開啓你的Windows APP</string> 
     <string name="pairing_denied">此一設備不得配對</string> 
     <string name="pairing_starting_backup">現在開始進行備份工作</string> 
+    <string name="network_state">沒有無線網路</string>    
+    <string name="without_wifi">您必須將無線網路開啟</string>
     
     
     <!--FILE TRANSFRING-->    

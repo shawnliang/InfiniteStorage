@@ -21,6 +21,10 @@ public class RuntimeState{
 	public static long mMediaID ;
 	public static int mFileType ;	
 	
+	
+	public static boolean isPhotoScaning = false;
+	public static boolean isVideoScaning = false;
+	public static boolean isAudioScaning = false;	
 	public static boolean isScaning = false;
 	public static boolean wasFirstTimeImportScanDone = false;	
 	public static boolean isBackuping = false;

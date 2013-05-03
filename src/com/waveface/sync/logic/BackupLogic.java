@@ -206,7 +206,6 @@ public class BackupLogic {
 						cv.put(ImportFilesTable.COLUMN_MIMETYPE, mimetype);							
 						cv.put(ImportFilesTable.COLUMN_FOLDER, folderName);
 						cv.put(ImportFilesTable.COLUMN_IMAGE_ID, mediaId);
-						cv.put(ImportFilesTable.COLUMN_UPDATE_TIME,StringUtil.getLocalDate());
 						filenamesSet.add(mediaData);
 						datas.add(cv);
 					}
@@ -586,93 +585,101 @@ public class BackupLogic {
 				int count = cursor.getCount();
 				for(int i = 0 ; i<count ;i++){
 					// send file index for start
-					entity.action = Constant.WS_ACTION_FILE_START;
 					filename = cursor.getString(0);
-					entity.fileName = StringUtil.getFilename(filename);
-					filetype = cursor.getInt(1);
-					switch(filetype){
-						case Constant.TYPE_IMAGE:
-							entity.type = Constant.TRANSFER_TYPE_IMAGE;
-							break;
-						case Constant.TYPE_AUDIO:
-							entity.type = Constant.TRANSFER_TYPE_AUDIO;
-							break;
-						case Constant.TYPE_VIDEO:
-							entity.type = Constant.TRANSFER_TYPE_VIDEO;
-							break;
-					}
-					entity.fileSize = cursor.getString(2);
-					entity.folder = StringUtil.getFilepath(filename, entity.fileName);				
-					entity.datetime = cursor.getString(3);
-					fileDatetime = entity.datetime;
-					
-					//FOR UI DISPLAY
-					RuntimeState.mFilename = entity.fileName;
-					RuntimeState.mFileType = filetype;
-					RuntimeState.mFilename = filename;
-					RuntimeState.mMediaID = cursor.getLong(4);
-					intent.putExtra(Constant.EXTRA_BACKING_UP_FILE_STATE, Constant.FILE_START);
-					context.sendBroadcast(intent);					
-					Log.d(TAG, "BACKUPING: type:"+entity.type+",Filename:"+entity.fileName);
-					//FOR UI DISPLAY
-					
-					try {
-						if(RuntimeState.isWebSocketAvaliable(context)){
-							RuntimeWebClient.send(RuntimeState.GSON.toJson(entity));
-							
+					if(FileUtil.isFileExisted(filename)){
+						entity.action = Constant.WS_ACTION_FILE_START;
+						entity.fileName = StringUtil.getFilename(filename);
+						filetype = cursor.getInt(1);
+						switch(filetype){
+							case Constant.TYPE_IMAGE:
+								entity.type = Constant.TRANSFER_TYPE_IMAGE;
+								break;
+							case Constant.TYPE_AUDIO:
+								entity.type = Constant.TRANSFER_TYPE_AUDIO;
+								break;
+							case Constant.TYPE_VIDEO:
+								entity.type = Constant.TRANSFER_TYPE_VIDEO;
+								break;
 						}
-						else{
-							isSuccesed = true;
-							break;
-						}
-						// send file binary
-						ios = new FileInputStream(new File(filename));
-						int read = 0;
-						while ((read = ios.read(buffer)) != -1) {
+						entity.fileSize = cursor.getString(2);
+						entity.folder = StringUtil.getFilepath(filename, entity.fileName);				
+						entity.datetime = cursor.getString(3);
+						fileDatetime = entity.datetime;
+						
+						//FOR UI DISPLAY
+						RuntimeState.mFilename = entity.fileName;
+						RuntimeState.mFileType = filetype;
+						RuntimeState.mFilename = filename;
+						RuntimeState.mMediaID = cursor.getLong(4);
+						intent.putExtra(Constant.EXTRA_BACKING_UP_FILE_STATE, Constant.FILE_START);
+						context.sendBroadcast(intent);					
+						Log.d(TAG, "BACKUPING: type:"+entity.type+",Filename:"+entity.fileName);
+						//FOR UI DISPLAY
+						
+						try {
 							if(RuntimeState.isWebSocketAvaliable(context)){
-								if (read != buffer.length) {
-									finalBuffer = new byte[read];
-									finalBuffer = Arrays.copyOf(buffer, read);
-									RuntimeWebClient.sendFile(finalBuffer);
-								} else {
-									RuntimeWebClient.sendFile(buffer);
-								}
+								RuntimeWebClient.send(RuntimeState.GSON.toJson(entity));
+								
 							}
 							else{
-								isSuccesed = false;
+								isSuccesed = true;
 								break;
 							}
-						}					
-						// send file index for end
-						if(RuntimeState.isWebSocketAvaliable(context)){
-							entity.action = Constant.WS_ACTION_FILE_END;
-							RuntimeWebClient.send(RuntimeState.GSON.toJson(entity));
-							isSuccesed = true;
-						}else{
-							isSuccesed = false;
-							break;						
-						}
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					} catch (WebSocketException e) {
-						e.printStackTrace();
-					} finally {
-						try {
-							if (ios != null)
-								ios.close();
+							// send file binary
+							ios = new FileInputStream(new File(filename));
+							int read = 0;
+							while ((read = ios.read(buffer)) != -1) {
+								if(RuntimeState.isWebSocketAvaliable(context)){
+									if (read != buffer.length) {
+										finalBuffer = new byte[read];
+										finalBuffer = Arrays.copyOf(buffer, read);
+										RuntimeWebClient.sendFile(finalBuffer);
+									} else {
+										RuntimeWebClient.sendFile(buffer);
+									}
+								}
+								else{
+									isSuccesed = false;
+									break;
+								}
+							}					
+							// send file index for end
+							if(RuntimeState.isWebSocketAvaliable(context)){
+								entity.action = Constant.WS_ACTION_FILE_END;
+								RuntimeWebClient.send(RuntimeState.GSON.toJson(entity));
+								isSuccesed = true;
+							}else{
+								isSuccesed = false;
+								break;						
+							}
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
 						} catch (IOException e) {
+							e.printStackTrace();
+						} catch (WebSocketException e) {
+							e.printStackTrace();
+						} finally {
+							try {
+								if (ios != null)
+									ios.close();
+							} catch (IOException e) {
+							}
+							if(isSuccesed){
+								ServersLogic.updateServerLastBackupTime(context, serverId,fileDatetime);
+								RuntimeState.FileBackedUp(context);
+							}
+							isSuccesed = false;
 						}
-						if(isSuccesed){
-							ServersLogic.updateServerLastBackupTime(context, serverId,fileDatetime);
-							RuntimeState.FileBackedUp(context);
+						cursor.moveToNext();
+						if(!RuntimeState.isWebSocketAvaliable(context)){
+							break;//cut off for loop
 						}
-						isSuccesed = false;
 					}
-					cursor.moveToNext();
-					if(!RuntimeState.isWebSocketAvaliable(context)){
-						break;//cut off for loop
+					else{
+						//UPDATE IMFOR FILE 
+						BackupLogic.updateBackupStatus(context, filename, Constant.IMPORT_FILE_DELETED);
+						//UPDATE COUNT FOR DETECT FILE IS DELETED
+						ServersLogic.updateCount(context, serverId);
 					}
 				}
 			}

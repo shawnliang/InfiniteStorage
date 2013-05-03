@@ -20,6 +20,7 @@ import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.db.DatabaseHelper;
 import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.db.ImportTable;
+import com.waveface.sync.util.StringUtil;
 
 public class SyncProvider extends ContentProvider {
 
@@ -539,7 +540,7 @@ public class SyncProvider extends ContentProvider {
 					insert.bindString(6, value.getAsString(ImportFilesTable.COLUMN_FILETYPE));
 					insert.bindString(7, value.getAsString(ImportFilesTable.COLUMN_FOLDER));
 					insert.bindString(8, value.getAsString(ImportFilesTable.COLUMN_IMAGE_ID));
-					insert.bindString(9, value.getAsString(ImportFilesTable.COLUMN_UPDATE_TIME));					
+					insert.bindString(9, StringUtil.getLocalDate());					
 					insert.execute();
 				}
 				db.setTransactionSuccessful();
