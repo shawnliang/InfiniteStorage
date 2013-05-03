@@ -89,7 +89,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textFolder"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:baselineAligned="false" >
 
      <RelativeLayout
         android:id="@+id/rl1"

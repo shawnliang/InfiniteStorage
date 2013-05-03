@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="wammer" default="help">
-<property name="devServiceFolder" location="${basedir}/src/com/waveface/photojournal/dev/service/"/>
-<property name="proServiceFolder" location="${basedir}/src/com/waveface/photojournal/service/"/>
+<project name="Bunny" default="help">
 <target name="help">
 	<echo message="ant -f publish.xml product -- change develop mode to product mode"/>
 	<echo message="The build home path is: ${basedir}"/>

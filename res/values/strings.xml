@@ -3,8 +3,6 @@
 
     <string name="hello">Welcome to Bunny!</string>
     <string name="app_name">Bunny</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_bonjour_servers">BonjourServers</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
@@ -102,9 +100,9 @@
     <string name="btn_confirm">Sure</string>
     <string name="btn_backup">Go Backup</string>
     <string name="btn_ok">OK</string>
-    <string name="btn_cancel">CANCEL</string>
-    <string name="btn_yes">YES</string>
-    <string name="btn_no">NO</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_yes">Yes</string>
+    <string name="btn_no">No</string>
 
     <!-- NOTIFICATION -->
     <string name="notify_link_server">Backing Up to %1$s</string>
