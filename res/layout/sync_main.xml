@@ -248,7 +248,8 @@
     	        android:layout_below="@+id/tvLastBackupTime"
     	        android:layout_centerHorizontal="true"
     	        android:layout_margin="10dp"
-    	        android:src="@drawable/ic_photos" />
+    	        android:src="@drawable/ic_photos"
+    	        android:background="#33FFFFFF" />
     	<ImageView 
     	        android:id="@+id/ivPlay"
     	        android:layout_width="20dp"
