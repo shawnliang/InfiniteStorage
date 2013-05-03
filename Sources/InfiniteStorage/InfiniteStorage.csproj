@@ -46,6 +46,9 @@
     <Reference Include="Mono.Zeroconf">
       <HintPath>..\..\Libs\Mono.Zeroconf\Mono.Zeroconf.dll</HintPath>
     </Reference>
+    <Reference Include="NBug">
+      <HintPath>..\..\packages\NBug.1.1.1\lib\net40-client\NBug.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\Libs\Newtonsoft.Json.4.5.10\lib\net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -235,6 +238,10 @@
       <DependentUpon>TransferringControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="NBug.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
