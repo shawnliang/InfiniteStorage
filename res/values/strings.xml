@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Welcome to Infinite Storage ShaketoSync!</string>
+    <string name="hello">Welcome to Bunny!</string>
     <string name="app_name">Bunny</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -19,10 +19,10 @@
     <string name="videos">%1$d video(s)</string>
     <string name="audios">%1$d audio(s)</string>
     <string name="photos">%1$d photo(s)</string>
-    <string name="can_not_find_server">Can\'t Find Server Now, We will connect to your PC automatically later!</string>
+    <string name="can_not_find_server">Can\'t find your PC now. We will connect again automatically later!</string>
 
     <!-- PAIRED SERVERS -->
-    <string name="backuping">Backing Up ...</string>
+    <string name="backuping">Backing up ...</string>
     <string name="offline">OFFLINE</string>
     <string name="backuped_completed">Backup Completed</string>
     <string name="backup_period">BACKUP FROM %1$s TO %2$s</string>
@@ -34,8 +34,8 @@
     <!-- PROGRESS INFO -->
     <string name="backup_info_empty">Backing Up ....</string>    
     <string name="backup_progress">Backing Up %1$d/%2$d</string>
-    <string name="backup_done">Backed Up to newest files</string>
-    <string name="backup_uncompleted">Backed Up Uncompleted</string>
+    <string name="backup_done">All backup files are up to date</string>
+    <string name="backup_uncompleted">Backup Uncompleted</string>
     
 
     <!-- FIRST USE -->
@@ -44,7 +44,7 @@
     <string name="simple_description1">When you\'re home</string>
     <string name="simple_description2">all contents will be backed-up automatically.</string>
     <string name="download_windows">download windows version</string>
-    <string name="download_url">waveface.com/awesome</string>
+    <string name="download_url">waveface.com/bunny</string>
     <string name="email_description">Email Link to Me</string>
     <string name="install_finding_server">Finding PCs.....</string>
     <string name="install_dialog_title">Can\'t Find Your PC</string>
@@ -56,21 +56,21 @@
 
     <!-- BONHOUR SERVER CHOOSE -->
     <string name="choose_server">Select a PC</string>
-    <string name="pairing">Please open your Windows APP for pairing with your phone</string>
+    <string name="pairing">Please go to your PC to confirm the connection</string>
     <string name="title_pairing">Message</string>
-    <string name="pairing_wait">Please open your Windows APP</string>
-    <string name="pairing_denied">This device has been denied.</string>
-    <string name="pairing_starting_backup">Backup Your files Now.</string>
+    <string name="pairing_wait">Please go to your PC to confirm the connection</string>
+    <string name="pairing_denied">Connection denied.</string>
+    <string name="pairing_starting_backup">Backup your files now.</string>
     <string name="network_state">No Wi-Fi Network</string>    
-    <string name="without_wifi">You have to turn on Wi-Fi Network</string>
+    <string name="without_wifi">You have to turn on Wi-Fi</string>
 
     <!-- FILE TRANSFRING -->
     <string name="file_transfering">%1$s transfering files</string>
-    <string name="backup_view_descript11">There\'re lots of files backup for the first time</string>
-    <string name="backup_view_descript12">please be patient</string>
+    <string name="backup_view_descript11">The first backup takes awhile</string>
+    <string name="backup_view_descript12">Sit back and relax</string>
     <string name="backup_view_descript21">Form now on all your</string>
-    <string name="backup_view_descript22">photos(s) videos(s) audio(s)</string>
-    <string name="backup_view_descript23">backup to your PC automatically through Wi-Fi Network!</string>
+    <string name="backup_view_descript22">photos, videos and audios</string>
+    <string name="backup_view_descript23">will be backup to your PC automatically through Wi-Fi everyday!</string>
 
     <!-- CLEAN STORAGE -->
     <string name="clean_title">Choose Keep Pattern(%1$s)</string>
@@ -84,7 +84,7 @@
 
     <!-- ADD SERVER -->
     <string name="add_new_pc">Add a new PC</string>
-    <string name="paired_pc">Paired PC</string>
+    <string name="paired_pc">Connected PC</string>
 
 
     <!-- BUTTON -->
