@@ -23,6 +23,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.widget.Toast;
+
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
@@ -133,8 +135,10 @@ public class InfiniteService extends Service{
 		//Notification 
 		mNotificationManager = SyncNotificationManager
 				.getInstance(getApplicationContext());
+		
 		// register camera observer
-	    mCamera = new ImageTableObserver(new Handler());
+		BackupLogic.setLastMediaSate(getApplicationContext());
+		mCamera = new ImageTableObserver(new Handler());
 	    getContentResolver().registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, true, mCamera);
 	    mVideo = new VideoTableObserver(new Handler());
 	    getContentResolver().registerContentObserver(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, true, mVideo);
@@ -400,9 +404,9 @@ public class InfiniteService extends Service{
   	  public void onChange(boolean selfChange)
   	  {
   		long maxId = BackupLogic.getMaxIdFromMediaDB(mContext, Constant.TYPE_IMAGE);
-//  		Log.d(TAG, "Photo:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxImageId);
-  		//Toast.makeText(getApplicationContext(), "Image:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxImageId, Toast.LENGTH_LONG).show();
-  		if(maxId > RuntimeState.maxImageId && RuntimeState.isPhotoScaning){
+  		Log.d(TAG, "Photo:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxImageId);
+  		Toast.makeText(getApplicationContext(), "Image:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxImageId, Toast.LENGTH_LONG).show();
+  		if(maxId > RuntimeState.maxImageId && RuntimeState.isPhotoScaning == false){
   			BackupLogic.scanFileForBackup(mContext, Constant.TYPE_IMAGE);
   			mHandler.postDelayed(new Runnable() {
   		        public void run() {
@@ -429,7 +433,7 @@ public class InfiniteService extends Service{
   	  {
   		long maxId = BackupLogic.getMaxIdFromMediaDB(mContext, Constant.TYPE_VIDEO);
 //  		Log.d(TAG, "Video:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxVideoId);
-  		if(maxId > RuntimeState.maxVideoId && RuntimeState.isVideoScaning){
+  		if(maxId > RuntimeState.maxVideoId && RuntimeState.isVideoScaning == false){
 //  			Toast.makeText(getApplicationContext(), "Video:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxVideoId, Toast.LENGTH_LONG).show();
   			mHandler.postDelayed(new Runnable() {
 	        public void run() {
@@ -454,7 +458,7 @@ public class InfiniteService extends Service{
   	  {
   		long maxId = BackupLogic.getMaxIdFromMediaDB(mContext, Constant.TYPE_AUDIO);
 //  		Log.d(TAG, "Audioo:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxAudioId);
-  		if(maxId > RuntimeState.maxAudioId && RuntimeState.isAudioScaning){  			
+  		if(maxId > RuntimeState.maxAudioId && RuntimeState.isAudioScaning == false){  			
 //  			Toast.makeText(getApplicationContext(), "Audioo:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxAudioId, Toast.LENGTH_LONG).show();
   			mHandler.postDelayed(new Runnable() {
 	        public void run() {

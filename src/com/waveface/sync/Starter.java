@@ -32,7 +32,6 @@ public class Starter extends Application {
 		ServersLogic.purgeAllBonjourServer(this);
 		//GET LAST BACKED UP FILE TO RUNTIME STATE
 		ServersLogic.getLastBackupState(getApplicationContext());
-		BackupLogic.setLastMediaSate(getApplicationContext());
 		super.onCreate();
 	}
 
