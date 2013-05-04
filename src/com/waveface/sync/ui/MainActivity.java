@@ -56,6 +56,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	private ImageView mVideoImage;
 	private TextView mVideoCount;
 	private TextView mVideoSize;
+	private ImageView mAudioImage;
 	private TextView mAudioCount;
 	private TextView mAudioSize;
 	private Button mDeletePhotoBtn;
@@ -117,6 +118,8 @@ public class MainActivity extends Activity implements OnClickListener{
 		mVideoSize = (TextView) this.findViewById(R.id.textVideoSize);
 		
 		//AUDIO
+		mAudioImage = (ImageView) this.findViewById(R.id.imageView3);
+		mAudioImage.setOnClickListener(this);
 		mAudioCount = (TextView) this.findViewById(R.id.textAudioCount);
 		mAudioSize = (TextView) this.findViewById(R.id.textAudioSize);
 		
@@ -458,6 +461,12 @@ public class MainActivity extends Activity implements OnClickListener{
 				//TO DISPLAY ALL VIDEOS
 	            startIntent = new Intent(MainActivity.this, ImageViewActivity.class);	    
 	            startIntent.putExtra(Constant.BUNDLE_FILE_TYPE, Constant.TRANSFER_TYPE_VIDEO);	            
+	            startActivity(startIntent);
+				break;
+			case R.id.imageView3:
+				//TO DISPLAY ALL VIDEOS
+	            startIntent = new Intent(MainActivity.this, ImageViewActivity.class);	    
+	            startIntent.putExtra(Constant.BUNDLE_FILE_TYPE, Constant.TRANSFER_TYPE_AUDIO);	            
 	            startActivity(startIntent);
 				break;
  		}

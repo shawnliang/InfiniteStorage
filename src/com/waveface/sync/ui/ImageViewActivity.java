@@ -1,13 +1,18 @@
 package com.waveface.sync.ui;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -19,6 +24,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -35,6 +41,11 @@ public class ImageViewActivity extends Activity {
 	private DisplayMetrics metrics;
 	private int mode = 2;
     private MediaStoreImage mMediaImage;
+    private MainAdapter mAdapter ; 
+    private ImageEntity mEntity;
+    private MediaPlayer mMediaPlayer;
+    private int mDisplayType = 0;
+    
     
 	public static boolean isFileExisted(String filePath) {
 		if (TextUtils.isEmpty(filePath))
@@ -54,12 +65,14 @@ public class ImageViewActivity extends Activity {
 		listview.setFadingEdgeLength(0);
 
 		String mType = getIntent().getStringExtra(Constant.BUNDLE_FILE_TYPE);
-		int displayType = 0;
 		if(mType.equals(Constant.TRANSFER_TYPE_IMAGE)){
-			displayType = Constant.TYPE_IMAGE;
+			mDisplayType = Constant.TYPE_IMAGE;
 		}
 		else if(mType.equals(Constant.TRANSFER_TYPE_VIDEO)){
-			displayType = Constant.TYPE_VIDEO;
+			mDisplayType = Constant.TYPE_VIDEO;
+		}
+		else if(mType.equals(Constant.TRANSFER_TYPE_AUDIO)){
+			mDisplayType = Constant.TYPE_AUDIO;
 		}
 	
 		Cursor cursor = getContentResolver()
@@ -68,7 +81,7 @@ public class ImageViewActivity extends Activity {
 						ImportFilesTable.COLUMN_IMAGE_ID,
 						ImportFilesTable.COLUMN_FILENAME
 				}, ImportFilesTable.COLUMN_FILETYPE+"=?",
-				new String[]{String.valueOf(displayType)}, 
+				new String[]{String.valueOf(mDisplayType)}, 
 				ImportFilesTable.COLUMN_DATE+" DESC");
 		ArrayList<ImageEntity> entities = new ArrayList<ImageEntity>();
 		if(cursor!=null && cursor.getCount()>0){
@@ -76,21 +89,66 @@ public class ImageViewActivity extends Activity {
 			for(int i = 0 ; i<cursor.getCount(); i++ ){
 				ImageEntity entity = new ImageEntity();
 				entity.mediaId = cursor.getLong(0);
-				entity.filename = StringUtil.getFilename(cursor.getString(1));
+				entity.filename = cursor.getString(1);
 				entities.add(entity);
 				cursor.moveToNext();
 			}
 			
 		}
 		cursor.close();
-		MainAdapter mAdapter = new MainAdapter(this, entities, metrics,displayType);
+		mAdapter = new MainAdapter(this, entities, metrics,mDisplayType);
 		listview.setAdapter(mAdapter);
-		
-//		ImagesListAdapter mAdapter = new ImagesListAdapter(this,cursor);
-//		listview.setAdapter(mAdapter);
+		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+		      @Override
+		      public void onItemClick(AdapterView<?> parent, final View view,
+		          int position, long id) {
+		        mEntity = mAdapter.getItem(position);
+		        if(mDisplayType== Constant.TYPE_AUDIO){
+			        if(mMediaPlayer == null){
+			        	mMediaPlayer = new MediaPlayer();
+			        }
+		        	if(mMediaPlayer.isPlaying()){
+			        	mMediaPlayer.stop();
+			        }
+			        try {
+						mMediaPlayer.setDataSource(mEntity.filename);
+						mMediaPlayer.prepare();
+						mMediaPlayer.start();
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (SecurityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalStateException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		        }
+		        else{		        	
+		            Intent intent = new Intent();
+		            intent.setAction(android.content.Intent.ACTION_VIEW);
+		            File file = new File(mEntity.filename);
+		            if(mDisplayType== Constant.TYPE_VIDEO){
+		            	intent.setDataAndType(Uri.fromFile(file), "video/*");
+		            }
+		            else{
+		            	intent.setDataAndType(Uri.fromFile(file), "image/*");		            	
+		            }
+		            startActivity(intent); 
+		        }
+		      }
+		});		
 		setContentView(listview);
 	}
-
+	public void openInGallery(String imageId) {
+		  Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI.buildUpon().appendPath(imageId).build();
+		  Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+		  startActivity(intent);
+	}
 	public boolean onCreateOptionsMenu(Menu menu) {
 		boolean result = super.onCreateOptionsMenu(menu);
 		menu.add(Menu.NONE, 1, 0, "1");
@@ -118,6 +176,7 @@ public class ImageViewActivity extends Activity {
 
 		private class Holder {
 			public ImageView imageview;
+			public ImageView playMark;			
 			public TextView textview;
 		}
 
@@ -144,6 +203,7 @@ public class ImageViewActivity extends Activity {
 
 				holder = new Holder();
 				holder.imageview = (ImageView)convertView.findViewById(R.id.ivImage);
+				holder.playMark = (ImageView)convertView.findViewById(R.id.ivPlayVideo);				
 				holder.textview = (TextView) convertView.findViewById(R.id.tvFilename);
 				
 				holder.textview.setTextColor(0xFFFFFFFF);
@@ -157,7 +217,16 @@ public class ImageViewActivity extends Activity {
 			if(b!=null){
 				holder.imageview.setImageBitmap(b);
 			}
-			holder.textview.setText(entity.filename);
+			else{
+				holder.imageview.setImageResource(R.drawable.ic_audio);
+			}
+			if(this.displayType == Constant.TYPE_IMAGE){
+				holder.playMark.setVisibility(View.GONE);
+			}
+			else{
+				holder.playMark.setVisibility(View.VISIBLE);
+			}
+			holder.textview.setText(StringUtil.getFilename(entity.filename));
 
 			Animation animation = null;
 
@@ -197,7 +266,7 @@ public class ImageViewActivity extends Activity {
 		}
 
 		@Override
-		public Object getItem(int position) {
+		public ImageEntity getItem(int position) {
 			return entities.get(position);
 		}
 
