@@ -214,22 +214,18 @@ public class MainActivity extends Activity implements OnClickListener{
 				dismissProgress();
 				String actionContent = intent.getStringExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT);
 				if(actionContent!=null){
-//					if(actionContent.equals(Constant.WS_ACTION_BACKUP_INFO)){
-//						//refreshServerStatus();
-//					}
-//					else if(actionContent.equals(Constant.WS_ACTION_ACCEPT)){
 					if(actionContent.equals(Constant.WS_ACTION_ACCEPT)){
 						if(RuntimeState.mAutoConnectMode){
 							dismissProgress();
 						}
+						displayProgressingInfo();
 					}
 					else if(actionContent.equals(Constant.WS_ACTION_SOCKET_CLOSED)){
 						displayProgressingInfo();
 					}
 				}
 			}
-			else if(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING.equals(action)){
-				
+			else if(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING.equals(action)){				
 				firsttimeDispaly();
 				displayProgressingInfo();
 			}	
