@@ -27,7 +27,8 @@ public class BackupedServersTable implements BaseColumns {
 	public static final String COLUMN_VIDEO_COUNT = "videoCount";	
 	public static final String COLUMN_AUDIO_COUNT = "audioCount";
 	public static final String COLUMN_LAST_DISPLAY_BACKUP_DATETIME = "lastDisplayBackupTime";	
-	public static final String COLUMN_LAST_FILE_BACKUP_DATETIME = "lastFileBackupTime";		
+	public static final String COLUMN_LAST_FILE_MEDIA_ID = "lastFileMediaId";		
+	
 	
 	private BackupedServersTable() {
 

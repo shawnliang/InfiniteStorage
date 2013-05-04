@@ -24,17 +24,20 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/imagePC"
-        android:text="nfejkfeknk"
+        android:layout_toLeftOf="@+id/ivConnected"
+        android:text="@string/user_pc"
         android:textColor="#FFFFFF"
         android:textSize="16sp" />
 
     <ImageView
         android:id="@+id/ivConnected"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/textBackupPC"
-        android:src="@android:drawable/btn_star_big_on"
-        android:visibility="invisible" />
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:src="@drawable/ic_checked"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -69,6 +69,7 @@
     <string name="pairing_starting_backup">現在開始進行備份</string> 
     <string name="network_state">沒有無線網路</string>    
     <string name="without_wifi">您必須將無線網路開啟</string>
+    <string name="user_pc">使用者-電腦名稱</string>
     
     
     <!--FILE TRANSFRING-->    

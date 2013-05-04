@@ -571,7 +571,7 @@ public class SyncProvider extends ContentProvider {
 						+ BackupedServersTable.COLUMN_VIDEO_COUNT + ","
 						+ BackupedServersTable.COLUMN_AUDIO_COUNT + ","	
 						+ BackupedServersTable.COLUMN_LAST_DISPLAY_BACKUP_DATETIME + ","
-						+ BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME + ")"
+						+ BackupedServersTable.COLUMN_LAST_FILE_MEDIA_ID + ")"
 						+ " values (?,?,?,?,?,?,?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
@@ -586,7 +586,7 @@ public class SyncProvider extends ContentProvider {
 					insert.bindString(9, value.getAsString(BackupedServersTable.COLUMN_VIDEO_COUNT));
 					insert.bindString(10, value.getAsString(BackupedServersTable.COLUMN_AUDIO_COUNT));			
 					insert.bindString(11, value.getAsString(BackupedServersTable.COLUMN_LAST_DISPLAY_BACKUP_DATETIME));
-					insert.bindString(12, value.getAsString(BackupedServersTable.COLUMN_LAST_FILE_BACKUP_DATETIME));				
+					insert.bindString(12, value.getAsString(BackupedServersTable.COLUMN_LAST_FILE_MEDIA_ID));				
 					insert.execute();
 				}
 				db.setTransactionSuccessful();

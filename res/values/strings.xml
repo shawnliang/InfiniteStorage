@@ -70,6 +70,8 @@
     <string name="pairing_starting_backup">Backup your files now.</string>
     <string name="network_state">No Wi-Fi Network</string>    
     <string name="without_wifi">You have to turn on Wi-Fi</string>
+    <string name="user_pc">User-PCNAME</string>
+    
 
     <!-- FILE TRANSFRING -->
     <string name="file_transfering">%1$s transfering files</string>

@@ -11,7 +11,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,7 +31,6 @@ import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.service.InfiniteService;
 import com.waveface.sync.util.DeviceUtil;
-import com.waveface.sync.util.ImageUtil;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.NetworkUtil;
 import com.waveface.sync.util.StringUtil;
@@ -231,6 +229,7 @@ public class MainActivity extends Activity implements OnClickListener{
 				}
 			}
 			else if(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING.equals(action)){
+				
 				firsttimeDispaly();
 				displayProgressingInfo();
 			}	

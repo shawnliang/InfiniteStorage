@@ -405,7 +405,7 @@ public class InfiniteService extends Service{
   	  {
   		long maxId = BackupLogic.getMaxIdFromMediaDB(mContext, Constant.TYPE_IMAGE);
   		Log.d(TAG, "Photo:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxImageId);
-  		Toast.makeText(getApplicationContext(), "Image:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxImageId, Toast.LENGTH_LONG).show();
+//  		Toast.makeText(getApplicationContext(), "Image:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxImageId, Toast.LENGTH_LONG).show();
   		if(maxId > RuntimeState.maxImageId && RuntimeState.isPhotoScaning == false){
   			BackupLogic.scanFileForBackup(mContext, Constant.TYPE_IMAGE);
   			mHandler.postDelayed(new Runnable() {

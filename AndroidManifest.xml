@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.waveface.sync"
-    android:versionCode="7"
-    android:versionName="1.0.6" >
+    android:versionCode="8"
+    android:versionName="0.5.1" >
 
     <uses-sdk android:minSdkVersion="9"/>
 
@@ -27,6 +27,7 @@
         android:name="com.waveface.sync.Starter"
         android:debuggable="true"
         android:hardwareAccelerated="true"
+        android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
