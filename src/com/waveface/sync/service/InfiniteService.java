@@ -239,6 +239,9 @@ public class InfiniteService extends Service{
 						if(NetworkUtil.isWifiNetworkAvailable(mContext) && RuntimeState.isMDNSSetUped== false){
 							Log.d(TAG, "reset MDNS");
 							setupMDNS();
+							if(!RuntimeState.isScaning){
+								BackupLogic.scanAllFiles(mContext);
+							}
 						}
 					}
 				}
