@@ -451,24 +451,24 @@ public class MainActivity extends Activity implements OnClickListener{
 	            startIntent.putExtra(Constant.BUNDLE_FILE_TYPE, Constant.TRANSFER_TYPE_AUDIO);
 	            startActivityForResult(startIntent, Constant.REQUEST_CODE_CLEAN_STORAGE);
 				break;
-			case R.id.imageView1:
-				//TO DISPLAY ALL IMAGES
-	            startIntent = new Intent(MainActivity.this, ImageViewActivity.class);	    
-	            startIntent.putExtra(Constant.BUNDLE_FILE_TYPE, Constant.TRANSFER_TYPE_IMAGE);	            
-	            startActivity(startIntent);
-				break;
-			case R.id.imageView2:
-				//TO DISPLAY ALL VIDEOS
-	            startIntent = new Intent(MainActivity.this, ImageViewActivity.class);	    
-	            startIntent.putExtra(Constant.BUNDLE_FILE_TYPE, Constant.TRANSFER_TYPE_VIDEO);	            
-	            startActivity(startIntent);
-				break;
-			case R.id.imageView3:
-				//TO DISPLAY ALL VIDEOS
-	            startIntent = new Intent(MainActivity.this, ImageViewActivity.class);	    
-	            startIntent.putExtra(Constant.BUNDLE_FILE_TYPE, Constant.TRANSFER_TYPE_AUDIO);	            
-	            startActivity(startIntent);
-				break;
+//			case R.id.imageView1:
+//				//TO DISPLAY ALL IMAGES
+//	            startIntent = new Intent(MainActivity.this, ImageViewActivity.class);	    
+//	            startIntent.putExtra(Constant.BUNDLE_FILE_TYPE, Constant.TRANSFER_TYPE_IMAGE);	            
+//	            startActivity(startIntent);
+//				break;
+//			case R.id.imageView2:
+//				//TO DISPLAY ALL VIDEOS
+//	            startIntent = new Intent(MainActivity.this, ImageViewActivity.class);	    
+//	            startIntent.putExtra(Constant.BUNDLE_FILE_TYPE, Constant.TRANSFER_TYPE_VIDEO);	            
+//	            startActivity(startIntent);
+//				break;
+//			case R.id.imageView3:
+//				//TO DISPLAY ALL VIDEOS
+//	            startIntent = new Intent(MainActivity.this, ImageViewActivity.class);	    
+//	            startIntent.putExtra(Constant.BUNDLE_FILE_TYPE, Constant.TRANSFER_TYPE_AUDIO);	            
+//	            startActivity(startIntent);
+//				break;
  		}
 	}
 	class StartServiceTask extends AsyncTask<Void,Void,Void>{
