@@ -80,9 +80,10 @@
 
         <Button
             android:id="@+id/btnPre"
-            android:layout_width="wrap_content"
+            android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/btn_click"
             android:text="@string/btn_cancel" />
 
     </LinearLayout>

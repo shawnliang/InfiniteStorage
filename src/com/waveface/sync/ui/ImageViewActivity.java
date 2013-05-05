@@ -13,7 +13,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -273,32 +272,6 @@ public class ImageViewActivity extends Activity {
 		@Override
 		public long getItemId(int position) {
 			return 0;
-		}
-	}
-	class ImagesListAdapter extends CursorAdapter
-	{
-		LayoutInflater inflater;
-	
-		public ImagesListAdapter(Context context, Cursor c) {
-			super(context, c);
-			inflater = LayoutInflater.from(context);
-		}
-
-		@Override
-		public void bindView(View view, Context context, Cursor cursor) {
-			ImageView iv = (ImageView)view.findViewById(R.id.ivImage);
-			TextView tv2 = (TextView)view.findViewById(R.id.tvFilename);
-	
-			Bitmap b = mMediaImage.getBitmap(cursor.getLong(0), Constant.TYPE_IMAGE);
-			if(b!=null){
-				iv.setImageBitmap(b);
-			}
-			tv2.setText(cursor.getString(1));
-		}
-	
-		@Override
-		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			return inflater.inflate(R.layout.image_list_item, parent, false);
 		}
 	}
 }
