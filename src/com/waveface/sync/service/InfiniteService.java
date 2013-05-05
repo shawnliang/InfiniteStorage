@@ -408,9 +408,9 @@ public class InfiniteService extends Service{
 //  		Toast.makeText(getApplicationContext(), "Image:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxImageId, Toast.LENGTH_LONG).show();
   		if(maxId > RuntimeState.maxImageId && RuntimeState.isPhotoScaning == false){
   			BackupLogic.scanFileForBackup(mContext, Constant.TYPE_IMAGE);
+	        RuntimeState.isPhotoScaning = true;
   			mHandler.postDelayed(new Runnable() {
   		        public void run() {
-  		        	RuntimeState.isPhotoScaning = true;
   		        	BackupLogic.scanFileForBackup(mContext, Constant.TYPE_IMAGE);
   		        	RuntimeState.isPhotoScaning = false;
   		        	}
@@ -432,16 +432,18 @@ public class InfiniteService extends Service{
   	  public void onChange(boolean selfChange)
   	  {
   		long maxId = BackupLogic.getMaxIdFromMediaDB(mContext, Constant.TYPE_VIDEO);
-//  		Log.d(TAG, "Video:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxVideoId);
+  		Log.d(TAG, "Video:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxVideoId);
   		if(maxId > RuntimeState.maxVideoId && RuntimeState.isVideoScaning == false){
 //  			Toast.makeText(getApplicationContext(), "Video:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxVideoId, Toast.LENGTH_LONG).show();
-  			mHandler.postDelayed(new Runnable() {
-	        public void run() {
-	        	RuntimeState.isVideoScaning = true;
-	        	BackupLogic.scanFileForBackup(mContext, Constant.TYPE_VIDEO);
-	        	RuntimeState.isVideoScaning = false;
-	        	}
-	        }, 3000);
+  			if(BackupLogic.getFileSizeFromDB(mContext, Constant.TYPE_VIDEO, maxId)>0){  			  			
+  				RuntimeState.isVideoScaning = true;
+  				mHandler.postDelayed(new Runnable() {
+		        public void run() {
+		        	BackupLogic.scanFileForBackup(mContext, Constant.TYPE_VIDEO);
+		        	RuntimeState.isVideoScaning = false;
+		        	}
+		        }, 3000);
+  			}
   		}
   	  }
    }
@@ -460,13 +462,15 @@ public class InfiniteService extends Service{
 //  		Log.d(TAG, "Audioo:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxAudioId);
   		if(maxId > RuntimeState.maxAudioId && RuntimeState.isAudioScaning == false){  			
 //  			Toast.makeText(getApplicationContext(), "Audioo:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxAudioId, Toast.LENGTH_LONG).show();
-  			mHandler.postDelayed(new Runnable() {
-	        public void run() {
+  			if(BackupLogic.getFileSizeFromDB(mContext, Constant.TYPE_AUDIO, maxId)>0){  			  			
 	        	RuntimeState.isAudioScaning = true;
-	        	BackupLogic.scanFileForBackup(mContext, Constant.TYPE_AUDIO);
-	        	RuntimeState.isAudioScaning = false;
-	        	}
-	        }, 2000);
+  				mHandler.postDelayed(new Runnable() {
+		        public void run() {
+		        	BackupLogic.scanFileForBackup(mContext, Constant.TYPE_AUDIO);
+		        	RuntimeState.isAudioScaning = false;
+		        	}
+		        }, 2000);
+  			}
   		}
   	  }
    }

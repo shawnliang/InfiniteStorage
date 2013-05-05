@@ -198,7 +198,8 @@ public class BackupLogic {
 					}
 					if (refCursorDate > 0 || cursorDate == null) {
 						cursorDate = StringUtil.getLocalDate(refCursorDate);
-					} else {
+					} 
+					else {
 						cursorDate = FileUtil.getFileCreateTime(mediaData);
 					}
 					if (!TextUtils.isEmpty(cursorDate)) {
@@ -380,6 +381,7 @@ public class BackupLogic {
 				cursor.moveToFirst();
 				for (int i = 0; i < count; i++) {
 					totalSizes += cursor.getLong(0);
+					cursor.moveToNext();
 				}
 			}
 		} catch (Exception e) {
@@ -581,7 +583,6 @@ public class BackupLogic {
 		boolean isSuccesed = false;
 		String filename = null;
 		int filetype = 0;
-		String fileDatetime = null;
 		long lastBackupMediaId = 0;
 		// select from serverFiles
 		ContentResolver cr = context.getContentResolver();
@@ -603,7 +604,8 @@ public class BackupLogic {
 			cursor = cr.query(ImportFilesTable.CONTENT_URI, new String[] {
 					ImportFilesTable.COLUMN_FILENAME,
 					ImportFilesTable.COLUMN_FILETYPE,
-					ImportFilesTable.COLUMN_SIZE, ImportFilesTable.COLUMN_DATE,
+					ImportFilesTable.COLUMN_SIZE, 
+					ImportFilesTable.COLUMN_DATE,
 					ImportFilesTable.COLUMN_IMAGE_ID },
 					ImportFilesTable.COLUMN_IMAGE_ID + " > ?",
 					new String[] { String.valueOf(lastBackupMediaId) },
@@ -633,8 +635,15 @@ public class BackupLogic {
 						entity.folder = StringUtil.getFilepath(filename,
 								entity.fileName);
 						entity.datetime = cursor.getString(3);
-						fileDatetime = entity.datetime;
-
+						
+						if(entity.fileSize.equals("0")){
+							break;
+						}
+						//CHECK FOR VIDEO/AUDIO TIME
+//						if(filetype == Constant.TYPE_AUDIO || filetype == Constant.TYPE_VIDEO){
+//							//TODO: reject filesize =0;
+//						}
+						
 						// FOR UI DISPLAY
 						RuntimeState.mFilename = entity.fileName;
 						RuntimeState.mFileType = filetype;
@@ -647,7 +656,6 @@ public class BackupLogic {
 						Log.d(TAG, "BACKUPING: type:" + entity.type
 								+ ",Filename:" + entity.fileName);
 						// FOR UI DISPLAY
-
 						try {
 							if (RuntimeState.isWebSocketAvaliable(context)) {
 								RuntimeWebClient.send(RuntimeState.GSON
@@ -730,6 +738,8 @@ public class BackupLogic {
 		}
 	}
 
+	 
+	
 	public static void scanAllFiles(Context context) {
 		RuntimeState.isScaning = true;
 		scanFileForBackup(context, Constant.TYPE_AUDIO);
@@ -806,8 +816,6 @@ public class BackupLogic {
 
 	public static long getMaxIdFromMediaDB(Context context, int type) {
 		long maxMediaId = 0;
-		String columnName = MediaStore.Audio.Media._ID;
-		String columns[] = new String[] { columnName };
 		Uri mediaUri = null;
 		switch (type) {
 		case Constant.TYPE_IMAGE:
@@ -820,7 +828,8 @@ public class BackupLogic {
 			mediaUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 			break;
 		}
-		Cursor cursor = context.getContentResolver().query(mediaUri, columns,
+		Cursor cursor = context.getContentResolver().query(mediaUri, 
+				new String[] { MediaStore.Audio.Media._ID },
 				null, null, MediaStore.Images.Media._ID + " DESC");
 		maxMediaId = cursor.moveToFirst() ? cursor.getLong(cursor
 				.getColumnIndex(MediaStore.Audio.Media._ID)) : -1;
@@ -830,6 +839,66 @@ public class BackupLogic {
 		cursor = null;
 		return maxMediaId;
 	}
+	public static long getModifiedTime(Context context, int type,long mediaId) {
+		long dateModified = -1;
+		long dateAdded = -1;		
+		Uri mediaUri = null;
+		switch (type) {
+		case Constant.TYPE_VIDEO:
+			mediaUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+			break;
+		case Constant.TYPE_AUDIO:
+			mediaUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+			break;
+		}
+		Cursor cursor = context.getContentResolver().query(mediaUri, 
+				new String[] 
+						{ MediaStore.Video.Media.DATE_MODIFIED,
+						MediaStore.Video.Media.DATE_ADDED,
+						MediaStore.Video.Media.SIZE,
+						MediaStore.Video.Media.DATA
+						},
+						MediaStore.Images.Media._ID+"=?", 
+						new String[]{String.valueOf(mediaId)}, 
+						null);
+		if(cursor !=null && cursor.getCount()>0){
+			cursor.moveToFirst(); 
+			dateModified = cursor.getLong(0);
+			dateAdded = cursor.getLong(1);		
+			Log.d("InfiniteService", "dateAdded:"+dateAdded);
+			Log.d("InfiniteService", "size:"+cursor.getLong(2));
+			Log.d("InfiniteService", "real size:"+ new File(cursor.getString(3)).length());
+			cursor.close();
+		}
+		cursor = null;
+		return dateModified;
+	}
+	public static long getFileSizeFromDB(Context context, int type,long mediaId) {
+		long fileSize = -1;
+		Uri mediaUri = null;
+		switch (type) {
+		case Constant.TYPE_VIDEO:
+			mediaUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+			break;
+		case Constant.TYPE_AUDIO:
+			mediaUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+			break;
+		}
+		Cursor cursor = context.getContentResolver().query(mediaUri, 
+				new String[] 
+						{MediaStore.Video.Media.SIZE},
+						MediaStore.Images.Media._ID+"=?", 
+						new String[]{String.valueOf(mediaId)}, 
+						null);
+		if(cursor !=null && cursor.getCount()>0){
+			cursor.moveToFirst(); 
+			fileSize = cursor.getLong(0);
+			cursor.close();
+		}
+		cursor = null;
+		return fileSize;
+	}
+	
 
 	public static void setLastMediaSate(Context context) {
 		int[] types = { Constant.TYPE_IMAGE, Constant.TYPE_VIDEO,
