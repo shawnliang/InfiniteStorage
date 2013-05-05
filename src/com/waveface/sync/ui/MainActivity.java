@@ -157,6 +157,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		filter.addAction(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING);		
 		filter.addAction(Constant.ACTION_BACKUP_DONE);
 		filter.addAction(Constant.ACTION_SCAN_FILE);		
+		filter.addAction(Constant.ACTION_FILE_DELETED);
 		filter.addAction(Constant.ACTION_WS_SERVER_NOTIFY);
 		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
 		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);
@@ -211,7 +212,8 @@ public class MainActivity extends Activity implements OnClickListener{
 			String action = intent.getAction();
 			Log.d(TAG, "action:" + intent.getAction());
 			if (Constant.ACTION_SCAN_FILE.equals(action) || 
-					Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED.equals(action)) {
+					Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED.equals(action)
+					||Constant.ACTION_FILE_DELETED.equals(action)) {
 				refreshLayout();
 			}
 			else if (Constant.ACTION_BACKUP_DONE.equals(action)) {

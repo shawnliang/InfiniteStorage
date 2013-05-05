@@ -18,6 +18,7 @@ public class Constant {
 	public final static String ACTION_BACKUP_FILE = "com.waveface.sync.action.BACKUP_FILE";	
 	public final static String ACTION_BACKUP_DONE = "com.waveface.sync.action.BACKUP_DONE";	
 	public final static String ACTION_SCAN_FILE = "com.waveface.sync.action.SCAN_FILE";
+	public final static String ACTION_FILE_DELETED = "com.waveface.sync.action.FILE_DELETED";	
 	public final static String ACTION_INFINITE_STORAGE_ALARM = "com.waveface.sync.action.INFINITE_STORAGE_ALARM";
 	public final static String ACTION_WEB_SOCKET_SERVER_CONNECTED = "com.waveface.sync.action.WEB_SOCKET_SERVER_CONNECTED";
 	

@@ -22,11 +22,11 @@ public class InfiniteReceiver extends BroadcastReceiver {
 //		RuntimeState.isServiceRunnng = 
 //				AppUtil.isThisServiceRunning(context,InfiniteService.class.getName());
 //		Toast.makeText(context, "action:"+action+",isServiceRunnng:"+RuntimeState.isServiceRunnng, Toast.LENGTH_LONG).show();
-		Log.d(TAG, "time:"+StringUtil.getLocalDate()+":action:"+action);
+//		Log.d(TAG, "time:"+StringUtil.getLocalDate()+":action:"+action);
 		if(context!= null){ 
 //			 if(RuntimeState.isServiceRunnng == false){
 //			Toast.makeText(context, "START Infinite Service", Toast.LENGTH_LONG).show();   
-				 context.startService(new Intent(context, InfiniteService.class));
+			context.startService(new Intent(context, InfiniteService.class));
 //			}
 			if(!TextUtils.isEmpty(action) && action.equals("android.net.conn.CONNECTIVITY_CHANGE")){
 				Intent inte = new Intent(Constant.ACTION_NETWORK_STATE_CHANGE);

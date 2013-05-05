@@ -10,26 +10,19 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Environment;
 
 import com.crashlytics.android.Crashlytics;
-import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.util.Log;
 
 public class Starter extends Application {
 	private static final String TAG = Starter.class.getSimpleName();	
 	
 	@Override
 	public void onCreate() {
-		Log.d(TAG,
-				"NativeHeapAllocatedSize:"
-						+ android.os.Debug.getNativeHeapAllocatedSize());
 		boolean isDebuggable = (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
 		if(isDebuggable){
 			setupCrashlytics();
 		}
 		
 		initialDirectory();
-		ServersLogic.updateAllBackedServerOffline(this);
-		ServersLogic.purgeAllBonjourServer(this);
 		//GET LAST BACKED UP FILE TO RUNTIME STATE
 		ServersLogic.getLastBackupState(getApplicationContext());
 		super.onCreate();

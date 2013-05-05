@@ -374,8 +374,12 @@ public class BackupLogic {
 		try {
 			cursor = cr.query(ImportFilesTable.CONTENT_URI,
 					new String[] { ImportFilesTable.COLUMN_SIZE },
-					ImportFilesTable.COLUMN_FILETYPE + "=?",
-					new String[] { String.valueOf(type) }, null);
+					ImportFilesTable.COLUMN_FILETYPE + "=? AND "+
+				    ImportFilesTable.COLUMN_STATUS + "!=? AND "+
+				    ImportFilesTable.COLUMN_STATUS + "!=? ",
+					new String[] { String.valueOf(type),
+					               Constant.IMPORT_FILE_DELETED,
+					               Constant.IMPORT_FILE_EXCLUDE}, null);
 			if (cursor != null && cursor.getCount() > 0) {
 				count = cursor.getCount();
 				cursor.moveToFirst();
@@ -584,6 +588,7 @@ public class BackupLogic {
 		String filename = null;
 		int filetype = 0;
 		long lastBackupMediaId = 0;
+		String status = null;
 		// select from serverFiles
 		ContentResolver cr = context.getContentResolver();
 		Cursor cursor = null;
@@ -606,7 +611,8 @@ public class BackupLogic {
 					ImportFilesTable.COLUMN_FILETYPE,
 					ImportFilesTable.COLUMN_SIZE, 
 					ImportFilesTable.COLUMN_DATE,
-					ImportFilesTable.COLUMN_IMAGE_ID },
+					ImportFilesTable.COLUMN_IMAGE_ID,
+					ImportFilesTable.COLUMN_STATUS},
 					ImportFilesTable.COLUMN_IMAGE_ID + " > ?",
 					new String[] { String.valueOf(lastBackupMediaId) },
 					ImportFilesTable.COLUMN_IMAGE_ID);
@@ -616,47 +622,47 @@ public class BackupLogic {
 				for (int i = 0; i < count; i++) {
 					// send file index for start
 					filename = cursor.getString(0);
-					if (FileUtil.isFileExisted(filename)) {
-						entity.action = Constant.WS_ACTION_FILE_START;
-						entity.fileName = StringUtil.getFilename(filename);
-						filetype = cursor.getInt(1);
-						switch (filetype) {
-						case Constant.TYPE_IMAGE:
-							entity.type = Constant.TRANSFER_TYPE_IMAGE;
-							break;
-						case Constant.TYPE_AUDIO:
-							entity.type = Constant.TRANSFER_TYPE_AUDIO;
-							break;
-						case Constant.TYPE_VIDEO:
-							entity.type = Constant.TRANSFER_TYPE_VIDEO;
-							break;
-						}
-						entity.fileSize = cursor.getString(2);
-						entity.folder = StringUtil.getFilepath(filename,
-								entity.fileName);
-						entity.datetime = cursor.getString(3);
-						
-						if(entity.fileSize.equals("0")){
-							break;
-						}
-						//CHECK FOR VIDEO/AUDIO TIME
-//						if(filetype == Constant.TYPE_AUDIO || filetype == Constant.TYPE_VIDEO){
-//							//TODO: reject filesize =0;
-//						}
-						
+					
+					entity.action = Constant.WS_ACTION_FILE_START;
+					entity.fileName = StringUtil.getFilename(filename);
+					filetype = cursor.getInt(1);
+					switch (filetype) {
+					case Constant.TYPE_IMAGE:
+						entity.type = Constant.TRANSFER_TYPE_IMAGE;
+						break;
+					case Constant.TYPE_AUDIO:
+						entity.type = Constant.TRANSFER_TYPE_AUDIO;
+						break;
+					case Constant.TYPE_VIDEO:
+						entity.type = Constant.TRANSFER_TYPE_VIDEO;
+						break;
+					}
+					entity.fileSize = cursor.getString(2);
+					entity.folder = StringUtil.getFilepath(filename,
+							entity.fileName);
+					entity.datetime = cursor.getString(3);
+											
+					if(Integer.parseInt(entity.fileSize)==0){
+						break;
+					}
+					lastBackupMediaId = cursor.getLong(4);
+					status = cursor.getString(5);
 						// FOR UI DISPLAY
-						RuntimeState.mFilename = entity.fileName;
-						RuntimeState.mFileType = filetype;
-						RuntimeState.mFilename = filename;
-						RuntimeState.mMediaID = cursor.getLong(4);
-						lastBackupMediaId = RuntimeState.mMediaID;
-						intent.putExtra(Constant.EXTRA_BACKING_UP_FILE_STATE,
-								Constant.FILE_START);
-						context.sendBroadcast(intent);
-						Log.d(TAG, "BACKUPING: type:" + entity.type
-								+ ",Filename:" + entity.fileName);
-						// FOR UI DISPLAY
+					if (FileUtil.isFileExisted(filename) 
+							&& !status.equals(Constant.IMPORT_FILE_DELETED) 
+							&& !status.equals(Constant.IMPORT_FILE_EXCLUDE)) {						
 						try {
+							// FOR UI DISPLAY
+							RuntimeState.mFilename = entity.fileName;
+							RuntimeState.mFileType = filetype;
+							RuntimeState.mFilename = filename;
+							RuntimeState.mMediaID = lastBackupMediaId;
+							intent.putExtra(Constant.EXTRA_BACKING_UP_FILE_STATE,
+									Constant.FILE_START);
+							context.sendBroadcast(intent);
+							Log.d(TAG, "BACKUPING: type:" + entity.type
+									+ ",Filename:" + entity.fileName);
+
 							if (RuntimeState.isWebSocketAvaliable(context)) {
 								RuntimeWebClient.send(RuntimeState.GSON
 										.toJson(entity));
@@ -706,7 +712,7 @@ public class BackupLogic {
 							} catch (IOException e) {
 							}
 							if (isSuccesed) {
-								ServersLogic.updateServerLastBackupTime(
+								ServersLogic.updateServerLastBackupMediaId(
 										context, serverId,
 										String.valueOf(lastBackupMediaId));
 								RuntimeState.FileBackedUp(context);
@@ -721,6 +727,11 @@ public class BackupLogic {
 						// UPDATE IMFOR FILE
 						BackupLogic.updateBackupStatus(context, filename,
 								Constant.IMPORT_FILE_DELETED);
+						ServersLogic.updateServerLastBackupMediaId(
+								context, serverId,
+								String.valueOf(lastBackupMediaId));
+						Intent intt = new Intent(Constant.ACTION_FILE_DELETED);
+						context.sendBroadcast(intt);
 						// UPDATE COUNT FOR DETECT FILE IS DELETED
 						ServersLogic.updateCount(context, serverId);
 					}

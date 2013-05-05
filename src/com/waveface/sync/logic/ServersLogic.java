@@ -466,95 +466,43 @@ public class ServersLogic {
 			// send connect cmd
 			UpdateCountEntity entity = new UpdateCountEntity();
 			entity.action = Constant.WS_ACTION_UPDATE_COUNT;
-			entity.transferCount = getTransferCount(context, serverId);
+			entity.transferCount = getTransferCountAndSize(context, serverId)[0];
 			RuntimeWebClient.send(RuntimeState.GSON.toJson(entity));
 		} catch (WebSocketException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static long getTransferCount(Context context, String serverId) {
-		long count = 0;
-		String lastTimestamp = null;
-		ContentResolver cr = context.getContentResolver();
-		Cursor cursor = null;
-		try {
-			cursor = cr.query(BackupedServersTable.CONTENT_URI,
-					new String[] { BackupedServersTable.COLUMN_END_DATETIME },
-					BackupedServersTable.COLUMN_SERVER_ID + " =? ",
-					new String[] { serverId }, null);
-			if (cursor != null && cursor.getCount() > 0) {
-				cursor.moveToFirst();
-				lastTimestamp = cursor.getString(0);
-				cursor.close();
-			}
-			cursor = null;
-			String where = null;
-			String[] whereArgs = null;
-			if (TextUtils.isEmpty(lastTimestamp)) {
-				where = ImportFilesTable.COLUMN_STATUS + "!=? AND "
-						+ ImportFilesTable.COLUMN_STATUS + "!=? ";
-				whereArgs = new String[] { Constant.IMPORT_FILE_DELETED,
-						Constant.IMPORT_FILE_EXCLUDE };
-			} else {
-				where = ImportFilesTable.COLUMN_DATE + ">=? AND "
-						+ ImportFilesTable.COLUMN_STATUS + "!=? AND "
-						+ ImportFilesTable.COLUMN_STATUS + "!=? ";
-				whereArgs = new String[] { lastTimestamp,
-						Constant.IMPORT_FILE_DELETED,
-						Constant.IMPORT_FILE_EXCLUDE };
-			}
-
-			cursor = cr.query(ImportFilesTable.CONTENT_URI,
-					new String[] { ImportFilesTable.COLUMN_SIZE }, where,
-					whereArgs, null);
-			if (cursor != null && cursor.getCount() > 0) {
-				count = cursor.getCount();
-				cursor.close();
-			}
-			cursor = null;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if (cursor != null) {
-				cursor.close();
-				cursor = null;
-			}
-		}
-		return count;
-	}
-
 	public static long[] getTransferCountAndSize(Context context,
 			String serverId) {
 		long count = 0;
 		long totalSize = 0;
-		String lastTimestamp = null;
+		String lastMediaId = null;
 		ContentResolver cr = context.getContentResolver();
 		Cursor cursor = null;
 		try {
 			cursor = cr.query(BackupedServersTable.CONTENT_URI,
-					new String[] { BackupedServersTable.COLUMN_END_DATETIME },
+					new String[] { BackupedServersTable.COLUMN_LAST_FILE_MEDIA_ID },
 					BackupedServersTable.COLUMN_SERVER_ID + " =? ",
 					new String[] { serverId }, null);
 			if (cursor != null && cursor.getCount() > 0) {
 				cursor.moveToFirst();
-				lastTimestamp = cursor.getString(0);
+				lastMediaId = cursor.getString(0);
 				cursor.close();
 			}
 			cursor = null;
 			String where = null;
 			String[] whereArgs = null;
-			if (TextUtils.isEmpty(lastTimestamp)) {
+			if (TextUtils.isEmpty(lastMediaId)) {
 				where = ImportFilesTable.COLUMN_STATUS + "!=? AND "
 						+ ImportFilesTable.COLUMN_STATUS + "!=? ";
 				whereArgs = new String[] { Constant.IMPORT_FILE_DELETED,
 						Constant.IMPORT_FILE_EXCLUDE };
 			} else {
-				where = ImportFilesTable.COLUMN_DATE + ">=? AND "
+				where = ImportFilesTable.COLUMN_IMAGE_ID + "<=? AND "
 						+ ImportFilesTable.COLUMN_STATUS + "!=? AND "
 						+ ImportFilesTable.COLUMN_STATUS + "!=? ";
-				whereArgs = new String[] { lastTimestamp,
+				whereArgs = new String[] { lastMediaId,
 						Constant.IMPORT_FILE_DELETED,
 						Constant.IMPORT_FILE_EXCLUDE };
 			}
@@ -613,7 +561,7 @@ public class ServersLogic {
 		return result;
 	}
 
-	public static int updateServerLastBackupTime(Context context,
+	public static int updateServerLastBackupMediaId(Context context,
 			String serverId, String fileDateTime) {
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
