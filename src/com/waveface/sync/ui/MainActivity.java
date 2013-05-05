@@ -50,10 +50,13 @@ public class MainActivity extends Activity implements OnClickListener{
 	private TextView mDevice;
 	private TextView mTotalInfo;	
 	private TextView mNowPeriod;
+	private ImageView mPhotoImage;
 	private TextView mPhotoCount;
 	private TextView mPhotoSize;
+	private ImageView mVideoImage;
 	private TextView mVideoCount;
 	private TextView mVideoSize;
+	private ImageView mAudioImage;
 	private TextView mAudioCount;
 	private TextView mAudioSize;
 	private Button mDeletePhotoBtn;
@@ -103,13 +106,20 @@ public class MainActivity extends Activity implements OnClickListener{
 		mNowPeriod = (TextView) this.findViewById(R.id.textPeriod);
 
 		//PHOTO
+		mPhotoImage = (ImageView) this.findViewById(R.id.imageView1);
+		mPhotoImage.setOnClickListener(this);
 		mPhotoCount = (TextView) this.findViewById(R.id.textPhotoCount);
 		mPhotoSize = (TextView) this.findViewById(R.id.textPhotoSize);
+		
 		//VIDEO
+		mVideoImage = (ImageView) this.findViewById(R.id.imageView2);
+		mVideoImage.setOnClickListener(this);
 		mVideoCount = (TextView) this.findViewById(R.id.textVideoCount);
 		mVideoSize = (TextView) this.findViewById(R.id.textVideoSize);
 		
 		//AUDIO
+		mAudioImage = (ImageView) this.findViewById(R.id.imageView3);
+		mAudioImage.setOnClickListener(this);
 		mAudioCount = (TextView) this.findViewById(R.id.textAudioCount);
 		mAudioSize = (TextView) this.findViewById(R.id.textAudioSize);
 		
@@ -441,7 +451,25 @@ public class MainActivity extends Activity implements OnClickListener{
 	            startIntent.putExtra(Constant.BUNDLE_FILE_TYPE, Constant.TRANSFER_TYPE_AUDIO);
 	            startActivityForResult(startIntent, Constant.REQUEST_CODE_CLEAN_STORAGE);
 				break;
-		}
+			case R.id.imageView1:
+				//TO DISPLAY ALL IMAGES
+	            startIntent = new Intent(MainActivity.this, ImageViewActivity.class);	    
+	            startIntent.putExtra(Constant.BUNDLE_FILE_TYPE, Constant.TRANSFER_TYPE_IMAGE);	            
+	            startActivity(startIntent);
+				break;
+			case R.id.imageView2:
+				//TO DISPLAY ALL VIDEOS
+	            startIntent = new Intent(MainActivity.this, ImageViewActivity.class);	    
+	            startIntent.putExtra(Constant.BUNDLE_FILE_TYPE, Constant.TRANSFER_TYPE_VIDEO);	            
+	            startActivity(startIntent);
+				break;
+			case R.id.imageView3:
+				//TO DISPLAY ALL VIDEOS
+	            startIntent = new Intent(MainActivity.this, ImageViewActivity.class);	    
+	            startIntent.putExtra(Constant.BUNDLE_FILE_TYPE, Constant.TRANSFER_TYPE_AUDIO);	            
+	            startActivity(startIntent);
+				break;
+ 		}
 	}
 	class StartServiceTask extends AsyncTask<Void,Void,Void>{
 

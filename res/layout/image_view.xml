@@ -1,0 +1,15 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+  		android:drawSelectorOnTop="false"
+  		android:listSelector="@drawable/server_chosed"
+  		android:cacheColorHint="@android:color/transparent"
+		android:clickable="true"
+        android:divider="#00FF00"
+        android:dividerHeight="2dp" />
+</RelativeLayout>

@@ -30,11 +30,10 @@
     <string name="backup_last_local_time">Last Sync Time %1$s</string>
 
     <!-- PROGRESS INFO -->
-    <string name="backup_info_empty">Backing Up ....</string>    
+    <string name="backup_info_empty">Backing Up ....</string>
     <string name="backup_progress">Backing Up %1$d/%2$d</string>
     <string name="backup_done">All backup files are up to date</string>
     <string name="backup_uncompleted">Backup Uncompleted</string>
-    
 
     <!-- FIRST USE -->
     <!-- INSTALL -->
@@ -48,18 +47,18 @@
     <string name="install_dialog_title">Can\'t Find Your PC</string>
     <string name="install_dialog_send_mail">Have you install Windows App？</string>
     <string name="install_dialog_go_install">Receive Email at your PC 上, download from the link and install.</string>
-    
+
     <!-- EMAIL -->
-    <string name="email_subject">Bunny backup app Windows Free download link</string>    
-    <string name="email_content"><![CDATA[
+    <string name="email_subject">Bunny backup app Windows Free download link</string>
+    <string name="email_content">
+<![CDATA[
             <p>Please visit our website to download our FREE Windows app<p>
 			<p><a href="http://cdn.waveface.com/WindowsStation/Bunny-installer.exe">http://waveface.com/bunny</a><p>
 			<p>Once you install the Windows version, connect your phone and it’s done.<p> 
 			<p>If you bump into any problems or have further questions please contact: support@waveface.com<p>
 			<p>Cheers,<p>
-			<p>Waveface Team<p>]]></string>   
-
-
+			<p>Waveface Team<p>]]>
+    </string>
 
     <!-- BONHOUR SERVER CHOOSE -->
     <string name="choose_server">Select a PC</string>
@@ -68,10 +67,9 @@
     <string name="pairing_wait">Please go to your PC to confirm the connection</string>
     <string name="pairing_denied">Connection denied.</string>
     <string name="pairing_starting_backup">Backup your files now.</string>
-    <string name="network_state">No Wi-Fi Network</string>    
+    <string name="network_state">No Wi-Fi Network</string>
     <string name="without_wifi">You have to turn on Wi-Fi</string>
     <string name="user_pc">User-PCNAME</string>
-    
 
     <!-- FILE TRANSFRING -->
     <string name="file_transfering">%1$s transfering files</string>
@@ -95,7 +93,6 @@
     <string name="add_new_pc">Add a new PC</string>
     <string name="paired_pc">Connected PC</string>
 
-
     <!-- BUTTON -->
     <string name="btn_back">Back</string>
     <string name="btn_next">Next</string>
@@ -109,4 +106,6 @@
     <!-- NOTIFICATION -->
     <string name="notify_link_server">Backing Up to %1$s</string>
     <string name="notify_backup_status"> %1$d file(s) Backed-up.</string>
+    <string name="title_activity_image_view">ImageViewActivity</string>
+
 </resources>
