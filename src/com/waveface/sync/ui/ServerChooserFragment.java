@@ -211,7 +211,7 @@ public class ServerChooserFragment extends FragmentBase
 			.setCancelable(false)
 			.setPositiveButton(R.string.email_description,new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog,int id) {
-					FlowLogic.onSendEmail(getActivity());
+					FlowLogic.sendDownloadEmail(getActivity());
 					dialog.cancel();
 				}
 			  })

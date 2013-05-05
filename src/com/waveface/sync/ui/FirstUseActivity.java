@@ -104,7 +104,7 @@ public class FirstUseActivity extends FragmentActivity implements
 
 	@Override
 	public void onSendEmail() {
-		FlowLogic.onSendEmail(this);
+		FlowLogic.sendDownloadEmail(this);
 	}
 
 

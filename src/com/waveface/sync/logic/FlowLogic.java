@@ -12,7 +12,7 @@ import com.waveface.sync.util.DeviceUtil;
 
 public class FlowLogic {
 
-	public static void onSendEmail(Context context) {
+	public static void sendDownloadEmail(Context context) {
 		String subject = context.getString(R.string.email_subject);
 		String content = Html.fromHtml(new StringBuilder()
 			.append(context.getString(R.string.email_content))
