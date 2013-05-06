@@ -1,5 +1,6 @@
 package com.waveface.sync.websocket;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -158,11 +159,15 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
                 notifyContent = Constant.WS_ACTION_WAIT_FOR_PAIR;                				
 			}
 			else if(entity.action.equals(Constant.WS_ACTION_DENIED)){
+				ArrayList<ServerEntity> entities =  ServersLogic.getBackupedServers(mContext);
 				if(!TextUtils.isEmpty(RuntimeState.mWebSocketServerId)){
 					ServersLogic.deniedPairedServer(mContext, RuntimeState.mWebSocketServerId);
 				}
+				else if(entities.size()>0){
+					ServersLogic.deniedPairedServer(mContext, entities.get(0).serverId);					
+				}
 				RuntimeState.setServerStatus(entity.action);
-                notifyContent = Constant.WS_ACTION_DENIED;                				
+                notifyContent = Constant.WS_ACTION_DENIED;                	
 			}
 			else if(entity.action.equals(Constant.WS_ACTION_BACKUP_INFO)){				
 				RuntimeState.setServerStatus(entity.action);

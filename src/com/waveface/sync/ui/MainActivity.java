@@ -235,6 +235,9 @@ public class MainActivity extends Activity implements OnClickListener{
 					else if(actionContent.equals(Constant.WS_ACTION_SOCKET_CLOSED)){
 						displayProgressingInfo();
 					}
+					else if(actionContent.equals(Constant.WS_ACTION_DENIED)){
+						refreshLayout();
+					}
 				}
 			}
 			else if(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING.equals(action)){				

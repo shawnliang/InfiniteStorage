@@ -85,11 +85,16 @@ public class ServersLogic {
 		cv.put(BackupedServersTable.COLUMN_LAST_DISPLAY_BACKUP_DATETIME,
 				StringUtil.getLocalDate());
 		cv.put(BackupedServersTable.COLUMN_LAST_FILE_MEDIA_ID, "");
+		cv.put(BackupedServersTable.COLUMN_LAST_FILE_DATE, "");
+		cv.put(BackupedServersTable.COLUMN_LAST_FILE_UPDATED_DATETIME,"");				
 
 		try {
 			cursor = cr
 					.query(BackupedServersTable.CONTENT_URI,
-							new String[] { BackupedServersTable.COLUMN_LAST_FILE_MEDIA_ID },
+							new String[] { 
+							BackupedServersTable.COLUMN_LAST_FILE_MEDIA_ID,
+							BackupedServersTable.COLUMN_LAST_FILE_DATE,
+							BackupedServersTable.COLUMN_LAST_FILE_UPDATED_DATETIME	},
 							BackupedServersTable.COLUMN_SERVER_ID + "=?",
 							new String[] { entity.serverId }, null);
 			// update
@@ -97,6 +102,10 @@ public class ServersLogic {
 				cursor.moveToFirst();
 				cv.put(BackupedServersTable.COLUMN_LAST_FILE_MEDIA_ID,
 						cursor.getString(0));
+				cv.put(BackupedServersTable.COLUMN_LAST_FILE_DATE,
+						cursor.getString(1));								
+				cv.put(BackupedServersTable.COLUMN_LAST_FILE_UPDATED_DATETIME,
+						cursor.getString(2));				
 				result = cr.update(BackupedServersTable.CONTENT_URI, cv,
 						BackupedServersTable.COLUMN_SERVER_ID + "=?",
 						new String[] { entity.serverId });
@@ -477,35 +486,13 @@ public class ServersLogic {
 			String serverId) {
 		long count = 0;
 		long totalSize = 0;
-		String lastMediaId = null;
 		ContentResolver cr = context.getContentResolver();
 		Cursor cursor = null;
 		try {
-			cursor = cr.query(BackupedServersTable.CONTENT_URI,
-					new String[] { BackupedServersTable.COLUMN_LAST_FILE_MEDIA_ID },
-					BackupedServersTable.COLUMN_SERVER_ID + " =? ",
-					new String[] { serverId }, null);
-			if (cursor != null && cursor.getCount() > 0) {
-				cursor.moveToFirst();
-				lastMediaId = cursor.getString(0);
-				cursor.close();
-			}
-			cursor = null;
-			String where = null;
-			String[] whereArgs = null;
-			if (TextUtils.isEmpty(lastMediaId)) {
-				where = ImportFilesTable.COLUMN_STATUS + "!=? AND "
+			String where = ImportFilesTable.COLUMN_STATUS + "!=? AND "
 						+ ImportFilesTable.COLUMN_STATUS + "!=? ";
-				whereArgs = new String[] { Constant.IMPORT_FILE_DELETED,
+			String[] whereArgs = new String[] { Constant.IMPORT_FILE_DELETED,
 						Constant.IMPORT_FILE_EXCLUDE };
-			} else {
-				where = ImportFilesTable.COLUMN_IMAGE_ID + "<=? AND "
-						+ ImportFilesTable.COLUMN_STATUS + "!=? AND "
-						+ ImportFilesTable.COLUMN_STATUS + "!=? ";
-				whereArgs = new String[] { lastMediaId,
-						Constant.IMPORT_FILE_DELETED,
-						Constant.IMPORT_FILE_EXCLUDE };
-			}
 
 			cursor = cr.query(ImportFilesTable.CONTENT_URI,
 					new String[] { ImportFilesTable.COLUMN_SIZE }, where,
@@ -521,7 +508,6 @@ public class ServersLogic {
 			}
 			cursor = null;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			if (cursor != null) {
@@ -561,13 +547,15 @@ public class ServersLogic {
 		return result;
 	}
 
-	public static int updateServerLastBackupMediaId(Context context,
-			String serverId, String fileDateTime) {
+	public static int updateServerLastBackupStatus(Context context,
+			String serverId, String mediaId,String fileDatetime,String lastFileUpdateTime) {
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
 		cv.put(BackupedServersTable.COLUMN_LAST_DISPLAY_BACKUP_DATETIME,
 				StringUtil.getLocalDate());
-		cv.put(BackupedServersTable.COLUMN_LAST_FILE_MEDIA_ID, fileDateTime);
+		cv.put(BackupedServersTable.COLUMN_LAST_FILE_MEDIA_ID, mediaId);
+		cv.put(BackupedServersTable.COLUMN_LAST_FILE_DATE, fileDatetime);
+		cv.put(BackupedServersTable.COLUMN_LAST_FILE_UPDATED_DATETIME, lastFileUpdateTime);		
 		return cr.update(BackupedServersTable.CONTENT_URI, cv,
 				BackupedServersTable.COLUMN_SERVER_ID + "=?",
 				new String[] { serverId });
@@ -649,31 +637,35 @@ public class ServersLogic {
 	public static void getLastBackupState(Context context) {
 		Cursor cursor = null;
 		ContentResolver cr = context.getContentResolver();
-		String lastBackupMediaId = null;
+		String lastBackupFileDatetime = null;
 		try {
 			cursor = cr
 					.query(BackupedServersTable.CONTENT_URI,
-							new String[] { BackupedServersTable.COLUMN_LAST_FILE_MEDIA_ID },
+							new String[] { BackupedServersTable.COLUMN_LAST_FILE_DATE },
 							BackupedServersTable.COLUMN_STATUS + "!=?",
 							new String[] { Constant.SERVER_DENIED }, null);
 
 			if (cursor != null && cursor.getCount() > 0) {
 				cursor.moveToFirst();
-				lastBackupMediaId = cursor.getString(0);
+				lastBackupFileDatetime = cursor.getString(0);
 			}
-			if (!TextUtils.isEmpty(lastBackupMediaId)) {
+			if (!TextUtils.isEmpty(lastBackupFileDatetime)) {
 				cursor = cr.query(ImportFilesTable.CONTENT_URI, new String[] {
 						ImportFilesTable.COLUMN_FILENAME,
 						ImportFilesTable.COLUMN_FILETYPE,
-						ImportFilesTable.COLUMN_IMAGE_ID },
-						ImportFilesTable.COLUMN_IMAGE_ID + "=?",
-						new String[] { lastBackupMediaId }, null);
+						ImportFilesTable.COLUMN_IMAGE_ID,
+						ImportFilesTable.COLUMN_DATE,
+						ImportFilesTable.COLUMN_UPDATE_TIME},
+						ImportFilesTable.COLUMN_DATE + "=?",
+						new String[] { lastBackupFileDatetime }, null);
 
 				if (cursor != null && cursor.getCount() > 0) {
 					cursor.moveToFirst();
 					RuntimeState.mFilename = cursor.getString(0);
 					RuntimeState.mFileType = cursor.getInt(1);
 					RuntimeState.mMediaID = cursor.getLong(2);
+					RuntimeState.mFileDatetime = cursor.getString(3);
+					RuntimeState.mFileUpdatedDate = cursor.getString(4);
 				}
 			}
 		} catch (Exception e) {

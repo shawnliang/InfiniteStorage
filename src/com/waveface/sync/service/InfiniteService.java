@@ -127,11 +127,9 @@ public class InfiniteService extends Service{
 		filter.addAction(Constant.ACTION_BACKUP_FILE);
 		registerReceiver(mReceiver, filter);
 
-		mPairedServers = ServersLogic.getBackupedServers(this);
-		if(mPairedServers.size()!=0){
-			RuntimeState.mAutoConnectMode = true ;
-		}
+		RuntimeState.mAutoConnectMode = ServersLogic.hasBackupedServers(this);
 		setupMDNS();
+		
 		//Notification 
 		mNotificationManager = SyncNotificationManager
 				.getInstance(getApplicationContext());
@@ -438,7 +436,7 @@ public class InfiniteService extends Service{
   	  {
   		long maxId = BackupLogic.getMaxIdFromMediaDB(mContext, Constant.TYPE_VIDEO);
   		Log.d(TAG, "Video:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxVideoId);
-  		if(maxId > RuntimeState.maxVideoId && RuntimeState.isVideoScaning == false){
+  		if(maxId != RuntimeState.maxVideoId && RuntimeState.isVideoScaning == false){
 //  			Toast.makeText(getApplicationContext(), "Video:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxVideoId, Toast.LENGTH_LONG).show();
   			if(BackupLogic.getFileSizeFromDB(mContext, Constant.TYPE_VIDEO, maxId)>0){  			  			
   				RuntimeState.isVideoScaning = true;
