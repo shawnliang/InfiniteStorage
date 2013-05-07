@@ -63,8 +63,7 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 
 	@Override
 	public void onBackPressed() {
-		getActivity().finish();
-		
+		super.onBackPressed();
 	}
 
 	private class BonjourServerContentObserver extends ContentObserver {
@@ -168,7 +167,6 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 						if(mAlertDialog!=null && mAlertDialog.isShowing()){
 							mAlertDialog.dismiss();
 						}
-						getActivity().setResult(getActivity().RESULT_OK,new Intent());
 					}
 					else if(response.equals(Constant.WS_ACTION_DENIED)){
 						dismissProgress();
@@ -235,6 +233,7 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 		int viewId = v.getId();
 		switch (viewId) {
 			case R.id.btnCancel:
+				getActivity().setResult(getActivity().RESULT_OK);
 				getActivity().finish();
 				break;
 		}

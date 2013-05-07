@@ -38,12 +38,6 @@ public class Preferences extends PreferenceActivity implements
 
 	private boolean mCanBackPress = true;
 
-	// REQUEST
-	public final static int REQUEST_CHANGE_PC = 100;
-	public final static int REQUEST_STORAGE_PLAN = 101;
-	public final static int REQUEST_PHOTO_AUTO_IMPORT = 102;
-	public final static int REQUEST_WEB_SERVICE_IMPORT = 103;
-
 	private final Handler mHandler = new Handler();
 
 	private final Runnable mRunnable = new Runnable() {
@@ -103,6 +97,7 @@ public class Preferences extends PreferenceActivity implements
 	@Override
 	public void onResume() {
 		super.onDestroy();
+		mChangePCPref.setSummary(this.getString(R.string.setting_current)+ServersLogic.getCurrentBackupedServerName(this));
 		mCanBackPress = true;
 	}
 
@@ -127,10 +122,13 @@ public class Preferences extends PreferenceActivity implements
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 		switch (requestCode) {
-		case REQUEST_CHANGE_PC:
-			mChangePCPref.setSummary(this.getString(R.string.setting_current)+ServersLogic.getCurrentBackupedServerName(this));
-			break;
+			case Constant.REQUEST_CODE_CHANGE_SERVER:
+				if (resultCode == RESULT_OK) {
+					mChangePCPref.setSummary(this.getString(R.string.setting_current)+ServersLogic.getCurrentBackupedServerName(this));
+		        }			
+				break;
 		}
 	}
 
@@ -177,6 +175,6 @@ public class Preferences extends PreferenceActivity implements
 
 	private void choseAnewPC(){
         Intent startIntent = new Intent(this, AddServerActivity.class);	                    	
-        startActivityForResult(startIntent, Constant.REQUEST_CODE_ADD_SERVER);							
+        startActivityForResult(startIntent, Constant.REQUEST_CODE_CHANGE_SERVER);							
 	}
 }

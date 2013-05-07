@@ -7,7 +7,9 @@ import com.waveface.sync.ui.FragmentBase.onFragmentChangedListener;
 import android.os.Bundle;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 
 public class AddServerActivity extends FragmentActivity implements
@@ -82,6 +84,13 @@ public class AddServerActivity extends FragmentActivity implements
 	@Override
 	public void goNext(String id) {
 		// TODO Auto-generated method stub
+
+	}
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		setResult(RESULT_OK);
+		finish();		
 
 	}
 }

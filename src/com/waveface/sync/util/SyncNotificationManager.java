@@ -94,7 +94,7 @@ public class SyncNotificationManager {
 		Notification notification = new NotificationCompat.Builder(mContext)        
 				.setContentTitle(title)
 		        .setContentText(content)
-		        .setSmallIcon(R.drawable.ic_launcher)
+		        .setSmallIcon(R.drawable.ic_status)
 		        .setLargeIcon(mediaImage.getBitmap(RuntimeState.mMediaID, RuntimeState.mFileType))
 		        .setContentIntent(pendingIntent).build();
 				
@@ -161,7 +161,7 @@ public class SyncNotificationManager {
 				R.layout.progress_notification);
 		notification.contentIntent = pendingIntent;
 		notification.contentView.setImageViewResource(R.id.status_icon,
-				R.drawable.ic_launcher);
+				R.drawable.ic_status);
 		notification.contentView.setTextViewText(R.id.status_text, content);
 		notification.contentView.setProgressBar(R.id.status_progress, 100, progress,
 				false);
