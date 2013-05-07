@@ -78,7 +78,7 @@ public class Constant {
 	public static final int RESULT_BACK = 20;
 
 	//
-	public final static String NETWORK_ACTION_BROKEN = "network_broken";	
+	public final static String NETWORK_ACTION_WIFI_BROKEN = "network_broken";	
 	public final static String NETWORK_ACTION_WIFI_CONNECTED = "network_wifi_connected";	
 
 	//BONJOUR SERVER ACTION

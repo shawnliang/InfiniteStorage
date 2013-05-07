@@ -73,7 +73,7 @@ public class RuntimeState{
 		}
 		else if(action.equals(Constant.WS_ACTION_SOCKET_CLOSED) 
 				||action.equals(Constant.BS_ACTION_SERVER_REMOVED)
-				||action.equals(Constant.NETWORK_ACTION_BROKEN) ){
+				||action.equals(Constant.NETWORK_ACTION_WIFI_BROKEN) ){
 			OnWebSocketStation = false;
 			OnWebSocketOpened = false;
 			isBackuping = false;

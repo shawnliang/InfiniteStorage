@@ -112,7 +112,6 @@ public class ServerChooserFragment extends FragmentBase
 		displayProgressBar();
 		
 		if(!NetworkUtil.isWifiNetworkAvailable(getActivity())){
-			
 			openDialog(getActivity(),Constant.NETWORK_IS_NOT_WIFI);
 		}
 		else{

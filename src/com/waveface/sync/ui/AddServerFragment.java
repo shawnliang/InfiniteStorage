@@ -16,18 +16,16 @@ import android.content.pm.ActivityInfo;
 import android.database.ContentObserver;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
+
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
@@ -35,6 +33,7 @@ import com.waveface.sync.RuntimeState;
 import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.ServersLogic;
+import com.waveface.sync.util.NetworkUtil;
 import com.waveface.sync.websocket.RuntimeWebClient;
 
 
@@ -116,6 +115,11 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 
 		mBtnCancel = (Button) mRootView.findViewById(R.id.btnCancel);
 		mBtnCancel.setOnClickListener(this);
+
+		if(!NetworkUtil.isWifiNetworkAvailable(getActivity())){
+			ServersLogic.purgeAllBonjourServer(getActivity());
+			openDialog(getActivity(),Constant.NETWORK_IS_NOT_WIFI);
+		}
 				
         mHandler.postDelayed(new Runnable() {
             public void run() {
@@ -175,7 +179,7 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 		}
 	};
 
-	private void openDialog(Context context,String action){
+	private void openDialog(Context context,final String action){
 		if(mAlertDialog!=null && mAlertDialog.isShowing()){
 			mAlertDialog.dismiss();
 		}
@@ -187,7 +191,10 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 		else if(action.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
 			message = context.getString(R.string.pairing_wait);
 		}
-		
+		else if(action.equals(Constant.NETWORK_IS_NOT_WIFI)){
+			title = context.getString(R.string.network_state);
+			message = context.getString(R.string.without_wifi);
+		}
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context); 
 		// set title
 		alertDialogBuilder.setTitle(title);
@@ -197,7 +204,13 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 			.setCancelable(false)
 			.setPositiveButton(R.string.btn_ok,new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog,int id) {
-					dialog.cancel();
+					if(action.equals(Constant.NETWORK_IS_NOT_WIFI)){
+						startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+						dialog.cancel();
+					}
+					else{
+						dialog.cancel();
+					}
 				}
 			  }); 
 		// create alert dialog
@@ -205,6 +218,7 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 		// show it
 		mAlertDialog.show();
 	}
+
 	@Override
 	public void onDestroy() {
 		getActivity().unregisterReceiver(mReceiver);
@@ -213,8 +227,7 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 		cr.unregisterContentObserver(mContentObserver);
 	}
     private void clickToLinkServer(ServerEntity entity){
-		mProgressDialog = ProgressDialog.show(getActivity(), "",getString(R.string.pairing));
-		mProgressDialog.setCancelable(true);
+		openDialog(getActivity(),Constant.WS_ACTION_WAIT_FOR_PAIR);
     	ServersLogic.startWSServerConnect(getActivity(), entity.wsLocation,entity.serverId);
     }
 	@Override

@@ -218,8 +218,6 @@ public class InfiniteService extends Service{
 			//mNotificationManager.cancelAll();
 			RuntimeState.isNotificationShowing = false;
 		}
-
-//		mNotificationManager.cancelAll();
 	}
 
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -229,7 +227,7 @@ public class InfiniteService extends Service{
 			if (Constant.ACTION_NETWORK_STATE_CHANGE.equals(action)) {
 				String actionContent = intent.getStringExtra(Constant.EXTRA_NETWROK_STATE);
 				if(actionContent!=null){
-					if(actionContent.equals(Constant.NETWORK_ACTION_BROKEN)){
+					if(actionContent.equals(Constant.NETWORK_ACTION_WIFI_BROKEN)){
 						Log.d(TAG, "release MDNS");
 						releaseMDNS();
 					}
