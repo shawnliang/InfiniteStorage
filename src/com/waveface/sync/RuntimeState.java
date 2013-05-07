@@ -19,6 +19,8 @@ public class RuntimeState{
 	
 	public static String mFilename ;	
 	public static long mMediaID ;
+	public static String mFileDatetime ;		
+	public static String mFileUpdatedDate ;	
 	public static int mFileType ;	
 	
 	

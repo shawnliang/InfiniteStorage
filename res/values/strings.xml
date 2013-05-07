@@ -53,7 +53,7 @@
     <string name="email_content">
 <![CDATA[
             <p>Please visit our website to download our FREE Windows app<p>
-			<p><a href="http://cdn.waveface.com/WindowsStation/Bunny-installer.exe">http://waveface.com/bunny</a><p>
+    	    <p><a href=\"http://waveface.com/bunny\">http://waveface.com/bunny</a><p>
 			<p>Once you install the Windows version, connect your phone and it’s done.<p> 
 			<p>If you bump into any problems or have further questions please contact: support@waveface.com<p>
 			<p>Cheers,<p>
