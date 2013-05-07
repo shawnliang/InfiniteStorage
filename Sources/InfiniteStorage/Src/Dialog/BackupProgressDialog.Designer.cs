@@ -40,13 +40,12 @@
 			// 
 			// TitleLabel
 			// 
-			this.TitleLabel.AutoSize = true;
 			this.TitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.TitleLabel.Location = new System.Drawing.Point(13, 13);
 			this.TitleLabel.Name = "TitleLabel";
-			this.TitleLabel.Size = new System.Drawing.Size(302, 20);
+			this.TitleLabel.Size = new System.Drawing.Size(400, 49);
 			this.TitleLabel.TabIndex = 0;
-			this.TitleLabel.Text = "自 shawn\'s GT-I9300 備份 2000 個檔案";
+			this.TitleLabel.Text = "自 shawn\'s GT-I9300 備份 2000 個檔案自 shawn\'s GT-I9300 備份 ";
 			// 
 			// progressBar
 			// 
@@ -60,7 +59,7 @@
 			// overallLabel
 			// 
 			this.overallLabel.AutoSize = true;
-			this.overallLabel.Location = new System.Drawing.Point(13, 55);
+			this.overallLabel.Location = new System.Drawing.Point(13, 62);
 			this.overallLabel.Name = "overallLabel";
 			this.overallLabel.Size = new System.Drawing.Size(88, 13);
 			this.overallLabel.TabIndex = 2;
@@ -69,7 +68,7 @@
 			// curFileLabel
 			// 
 			this.curFileLabel.AutoSize = true;
-			this.curFileLabel.Location = new System.Drawing.Point(13, 79);
+			this.curFileLabel.Location = new System.Drawing.Point(13, 83);
 			this.curFileLabel.Name = "curFileLabel";
 			this.curFileLabel.Size = new System.Drawing.Size(88, 13);
 			this.curFileLabel.TabIndex = 3;
