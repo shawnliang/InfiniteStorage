@@ -54,7 +54,7 @@
     <string name="email_subject">Bunny 備份，Windows 版免費下載網址</string>   
     <string name="email_content"><![CDATA[
         <p>請到官網，直接免費下載Bunny備份Windows版，安裝後連結手機就完成囉!<p>
-    	<p><a href="http://cdn.waveface.com/WindowsStation/Bunny-installer.exe">http://waveface.com/bunny</a><p>
+    	<p><a href=\"http://waveface.com/bunny\">http://waveface.com/bunny</a><p>
 	    <p>如有任何問題，也請隨時與我們聯繫: support@waveface.com<p>
 	    <p>感謝支持!<p> 
 	    <p>Waveface 團隊敬上<p>]]></string>   

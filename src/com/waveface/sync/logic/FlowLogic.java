@@ -14,9 +14,7 @@ public class FlowLogic {
 
 	public static void sendDownloadEmail(Context context) {
 		String subject = context.getString(R.string.email_subject);
-		String content = Html.fromHtml(new StringBuilder()
-			.append(context.getString(R.string.email_content))
-			.toString()).toString();
+		String content = Html.fromHtml(context.getString(R.string.email_content)).toString();
 		String mailId = DeviceUtil.getEmailAccount(context);
 		String uriText = "mailto:"+mailId + 
 			    "?subject=" + URLEncoder.encode(subject) + 

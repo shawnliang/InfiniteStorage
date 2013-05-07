@@ -114,7 +114,8 @@
         android:layout_marginRight="0dp"
         android:background="@drawable/btn_click"
         android:text="@string/btn_confirm" 
-        android:textColor="#FFFFFF"/>
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"/>
 	</LinearLayout>
 
 </RelativeLayout>
