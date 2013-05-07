@@ -2,6 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
     	android:state_pressed="true"
-    	android:drawable="@drawable/ic_btn_pressed" />
-    <item android:drawable="@drawable/ic_btn_normal" />
+    	android:drawable="@drawable/ic_settings_pressed" />
+    <item android:drawable="@drawable/ic_settings" />
 </selector>

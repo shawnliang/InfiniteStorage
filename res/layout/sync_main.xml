@@ -312,7 +312,7 @@
   			android:layout_margin="1dp"
   			android:layout_below="@+id/tvConnectPC"
   			android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_add_pc"/>
+            android:src="@drawable/add_pc"/>
     </RelativeLayout>
 
     <ImageView
@@ -321,6 +321,6 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/llTotalContent"
         android:layout_alignTop="@+id/imageDevice"
-        android:src="@drawable/ic_settings" />
+        android:src="@drawable/setting" />
 
 </RelativeLayout>
