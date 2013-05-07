@@ -44,11 +44,14 @@ namespace InfiniteStorage
 						var fileInfo = WebSocketContext.fileCtx;
 						if (fileInfo != null)
 						{
+							int curVal, maxVal;
+							Normalizer.NormalizeToInt(fileInfo.file_size, WebSocketContext.temp_file.BytesWritten, out maxVal, out curVal);
+
 							fileLable.Text = string.Format(Resources.FirstUse_FileLabel, fileInfo.file_name, fileInfo.file_size);
 							progressBar.Style = ProgressBarStyle.Blocks;
 							progressBar.Minimum = 0;
-							progressBar.Maximum = (int)fileInfo.file_size;
-							progressBar.Value = WebSocketContext.temp_file.BytesWritten;
+							progressBar.Maximum = maxVal;
+							progressBar.Value = curVal;
 						}
 					}
 					else

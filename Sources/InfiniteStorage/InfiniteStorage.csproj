@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Src\Class\Common\AutoUpdator.cs" />
+    <Compile Include="Src\Class\Normalizer.cs" />
     <Compile Include="Src\Dialog\BackupProgressDialog.cs">
       <SubType>Form</SubType>
     </Compile>

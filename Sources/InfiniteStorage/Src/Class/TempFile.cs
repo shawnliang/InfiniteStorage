@@ -23,7 +23,7 @@ namespace InfiniteStorage
 			private set;
 		}
 
-		public int BytesWritten
+		public long BytesWritten
 		{
 			get;
 			private set;

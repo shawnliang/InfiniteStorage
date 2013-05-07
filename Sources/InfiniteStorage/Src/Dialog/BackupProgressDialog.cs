@@ -53,8 +53,11 @@ namespace InfiniteStorage
 					{
 						curFileLabel.Text = string.Format(Resources.FirstUse_FileLabel, WSCtx.fileCtx.file_name, WSCtx.fileCtx.file_size);
 
-						progressBar.Maximum = (int)WSCtx.fileCtx.file_size;
-						progressBar.Value = WSCtx.temp_file.BytesWritten;
+						int curVal, maxVal;
+						Normalizer.NormalizeToInt(WSCtx.fileCtx.file_size, WSCtx.temp_file.BytesWritten, out maxVal, out curVal);
+
+						progressBar.Maximum = maxVal;
+						progressBar.Value = curVal;
 						progressBar.Visible = true;
 					}
 					else

@@ -25,7 +25,7 @@ namespace InfiniteStorage
 		/// <summary>
 		/// Gets the number of bytes written to the temp file
 		/// </summary>
-		int BytesWritten { get; }
+		long BytesWritten { get; }
 		
 		/// <summary>
 		/// Writes data to the end of this temp file
