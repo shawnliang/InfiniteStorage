@@ -117,9 +117,10 @@ public class ServersLogic {
 								BackupedServersTable.COLUMN_SERVER_ID
 										+ "!=? AND "
 										+ BackupedServersTable.COLUMN_STATUS
-										+ "!=?",
+										+ " NOT IN (?,?)",
 								new String[] { entity.serverId,
-										Constant.SERVER_DENIED });
+										Constant.SERVER_DENIED_BY_SERVER,
+										Constant.SERVER_DENIED_BY_CLIENT });
 				cursor.close();
 			}
 			// insert
@@ -145,8 +146,9 @@ public class ServersLogic {
 		Cursor cursor = null;
 		try {
 			cursor = cr.query(BackupedServersTable.CONTENT_URI, null,
-					BackupedServersTable.COLUMN_STATUS + "!=?",
-					new String[] { Constant.SERVER_DENIED },
+					BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+					new String[] { Constant.SERVER_DENIED_BY_SERVER,
+							   Constant.SERVER_DENIED_BY_CLIENT}, 
 					BackupedServersTable.COLUMN_SERVER_ID + " LIMIT 1");
 			if (cursor != null && cursor.getCount() > 0) {
 				hasServer = true;
@@ -171,8 +173,9 @@ public class ServersLogic {
 		ContentResolver cr = context.getContentResolver();
 		try {
 			cursor = cr.query(BackupedServersTable.CONTENT_URI, null,
-					BackupedServersTable.COLUMN_STATUS + "!=?",
-					new String[] { Constant.SERVER_DENIED }, null);
+					BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+					new String[] { Constant.SERVER_DENIED_BY_SERVER,
+								   Constant.SERVER_DENIED_BY_CLIENT}, null);
 
 			if (cursor != null && cursor.getCount() > 0) {
 				int count = cursor.getCount();
@@ -346,7 +349,9 @@ public class ServersLogic {
 		try {
 			cursor = cr.query(BackupedServersTable.CONTENT_URI,
 					new String[] { BackupedServersTable.COLUMN_SERVER_ID },
-					null, null, null);
+					BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+					new String[] { Constant.SERVER_DENIED_BY_SERVER,
+							   Constant.SERVER_DENIED_BY_CLIENT}, null);
 
 			if (cursor != null && cursor.getCount() > 0) {
 				int count = cursor.getCount();
@@ -423,14 +428,43 @@ public class ServersLogic {
 		}
 		return entity;
 	}
+	public static String getCurrentBackupedServerName(Context context) {
+		String serverName = "";
+		Cursor cursor = null;
+		ContentResolver cr = context.getContentResolver();
+		try {
+			cursor = cr.query(BackupedServersTable.CONTENT_URI, 
+					new String[]{BackupedServersTable.COLUMN_SERVER_NAME},
+					BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+					new String[] { Constant.SERVER_DENIED_BY_SERVER,
+							   Constant.SERVER_DENIED_BY_CLIENT}, null);
 
-	public static int updateAllBackedServerOffline(Context context) {
+			if (cursor != null && cursor.getCount() > 0) {
+				cursor.moveToFirst();
+				serverName = cursor.getString(0);
+				cursor.close();
+			}
+			cursor= null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+				cursor = null;
+			}
+		}
+		return serverName;
+	}
+	
+
+	public static int updateAllBackedServerStatus(Context context,String status) {
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
-		cv.put(BackupedServersTable.COLUMN_STATUS, Constant.SERVER_OFFLINE);
+		cv.put(BackupedServersTable.COLUMN_STATUS, status);
 		return cr.update(BackupedServersTable.CONTENT_URI, cv,
-				BackupedServersTable.COLUMN_STATUS + "!=?",
-				new String[] { Constant.SERVER_DENIED });
+				BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+				new String[] { Constant.SERVER_DENIED_BY_SERVER,
+						   Constant.SERVER_DENIED_BY_CLIENT});
 	}
 
 	public static int purgeAllBonjourServer(Context context) {
@@ -518,11 +552,11 @@ public class ServersLogic {
 		return new long[] { count, totalSize };
 	}
 
-	public static int deniedPairedServer(Context context, String serverId) {
+	public static int deniedPairedServer(Context context, String serverId,String status) {
 		int result = 0;
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
-		cv.put(BackupedServersTable.COLUMN_STATUS, Constant.SERVER_DENIED);
+		cv.put(BackupedServersTable.COLUMN_STATUS, status);
 		Cursor cursor = null;
 		try {
 			cursor = cr.query(BackupedServersTable.CONTENT_URI,
@@ -575,8 +609,9 @@ public class ServersLogic {
 		Cursor cursor = null;
 		try {
 			cursor = cr.query(BackupedServersTable.CONTENT_URI, null,
-					BackupedServersTable.COLUMN_STATUS + "!=?",
-					new String[] { Constant.SERVER_DENIED }, null);
+					BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+					new String[] { Constant.SERVER_DENIED_BY_SERVER,
+							   Constant.SERVER_DENIED_BY_CLIENT}, null);
 			if (cursor != null && cursor.getCount() > 0) {
 				cursor.moveToFirst();
 				entity = new ServerEntity();
@@ -615,8 +650,9 @@ public class ServersLogic {
 					BackupedServersTable.COLUMN_PHOTO_COUNT,
 					BackupedServersTable.COLUMN_VIDEO_COUNT,
 					BackupedServersTable.COLUMN_AUDIO_COUNT },
-					BackupedServersTable.COLUMN_STATUS + "!=?",
-					new String[] { Constant.SERVER_DENIED }, null);
+					BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+					new String[] { Constant.SERVER_DENIED_BY_SERVER,
+							   Constant.SERVER_DENIED_BY_CLIENT}, null);
 			if (cursor != null && cursor.getCount() > 0) {
 				cursor.moveToFirst();
 				count += cursor.getInt(0);
@@ -642,9 +678,11 @@ public class ServersLogic {
 			cursor = cr
 					.query(BackupedServersTable.CONTENT_URI,
 							new String[] { BackupedServersTable.COLUMN_LAST_FILE_DATE },
-							BackupedServersTable.COLUMN_STATUS + "!=?",
-							new String[] { Constant.SERVER_DENIED }, null);
+							BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+							new String[] { Constant.SERVER_DENIED_BY_SERVER,
+									   Constant.SERVER_DENIED_BY_CLIENT}, null);
 
+			
 			if (cursor != null && cursor.getCount() > 0) {
 				cursor.moveToFirst();
 				lastBackupFileDatetime = cursor.getString(0);

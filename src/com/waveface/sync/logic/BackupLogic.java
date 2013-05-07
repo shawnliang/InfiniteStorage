@@ -443,7 +443,6 @@ public class BackupLogic {
 		int totalCount = 0;
 		int backupedCount = 0;
 		String lastBackupFileDate = null;		
-		String lastBackupFileUpdatedTime = null;
 		// select from serverFiles
 		Cursor cursor = null;
 		ContentResolver cr = context.getContentResolver();
@@ -451,14 +450,12 @@ public class BackupLogic {
 			cursor = cr
 					.query(BackupedServersTable.CONTENT_URI,
 							new String[] { 
-							BackupedServersTable.COLUMN_LAST_FILE_DATE,
-							BackupedServersTable.COLUMN_LAST_FILE_UPDATED_DATETIME },
+							BackupedServersTable.COLUMN_LAST_FILE_DATE},
 							BackupedServersTable.COLUMN_SERVER_ID + "=?",
 							new String[] { serverId }, null);
 			if (cursor != null && cursor.getCount() > 0) {
 				cursor.moveToFirst();
 				lastBackupFileDate = cursor.getString(0);
-				lastBackupFileUpdatedTime = cursor.getString(1);
 				cursor.close();
 			}
 			cursor = null;
@@ -477,7 +474,7 @@ public class BackupLogic {
 			}
 			cursor = null;
 			// GET BACKUPED COUNT
-			if (!TextUtils.isEmpty(lastBackupFileUpdatedTime)) {
+			if (!TextUtils.isEmpty(lastBackupFileDate)) {
 				
 				where = ImportFilesTable.COLUMN_DATE + "<=? AND "
 						+ ImportFilesTable.COLUMN_STATUS + "!=? AND "
@@ -509,38 +506,33 @@ public class BackupLogic {
 	public static boolean needToBackup(Context context, String serverId) {
 		boolean needBackup = false;
 		String lastMediaDatetime = null;				
-		String lastMediaUpdatedDatetime = null;		
 		Cursor cursor = null;
 		ContentResolver cr = context.getContentResolver();
 		try {
 			cursor = cr
 					.query(BackupedServersTable.CONTENT_URI,
 							new String[] { 
-							    BackupedServersTable.COLUMN_LAST_FILE_DATE,							
-								BackupedServersTable.COLUMN_LAST_FILE_UPDATED_DATETIME
+							    BackupedServersTable.COLUMN_LAST_FILE_DATE
 							},
 							BackupedServersTable.COLUMN_SERVER_ID + "=?",
 							new String[] { serverId }, null);
 			if (cursor != null && cursor.getCount() > 0) {
 				cursor.moveToFirst();
 				lastMediaDatetime = cursor.getString(0);
-				lastMediaUpdatedDatetime = cursor.getString(1);
 				cursor.close();
 			}
 			cursor = null;
 			
 			String where = ImportFilesTable.COLUMN_DATE+">? AND " 
-					+ ImportFilesTable.COLUMN_UPDATE_TIME+">=? AND "
 					+ ImportFilesTable.COLUMN_STATUS + "!=? AND "
 					+ ImportFilesTable.COLUMN_STATUS + "!=? ";
 			String[] whereArgs = 
 					new String[] 
 							{ lastMediaDatetime,
-					          lastMediaUpdatedDatetime,
 							  Constant.IMPORT_FILE_DELETED,
 							  Constant.IMPORT_FILE_EXCLUDE };
 			cursor = cr.query(ImportFilesTable.CONTENT_URI,
-					new String[] { ImportFilesTable.COLUMN_UPDATE_TIME	}, 
+					new String[] { ImportFilesTable.COLUMN_DATE	}, 
 						where,whereArgs, ImportFilesTable.COLUMN_IMAGE_ID
 							+ " DESC LIMIT 1");
 			if (cursor != null && cursor.getCount() > 0) {
@@ -602,7 +594,6 @@ public class BackupLogic {
 		int filetype = 0;
 		long lastBackupMediaId = 0;
 		String lastBackupFileDateTime = null;		
-		String lastBackupFileUpdatedTime = null;
 		String status = null;
 		// select from serverFiles
 		ContentResolver cr = context.getContentResolver();
@@ -612,15 +603,13 @@ public class BackupLogic {
 			cursor = cr
 					.query(BackupedServersTable.CONTENT_URI,
 							new String[] { 
-							BackupedServersTable.COLUMN_LAST_FILE_DATE,
-							BackupedServersTable.COLUMN_LAST_FILE_UPDATED_DATETIME },
+							BackupedServersTable.COLUMN_LAST_FILE_DATE},
 							BackupedServersTable.COLUMN_SERVER_ID + "=?",
 							new String[] { serverId }, null);
 
 			if (cursor != null && cursor.getCount() > 0) {
 				cursor.moveToFirst();
 				lastBackupFileDateTime = cursor.getString(0);
-				lastBackupFileUpdatedTime = cursor.getString(1);
 				cursor.close();
 			}
 			cursor = null;
@@ -632,11 +621,9 @@ public class BackupLogic {
 					ImportFilesTable.COLUMN_IMAGE_ID,
 					ImportFilesTable.COLUMN_STATUS,
 					ImportFilesTable.COLUMN_UPDATE_TIME},
-					ImportFilesTable.COLUMN_DATE + " > ? AND "+
-					ImportFilesTable.COLUMN_UPDATE_TIME + " >= ?",
+					ImportFilesTable.COLUMN_DATE + " > ?",
 					new String[] {
-					    lastBackupFileDateTime,
-						lastBackupFileUpdatedTime },
+					    lastBackupFileDateTime},
 					ImportFilesTable.COLUMN_DATE);
 			if (cursor != null && cursor.getCount() > 0) {
 				cursor.moveToFirst();
@@ -684,7 +671,7 @@ public class BackupLogic {
 							intent.putExtra(Constant.EXTRA_BACKING_UP_FILE_STATE,
 									Constant.FILE_START);
 							context.sendBroadcast(intent);
-							Log.d(TAG, "BACKUPING: type:" + entity.type
+							Log.d(TAG, i+":BACKUPING: type:" + entity.type
 									+ ",Filename:" + entity.fileName);
 							Log.d(TAG, "filedate:"+fileDateTime+"fileUpdatedTime:"+fileUpdatedTime);
 							Log.d(TAG, "lastBackupMediaId:"+lastBackupMediaId);							

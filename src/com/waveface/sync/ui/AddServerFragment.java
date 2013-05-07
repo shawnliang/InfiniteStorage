@@ -104,7 +104,7 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 						e.printStackTrace();
 					}
 		    	  }
-		    	  ServersLogic.updateAllBackedServerOffline(getActivity());
+		    	  ServersLogic.updateAllBackedServerStatus(getActivity(),Constant.SERVER_DENIED_BY_CLIENT);
 		    	  clickToLinkServer(mServer);
 		      }
 		});

@@ -196,7 +196,6 @@
 
     <RelativeLayout 
   		android:id="@+id/rlBackupContent"
-        android:layout_above="@+id/rlSetting" 
         android:layout_below="@+id/vLine1"        
   		android:layout_width="match_parent"
   		android:layout_height="wrap_content"
@@ -293,22 +292,35 @@
     <RelativeLayout
         android:id="@+id/rlSetting"
         android:layout_width="match_parent"
-  		android:layout_height="wrap_content"
-  		android:layout_alignParentBottom="true"
+  		android:layout_height="match_parent"
+  		android:layout_below="@+id/vLine1"  
         >
-        <View
-            android:id="@+id/vLine2"
-        	android:layout_width="match_parent"
-  			android:layout_height="1dp"
-  			android:background="#1BBFE0"
-  			android:layout_margin="3dp"
-            />
+	    <TextView 
+        	android:id="@+id/tvConnectPC"
+        	android:layout_width="wrap_content"
+  			android:layout_height="wrap_content"
+  			android:layout_marginTop="40dip"
+  			android:layout_centerHorizontal="true"
+		    android:text="@string/connect_a_pc"		
+		    android:textColor="#FFFFFF"
+		    android:textSize="24sp"
+	    />
         <ImageView
         	android:id="@+id/ivAddpc"
-        	android:layout_width="match_parent"
-  			android:layout_height="wrap_content"
-  			android:layout_below="@+id/vLine2"
+        	android:layout_width="90dip"
+  			android:layout_height="90dip"
   			android:layout_margin="1dp"
+  			android:layout_below="@+id/tvConnectPC"
+  			android:layout_centerHorizontal="true"
             android:src="@drawable/ic_add_pc"/>
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/ivSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/llTotalContent"
+        android:layout_alignTop="@+id/imageDevice"
+        android:src="@drawable/ic_settings" />
+
 </RelativeLayout>

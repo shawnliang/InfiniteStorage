@@ -95,6 +95,9 @@
             android:name="com.waveface.sync.ui.ImageViewActivity"
              android:theme="@style/Theme.Transparent">            
         </activity>
+        <activity
+            android:name="com.waveface.sync.ui.preference.Preferences"  android:theme="@style/HoloTheme"/>
+
     </application>
 
 </manifest>

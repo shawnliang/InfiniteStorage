@@ -161,10 +161,10 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 			else if(entity.action.equals(Constant.WS_ACTION_DENIED)){
 				ArrayList<ServerEntity> entities =  ServersLogic.getBackupedServers(mContext);
 				if(!TextUtils.isEmpty(RuntimeState.mWebSocketServerId)){
-					ServersLogic.deniedPairedServer(mContext, RuntimeState.mWebSocketServerId);
+					ServersLogic.deniedPairedServer(mContext, RuntimeState.mWebSocketServerId,Constant.SERVER_DENIED_BY_SERVER);
 				}
 				else if(entities.size()>0){
-					ServersLogic.deniedPairedServer(mContext, entities.get(0).serverId);					
+					ServersLogic.deniedPairedServer(mContext, entities.get(0).serverId,Constant.SERVER_DENIED_BY_SERVER);					
 				}
 				RuntimeState.setServerStatus(entity.action);
                 notifyContent = Constant.WS_ACTION_DENIED;                	
@@ -195,7 +195,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		@Override
 		public void processClosed(WebSocketClientEvent aEvent) {
 			RuntimeState.setServerStatus(Constant.WS_ACTION_SOCKET_CLOSED);
-			ServersLogic.updateAllBackedServerOffline(mContext);
+	    	ServersLogic.updateAllBackedServerStatus(mContext,Constant.SERVER_OFFLINE);
 			Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
 			intent.putExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT, Constant.WS_ACTION_SOCKET_CLOSED);
 			mContext.sendBroadcast(intent);			

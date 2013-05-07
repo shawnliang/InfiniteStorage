@@ -261,8 +261,8 @@ public class InfiniteService extends Service{
 			timer.cancel();
 		}
 		releaseMDNS();  
-		ServersLogic.updateAllBackedServerOffline(this);
 		ServersLogic.purgeAllBonjourServer(this);
+    	ServersLogic.updateAllBackedServerStatus(this,Constant.SERVER_OFFLINE);
 		Log.d(TAG, "onDestroy");
 		super.onDestroy();
 	}

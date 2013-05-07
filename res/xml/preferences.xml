@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- SETTING -->
+    <PreferenceCategory android:title="@string/setting_title" >
+        <Preference
+            android:key="changePc"
+            android:title="@string/setting_change_pc" />        
+
+    </PreferenceCategory>
+    
+    <!-- ABOUT -->
+    <PreferenceCategory android:title="@string/about" >
+         <Preference
+            android:key="support"
+            android:title="@string/support"/>
+
+        <Preference
+            android:key="version"
+            android:title="@string/version" />
+    </PreferenceCategory>
+</PreferenceScreen>

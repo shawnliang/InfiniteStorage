@@ -21,6 +21,7 @@ public class Constant {
 	public final static String ACTION_FILE_DELETED = "com.waveface.sync.action.FILE_DELETED";	
 	public final static String ACTION_INFINITE_STORAGE_ALARM = "com.waveface.sync.action.INFINITE_STORAGE_ALARM";
 	public final static String ACTION_WEB_SOCKET_SERVER_CONNECTED = "com.waveface.sync.action.WEB_SOCKET_SERVER_CONNECTED";
+	public final static String ACTION_RELEASE_PAIRED_SERVER_BY_CLIENT = "com.waveface.sync.action.RELEASE_PAIRED_SERVER_BY_CLIENT";	
 	
 
 	//BUNDLE DATA
@@ -49,7 +50,9 @@ public class Constant {
 	//SERVER STATUS
 	public static final String SERVER_LINKING = "1";
 	public static final String SERVER_OFFLINE = "2";	
-	public static final String SERVER_DENIED = "3";	
+	public static final String SERVER_DENIED_BY_SERVER = "3";	
+	public static final String SERVER_DENIED_BY_CLIENT = "4";	
+	
 
 	//FILE BACKUP STATE
 	public static final int JOB_START = 0;	

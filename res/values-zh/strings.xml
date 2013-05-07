@@ -18,6 +18,7 @@
     <string name="audios">%1$d 個聲音檔</string>    
     <string name="photos">%1$d 張照片</string>        
     <string name="can_not_find_server">目前找不到配對的PC,稍後會嘗試幫你自動連線!</string>    
+    <string name="connect_a_pc">連結你的電腦</string>
     
     <!--PAIRED SERVERS-->
     <string name="backuping">備份中...</string>    
@@ -110,4 +111,16 @@
     <!--NOTIFICATION-->    
     <string name="notify_link_server">正在備份到 %1$s</string>    
     <string name="notify_backup_status"> %1$d 檔案已經備份完成</string>
+    
+        <!-- PREFERENCE -->
+    <!-- SETTING -->
+    <string name="setting_title">設定</string>
+    <string name="setting_change_pc">更換備份電腦</string>
+    <string name="setting_current">目前 PC : </string>
+    <!-- ABOUT -->
+    <string name="about">關於</string>
+    <string name="support">聯絡我們</string>
+    <string name="version">版本</string>
+    <string name="add_pc_content">一次只能備份到一台指定的電腦.當你更換後,新資料將不會被備份到之前的電腦中.</string>
+    
 </resources>

@@ -18,6 +18,8 @@
     <string name="audios">%1$d audio(s)</string>
     <string name="photos">%1$d photo(s)</string>
     <string name="can_not_find_server">Can\'t find your PC now. We will connect again automatically later!</string>
+    <string name="connect_a_pc">Connect to a PC</string>
+    
 
     <!-- PAIRED SERVERS -->
     <string name="backuping">Backing up ...</string>
@@ -93,6 +95,7 @@
     <string name="add_new_pc">Add a new PC</string>
     <string name="paired_pc">Connected PC</string>
 
+
     <!-- BUTTON -->
     <string name="btn_back">Back</string>
     <string name="btn_next">Next</string>
@@ -107,5 +110,17 @@
     <string name="notify_link_server">Backing Up to %1$s</string>
     <string name="notify_backup_status"> %1$d file(s) Backed-up.</string>
     <string name="title_activity_image_view">ImageViewActivity</string>
+
+    <!-- PREFERENCE -->
+    <!-- SETTING -->
+    <string name="setting_title">Settings</string>
+    <string name="setting_change_pc">Change PC to Back up</string>
+    <string name="setting_current">Current Paired PC : </string>
+    <!-- ABOUT -->
+    <string name="support_email">supportd@waveface.com</string>   
+    <string name="about">About us</string>
+    <string name="support">Contact us</string>
+    <string name="version">Version </string>
+    <string name="add_pc_content">You just can backup to one pc one time.Files will not back up to Pc which you connected before.</string>
 
 </resources>

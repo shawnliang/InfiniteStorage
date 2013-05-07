@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -30,6 +31,7 @@ import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.service.InfiniteService;
+import com.waveface.sync.ui.preference.Preferences;
 import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.NetworkUtil;
@@ -105,6 +107,10 @@ public class MainActivity extends Activity implements OnClickListener{
 		mTotalInfo = (TextView) this.findViewById(R.id.textTotolInfo);
 		mNowPeriod = (TextView) this.findViewById(R.id.textPeriod);
 
+		//SETTINGS
+		ImageView iv = (ImageView) this.findViewById(R.id.ivSettings);
+		iv.setOnClickListener(this);
+		
 		//PHOTO
 		mPhotoImage = (ImageView) this.findViewById(R.id.imageView1);
 		mPhotoImage.setOnClickListener(this);
@@ -431,6 +437,10 @@ public class MainActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		Intent startIntent = null;
  		switch(v.getId()){
+ 		    case R.id.ivSettings:
+ 		    	Intent intent = new Intent(this,Preferences.class);
+ 		    	startActivity(intent);
+ 		    	break;
 			case R.id.ivAddpc:
 				if(!ServersLogic.hasBackupedServers(this)){
 		            startIntent = new Intent(MainActivity.this, FirstUseActivity.class);	                    	
@@ -484,4 +494,14 @@ public class MainActivity extends Activity implements OnClickListener{
 			return null;
 		}		
 	}
-}
+	@Override
+	public boolean onKeyDown(int keycode, KeyEvent e) {
+	    switch(keycode) {
+	        case KeyEvent.KEYCODE_MENU:
+ 		    	Intent intent = new Intent(this,Preferences.class);
+ 		    	startActivity(intent);
+	            return true;
+	    }
+
+	    return super.onKeyDown(keycode, e);
+	}}
