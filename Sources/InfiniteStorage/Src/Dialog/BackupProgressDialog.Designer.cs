@@ -40,6 +40,8 @@
 			// 
 			// TitleLabel
 			// 
+			this.TitleLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.TitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.TitleLabel.Location = new System.Drawing.Point(13, 13);
 			this.TitleLabel.Name = "TitleLabel";
