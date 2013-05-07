@@ -81,10 +81,11 @@
         <Button
             android:id="@+id/btnPre"
             android:layout_width="0dip"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/btn_click"
-            android:text="@string/btn_cancel" />
+            android:text="@string/btn_cancel"
+            android:textColor="#FFFFFF"/>
 
     </LinearLayout>
 
