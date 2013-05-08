@@ -439,6 +439,62 @@ public class BackupLogic {
 				new String[] { serverId, filename });
 	}
 
+	public static int getBackedUpCountForPairedPC(Context context) {
+		int backupedCount = 0;
+		String lastBackupFileDate = null;		
+		// select from serverFiles
+		Cursor cursor = null;
+		ContentResolver cr = context.getContentResolver();
+		try {
+			cursor = cr
+					.query(BackupedServersTable.CONTENT_URI,
+							new String[] { 
+							BackupedServersTable.COLUMN_LAST_FILE_DATE},
+							BackupedServersTable.COLUMN_SERVER_ID + " NOT IN (?,?)",
+							new String[] { 
+							Constant.IMPORT_FILE_DELETED,
+							Constant.IMPORT_FILE_EXCLUDE}, null);
+			if (cursor != null && cursor.getCount() > 0) {
+				cursor.moveToFirst();
+				lastBackupFileDate = cursor.getString(0);
+				cursor.close();
+			}
+			cursor = null;
+			String where = ImportFilesTable.COLUMN_STATUS + "!=? AND "
+					+ ImportFilesTable.COLUMN_STATUS + "!=? ";
+			String[] whereArgs = new String[] { Constant.IMPORT_FILE_DELETED,
+					Constant.IMPORT_FILE_EXCLUDE };
+
+			// GET BACKUPED COUNT
+			if (!TextUtils.isEmpty(lastBackupFileDate)) {
+				
+				where = ImportFilesTable.COLUMN_DATE + "<=? AND "
+						+ ImportFilesTable.COLUMN_STATUS + "!=? AND "
+						+ ImportFilesTable.COLUMN_STATUS + "!=? ";
+				whereArgs = new String[] { 
+						lastBackupFileDate,
+						Constant.IMPORT_FILE_DELETED,
+						Constant.IMPORT_FILE_EXCLUDE };
+				cursor = cr.query(ImportFilesTable.CONTENT_URI, new String[] {
+						ImportFilesTable.COLUMN_FILENAME,
+						ImportFilesTable.COLUMN_DATE }, where, whereArgs, null);
+				if (cursor != null && cursor.getCount() > 0) {
+					backupedCount = cursor.getCount();
+					cursor.close();
+				}
+				cursor = null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+				cursor = null;
+			}
+		}
+		return backupedCount;
+	}
+	
 	public static int[] getBackupProgressInfo(Context context, String serverId) {
 		int totalCount = 0;
 		int backupedCount = 0;

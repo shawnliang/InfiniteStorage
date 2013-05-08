@@ -208,7 +208,7 @@ public class InfiniteService extends Service{
 			case Constant.NOTIFICATION_BACKED_UP:
 				removeNotification();
 				if(RuntimeState.isNotificationShowing == false ){
-					int count = ServersLogic.getServerBackupedCountById(mContext, RuntimeState.mWebSocketServerId);		
+					int count = BackupLogic.getBackedUpCountForPairedPC(mContext);		
 //					int count = BackupLogic.getBackupProgressInfo(mContext, RuntimeState.mWebSocketServerId)[0];
 					content = mContext.getString(R.string.notify_backup_status, count);				
 					mNotificationManager.createTextNotification(
