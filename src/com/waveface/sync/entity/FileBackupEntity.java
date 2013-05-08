@@ -21,4 +21,10 @@ public class FileBackupEntity {
 	
 	@SerializedName("datetime")
 	public String datetime;
+
+	@SerializedName("total_count")
+	public long totalCount;
+
+	@SerializedName("backuped_count")
+	public long backupedCount;
 }

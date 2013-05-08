@@ -613,6 +613,7 @@ public class BackupLogic {
 				cursor.close();
 			}
 			cursor = null;
+
 			cursor = cr.query(ImportFilesTable.CONTENT_URI, new String[] {
 					ImportFilesTable.COLUMN_FILENAME,
 					ImportFilesTable.COLUMN_FILETYPE,
@@ -650,6 +651,11 @@ public class BackupLogic {
 					entity.folder = StringUtil.getFilepath(filename,
 							entity.fileName);
 					entity.datetime = cursor.getString(3);
+
+					int progress[] = BackupLogic.getBackupProgressInfo(context, serverId);
+
+					entity.backupedCount = progress[0];
+					entity.totalCount = progress[1];
 					fileDateTime = entity.datetime; 						
 					if(Integer.parseInt(entity.fileSize)==0){
 						break;
