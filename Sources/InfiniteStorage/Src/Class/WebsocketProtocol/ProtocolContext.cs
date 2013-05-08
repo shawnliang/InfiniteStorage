@@ -18,7 +18,8 @@ namespace InfiniteStorage.WebsocketProtocol
 		public string device_id { get; set; }
 		public string device_folder_name { get; set; }
 
-		public long total_files { get; set; }
+		public long backup_count { get; set; }
+		public long total_count { get; set; }
 		public long recved_files { get; set; }
 
 		public IFileStorage storage { get; private set; }

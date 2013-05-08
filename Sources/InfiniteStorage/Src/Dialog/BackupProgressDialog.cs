@@ -48,7 +48,7 @@ namespace InfiniteStorage
 				else
 				{
 					TitleLabel.Text = string.Format(Resources.BackupProgressTitle_InProgress, WSCtx.device_name);
-					overallLabel.Text = string.Format(Resources.FirstUse_ProgressLabel, WSCtx.recved_files, WSCtx.total_files);
+					overallLabel.Text = string.Format(Resources.FirstUse_ProgressLabel, WSCtx.backup_count, WSCtx.total_count);
 					if (WSCtx.fileCtx != null)
 					{
 						curFileLabel.Text = string.Format(Resources.FirstUse_FileLabel, WSCtx.fileCtx.file_name, WSCtx.fileCtx.file_size);

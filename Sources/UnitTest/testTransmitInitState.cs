@@ -39,7 +39,9 @@ namespace UnitTest
 				file_size = 1234,
 				type = "audio",
 				folder = "/sto/pp",
-				datetime = DateTime.Now
+				datetime = DateTime.Now,
+				total_count = 1000,
+				backuped_count = 333,
 			};
 			
 			ctx.handleFileStartCmd(cmd);
@@ -49,7 +51,8 @@ namespace UnitTest
 			Assert.AreEqual(FileAssetType.audio, ctx.fileCtx.type);
 			Assert.AreEqual(cmd.folder, ctx.fileCtx.folder);
 			Assert.AreEqual(cmd.datetime, ctx.fileCtx.datetime);
-
+			Assert.AreEqual(cmd.total_count, ctx.total_count);
+			Assert.AreEqual(cmd.backuped_count, ctx.backup_count);
 
 			Assert.IsTrue(ctx.GetState() is TransmitStartedState);
 		}
@@ -94,25 +97,24 @@ namespace UnitTest
 		}
 
 		[TestMethod]
-		public void update_count()
+		public void ctx_counts_are_updated_by_update_count_msg() // because update-count is deprecated
 		{
-
 			var state = new TransmitInitState();
 			var ctx = new ProtocolContext(fac.Object, storage.Object, state);
-			long newTotal = -1;
-			ctx.OnTotalCountUpdated += (s, e) => { newTotal = e.ctx.total_files; };
+			ctx.total_count = 1000;
 
 			var cmd = new TextCommand
 			{
 				action = "update-count",
-				transfer_count = 3322
+				transfer_count = 3322,
+				backuped_count = 1000,
 			};
 
 			ctx.handleUpdateCountCmd(cmd);
 
-			Assert.AreEqual(cmd.transfer_count, ctx.total_files);
+			Assert.AreEqual(cmd.transfer_count, ctx.total_count);
+			Assert.AreEqual(cmd.backuped_count, ctx.backup_count);
 			Assert.AreEqual(state, ctx.GetState());
-			Assert.AreEqual(cmd.transfer_count, newTotal);
 		}
 	}
 }

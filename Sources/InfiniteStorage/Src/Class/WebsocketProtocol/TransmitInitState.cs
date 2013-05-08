@@ -31,6 +31,9 @@ namespace InfiniteStorage.WebsocketProtocol
 				type = type
 			};
 
+			ctx.backup_count = cmd.backuped_count;
+			ctx.total_count = cmd.total_count;
+
 			ctx.temp_file = ctx.factory.CreateTempFile();
 
 			log4net.LogManager.GetLogger("wsproto").DebugFormat("name: {0}, size: {1}, folder: {2}, datetime: {3}, type: {4}",
@@ -41,7 +44,8 @@ namespace InfiniteStorage.WebsocketProtocol
 
 		public override void handleUpdateCountCmd(ProtocolContext ctx, TextCommand cmd)
 		{
-			ctx.total_files = cmd.transfer_count;
+			ctx.total_count = cmd.total_count;
+			ctx.backup_count = cmd.backuped_count;
 			ctx.raiseOnTotalCountUpdated();
 		}
 	}

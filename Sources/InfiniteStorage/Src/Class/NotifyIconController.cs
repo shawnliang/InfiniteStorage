@@ -67,12 +67,6 @@ namespace InfiniteStorage
 
 		public void OnDeviceConnected(object sender, WebsocketEventArgs evt)
 		{
-			if (evt.ctx.total_files == 0 || evt.ctx.total_files == evt.ctx.recved_files)
-			{
-				return;
-			}
-
-
 			SynchronizationContextHelper.SendMainSyncContext(() => {
 				updateNotifyIconMenu(evt.ctx);
 				updateProgressDialog(evt.ctx);
@@ -106,7 +100,7 @@ namespace InfiniteStorage
 
 				notifyIcon.ContextMenuStrip.Items.Insert(2, item);
 				notifyIcon.ContextMenuStrip.Items.Insert(3, item2);
-				notifyIcon.ShowBalloonTip(3000, Resources.ProductName, string.Format(Resources.BallonText_Transferring, ctx.device_name, ctx.total_files), ToolTipIcon.Info);
+				notifyIcon.ShowBalloonTip(3000, Resources.ProductName, string.Format(Resources.BallonText_Transferring, ctx.device_name, ctx.total_count), ToolTipIcon.Info);
 			}
 		}
 
@@ -154,7 +148,7 @@ namespace InfiniteStorage
 
 		private static string getOverallProgressText(ProtocolContext ctx)
 		{
-			return string.Format("{0}: {1}/{2}", ctx.device_name, ctx.recved_files, ctx.total_files);
+			return ctx.total_count > 0 ? string.Format("{0}: {1}/{2}", ctx.device_name, ctx.backup_count, ctx.total_count) : ctx.device_name;
 		}
 
 		public void refreshNotifyIconContextMenu()

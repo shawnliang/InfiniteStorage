@@ -31,7 +31,7 @@ namespace InfiniteStorage
 
 					if (!WebSocketContext.IsClosed)
 					{
-						progressLabel.Text = string.Format(Resources.FirstUse_ProgressLabel, WebSocketContext.recved_files, WebSocketContext.total_files);
+						progressLabel.Text = string.Format(Resources.FirstUse_ProgressLabel, WebSocketContext.backup_count, WebSocketContext.total_count);
 
 
 						// TODO: accessing member properties of WebScokectContext without locking

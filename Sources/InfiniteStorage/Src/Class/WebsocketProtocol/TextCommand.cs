@@ -18,6 +18,9 @@ namespace InfiniteStorage.WebsocketProtocol
 		public long transfer_size { get; set; }
 		public string type { get; set; }
 
+		public long backuped_count { get; set; }
+		public long total_count { get; set; }
+
 		public bool isFileStartCmd()
 		{
 			return "file-start".Equals(action);
