@@ -1,4 +1,4 @@
-package com.waveface.sync.ui;
+package com.waveface.sync.ui.fragment;
 
 
 import android.app.Activity;

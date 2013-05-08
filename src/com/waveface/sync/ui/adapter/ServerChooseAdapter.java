@@ -1,4 +1,4 @@
-package com.waveface.sync.ui;
+package com.waveface.sync.ui.adapter;
 
 import java.util.ArrayList;
 
@@ -51,7 +51,7 @@ public class ServerChooseAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.choose_server_row, parent,
+			convertView = mInflater.inflate(R.layout.item_choose_server_row, parent,
 					false);
 			holder = new ViewHolder();
 			holder.imagePC = (ImageView) convertView.findViewById(R.id.imagePC);

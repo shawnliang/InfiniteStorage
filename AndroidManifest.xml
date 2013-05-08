@@ -91,7 +91,7 @@
             android:value="2de93f37d61a80e50febf2dfa9e0b80d5105afd0" />
 
         <activity
-            android:name="com.waveface.sync.ui.ImageViewActivity"
+            android:name="com.waveface.sync.ui.ViewImageActivity"
              android:theme="@style/Theme.Transparent">            
         </activity>
         <activity

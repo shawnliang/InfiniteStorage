@@ -69,7 +69,7 @@ public class ViewUtil {
 	}
 
 	public static boolean qualifiedTabletLayout(Context context) {
-		ViewGroup root = (ViewGroup) LayoutInflater.from(context).inflate(R.layout.dummy_layout, null);
+		ViewGroup root = (ViewGroup) LayoutInflater.from(context).inflate(R.layout.layout_dummy, null);
         if (root.findViewById(R.id.seven_inch_tablet) != null || root.findViewById(R.id.ten_inch_tablet) != null)
         	return true;
         else

@@ -1,4 +1,4 @@
-package com.waveface.sync.ui;
+package com.waveface.sync.ui.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -39,7 +39,7 @@ public class CleanStorageFragment extends FragmentBase implements OnClickListene
 			Bundle bundle) {
 		
 		mType = getActivity().getIntent().getStringExtra(Constant.BUNDLE_FILE_TYPE);
-		mRootView = (ViewGroup) inflater.inflate(R.layout.clean, null);
+		mRootView = (ViewGroup) inflater.inflate(R.layout.fragment_clean_storage, null);
 		
 		
 		TextView title = (TextView) mRootView.findViewById(R.id.tvTitle);

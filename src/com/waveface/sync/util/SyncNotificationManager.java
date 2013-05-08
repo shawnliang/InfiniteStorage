@@ -13,7 +13,7 @@ import android.widget.RemoteViews;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
-import com.waveface.sync.ui.MediaStoreImage;
+import com.waveface.sync.image.MediaStoreImage;
 
 public class SyncNotificationManager {
 	private volatile static SyncNotificationManager mInstance;
@@ -158,7 +158,7 @@ public class SyncNotificationManager {
 		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 		
 		notification.contentView = new RemoteViews(mContext.getPackageName(),
-				R.layout.progress_notification);
+				R.layout.notification_progress);
 		notification.contentIntent = pendingIntent;
 		notification.contentView.setImageViewResource(R.id.status_icon,
 				R.drawable.ic_status);

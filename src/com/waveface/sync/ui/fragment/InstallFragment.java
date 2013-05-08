@@ -1,4 +1,4 @@
-package com.waveface.sync.ui;
+package com.waveface.sync.ui.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -41,7 +41,7 @@ public class InstallFragment extends FragmentBase implements OnClickListener{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		mRootView = (ViewGroup) inflater.inflate(
-				R.layout.first_use_install_new, null);
+				R.layout.fragment_install, null);
 		final Button mNextBtn = (Button) mRootView.findViewById(R.id.btnNext);
 		mNextBtn.setOnClickListener(this);
 		if(!ServersLogic.hasBonjourServers(getActivity())){

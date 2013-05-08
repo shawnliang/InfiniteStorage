@@ -1,4 +1,4 @@
-package com.waveface.sync.ui;
+package com.waveface.sync.ui.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -48,7 +48,7 @@ public class BackupInfoFragment extends FragmentBase implements OnClickListener,
 			Bundle savedInstanceState) {
 
 		mRootView = (ViewGroup) inflater.inflate(
-				R.layout.firstuse_backup_view, null);
+				R.layout.fragment_backup_info, null);
 		Button btn = (Button) mRootView.findViewById(R.id.btnConfirm);
 		btn.setOnClickListener(this);
 		

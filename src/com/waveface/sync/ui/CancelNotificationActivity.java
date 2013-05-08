@@ -12,9 +12,9 @@ import com.waveface.sync.R;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.SyncNotificationManager;
 
-public class CancelNotification extends Activity implements OnClickListener {
+public class CancelNotificationActivity extends Activity implements OnClickListener {
 	private final String mNotificationId = null;
-	public static final String TAG = CancelNotification.class.getSimpleName();
+	public static final String TAG = CancelNotificationActivity.class.getSimpleName();
 	private SyncNotificationManager mNotificationManager;
 
 	@Override

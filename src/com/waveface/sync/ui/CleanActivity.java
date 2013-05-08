@@ -8,7 +8,8 @@ import android.widget.Toast;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
-import com.waveface.sync.ui.FragmentBase.onFragmentChangedListener;
+import com.waveface.sync.ui.fragment.CleanStorageFragment;
+import com.waveface.sync.ui.fragment.FragmentBase.onFragmentChangedListener;
 
 public class CleanActivity extends FragmentActivity 
 	implements 
@@ -23,7 +24,7 @@ public class CleanActivity extends FragmentActivity
 			return;
 		}
 		getWindow().setBackgroundDrawable(null);
-		setContentView(R.layout.entry_activity);
+		setContentView(R.layout.activity_base);
 		if (Constant.PHONE) {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}

@@ -1,4 +1,4 @@
-package com.waveface.sync.ui;
+package com.waveface.sync.ui.adapter;
 
 import java.util.ArrayList;
 
@@ -67,7 +67,7 @@ public class PairedServersAdapter  extends BaseAdapter {
 		  if( v==null){
 		    LayoutInflater inflater = (LayoutInflater) context
 		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		    v = inflater.inflate(R.layout.server_row, parent, false);
+		    v = inflater.inflate(R.layout.item_paired_servers, parent, false);
 		    viewHolder = new ViewHolder();
 		    viewHolder.iv = (ImageView) v.findViewById(R.id.imagePC);
 		    viewHolder.pb = (ProgressBar) v.findViewById(R.id.pbBackup);

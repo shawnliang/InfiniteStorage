@@ -32,9 +32,10 @@ import android.widget.TextView;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.db.ImportFilesTable;
+import com.waveface.sync.image.MediaStoreImage;
 import com.waveface.sync.util.StringUtil;
 
-public class ImageViewActivity extends Activity {
+public class ViewImageActivity extends Activity {
 
 	private ListView listview;
 	private DisplayMetrics metrics;
@@ -197,7 +198,7 @@ public class ImageViewActivity extends Activity {
 
 			if (convertView == null) {
 				convertView = mInflater.inflate(
-						R.layout.image_list_item, null);
+						R.layout.item_viwe_image, null);
 				convertView.setBackgroundColor(0xFF202020);
 
 				holder = new Holder();

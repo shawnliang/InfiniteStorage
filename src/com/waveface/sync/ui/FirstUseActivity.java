@@ -16,7 +16,11 @@ import android.text.Html;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.logic.FlowLogic;
-import com.waveface.sync.ui.FragmentBase.onFragmentChangedListener;
+import com.waveface.sync.ui.fragment.BackupInfoFragment;
+import com.waveface.sync.ui.fragment.FragmentBase;
+import com.waveface.sync.ui.fragment.InstallFragment;
+import com.waveface.sync.ui.fragment.ServerChooserFragment;
+import com.waveface.sync.ui.fragment.FragmentBase.onFragmentChangedListener;
 import com.waveface.sync.util.DeviceUtil;
 
 
@@ -35,7 +39,7 @@ public class FirstUseActivity extends FragmentActivity implements
 			return;
 		}
 		getWindow().setBackgroundDrawable(null);
-		setContentView(R.layout.entry_activity);
+		setContentView(R.layout.activity_base);
 		if (Constant.PHONE) {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}

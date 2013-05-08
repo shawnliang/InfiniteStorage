@@ -1,4 +1,4 @@
-package com.waveface.sync.ui;
+package com.waveface.sync.image;
 
 
 import java.io.FileNotFoundException;

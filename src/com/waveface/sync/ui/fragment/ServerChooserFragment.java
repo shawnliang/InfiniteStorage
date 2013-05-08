@@ -1,8 +1,6 @@
-package com.waveface.sync.ui;
+package com.waveface.sync.ui.fragment;
 
-import java.util.ArrayList;
-
-import org.jwebsocket.kit.WebSocketException;
+import java.util.HashMap;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -14,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.database.ContentObserver;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -24,35 +23,39 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
-
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
-import com.waveface.sync.RuntimeState;
 import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.entity.ServerEntity;
+import com.waveface.sync.logic.FlowLogic;
 import com.waveface.sync.logic.ServersLogic;
+import com.waveface.sync.ui.adapter.ServerChooseAdapter;
 import com.waveface.sync.util.NetworkUtil;
-import com.waveface.sync.websocket.RuntimeWebClient;
 
 
-public class AddServerFragment extends FragmentBase implements OnClickListener{
-	public final String TAG = AddServerFragment.class.getSimpleName();
+public class ServerChooserFragment extends FragmentBase 
+	implements OnClickListener, OnCheckedChangeListener{
+	public final String TAG = ServerChooserFragment.class.getSimpleName();
 
 	private ViewGroup mRootView;
-	
-	private ServerChooseAdapter mNewServerAdapter ;
-	private ServerChooseAdapter mPairedAdapter ;	
-	
+	private ServerChooseAdapter mAdapter ; 
     private Handler mHandler = new Handler();
 	private BonjourServerContentObserver mContentObserver;
 	private ProgressDialog mProgressDialog;
-	private Button mBtnCancel;
+	private ProgressBar mProgressBar;
+	private TextView mTvSearch;
+	private Button mBtnBackup;
 	
 	private AlertDialog mAlertDialog;
-	private ListView mAddServerListview ;
-	private ListView mPairedServerListview ;
+	private AlertDialog mSendEmailDialog;
+	
+
 
 	//DATA
 	private ServerEntity mServer ;
@@ -63,11 +66,14 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
+		if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+			mProgressDialog.dismiss();
+		} else {
+			mListener.goBack(TAG);
+		}
 	}
 
 	private class BonjourServerContentObserver extends ContentObserver {
-
 		public BonjourServerContentObserver() {
 			super(new Handler());
 		}
@@ -78,54 +84,62 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 				refreshUI();
 			}
 		}
-
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
 		mRootView = (ViewGroup) inflater.inflate(
-				R.layout.add_server, null);
-		mAddServerListview = (ListView) mRootView.findViewById(R.id.newServerListview);
-		mNewServerAdapter = new ServerChooseAdapter(getActivity(), ServersLogic.getBonjourServersExportPaired(getActivity()));
-		mAddServerListview.setAdapter(mNewServerAdapter);
-		mAddServerListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				R.layout.fragment_server_chooser, null);
+		ListView listview = (ListView) mRootView.findViewById(R.id.listview);
+		mAdapter = new ServerChooseAdapter(getActivity(), ServersLogic.getBonjourServers(getActivity()));
+    	mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
+		listview.setAdapter(mAdapter);
+		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 		      @Override
 		      public void onItemClick(AdapterView<?> parent, final View view,
 		          int position, long id) {
-		    	  mServer = mNewServerAdapter.getItem(position);
-		    	  if(RuntimeState.OnWebSocketStation){
-		    		  try {
-						RuntimeWebClient.close();
-					} catch (WebSocketException e) {
-						e.printStackTrace();
-					}
-		    	  }
-		    	  ServersLogic.updateAllBackedServerStatus(getActivity(),Constant.SERVER_DENIED_BY_CLIENT);
-		    	  clickToLinkServer(mServer);
+		        mServer = mAdapter.getItem(position);
+		        clickToLinkServer(mServer);
 		      }
 		});
-		
-		
-		mPairedServerListview = (ListView) mRootView.findViewById(R.id.pairedServerListview);
-		mPairedAdapter = new ServerChooseAdapter(getActivity(), ServersLogic.getBackupedServers(getActivity()));
-		mPairedServerListview.setAdapter(mPairedAdapter);
 
-		mBtnCancel = (Button) mRootView.findViewById(R.id.btnCancel);
-		mBtnCancel.setOnClickListener(this);
-
+		Button btn = (Button) mRootView.findViewById(R.id.btnPre);
+		btn.setOnClickListener(this);
+		
+	    mProgressBar = (ProgressBar) mRootView.findViewById(R.id.pbSearch);
+	    mTvSearch = (TextView) mRootView.findViewById(R.id.tvSearch);
+		displayProgressBar();
+		
 		if(!NetworkUtil.isWifiNetworkAvailable(getActivity())){
-			ServersLogic.purgeAllBonjourServer(getActivity());
 			openDialog(getActivity(),Constant.NETWORK_IS_NOT_WIFI);
 		}
-				
-        mHandler.postDelayed(new Runnable() {
-            public void run() {
-             	 mNewServerAdapter.setData(ServersLogic.getBonjourServersExportPaired(getActivity()));
-            	}
-            }, 300);
+		else{
+			detectInstall();
+		}
 		return mRootView;
+	}
+
+	private void detectInstall() {
+		if(!ServersLogic.hasBonjourServers(getActivity())){
+		    mHandler.postDelayed(new Runnable() {
+		        public void run() {
+		        	  openSendDialog(getActivity());
+		        	}
+		        }, 300);
+		}
+	}
+
+	private void displayProgressBar() {
+		if(mAdapter.getCount()>0){
+		    mProgressBar.setVisibility(View.GONE);
+		    mTvSearch.setVisibility(View.GONE);
+		}
+		else{
+		    mProgressBar.setVisibility(View.VISIBLE);
+		    mTvSearch.setVisibility(View.VISIBLE);			
+		}
 	}
 
 	@Override
@@ -139,6 +153,7 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 		if (Constant.PHONE) {
 			getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
+
 		mContentObserver = new BonjourServerContentObserver();
 		ContentResolver cr = getActivity().getContentResolver();
 		cr.registerContentObserver(BonjourServersTable.BONJOUR_SERVER_URI, false, mContentObserver);
@@ -161,22 +176,57 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 				String response = intent.getStringExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT);
 				if(response!=null){
 					if(response.equals(Constant.WS_ACTION_ACCEPT)){
-						dismissProgress();
+						Intent i = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
+						getActivity().sendBroadcast(i);
 						refreshUI();
-						mBtnCancel.setEnabled(true);
 						if(mAlertDialog!=null && mAlertDialog.isShowing()){
 							mAlertDialog.dismiss();
 						}
+						//Toast.makeText(getActivity(), R.string.pairing_starting_backup, Toast.LENGTH_LONG).show();
+						mListener.goNext(TAG);
 					}
 					else if(response.equals(Constant.WS_ACTION_DENIED)){
-						dismissProgress();
 						openDialog(context,Constant.WS_ACTION_DENIED);
 					}				
+//					else if(response.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
+//						openDialog(context,Constant.WS_ACTION_WAIT_FOR_PAIR);
+//					}									
 				}
 			}
 		}
 	};
-
+	private void openSendDialog(Context context){
+		if(mSendEmailDialog!=null && mSendEmailDialog.isShowing()){
+			mSendEmailDialog.dismiss();
+		}
+		String title = context.getString(R.string.install_dialog_title);
+		String message = context.getString(R.string.install_dialog_send_mail);
+		
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context); 
+		// set title
+		alertDialogBuilder.setTitle(title);
+		// set dialog message
+		alertDialogBuilder
+			.setMessage(message)
+			.setCancelable(false)
+			.setPositiveButton(R.string.email_description,new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					FlowLogic.sendDownloadEmail(getActivity());
+					dialog.cancel();
+				}
+			  })
+			.setNegativeButton(R.string.btn_no,new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					dialog.cancel();
+				}
+			  }); 
+		
+		// create alert dialog
+		mSendEmailDialog = alertDialogBuilder.create();
+		// show it
+		mSendEmailDialog.show();
+	}
+	
 	private void openDialog(Context context,final String action){
 		if(mAlertDialog!=null && mAlertDialog.isShowing()){
 			mAlertDialog.dismiss();
@@ -205,6 +255,7 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 					if(action.equals(Constant.NETWORK_IS_NOT_WIFI)){
 						startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
 						dialog.cancel();
+						detectInstall();
 					}
 					else{
 						dialog.cancel();
@@ -216,7 +267,6 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 		// show it
 		mAlertDialog.show();
 	}
-
 	@Override
 	public void onDestroy() {
 		getActivity().unregisterReceiver(mReceiver);
@@ -225,21 +275,50 @@ public class AddServerFragment extends FragmentBase implements OnClickListener{
 		cr.unregisterContentObserver(mContentObserver);
 	}
     private void clickToLinkServer(ServerEntity entity){
+//		mProgressDialog = ProgressDialog.show(getActivity(), "",getString(R.string.pairing));
+//		mProgressDialog.setCancelable(true);
 		openDialog(getActivity(),Constant.WS_ACTION_WAIT_FOR_PAIR);
-    	ServersLogic.startWSServerConnect(getActivity(), entity.wsLocation,entity.serverId);
+		
+		HashMap<String,String> param = new HashMap<String,String>();
+		param.put(Constant.PARAM_SERVER_WS_LOCATION, entity.wsLocation);
+		param.put(Constant.PARAM_SERVER_ID, entity.serverId);
+		new LinkBonjourServer().execute(param);
     }
 	@Override
 	public void onClick(View v) {
 		int viewId = v.getId();
 		switch (viewId) {
-			case R.id.btnCancel:
-				getActivity().setResult(getActivity().RESULT_OK);
+			case R.id.btnPre:
 				getActivity().finish();
+//				mListener.goBack(TAG);
 				break;
 		}
 	}
-	public void refreshUI(){
-		mNewServerAdapter.setData(ServersLogic.getBonjourServersExportPaired(getActivity()));
-		mPairedAdapter.setData(ServersLogic.getBackupedServers(getActivity()));
+	public void refreshUI(){		
+		if(ServersLogic.hasBonjourServers(getActivity())){
+			if(mSendEmailDialog !=null && mSendEmailDialog.isShowing()){
+				mSendEmailDialog.dismiss();
+			}
+		}
+		mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
+		displayProgressBar();
+	}
+	
+	@Override
+	public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+	}
+	
+	class LinkBonjourServer extends AsyncTask<HashMap<String,String>,Void,Void>{
+
+		@Override
+		protected Void doInBackground(HashMap<String,String>... params) {
+			
+			String wsLocation = params[0].get(Constant.PARAM_SERVER_WS_LOCATION);
+			String serverId = params[0].get(Constant.PARAM_SERVER_ID);
+			
+			ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId);
+			return null;
+		}
+		
 	}
 }

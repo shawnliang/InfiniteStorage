@@ -28,9 +28,11 @@ import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
 import com.waveface.sync.entity.ServerEntity;
+import com.waveface.sync.image.MediaStoreImage;
 import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.service.InfiniteService;
+import com.waveface.sync.ui.adapter.PairedServersAdapter;
 import com.waveface.sync.ui.preference.Preferences;
 import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.util.Log;
@@ -94,7 +96,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		RuntimeState.isAppLaunching = true;
 		
 		Log.d(TAG, "onCreate");
-		setContentView(R.layout.sync_main);
+		setContentView(R.layout.activity_main);
 		
 		mPrefs = getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);
 		mEditor = mPrefs.edit();
