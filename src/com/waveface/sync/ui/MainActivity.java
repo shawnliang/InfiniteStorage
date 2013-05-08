@@ -162,6 +162,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		filter.addAction(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING);
 		filter.addAction(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING);		
 		filter.addAction(Constant.ACTION_BACKUP_DONE);
+		filter.addAction(Constant.ACTION_BACKUP_START);
 		filter.addAction(Constant.ACTION_SCAN_FILE);		
 		filter.addAction(Constant.ACTION_FILE_DELETED);
 		filter.addAction(Constant.ACTION_WS_SERVER_NOTIFY);
@@ -222,7 +223,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					||Constant.ACTION_FILE_DELETED.equals(action)) {
 				refreshLayout();
 			}
-			else if (Constant.ACTION_BACKUP_DONE.equals(action)) {
+			else if (Constant.ACTION_BACKUP_START.equals(action) || Constant.ACTION_BACKUP_DONE.equals(action)) {
 				displayProgressingInfo();
 			}
 			else if (Constant.ACTION_NETWORK_STATE_CHANGE.equals(action)) {
@@ -282,6 +283,7 @@ public class MainActivity extends Activity implements OnClickListener{
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
+        refreshLayout();
     }
         
     @Override

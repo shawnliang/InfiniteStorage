@@ -16,6 +16,7 @@ public class Constant {
 	public final static String ACTION_BONJOUR_MULTICAT_EVENT = "com.waveface.sync.action.BONJOUR_MULTICAT_EVENT";	
 	public final static String ACTION_UPLOADING_FILE = "com.waveface.sync.action.UPLOADING_FILE";		
 	public final static String ACTION_BACKUP_FILE = "com.waveface.sync.action.BACKUP_FILE";	
+	public final static String ACTION_BACKUP_START = "com.waveface.sync.action.BACKUP_START";		
 	public final static String ACTION_BACKUP_DONE = "com.waveface.sync.action.BACKUP_DONE";	
 	public final static String ACTION_SCAN_FILE = "com.waveface.sync.action.SCAN_FILE";
 	public final static String ACTION_FILE_DELETED = "com.waveface.sync.action.FILE_DELETED";	

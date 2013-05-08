@@ -80,7 +80,7 @@ public class RuntimeState{
 			mWebSocketServerId = "";
 		}
 		else if(action.equals(Constant.WS_ACTION_START_BACKUP)){
-			isBackuping = true;			
+			isBackuping = true;
 		}
 		else if(action.equals(Constant.WS_ACTION_END_BACKUP)){
 			isBackuping = false;			
