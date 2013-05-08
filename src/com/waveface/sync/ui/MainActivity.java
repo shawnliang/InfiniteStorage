@@ -46,6 +46,7 @@ public class MainActivity extends FragmentActivity {
 		}
 
         mSlidingMenu = (SlidingMenu) findViewById(R.id.sliding_menu);
+        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 		
         getWindow().setBackgroundDrawable(null);
 	}
