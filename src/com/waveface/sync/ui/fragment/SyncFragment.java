@@ -171,6 +171,7 @@ public class SyncFragment extends Fragment implements OnClickListener {
 		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
 		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);
 		filter.addAction(Constant.ACTION_UPLOADING_FILE);
+		filter.addAction(Constant.ACTION_BACKUP_START);
 		getActivity().registerReceiver(mReceiver, filter);
 
 		// GET PAIRED SERVERS
@@ -235,7 +236,7 @@ public class SyncFragment extends Fragment implements OnClickListener {
 							.equals(action)
 					|| Constant.ACTION_FILE_DELETED.equals(action)) {
 				refreshLayout();
-			} else if (Constant.ACTION_BACKUP_DONE.equals(action)) {
+			} else if (Constant.ACTION_BACKUP_START.equals(action) || Constant.ACTION_BACKUP_DONE.equals(action)) {
 				displayProgressingInfo();
 			} else if (Constant.ACTION_NETWORK_STATE_CHANGE.equals(action)) {
 				displayProgressingInfo();
@@ -282,6 +283,12 @@ public class SyncFragment extends Fragment implements OnClickListener {
 				// mAdapter.setData(ServersLogic.getBackupedServers(this));
 			}
 		}
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		refreshLayout();
 	}
 
 	@Override

@@ -39,13 +39,11 @@ public class MainActivity extends FragmentActivity {
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 			SlidingMenuFragment menu = new SlidingMenuFragment();
 			transaction.add(R.id.container_sliding_menu, menu).commit();
-
 			SyncFragment photoJournal = new SyncFragment();
 			transaction = getSupportFragmentManager().beginTransaction();
 			transaction.add(R.id.container_content, photoJournal, SyncFragment.class.getSimpleName()).commit();
 			mCurrentFragmentName = SyncFragment.class.getSimpleName();
 		}
-        
 
         mSlidingMenu = (SlidingMenu) findViewById(R.id.sliding_menu);
 		

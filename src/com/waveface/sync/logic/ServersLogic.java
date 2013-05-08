@@ -165,7 +165,34 @@ public class ServersLogic {
 		}
 		return hasServer;
 	}
+	public static boolean canPairedServers(Context context,String serverId) {
+		boolean canPair = false;
+		ContentResolver cr = context.getContentResolver();
+		Cursor cursor = null;
+		try {
+			cursor = cr.query(BackupedServersTable.CONTENT_URI, null,
+					BackupedServersTable.COLUMN_SERVER_ID+"=? AND "+ 
+			        BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+					new String[] { serverId,Constant.SERVER_DENIED_BY_SERVER,
+							   Constant.SERVER_DENIED_BY_CLIENT}, 
+					BackupedServersTable.COLUMN_SERVER_ID + " LIMIT 1");
+			if (cursor != null && cursor.getCount() > 0) {
+				canPair = true;
+				cursor.close();
+			}
+			cursor = null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+				cursor = null;
+			}
+		}
+		return canPair;
+	}
 
+	
 	public static ArrayList<ServerEntity> getBackupedServers(Context context) {
 		ArrayList<ServerEntity> datas = new ArrayList<ServerEntity>();
 		ServerEntity entity = null;
@@ -509,7 +536,10 @@ public class ServersLogic {
 			// send connect cmd
 			UpdateCountEntity entity = new UpdateCountEntity();
 			entity.action = Constant.WS_ACTION_UPDATE_COUNT;
-			entity.transferCount = getTransferCountAndSize(context, serverId)[0];
+			int progress[] = BackupLogic.getBackupProgressInfo(context, serverId);
+			entity.transferCount = progress[0];
+			entity.backupedCount = progress[1];
+//			entity.transferCount = getTransferCountAndSize(context, serverId)[0];
 			RuntimeWebClient.send(RuntimeState.GSON.toJson(entity));
 		} catch (WebSocketException e) {
 			e.printStackTrace();

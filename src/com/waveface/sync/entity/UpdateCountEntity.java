@@ -10,4 +10,6 @@ public class UpdateCountEntity {
 	@SerializedName("transfer_count")
 	public long transferCount;
 
+	@SerializedName("backuped_count")
+	public long backupedCount;
 }

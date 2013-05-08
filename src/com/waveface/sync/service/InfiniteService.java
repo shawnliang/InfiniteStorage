@@ -23,7 +23,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
@@ -44,6 +43,7 @@ public class InfiniteService extends Service{
 	private WifiManager.MulticastLock mLock;
 	private JmDNS mJMDNS = null;
     private ServiceListener mListener = null;
+    private long mMDNSSetupTime;
  	
 	//DATA 
 	private ArrayList<ServerEntity> mPairedServers ;
@@ -52,7 +52,8 @@ public class InfiniteService extends Service{
 
 	//TIMER
     private final int UPDATE_INTERVAL = 30 * 1000;
-    private Timer timer = new Timer();
+    private Timer BackupTimer = new Timer();
+    private Timer ResetMDNSTimer = new Timer();    
     
     //
 	private SyncNotificationManager mNotificationManager;
@@ -69,11 +70,11 @@ public class InfiniteService extends Service{
 	}
 
 	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		if(timer==null){
-			timer = new Timer();
+	public int onStartCommand(Intent intent, int flags, int startId) {		
+		if(BackupTimer==null){
+			BackupTimer = new Timer();
 		}
-        timer.scheduleAtFixedRate(new TimerTask() {
+        BackupTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
         		//SCAN ALL FILES FOR THE FIRST TIME
@@ -85,26 +86,45 @@ public class InfiniteService extends Service{
             					RuntimeState.wasFirstTimeImportScanDone)
             			.commit();
             	}
+            	long fromTime = System.currentTimeMillis()-mMDNSSetupTime;
+            	if(NetworkUtil.isWifiNetworkAvailable(mContext)
+            			&& RuntimeState.isMDNSSetUped  
+            			&& fromTime > (60*1000)
+            			&& RuntimeState .OnWebSocketOpened == false 
+            			&& RuntimeState.OnWebSocketStation == false
+            			&& RuntimeState.isBackuping == false){
+            		    Log.d(TAG, "reset MDNS FOR WAIT FOR 1 Minutes");
+//            		    ServersLogic.purgeAllBonjourServer(mContext);
+						releaseMDNS();
+						Log.d(TAG, "reset MDNS");
+						setupMDNS();
+            	}
+            	
 		    	String serverId = RuntimeState.mWebSocketServerId;
-            	if(!TextUtils.isEmpty(serverId)
+		    	if(!TextUtils.isEmpty(serverId)){
+		    		ServersLogic.updateCount(mContext, serverId);
+		    	}
+		    	if(!TextUtils.isEmpty(serverId)
             			&& RuntimeState.wasFirstTimeImportScanDone
             			&& RuntimeState.canBackup(mContext) 
         				&& BackupLogic.needToBackup(mContext,serverId)){
 					Log.d(TAG, "START BACKUP FILE");
+					Intent intent = new Intent(Constant.ACTION_BACKUP_START);
+					mContext.sendBroadcast(intent);
 					RuntimeState.setServerStatus(Constant.WS_ACTION_START_BACKUP);
-					ServersLogic.updateCount(mContext, serverId);
 					showSyncNotification(Constant.NOTIFICATION_BACK_UP_START);
 					while(RuntimeState.isWebSocketAvaliable(mContext) && BackupLogic.needToBackup(mContext,serverId)){
 						if(RuntimeState.isBackuping==false){
-							Intent intent = new Intent(Constant.ACTION_UPLOADING_FILE);
+							intent = new Intent(Constant.ACTION_UPLOADING_FILE);
 							intent.putExtra(Constant.EXTRA_BACKING_UP_FILE_STATE, Constant.JOB_START);
 							mContext.sendBroadcast(intent);
 							RuntimeState.isBackuping = true;
 						}
 			    		BackupLogic.backupFiles(mContext, serverId);
 			    	}
+					ServersLogic.updateCount(mContext, serverId);
 					RuntimeState.isBackuping = false;
-					Intent intent = new Intent(Constant.ACTION_BACKUP_DONE);
+					intent = new Intent(Constant.ACTION_BACKUP_DONE);
 					mContext.sendBroadcast(intent);
 					RuntimeState.setServerStatus(Constant.WS_ACTION_END_BACKUP);
 					showSyncNotification(Constant.NOTIFICATION_BACKED_UP);
@@ -189,6 +209,7 @@ public class InfiniteService extends Service{
 				removeNotification();
 				if(RuntimeState.isNotificationShowing == false ){
 					int count = ServersLogic.getServerBackupedCountById(mContext, RuntimeState.mWebSocketServerId);		
+//					int count = BackupLogic.getBackupProgressInfo(mContext, RuntimeState.mWebSocketServerId)[0];
 					content = mContext.getString(R.string.notify_backup_status, count);				
 					mNotificationManager.createTextNotification(
 							mNotoficationId,
@@ -229,6 +250,7 @@ public class InfiniteService extends Service{
 				if(actionContent!=null){
 					if(actionContent.equals(Constant.NETWORK_ACTION_WIFI_BROKEN)){
 						Log.d(TAG, "release MDNS");
+						ServersLogic.purgeAllBonjourServer(mContext);
 						releaseMDNS();
 					}
 					else if(actionContent.equals(Constant.NETWORK_ACTION_WIFI_CONNECTED)){
@@ -255,8 +277,8 @@ public class InfiniteService extends Service{
 		getContentResolver().unregisterContentObserver(mVideo);
 		getContentResolver().unregisterContentObserver(mAudio);
 
-		if(timer!=null){
-			timer.cancel();
+		if(BackupTimer!=null){
+			BackupTimer.cancel();
 		}
 		releaseMDNS();  
 		ServersLogic.purgeAllBonjourServer(this);
@@ -297,6 +319,7 @@ public class InfiniteService extends Service{
 	}
 
     private void setupMDNS() {
+    	mMDNSSetupTime = System.currentTimeMillis();
         WifiManager wifi = (WifiManager) getSystemService(android.content.Context.WIFI_SERVICE);
         mLock = wifi.createMulticastLock("infiniteS");
 //        lock.setReferenceCounted(true);
@@ -325,18 +348,22 @@ public class InfiniteService extends Service{
     	        		if(mPairedServers.size()!=0){
     	        			RuntimeState.mAutoConnectMode = true ;
     	        		}
-    	                if(RuntimeState.mAutoConnectMode == false && RuntimeState.OnWebSocketOpened == false ){	                    
+//    	                if(RuntimeState.mAutoConnectMode == false && RuntimeState.OnWebSocketOpened == false ){	                    
 //    	                    Intent intent = new Intent(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING);
 //    	                    mContext.sendBroadcast(intent);
-    	                }
-    	                else{
-    	                	if(NetworkUtil.isWifiNetworkAvailable(mContext) && RuntimeState.OnWebSocketOpened == false){
-    		                	Intent intent = new Intent(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING);
+//    	                }
+//    	                else{
+	                	if(RuntimeState.mAutoConnectMode 
+	                			&& NetworkUtil.isWifiNetworkAvailable(mContext) 
+	                			&& RuntimeState.OnWebSocketOpened == false){
+		                	if(ServersLogic.canPairedServers(mContext, entity.serverId)){
+    	                		Intent intent = new Intent(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING);
     		                	intent.putExtra(Constant.EXTRA_BONJOUR_AUTO_PAIR_STATUS, Constant.BONJOUR_PAIRING);
     		                	mContext.sendBroadcast(intent);
     		                	autoPairingConnect();
-    	                	}
-    	                }
+		                	}
+	                	}
+//    	                }
                 	}
                 }
 
