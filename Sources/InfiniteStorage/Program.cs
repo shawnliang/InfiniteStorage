@@ -53,6 +53,12 @@ namespace InfiniteStorage
 			Log4netConfigure.InitLog4net();
 			log4net.LogManager.GetLogger("main").Debug("==== program started ====");
 
+			if (!Settings.Default.IsUpgraded)
+			{
+				Settings.Default.Upgrade();
+				Settings.Default.IsUpgraded = true;
+				Settings.Default.Save();
+			}
 
 			if (string.IsNullOrEmpty(Settings.Default.ServerId))
 			{
