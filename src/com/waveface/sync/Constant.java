@@ -48,6 +48,22 @@ public class Constant {
 	public static final long ALARM_INTERVAL =  1 *30 * 1000;
 
 
+	//CATEGORY
+	public static final String CATEGORY_UI = "ui";
+	public static final String CATEGORY_SERVICE = "service";
+	
+	
+	//UI ACTION
+	public static final String ANALYTICS_ACTION_BTN_PRESS = "btn_press";
+	
+	//SERVICE ACTION
+	public static final String ANALYTICS_ACTION_FINAL_BACKUP_COUNT = "final_backedup_count";
+	
+	//USRER ACTION VALUE
+	public static final String ANALYTICS_CLICK_SETTING = "click_setting";
+	public static final String ANALYTICS_CLICK_ADD_PC = "click_add_pc";	
+	
+
 	//SERVER STATUS
 	public static final String SERVER_LINKING = "1";
 	public static final String SERVER_OFFLINE = "2";	

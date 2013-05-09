@@ -213,7 +213,7 @@ public class ViewImageActivity extends Activity {
 				holder = (Holder) convertView.getTag();
 			}
 
-			Bitmap b = mMediaImage.getBitmap(entity.mediaId, this.displayType);
+			Bitmap b = mMediaImage.getBitmap(entity.mediaId, this.displayType,entity.filename);
 			if(b!=null){
 				holder.imageview.setImageBitmap(b);
 			}

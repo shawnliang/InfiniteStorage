@@ -96,7 +96,7 @@ public class SyncNotificationManager {
 					.setContentTitle(title)
 			        .setContentText(content)
 			        .setSmallIcon(R.drawable.ic_status)
-			        .setLargeIcon(mediaImage.getBitmap(RuntimeState.mMediaID, RuntimeState.mFileType))
+			        .setLargeIcon(mediaImage.getBitmap(RuntimeState.mMediaID, RuntimeState.mFileType,RuntimeState.mFileDatetime))
 			        .setContentIntent(pendingIntent).build();
 		}
 		else{

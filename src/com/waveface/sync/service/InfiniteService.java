@@ -24,6 +24,7 @@ import android.os.IBinder;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
@@ -214,6 +215,8 @@ public class InfiniteService extends Service{
 				removeNotification();
 				if(RuntimeState.isNotificationShowing == false ){
 					int count = BackupLogic.getBackedUpCountForPairedPC(mContext);		
+					EasyTracker.getTracker().sendEvent(Constant.CATEGORY_SERVICE, 
+							Constant.ANALYTICS_ACTION_FINAL_BACKUP_COUNT, String.valueOf(count), null);
 //					int count = BackupLogic.getBackupProgressInfo(mContext, RuntimeState.mWebSocketServerId)[0];
 					content = mContext.getString(R.string.notify_backup_status, count);				
 					

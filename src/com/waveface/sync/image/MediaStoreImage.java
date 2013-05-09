@@ -17,6 +17,7 @@ import android.util.Log;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.RuntimeState;
+import com.waveface.sync.util.FileUtil;
 import com.waveface.sync.util.ImageUtil;
 
 public class MediaStoreImage  {
@@ -43,7 +44,7 @@ public class MediaStoreImage  {
 	}
 
 
-	public Bitmap getBitmap(long mediaId,int type) {
+	public Bitmap getBitmap(long mediaId,int type,String filename) {
 	    Bitmap b = null;
 	    switch(type){
 	    case Constant.TYPE_IMAGE:
@@ -63,18 +64,21 @@ public class MediaStoreImage  {
 	    if(b != null) {
 	    	// we don't need the image to big, but hence android Thumbnails.MICRO_KIND
 	    	// will have problem to retrieve right image, we need to re-scale bitmap
-	    	b = ImageUtil.extractThumbnail(b, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
-			float rotation = ImageUtil.rotationForImage(RuntimeState.mFilename);
-			if (rotation != 0f) {
-				Matrix matrix = new Matrix();
-				matrix.preRotate(rotation);
-				try{
-					b = Bitmap.createBitmap(b, 0, 0, IMAGE_MAX_WIDTH,IMAGE_MAX_HEIGHT,matrix, true);
+	    	if(FileUtil.isFileExisted(filename)){
+		    	b = ImageUtil.extractThumbnail(b, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
+	
+		    	float rotation = ImageUtil.rotationForImage(filename);
+				if (rotation != 0f) {
+					Matrix matrix = new Matrix();
+					matrix.preRotate(rotation);
+					try{
+						b = Bitmap.createBitmap(b, 0, 0, IMAGE_MAX_WIDTH,IMAGE_MAX_HEIGHT,matrix, true);
+					}
+					catch(Exception ex){
+						ex.printStackTrace();
+					}
 				}
-				catch(Exception ex){
-					ex.printStackTrace();
-				}
-			}
+	    	}
 	    }
 	    return b;
 	}

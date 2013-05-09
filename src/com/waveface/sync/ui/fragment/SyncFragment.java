@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
@@ -35,6 +36,7 @@ import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.ui.CleanActivity;
 import com.waveface.sync.ui.FirstUseActivity;
+import com.waveface.sync.ui.ViewImageActivity;
 import com.waveface.sync.ui.preference.Preferences;
 import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.util.NetworkUtil;
@@ -83,17 +85,19 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	private final static int IMAGE_WIDTH = 110;
 	// DATA
 	private ArrayList<ServerEntity> mPairedServers;
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
 		View root = inflater.inflate(R.layout.fragment_sync, container, false);
-		
-		mPrefs = getActivity().getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE);
+
+		mPrefs = getActivity().getSharedPreferences(Constant.PREFS_NAME,
+				Context.MODE_PRIVATE);
 		mEditor = mPrefs.edit();
 
-		mMediaImage = new MediaStoreImage(getActivity(), IMAGE_WIDTH, IMAGE_HEIGHT);
+		mMediaImage = new MediaStoreImage(getActivity(), IMAGE_WIDTH,
+				IMAGE_HEIGHT);
 
 		mDevice = (TextView) root.findViewById(R.id.textDevice);
 		mDevice.setText(DeviceUtil.getDeviceNameForDisplay(getActivity()));
@@ -131,7 +135,8 @@ public class SyncFragment extends Fragment implements OnClickListener {
 		mDeleteAudioBtn.setOnClickListener(this);
 
 		// progress Content Area
-		rlBackupContent = (RelativeLayout) root.findViewById(R.id.rlBackupContent);
+		rlBackupContent = (RelativeLayout) root
+				.findViewById(R.id.rlBackupContent);
 		ivPC = (ImageView) root.findViewById(R.id.imagePC);
 		ivFile = (ImageView) root.findViewById(R.id.ivFile);
 		ivPlay = (ImageView) root.findViewById(R.id.ivPlay);
@@ -153,12 +158,12 @@ public class SyncFragment extends Fragment implements OnClickListener {
 		mIvAddPc.setOnClickListener(this);
 		return root;
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		refreshLayout();
-		
+
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING);
 		filter.addAction(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING);
@@ -182,8 +187,9 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			mEditor.putBoolean(Constant.PREF_BONJOUR_SERVER_ALRM_ENNABLED, true)
 					.commit();
 		}
-//		new StartServiceTask().execute(new Void[] {});
-		getActivity().sendBroadcast(new Intent(Constant.ACTION_INFINITE_STORAGE_ALARM));
+		// new StartServiceTask().execute(new Void[] {});
+		getActivity().sendBroadcast(
+				new Intent(Constant.ACTION_INFINITE_STORAGE_ALARM));
 	}
 
 	private void dismissProgress() {
@@ -235,7 +241,8 @@ public class SyncFragment extends Fragment implements OnClickListener {
 							.equals(action)
 					|| Constant.ACTION_FILE_DELETED.equals(action)) {
 				refreshLayout();
-			} else if (Constant.ACTION_BACKUP_START.equals(action) || Constant.ACTION_BACKUP_DONE.equals(action)) {
+			} else if (Constant.ACTION_BACKUP_START.equals(action)
+					|| Constant.ACTION_BACKUP_DONE.equals(action)) {
 				displayProgressingInfo();
 			} else if (Constant.ACTION_NETWORK_STATE_CHANGE.equals(action)) {
 				displayProgressingInfo();
@@ -269,7 +276,6 @@ public class SyncFragment extends Fragment implements OnClickListener {
 		}
 	};
 
-	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER) {
@@ -283,12 +289,18 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			}
 		}
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
 		refreshLayout();
 	}
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance().setContext(getActivity());
+		EasyTracker.getTracker().sendView(TAG);
+	};
 
 	@Override
 	public void onDestroy() {
@@ -308,7 +320,8 @@ public class SyncFragment extends Fragment implements OnClickListener {
 		long totalCount = 0;
 		long totalSize = 0;
 
-		long[] datas = BackupLogic.getFileInfo(getActivity(), Constant.TYPE_IMAGE);
+		long[] datas = BackupLogic.getFileInfo(getActivity(),
+				Constant.TYPE_IMAGE);
 		mPhotoCount.setText(getString(R.string.photos, datas[0]));
 		mPhotoSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
 		totalCount += datas[0];
@@ -426,10 +439,10 @@ public class SyncFragment extends Fragment implements OnClickListener {
 				break;
 			}
 			if (RuntimeState.mFileType != Constant.TYPE_AUDIO) {
-				
+
 				try {
 					Bitmap b = mMediaImage.getBitmap(RuntimeState.mMediaID,
-							RuntimeState.mFileType);
+							RuntimeState.mFileType, RuntimeState.mFilename);
 					if (b != null) {
 						ivFile.setImageBitmap(b);
 					} else {
@@ -452,13 +465,14 @@ public class SyncFragment extends Fragment implements OnClickListener {
 		case R.id.ivSettings:
 			Intent intent = new Intent(getActivity(), Preferences.class);
 			startActivity(intent);
+			EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_CLICK_SETTING, null);
 			break;
 		case R.id.ivAddpc:
 			if (!ServersLogic.hasBackupedServers(getActivity())) {
-				startIntent = new Intent(getActivity(),
-						FirstUseActivity.class);
+				startIntent = new Intent(getActivity(), FirstUseActivity.class);
 				startActivityForResult(startIntent,
 						Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
+				EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_CLICK_ADD_PC, null);
 			}
 			// else{
 			// startIntent = new Intent(MainActivity.this,
@@ -488,27 +502,27 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			startActivityForResult(startIntent,
 					Constant.REQUEST_CODE_CLEAN_STORAGE);
 			break;
-		// case R.id.imageView1:
-		// //TO DISPLAY ALL IMAGES
-		// startIntent = new Intent(MainActivity.this, ImageViewActivity.class);
-		// startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
-		// Constant.TRANSFER_TYPE_IMAGE);
-		// startActivity(startIntent);
-		// break;
-		// case R.id.imageView2:
-		// //TO DISPLAY ALL VIDEOS
-		// startIntent = new Intent(MainActivity.this, ImageViewActivity.class);
-		// startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
-		// Constant.TRANSFER_TYPE_VIDEO);
-		// startActivity(startIntent);
-		// break;
-		// case R.id.imageView3:
-		// //TO DISPLAY ALL VIDEOS
-		// startIntent = new Intent(MainActivity.this, ImageViewActivity.class);
-		// startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
-		// Constant.TRANSFER_TYPE_AUDIO);
-		// startActivity(startIntent);
-		// break;
+		case R.id.imageView1:
+			// TO DISPLAY ALL IMAGES
+			startIntent = new Intent(getActivity(), ViewImageActivity.class);
+			startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
+					Constant.TRANSFER_TYPE_IMAGE);
+			startActivity(startIntent);
+			break;
+		case R.id.imageView2:
+			// TO DISPLAY ALL VIDEOS
+			startIntent = new Intent(getActivity(), ViewImageActivity.class);
+			startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
+					Constant.TRANSFER_TYPE_VIDEO);
+			startActivity(startIntent);
+			break;
+		case R.id.imageView3:
+			// TO DISPLAY ALL VIDEOS
+			startIntent = new Intent(getActivity(), ViewImageActivity.class);
+			startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
+					Constant.TRANSFER_TYPE_AUDIO);
+			startActivity(startIntent);
+			break;
 		}
 	}
 }
