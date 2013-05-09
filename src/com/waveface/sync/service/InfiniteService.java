@@ -239,9 +239,9 @@ public class InfiniteService extends Service{
 			mNotificationManager = SyncNotificationManager
 					.getInstance(mContext);
 		}
-		String notificationId = mPrefs.getString(Constant.PREF_NOTIFICATION_ID, "");
-		if(!TextUtils.isEmpty(notificationId) && RuntimeState.isNotificationShowing){
-			mNotificationManager.cancelNotification(notificationId);
+		mNotoficationId = mPrefs.getString(Constant.PREF_NOTIFICATION_ID, "");
+		if(!TextUtils.isEmpty(mNotoficationId) && RuntimeState.isNotificationShowing){
+			mNotificationManager.cancelNotification(mNotoficationId);
 			//mNotificationManager.cancelAll();
 			RuntimeState.isNotificationShowing = false;
 		}
