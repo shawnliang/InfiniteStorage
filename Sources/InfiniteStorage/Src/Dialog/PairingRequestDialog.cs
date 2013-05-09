@@ -20,7 +20,7 @@ namespace InfiniteStorage
 			this.ctx = ctx;
 			InitializeComponent();
 			Text = Resources.ProductName;
-			Icon = Resources.product_icon;
+			Icon = Resources.ProductIcon;
 			DialogResult = System.Windows.Forms.DialogResult.Cancel;
 		}
 

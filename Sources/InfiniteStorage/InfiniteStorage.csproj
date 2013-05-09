@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\product.ico</ApplicationIcon>
+    <ApplicationIcon>resources\Bunnydesktop.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AppLimit.NetSparkle">
@@ -257,9 +257,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\product.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="..\..\Libs\Mono.Zeroconf\Mono.Zeroconf.Providers.Bonjour.dll">
       <Link>Mono.Zeroconf.Providers.Bonjour.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -272,9 +269,9 @@
       <Link>x86\SQLite.Interop.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Bunnydesktop.ico" />
     <None Include="Resources\ChooseThisPCOnYourPhone.png" />
     <None Include="Resources\Tea-Cup1.png" />
-    <None Include="Resources\AppIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

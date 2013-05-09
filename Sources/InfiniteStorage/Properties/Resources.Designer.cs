@@ -257,9 +257,9 @@ namespace InfiniteStorage.Properties {
             }
         }
         
-        internal static System.Drawing.Icon product_icon {
+        internal static System.Drawing.Icon ProductIcon {
             get {
-                object obj = ResourceManager.GetObject("product_icon", resourceCulture);
+                object obj = ResourceManager.GetObject("ProductIcon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

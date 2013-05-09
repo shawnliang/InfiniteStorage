@@ -28,7 +28,7 @@ namespace InfiniteStorage
 
 		private void BackupProgressDialog_Load(object sender, EventArgs e)
 		{
-			Icon = Resources.product_icon;
+			Icon = Resources.ProductIcon;
 			Text = Resources.ProductName;
 			TitleLabel.Text = string.Format(Resources.BackupProgressTitle_InProgress, WSCtx.device_name);
 			refresh_timer.Start();

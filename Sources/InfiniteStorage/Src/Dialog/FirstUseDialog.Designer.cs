@@ -74,7 +74,7 @@
 			this.nextButton.Name = "nextButton";
 			this.nextButton.Size = new System.Drawing.Size(75, 32);
 			this.nextButton.TabIndex = 1;
-			this.nextButton.Text = "Next";
+			this.nextButton.Text = "下一步";
 			this.nextButton.UseVisualStyleBackColor = true;
 			this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
 			// 
@@ -85,7 +85,7 @@
 			this.prevButton.Name = "prevButton";
 			this.prevButton.Size = new System.Drawing.Size(75, 32);
 			this.prevButton.TabIndex = 0;
-			this.prevButton.Text = "Previous";
+			this.prevButton.Text = "上一步";
 			this.prevButton.UseVisualStyleBackColor = true;
 			this.prevButton.Click += new System.EventHandler(this.prevButton_Click);
 			// 

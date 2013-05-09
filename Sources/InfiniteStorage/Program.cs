@@ -256,7 +256,7 @@ namespace InfiniteStorage
 		{
 			m_notifyIcon = new NotifyIcon();
 			m_notifyIcon.Text = Resources.ProductName;
-			m_notifyIcon.Icon = Resources.product_icon;
+			m_notifyIcon.Icon = Resources.ProductIcon;
 			m_notifyIconController = new NotifyIconController(m_notifyIcon);
 
 			m_notifyIcon.ContextMenuStrip = new ContextMenuStrip();

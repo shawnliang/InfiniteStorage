@@ -20,7 +20,7 @@ namespace InfiniteStorage
 		{
 			InitializeComponent();
 			Text = Resources.ProductName;
-			Icon = Resources.product_icon;
+			Icon = Resources.ProductIcon;
 
 			deviceListControl.SettingChanged += new EventHandler(handleAnySettingChanged);
 			aboutControl1.SettingsChanged += new EventHandler(handleAnySettingChanged);

@@ -97,6 +97,7 @@
 			this.deviceListControl.Location = new System.Drawing.Point(3, 3);
 			this.deviceListControl.Name = "deviceListControl";
 			this.deviceListControl.RejectOtherDevices = false;
+			this.deviceListControl.ShowBackupProgress = false;
 			this.deviceListControl.Size = new System.Drawing.Size(614, 284);
 			this.deviceListControl.TabIndex = 0;
 			// 
@@ -127,7 +128,7 @@
 			this.buttonOK.Name = "buttonOK";
 			this.buttonOK.Size = new System.Drawing.Size(75, 23);
 			this.buttonOK.TabIndex = 1;
-			this.buttonOK.Text = "OK";
+			this.buttonOK.Text = "確認";
 			this.buttonOK.UseVisualStyleBackColor = true;
 			this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
 			// 
@@ -138,7 +139,7 @@
 			this.buttonCancel.Name = "buttonCancel";
 			this.buttonCancel.Size = new System.Drawing.Size(75, 23);
 			this.buttonCancel.TabIndex = 2;
-			this.buttonCancel.Text = "Cancel";
+			this.buttonCancel.Text = "取消";
 			this.buttonCancel.UseVisualStyleBackColor = true;
 			this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
 			// 
@@ -150,7 +151,7 @@
 			this.buttonApply.Name = "buttonApply";
 			this.buttonApply.Size = new System.Drawing.Size(75, 23);
 			this.buttonApply.TabIndex = 3;
-			this.buttonApply.Text = "Apply";
+			this.buttonApply.Text = "套用";
 			this.buttonApply.UseVisualStyleBackColor = true;
 			this.buttonApply.Click += new System.EventHandler(this.buttonApply_Click);
 			// 

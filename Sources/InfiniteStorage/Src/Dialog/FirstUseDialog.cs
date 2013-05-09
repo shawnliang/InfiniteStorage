@@ -31,7 +31,7 @@ namespace InfiniteStorage
 		public FirstUseDialog()
 		{
 			InitializeComponent();
-			Icon = Resources.product_icon;
+			Icon = Resources.ProductIcon;
 			Text = Resources.ProductName;
 		}
 
