@@ -60,8 +60,12 @@ public class Constant {
 	public static final String ANALYTICS_ACTION_FINAL_BACKUP_COUNT = "final_backedup_count";
 	
 	//USRER ACTION VALUE
-	public static final String ANALYTICS_CLICK_SETTING = "click_setting";
-	public static final String ANALYTICS_CLICK_ADD_PC = "click_add_pc";	
+	public static final String ANALYTICS_LABEL_SETTING = "click_setting";
+	public static final String ANALYTICS_LABEL_IMAGE = "click_image";
+	public static final String ANALYTICS_LABEL_VIDEO = "click_video";
+	public static final String ANALYTICS_LABEL_AUDIO = "click_audio";	
+	public static final String ANALYTICS_LABEL_ADD_PC = "click_add_pc";	
+	public static final String ANALYTICS_LABEL_COUNT = "count";
 	
 
 	//SERVER STATUS

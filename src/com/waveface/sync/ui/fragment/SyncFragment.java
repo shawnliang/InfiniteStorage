@@ -465,14 +465,14 @@ public class SyncFragment extends Fragment implements OnClickListener {
 		case R.id.ivSettings:
 			Intent intent = new Intent(getActivity(), Preferences.class);
 			startActivity(intent);
-			EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_CLICK_SETTING, null);
+			EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_LABEL_SETTING, null);
 			break;
 		case R.id.ivAddpc:
 			if (!ServersLogic.hasBackupedServers(getActivity())) {
 				startIntent = new Intent(getActivity(), FirstUseActivity.class);
 				startActivityForResult(startIntent,
 						Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
-				EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_CLICK_ADD_PC, null);
+				EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_LABEL_ADD_PC, null);
 			}
 			// else{
 			// startIntent = new Intent(MainActivity.this,
@@ -504,6 +504,7 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			break;
 		case R.id.imageView1:
 			// TO DISPLAY ALL IMAGES
+			EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_LABEL_IMAGE, null);
 			startIntent = new Intent(getActivity(), ViewImageActivity.class);
 			startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
 					Constant.TRANSFER_TYPE_IMAGE);
@@ -511,13 +512,15 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			break;
 		case R.id.imageView2:
 			// TO DISPLAY ALL VIDEOS
+			EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_LABEL_VIDEO, null);
 			startIntent = new Intent(getActivity(), ViewImageActivity.class);
 			startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
 					Constant.TRANSFER_TYPE_VIDEO);
 			startActivity(startIntent);
 			break;
 		case R.id.imageView3:
-			// TO DISPLAY ALL VIDEOS
+			// TO DISPLAY ALL AUDIO
+			EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_LABEL_AUDIO, null);
 			startIntent = new Intent(getActivity(), ViewImageActivity.class);
 			startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
 					Constant.TRANSFER_TYPE_AUDIO);
