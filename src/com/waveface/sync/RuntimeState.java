@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.google.gson.Gson;
+import com.waveface.sync.callback.ActionCallbackManager;
 import com.waveface.sync.util.NetworkUtil;
 
 public class RuntimeState{
@@ -42,7 +43,9 @@ public class RuntimeState{
 	public static long maxAudioId = -1;
 	
 	public static int LastTimeNetworkState = 0;
-		
+	
+	private static ActionCallbackManager mActionManager = ActionCallbackManager.getInstance();
+	
 	public static void setServerStatus(String action){
 		if(action.equals(Constant.WS_ACTION_SOCKET_OPENED)){
 			OnWebSocketOpened = true;			
@@ -108,6 +111,13 @@ public class RuntimeState{
 			return false;
 		}
 	}	
+	
+	public static void fireEvent(String action,int value){
+		if(mActionManager==null){
+			mActionManager = ActionCallbackManager.getInstance();
+		}
+		mActionManager.fireEvent(action, value);
+	}
 	public static void FileBackedUp(Context context){
 		Intent intent = new Intent(Constant.ACTION_BACKUP_FILE);
 		context.sendBroadcast(intent);

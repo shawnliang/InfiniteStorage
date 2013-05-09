@@ -2,21 +2,6 @@ package com.waveface.sync.ui.fragment;
 
 import java.util.ArrayList;
 
-import com.waveface.sync.Constant;
-import com.waveface.sync.R;
-import com.waveface.sync.RuntimeState;
-import com.waveface.sync.entity.ServerEntity;
-import com.waveface.sync.image.MediaStoreImage;
-import com.waveface.sync.logic.BackupLogic;
-import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.service.InfiniteService;
-import com.waveface.sync.ui.CleanActivity;
-import com.waveface.sync.ui.FirstUseActivity;
-import com.waveface.sync.ui.preference.Preferences;
-import com.waveface.sync.util.DeviceUtil;
-import com.waveface.sync.util.NetworkUtil;
-import com.waveface.sync.util.StringUtil;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -26,7 +11,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -41,6 +25,20 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.waveface.sync.Constant;
+import com.waveface.sync.R;
+import com.waveface.sync.RuntimeState;
+import com.waveface.sync.entity.ServerEntity;
+import com.waveface.sync.image.MediaStoreImage;
+import com.waveface.sync.logic.BackupLogic;
+import com.waveface.sync.logic.ServersLogic;
+import com.waveface.sync.ui.CleanActivity;
+import com.waveface.sync.ui.FirstUseActivity;
+import com.waveface.sync.ui.preference.Preferences;
+import com.waveface.sync.util.DeviceUtil;
+import com.waveface.sync.util.NetworkUtil;
+import com.waveface.sync.util.StringUtil;
 
 public class SyncFragment extends Fragment implements OnClickListener {
 
@@ -85,7 +83,7 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	private final static int IMAGE_WIDTH = 110;
 	// DATA
 	private ArrayList<ServerEntity> mPairedServers;
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -160,7 +158,7 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		refreshLayout();
-
+		
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING);
 		filter.addAction(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING);
@@ -184,7 +182,8 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			mEditor.putBoolean(Constant.PREF_BONJOUR_SERVER_ALRM_ENNABLED, true)
 					.commit();
 		}
-		new StartServiceTask().execute(new Void[] {});
+//		new StartServiceTask().execute(new Void[] {});
+		getActivity().sendBroadcast(new Intent(Constant.ACTION_INFINITE_STORAGE_ALARM));
 	}
 
 	private void dismissProgress() {
@@ -427,11 +426,17 @@ public class SyncFragment extends Fragment implements OnClickListener {
 				break;
 			}
 			if (RuntimeState.mFileType != Constant.TYPE_AUDIO) {
-				Bitmap b = mMediaImage.getBitmap(RuntimeState.mMediaID,
-						RuntimeState.mFileType);
-				if (b != null) {
-					ivFile.setImageBitmap(b);
-				} else {
+				
+				try {
+					Bitmap b = mMediaImage.getBitmap(RuntimeState.mMediaID,
+							RuntimeState.mFileType);
+					if (b != null) {
+						ivFile.setImageBitmap(b);
+					} else {
+						ivFile.setImageResource(R.drawable.ic_photos);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 					ivFile.setImageResource(R.drawable.ic_photos);
 				}
 			}
@@ -504,15 +509,6 @@ public class SyncFragment extends Fragment implements OnClickListener {
 		// Constant.TRANSFER_TYPE_AUDIO);
 		// startActivity(startIntent);
 		// break;
-		}
-	}
-
-	class StartServiceTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			getActivity().startService(new Intent(getActivity(), InfiniteService.class));
-			return null;
 		}
 	}
 }

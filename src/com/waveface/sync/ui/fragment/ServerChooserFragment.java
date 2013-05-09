@@ -50,8 +50,6 @@ public class ServerChooserFragment extends FragmentBase
 	private ProgressDialog mProgressDialog;
 	private ProgressBar mProgressBar;
 	private TextView mTvSearch;
-	private Button mBtnBackup;
-	
 	private AlertDialog mAlertDialog;
 	private AlertDialog mSendEmailDialog;
 	
@@ -158,11 +156,6 @@ public class ServerChooserFragment extends FragmentBase
 		ContentResolver cr = getActivity().getContentResolver();
 		cr.registerContentObserver(BonjourServersTable.BONJOUR_SERVER_URI, false, mContentObserver);
 
-	}
-	private void dismissProgress(){
-		if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
-			mProgressDialog.dismiss();
-		}		
 	}
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		@Override
@@ -274,7 +267,8 @@ public class ServerChooserFragment extends FragmentBase
 		ContentResolver cr = getActivity().getContentResolver();
 		cr.unregisterContentObserver(mContentObserver);
 	}
-    private void clickToLinkServer(ServerEntity entity){
+    @SuppressWarnings("unchecked")
+	private void clickToLinkServer(ServerEntity entity){
 //		mProgressDialog = ProgressDialog.show(getActivity(), "",getString(R.string.pairing));
 //		mProgressDialog.setCancelable(true);
 		openDialog(getActivity(),Constant.WS_ACTION_WAIT_FOR_PAIR);

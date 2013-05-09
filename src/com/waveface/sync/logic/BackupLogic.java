@@ -730,9 +730,11 @@ public class BackupLogic {
 							RuntimeState.mFileType = filetype;
 							RuntimeState.mFilename = filename;
 							RuntimeState.mMediaID = lastBackupMediaId;
+							
 							intent.putExtra(Constant.EXTRA_BACKING_UP_FILE_STATE,
 									Constant.FILE_START);
 							context.sendBroadcast(intent);
+
 							Log.d(TAG, i+":BACKUPING: type:" + entity.type
 									+ ",Filename:" + entity.fileName);
 							Log.d(TAG, "filedate:"+fileDateTime+"fileUpdatedTime:"+fileUpdatedTime);
