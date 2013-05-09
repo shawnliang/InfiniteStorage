@@ -2,6 +2,21 @@ package com.waveface.sync.ui.fragment;
 
 import java.util.ArrayList;
 
+import com.waveface.sync.Constant;
+import com.waveface.sync.R;
+import com.waveface.sync.RuntimeState;
+import com.waveface.sync.entity.ServerEntity;
+import com.waveface.sync.image.MediaStoreImage;
+import com.waveface.sync.logic.BackupLogic;
+import com.waveface.sync.logic.ServersLogic;
+import com.waveface.sync.ui.CleanActivity;
+import com.waveface.sync.ui.FirstUseActivity;
+import com.waveface.sync.ui.preference.Preferences;
+import com.waveface.sync.util.DeviceUtil;
+import com.waveface.sync.util.NetworkUtil;
+import com.waveface.sync.util.StringUtil;
+
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -27,20 +42,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
-import com.waveface.sync.Constant;
-import com.waveface.sync.R;
-import com.waveface.sync.RuntimeState;
-import com.waveface.sync.entity.ServerEntity;
-import com.waveface.sync.image.MediaStoreImage;
-import com.waveface.sync.logic.BackupLogic;
-import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.ui.CleanActivity;
-import com.waveface.sync.ui.FirstUseActivity;
 import com.waveface.sync.ui.ViewImageActivity;
-import com.waveface.sync.ui.preference.Preferences;
-import com.waveface.sync.util.DeviceUtil;
-import com.waveface.sync.util.NetworkUtil;
-import com.waveface.sync.util.StringUtil;
 
 public class SyncFragment extends Fragment implements OnClickListener {
 
@@ -187,7 +189,6 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			mEditor.putBoolean(Constant.PREF_BONJOUR_SERVER_ALRM_ENNABLED, true)
 					.commit();
 		}
-		// new StartServiceTask().execute(new Void[] {});
 		getActivity().sendBroadcast(
 				new Intent(Constant.ACTION_INFINITE_STORAGE_ALARM));
 	}
