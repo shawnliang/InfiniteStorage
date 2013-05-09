@@ -812,7 +812,9 @@ public class BackupLogic {
 						Intent intt = new Intent(Constant.ACTION_FILE_DELETED);
 						context.sendBroadcast(intt);
 						// UPDATE COUNT FOR DETECT FILE IS DELETED
-						ServersLogic.updateCount(context, serverId);
+						if (RuntimeState.isWebSocketAvaliable(context)) {
+							ServersLogic.updateCount(context, serverId);
+						}
 					}
 				}
 				cursor.close();
@@ -988,7 +990,31 @@ public class BackupLogic {
 		cursor = null;
 		return fileSize;
 	}
-	
+	public static String getServerBackupedId(Context context) {
+		String serverId = null;
+		ContentResolver cr = context.getContentResolver();
+		Cursor cursor = null;
+		try {
+			cursor = cr.query(BackupedServersTable.CONTENT_URI, new String[] {
+					BackupedServersTable.COLUMN_SERVER_ID },
+					BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+					new String[] { Constant.SERVER_DENIED_BY_SERVER,
+							   Constant.SERVER_DENIED_BY_CLIENT}, BackupedServersTable.COLUMN_SERVER_ID+" LIMIT 1");
+			if (cursor != null && cursor.getCount() > 0) {
+				cursor.moveToFirst();
+				serverId = cursor.getString(0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+				cursor = null;
+			}
+		}
+		return serverId;
+	}
+
 
 	public static void setLastMediaSate(Context context) {
 		int[] types = { Constant.TYPE_IMAGE, Constant.TYPE_VIDEO,

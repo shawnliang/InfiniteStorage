@@ -99,11 +99,13 @@ public class InfiniteService extends Service{
 						Log.d(TAG, "reset MDNS");
 						setupMDNS();
             	}
-            	
-		    	String serverId = RuntimeState.mWebSocketServerId;
-		    	if(!TextUtils.isEmpty(serverId)){
+            	            	
+		    	String serverId = BackupLogic.getServerBackupedId(mContext);
+		    	if(!TextUtils.isEmpty(serverId) 
+		    			&& RuntimeState.isWebSocketAvaliable(mContext)){
 		    		ServersLogic.updateCount(mContext, serverId);
 		    	}
+		    	serverId = RuntimeState.mWebSocketServerId;
 		    	if(!TextUtils.isEmpty(serverId)
             			&& RuntimeState.wasFirstTimeImportScanDone
             			&& RuntimeState.canBackup(mContext) 
@@ -122,7 +124,10 @@ public class InfiniteService extends Service{
 						}
 			    		BackupLogic.backupFiles(mContext, serverId);
 			    	}
-					ServersLogic.updateCount(mContext, serverId);
+			    	if(!TextUtils.isEmpty(serverId) 
+			    			&& RuntimeState.isWebSocketAvaliable(mContext)){
+			    		ServersLogic.updateCount(mContext, serverId);
+			    	}
 					RuntimeState.isBackuping = false;
 					intent = new Intent(Constant.ACTION_BACKUP_DONE);
 					mContext.sendBroadcast(intent);
@@ -211,6 +216,7 @@ public class InfiniteService extends Service{
 					int count = BackupLogic.getBackedUpCountForPairedPC(mContext);		
 //					int count = BackupLogic.getBackupProgressInfo(mContext, RuntimeState.mWebSocketServerId)[0];
 					content = mContext.getString(R.string.notify_backup_status, count);				
+					
 					mNotificationManager.createTextNotification(
 							mNotoficationId,
 							mContext.getString(R.string.app_name),
