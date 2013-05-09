@@ -91,6 +91,7 @@ namespace InfiniteStorage
 				itemFound.Text = getOverallProgressText(ctx);
 
 				var nextIdx = notifyIcon.ContextMenuStrip.Items.IndexOf(itemFound) + 1;
+
 				notifyIcon.ContextMenuStrip.Items[nextIdx].Text = getSingleFileText(ctx);
 			}
 		}
@@ -167,9 +168,14 @@ namespace InfiniteStorage
 
 		private static string getSingleFileText(ProtocolContext ctx)
 		{
+			if (ctx.NoMoreToTransfer())
+			{
+				return Resources.MenuItem_BackupComplete;
+			}
+
 			return ctx.temp_file != null ?
 							string.Format("  - {0} : {1}%", ctx.fileCtx.file_name, 100 * ctx.temp_file.BytesWritten / ctx.fileCtx.file_size) :
-							"  - 準備傳送中...";
+							Resources.MenuItem_Preparing;
 		}
 
 		private static string getOverallProgressText(ProtocolContext ctx)

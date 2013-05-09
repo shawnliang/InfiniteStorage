@@ -97,6 +97,15 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 裝置中所有 {0} 個檔案都已備份到此電腦中.
+        /// </summary>
+        internal static string BackupProgressTitle_BackupComplete {
+            get {
+                return ResourceManager.GetString("BackupProgressTitle_BackupComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} 已結束備份.
         /// </summary>
         internal static string BackupProgressTitle_Finished {
@@ -227,6 +236,24 @@ namespace InfiniteStorage.Properties {
         internal static string FirstUse_TransferStopped {
             get {
                 return ResourceManager.GetString("FirstUse_TransferStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - 備份完成.
+        /// </summary>
+        internal static string MenuItem_BackupComplete {
+            get {
+                return ResourceManager.GetString("MenuItem_BackupComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - 準備傳送中....
+        /// </summary>
+        internal static string MenuItem_Preparing {
+            get {
+                return ResourceManager.GetString("MenuItem_Preparing", resourceCulture);
             }
         }
         

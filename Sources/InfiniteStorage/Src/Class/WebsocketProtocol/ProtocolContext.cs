@@ -140,5 +140,10 @@ namespace InfiniteStorage.WebsocketProtocol
 		}
 
 		public bool IsClosed { get; set; }
+
+		public bool NoMoreToTransfer()
+		{
+			return total_count > 0 && total_count == backup_count;
+		}
 	}
 }

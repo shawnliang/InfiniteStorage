@@ -44,7 +44,7 @@ namespace InfiniteStorage.WebsocketProtocol
 
 		public override void handleUpdateCountCmd(ProtocolContext ctx, TextCommand cmd)
 		{
-			ctx.total_count = cmd.total_count;
+			ctx.total_count = cmd.transfer_count;
 			ctx.backup_count = cmd.backuped_count;
 			ctx.raiseOnTotalCountUpdated();
 		}

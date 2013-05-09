@@ -38,10 +38,13 @@ namespace InfiniteStorage
 		{
 			try
 			{
-				if (WSCtx.IsClosed)
+				if (WSCtx.IsClosed || WSCtx.NoMoreToTransfer())
 				{
 					TitleLabel.Text = string.Format(Resources.BackupProgressTitle_Finished, WSCtx.device_name);
-					overallLabel.Text = string.Format(Resources.FirstUse_TransferStopped, WSCtx.device_name, WSCtx.recved_files);
+					overallLabel.Text = (WSCtx.NoMoreToTransfer()) ?
+						string.Format(Resources.BackupProgressTitle_BackupComplete, WSCtx.total_count):
+						string.Format(Resources.FirstUse_TransferStopped, WSCtx.device_name, WSCtx.recved_files);
+
 					curFileLabel.Text = "";
 					progressBar.Visible = false;
 				}

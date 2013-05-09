@@ -203,4 +203,13 @@
   <data name="AlreadyLastestVersion" xml:space="preserve">
     <value>您的 Bunny 已經是最新的版本</value>
   </data>
+  <data name="MenuItem_BackupComplete" xml:space="preserve">
+    <value>- 備份完成</value>
+  </data>
+  <data name="MenuItem_Preparing" xml:space="preserve">
+    <value>- 準備傳送中...</value>
+  </data>
+  <data name="BackupProgressTitle_BackupComplete" xml:space="preserve">
+    <value>裝置中所有 {0} 個檔案都已備份到此電腦中</value>
+  </data>
 </root>
