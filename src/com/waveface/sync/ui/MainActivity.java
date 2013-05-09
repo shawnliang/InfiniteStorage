@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
 import com.waveface.sync.ui.fragment.FragmentBase;
@@ -32,6 +33,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate");
+		sendBroadcast(new Intent(Constant.ACTION_INFINITE_STORAGE_ALARM));
 		setContentView(R.layout.activity_main);
 		RuntimeState.isAppLaunching = true;
 		

@@ -9,7 +9,6 @@ import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.image.MediaStoreImage;
 import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.service.InfiniteService;
 import com.waveface.sync.ui.CleanActivity;
 import com.waveface.sync.ui.FirstUseActivity;
 import com.waveface.sync.ui.preference.Preferences;
@@ -26,7 +25,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -184,7 +182,6 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			mEditor.putBoolean(Constant.PREF_BONJOUR_SERVER_ALRM_ENNABLED, true)
 					.commit();
 		}
-		new StartServiceTask().execute(new Void[] {});
 	}
 
 	private void dismissProgress() {
@@ -504,15 +501,6 @@ public class SyncFragment extends Fragment implements OnClickListener {
 		// Constant.TRANSFER_TYPE_AUDIO);
 		// startActivity(startIntent);
 		// break;
-		}
-	}
-
-	class StartServiceTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			getActivity().startService(new Intent(getActivity(), InfiniteService.class));
-			return null;
 		}
 	}
 }
