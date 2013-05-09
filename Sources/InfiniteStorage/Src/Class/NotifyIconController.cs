@@ -68,6 +68,15 @@ namespace InfiniteStorage
 		public void OnDeviceConnected(object sender, WebsocketEventArgs evt)
 		{
 			SynchronizationContextHelper.SendMainSyncContext(() => {
+				showNotifyIconMenu(evt.ctx);
+				showProgressDialog(evt.ctx);
+			});
+		}
+
+		public void OnTotalCountUpdated(object sender, WebsocketEventArgs evt)
+		{
+			SynchronizationContextHelper.SendMainSyncContext(() =>
+			{
 				updateNotifyIconMenu(evt.ctx);
 				updateProgressDialog(evt.ctx);
 			});
@@ -84,7 +93,28 @@ namespace InfiniteStorage
 				var nextIdx = notifyIcon.ContextMenuStrip.Items.IndexOf(itemFound) + 1;
 				notifyIcon.ContextMenuStrip.Items[nextIdx].Text = getSingleFileText(ctx);
 			}
-			else
+		}
+
+		private void updateProgressDialog(ProtocolContext ctx)
+		{
+			if (!Settings.Default.ShowBackupProgressDialog)
+				return;
+
+			lock (cs)
+			{
+				var dupConnDialog = progressDialogs.Find(x => x.WSCtx.device_id == ctx.device_id);
+				if (dupConnDialog != null)
+				{
+					dupConnDialog.WSCtx = ctx;
+				}
+			}
+		}
+
+		private void showNotifyIconMenu(ProtocolContext ctx)
+		{
+			ToolStripItem itemFound = findMenuItemInNotifyContextMenu(ctx);
+
+			if (itemFound == null)
 			{
 				var item = new ToolStripMenuItem();
 				item.Text = getOverallProgressText(ctx);
@@ -104,7 +134,7 @@ namespace InfiniteStorage
 			}
 		}
 
-		private void updateProgressDialog(ProtocolContext ctx)
+		private void showProgressDialog(ProtocolContext ctx)
 		{
 			if (!Settings.Default.ShowBackupProgressDialog)
 				return;
@@ -112,11 +142,7 @@ namespace InfiniteStorage
 			lock (cs)
 			{
 				var dupConnDialog = progressDialogs.Find(x => x.WSCtx.device_id == ctx.device_id);
-				if (dupConnDialog != null)
-				{
-					dupConnDialog.WSCtx = ctx;
-				}
-				else
+				if (dupConnDialog == null)
 				{
 					var dialog = new BackupProgressDialog(ctx);
 					dialog.FormClosed += onProgressDialogClosed;
