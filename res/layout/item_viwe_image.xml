@@ -24,16 +24,42 @@
         android:padding="20dp"
         android:src="@drawable/ic_play_video"
         android:visibility="visible" />
+    <LinearLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/ivImage"        
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        >
+    <TextView
+        android:id="@+id/tvFiletime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_pc"
+        android:textColor="#1BBFE0"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+   <TextView
+        android:id="@+id/tvFolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dip"
+        android:text="@string/user_pc"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+         />
     
-
     <TextView
         android:id="@+id/tvFilename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/ivImage"
+        android:layout_marginTop="3dip"
         android:text="@string/user_pc"
         android:textColor="#FFFFFF"
-        android:textSize="16sp" />
+        android:textSize="12sp" />
+    
+    
+    </LinearLayout>
+    
 </RelativeLayout>
