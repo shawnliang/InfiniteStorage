@@ -189,12 +189,13 @@ public class BackupLogic {
 					}
 					folderName = getFoldername(mediaData);
 
-					if (dateAdded != -1) {
+					if (dateTaken != -1) {
+						refCursorDate = dateTaken / 1000;
+					}
+					else if (dateAdded != -1) {
 						refCursorDate = dateAdded;
 					}else if (dateModified != -1) {
 						refCursorDate = dateModified;
-					}else if (dateTaken != -1) {
-						refCursorDate = dateTaken / 1000;
 					}
 					
 					if (refCursorDate > 0 || cursorDate == null) {
