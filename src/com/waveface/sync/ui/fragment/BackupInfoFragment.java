@@ -78,10 +78,10 @@ public class BackupInfoFragment extends FragmentBase implements OnClickListener,
 		if(getActivity()!=null){
 	    	if(!TextUtils.isEmpty(RuntimeState.mWebSocketServerId)){
 		    	int[] datas = BackupLogic.getBackupProgressInfo(getActivity(), RuntimeState.mWebSocketServerId);
-				String nowProgress = datas[0]+"/"+datas[1];
+				int countRemainder = datas[1]-datas[0];
 				mProgressBar.setMax(datas[1]);
 				mProgressBar.setProgress(datas[0]);
-				mTvFileTransfer.setText(getActivity().getString(R.string.file_transfering,nowProgress));
+				mTvFileTransfer.setText(getActivity().getString(R.string.file_transfering,String.valueOf(countRemainder)));
 	    	}
 		}
 	}
