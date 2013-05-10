@@ -135,6 +135,9 @@ public class InfiniteService extends Service{
 					RuntimeState.setServerStatus(Constant.WS_ACTION_END_BACKUP);
 					showSyncNotification(Constant.NOTIFICATION_BACKED_UP);
             	}
+		    	if(RuntimeState.isScaning == false){
+		    		BackupLogic.scanAllFiles(mContext);
+		    	}
 				// Check if there are updates here and notify if true
             }
         }, 0, UPDATE_INTERVAL);
@@ -266,10 +269,10 @@ public class InfiniteService extends Service{
 						if(NetworkUtil.isWifiNetworkAvailable(mContext) && RuntimeState.isMDNSSetUped== false){
 							Log.d(TAG, "reset MDNS");
 							setupMDNS();
-							if(!RuntimeState.isScaning){
-								BackupLogic.scanAllFiles(mContext);
-							}
 						}
+					}
+					if(!RuntimeState.isScaning){
+						BackupLogic.scanAllFiles(mContext);
 					}
 				}
 			}
