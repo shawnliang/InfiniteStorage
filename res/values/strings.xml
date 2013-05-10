@@ -33,7 +33,7 @@
 
     <!-- PROGRESS INFO -->
     <string name="backup_info_empty">Backing Up ....</string>
-    <string name="backup_progress">Backing Up %1$d/%2$d</string>
+    <string name="backup_progress">%1$d File(s) for back up</string>
     <string name="backup_done">All backup files are up to date</string>
     <string name="backup_uncompleted">Backup Uncompleted</string>
 
@@ -107,7 +107,7 @@
     <string name="btn_no">No</string>
 
     <!-- NOTIFICATION -->
-    <string name="notify_link_server">Backing Up to %1$s</string>
+    <string name="notify_link_server">Link to %1$s, %2$s File(s) wait for back up </string>
     <string name="notify_backup_status"> %1$d file(s) Backed-up.</string>
     <string name="title_activity_image_view">ImageViewActivity</string>
 

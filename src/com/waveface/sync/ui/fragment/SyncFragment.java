@@ -365,14 +365,15 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			String displayTime = StringUtil.displayLocalTime(
 					entity.lastLocalBackupTime, StringUtil.DATE_FORMAT);
 			rlBackupContent.setVisibility(View.VISIBLE);
+			String serverId = BackupLogic.getServerBackupedId(getActivity());
 			int[] counts = BackupLogic.getBackupProgressInfo(getActivity(),
-					entity.serverId);
+					serverId);
 			if (RuntimeState.OnWebSocketStation) {
 				tvBackupPC.setText(entity.serverName);
 				if (RuntimeState.isBackuping) {
 					ivPC.setImageResource(R.drawable.ic_processing);
 					tvContent.setText(getString(R.string.backup_progress,
-							counts[0], counts[1]));
+							(counts[1]-counts[0])));
 				} else {
 					ivPC.setImageResource(R.drawable.ic_transfer);
 					if (counts[0] == counts[1] && counts[1] != 0) {
@@ -389,7 +390,8 @@ public class SyncFragment extends Fragment implements OnClickListener {
 				if (counts[0] == counts[1] && counts[1] != 0) {
 					tvContent.setText(getString(R.string.backup_done));
 				} else {
-					tvContent.setText(getString(R.string.backup_uncompleted));
+					tvContent.setText(getString(R.string.backup_progress,
+							(counts[1]-counts[0])));
 				}
 			}
 			if (!TextUtils.isEmpty(displayTime)) {

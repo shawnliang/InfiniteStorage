@@ -189,10 +189,12 @@ public class InfiniteService extends Service{
 		int progress = 0;
 		if(notifyCode== Constant.NOTIFICATION_BACK_UP_START 
 				|| notifyCode==  Constant.NOTIFICATION_BACK_UP_ON_PROGRESS){
-			content = mContext.getString(R.string.notify_link_server,RuntimeState.mWebSocketServerName);
 			backupAndTotalCount = BackupLogic.getBackupProgressInfo(mContext, RuntimeState.mWebSocketServerId);
+			String remainedCount = ""+(backupAndTotalCount[1]-backupAndTotalCount[0]);
 			progress = (int) ((backupAndTotalCount[0])/ (float) backupAndTotalCount[1] * 100);
-			content += " ( "+backupAndTotalCount[0]+" / "+backupAndTotalCount[1]+" ) , "+progress+"%";			
+			content = mContext.getString(R.string.notify_link_server,RuntimeState.mWebSocketServerName,remainedCount)+","+progress+"%";
+//			progress = (int) ((backupAndTotalCount[0])/ (float) backupAndTotalCount[1] * 100);
+//			content += " ( "+backupAndTotalCount[0]+" / "+backupAndTotalCount[1]+" ) , "+progress+"%";			
 		}
 		
 		switch(notifyCode){

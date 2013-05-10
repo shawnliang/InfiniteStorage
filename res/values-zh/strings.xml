@@ -32,7 +32,7 @@
     
     <!-- PROGRESS INFO -->
     <string name="backup_info_empty">整理資料中 ....</string>
-    <string name="backup_progress">正在備份檔案 %1$d/%2$d</string>
+    <string name="backup_progress">剩下 %1$d 個檔案要備份</string>
     <string name="backup_done">已經備份到最新</string>
     <string name="backup_uncompleted">備份尚未完成</string>
     
@@ -109,7 +109,7 @@
     <string name="btn_no">取消</string>        
     
     <!--NOTIFICATION-->    
-    <string name="notify_link_server">正在備份到 %1$s</string>    
+    <string name="notify_link_server">連線到%1$s, 剩下%2$s File(s) 檔案要備份 </string>
     <string name="notify_backup_status"> %1$d 檔案已經備份完成</string>
     
         <!-- PREFERENCE -->
