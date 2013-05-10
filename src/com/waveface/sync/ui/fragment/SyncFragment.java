@@ -42,7 +42,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
-import com.waveface.sync.ui.ViewImageActivity;
+import com.waveface.sync.ui.ViewMediaActivity;
 
 public class SyncFragment extends Fragment implements OnClickListener {
 
@@ -506,7 +506,7 @@ public class SyncFragment extends Fragment implements OnClickListener {
 		case R.id.imageView1:
 			// TO DISPLAY ALL IMAGES
 			EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_LABEL_IMAGE, null);
-			startIntent = new Intent(getActivity(), ViewImageActivity.class);
+			startIntent = new Intent(getActivity(), ViewMediaActivity.class);
 			startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
 					Constant.TRANSFER_TYPE_IMAGE);
 			startActivity(startIntent);
@@ -514,7 +514,7 @@ public class SyncFragment extends Fragment implements OnClickListener {
 		case R.id.imageView2:
 			// TO DISPLAY ALL VIDEOS
 			EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_LABEL_VIDEO, null);
-			startIntent = new Intent(getActivity(), ViewImageActivity.class);
+			startIntent = new Intent(getActivity(), ViewMediaActivity.class);
 			startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
 					Constant.TRANSFER_TYPE_VIDEO);
 			startActivity(startIntent);
@@ -522,7 +522,7 @@ public class SyncFragment extends Fragment implements OnClickListener {
 		case R.id.imageView3:
 			// TO DISPLAY ALL AUDIO
 			EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_LABEL_AUDIO, null);
-			startIntent = new Intent(getActivity(), ViewImageActivity.class);
+			startIntent = new Intent(getActivity(), ViewMediaActivity.class);
 			startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
 					Constant.TRANSFER_TYPE_AUDIO);
 			startActivity(startIntent);

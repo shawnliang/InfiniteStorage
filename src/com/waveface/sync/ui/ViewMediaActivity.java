@@ -35,14 +35,14 @@ import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.image.MediaStoreImage;
 import com.waveface.sync.util.StringUtil;
 
-public class ViewImageActivity extends Activity {
+public class ViewMediaActivity extends Activity {
 
 	private ListView listview;
 	private DisplayMetrics metrics;
 	private int mode = 2;
     private MediaStoreImage mMediaImage;
     private MainAdapter mAdapter ; 
-    private ImageEntity mEntity;
+    private MediaEntity mEntity;
     private MediaPlayer mMediaPlayer;
     private int mDisplayType = 0;
     
@@ -79,17 +79,21 @@ public class ViewImageActivity extends Activity {
 				.query(ImportFilesTable.CONTENT_URI, 
 						new String[]{
 						ImportFilesTable.COLUMN_IMAGE_ID,
-						ImportFilesTable.COLUMN_FILENAME
+						ImportFilesTable.COLUMN_FILENAME,
+						ImportFilesTable.COLUMN_FOLDER,
+						ImportFilesTable.COLUMN_DATE
 				}, ImportFilesTable.COLUMN_FILETYPE+"=?",
 				new String[]{String.valueOf(mDisplayType)}, 
 				ImportFilesTable.COLUMN_DATE+" DESC");
-		ArrayList<ImageEntity> entities = new ArrayList<ImageEntity>();
+		ArrayList<MediaEntity> entities = new ArrayList<MediaEntity>();
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();
 			for(int i = 0 ; i<cursor.getCount(); i++ ){
-				ImageEntity entity = new ImageEntity();
+				MediaEntity entity = new MediaEntity();
 				entity.mediaId = cursor.getLong(0);
 				entity.filename = cursor.getString(1);
+				entity.foldername = cursor.getString(2);
+				entity.filetime = cursor.getString(3);				
 				entities.add(entity);
 				cursor.moveToNext();
 			}
@@ -108,9 +112,10 @@ public class ViewImageActivity extends Activity {
 			        if(mMediaPlayer == null){
 			        	mMediaPlayer = new MediaPlayer();
 			        }
-		        	if(mMediaPlayer.isPlaying()){
-			        	mMediaPlayer.stop();
-			        }
+		        	if(mMediaPlayer.isPlaying()==true){
+		        		mMediaPlayer.pause();
+		        		mMediaPlayer.release();
+		        	}
 			        try {
 						mMediaPlayer.setDataSource(mEntity.filename);
 						mMediaPlayer.prepare();
@@ -118,15 +123,12 @@ public class ViewImageActivity extends Activity {
 					} catch (IllegalArgumentException e) {
 						e.printStackTrace();
 					} catch (SecurityException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IllegalStateException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}
+					}		        	
 		        }
 		        else{		        	
 		            Intent intent = new Intent();
@@ -163,24 +165,28 @@ public class ViewImageActivity extends Activity {
 		mode = item.getItemId();
 		return super.onOptionsItemSelected(item);
 	}
-	class ImageEntity {
+	class MediaEntity {
 		public long mediaId;
 		public String filename;
+		public String foldername;
+		public String filetime;		
 	}
 	public class MainAdapter extends BaseAdapter  {
 		private Context context;
 		private LayoutInflater mInflater;
-		private ArrayList<ImageEntity> entities;
+		private ArrayList<MediaEntity> entities;
 		private DisplayMetrics metrics_;
 		private int displayType;
 
 		private class Holder {
 			public ImageView imageview;
-			public ImageView playMark;			
-			public TextView textview;
+			public ImageView playMark;	
+			public TextView tvFolder;			
+			public TextView tvFilename;
+			public TextView tvFiletime;
 		}
 
-		public MainAdapter(Context context, ArrayList<ImageEntity> strings,
+		public MainAdapter(Context context, ArrayList<MediaEntity> strings,
 				DisplayMetrics metrics,int type) {
 			this.context = context;
 			this.mInflater = (LayoutInflater) this.context
@@ -193,7 +199,7 @@ public class ViewImageActivity extends Activity {
 		@Override
 		public View getView(final int position, View convertView,
 				ViewGroup parent) {
-			final ImageEntity entity = this.entities.get(position);
+			final MediaEntity entity = this.entities.get(position);
 			final Holder holder;
 
 			if (convertView == null) {
@@ -203,10 +209,12 @@ public class ViewImageActivity extends Activity {
 
 				holder = new Holder();
 				holder.imageview = (ImageView)convertView.findViewById(R.id.ivImage);
-				holder.playMark = (ImageView)convertView.findViewById(R.id.ivPlayVideo);				
-				holder.textview = (TextView) convertView.findViewById(R.id.tvFilename);
+				holder.playMark = (ImageView)convertView.findViewById(R.id.ivPlayVideo);	
+				holder.tvFolder = (TextView) convertView.findViewById(R.id.tvFolder);				
+				holder.tvFilename = (TextView) convertView.findViewById(R.id.tvFilename);
+				holder.tvFiletime = (TextView) convertView.findViewById(R.id.tvFiletime);
 				
-				holder.textview.setTextColor(0xFFFFFFFF);
+				holder.tvFilename.setTextColor(0xFFFFFFFF);
 
 				convertView.setTag(holder);
 			} else {
@@ -214,19 +222,38 @@ public class ViewImageActivity extends Activity {
 			}
 
 			Bitmap b = mMediaImage.getBitmap(entity.mediaId, this.displayType,entity.filename);
-			if(b!=null){
-				holder.imageview.setImageBitmap(b);
-			}
-			else{
-				holder.imageview.setImageResource(R.drawable.ic_audio);
-			}
 			if(this.displayType == Constant.TYPE_IMAGE){
 				holder.playMark.setVisibility(View.GONE);
+				if(b!=null){
+					holder.imageview.setImageBitmap(b);
+				}
+				else{
+					holder.imageview.setImageResource(R.drawable.ic_photo);
+				}
 			}
-			else{
-				holder.playMark.setVisibility(View.VISIBLE);
+			else if(this.displayType == Constant.TYPE_VIDEO){
+				if(b!=null){
+					holder.playMark.setVisibility(View.VISIBLE);
+					holder.imageview.setImageBitmap(b);
+				}
+				else{
+					holder.playMark.setVisibility(View.GONE);
+					holder.imageview.setImageResource(R.drawable.ic_video);
+				}
 			}
-			holder.textview.setText(StringUtil.getFilename(entity.filename));
+			else if(this.displayType == Constant.TYPE_AUDIO){
+				if(b!=null){
+					holder.playMark.setVisibility(View.VISIBLE);
+					holder.imageview.setImageBitmap(b);
+				}
+				else{
+					holder.playMark.setVisibility(View.GONE);
+					holder.imageview.setImageResource(R.drawable.ic_audio);
+				}
+			}
+			holder.tvFolder.setText(entity.foldername);			
+			holder.tvFilename.setText(StringUtil.getFilename(entity.filename));
+			holder.tvFiletime.setText(StringUtil.displayLocalTime(entity.filetime,StringUtil.DATE_FORMAT));
 
 			Animation animation = null;
 
@@ -266,7 +293,7 @@ public class ViewImageActivity extends Activity {
 		}
 
 		@Override
-		public ImageEntity getItem(int position) {
+		public MediaEntity getItem(int position) {
 			return entities.get(position);
 		}
 
