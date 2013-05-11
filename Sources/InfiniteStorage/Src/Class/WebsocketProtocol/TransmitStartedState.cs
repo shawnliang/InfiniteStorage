@@ -48,7 +48,8 @@ namespace InfiniteStorage.WebsocketProtocol
 					file_path = Path.Combine(ctx.fileCtx.folder, ctx.fileCtx.file_name),
 					file_size = ctx.fileCtx.file_size,
 					type = (int)ctx.fileCtx.type,
-					saved_path = saved.relative_file_path
+					saved_path = saved.relative_file_path,
+					seq = Util.GetNextSeq()
 				};
 				Util.SaveFileRecord(fileAsset);
 

@@ -80,6 +80,24 @@ CREATE INDEX [idx_Files_path_1] ON [Files](
 						schemaVersion = 2;
 					}
 
+					if (schemaVersion == 2L)
+					{
+						var cmd = new SQLiteCommand(
+@"ALTER TABLE [Files] ADD COLUMN [seq] INTEGER NULL;
+
+CREATE INDEX [idx_Files_seq_1] ON [Files](
+[seq]  ASC
+);
+
+ALTER TABLE [Files] ADD COLUMN [deleted] BOOLEAN NULL;
+
+ALTER TABLE [Files] ADD COLUMN [thumb_ready] BOOLEAN NULL;
+", conn);
+						cmd.ExecuteNonQuery();
+
+						updateDbSchemaVersion(conn, 3);
+						schemaVersion = 3;
+					}
 
 					transaction.Commit();
 				}

@@ -31,5 +31,10 @@ namespace InfiniteStorage.WebsocketProtocol
 				return result.Any();
 			}
 		}
+
+		public long GetNextSeq()
+		{
+			return SeqNum.GetNextSeq();
+		}
 	}
 }

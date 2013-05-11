@@ -10,6 +10,7 @@ namespace InfiniteStorage.WebsocketProtocol
 	{
 		void SaveFileRecord(FileAsset file);
 		bool HasDuplicateFile(FileContext file, string device_id);
+		long GetNextSeq();
 	}
 
 	public class SavedPath

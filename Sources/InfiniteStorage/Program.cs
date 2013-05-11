@@ -72,6 +72,7 @@ namespace InfiniteStorage
 
 			SynchronizationContextHelper.SetMainSyncContext();
 			MyDbContext.InitialzeDatabaseSchema();
+			SeqNum.InitFromDB();
 
 			initNotifyIcon();
 

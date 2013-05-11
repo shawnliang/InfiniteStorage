@@ -41,6 +41,12 @@ namespace InfiniteStorage.Model
 
 		public string saved_path { get; set; }
 
+		public long seq { get; set; }
+
+		public bool thumb_ready { get; set; }
+
+		public bool deleted { get; set; }
+
 		public virtual Device device { get; set; }
 	}
 

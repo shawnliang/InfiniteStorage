@@ -45,6 +45,7 @@ namespace UnitTest
 			temp.Setup(x => x.EndWrite()).Verifiable();
 			temp.Setup(x=>x.Path).Returns("path1").Verifiable();
 			storage.Setup(x => x.MoveToStorage("path1", ctx.fileCtx)).Returns(saved).Verifiable();
+			util.Setup(x => x.GetNextSeq()).Returns(112345).Verifiable();
 			util.Setup(x => x.SaveFileRecord(It.Is<FileAsset>(
 				f =>
 					f.device_id == ctx.device_id &&
@@ -54,7 +55,8 @@ namespace UnitTest
 					f.file_path == Path.Combine(ctx.fileCtx.folder, ctx.fileCtx.file_name) &&
 					f.file_size == ctx.fileCtx.file_size &&
 					f.type == (int)ctx.fileCtx.type &&
-					f.saved_path == saved.relative_file_path)
+					f.saved_path == saved.relative_file_path &&
+					f.seq == 112345)
 				)).Verifiable();
 
 
