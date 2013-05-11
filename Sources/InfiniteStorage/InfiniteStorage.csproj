@@ -81,6 +81,10 @@
   <ItemGroup>
     <Compile Include="Src\Class\Common\AutoUpdator.cs" />
     <Compile Include="Src\Class\Normalizer.cs" />
+    <Compile Include="Src\Class\Notify\NotifyChannelEventArgs.cs" />
+    <Compile Include="Src\Class\Notify\NotifyChannelHandler.cs" />
+    <Compile Include="Src\Class\Notify\NotifyWebSocketService.cs" />
+    <Compile Include="Src\Class\Notify\SubscriptionContext.cs" />
     <Compile Include="Src\Class\SeqNum.cs" />
     <Compile Include="Src\Dialog\BackupProgressDialog.cs">
       <SubType>Form</SubType>
