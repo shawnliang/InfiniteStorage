@@ -11,6 +11,7 @@ using System.Management;
 using System.Security.Cryptography;
 using System.Text;
 using InfiniteStorage.WebsocketProtocol;
+using InfiniteStorage.Notify;
 
 namespace InfiniteStorage
 {
@@ -22,7 +23,8 @@ namespace InfiniteStorage
 		static Timer m_NotifyTimer;
 		static System.Timers.Timer m_BackupStatusTimer;
 		static System.Timers.Timer m_ReRegBonjourTimer;
-		static WebSocketServer<InfiniteStorageWebSocketService> ws_server;
+		static WebSocketServer<InfiniteStorageWebSocketService> backup_server;
+		static WebSocketServer<NotifyWebSocketService> notify_server;
 
 		private static System.Threading.Mutex m_InstanceMutex { get; set; }
 
@@ -84,11 +86,12 @@ namespace InfiniteStorage
 			initConnectedDeviceCollection();
 			initBackupStatusTimer();
 
-			ushort port = 0;
-
+			ushort backup_port = 0;
+			ushort notify_port = 0;
 			try
 			{
-				port = initWebsocketServer();
+				backup_port = initWebsocketServer<InfiniteStorageWebSocketService>(out backup_server, 13895);
+				notify_port = initWebsocketServer<NotifyWebSocketService>(out notify_server, 13995);
 			}
 			catch (Exception e)
 			{
@@ -103,12 +106,12 @@ namespace InfiniteStorage
 				m_bonjourService.Error += new EventHandler<BonjourErrorEventArgs>(m_bonjourService_Error);
 
 				
-				m_bonjourService.Register(port, Settings.Default.ServerId);
+				m_bonjourService.Register(backup_port, notify_port, Settings.Default.ServerId);
 
 				// bonjour record sometimes disappear for unknown reason.
 				// to workaround this, we just periodically re-register with
 				// bonjour
-				startTimerToReRegisterWithBonjour(port);
+				startTimerToReRegisterWithBonjour(backup_port, notify_port);
 
 			}
 			catch (Exception e)
@@ -140,7 +143,7 @@ namespace InfiniteStorage
 			Application.Run();
 		}
 
-		private static void startTimerToReRegisterWithBonjour(ushort port)
+		private static void startTimerToReRegisterWithBonjour(ushort backup_port, ushort notify_port)
 		{
 			m_ReRegBonjourTimer = new System.Timers.Timer(60 * 1000);
 			m_ReRegBonjourTimer.AutoReset = true;
@@ -157,7 +160,7 @@ namespace InfiniteStorage
 					}
 					m_bonjourService = new BonjourService();
 					m_bonjourService.Error += m_bonjourService_Error;
-					m_bonjourService.Register(port, Settings.Default.ServerId);
+					m_bonjourService.Register(backup_port, notify_port, Settings.Default.ServerId);
 				}
 				catch (Exception err)
 				{
@@ -191,19 +194,19 @@ namespace InfiniteStorage
 			return serialNum;
 		}
 
-		private static ushort initWebsocketServer()
+		private static ushort initWebsocketServer<T>(out WebSocketServer<T> server, ushort preferred_port) where T : WebSocketService, new()
 		{
 			bool addrUsedByOthers = false;
-			var port = (ushort)13895;
+			var port = preferred_port;
 
 			do
 			{
 				try
 				{
-					
+
 					var url = string.Format("ws://0.0.0.0:{0}/", port);
-					ws_server = new WebSocketSharp.Server.WebSocketServer<InfiniteStorageWebSocketService>(url);
-					ws_server.Start();
+					server = new WebSocketSharp.Server.WebSocketServer<T>(url);
+					server.Start();
 					return port;
 				}
 				catch (System.Net.Sockets.SocketException e)
@@ -296,7 +299,7 @@ namespace InfiniteStorage
 
 		static void Application_ApplicationExit(object sender, EventArgs e)
 		{
-			ws_server.Stop();
+			backup_server.Stop();
 
 			if (m_notifyIcon != null)
 				m_notifyIcon.Dispose();

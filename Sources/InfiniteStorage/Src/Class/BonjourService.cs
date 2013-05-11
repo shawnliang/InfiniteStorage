@@ -33,16 +33,17 @@ namespace InfiniteStorage
 			}
 		}
 
-		public void Register(ushort port, string server_id)
+		public void Register(ushort backup_port, ushort notify_port, string server_id)
 		{
 			m_svc.Name = ServiceName;
-			m_svc.Port = (short)port;
+			m_svc.Port = (short)backup_port;
 			m_svc.RegType = SVC_TYPE;
 			m_svc.ReplyDomain = "local.";
 
 			var txt = new TxtRecord();
 			txt.Add("server_id", server_id);
-			txt.Add("ws_port", port.ToString());
+			txt.Add("ws_port", backup_port.ToString());
+			txt.Add("notify_port", notify_port.ToString());
 			txt.Add("version", "1.0");
 
 			m_svc.TxtRecord = txt;
