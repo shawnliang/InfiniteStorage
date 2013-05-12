@@ -42,12 +42,14 @@ namespace InfiniteStorage.Notify
 
 		protected override void onClose(object sender, CloseEventArgs e)
 		{
-			base.onClose(sender, e);
+			logger.Debug("connection closed: " + e.Reason);
+			raiseDisconnectedEvent();
 		}
 
 		protected override void onError(object sender, ErrorEventArgs e)
 		{
-			base.onError(sender, e);
+			logger.Debug("connection error: " + e.Message);
+			closeAndFireEvent(WebSocketSharp.Frame.CloseStatusCode.SERVER_ERROR, e.Message);
 		}
 
 		protected override void onOpen(object sender, EventArgs e)
