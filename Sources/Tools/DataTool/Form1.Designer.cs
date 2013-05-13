@@ -36,6 +36,9 @@
 			this.textBoxNotify = new System.Windows.Forms.TextBox();
 			this.connectButton = new System.Windows.Forms.Button();
 			this.disconnectButton = new System.Windows.Forms.Button();
+			this.subscribeLabels = new System.Windows.Forms.CheckBox();
+			this.subcribeFiles = new System.Windows.Forms.CheckBox();
+			this.fileSeq = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
 			// generateButton
@@ -87,10 +90,10 @@
 			this.textBoxNotify.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.textBoxNotify.Location = new System.Drawing.Point(12, 203);
+			this.textBoxNotify.Location = new System.Drawing.Point(12, 238);
 			this.textBoxNotify.Multiline = true;
 			this.textBoxNotify.Name = "textBoxNotify";
-			this.textBoxNotify.Size = new System.Drawing.Size(503, 208);
+			this.textBoxNotify.Size = new System.Drawing.Size(503, 173);
 			this.textBoxNotify.TabIndex = 5;
 			// 
 			// connectButton
@@ -111,12 +114,48 @@
 			this.disconnectButton.TabIndex = 7;
 			this.disconnectButton.Text = "disconnect";
 			this.disconnectButton.UseVisualStyleBackColor = true;
+			this.disconnectButton.Click += new System.EventHandler(this.disconnectButton_Click);
+			// 
+			// subscribeLabels
+			// 
+			this.subscribeLabels.AutoSize = true;
+			this.subscribeLabels.Checked = true;
+			this.subscribeLabels.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.subscribeLabels.Location = new System.Drawing.Point(12, 204);
+			this.subscribeLabels.Name = "subscribeLabels";
+			this.subscribeLabels.Size = new System.Drawing.Size(101, 17);
+			this.subscribeLabels.TabIndex = 8;
+			this.subscribeLabels.Text = "subscribe labels";
+			this.subscribeLabels.UseVisualStyleBackColor = true;
+			// 
+			// subcribeFiles
+			// 
+			this.subcribeFiles.AutoSize = true;
+			this.subcribeFiles.Checked = true;
+			this.subcribeFiles.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.subcribeFiles.Location = new System.Drawing.Point(140, 204);
+			this.subcribeFiles.Name = "subcribeFiles";
+			this.subcribeFiles.Size = new System.Drawing.Size(115, 17);
+			this.subcribeFiles.TabIndex = 9;
+			this.subcribeFiles.Text = "subscribe files from";
+			this.subcribeFiles.UseVisualStyleBackColor = true;
+			// 
+			// fileSeq
+			// 
+			this.fileSeq.Location = new System.Drawing.Point(261, 201);
+			this.fileSeq.Name = "fileSeq";
+			this.fileSeq.Size = new System.Drawing.Size(100, 20);
+			this.fileSeq.TabIndex = 10;
+			this.fileSeq.Text = "19995";
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(527, 423);
+			this.Controls.Add(this.fileSeq);
+			this.Controls.Add(this.subcribeFiles);
+			this.Controls.Add(this.subscribeLabels);
 			this.Controls.Add(this.disconnectButton);
 			this.Controls.Add(this.connectButton);
 			this.Controls.Add(this.textBoxNotify);
@@ -142,6 +181,9 @@
 		private System.Windows.Forms.TextBox textBoxNotify;
 		private System.Windows.Forms.Button connectButton;
 		private System.Windows.Forms.Button disconnectButton;
+		private System.Windows.Forms.CheckBox subscribeLabels;
+		private System.Windows.Forms.CheckBox subcribeFiles;
+		private System.Windows.Forms.TextBox fileSeq;
 	}
 }
 

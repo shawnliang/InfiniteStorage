@@ -73,14 +73,41 @@ namespace DataTool
 		private void connectButton_Click(object sender, EventArgs e)
 		{
 			client = new WebSocket(textBox1.Text);
-			client.OnMessage += new EventHandler<MessageEventArgs>(client_OnMessage);
+			client.OnMessage += client_OnMessage;
 			client.Connect();
 
-			client.Send(JsonConvert.SerializeObject(new
-			{
-				connect = new { device_id = Guid.NewGuid().ToString(), device_name = "shawn's test tool" },
-				subscribe = new { files_from_seq = 0 }
-			}));
+			object data;
+
+			if (subcribeFiles.Checked)
+				data = new {
+					connect = new
+					{
+						device_id = Guid.NewGuid().ToString(),
+						device_name = "shawn's test tool"
+					},
+
+					subscribe = new
+					{
+						files_from_seq = Int64.Parse(fileSeq.Text),
+						labels = subscribeLabels.Checked
+					}
+				};
+			else
+				data = new {
+					connect = new
+					{
+						device_id = Guid.NewGuid().ToString(),
+						device_name = "shawn's test tool"
+					},
+
+					subscribe = new
+					{
+						labels = subscribeLabels.Checked
+					}
+				};
+
+
+			client.Send(JsonConvert.SerializeObject(data));
 		}
 
 		void client_OnMessage(object sender, MessageEventArgs e)
@@ -97,13 +124,32 @@ namespace DataTool
 			var o = JObject.Parse(e.Data);
 			var files = o["file_changes"];
 
-			foreach (var file in files)
+			if (files != null)
 			{
-				textBoxNotify.AppendText(file["file_name"].Value<string>());
+				foreach (var file in files)
+				{
+					textBoxNotify.AppendText(file["file_name"].Value<string>() + "\r\n");
+				}
+			}
+
+			var label = o["label_id"];
+			if (label != null)
+			{
+				textBoxNotify.AppendText(e.Data + "\r\n");
 			}
 
 
 			//textBoxNotify.AppendText(e.Data);
+		}
+
+		private void disconnectButton_Click(object sender, EventArgs e)
+		{
+			if (client != null)
+			{
+				client.OnMessage -= client_OnMessage;
+				client.Close();
+				client = null;
+			}
 		}
 	}
 }

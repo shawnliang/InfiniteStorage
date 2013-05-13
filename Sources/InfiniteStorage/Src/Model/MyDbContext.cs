@@ -104,11 +104,12 @@ ALTER TABLE [Files] ADD COLUMN [thumb_ready] BOOLEAN NULL;
 						var cmd = new SQLiteCommand(
 @"CREATE TABLE [LabelFiles] (
 [label_id] GUID  NOT NULL,
-[file_id] GUID  NOT NULL
+[file_id] GUID  NOT NULL,
+PRIMARY KEY ([label_id],[file_id])
 );
 
 CREATE TABLE [Labels] (
-[label_id] GUID  UNIQUE NOT NULL,
+[label_id] GUID  UNIQUE NOT NULL PRIMARY KEY,
 [name] NVARCHAR(200)  NULL,
 [seq] INTEGER  NOT NULL
 );", conn);

@@ -43,12 +43,25 @@ namespace InfiniteStorage.Notify
 
 		public List<Label> QueryAllLabels()
 		{
-			throw new NotImplementedException();
+			using (var db = new MyDbContext())
+			{
+				return (from b in db.Object.Labels
+						select b).ToList();
+			}
 		}
 
 		public List<Guid> QueryLabeledFiles(Guid label_id)
 		{
-			throw new NotImplementedException();
+			using (var db = new MyDbContext())
+			{
+				var result = from lb in db.Object.LabelFiles
+							 join f in db.Object.Files on lb.file_id equals f.file_id
+							 where lb.label_id == label_id
+							 orderby f.event_time ascending
+							 select lb.file_id;
+
+				return result.ToList();
+			}
 		}
 	}
 }

@@ -63,7 +63,12 @@ namespace InfiniteStorage.Model
 	[Table("LabelFiles")]
 	public class LabeledFile
 	{
+		[Key]
+		[Column(Order = 0)]
 		public Guid label_id { get; set; }
+
+		[Key]
+		[Column(Order = 1)]
 		public Guid file_id { get; set; }
 	}
 
@@ -79,6 +84,10 @@ namespace InfiniteStorage.Model
 		public DbSet<Device> Devices { get; set; }
 		
 		public DbSet<FileAsset> Files { get; set; }
+
+		public DbSet<Label> Labels { get; set; }
+
+		public DbSet<LabeledFile> LabelFiles { get; set; }
 
 		public InfiniteStorageContext(DbConnection conn, bool contextOwnsConnection)
 			:base(conn, contextOwnsConnection)
