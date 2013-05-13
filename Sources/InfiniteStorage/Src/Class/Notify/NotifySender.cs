@@ -11,18 +11,80 @@ namespace InfiniteStorage.Notify
 		private INotifySenderUtil util;
 
 		public ISubscriptionContext ctx { get; private set; }
-		public long from_seq { get; private set; }
+		public long file_seq { get; private set; }
+		public Dictionary<Guid, long> label_seq { get; private set; }
 
 		public NotifySender(ISubscriptionContext ctx, INotifySenderUtil util)
 		{
 			this.ctx = ctx;
 			this.util = util;
-			this.from_seq = ctx.files_from_seq;
+			this.file_seq = ctx.files_from_seq;
+			this.label_seq = new Dictionary<Guid, long>();
 		}
 
 		public void Notify()
 		{
-			var all = util.QueryChangedFiles(from_seq);
+			if (ctx.subscribe_files)
+			{
+				sendChangedFiles();
+			}
+
+			if (ctx.subscribe_labels)
+			{
+				sendChangedLabels();
+			}
+		}
+
+		private void sendChangedLabels()
+		{
+			var labels = util.QueryAllLabels();
+
+			foreach(var label in labels)
+			{
+				var oldSeq = getOldLabelSeq(label);
+
+				if (oldSeq < label.seq)
+				{
+					var files = util.QueryLabeledFiles(label.label_id);
+
+					try
+					{
+						ctx.Send(JsonConvert.SerializeObject(new
+						{
+							label_id = label.label_id,
+							label_name = label.name,
+							files = files
+						}));
+
+						setOldLabelSeq(label);
+					}
+					catch (Exception err)
+					{
+						log4net.LogManager.GetLogger(GetType()).Warn("Unable to send labels to " + ctx.device_name, err);
+					}
+				}
+			}
+		}
+
+		private long getOldLabelSeq(Model.Label label)
+		{
+			var oldSeq = -1L;
+			if (label_seq.ContainsKey(label.label_id))
+				oldSeq = label_seq[label.label_id];
+			return oldSeq;
+		}
+
+		private void setOldLabelSeq(Model.Label label)
+		{
+			if (!label_seq.ContainsKey(label.label_id))
+				label_seq.Add(label.label_id, label.seq);
+			else
+				label_seq[label.label_id] = label.seq;
+		}
+
+		private void sendChangedFiles()
+		{
+			var all = util.QueryChangedFiles(file_seq);
 
 			if (all.Count > 0)
 			{
@@ -42,7 +104,7 @@ namespace InfiniteStorage.Notify
 
 				} while (nSent < all.Count);
 
-				from_seq = all.Last().seq + 1;
+				file_seq = all.Last().seq + 1;
 			}
 		}
 	}

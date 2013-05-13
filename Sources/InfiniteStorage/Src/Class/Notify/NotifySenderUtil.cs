@@ -39,5 +39,16 @@ namespace InfiniteStorage.Notify
 				return result.ToList();
 			}
 		}
+
+
+		public List<Label> QueryAllLabels()
+		{
+			throw new NotImplementedException();
+		}
+
+		public List<Guid> QueryLabeledFiles(Guid label_id)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

@@ -99,6 +99,25 @@ ALTER TABLE [Files] ADD COLUMN [thumb_ready] BOOLEAN NULL;
 						schemaVersion = 3;
 					}
 
+					if (schemaVersion == 3L)
+					{
+						var cmd = new SQLiteCommand(
+@"CREATE TABLE [LabelFiles] (
+[label_id] GUID  NOT NULL,
+[file_id] GUID  NOT NULL
+);
+
+CREATE TABLE [Labels] (
+[label_id] GUID  UNIQUE NOT NULL,
+[name] NVARCHAR(200)  NULL,
+[seq] INTEGER  NOT NULL
+);", conn);
+						cmd.ExecuteNonQuery();
+						updateDbSchemaVersion(conn, 4);
+						schemaVersion = 4;
+					}
+
+
 					transaction.Commit();
 				}
 			}

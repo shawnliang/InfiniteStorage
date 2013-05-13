@@ -41,6 +41,49 @@ namespace UnitTest.Notify
 			Assert.AreEqual(1000, ctx.files_from_seq);
 			Assert.AreEqual("name", ctx.device_name);
 			Assert.AreEqual("dev", ctx.device_id);
+			Assert.AreEqual(true, ctx.subscribe_files);
+			Assert.AreEqual(false, ctx.subscribe_labels);
+		}
+
+		[TestMethod]
+		public void happyCase_labels()
+		{
+		    var msg = JsonConvert.SerializeObject(new
+		    {
+		        connect = new { device_id = "dev", device_name = "name" },
+		        subscribe = new { labels = true }
+		    });
+
+
+		    SubscriptionContext ctx = null;
+		    handler.Subscribing += (s, e) => { ctx = e.Ctx; };
+		    handler.HandleMessage(svc.Object, new WebSocketSharp.MessageEventArgs(msg));
+
+		    Assert.AreEqual("name", ctx.device_name);
+		    Assert.AreEqual("dev", ctx.device_id);
+			Assert.AreEqual(false, ctx.subscribe_files);
+			Assert.AreEqual(true, ctx.subscribe_labels);
+		}
+
+		[TestMethod]
+		public void happyCase_both()
+		{
+			var msg = JsonConvert.SerializeObject(new
+			{
+				connect = new { device_id = "dev", device_name = "name" },
+				subscribe = new { labels = true, files_from_seq = 1234 }
+			});
+
+
+			SubscriptionContext ctx = null;
+			handler.Subscribing += (s, e) => { ctx = e.Ctx; };
+			handler.HandleMessage(svc.Object, new WebSocketSharp.MessageEventArgs(msg));
+
+			Assert.AreEqual("name", ctx.device_name);
+			Assert.AreEqual("dev", ctx.device_id);
+			Assert.AreEqual(true, ctx.subscribe_files);
+			Assert.AreEqual(true, ctx.subscribe_labels);
+			Assert.AreEqual(1234, ctx.files_from_seq);
 		}
 
 		[TestMethod]

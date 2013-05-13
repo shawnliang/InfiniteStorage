@@ -31,7 +31,7 @@ namespace UnitTest.Notify
 			string sentData = null;
 			notifyCtx.Setup(x => x.Send(It.IsAny<string>())).Callback<string>((data) => { sentData = data; }).Verifiable();
 			notifyCtx.Setup(x => x.files_from_seq).Returns(1000);
-		
+			notifyCtx.Setup(x => x.subscribe_files).Returns(true);
 
 			var retFiles = new List<FileChangeData>
 			{
@@ -60,7 +60,7 @@ namespace UnitTest.Notify
 
 
 			notifyCtx.VerifyAll();
-			Assert.AreEqual(1001, sender.from_seq);
+			Assert.AreEqual(1001, sender.file_seq);
 			Assert.IsNotNull(sentData);
 			
 			var o = JObject.Parse(sentData);
@@ -89,6 +89,88 @@ namespace UnitTest.Notify
 
 			Assert.IsFalse(file0["deleted"].Value<bool>());
 			Assert.AreEqual(retFiles[0].seq, file0["seq"].Value<long>());
+		}
+
+		[TestMethod]
+		public void sendLabels_with_old_seq()
+		{
+			string sentData = null;
+			notifyCtx.Setup(x => x.Send(It.IsAny<string>())).Callback<string>(x => { sentData = x; });
+			notifyCtx.Setup(x => x.subscribe_labels).Returns(true);
+
+			var allLabels = new List<Label> { new Label { label_id = Guid.NewGuid(), name = "name1", seq = 1000 } };
+			var labelFiles = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
+
+			util.Setup(x => x.QueryAllLabels()).Returns(allLabels);
+			util.Setup(x => x.QueryLabeledFiles(allLabels.ElementAt(0).label_id)).Returns(labelFiles);
+
+
+			var sender = new NotifySender(notifyCtx.Object, util.Object);
+			sender.label_seq.Add(allLabels[0].label_id, 5);
+			sender.Notify();
+
+			
+			notifyCtx.VerifyAll();
+			util.VerifyAll();
+
+			Assert.IsNotNull(sentData);
+			var o = JObject.Parse(sentData);
+
+			Assert.AreEqual(allLabels.ElementAt(0).label_id.ToString(), o["label_id"].Value<string>());
+			Assert.AreEqual(allLabels.ElementAt(0).name, o["label_name"].Value<string>());
+			Assert.AreEqual(2, o["files"].Count());
+			Assert.AreEqual(labelFiles[0].ToString(), o["files"].ElementAt(0));
+			Assert.AreEqual(labelFiles[1].ToString(), o["files"].ElementAt(1));
+
+			Assert.AreEqual(1000L, sender.label_seq[allLabels[0].label_id]);
+		}
+
+		[TestMethod]
+		public void sendLabels_no_old_seq()
+		{
+			string sentData = null;
+			notifyCtx.Setup(x => x.Send(It.IsAny<string>())).Callback<string>(x => { sentData = x; });
+			notifyCtx.Setup(x => x.subscribe_labels).Returns(true);
+
+			var allLabels = new List<Label> { new Label { label_id = Guid.NewGuid(), name = "name1", seq = 1000 } };
+			var labelFiles = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
+
+			util.Setup(x => x.QueryAllLabels()).Returns(allLabels);
+			util.Setup(x => x.QueryLabeledFiles(allLabels.ElementAt(0).label_id)).Returns(labelFiles);
+
+
+			var sender = new NotifySender(notifyCtx.Object, util.Object);
+			sender.Notify();
+
+
+			notifyCtx.VerifyAll();
+			util.VerifyAll();
+
+			Assert.IsNotNull(sentData);
+
+			Assert.AreEqual(1000L, sender.label_seq[allLabels[0].label_id]);
+		}
+
+		[TestMethod]
+		public void do_not_send_label_due_to_old_seq_is_larger_than_seq()
+		{
+			string sentData = null;
+			notifyCtx.Setup(x => x.Send(It.IsAny<string>())).Callback<string>(x => { sentData = x; });
+			notifyCtx.Setup(x => x.subscribe_labels).Returns(true);
+
+			var allLabels = new List<Label> { new Label { label_id = Guid.NewGuid(), name = "name1", seq = 1000 } };
+			var labelFiles = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
+
+			util.Setup(x => x.QueryAllLabels()).Returns(allLabels);
+
+			var sender = new NotifySender(notifyCtx.Object, util.Object);
+			sender.label_seq.Add(allLabels[0].label_id, 1234L);
+			sender.Notify();
+
+
+			util.VerifyAll();
+
+			Assert.IsNull(sentData);
 		}
 	}
 }

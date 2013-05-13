@@ -16,6 +16,7 @@ namespace InfiniteStorage.Notify
 		private const string PROPERTY_DEVICE_NAME = "device_name";
 		private const string PROPERTY_SUBSCRIBE = "subscribe";
 		private const string PROPERTY_FILES_FROM_SEQ = "files_from_seq";
+		private const string PROPERTY_LABELS = "labels";
 
 		public event EventHandler<NotifyChannelEventArgs> Subscribing;
 
@@ -41,7 +42,16 @@ namespace InfiniteStorage.Notify
 				svc);
 
 			var subsribe = msg[PROPERTY_SUBSCRIBE];
-			Ctx.files_from_seq = subsribe[PROPERTY_FILES_FROM_SEQ].Value<long>();
+			if (subsribe[PROPERTY_FILES_FROM_SEQ] != null)
+			{
+				Ctx.subscribe_files = true;
+				Ctx.files_from_seq = subsribe[PROPERTY_FILES_FROM_SEQ].Value<long>();
+			}
+
+			if (subsribe[PROPERTY_LABELS] != null)
+			{
+				Ctx.subscribe_labels = subsribe[PROPERTY_LABELS].Value<bool>();
+			}
 
 			raiseSubscribingEvent(svc, Ctx);
 		}

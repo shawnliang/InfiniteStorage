@@ -50,6 +50,23 @@ namespace InfiniteStorage.Model
 		public virtual Device device { get; set; }
 	}
 
+	public class Label
+	{
+		[Key]
+		public Guid label_id { get; set; }
+
+		public string name { get; set; }
+
+		public long seq { get; set; }
+	}
+
+	[Table("LabelFiles")]
+	public class LabeledFile
+	{
+		public Guid label_id { get; set; }
+		public Guid file_id { get; set; }
+	}
+
 	public enum FileAssetType
 	{
 		image = 0,

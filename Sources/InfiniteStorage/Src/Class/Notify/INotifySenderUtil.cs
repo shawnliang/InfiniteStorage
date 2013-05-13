@@ -11,6 +11,8 @@ namespace InfiniteStorage.Notify
 	public interface INotifySenderUtil
 	{
 		List<FileChangeData> QueryChangedFiles(long from_seq);
+		List<Label> QueryAllLabels();
+		List<Guid> QueryLabeledFiles(Guid label_id);
 	}
 
 
