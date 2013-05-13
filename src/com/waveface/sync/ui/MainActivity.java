@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
@@ -15,7 +14,6 @@ import com.waveface.sync.RuntimeState;
 import com.waveface.sync.ui.fragment.FragmentBase;
 import com.waveface.sync.ui.fragment.SlidingMenuFragment;
 import com.waveface.sync.ui.fragment.SyncFragment;
-import com.waveface.sync.ui.preference.Preferences;
 import com.waveface.sync.ui.widget.SlidingMenu;
 
 /**
@@ -72,14 +70,4 @@ public class MainActivity extends FragmentActivity {
 		RuntimeState.isAppLaunching = false;
 	}
     
-	@Override
-	public boolean onKeyDown(int keycode, KeyEvent e) {
-	    switch(keycode) {
-	        case KeyEvent.KEYCODE_MENU:
- 		    	Intent intent = new Intent(this,Preferences.class);
- 		    	startActivity(intent);
-	            return true;
-	    }
-
-	    return super.onKeyDown(keycode, e);
-	}}
+}

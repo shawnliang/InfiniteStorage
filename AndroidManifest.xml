@@ -52,17 +52,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent" >
         </activity>
-        <activity
-            android:name="com.waveface.sync.ui.CleanActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent" />
-        <activity
-            android:name="com.waveface.sync.ui.AddServerActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent" />
-
         <provider
             android:name="com.waveface.sync.provider.SyncProvider"
             android:authorities="com.waveface.sync"
@@ -89,13 +78,6 @@
         <meta-data
             android:name="com.crashlytics.ApiKey"
             android:value="2de93f37d61a80e50febf2dfa9e0b80d5105afd0" />
-
-        <activity
-            android:name="com.waveface.sync.ui.ViewMediaActivity"
-             android:theme="@style/Theme.Transparent">            
-        </activity>
-        <activity
-            android:name="com.waveface.sync.ui.preference.Preferences"  android:theme="@style/HoloTheme"/>
 
     </application>
 

@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.google.gson.Gson;
-import com.waveface.sync.callback.ActionCallbackManager;
 import com.waveface.sync.util.NetworkUtil;
 
 public class RuntimeState{
 	private static final String TAG = RuntimeState.class.getSimpleName();
 	
 	public static Gson GSON = new Gson();
-	public static boolean OnWebSocketStation = false;
 	public static boolean OnWebSocketOpened = false;
 	
 	public static boolean mAutoConnectMode = false;
@@ -43,41 +41,32 @@ public class RuntimeState{
 	public static long maxAudioId = -1;
 	
 	public static int LastTimeNetworkState = 0;
-	
-	private static ActionCallbackManager mActionManager = ActionCallbackManager.getInstance();
-	
+		
 	public static void setServerStatus(String action){
 		if(action.equals(Constant.WS_ACTION_SOCKET_OPENED)){
 			OnWebSocketOpened = true;			
-			OnWebSocketStation = false;
 		}
 		else if(action.equals(Constant.WS_ACTION_CONNECT)){
 			OnWebSocketOpened = true;			
-			OnWebSocketStation = false;
 		}
 		else if(action.equals(Constant.WS_ACTION_ACCEPT)){
 			OnWebSocketOpened = true;			
-			OnWebSocketStation = true;
 		}
 		else if(action.equals(Constant.WS_ACTION_DENIED)){
 			OnWebSocketOpened = false;			
-			OnWebSocketStation = false;
 			isBackuping = false;
 			mWebSocketServerId = "";
 		}
 		else if(action.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
 			OnWebSocketOpened = true;			
-			OnWebSocketStation = false;
 			mWebSocketServerId = "";
 		}
 		else if(action.equals(Constant.WS_ACTION_BACKUP_INFO)){
 			OnWebSocketOpened = true;			
-			OnWebSocketStation = true;
 		}
 		else if(action.equals(Constant.WS_ACTION_SOCKET_CLOSED) 
 				||action.equals(Constant.BS_ACTION_SERVER_REMOVED)
 				||action.equals(Constant.NETWORK_ACTION_WIFI_BROKEN) ){
-			OnWebSocketStation = false;
 			OnWebSocketOpened = false;
 			isBackuping = false;
 			mWebSocketServerId = "";
@@ -91,8 +80,7 @@ public class RuntimeState{
 	}
 	public static boolean isWebSocketAvaliable(Context context){
 		if(NetworkUtil.isWifiNetworkAvailable(context) 
-				&& RuntimeState.OnWebSocketOpened 
-				&& RuntimeState.OnWebSocketStation){
+				&& RuntimeState.OnWebSocketOpened){
 			return true;
 		}
 		else{
@@ -112,14 +100,4 @@ public class RuntimeState{
 		}
 	}	
 	
-	public static void fireEvent(String action,int value){
-		if(mActionManager==null){
-			mActionManager = ActionCallbackManager.getInstance();
-		}
-		mActionManager.fireEvent(action, value);
-	}
-	public static void FileBackedUp(Context context){
-		Intent intent = new Intent(Constant.ACTION_BACKUP_FILE);
-		context.sendBroadcast(intent);
-	}
 }

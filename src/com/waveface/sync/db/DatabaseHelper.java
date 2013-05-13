@@ -16,14 +16,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final String TAG = DatabaseHelper.class.getSimpleName();
 	private static final int DATABASE_VERSION = 7;
 	private static final String[] TABLE_NAME_LIST = {
-			ImportTable.TABLE_NAME,
-			ImportFilesTable.TABLE_NAME,
 			BonjourServersTable.TABLE_NAME,
-			BackupedServersTable.TABLE_NAME,
-			BackupDetailsTable.TABLE_NAME};
+			BackupedServersTable.TABLE_NAME};
 
-	private static final String INDEX_IMPORT_FILE_1 = "IDX_"+ImportFilesTable.TABLE_NAME+"_1";
-	private static final String INDEX_BACKUP_DETAILS_1 = "IDX_"+BackupDetailsTable.TABLE_NAME+"_1";
 
 	private final boolean DEBUGGABLE;
 
@@ -45,31 +40,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		Log.i(TAG, "onCreate at WammerProvider!!!!");
 		StringBuilder sqlBuilder = new StringBuilder();
 
-		// Create Import table
-		sqlBuilder = new StringBuilder();
-		sqlBuilder.append("Create Table  {0} (")
-				.append(ImportTable.COLUMN_DB_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,")
-				.append(ImportTable.COLUMN_FOLDER_NAME + " TEXT NOT NULL,")
-				.append(ImportTable.COLUMN_TYPE + " TEXT NOT NULL,")
-				.append(ImportTable.COLUMN_ENABLE + " INTEGER ,")
-				.append(ImportTable.COLUMN_LAST_IMPORT_TIME + " TEXT NOT NULL DEFAULT ''',")
-				.append(ImportTable.COLUMN_ADDED_TIME + " TEXT NOT NULL);");
-		createTable(db, sqlBuilder.toString(), ImportTable.TABLE_NAME);
-
-
-		// Create ImportFiles table
-		sqlBuilder = new StringBuilder();
-		sqlBuilder.append("Create Table {0} (")
-		  .append(ImportFilesTable.COLUMN_FILENAME + " TEXT PRIMARY KEY,")
-		  .append(ImportFilesTable.COLUMN_SIZE+" TEXT NOT NULL,")
-		  .append(ImportFilesTable.COLUMN_MIMETYPE+" TEXT NOT NULL,")		  
-		  .append(ImportFilesTable.COLUMN_DATE+" TEXT NOT NULL,")
-		  .append(ImportFilesTable.COLUMN_STATUS + " TEXT NOT NULL DEFAULT '0',")
-		  .append(ImportFilesTable.COLUMN_FILETYPE + " TEXT NOT NULL ,")		  
-		  .append(ImportFilesTable.COLUMN_FOLDER + " TEXT NOT NULL DEFAULT ''',")
-	      .append(ImportFilesTable.COLUMN_IMAGE_ID + " TEXT NOT NULL DEFAULT '-1',")
-		  .append(ImportFilesTable.COLUMN_UPDATE_TIME + " TEXT NOT NULL);");
-		createTable(db, sqlBuilder.toString(), ImportFilesTable.TABLE_NAME);
 
 		// Create Backuped Servers table
 		sqlBuilder = new StringBuilder();
@@ -99,24 +69,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		  .append(BonjourServersTable.COLUMN_WS_LOCATION + " TEXT NOT NULL );");		
 		createTable(db, sqlBuilder.toString(), BonjourServersTable.TABLE_NAME);
 
-		// Create Servers table
-		sqlBuilder = new StringBuilder();
-		sqlBuilder.append("Create Table {0} (")
-		  .append(BackupDetailsTable.COLUMN_SERVER_ID + " TEXT ,")
-		  .append(BackupDetailsTable.COLUMN_FILENAME+" TEXT NOT NULL,")
-		  .append(BackupDetailsTable.COLUMN_STATUS+" TEXT NOT NULL,")		
-		  .append("PRIMARY KEY ( "+BackupDetailsTable.COLUMN_SERVER_ID+","+BackupDetailsTable.COLUMN_FILENAME+"));");
-
-		createTable(db, sqlBuilder.toString(), BackupDetailsTable.TABLE_NAME);
-
-		//Create Indexes
-		String sql = "CREATE INDEX "+INDEX_IMPORT_FILE_1+" on "+ImportFilesTable.TABLE_NAME+"("+ImportFilesTable.COLUMN_FILETYPE+");";
-		db.execSQL(sql);
-		Log.d(TAG, "CREATE INDEXES(1) FOR IMPORT FILE TABLE:"+sql);
-		
-		sql = "CREATE INDEX "+INDEX_BACKUP_DETAILS_1+" on "+BackupDetailsTable.TABLE_NAME+"("+BackupDetailsTable.COLUMN_STATUS+");";
-		db.execSQL(sql);
-		Log.d(TAG, "CREATE INDEXES(1) FOR BACKUP DETAILS TABLE:"+sql);	
 	}
 
 	@Override

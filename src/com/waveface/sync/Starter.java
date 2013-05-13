@@ -10,7 +10,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Environment;
 
 import com.crashlytics.android.Crashlytics;
-import com.waveface.sync.logic.ServersLogic;
 
 public class Starter extends Application {
 	private static final String TAG = Starter.class.getSimpleName();	
@@ -23,8 +22,6 @@ public class Starter extends Application {
 		}
 		
 		initialDirectory();
-		//GET LAST BACKED UP FILE TO RUNTIME STATE
-		ServersLogic.getLastBackupState(getApplicationContext());
 		super.onCreate();
 	}
 

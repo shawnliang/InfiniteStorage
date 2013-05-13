@@ -33,7 +33,6 @@ import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.entity.ServerEntity;
-import com.waveface.sync.logic.FlowLogic;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.ui.adapter.ServerChooseAdapter;
 import com.waveface.sync.util.NetworkUtil;
@@ -110,6 +109,7 @@ public class ServerChooserFragment extends FragmentBase
 	    mTvSearch = (TextView) mRootView.findViewById(R.id.tvSearch);
 		displayProgressBar();
 		
+		//OPEN WI-Fi SETTING
 		if(!NetworkUtil.isWifiNetworkAvailable(getActivity())){
 			openDialog(getActivity(),Constant.NETWORK_IS_NOT_WIFI);
 		}
@@ -204,7 +204,7 @@ public class ServerChooserFragment extends FragmentBase
 			.setCancelable(false)
 			.setPositiveButton(R.string.email_description,new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog,int id) {
-					FlowLogic.sendDownloadEmail(getActivity());
+//					FlowLogic.sendDownloadEmail(getActivity());
 					dialog.cancel();
 				}
 			  })

@@ -20,18 +20,14 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
-import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
 import com.google.gson.stream.JsonReader;
-import com.waveface.sync.R;
 
 public class StringUtil {
 	/**

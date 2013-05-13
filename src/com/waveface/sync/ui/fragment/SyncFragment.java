@@ -36,11 +36,8 @@ import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.service.InfiniteService;
 import com.waveface.sync.ui.FirstUseActivity;
-import com.waveface.sync.ui.ViewMediaActivity;
-import com.waveface.sync.ui.preference.Preferences;
 import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.util.NetworkUtil;
-import com.waveface.sync.util.StringUtil;
 
 public class SyncFragment extends Fragment implements OnClickListener {
 
@@ -84,6 +81,7 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
+		//START UP SERVICE
 		new InvokeServiceTask().execute(new Void[]{});
 		
 		View root = inflater.inflate(R.layout.fragment_sync, container, false);
@@ -185,10 +183,11 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	}
 
 	private void firsttimeDispaly() {
+		//HAS PAIRED SERVER
 		mPairedServers = ServersLogic.getBackupedServers(getActivity());
 		if (mProgressDialog == null) {
 			if (NetworkUtil.isWifiNetworkAvailable(getActivity())
-					&& RuntimeState.OnWebSocketStation == false) {
+					&& RuntimeState.OnWebSocketOpened == false) {
 				if (mPairedServers.size() != 0) {
 					RuntimeState.mAutoConnectMode = true;
 					mProgressDialog = ProgressDialog.show(getActivity(), "",
@@ -198,7 +197,7 @@ public class SyncFragment extends Fragment implements OnClickListener {
 						public void run() {
 							if (NetworkUtil
 									.isWifiNetworkAvailable(getActivity())
-									&& RuntimeState.OnWebSocketStation == false) {
+									&& RuntimeState.OnWebSocketOpened == false) {
 								dismissProgress();
 								Toast.makeText(getActivity(),
 										R.string.can_not_find_server,
@@ -209,6 +208,7 @@ public class SyncFragment extends Fragment implements OnClickListener {
 				}
 			}
 		}
+		//NO PAIRED SERVER
 		if (mPairedServers.size() == 0) {
 			Intent startIntent = new Intent(getActivity(),
 					FirstUseActivity.class);
@@ -293,40 +293,6 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	}
 
 	public void refreshLayout() {
-		String[] periods = BackupLogic.getFilePeriods(getActivity());
-		if (TextUtils.isEmpty(periods[0])) {
-			mNowPeriod.setText(R.string.file_scanning);
-		} else {
-			mNowPeriod.setText(getString(R.string.period, periods[0],
-					periods[1]));
-		}
-		long totalCount = 0;
-		long totalSize = 0;
-
-		long[] datas = BackupLogic.getFileInfo(getActivity(),
-				Constant.TYPE_IMAGE);
-		mPhotoCount.setText(getString(R.string.photos, datas[0]));
-		mPhotoSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
-		totalCount += datas[0];
-		totalSize += datas[1];
-
-		datas = BackupLogic.getFileInfo(getActivity(), Constant.TYPE_VIDEO);
-		mVideoCount.setText(getString(R.string.videos, datas[0]));
-		mVideoSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
-		totalCount += datas[0];
-		totalSize += datas[1];
-
-		datas = BackupLogic.getFileInfo(getActivity(), Constant.TYPE_AUDIO);
-		mAudioCount.setText(getString(R.string.audios, datas[0]));
-		mAudioSize.setText(StringUtil.byteCountToDisplaySize(datas[1]));
-		totalCount += datas[0];
-		totalSize += datas[1];
-
-		mTotalInfo.setText(getString(R.string.total_info, totalCount,
-				StringUtil.byteCountToDisplaySize(totalSize)));
-
-		// REFRESH PROGRESS INFO
-		displayProgressingInfo();
 
 		// REFRESH SETTING AREA
 		if (ServersLogic.hasBackupedServers(getActivity())) {
@@ -337,53 +303,6 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	}
 
 	public void displayProgressingInfo() {
-		if (ServersLogic.hasBackupedServers(getActivity())) {
-			ArrayList<ServerEntity> servers = ServersLogic
-					.getBackupedServers(getActivity());
-			ServerEntity entity = servers.get(0);
-			String displayTime = StringUtil.displayLocalTime(
-					entity.lastLocalBackupTime, StringUtil.DATE_FORMAT);
-			rlBackupContent.setVisibility(View.VISIBLE);
-			String serverId = BackupLogic.getServerBackupedId(getActivity());
-			int[] counts = BackupLogic.getBackupProgressInfo(getActivity(),
-					serverId);
-			if (RuntimeState.OnWebSocketStation) {
-				tvBackupPC.setText(entity.serverName);
-				if (RuntimeState.isBackuping) {
-					ivPC.setImageResource(R.drawable.ic_processing);
-					tvContent.setText(getString(R.string.backup_progress,
-							(counts[1]-counts[0])));
-				} else {
-					ivPC.setImageResource(R.drawable.ic_transfer);
-					if (counts[0] == counts[1] && counts[1] != 0) {
-						tvContent.setText(getString(R.string.backup_done));
-					} else {
-						tvContent
-								.setText(getString(R.string.backup_info_empty));
-					}
-				}
-			} else {
-				tvBackupPC.setText(entity.serverName);
-				ivPC.setImageResource(R.drawable.ic_offline);
-
-				if (counts[0] == counts[1] && counts[1] != 0) {
-					tvContent.setText(getString(R.string.backup_done));
-				} else {
-					tvContent.setText(getString(R.string.backup_progress,
-							(counts[1]-counts[0])));
-				}
-			}
-			if (!TextUtils.isEmpty(displayTime)) {
-				tvLastBackupTime.setText(getString(
-						R.string.backup_last_local_time, displayTime));
-			}
-			
-			//TODO:
-			tvDetail.setText(StringUtil.getFilename(RuntimeState.mFilename));
-		} else {
-			rlBackupContent.setVisibility(View.INVISIBLE);
-		}
-		displayBackingUpImage();
 	}
 
 	// public void refreshServerStatus(){
@@ -428,11 +347,6 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	public void onClick(View v) {
 		Intent startIntent = null;
 		switch (v.getId()) {
-		case R.id.ivSettings:
-			Intent intent = new Intent(getActivity(), Preferences.class);
-			startActivity(intent);
-			EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_LABEL_SETTING, null);
-			break;
 		case R.id.ivAddpc:
 			if (!ServersLogic.hasBackupedServers(getActivity())) {
 				startIntent = new Intent(getActivity(), FirstUseActivity.class);
@@ -447,39 +361,12 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			// Constant.REQUEST_CODE_ADD_SERVER);
 			// }
 			break;
-		case R.id.imageView1:
-			// TO DISPLAY ALL IMAGES
-			EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_LABEL_IMAGE, null);
-			startIntent = new Intent(getActivity(), ViewMediaActivity.class);
-			startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
-					Constant.TRANSFER_TYPE_IMAGE);
-			startActivity(startIntent);
-			break;
-		case R.id.imageView2:
-			// TO DISPLAY ALL VIDEOS
-			EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_LABEL_VIDEO, null);
-			startIntent = new Intent(getActivity(), ViewMediaActivity.class);
-			startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
-					Constant.TRANSFER_TYPE_VIDEO);
-			startActivity(startIntent);
-			break;
-		case R.id.imageView3:
-			// TO DISPLAY ALL AUDIO
-			EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_LABEL_AUDIO, null);
-			startIntent = new Intent(getActivity(), ViewMediaActivity.class);
-			startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
-					Constant.TRANSFER_TYPE_AUDIO);
-			startActivity(startIntent);
-			break;
 		}
 	}
 	class InvokeServiceTask extends AsyncTask<Void,Void,Void>{
 		@Override
 		protected Void doInBackground(Void... params) {
 			getActivity().startService(new Intent(getActivity(), InfiniteService.class));
-	    	if(RuntimeState.isScaning == false){
-	    		BackupLogic.scanAllFiles(getActivity());
-	    	}
 			return null;
 		}
 	}

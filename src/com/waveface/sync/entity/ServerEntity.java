@@ -48,6 +48,11 @@ public class ServerEntity implements Serializable {
 	@SerializedName("audio_count")
 	public int audioCount;
 	
+	public String wsPort;
+	public String notifyPort;
+	public String restPort;
+	
+	
 	public String wsLocation;
 
 	public String lastLocalBackupTime;

@@ -1,31 +1,21 @@
 package com.waveface.sync.ui;
 
 
-import java.net.URLEncoder;
-
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Html;
-
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
-import com.waveface.sync.logic.FlowLogic;
-import com.waveface.sync.ui.fragment.BackupInfoFragment;
 import com.waveface.sync.ui.fragment.FragmentBase;
-import com.waveface.sync.ui.fragment.InstallFragment;
 import com.waveface.sync.ui.fragment.ServerChooserFragment;
 import com.waveface.sync.ui.fragment.FragmentBase.onFragmentChangedListener;
-import com.waveface.sync.util.DeviceUtil;
 
 
-public class FirstUseActivity extends FragmentActivity implements
-		InstallFragment.InstallFragmentListener, onFragmentChangedListener {
+public class FirstUseActivity extends FragmentActivity implements onFragmentChangedListener {
 	public final String TAG = FirstUseActivity.class.getSimpleName();
 
 	/**
@@ -92,28 +82,11 @@ public class FirstUseActivity extends FragmentActivity implements
 		}
 	}
 
+
 	@Override
 	public void goNext(String id) {
-		if (InstallFragment.class.getSimpleName().equals(id)) {
-			finish();
-		}
-		else if (ServerChooserFragment.class.getSimpleName().equals(id)) {
-			showFragment(new BackupInfoFragment(), BackupInfoFragment.class.getSimpleName());
-		}
-		else if (BackupInfoFragment.class.getSimpleName().equals(id)) {
-			setResult(RESULT_OK,new Intent());
-			finish();
-		}		
+		// TODO Auto-generated method stub
+		
 	}
 
-	@Override
-	public void onSendEmail() {
-		FlowLogic.sendDownloadEmail(this);
-	}
-
-
-	@Override
-	public void onInstallNext() {
-		showFragment(new ServerChooserFragment(), ServerChooserFragment.class.getSimpleName());
-	}
 }

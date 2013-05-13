@@ -1,6 +1,5 @@
 package com.waveface.sync.websocket;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -30,7 +29,7 @@ import android.text.TextUtils;
 import com.google.gson.JsonSyntaxException;
 import com.waveface.sync.Constant;
 import com.waveface.sync.RuntimeState;
-import com.waveface.sync.entity.ServerEntity;
+import com.waveface.sync.entity.LabelEntity;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.util.Log;
 
@@ -137,47 +136,16 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		@Override
 		public void processPacket(WebSocketClientEvent aEvent, WebSocketPacket aPacket) {
 			String jsonOutput = aPacket.getUTF8();
-			ServerEntity entity = null;
-			String notifyContent = null;
+			LabelEntity entity = null;
 			try {
 				if(!TextUtils.isEmpty(jsonOutput))
-					entity = RuntimeState.GSON.fromJson(jsonOutput, ServerEntity.class);
+					entity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.class);
 			} catch (JsonSyntaxException e) {
 				e.printStackTrace();
 				Log.e(Constant.JSON_ERROR_TAG, jsonOutput);
 				Log.e(Constant.JSON_ERROR_TAG, e.getLocalizedMessage());
 			}
-			if(entity.action.equals(Constant.WS_ACTION_ACCEPT)){
-				RuntimeState.mWebSocketServerId = entity.serverId;
-				RuntimeState.mWebSocketServerName = entity.serverName;
-				RuntimeState.setServerStatus(entity.action);
-				ServersLogic.updateBackupedServerByServerNotify(mContext, entity,true);
-				notifyContent = Constant.WS_ACTION_ACCEPT;
-			}
-			else if(entity.action.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
-				RuntimeState.setServerStatus(entity.action);
-                notifyContent = Constant.WS_ACTION_WAIT_FOR_PAIR;                				
-			}
-			else if(entity.action.equals(Constant.WS_ACTION_DENIED)){
-				ArrayList<ServerEntity> entities =  ServersLogic.getBackupedServers(mContext);
-				if(!TextUtils.isEmpty(RuntimeState.mWebSocketServerId)){
-					ServersLogic.deniedPairedServer(mContext, RuntimeState.mWebSocketServerId,Constant.SERVER_DENIED_BY_SERVER);
-				}
-				else if(entities.size()>0){
-					ServersLogic.deniedPairedServer(mContext, entities.get(0).serverId,Constant.SERVER_DENIED_BY_SERVER);					
-				}
-				RuntimeState.setServerStatus(entity.action);
-                notifyContent = Constant.WS_ACTION_DENIED;                	
-			}
-			else if(entity.action.equals(Constant.WS_ACTION_BACKUP_INFO)){				
-				RuntimeState.setServerStatus(entity.action);
-				ServersLogic.updateBackupedServerByServerNotify(mContext, entity,false);               
-				notifyContent = Constant.WS_ACTION_BACKUP_INFO;
-			}
-			//SEND BROADCAST
-			Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
-			intent.putExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT, notifyContent);
-        	mContext.sendBroadcast(intent);
+			//TODO:handle retrive label
 
 			//ORIGINAL Web Socket Code
 			Token lToken = packetToToken(aPacket);
@@ -196,9 +164,6 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		public void processClosed(WebSocketClientEvent aEvent) {
 			RuntimeState.setServerStatus(Constant.WS_ACTION_SOCKET_CLOSED);
 	    	ServersLogic.updateAllBackedServerStatus(mContext,Constant.SERVER_OFFLINE);
-			Intent intent = new Intent(Constant.ACTION_WS_SERVER_NOTIFY);
-			intent.putExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT, Constant.WS_ACTION_SOCKET_CLOSED);
-			mContext.sendBroadcast(intent);			
 		}
 
 		/**

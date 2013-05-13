@@ -2,9 +2,6 @@ package com.waveface.sync.ui.widget;
 
 import java.lang.reflect.Method;
 
-import com.waveface.sync.R;
-import com.waveface.sync.ui.widget.CustomViewAbove.OnPageChangeListener;
-
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -29,6 +26,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+
+import com.waveface.sync.R;
+import com.waveface.sync.ui.widget.CustomViewAbove.OnPageChangeListener;
 
 public class SlidingMenu extends RelativeLayout {
 

@@ -17,7 +17,6 @@ import com.waveface.sync.Constant;
 import com.waveface.sync.RuntimeState;
 import com.waveface.sync.db.BackupedServersTable;
 import com.waveface.sync.db.BonjourServersTable;
-import com.waveface.sync.db.ImportFilesTable;
 import com.waveface.sync.entity.ConnectEntity;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.entity.UpdateCountEntity;
@@ -515,71 +514,14 @@ public class ServersLogic {
 			RuntimeWebClient.setURL(wsLocation);
 			try {
 				RuntimeWebClient.open();
-				// send connect cmd
+				//TODO:CHANGE TO NEW PROTOCAL				
 				ConnectEntity connect = new ConnectEntity();
-				connect.action = Constant.WS_ACTION_CONNECT;
-				connect.deviceId = DeviceUtil.id(context);
-				connect.deviceName = DeviceUtil
-						.getDeviceNameForDisplay(context);
-				long[] countAndSize = getTransferCountAndSize(context, serverId);
-				connect.transferCount = countAndSize[0];
-				connect.transferSize = countAndSize[1];
+				
 				RuntimeWebClient.send(RuntimeState.GSON.toJson(connect));
 			} catch (WebSocketException e) {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public static void updateCount(Context context, String serverId) {
-		try {
-			// send connect cmd
-			UpdateCountEntity entity = new UpdateCountEntity();
-			entity.action = Constant.WS_ACTION_UPDATE_COUNT;
-			int progress[] = BackupLogic.getBackupProgressInfo(context, serverId);
-			entity.transferCount = progress[0];
-			entity.backupedCount = progress[1];
-//			entity.transferCount = getTransferCountAndSize(context, serverId)[0];
-			RuntimeWebClient.send(RuntimeState.GSON.toJson(entity));
-		} catch (WebSocketException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static long[] getTransferCountAndSize(Context context,
-			String serverId) {
-		long count = 0;
-		long totalSize = 0;
-		ContentResolver cr = context.getContentResolver();
-		Cursor cursor = null;
-		try {
-			String where = ImportFilesTable.COLUMN_STATUS + "!=? AND "
-						+ ImportFilesTable.COLUMN_STATUS + "!=? ";
-			String[] whereArgs = new String[] { Constant.IMPORT_FILE_DELETED,
-						Constant.IMPORT_FILE_EXCLUDE };
-
-			cursor = cr.query(ImportFilesTable.CONTENT_URI,
-					new String[] { ImportFilesTable.COLUMN_SIZE }, where,
-					whereArgs, null);
-			if (cursor != null && cursor.getCount() > 0) {
-				count = cursor.getCount();
-				cursor.moveToFirst();
-				for (int i = 0; i < count; i++) {
-					totalSize += cursor.getLong(0);
-					cursor.moveToNext();
-				}
-				cursor.close();
-			}
-			cursor = null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (cursor != null) {
-				cursor.close();
-				cursor = null;
-			}
-		}
-		return new long[] { count, totalSize };
 	}
 
 	public static int deniedPairedServer(Context context, String serverId,String status) {
@@ -698,51 +640,5 @@ public class ServersLogic {
 			}
 		}
 		return count;
-	}
-
-	public static void getLastBackupState(Context context) {
-		Cursor cursor = null;
-		ContentResolver cr = context.getContentResolver();
-		String lastBackupFileDatetime = null;
-		try {
-			cursor = cr
-					.query(BackupedServersTable.CONTENT_URI,
-							new String[] { BackupedServersTable.COLUMN_LAST_FILE_DATE },
-							BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
-							new String[] { Constant.SERVER_DENIED_BY_SERVER,
-									   Constant.SERVER_DENIED_BY_CLIENT}, null);
-
-			
-			if (cursor != null && cursor.getCount() > 0) {
-				cursor.moveToFirst();
-				lastBackupFileDatetime = cursor.getString(0);
-			}
-			if (!TextUtils.isEmpty(lastBackupFileDatetime)) {
-				cursor = cr.query(ImportFilesTable.CONTENT_URI, new String[] {
-						ImportFilesTable.COLUMN_FILENAME,
-						ImportFilesTable.COLUMN_FILETYPE,
-						ImportFilesTable.COLUMN_IMAGE_ID,
-						ImportFilesTable.COLUMN_DATE,
-						ImportFilesTable.COLUMN_UPDATE_TIME},
-						ImportFilesTable.COLUMN_DATE + "=?",
-						new String[] { lastBackupFileDatetime }, null);
-
-				if (cursor != null && cursor.getCount() > 0) {
-					cursor.moveToFirst();
-					RuntimeState.mFilename = cursor.getString(0);
-					RuntimeState.mFileType = cursor.getInt(1);
-					RuntimeState.mMediaID = cursor.getLong(2);
-					RuntimeState.mFileDatetime = cursor.getString(3);
-					RuntimeState.mFileUpdatedDate = cursor.getString(4);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (cursor != null) {
-				cursor.close();
-				cursor = null;
-			}
-		}
 	}
 }

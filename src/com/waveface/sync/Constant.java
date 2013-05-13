@@ -134,6 +134,10 @@ public class Constant {
 	
 	public final static String PARAM_SERVER_DATA = "server_data";
 	public final static String PARAM_SERVER_ID = "server_id";	
+	public final static String PARAM_WS_PORT = "ws_port";	
+	public final static String PARAM_NOTIFY_PORT = "notify_port";	
+	public final static String PARAM_REST_PORT = "rest_port";	
+	
 	public final static String PARAM_SERVER_WS_LOCATION = "server_ws_location";		
 	public final static String PARAM_SERVER_OS = "os";		
 	public final static String PARAM_RESULT = "result";

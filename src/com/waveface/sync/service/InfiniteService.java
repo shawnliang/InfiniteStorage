@@ -17,23 +17,17 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.ContentObserver;
 import android.net.wifi.WifiManager;
-import android.os.Handler;
 import android.os.IBinder;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 
-import com.google.analytics.tracking.android.EasyTracker;
 import com.waveface.sync.Constant;
-import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.NetworkUtil;
-import com.waveface.sync.util.SyncNotificationManager;
 
 public class InfiniteService extends Service{
 	private static final String TAG = InfiniteService.class.getSimpleName();
@@ -54,16 +48,6 @@ public class InfiniteService extends Service{
 	//TIMER
     private final int UPDATE_INTERVAL = 30 * 1000;
     private Timer BackupTimer = new Timer();
-    private Timer ResetMDNSTimer = new Timer();    
-    
-    //
-	private SyncNotificationManager mNotificationManager;
-	private String mNotoficationId;	
-	
-	//Observers
-	private ImageTableObserver mCamera;
-	private VideoTableObserver mVideo;
-	private AudioTableObserver mAudio;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -79,68 +63,16 @@ public class InfiniteService extends Service{
             @Override
             public void run() {
             	if(NetworkUtil.isWifiNetworkAvailable(mContext)){
-            		//SCAN ALL FILES FOR THE FIRST TIME
-                	if(RuntimeState.wasFirstTimeImportScanDone == false){
-                		BackupLogic.scanAllFiles(mContext);
-                		RuntimeState.wasFirstTimeImportScanDone = true ;
-                		mPrefs.edit()
-                			.putBoolean(Constant.PREF_FILE_IMPORT_FIRST_TIME_DONE, 
-                					RuntimeState.wasFirstTimeImportScanDone)
-                			.commit();
-                	}
                 	long fromTime = System.currentTimeMillis()-mMDNSSetupTime;
                 	if(NetworkUtil.isWifiNetworkAvailable(mContext)
                 			&& RuntimeState.isMDNSSetUped  
                 			&& fromTime > (60*1000)
-                			&& RuntimeState .OnWebSocketOpened == false 
-                			&& RuntimeState.OnWebSocketStation == false
-                			&& RuntimeState.isBackuping == false){
+                			&& RuntimeState .OnWebSocketOpened == false){
                 		    Log.d(TAG, "reset MDNS FOR WAIT FOR 1 Minutes");
-//                		    ServersLogic.purgeAllBonjourServer(mContext);
     						releaseMDNS();
     						Log.d(TAG, "reset MDNS");
     						setupMDNS();
-                	}
-                	            	
-    		    	String serverId = BackupLogic.getServerBackupedId(mContext);
-    		    	if(!TextUtils.isEmpty(serverId) 
-    		    			&& RuntimeState.isWebSocketAvaliable(mContext)){
-    		    		ServersLogic.updateCount(mContext, serverId);
-    		    	}
-    		    	serverId = RuntimeState.mWebSocketServerId;
-    		    	if(!TextUtils.isEmpty(serverId)
-                			&& RuntimeState.wasFirstTimeImportScanDone
-                			&& RuntimeState.canBackup(mContext) 
-            				&& BackupLogic.needToBackup(mContext,serverId)){
-    					Log.d(TAG, "START BACKUP FILE");
-    					Intent intent = new Intent(Constant.ACTION_BACKUP_START);
-    					mContext.sendBroadcast(intent);
-    					RuntimeState.setServerStatus(Constant.WS_ACTION_START_BACKUP);
-    					showSyncNotification(Constant.NOTIFICATION_BACK_UP_START);
-    					while(RuntimeState.isWebSocketAvaliable(mContext) && BackupLogic.needToBackup(mContext,serverId)){
-    						if(RuntimeState.isBackuping==false){
-    							intent = new Intent(Constant.ACTION_UPLOADING_FILE);
-    							intent.putExtra(Constant.EXTRA_BACKING_UP_FILE_STATE, Constant.JOB_START);
-    							mContext.sendBroadcast(intent);
-    							RuntimeState.isBackuping = true;
-    						}
-    			    		BackupLogic.backupFiles(mContext, serverId);
-    			    	}
-    			    	if(!TextUtils.isEmpty(serverId) 
-    			    			&& RuntimeState.isWebSocketAvaliable(mContext)){
-    			    		ServersLogic.updateCount(mContext, serverId);
-    			    	}
-    					RuntimeState.isBackuping = false;
-    					intent = new Intent(Constant.ACTION_BACKUP_DONE);
-    					mContext.sendBroadcast(intent);
-    					RuntimeState.setServerStatus(Constant.WS_ACTION_END_BACKUP);
-    					showSyncNotification(Constant.NOTIFICATION_BACKED_UP);
-                	}
-    		    	if(RuntimeState.isScaning == false){
-    		    		BackupLogic.scanAllFiles(mContext);
-    		    	}
-    				// Check if there are updates here and notify if true
-            		
+                	}                	            	
             	}
             }
         }, 0, UPDATE_INTERVAL);
@@ -156,108 +88,15 @@ public class InfiniteService extends Service{
 
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);
-		filter.addAction(Constant.ACTION_BACKUP_FILE);
 		registerReceiver(mReceiver, filter);
 
 		RuntimeState.mAutoConnectMode = ServersLogic.hasBackupedServers(this);
 		setupMDNS();
 		
-		//Notification 
-		mNotificationManager = SyncNotificationManager
-				.getInstance(getApplicationContext());
-		
-		// register camera observer
-		BackupLogic.setLastMediaSate(getApplicationContext());
-		mCamera = new ImageTableObserver(new Handler());
-	    getContentResolver().registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, true, mCamera);
-	    mVideo = new VideoTableObserver(new Handler());
-	    getContentResolver().registerContentObserver(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, true, mVideo);
-	    mAudio = new AudioTableObserver(new Handler());
-	    getContentResolver().registerContentObserver(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, true, mAudio);
-		//SCAN ALL FILES FOR THE FIRST TIME
-		RuntimeState.wasFirstTimeImportScanDone = 
-				mPrefs.getBoolean(Constant.PREF_FILE_IMPORT_FIRST_TIME_DONE, false);
 		Log.d(TAG, "onCreate");
 	}
 
-	private void showSyncNotification(int notifyCode) {
-		mNotoficationId = mPrefs.getString(Constant.PREF_NOTIFICATION_ID, "");
-		if(TextUtils.isEmpty(mNotoficationId)){
-			mNotoficationId = System.currentTimeMillis()+"";
-			mEditor.putString(Constant.PREF_NOTIFICATION_ID, mNotoficationId);
-			mEditor.commit();
-		}
-		String content = null;
-		int[] backupAndTotalCount = null;
-		int progress = 0;
-		if(notifyCode== Constant.NOTIFICATION_BACK_UP_START 
-				|| notifyCode==  Constant.NOTIFICATION_BACK_UP_ON_PROGRESS){
-			backupAndTotalCount = BackupLogic.getBackupProgressInfo(mContext, RuntimeState.mWebSocketServerId);
-			String remainedCount = ""+(backupAndTotalCount[1]-backupAndTotalCount[0]);
-			progress = (int) ((backupAndTotalCount[0])/ (float) backupAndTotalCount[1] * 100);
-			content = mContext.getString(R.string.notify_link_server,RuntimeState.mWebSocketServerName,remainedCount)+","+progress+"%";
-//			progress = (int) ((backupAndTotalCount[0])/ (float) backupAndTotalCount[1] * 100);
-//			content += " ( "+backupAndTotalCount[0]+" / "+backupAndTotalCount[1]+" ) , "+progress+"%";			
-		}
-		
-		switch(notifyCode){
-			case Constant.NOTIFICATION_BACK_UP_START:
-				if(RuntimeState.OnWebSocketStation ){
-					removeNotification();					
-					mNotificationManager.createProgressNotification(
-						mNotoficationId,
-						mContext.getString(R.string.app_name),
-						content,progress);
-					RuntimeState.isNotificationShowing = true ;
-				}
-
-				break;
-			case Constant.NOTIFICATION_BACK_UP_ON_PROGRESS:
-				if(RuntimeState.OnWebSocketStation ){
-					mNotificationManager.updateProgressNotification(mNotoficationId,
-								content,progress);
-					RuntimeState.isNotificationShowing = true ;
-				}
-				break;
-			case Constant.NOTIFICATION_BACKED_UP:
-				removeNotification();
-				if(RuntimeState.isNotificationShowing == false ){
-					int count = BackupLogic.getBackedUpCountForPairedPC(mContext);		
-					EasyTracker.getTracker().sendEvent(Constant.CATEGORY_SERVICE, 
-							Constant.ANALYTICS_ACTION_FINAL_BACKUP_COUNT, Constant.ANALYTICS_LABEL_COUNT, (long)count);
-//					int count = BackupLogic.getBackupProgressInfo(mContext, RuntimeState.mWebSocketServerId)[0];
-					content = mContext.getString(R.string.notify_backup_status, count);				
-					
-					mNotificationManager.createTextNotification(
-							mNotoficationId,
-							mContext.getString(R.string.app_name),
-							content,null);					
-					RuntimeState.isNotificationShowing = true ;
-				}	
-				break;
-		}		
-	}
 	
-	private void removeNotification(){
-		if(mContext == null){
-			return;
-		}
-		if(mPrefs==null){
-			mPrefs = mContext.getSharedPreferences(
-					Constant.PREFS_NAME, Context.MODE_PRIVATE);
-		}
-		if(mNotificationManager == null){
-			mNotificationManager = SyncNotificationManager
-					.getInstance(mContext);
-		}
-		mNotoficationId = mPrefs.getString(Constant.PREF_NOTIFICATION_ID, "");
-		if(!TextUtils.isEmpty(mNotoficationId) && RuntimeState.isNotificationShowing){
-			mNotificationManager.cancelNotification(mNotoficationId);
-			//mNotificationManager.cancelAll();
-			RuntimeState.isNotificationShowing = false;
-		}
-	}
-
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -276,13 +115,7 @@ public class InfiniteService extends Service{
 							setupMDNS();
 						}
 					}
-					if(!RuntimeState.isScaning){
-						BackupLogic.scanAllFiles(mContext);
-					}
 				}
-			}
-			else if(Constant.ACTION_BACKUP_FILE.equals(action)){
-				showSyncNotification(Constant.NOTIFICATION_BACK_UP_ON_PROGRESS);
 			}
 		}
 	};
@@ -290,11 +123,8 @@ public class InfiniteService extends Service{
 	@Override
 	public void onDestroy() {
  		unregisterReceiver(mReceiver);
-		getContentResolver().unregisterContentObserver(mCamera);
-		getContentResolver().unregisterContentObserver(mVideo);
-		getContentResolver().unregisterContentObserver(mAudio);
 
-		if(BackupTimer!=null){
+ 		if(BackupTimer!=null){
 			BackupTimer.cancel();
 		}
 		releaseMDNS();  
@@ -352,24 +182,16 @@ public class InfiniteService extends Service{
     	                final ServerEntity entity = new ServerEntity();
     	            	entity.serverName = si.getName();
     					entity.serverId = si.getPropertyString(Constant.PARAM_SERVER_ID);
-    					if(!TextUtils.isEmpty(si.getPropertyString(Constant.PARAM_SERVER_OS))){
-    						entity.serverOS = si.getPropertyString(Constant.PARAM_SERVER_OS);		
-    					}
-    					else{
-    						entity.serverOS = "WINDOWS";
-    					}
-    	                entity.wsLocation = "ws://"+si.getHostAddress()+":"+si.getPort();
+    					entity.wsPort = si.getPropertyString(Constant.PARAM_WS_PORT);
+    					entity.notifyPort = si.getPropertyString(Constant.PARAM_NOTIFY_PORT);
+    					entity.restPort = si.getPropertyString(Constant.PARAM_REST_PORT);    					
+    	                entity.wsLocation = "ws://"+si.getHostAddress()+":"+entity.wsPort;
     	                Log.d(TAG, "Resolved SERVER NAME:"+entity.serverName);
     	                ServersLogic.updateBonjourServer(mContext, entity);
     	        		mPairedServers = ServersLogic.getBackupedServers(mContext);
     	        		if(mPairedServers.size()!=0){
     	        			RuntimeState.mAutoConnectMode = true ;
     	        		}
-//    	                if(RuntimeState.mAutoConnectMode == false && RuntimeState.OnWebSocketOpened == false ){	                    
-//    	                    Intent intent = new Intent(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING);
-//    	                    mContext.sendBroadcast(intent);
-//    	                }
-//    	                else{
 	                	if(RuntimeState.mAutoConnectMode 
 	                			&& NetworkUtil.isWifiNetworkAvailable(mContext) 
 	                			&& RuntimeState.OnWebSocketOpened == false){
@@ -423,7 +245,7 @@ public class InfiniteService extends Service{
 				mCondidateWSLocation = bonjourServer.wsLocation;
 				Log.d(TAG, "PAIRING WITH "+pairedServer.serverName+","+bonjourServer.wsLocation);
 				ServersLogic.startWSServerConnect(this, mCondidateWSLocation, mCondidateServerId);
-				while(RuntimeState.OnWebSocketOpened){
+				while(!RuntimeState.OnWebSocketOpened){
 					try {
 						Thread.sleep(50);
 					} catch (InterruptedException e) {
@@ -431,93 +253,6 @@ public class InfiniteService extends Service{
 					}
 				}
 			}
-			if(RuntimeState.OnWebSocketStation){
-				break;
-			}
 		}
 	}
-	//Observers
-    class ImageTableObserver extends ContentObserver
-    {
-        private Handler mHandler;	
-
-  	  public ImageTableObserver(Handler handler)
-  	  {
-  	    super(handler);
-  	    mHandler = handler;
-  	  }
-  	  @Override
-  	  public void onChange(boolean selfChange)
-  	  {
-  		long maxId = BackupLogic.getMaxIdFromMediaDB(mContext, Constant.TYPE_IMAGE);
-  		Log.d(TAG, "Photo:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxImageId);
-//  		Toast.makeText(getApplicationContext(), "Image:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxImageId, Toast.LENGTH_LONG).show();
-  		if(maxId > RuntimeState.maxImageId && RuntimeState.isPhotoScaning == false){
-  			BackupLogic.scanFileForBackup(mContext, Constant.TYPE_IMAGE);
-	        RuntimeState.isPhotoScaning = true;
-  			mHandler.postDelayed(new Runnable() {
-  		        public void run() {
-  		        	BackupLogic.scanFileForBackup(mContext, Constant.TYPE_IMAGE);
-  		        	RuntimeState.isPhotoScaning = false;
-  		        	}
-  		        }, 1000);
-
-  		}
-  	  }
-   }
-    class VideoTableObserver extends ContentObserver
-    {
-      private Handler mHandler;	
-	
-  	  public VideoTableObserver(Handler handler)
-  	  {
-  	    super(handler);
-  	    mHandler = handler;
-  	  }
-  	  @Override
-  	  public void onChange(boolean selfChange)
-  	  {
-  		long maxId = BackupLogic.getMaxIdFromMediaDB(mContext, Constant.TYPE_VIDEO);
-  		Log.d(TAG, "Video:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxVideoId);
-  		if(maxId != RuntimeState.maxVideoId && RuntimeState.isVideoScaning == false){
-//  			Toast.makeText(getApplicationContext(), "Video:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxVideoId, Toast.LENGTH_LONG).show();
-  			if(BackupLogic.getFileSizeFromDB(mContext, Constant.TYPE_VIDEO, maxId)>0){  			  			
-  				RuntimeState.isVideoScaning = true;
-  				mHandler.postDelayed(new Runnable() {
-		        public void run() {
-		        	BackupLogic.scanFileForBackup(mContext, Constant.TYPE_VIDEO);
-		        	RuntimeState.isVideoScaning = false;
-		        	}
-		        }, 3000);
-  			}
-  		}
-  	  }
-   }
-    class AudioTableObserver extends ContentObserver
-    {
-      private Handler mHandler;	
-  	  public AudioTableObserver(Handler handler)
-  	  {
-  	    super(handler);
-  	    mHandler = handler;
-  	  }
-  	  @Override
-  	  public void onChange(boolean selfChange)
-  	  {
-  		long maxId = BackupLogic.getMaxIdFromMediaDB(mContext, Constant.TYPE_AUDIO);
-//  		Log.d(TAG, "Audioo:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxAudioId);
-  		if(maxId > RuntimeState.maxAudioId && RuntimeState.isAudioScaning == false){  			
-//  			Toast.makeText(getApplicationContext(), "Audioo:MaxId:"+maxId+",RuntimeID:"+RuntimeState.maxAudioId, Toast.LENGTH_LONG).show();
-  			if(BackupLogic.getFileSizeFromDB(mContext, Constant.TYPE_AUDIO, maxId)>0){  			  			
-	        	RuntimeState.isAudioScaning = true;
-  				mHandler.postDelayed(new Runnable() {
-		        public void run() {
-		        	BackupLogic.scanFileForBackup(mContext, Constant.TYPE_AUDIO);
-		        	RuntimeState.isAudioScaning = false;
-		        	}
-		        }, 2000);
-  			}
-  		}
-  	  }
-   }
 }

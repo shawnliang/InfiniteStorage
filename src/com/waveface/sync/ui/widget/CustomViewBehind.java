@@ -1,8 +1,5 @@
 package com.waveface.sync.ui.widget;
 
-import com.waveface.sync.R;
-import com.waveface.sync.ui.widget.SlidingMenu.CanvasTransformer;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -15,6 +12,9 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.waveface.sync.R;
+import com.waveface.sync.ui.widget.SlidingMenu.CanvasTransformer;
 
 public class CustomViewBehind extends ViewGroup {
 
