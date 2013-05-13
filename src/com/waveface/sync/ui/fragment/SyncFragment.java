@@ -377,6 +377,8 @@ public class SyncFragment extends Fragment implements OnClickListener {
 				tvLastBackupTime.setText(getString(
 						R.string.backup_last_local_time, displayTime));
 			}
+			
+			//TODO:
 			tvDetail.setText(StringUtil.getFilename(RuntimeState.mFilename));
 		} else {
 			rlBackupContent.setVisibility(View.INVISIBLE);

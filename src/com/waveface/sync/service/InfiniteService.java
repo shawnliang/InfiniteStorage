@@ -78,7 +78,7 @@ public class InfiniteService extends Service{
         BackupTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-            	if(NetworkUtil.isWifiNetworkAvailable(mContext) && RuntimeState.isBackuping==false ){
+            	if(NetworkUtil.isWifiNetworkAvailable(mContext)){
             		//SCAN ALL FILES FOR THE FIRST TIME
                 	if(RuntimeState.wasFirstTimeImportScanDone == false){
                 		BackupLogic.scanAllFiles(mContext);
@@ -388,7 +388,8 @@ public class InfiniteService extends Service{
                 public void serviceRemoved(ServiceEvent ev) {
                 	ServiceInfo si = ev.getInfo();
     				//CHECK IF CONNECTING SERVER
-    				String serverId = si.getPropertyString(Constant.PARAM_SERVER_ID);;
+    				String serverId = si.getPropertyString(Constant.PARAM_SERVER_ID);
+    				 Log.d(TAG, "Remove SERVER NAME:"+si.getName());
     				if(serverId.equals(RuntimeState.mWebSocketServerId)){
     					RuntimeState.setServerStatus(Constant.BS_ACTION_SERVER_REMOVED);
     					ServersLogic.updateBackupedServerStatus(mContext, serverId, Constant.SERVER_OFFLINE);

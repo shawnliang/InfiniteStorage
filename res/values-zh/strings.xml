@@ -18,7 +18,7 @@
     <string name="audios">%1$d 個聲音檔</string>    
     <string name="photos">%1$d 張照片</string>        
     <string name="can_not_find_server">目前找不到配對的PC,稍後會嘗試幫你自動連線!</string>    
-    <string name="connect_a_pc">連結你的電腦</string>
+    <string name="connect_a_pc">開始連結你的電腦</string>
     
     <!--PAIRED SERVERS-->
     <string name="backuping">備份中...</string>    
@@ -32,8 +32,9 @@
     
     <!-- PROGRESS INFO -->
     <string name="backup_info_empty">整理資料中 ....</string>
-    <string name="backup_progress">剩下 %1$d 個檔案要備份</string>
-    <string name="backup_done">已經備份到最新</string>
+    <string name="backup_progress">自動備份進行中...\n剩餘 %1$d 個檔案</string>
+    <string name="backup_wait"> %1$d 個檔案待備份</string>
+    <string name="backup_done">所有檔案已備份</string>
     <string name="backup_uncompleted">備份尚未完成</string>
     
     

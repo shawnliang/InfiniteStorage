@@ -12,7 +12,8 @@
         android:layout_centerHorizontal="true"
         android:text="Bunny"
         android:textColor="#FFFFFF"
-        android:textSize="26sp" />
+        android:textSize="26sp"
+        android:textStyle="bold" />
     
     <View
         android:id="@+id/vLine0"

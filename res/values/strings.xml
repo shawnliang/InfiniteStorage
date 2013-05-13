@@ -33,9 +33,11 @@
 
     <!-- PROGRESS INFO -->
     <string name="backup_info_empty">Backing Up ....</string>
-    <string name="backup_progress">%1$d File(s) for back up</string>
-    <string name="backup_done">All backup files are up to date</string>
+    <string name="backup_progress">Auto Backing up...\n%1$d File(s) for back up</string>
+    <string name="backup_wait"> %1$d File(s) for back up</string>
+    <string name="backup_done">All Files backed up</string>
     <string name="backup_uncompleted">Backup Uncompleted</string>
+
 
     <!-- FIRST USE -->
     <!-- INSTALL -->
