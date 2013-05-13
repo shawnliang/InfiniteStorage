@@ -4,20 +4,29 @@
     android:layout_height="match_parent"
     android:background="#061E30" >
 
-    <ImageView
-        android:id="@+id/imageDevice"
+    <TextView
+        android:id="@+id/textApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"        
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp"
-        android:src="@drawable/ic_launcher" />
+        android:text="Bunny"
+        android:textColor="#FFFFFF"
+        android:textSize="26sp" />
+    
+    <View
+        android:id="@+id/vLine0"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@+id/textApp"
+        android:layout_margin="3dp"
+        android:background="#1BBFE0" />    
 
     <TextView
         android:id="@+id/textDevice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageDevice"
+        android:layout_below="@+id/vLine0"
         android:layout_centerHorizontal="true"
         android:text="lmichael-Nexus S"
         android:textColor="#FFFFFF"
@@ -320,7 +329,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/llTotalContent"
-        android:layout_alignTop="@+id/imageDevice"
+        android:layout_alignTop="@+id/textApp"
+        android:layout_alignBottom="@+id/textApp"        
         android:src="@drawable/setting" />
 
 </RelativeLayout>
