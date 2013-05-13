@@ -9,7 +9,7 @@ namespace InfiniteStorage.Notify
 {
 	class NotifySenderUtil : INotifySenderUtil
 	{
-		public IEnumerable<FileChangeData> QueryChangedFiles(long from_seq)
+		public List<FileChangeData> QueryChangedFiles(long from_seq)
 		{
 			using (var db = new MyDbContext())
 			{

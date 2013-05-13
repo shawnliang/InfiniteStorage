@@ -10,7 +10,7 @@ namespace InfiniteStorage.Notify
 {
 	public interface INotifySenderUtil
 	{
-		IEnumerable<FileChangeData> QueryChangedFiles(long from_seq);
+		List<FileChangeData> QueryChangedFiles(long from_seq);
 	}
 
 

@@ -22,18 +22,25 @@ namespace InfiniteStorage.Notify
 
 		public void Notify()
 		{
-			var result = util.QueryChangedFiles(from_seq);
-
-			var all = result.ToList();
+			var all = util.QueryChangedFiles(from_seq);
 
 			if (all.Count > 0)
 			{
-				var msg = JsonConvert.SerializeObject(new
-				   {
-					   file_changes = all
-				   });
+				int nSent = 0;
 
-				ctx.Send(msg);
+				do
+				{
+					var batch = all.Skip(nSent).Take(500).ToList();
+
+					var msg = JsonConvert.SerializeObject(new
+					{
+						file_changes = batch
+					});
+
+					ctx.Send(msg);
+					nSent += batch.Count;
+
+				} while (nSent < all.Count);
 
 				from_seq = all.Last().seq + 1;
 			}
