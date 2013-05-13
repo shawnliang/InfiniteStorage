@@ -78,67 +78,70 @@ public class InfiniteService extends Service{
         BackupTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-        		//SCAN ALL FILES FOR THE FIRST TIME
-            	if(RuntimeState.wasFirstTimeImportScanDone == false){
-            		BackupLogic.scanAllFiles(mContext);
-            		RuntimeState.wasFirstTimeImportScanDone = true ;
-            		mPrefs.edit()
-            			.putBoolean(Constant.PREF_FILE_IMPORT_FIRST_TIME_DONE, 
-            					RuntimeState.wasFirstTimeImportScanDone)
-            			.commit();
+            	if(NetworkUtil.isWifiNetworkAvailable(mContext) && RuntimeState.isBackuping==false ){
+            		//SCAN ALL FILES FOR THE FIRST TIME
+                	if(RuntimeState.wasFirstTimeImportScanDone == false){
+                		BackupLogic.scanAllFiles(mContext);
+                		RuntimeState.wasFirstTimeImportScanDone = true ;
+                		mPrefs.edit()
+                			.putBoolean(Constant.PREF_FILE_IMPORT_FIRST_TIME_DONE, 
+                					RuntimeState.wasFirstTimeImportScanDone)
+                			.commit();
+                	}
+                	long fromTime = System.currentTimeMillis()-mMDNSSetupTime;
+                	if(NetworkUtil.isWifiNetworkAvailable(mContext)
+                			&& RuntimeState.isMDNSSetUped  
+                			&& fromTime > (60*1000)
+                			&& RuntimeState .OnWebSocketOpened == false 
+                			&& RuntimeState.OnWebSocketStation == false
+                			&& RuntimeState.isBackuping == false){
+                		    Log.d(TAG, "reset MDNS FOR WAIT FOR 1 Minutes");
+//                		    ServersLogic.purgeAllBonjourServer(mContext);
+    						releaseMDNS();
+    						Log.d(TAG, "reset MDNS");
+    						setupMDNS();
+                	}
+                	            	
+    		    	String serverId = BackupLogic.getServerBackupedId(mContext);
+    		    	if(!TextUtils.isEmpty(serverId) 
+    		    			&& RuntimeState.isWebSocketAvaliable(mContext)){
+    		    		ServersLogic.updateCount(mContext, serverId);
+    		    	}
+    		    	serverId = RuntimeState.mWebSocketServerId;
+    		    	if(!TextUtils.isEmpty(serverId)
+                			&& RuntimeState.wasFirstTimeImportScanDone
+                			&& RuntimeState.canBackup(mContext) 
+            				&& BackupLogic.needToBackup(mContext,serverId)){
+    					Log.d(TAG, "START BACKUP FILE");
+    					Intent intent = new Intent(Constant.ACTION_BACKUP_START);
+    					mContext.sendBroadcast(intent);
+    					RuntimeState.setServerStatus(Constant.WS_ACTION_START_BACKUP);
+    					showSyncNotification(Constant.NOTIFICATION_BACK_UP_START);
+    					while(RuntimeState.isWebSocketAvaliable(mContext) && BackupLogic.needToBackup(mContext,serverId)){
+    						if(RuntimeState.isBackuping==false){
+    							intent = new Intent(Constant.ACTION_UPLOADING_FILE);
+    							intent.putExtra(Constant.EXTRA_BACKING_UP_FILE_STATE, Constant.JOB_START);
+    							mContext.sendBroadcast(intent);
+    							RuntimeState.isBackuping = true;
+    						}
+    			    		BackupLogic.backupFiles(mContext, serverId);
+    			    	}
+    			    	if(!TextUtils.isEmpty(serverId) 
+    			    			&& RuntimeState.isWebSocketAvaliable(mContext)){
+    			    		ServersLogic.updateCount(mContext, serverId);
+    			    	}
+    					RuntimeState.isBackuping = false;
+    					intent = new Intent(Constant.ACTION_BACKUP_DONE);
+    					mContext.sendBroadcast(intent);
+    					RuntimeState.setServerStatus(Constant.WS_ACTION_END_BACKUP);
+    					showSyncNotification(Constant.NOTIFICATION_BACKED_UP);
+                	}
+    		    	if(RuntimeState.isScaning == false){
+    		    		BackupLogic.scanAllFiles(mContext);
+    		    	}
+    				// Check if there are updates here and notify if true
+            		
             	}
-            	long fromTime = System.currentTimeMillis()-mMDNSSetupTime;
-            	if(NetworkUtil.isWifiNetworkAvailable(mContext)
-            			&& RuntimeState.isMDNSSetUped  
-            			&& fromTime > (60*1000)
-            			&& RuntimeState .OnWebSocketOpened == false 
-            			&& RuntimeState.OnWebSocketStation == false
-            			&& RuntimeState.isBackuping == false){
-            		    Log.d(TAG, "reset MDNS FOR WAIT FOR 1 Minutes");
-//            		    ServersLogic.purgeAllBonjourServer(mContext);
-						releaseMDNS();
-						Log.d(TAG, "reset MDNS");
-						setupMDNS();
-            	}
-            	            	
-		    	String serverId = BackupLogic.getServerBackupedId(mContext);
-		    	if(!TextUtils.isEmpty(serverId) 
-		    			&& RuntimeState.isWebSocketAvaliable(mContext)){
-		    		ServersLogic.updateCount(mContext, serverId);
-		    	}
-		    	serverId = RuntimeState.mWebSocketServerId;
-		    	if(!TextUtils.isEmpty(serverId)
-            			&& RuntimeState.wasFirstTimeImportScanDone
-            			&& RuntimeState.canBackup(mContext) 
-        				&& BackupLogic.needToBackup(mContext,serverId)){
-					Log.d(TAG, "START BACKUP FILE");
-					Intent intent = new Intent(Constant.ACTION_BACKUP_START);
-					mContext.sendBroadcast(intent);
-					RuntimeState.setServerStatus(Constant.WS_ACTION_START_BACKUP);
-					showSyncNotification(Constant.NOTIFICATION_BACK_UP_START);
-					while(RuntimeState.isWebSocketAvaliable(mContext) && BackupLogic.needToBackup(mContext,serverId)){
-						if(RuntimeState.isBackuping==false){
-							intent = new Intent(Constant.ACTION_UPLOADING_FILE);
-							intent.putExtra(Constant.EXTRA_BACKING_UP_FILE_STATE, Constant.JOB_START);
-							mContext.sendBroadcast(intent);
-							RuntimeState.isBackuping = true;
-						}
-			    		BackupLogic.backupFiles(mContext, serverId);
-			    	}
-			    	if(!TextUtils.isEmpty(serverId) 
-			    			&& RuntimeState.isWebSocketAvaliable(mContext)){
-			    		ServersLogic.updateCount(mContext, serverId);
-			    	}
-					RuntimeState.isBackuping = false;
-					intent = new Intent(Constant.ACTION_BACKUP_DONE);
-					mContext.sendBroadcast(intent);
-					RuntimeState.setServerStatus(Constant.WS_ACTION_END_BACKUP);
-					showSyncNotification(Constant.NOTIFICATION_BACKED_UP);
-            	}
-		    	if(RuntimeState.isScaning == false){
-		    		BackupLogic.scanAllFiles(mContext);
-		    	}
-				// Check if there are updates here and notify if true
             }
         }, 0, UPDATE_INTERVAL);
 	    return Service.START_NOT_STICKY;
