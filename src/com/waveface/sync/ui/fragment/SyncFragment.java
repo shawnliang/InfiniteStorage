@@ -2,21 +2,6 @@ package com.waveface.sync.ui.fragment;
 
 import java.util.ArrayList;
 
-import com.waveface.sync.Constant;
-import com.waveface.sync.R;
-import com.waveface.sync.RuntimeState;
-import com.waveface.sync.entity.ServerEntity;
-import com.waveface.sync.image.MediaStoreImage;
-import com.waveface.sync.logic.BackupLogic;
-import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.ui.CleanActivity;
-import com.waveface.sync.ui.FirstUseActivity;
-import com.waveface.sync.ui.preference.Preferences;
-import com.waveface.sync.util.DeviceUtil;
-import com.waveface.sync.util.NetworkUtil;
-import com.waveface.sync.util.StringUtil;
-
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -26,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -35,14 +21,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.waveface.sync.Constant;
+import com.waveface.sync.R;
+import com.waveface.sync.RuntimeState;
+import com.waveface.sync.entity.ServerEntity;
+import com.waveface.sync.image.MediaStoreImage;
+import com.waveface.sync.logic.BackupLogic;
+import com.waveface.sync.logic.ServersLogic;
+import com.waveface.sync.service.InfiniteService;
+import com.waveface.sync.ui.FirstUseActivity;
 import com.waveface.sync.ui.ViewMediaActivity;
+import com.waveface.sync.ui.preference.Preferences;
+import com.waveface.sync.util.DeviceUtil;
+import com.waveface.sync.util.NetworkUtil;
+import com.waveface.sync.util.StringUtil;
 
 public class SyncFragment extends Fragment implements OnClickListener {
 
@@ -54,18 +52,12 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	private TextView mDevice;
 	private TextView mTotalInfo;
 	private TextView mNowPeriod;
-	private ImageView mPhotoImage;
 	private TextView mPhotoCount;
 	private TextView mPhotoSize;
-	private ImageView mVideoImage;
 	private TextView mVideoCount;
 	private TextView mVideoSize;
-	private ImageView mAudioImage;
 	private TextView mAudioCount;
 	private TextView mAudioSize;
-	private Button mDeletePhotoBtn;
-	private Button mDeleteVideoBtn;
-	private Button mDeleteAudioBtn;
 	private RelativeLayout mRLSetting;
 	private ImageView mIvAddPc;
 	private RelativeLayout rlBackupContent;
@@ -92,6 +84,8 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
+		new InvokeServiceTask().execute(new Void[]{});
+		
 		View root = inflater.inflate(R.layout.fragment_sync, container, false);
 
 		mPrefs = getActivity().getSharedPreferences(Constant.PREFS_NAME,
@@ -112,29 +106,22 @@ public class SyncFragment extends Fragment implements OnClickListener {
 		iv.setOnClickListener(this);
 
 		// PHOTO
-		mPhotoImage = (ImageView) root.findViewById(R.id.imageView1);
-		mPhotoImage.setOnClickListener(this);
+		iv = (ImageView) root.findViewById(R.id.imageView1);
+		iv.setOnClickListener(this);
 		mPhotoCount = (TextView) root.findViewById(R.id.textPhotoCount);
 		mPhotoSize = (TextView) root.findViewById(R.id.textPhotoSize);
 
 		// VIDEO
-		mVideoImage = (ImageView) root.findViewById(R.id.imageView2);
-		mVideoImage.setOnClickListener(this);
+		iv = (ImageView) root.findViewById(R.id.imageView2);
+		iv.setOnClickListener(this);
 		mVideoCount = (TextView) root.findViewById(R.id.textVideoCount);
 		mVideoSize = (TextView) root.findViewById(R.id.textVideoSize);
 
 		// AUDIO
-		mAudioImage = (ImageView) root.findViewById(R.id.imageView3);
-		mAudioImage.setOnClickListener(this);
+		iv = (ImageView) root.findViewById(R.id.imageView3);
+		iv.setOnClickListener(this);
 		mAudioCount = (TextView) root.findViewById(R.id.textAudioCount);
 		mAudioSize = (TextView) root.findViewById(R.id.textAudioSize);
-
-		mDeletePhotoBtn = (Button) root.findViewById(R.id.btnDeletePhoto);
-		mDeletePhotoBtn.setOnClickListener(this);
-		mDeleteVideoBtn = (Button) root.findViewById(R.id.btnDeleteVideo);
-		mDeleteVideoBtn.setOnClickListener(this);
-		mDeleteAudioBtn = (Button) root.findViewById(R.id.btnDeleteAudio);
-		mDeleteAudioBtn.setOnClickListener(this);
 
 		// progress Content Area
 		rlBackupContent = (RelativeLayout) root
@@ -189,8 +176,6 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			mEditor.putBoolean(Constant.PREF_BONJOUR_SERVER_ALRM_ENNABLED, true)
 					.commit();
 		}
-		getActivity().sendBroadcast(
-				new Intent(Constant.ACTION_INFINITE_STORAGE_ALARM));
 	}
 
 	private void dismissProgress() {
@@ -270,9 +255,6 @@ public class SyncFragment extends Fragment implements OnClickListener {
 				displayProgressingInfo();
 			} else if (Constant.ACTION_UPLOADING_FILE.equals(action)) {
 				displayProgressingInfo();
-				int state = intent.getIntExtra(
-						Constant.EXTRA_BACKING_UP_FILE_STATE, -1);
-				refreshFileContent(state);
 			}
 		}
 	};
@@ -346,9 +328,6 @@ public class SyncFragment extends Fragment implements OnClickListener {
 		// REFRESH PROGRESS INFO
 		displayProgressingInfo();
 
-		// REFRESH SERVERS STATUS
-		// refreshServerStatus();
-
 		// REFRESH SETTING AREA
 		if (ServersLogic.hasBackupedServers(getActivity())) {
 			mRLSetting.setVisibility(View.GONE);
@@ -403,24 +382,6 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			rlBackupContent.setVisibility(View.INVISIBLE);
 		}
 		displayBackingUpImage();
-	}
-
-	public void refreshFileContent(int state) {
-		switch (state) {
-		case Constant.JOB_START:
-			displayProgressingInfo();
-			break;
-		case Constant.FILE_START:
-			int[] counts = BackupLogic.getBackupProgressInfo(getActivity(),
-					RuntimeState.mWebSocketServerId);
-			// int progress = (int) (counts[0]/ (float) counts[1] * 100);
-			// tvContent.setText(getString(R.string.backup_progress,counts[0],counts[1],progress));
-			tvContent.setText(getString(R.string.backup_progress, counts[0],
-					counts[1]));
-			tvDetail.setText(StringUtil.getFilename(RuntimeState.mFilename));
-			displayBackingUpImage();
-			break;
-		}
 	}
 
 	// public void refreshServerStatus(){
@@ -484,27 +445,6 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			// Constant.REQUEST_CODE_ADD_SERVER);
 			// }
 			break;
-		case R.id.btnDeletePhoto:
-			startIntent = new Intent(getActivity(), CleanActivity.class);
-			startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
-					Constant.TRANSFER_TYPE_IMAGE);
-			startActivityForResult(startIntent,
-					Constant.REQUEST_CODE_CLEAN_STORAGE);
-			break;
-		case R.id.btnDeleteVideo:
-			startIntent = new Intent(getActivity(), CleanActivity.class);
-			startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
-					Constant.TRANSFER_TYPE_VIDEO);
-			startActivityForResult(startIntent,
-					Constant.REQUEST_CODE_CLEAN_STORAGE);
-			break;
-		case R.id.btnDeleteAudio:
-			startIntent = new Intent(getActivity(), CleanActivity.class);
-			startIntent.putExtra(Constant.BUNDLE_FILE_TYPE,
-					Constant.TRANSFER_TYPE_AUDIO);
-			startActivityForResult(startIntent,
-					Constant.REQUEST_CODE_CLEAN_STORAGE);
-			break;
 		case R.id.imageView1:
 			// TO DISPLAY ALL IMAGES
 			EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_LABEL_IMAGE, null);
@@ -529,6 +469,16 @@ public class SyncFragment extends Fragment implements OnClickListener {
 					Constant.TRANSFER_TYPE_AUDIO);
 			startActivity(startIntent);
 			break;
+		}
+	}
+	class InvokeServiceTask extends AsyncTask<Void,Void,Void>{
+		@Override
+		protected Void doInBackground(Void... params) {
+			getActivity().startService(new Intent(getActivity(), InfiniteService.class));
+	    	if(RuntimeState.isScaning == false){
+	    		BackupLogic.scanAllFiles(getActivity());
+	    	}
+			return null;
 		}
 	}
 }
