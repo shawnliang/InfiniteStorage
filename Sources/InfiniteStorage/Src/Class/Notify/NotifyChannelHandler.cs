@@ -37,7 +37,8 @@ namespace InfiniteStorage.Notify
 
 			Ctx = new SubscriptionContext(
 				msg[PROPERTY_CONNECT][PROPERTY_DEVICE_ID].Value<string>(),
-				msg[PROPERTY_CONNECT][PROPERTY_DEVICE_NAME].Value<string>());
+				msg[PROPERTY_CONNECT][PROPERTY_DEVICE_NAME].Value<string>(),
+				svc);
 
 			var subsribe = msg[PROPERTY_SUBSCRIBE];
 			Ctx.files_from_seq = subsribe[PROPERTY_FILES_FROM_SEQ].Value<long>();

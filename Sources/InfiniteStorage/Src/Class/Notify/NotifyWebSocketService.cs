@@ -26,6 +26,9 @@ namespace InfiniteStorage.Notify
 		{
 			try
 			{
+				if (e.Type == WebSocketSharp.Frame.Opcode.TEXT)
+					logger.Debug(e.Data);
+
 				handler.HandleMessage(this, e);
 			}
 			catch (WebsocketProtocol.ProtocolErrorException err)
@@ -48,7 +51,7 @@ namespace InfiniteStorage.Notify
 
 		protected override void onError(object sender, ErrorEventArgs e)
 		{
-			logger.Debug("connection error: " + e.Message);
+			logger.Warn("connection error: " + e.Message);
 			closeAndFireEvent(WebSocketSharp.Frame.CloseStatusCode.SERVER_ERROR, e.Message);
 		}
 

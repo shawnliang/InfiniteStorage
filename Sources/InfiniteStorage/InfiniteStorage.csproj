@@ -81,8 +81,13 @@
   <ItemGroup>
     <Compile Include="Src\Class\Common\AutoUpdator.cs" />
     <Compile Include="Src\Class\Normalizer.cs" />
+    <Compile Include="Src\Class\Notify\INotifySenderUtil.cs" />
+    <Compile Include="Src\Class\Notify\ISubscriptionContext.cs" />
+    <Compile Include="Src\Class\Notify\Notifier.cs" />
     <Compile Include="Src\Class\Notify\NotifyChannelEventArgs.cs" />
     <Compile Include="Src\Class\Notify\NotifyChannelHandler.cs" />
+    <Compile Include="Src\Class\Notify\NotifySender.cs" />
+    <Compile Include="Src\Class\Notify\NotifySenderUtil.cs" />
     <Compile Include="Src\Class\Notify\NotifyWebSocketService.cs" />
     <Compile Include="Src\Class\Notify\SubscriptionContext.cs" />
     <Compile Include="Src\Class\SeqNum.cs" />

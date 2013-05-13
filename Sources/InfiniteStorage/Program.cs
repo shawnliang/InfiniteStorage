@@ -25,6 +25,7 @@ namespace InfiniteStorage
 		static System.Timers.Timer m_ReRegBonjourTimer;
 		static WebSocketServer<InfiniteStorageWebSocketService> backup_server;
 		static WebSocketServer<NotifyWebSocketService> notify_server;
+		static Notifier notifier;
 
 		private static System.Threading.Mutex m_InstanceMutex { get; set; }
 
@@ -86,6 +87,12 @@ namespace InfiniteStorage
 			initConnectedDeviceCollection();
 			initBackupStatusTimer();
 
+			notifier = new Notifier();
+			NotifyWebSocketService.Subscribing += notifier.OnSubscribing;
+			NotifyWebSocketService.Disconnected += notifier.OnChannelDisconnected;
+			notifier.Start();
+
+
 			ushort backup_port = 0;
 			ushort notify_port = 0;
 			try
@@ -99,6 +106,8 @@ namespace InfiniteStorage
 				MessageBox.Show(e.Message, Resources.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
+
+
 
 			try
 			{
@@ -127,8 +136,6 @@ namespace InfiniteStorage
 			{
 				FirstUseDialog.Instance.Show();
 			}
-
-
 
 
 			ProgramIPC.Instance.OnWinMsg += (s, e) =>
@@ -299,6 +306,7 @@ namespace InfiniteStorage
 
 		static void Application_ApplicationExit(object sender, EventArgs e)
 		{
+			notifier.Stop();
 			backup_server.Stop();
 
 			if (m_notifyIcon != null)
