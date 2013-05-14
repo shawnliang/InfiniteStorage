@@ -147,6 +147,8 @@ namespace InfiniteStorage
 			var updator = new Waveface.Common.AutoUpdate(false);
 			updator.StartLoop();
 
+			NginxUtility.Instance.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
+
 			Application.Run();
 		}
 
@@ -306,11 +308,17 @@ namespace InfiniteStorage
 
 		static void Application_ApplicationExit(object sender, EventArgs e)
 		{
-			notifier.Stop();
-			backup_server.Stop();
+			try
+			{
+				notifier.Stop();
+				backup_server.Stop();
 
-			if (m_notifyIcon != null)
-				m_notifyIcon.Dispose();
+				if (m_notifyIcon != null)
+					m_notifyIcon.Dispose();
+			}
+			catch
+			{
+			}
 		}
 
 		static void m_bonjourService_Error(object sender, BonjourErrorEventArgs e)
