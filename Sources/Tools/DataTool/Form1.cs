@@ -32,7 +32,7 @@ namespace DataTool
 
 				using (var transaction = conn.BeginTransaction())
 				{
-					var cmd = new SQLiteCommand("delete from [files]; delete from [devices];");
+					var cmd = new SQLiteCommand("delete from [files]; delete from [devices]; delete from [labels]; delete from [labelFiles];");
 					cmd.Connection = conn;
 					cmd.ExecuteNonQuery();
 
@@ -64,6 +64,20 @@ namespace DataTool
 
 						cmd1.ExecuteNonQuery();
 					}
+
+					var label_id = Guid.NewGuid();
+					cmd.CommandText = "insert into [labels] (label_id, name, seq) values (@labelId, 'no name', 120)";
+					cmd.Parameters.Clear();
+					cmd.Parameters.Add(new SQLiteParameter("@labelId", label_id));
+					cmd.ExecuteNonQuery();
+
+
+					cmd.CommandText = "insert into [labelFiles] (label_id, file_id) " +
+									"select @labelId, file_id from [Files] where seq < 10";
+					cmd.Parameters.Clear();
+					cmd.Parameters.Add(new SQLiteParameter("@labelId", label_id));
+					cmd.ExecuteNonQuery();
+
 
 					transaction.Commit();
 				}
