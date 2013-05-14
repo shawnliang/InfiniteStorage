@@ -67,6 +67,7 @@
       <HintPath>..\..\Libs\System.Data.SQLite.1.0.84.0\net40\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Management" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -80,6 +81,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Src\Class\Common\AutoUpdator.cs" />
+    <Compile Include="Src\Class\Common\HttpHandler.cs" />
+    <Compile Include="Src\Class\Common\HttpServer.cs" />
+    <Compile Include="Src\Class\Common\Multipart\Disposition.cs" />
+    <Compile Include="Src\Class\Common\Multipart\Parser.cs" />
+    <Compile Include="Src\Class\Common\Multipart\Part.cs" />
+    <Compile Include="Src\Class\Common\Multipart\Serializer.cs" />
     <Compile Include="Src\Class\NginxUtility.cs" />
     <Compile Include="Src\Class\Normalizer.cs" />
     <Compile Include="Src\Class\Notify\INotifySenderUtil.cs" />
