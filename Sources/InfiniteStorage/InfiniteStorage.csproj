@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Src\Class\Common\AutoUpdator.cs" />
+    <Compile Include="Src\Class\NginxUtility.cs" />
     <Compile Include="Src\Class\Normalizer.cs" />
     <Compile Include="Src\Class\Notify\INotifySenderUtil.cs" />
     <Compile Include="Src\Class\Notify\ISubscriptionContext.cs" />
@@ -251,6 +252,14 @@
     <EmbeddedResource Include="Src\UIControl\TransferringControl.resx">
       <DependentUpon>TransferringControl.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="..\..\Libs\nginx-1.2.3\conf\mime.types">
+      <Link>nginx\conf\mime.types</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Libs\nginx-1.2.3\conf\nginx.conf.template">
+      <Link>nginx\conf\nginx.conf.template</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="app.config" />
     <None Include="NBug.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -269,6 +278,14 @@
   <ItemGroup>
     <Content Include="..\..\Libs\Mono.Zeroconf\Mono.Zeroconf.Providers.Bonjour.dll">
       <Link>Mono.Zeroconf.Providers.Bonjour.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Libs\nginx-1.2.3\html\50x.html">
+      <Link>nginx\html\50x.html</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Libs\nginx-1.2.3\nginx.exe">
+      <Link>nginx\nginx.exe</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\Libs\System.Data.SQLite.1.0.84.0\net40\x64\SQLite.Interop.dll">

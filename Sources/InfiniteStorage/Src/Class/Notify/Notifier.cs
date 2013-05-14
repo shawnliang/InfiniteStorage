@@ -9,6 +9,7 @@ namespace InfiniteStorage.Notify
 	{
 		private List<NotifySender> senders = new List<NotifySender>();
 		private object cs = new object();
+		private object timer_lock = new object();
 		private System.Timers.Timer timer = new System.Timers.Timer(500.0);
 
 		public Notifier()
@@ -49,35 +50,39 @@ namespace InfiniteStorage.Notify
 
 		void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{
-			timer.Stop();
-			try
+			lock (timer_lock)
 			{
-				List<NotifySender> allChannels = null;
+				timer.Stop();
 
-				lock (cs)
+				try
 				{
-					allChannels = senders.ToList();
-				}
+					List<NotifySender> allChannels = null;
 
-				foreach (var channel in allChannels)
-				{
-					try
+					lock (cs)
 					{
-						channel.Notify();
+						allChannels = senders.ToList();
 					}
-					catch (Exception err)
+
+					foreach (var channel in allChannels)
 					{
-						log4net.LogManager.GetLogger(GetType()).Warn("unable to notify:", err);
+						try
+						{
+							channel.Notify();
+						}
+						catch (Exception err)
+						{
+							log4net.LogManager.GetLogger(GetType()).Warn("unable to notify:", err);
+						}
 					}
 				}
-			}
-			catch (Exception err)
-			{
-				log4net.LogManager.GetLogger(GetType()).Warn("unable to notify:", err);
-			}
-			finally
-			{
-				timer.Start();
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn("unable to notify:", err);
+				}
+				finally
+				{
+					timer.Start();
+				}
 			}
 		}
 	}

@@ -58,6 +58,17 @@ namespace InfiniteStorage
 				Settings.Default.OrganizeMethod = (int)organizeSelectionControl1.OrganizeBy;
 				Settings.Default.Save();
 
+
+				var bunnyAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName);
+
+				NginxUtility.Instance.PrepareNginxConfig(
+					bunnyAppData,
+					12888,
+					storageLocationControl1.StoragePath
+				);
+
+				NginxUtility.Instance.Start(bunnyAppData);
+
 				try
 				{
 					transferringControl1.WebSocketContext.handleApprove();

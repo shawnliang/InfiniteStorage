@@ -80,6 +80,59 @@
             <File Id="MZClient.exe" KeyPath="yes" Source="$(var.SolutionDir)\Libs\Mono.Zeroconf\MZClient.exe" />
           </Component>
 
+          <Directory Id="nginx" Name="nginx">
+
+            <Component Id="nginx.exe" Guid="*">
+              <File Id="nginx.exe" KeyPath="yes" Source="$(var.SolutionDir)\Libs\nginx-1.2.3\nginx.exe" />
+            </Component>
+
+            <Directory Id="nginx.conf.dir" Name="conf">
+              
+              <Component Id="koiutf" Guid="*">
+                <File Id="koiutf" KeyPath="yes" Source="$(var.SolutionDir)\Libs\nginx-1.2.3\conf\koi-utf" />
+              </Component>
+
+              <Component Id="koiwin" Guid="*">
+                <File Id="koiwin" KeyPath="yes" Source="$(var.SolutionDir)\Libs\nginx-1.2.3\conf\koi-win" />
+              </Component>
+
+              <Component Id="mime.types" Guid="*">
+                <File Id="mime.types" KeyPath="yes" Source="$(var.SolutionDir)\Libs\nginx-1.2.3\conf\mime.types" />
+              </Component>
+
+              <Component Id="nginx.conf.template" Guid="*">
+                <File Id="nginx.conf.template" KeyPath="yes" Source="$(var.SolutionDir)\Libs\nginx-1.2.3\conf\nginx.conf.template" />
+              </Component>
+
+              <Component Id="winutf" Guid="*">
+                <File Id="winutf" KeyPath="yes" Source="$(var.SolutionDir)\Libs\nginx-1.2.3\conf\win-utf" />
+              </Component>
+              
+            </Directory>
+
+            <Directory Id="nginx.html.dir" Name="html">
+              <Component Id="_50x.html" Guid="*">
+                <File Id="_50x.html" KeyPath="yes" Source="$(var.SolutionDir)\Libs\nginx-1.2.3\html\50x.html" />
+              </Component>
+            </Directory>
+
+            <Directory Id="nginx.logs.dir" Name="logs" >
+              <Component Id="nginx.logs.dir.empty" Guid="DAD40998-A9B8-4CE0-BFA8-C3D031121A9E">
+                <CreateFolder />
+              </Component>
+            </Directory>
+
+            <Directory Id="nginx.temps.dir" Name="temps">
+              <Component Id="nginx.temps.dir.empty" Guid="57F4AB77-770E-4BE7-9249-7148BAB849A8">
+                <CreateFolder />
+              </Component>
+            </Directory>
+            
+          </Directory>
+
+
+
+
           <Component Id="log4net.dll" Guid="*">
             <File Id="log4net.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\log4net.dll" />
           </Component>
@@ -100,6 +153,8 @@
             <File Id="NBug.config" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\NBug.config" />
           </Component>
 
+          
+          
           <Component Id="AppLimit.NetSparkle.dll" Guid="*">
             <File Id="AppLimit.NetSparkle.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\AppLimit.NetSparkle.dll" />
           </Component>
@@ -149,6 +204,16 @@
       <ComponentRef Id="SQLite.Interop.dll.x86" />
       <ComponentRef Id="SQLite.Interop.dll.x64" />
 
+      <ComponentRef Id="nginx.exe"/>
+      <ComponentRef Id="koiutf"/>
+      <ComponentRef Id="koiwin"/>
+      <ComponentRef Id="mime.types"/>
+      <ComponentRef Id="nginx.conf.template"/>
+      <ComponentRef Id="winutf"/>
+      <ComponentRef Id="_50x.html"/>
+      <ComponentRef Id="nginx.logs.dir.empty"/>
+      <ComponentRef Id="nginx.temps.dir.empty"/>
+      
     </Feature>
 
     <!--
