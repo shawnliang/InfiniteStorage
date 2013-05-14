@@ -12,6 +12,8 @@ using System.Security.Cryptography;
 using System.Text;
 using InfiniteStorage.WebsocketProtocol;
 using InfiniteStorage.Notify;
+using Wammer.Station;
+using System.Net;
 
 namespace InfiniteStorage
 {
@@ -25,6 +27,7 @@ namespace InfiniteStorage
 		static System.Timers.Timer m_ReRegBonjourTimer;
 		static WebSocketServer<InfiniteStorageWebSocketService> backup_server;
 		static WebSocketServer<NotifyWebSocketService> notify_server;
+		static HttpServer rest_server;
 		static Notifier notifier;
 
 		private static System.Threading.Mutex m_InstanceMutex { get; set; }
@@ -95,14 +98,16 @@ namespace InfiniteStorage
 
 			ushort backup_port = 0;
 			ushort notify_port = 0;
+			ushort rest_port = 0;
 			try
 			{
 				backup_port = initWebsocketServer<InfiniteStorageWebSocketService>(out backup_server, 13895);
 				notify_port = initWebsocketServer<NotifyWebSocketService>(out notify_server, 13995);
+				rest_port = initRestApiServer(out rest_server, 14005);
 			}
 			catch (Exception e)
 			{
-				log4net.LogManager.GetLogger("main").Error("Unable to start web socket server", e);
+				log4net.LogManager.GetLogger("main").Error("Unable to start web socket or rest api server", e);
 				MessageBox.Show(e.Message, Resources.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
@@ -115,12 +120,12 @@ namespace InfiniteStorage
 				m_bonjourService.Error += new EventHandler<BonjourErrorEventArgs>(m_bonjourService_Error);
 
 				
-				m_bonjourService.Register(backup_port, notify_port, Settings.Default.ServerId);
+				m_bonjourService.Register(backup_port, notify_port, rest_port, Settings.Default.ServerId);
 
 				// bonjour record sometimes disappear for unknown reason.
 				// to workaround this, we just periodically re-register with
 				// bonjour
-				startTimerToReRegisterWithBonjour(backup_port, notify_port);
+				startTimerToReRegisterWithBonjour(backup_port, notify_port, rest_port);
 
 			}
 			catch (Exception e)
@@ -152,7 +157,7 @@ namespace InfiniteStorage
 			Application.Run();
 		}
 
-		private static void startTimerToReRegisterWithBonjour(ushort backup_port, ushort notify_port)
+		private static void startTimerToReRegisterWithBonjour(ushort backup_port, ushort notify_port, ushort rest_port)
 		{
 			m_ReRegBonjourTimer = new System.Timers.Timer(60 * 1000);
 			m_ReRegBonjourTimer.AutoReset = true;
@@ -169,7 +174,7 @@ namespace InfiniteStorage
 					}
 					m_bonjourService = new BonjourService();
 					m_bonjourService.Error += m_bonjourService_Error;
-					m_bonjourService.Register(backup_port, notify_port, Settings.Default.ServerId);
+					m_bonjourService.Register(backup_port, notify_port, rest_port, Settings.Default.ServerId);
 				}
 				catch (Exception err)
 				{
@@ -233,6 +238,25 @@ namespace InfiniteStorage
 
 
 			throw new Exception("should not reach here");
+		}
+
+		private static ushort initRestApiServer(out HttpServer rest_server, ushort port)
+		{
+			while (true)
+			{
+				try
+				{
+					rest_server = new HttpServer(port);
+					rest_server.AddHandler("/image/", new ImageApiHandler());
+					rest_server.Start();
+
+					return port;
+				}
+				catch (HttpListenerException)
+				{
+					port++;
+				}
+			}
 		}
 
 		private static void invokeAnotherRunningProcess()

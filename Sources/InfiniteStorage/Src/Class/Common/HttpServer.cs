@@ -103,9 +103,24 @@ namespace Wammer.Station
 			if (!path.EndsWith("/"))
 				path += "/";
 
-			if (m_Handlers.ContainsKey(path))
-				return m_Handlers[path];
-			return _defaultHandler;
+			int maxMatchLen = 0;
+			IHttpHandler handler = null;
+
+			foreach (var pair in m_Handlers)
+			{
+				if (path.StartsWith(pair.Key))
+				{
+					var matchLen = pair.Key.Length;
+
+					if (matchLen > maxMatchLen)
+					{
+						maxMatchLen = matchLen;
+						handler = pair.Value;
+					}
+				}
+			}
+
+			return handler ?? _defaultHandler;
 		}
 
 		#endregion
