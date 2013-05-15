@@ -333,6 +333,8 @@ namespace Wammer.Station
 			}
 			catch (Exception e)
 			{
+				logger.Warn(e.ToString());
+
 				response.StatusCode = (int)HttpStatusCode.BadRequest;
 				response.ContentType = "application/json";
 				using (var output = new StreamWriter(response.OutputStream))

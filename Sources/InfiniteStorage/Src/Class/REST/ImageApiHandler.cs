@@ -7,7 +7,7 @@ using InfiniteStorage.Model;
 using System.Net;
 using System.IO;
 
-namespace InfiniteStorage
+namespace InfiniteStorage.REST
 {
 	class ImageApiHandler : HttpHandler
 	{

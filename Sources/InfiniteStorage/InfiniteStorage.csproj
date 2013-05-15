@@ -87,7 +87,7 @@
     <Compile Include="Src\Class\Common\Multipart\Parser.cs" />
     <Compile Include="Src\Class\Common\Multipart\Part.cs" />
     <Compile Include="Src\Class\Common\Multipart\Serializer.cs" />
-    <Compile Include="Src\Class\ImageApiHandler.cs" />
+    <Compile Include="Src\Class\REST\ImageApiHandler.cs" />
     <Compile Include="Src\Class\NginxUtility.cs" />
     <Compile Include="Src\Class\Normalizer.cs" />
     <Compile Include="Src\Class\Notify\INotifySenderUtil.cs" />
@@ -99,6 +99,13 @@
     <Compile Include="Src\Class\Notify\NotifySenderUtil.cs" />
     <Compile Include="Src\Class\Notify\NotifyWebSocketService.cs" />
     <Compile Include="Src\Class\Notify\SubscriptionContext.cs" />
+    <Compile Include="Src\Class\REST\LabelAddApiHandler.cs" />
+    <Compile Include="Src\Class\REST\LabelClearApiHandler.cs" />
+    <Compile Include="Src\Class\REST\LabelDeleteApiHandler.cs" />
+    <Compile Include="Src\Class\REST\LabelListApiHandler.cs" />
+    <Compile Include="Src\Class\REST\LabelRenameApiHandler.cs" />
+    <Compile Include="Src\Class\REST\LabelTagApiHandler.cs" />
+    <Compile Include="Src\Class\REST\LabelUntagApiHandler.cs" />
     <Compile Include="Src\Class\SeqNum.cs" />
     <Compile Include="Src\Dialog\BackupProgressDialog.cs">
       <SubType>Form</SubType>

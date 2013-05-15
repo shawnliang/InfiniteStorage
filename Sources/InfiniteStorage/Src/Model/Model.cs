@@ -58,6 +58,8 @@ namespace InfiniteStorage.Model
 		public string name { get; set; }
 
 		public long seq { get; set; }
+
+		public bool deleted { get; set; }
 	}
 
 	[Table("LabelFiles")]

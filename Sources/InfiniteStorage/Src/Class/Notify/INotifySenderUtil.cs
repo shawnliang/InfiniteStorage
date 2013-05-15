@@ -12,7 +12,7 @@ namespace InfiniteStorage.Notify
 	{
 		List<FileChangeData> QueryChangedFiles(long from_seq);
 		List<Label> QueryAllLabels();
-		List<Guid> QueryLabeledFiles(Guid label_id);
+		List<FileChangeData> QueryLabeledFiles(Guid label_id);
 	}
 
 

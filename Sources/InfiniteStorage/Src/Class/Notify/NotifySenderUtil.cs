@@ -50,17 +50,36 @@ namespace InfiniteStorage.Notify
 			}
 		}
 
-		public List<Guid> QueryLabeledFiles(Guid label_id)
+		public List<FileChangeData> QueryLabeledFiles(Guid label_id)
 		{
 			using (var db = new MyDbContext())
 			{
 				var result = from lb in db.Object.LabelFiles
 							 join f in db.Object.Files on lb.file_id equals f.file_id
+							 join dev in db.Object.Devices on f.device_id equals dev.device_id
 							 where lb.label_id == label_id
 							 orderby f.event_time ascending
-							 select lb.file_id;
+							 select new FileChangeData
+							 {
+								 id = f.file_id,
+								 file_name = f.file_name,
+								 thumb_ready = f.thumb_ready,
+								 width = 0, //TODO
+								 height = 0,//TODO
+								 size = f.file_size,
+								 type = f.type,
+								 dev_id = f.device_id,
+								 dev_name = dev.device_name,
+								 dev_type = 0,//TODO
+								 deleted = f.deleted,
+								 seq = f.seq,
+
+								 saved_path = f.saved_path,
+								 device_folder = dev.folder_name
+							 };
 
 				return result.ToList();
+				
 			}
 		}
 	}

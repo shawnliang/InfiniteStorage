@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using Wammer.MultiPart;
+using Newtonsoft.Json;
 
 namespace Wammer.Station
 {
@@ -295,6 +296,23 @@ namespace Wammer.Station
 			}
 
 			return new NameValueCollection();
+		}
+
+
+		protected void respondSuccess(object data = null)
+		{
+			var replyContent = "";
+			if (data == null)
+				replyContent = JsonConvert.SerializeObject(new { api_ret_code = 0, api_ret_message = "success", status = 200 });
+			else
+				replyContent = JsonConvert.SerializeObject(data);
+
+			Response.StatusCode = (int)HttpStatusCode.OK;
+			Response.ContentType = "application/json";
+			using (var w = new StreamWriter(Response.OutputStream))
+			{
+				w.Write(replyContent);
+			}
 		}
 	}
 

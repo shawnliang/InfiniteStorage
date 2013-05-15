@@ -118,6 +118,17 @@ CREATE TABLE [Labels] (
 						schemaVersion = 4;
 					}
 
+					if (schemaVersion == 4L)
+					{
+						var cmd = new SQLiteCommand(
+@"ALTER TABLE [Labels] ADD COLUMN [deleted] BOOLEAN NULL;
+
+Update [Labels] set deleted = 0;
+", conn);
+						cmd.ExecuteNonQuery();
+						updateDbSchemaVersion(conn, 5);
+						schemaVersion = 5;
+					}
 
 					transaction.Commit();
 				}

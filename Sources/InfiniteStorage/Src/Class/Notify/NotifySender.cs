@@ -53,6 +53,7 @@ namespace InfiniteStorage.Notify
 						{
 							label_id = label.label_id,
 							label_name = label.name,
+							deleted = label.deleted,
 							files = files
 						}));
 

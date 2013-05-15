@@ -142,14 +142,14 @@ namespace DataTool
 			{
 				foreach (var file in files)
 				{
-					textBoxNotify.AppendText(file["file_name"].Value<string>() + " => " + file["id"].Value<string>() + "\n");
+					textBoxNotify.AppendText(file["file_name"].Value<string>() + " => " + file["id"].Value<string>() + "\r\n");
 				}
 			}
 
 			var label = o["label_id"];
 			if (label != null)
 			{
-				textBoxNotify.AppendText(e.Data + "\r\n");
+				textBoxNotify.AppendText("\r\n" + e.Data + "\r\n");
 			}
 
 

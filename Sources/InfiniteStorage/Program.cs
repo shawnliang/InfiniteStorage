@@ -14,6 +14,7 @@ using InfiniteStorage.WebsocketProtocol;
 using InfiniteStorage.Notify;
 using Wammer.Station;
 using System.Net;
+using InfiniteStorage.REST;
 
 namespace InfiniteStorage
 {
@@ -248,6 +249,14 @@ namespace InfiniteStorage
 		{
 			rest_server = new HttpServer(port);
 			rest_server.AddHandler("/image/", new ImageApiHandler());
+			rest_server.AddHandler("/label/list_all", new LabelListApiHandler());
+			rest_server.AddHandler("/label/tag", new LabelTagApiHandler());
+			rest_server.AddHandler("/label/untag", new LabelUntagApiHandler());
+			rest_server.AddHandler("/label/clear", new LabelClearApiHandler());
+			rest_server.AddHandler("/label/rename", new LabelRenameApiHandler());
+
+			rest_server.AddHandler("/label/add", new LabelAddApiHandler());
+			rest_server.AddHandler("/label/delete", new LabelDeleteApiHandler());
 			rest_server.Start();
 
 			return port;
