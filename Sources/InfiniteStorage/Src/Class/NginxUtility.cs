@@ -72,6 +72,12 @@ namespace InfiniteStorage
 
 		public void Start(string cfg_dir)
 		{
+			var processes = Process.GetProcessesByName("nginx");
+			if (processes != null)
+			{
+				Stop(cfg_dir);
+			}
+
 			start(cfg_dir);
 			reload(cfg_dir);
 		}

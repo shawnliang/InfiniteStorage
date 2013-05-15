@@ -116,6 +116,10 @@ namespace InfiniteStorage
 
 			try
 			{
+				// Stop nginx here to delete possible old nginx instance.
+				// Not doing so, bounjour sevice name could become "pc name (2)"...
+				NginxUtility.Instance.Stop(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
+
 				m_bonjourService = new BonjourService();
 				m_bonjourService.Error += new EventHandler<BonjourErrorEventArgs>(m_bonjourService_Error);
 
@@ -334,6 +338,7 @@ namespace InfiniteStorage
 		{
 			try
 			{
+				NginxUtility.Instance.Stop(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
 				notifier.Stop();
 				backup_server.Stop();
 
