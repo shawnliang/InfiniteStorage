@@ -1,5 +1,6 @@
 package com.waveface.sync.ui.fragment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.AlertDialog;
@@ -89,8 +90,9 @@ public class ServerChooserFragment extends FragmentBase
 		mRootView = (ViewGroup) inflater.inflate(
 				R.layout.fragment_server_chooser, null);
 		ListView listview = (ListView) mRootView.findViewById(R.id.listview);
-		mAdapter = new ServerChooseAdapter(getActivity(), ServersLogic.getBonjourServers(getActivity()));
-    	mAdapter.setData(ServersLogic.getBonjourServers(getActivity()));
+		ArrayList<ServerEntity> serverEntityList =ServersLogic.getBonjourServers(getActivity());
+		mAdapter = new ServerChooseAdapter(getActivity(), serverEntityList);
+    	mAdapter.setData(serverEntityList);
 		listview.setAdapter(mAdapter);
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -145,7 +147,7 @@ public class ServerChooserFragment extends FragmentBase
 		super.onCreate(savedInstanceState);
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_BONJOUR_MULTICAT_EVENT);
-		filter.addAction(Constant.ACTION_WS_SERVER_NOTIFY);		
+		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);		
         getActivity().registerReceiver(mReceiver, filter);
 
 		if (Constant.PHONE) {
@@ -165,26 +167,8 @@ public class ServerChooserFragment extends FragmentBase
 			if (Constant.ACTION_BONJOUR_MULTICAT_EVENT.equals(action)) {		
 				refreshUI();
 			}
-			else if(Constant.ACTION_WS_SERVER_NOTIFY.equals(action)){
-				String response = intent.getStringExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT);
-				if(response!=null){
-					if(response.equals(Constant.WS_ACTION_ACCEPT)){
-						Intent i = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
-						getActivity().sendBroadcast(i);
-						refreshUI();
-						if(mAlertDialog!=null && mAlertDialog.isShowing()){
-							mAlertDialog.dismiss();
-						}
-						//Toast.makeText(getActivity(), R.string.pairing_starting_backup, Toast.LENGTH_LONG).show();
-						mListener.goNext(TAG);
-					}
-					else if(response.equals(Constant.WS_ACTION_DENIED)){
-						openDialog(context,Constant.WS_ACTION_DENIED);
-					}				
-//					else if(response.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
-//						openDialog(context,Constant.WS_ACTION_WAIT_FOR_PAIR);
-//					}									
-				}
+			else if(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED.equals(action)){
+				getActivity().finish();
 			}
 		}
 	};
@@ -272,10 +256,14 @@ public class ServerChooserFragment extends FragmentBase
 //		mProgressDialog = ProgressDialog.show(getActivity(), "",getString(R.string.pairing));
 //		mProgressDialog.setCancelable(true);
 		openDialog(getActivity(),Constant.WS_ACTION_WAIT_FOR_PAIR);
-		
+		String wsLocation = "ws://"+entity.ip+":"+entity.notifyPort;
 		HashMap<String,String> param = new HashMap<String,String>();
-		param.put(Constant.PARAM_SERVER_WS_LOCATION, entity.wsLocation);
+		param.put(Constant.PARAM_SERVER_WS_LOCATION, wsLocation);
 		param.put(Constant.PARAM_SERVER_ID, entity.serverId);
+		param.put(Constant.PARAM_SERVER_NAME, entity.serverName);		
+		param.put(Constant.PARAM_SERVER_IP, entity.ip);
+		param.put(Constant.PARAM_NOTIFY_PORT, entity.notifyPort);
+		param.put(Constant.PARAM_REST_PORT,entity.restPort);
 		new LinkBonjourServer().execute(param);
     }
 	@Override
@@ -309,8 +297,11 @@ public class ServerChooserFragment extends FragmentBase
 			
 			String wsLocation = params[0].get(Constant.PARAM_SERVER_WS_LOCATION);
 			String serverId = params[0].get(Constant.PARAM_SERVER_ID);
-			
-			ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId);
+			String serverName = params[0].get(Constant.PARAM_SERVER_NAME);			
+			String ip=params[0].get(Constant.PARAM_SERVER_IP);
+			String notifyPort =params[0].get(Constant.PARAM_NOTIFY_PORT);
+			String restPort =params[0].get(Constant.PARAM_REST_PORT);
+			ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort);
 			return null;
 		}
 		

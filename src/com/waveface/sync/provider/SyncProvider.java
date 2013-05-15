@@ -1,6 +1,7 @@
 package com.waveface.sync.provider;
 
 import android.content.ContentProvider;
+
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,6 +16,9 @@ import android.text.TextUtils;
 import com.waveface.sync.db.BackupedServersTable;
 import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.db.DatabaseHelper;
+import com.waveface.sync.db.LabelFileTable;
+import com.waveface.sync.db.LabelTable;
+
 
 public class SyncProvider extends ContentProvider {
 
@@ -25,6 +29,12 @@ public class SyncProvider extends ContentProvider {
 	private final static int BONJOUR_SERVERS = 7;
 	private final static int BONJOUR_SERVERS_ID = 8;
 	
+	private final static int LABELS = 9;
+	private final static int LABELS_ID = 10;
+	
+	private final static int LABELFILES = 11;
+	private final static int LABELFILES_ID = 12;
+
 	
 	public static final String AUTHORITY = "com.waveface.sync";
 
@@ -40,6 +50,15 @@ public class SyncProvider extends ContentProvider {
 		//FOR BONJOUR SERVER
 		sUriMatcher.addURI(AUTHORITY, BonjourServersTable.BONJOUR_SERVERS_NAME, BONJOUR_SERVERS);
 		sUriMatcher.addURI(AUTHORITY, BonjourServersTable.BONJOUR_SERVERS_NAME + "/*", BONJOUR_SERVERS_ID);
+		
+		//FOR LABEL
+		sUriMatcher.addURI(AUTHORITY, LabelTable.LABELS_NAME, LABELS);
+		sUriMatcher.addURI(AUTHORITY, LabelTable.LABELS_NAME + "/*", LABELS_ID);
+		
+		//FOR LABEL FILES
+		sUriMatcher.addURI(AUTHORITY, LabelFileTable.LABELFILE_NAME, LABELFILES);
+		sUriMatcher.addURI(AUTHORITY, LabelFileTable.LABELFILE_NAME + "/*", LABELFILES_ID);
+				
 	}
 
 	private DatabaseHelper mOpenHelper;
@@ -160,6 +179,25 @@ public class SyncProvider extends ContentProvider {
 				return queueUri;
 			}
 			break;
+		case LABELS:
+			rowId = db.insert(LabelTable.TABLE_NAME,
+					LabelTable.LABELS_NAME, values);
+			if (rowId > 0) {
+				Uri queueUri = ContentUris.withAppendedId(
+						LabelTable.CONTENT_URI, rowId);
+				getContext().getContentResolver().notifyChange(queueUri, null);
+				return queueUri;
+			}
+		case LABELFILES:
+			rowId = db.insert(LabelFileTable.TABLE_NAME,
+					LabelFileTable.LABELFILE_NAME, values);
+			if (rowId > 0) {
+				Uri queueUri = ContentUris.withAppendedId(
+						LabelFileTable.CONTENT_URI, rowId);
+				getContext().getContentResolver().notifyChange(queueUri, null);
+				return queueUri;
+			}	
+			break;			
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -182,13 +220,9 @@ public class SyncProvider extends ContentProvider {
 
 		switch (match) {
 		case BACKUPED_SERVERS:
-			if (TextUtils.isEmpty(sortOrder)) {
-				orderBy = BackupedServersTable.DEFAULT_SORT_ORDER;
-			} else {
-				orderBy = sortOrder;
-			}
+
 			c = mDb.query(BackupedServersTable.TABLE_NAME, projection, where,
-					whereArgs, null, null, orderBy);
+					whereArgs, null, null, null);
 			c.setNotificationUri(getContext().getContentResolver(),
 					BackupedServersTable.CONTENT_URI);
 			break;
@@ -217,6 +251,15 @@ public class SyncProvider extends ContentProvider {
 			c.setNotificationUri(getContext().getContentResolver(),
 					BonjourServersTable.CONTENT_URI);
 			break;
+
+		case LABELS_ID:
+			String labelId = uri.getLastPathSegment();
+			c = executeGeneralQuery(labelId, LabelTable.TABLE_NAME,
+					LabelTable.COLUMN_LABEL_ID, where, whereArgs);
+			c.setNotificationUri(getContext().getContentResolver(),
+					LabelTable.CONTENT_URI);
+			break;
+			
 
 		default:
 			c = new DummyCursor();
@@ -293,34 +336,21 @@ public class SyncProvider extends ContentProvider {
 						+ BackupedServersTable.COLUMN_SERVER_ID + ","
 						+ BackupedServersTable.COLUMN_SERVER_NAME + ","
 						+ BackupedServersTable.COLUMN_STATUS + ","
-						+ BackupedServersTable.COLUMN_START_DATETIME + ","
-						+ BackupedServersTable.COLUMN_END_DATETIME + ","
-						+ BackupedServersTable.COLUMN_FOLDER + ","
-						+ BackupedServersTable.COLUMN_FREE_SPACE + ","
-						+ BackupedServersTable.COLUMN_PHOTO_COUNT + ","
-						+ BackupedServersTable.COLUMN_VIDEO_COUNT + ","
-						+ BackupedServersTable.COLUMN_AUDIO_COUNT + ","	
-						+ BackupedServersTable.COLUMN_LAST_DISPLAY_BACKUP_DATETIME + ","
-						+ BackupedServersTable.COLUMN_LAST_FILE_MEDIA_ID + ","
-						+ BackupedServersTable.COLUMN_LAST_FILE_DATE + ","
-						+ BackupedServersTable.COLUMN_LAST_FILE_UPDATED_DATETIME+ ")"
-						+ " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+						+ BackupedServersTable.COLUMN_IP + ","
+						+ BackupedServersTable.COLUMN_WS_PORT + ","
+						+ BackupedServersTable.COLUMN_NOTIFY_PORT + ","
+						+ BackupedServersTable.COLUMN_REST_PORT  + ")"
+						+ " values (?,?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
 					insert.bindString(1, value.getAsString(BackupedServersTable.COLUMN_SERVER_ID));
 					insert.bindString(2, value.getAsString(BackupedServersTable.COLUMN_SERVER_NAME));
 					insert.bindString(3, value.getAsString(BackupedServersTable.COLUMN_STATUS));
-					insert.bindString(4, value.getAsString(BackupedServersTable.COLUMN_START_DATETIME));
-					insert.bindString(5, value.getAsString(BackupedServersTable.COLUMN_END_DATETIME));
-					insert.bindString(6, value.getAsString(BackupedServersTable.COLUMN_FOLDER));
-					insert.bindString(7, value.getAsString(BackupedServersTable.COLUMN_FREE_SPACE));
-					insert.bindString(8, value.getAsString(BackupedServersTable.COLUMN_PHOTO_COUNT));
-					insert.bindString(9, value.getAsString(BackupedServersTable.COLUMN_VIDEO_COUNT));
-					insert.bindString(10, value.getAsString(BackupedServersTable.COLUMN_AUDIO_COUNT));			
-					insert.bindString(11, value.getAsString(BackupedServersTable.COLUMN_LAST_DISPLAY_BACKUP_DATETIME));
-					insert.bindString(12, value.getAsString(BackupedServersTable.COLUMN_LAST_FILE_MEDIA_ID));				
-					insert.bindString(13, value.getAsString(BackupedServersTable.COLUMN_LAST_FILE_DATE));														
-					insert.bindString(14, value.getAsString(BackupedServersTable.COLUMN_LAST_FILE_UPDATED_DATETIME));									
+					insert.bindString(4, value.getAsString(BackupedServersTable.COLUMN_IP));
+					insert.bindString(5, value.getAsString(BackupedServersTable.COLUMN_WS_PORT));
+					insert.bindString(6, value.getAsString(BackupedServersTable.COLUMN_NOTIFY_PORT));
+					insert.bindString(7, value.getAsString(BackupedServersTable.COLUMN_REST_PORT));
+				
 					insert.execute();
 				}
 				db.setTransactionSuccessful();
@@ -338,19 +368,23 @@ public class SyncProvider extends ContentProvider {
 			db.beginTransaction();
 			try {
 				// standard SQL insert statement, that can be reused
-				insert = db.compileStatement("INSERT INTO "
+				insert = db.compileStatement("INSERT OR REPLACE INTO "
 						+ BonjourServersTable.TABLE_NAME + "("
 						+ BonjourServersTable.COLUMN_SERVER_ID + ","
 						+ BonjourServersTable.COLUMN_SERVER_NAME + ","
-						+ BonjourServersTable.COLUMN_SERVER_OS + ","
-						+ BonjourServersTable.COLUMN_WS_LOCATION + ")"						
-						+ " values (?,?,?,?)");
+						+ BonjourServersTable.COLUMN_IP + ","						
+						+ BonjourServersTable.COLUMN_WS_PORT + ","
+						+ BonjourServersTable.COLUMN_NOTIFY_PORT + ","						
+						+ BonjourServersTable.COLUMN_REST_PORT + ")"						
+						+ " values (?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
 					insert.bindString(1, value.getAsString(BonjourServersTable.COLUMN_SERVER_ID));
 					insert.bindString(2, value.getAsString(BonjourServersTable.COLUMN_SERVER_NAME));
-					insert.bindString(3, value.getAsString(BonjourServersTable.COLUMN_SERVER_OS));
-					insert.bindString(4, value.getAsString(BonjourServersTable.COLUMN_WS_LOCATION));
+					insert.bindString(3, value.getAsString(BonjourServersTable.COLUMN_IP));					
+					insert.bindString(4, value.getAsString(BonjourServersTable.COLUMN_WS_PORT));
+					insert.bindString(5, value.getAsString(BonjourServersTable.COLUMN_NOTIFY_PORT));
+					insert.bindString(6, value.getAsString(BonjourServersTable.COLUMN_REST_PORT));
 					insert.execute();
 				}
 				db.setTransactionSuccessful();
@@ -365,7 +399,56 @@ public class SyncProvider extends ContentProvider {
 				db.endTransaction();
 			}
 			return numInserted;
+		case LABELS:
+			db.beginTransaction();
+			try {
+				// standard SQL insert statement, that can be reused
+				insert = db.compileStatement("INSERT OR REPLACE INTO "
+						+ LabelTable.TABLE_NAME + "("
+						+ LabelTable.COLUMN_LABEL_ID + ","
+						+ LabelTable.COLUMN_LABEL_NAME + ")"
+						+ " values (?,?)");
 
+				for (ContentValues value : values) {
+					// bind the 1-indexed ?'s to the values specified
+					insert.bindString(1, value.getAsString(LabelTable.COLUMN_LABEL_ID));
+					insert.bindString(2, value.getAsString(LabelTable.COLUMN_LABEL_NAME));
+					insert.execute();
+				}
+				db.setTransactionSuccessful();
+				numInserted = values.length;
+			} finally {
+				if (insert != null) {
+					insert.close();
+				}
+				db.endTransaction();
+			}
+			return numInserted;
+		case LABELFILES:
+			db.beginTransaction();
+			try {
+				// standard SQL insert statement, that can be reused
+				insert = db.compileStatement("INSERT OR REPLACE INTO "
+						+ LabelFileTable.TABLE_NAME + "("
+						+ LabelFileTable.COLUMN_LABEL_ID + ","
+						+ LabelFileTable.COLUMN_FILE_ID + ")"
+						+ " values (?,?)");
+
+				for (ContentValues value : values) {
+					// bind the 1-indexed ?'s to the values specified
+					insert.bindString(1, value.getAsString(LabelFileTable.COLUMN_LABEL_ID));
+					insert.bindString(2, value.getAsString(LabelFileTable.COLUMN_FILE_ID));
+					insert.execute();
+				}
+				db.setTransactionSuccessful();
+				numInserted = values.length;
+			} finally {
+				if (insert != null) {
+					insert.close();
+				}
+				db.endTransaction();
+			}
+			return numInserted;			
 		default:
 			throw new UnsupportedOperationException("unsupported uri: " + uri);
 		}

@@ -133,7 +133,9 @@ public class Constant {
 	public final static String PARAM_FILESIZE = "filesize";	
 	
 	public final static String PARAM_SERVER_DATA = "server_data";
-	public final static String PARAM_SERVER_ID = "server_id";	
+	public final static String PARAM_SERVER_ID = "server_id";
+	public final static String PARAM_SERVER_NAME = "server_name";	
+	public final static String PARAM_SERVER_IP = "server_ip";	
 	public final static String PARAM_WS_PORT = "ws_port";	
 	public final static String PARAM_NOTIFY_PORT = "notify_port";	
 	public final static String PARAM_REST_PORT = "rest_port";	

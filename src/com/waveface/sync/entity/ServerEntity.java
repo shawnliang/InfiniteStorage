@@ -47,7 +47,9 @@ public class ServerEntity implements Serializable {
 	
 	@SerializedName("audio_count")
 	public int audioCount;
-	
+
+	public String ip;
+
 	public String wsPort;
 	public String notifyPort;
 	public String restPort;

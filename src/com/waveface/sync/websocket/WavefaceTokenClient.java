@@ -1,6 +1,7 @@
 package com.waveface.sync.websocket;
 
 import java.util.Map;
+
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -24,11 +25,14 @@ import org.jwebsocket.util.Tools;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.google.gson.JsonSyntaxException;
 import com.waveface.sync.Constant;
 import com.waveface.sync.RuntimeState;
+import com.waveface.sync.db.LabelFileTable;
+import com.waveface.sync.db.LabelTable;
 import com.waveface.sync.entity.LabelEntity;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.util.Log;
@@ -146,7 +150,30 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 				Log.e(Constant.JSON_ERROR_TAG, e.getLocalizedMessage());
 			}
 			//TODO:handle retrive label
-
+			
+			if(entity!=null){
+			   //update label info
+				//ServersLogic.updateLabelInfo(mContext,entity);
+				//update label
+				LabelTable.updateLabel(mContext, entity);
+				//update label's file
+				LabelFileTable.updateLabelFiles(mContext, entity.label_id, entity.files);
+			}
+			
+			//get label info
+			Cursor labelCursor = LabelTable.getLabels(mContext);
+			labelCursor.moveToFirst();
+			int labelCount =labelCursor.getCount();
+			Log.d(TAG, "label count="+labelCount);
+			String labelId = labelCursor.getColumnName(labelCursor.getColumnIndex(LabelTable.COLUMN_LABEL_ID));
+			labelCursor.close();
+			//get label's file info
+			Cursor fileCursor= LabelFileTable.getLableFiles(mContext, labelId);
+			fileCursor.moveToFirst();
+			int fileCount =fileCursor.getCount();
+			Log.d(TAG, "file count="+fileCount);
+			fileCursor.close();
+			
 			//ORIGINAL Web Socket Code
 			Token lToken = packetToToken(aPacket);
 			//Notifying listeners
@@ -164,6 +191,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		public void processClosed(WebSocketClientEvent aEvent) {
 			RuntimeState.setServerStatus(Constant.WS_ACTION_SOCKET_CLOSED);
 	    	ServersLogic.updateAllBackedServerStatus(mContext,Constant.SERVER_OFFLINE);
+	    	
 		}
 
 		/**

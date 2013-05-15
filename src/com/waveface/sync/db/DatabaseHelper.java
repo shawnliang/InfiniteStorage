@@ -14,7 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String DATABASE_NAME = "infinites.db";
 
 	private static final String TAG = DatabaseHelper.class.getSimpleName();
-	private static final int DATABASE_VERSION = 7;
+	private static final int DATABASE_VERSION = 8;
 	private static final String[] TABLE_NAME_LIST = {
 			BonjourServersTable.TABLE_NAME,
 			BackupedServersTable.TABLE_NAME};
@@ -47,17 +47,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		  .append(BackupedServersTable.COLUMN_SERVER_ID + " TEXT PRIMARY KEY,")
 		  .append(BackupedServersTable.COLUMN_SERVER_NAME+" TEXT NOT NULL DEFAULT ''' ,")
 		  .append(BackupedServersTable.COLUMN_STATUS+" TEXT NOT NULL,")
-		  .append(BackupedServersTable.COLUMN_START_DATETIME + " TEXT NOT NULL DEFAULT ''',")
-		  .append(BackupedServersTable.COLUMN_END_DATETIME + " TEXT NOT NULL DEFAULT ''',")		  
-		  .append(BackupedServersTable.COLUMN_FOLDER + " TEXT NOT NULL DEFAULT ''',")
-	      .append(BackupedServersTable.COLUMN_FREE_SPACE + " TEXT NOT NULL DEFAULT '0',")
-	      .append(BackupedServersTable.COLUMN_PHOTO_COUNT + " TEXT NOT NULL DEFAULT '0',")
-	      .append(BackupedServersTable.COLUMN_VIDEO_COUNT + " TEXT NOT NULL DEFAULT '0',")
-	      .append(BackupedServersTable.COLUMN_AUDIO_COUNT + " TEXT NOT NULL DEFAULT '0',")		
-	      .append(BackupedServersTable.COLUMN_LAST_DISPLAY_BACKUP_DATETIME+ " TEXT NOT NULL,")
-	      .append(BackupedServersTable.COLUMN_LAST_FILE_MEDIA_ID+ " TEXT ,")
-	      .append(BackupedServersTable.COLUMN_LAST_FILE_DATE+ " TEXT ,")
-	      .append(BackupedServersTable.COLUMN_LAST_FILE_UPDATED_DATETIME+ " TEXT );");
+		  .append(BackupedServersTable.COLUMN_IP+" TEXT NOT NULL,")
+		  .append(BackupedServersTable.COLUMN_WS_PORT+" TEXT NOT NULL,")
+		  .append(BackupedServersTable.COLUMN_NOTIFY_PORT+" TEXT NOT NULL,")
+		  .append(BackupedServersTable.COLUMN_REST_PORT+ " TEXT );");
 		createTable(db, sqlBuilder.toString(), BackupedServersTable.TABLE_NAME);
 
 		// Create BonjourServers table
@@ -65,9 +58,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		sqlBuilder.append("Create Table {0} (")
 		  .append(BonjourServersTable.COLUMN_SERVER_ID + " TEXT PRIMARY KEY,")
 		  .append(BonjourServersTable.COLUMN_SERVER_NAME+" TEXT NOT NULL DEFAULT ''' ,")
-		  .append(BonjourServersTable.COLUMN_SERVER_OS+" TEXT NOT NULL,")
-		  .append(BonjourServersTable.COLUMN_WS_LOCATION + " TEXT NOT NULL );");		
+		  .append(BonjourServersTable.COLUMN_IP+" TEXT NOT NULL,")		  
+		  .append(BonjourServersTable.COLUMN_WS_PORT+" TEXT NOT NULL,")
+		  .append(BonjourServersTable.COLUMN_NOTIFY_PORT + " TEXT NOT NULL,")		
+		  .append(BonjourServersTable.COLUMN_REST_PORT + " TEXT NOT NULL );");
 		createTable(db, sqlBuilder.toString(), BonjourServersTable.TABLE_NAME);
+		
+		// Create Labels table
+		sqlBuilder = new StringBuilder();
+		sqlBuilder.append("Create Table {0} (")
+		  .append(LabelTable.COLUMN_LABEL_ID + " TEXT PRIMARY KEY,")
+		  .append(LabelTable.COLUMN_LABEL_NAME + " TEXT NOT NULL );");		
+		createTable(db, sqlBuilder.toString(), LabelTable.TABLE_NAME);
+		
+		// Create Label Files table
+		sqlBuilder = new StringBuilder();
+		sqlBuilder.append("Create Table {0} (")
+		  .append(LabelFileTable.COLUMN_LABEL_ID + " TEXT PRIMARY KEY,")
+		  .append(LabelFileTable.COLUMN_FILE_ID + " TEXT NOT NULL );");		
+		createTable(db, sqlBuilder.toString(), LabelFileTable.TABLE_NAME);
 
 	}
 

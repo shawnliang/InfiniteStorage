@@ -2,6 +2,7 @@ package com.waveface.sync.ui.fragment;
 
 import java.util.ArrayList;
 
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
+
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
@@ -93,51 +95,11 @@ public class SyncFragment extends Fragment implements OnClickListener {
 		mMediaImage = new MediaStoreImage(getActivity(), IMAGE_WIDTH,
 				IMAGE_HEIGHT);
 
-		mDevice = (TextView) root.findViewById(R.id.textDevice);
-		mDevice.setText(DeviceUtil.getDeviceNameForDisplay(getActivity()));
-
-		mTotalInfo = (TextView) root.findViewById(R.id.textTotolInfo);
-		mNowPeriod = (TextView) root.findViewById(R.id.textPeriod);
 
 		// SETTINGS
 		ImageView iv = (ImageView) root.findViewById(R.id.ivSettings);
 		iv.setOnClickListener(this);
 
-		// PHOTO
-		iv = (ImageView) root.findViewById(R.id.imageView1);
-		iv.setOnClickListener(this);
-		mPhotoCount = (TextView) root.findViewById(R.id.textPhotoCount);
-		mPhotoSize = (TextView) root.findViewById(R.id.textPhotoSize);
-
-		// VIDEO
-		iv = (ImageView) root.findViewById(R.id.imageView2);
-		iv.setOnClickListener(this);
-		mVideoCount = (TextView) root.findViewById(R.id.textVideoCount);
-		mVideoSize = (TextView) root.findViewById(R.id.textVideoSize);
-
-		// AUDIO
-		iv = (ImageView) root.findViewById(R.id.imageView3);
-		iv.setOnClickListener(this);
-		mAudioCount = (TextView) root.findViewById(R.id.textAudioCount);
-		mAudioSize = (TextView) root.findViewById(R.id.textAudioSize);
-
-		// progress Content Area
-		rlBackupContent = (RelativeLayout) root
-				.findViewById(R.id.rlBackupContent);
-		ivPC = (ImageView) root.findViewById(R.id.imagePC);
-		ivFile = (ImageView) root.findViewById(R.id.ivFile);
-		ivPlay = (ImageView) root.findViewById(R.id.ivPlay);
-		tvBackupPC = (TextView) root.findViewById(R.id.tvBackupPC);
-		tvContent = (TextView) root.findViewById(R.id.tvContent);
-		tvDetail = (TextView) root.findViewById(R.id.tvDetail);
-		tvLastBackupTime = (TextView) root.findViewById(R.id.tvLastBackupTime);
-
-		// PAIRED SERVERS
-		// ListView listview = (ListView) findViewById(R.id.listview);
-		// ArrayList<ServerEntity> servers =
-		// ServersLogic.getBackupedServers(this);
-		// mAdapter = new PairedServersAdapter(this,servers);
-		// listview.setAdapter(mAdapter);
 
 		mRLSetting = (RelativeLayout) root.findViewById(R.id.rlSetting);
 
@@ -149,21 +111,16 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		refreshLayout();
+//		refreshLayout();
 
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING);
 		filter.addAction(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING);
-		filter.addAction(Constant.ACTION_BACKUP_DONE);
-		filter.addAction(Constant.ACTION_SCAN_FILE);
-		filter.addAction(Constant.ACTION_FILE_DELETED);
-		filter.addAction(Constant.ACTION_WS_SERVER_NOTIFY);
 		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
 		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);
-		filter.addAction(Constant.ACTION_UPLOADING_FILE);
-		filter.addAction(Constant.ACTION_BACKUP_START);
 		getActivity().registerReceiver(mReceiver, filter);
 
+	
 		// GET PAIRED SERVERS
 		firsttimeDispaly();
 
@@ -209,12 +166,12 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			}
 		}
 		//NO PAIRED SERVER
-		if (mPairedServers.size() == 0) {
-			Intent startIntent = new Intent(getActivity(),
-					FirstUseActivity.class);
-			startActivityForResult(startIntent,
-					Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
-		}
+//		if (mPairedServers.size() == 0) {
+//			Intent startIntent = new Intent(getActivity(),
+//					FirstUseActivity.class);
+//			startActivityForResult(startIntent,
+//					Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
+//		}
 	}
 
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -232,24 +189,8 @@ public class SyncFragment extends Fragment implements OnClickListener {
 				displayProgressingInfo();
 			} else if (Constant.ACTION_NETWORK_STATE_CHANGE.equals(action)) {
 				displayProgressingInfo();
-			} else if (Constant.ACTION_WS_SERVER_NOTIFY.equals(action)) {
-				dismissProgress();
-				String actionContent = intent
-						.getStringExtra(Constant.EXTRA_WEB_SOCKET_EVENT_CONTENT);
-				if (actionContent != null) {
-					if (actionContent.equals(Constant.WS_ACTION_ACCEPT)) {
-						if (RuntimeState.mAutoConnectMode) {
-							dismissProgress();
-						}
-						displayProgressingInfo();
-					} else if (actionContent
-							.equals(Constant.WS_ACTION_SOCKET_CLOSED)) {
-						displayProgressingInfo();
-					} else if (actionContent.equals(Constant.WS_ACTION_DENIED)) {
-						refreshLayout();
-					}
-				}
-			} else if (Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING
+			} 
+			else if (Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING
 					.equals(action)) {
 				firsttimeDispaly();
 				displayProgressingInfo();

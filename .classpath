@@ -3,14 +3,14 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry kind="lib" path="libs/jWebSocketClientAPI-1.0.jar"/>
-	<classpathentry kind="lib" path="libs/jWebSocketCommon-1.0.jar"/>
-	<classpathentry kind="lib" path="libs/jWebSocketJavaSEClient-1.0.jar"/>
-	<classpathentry kind="lib" path="libs/gson-2.0.jar"/>
-	<classpathentry kind="lib" path="libs/jmdns.jar"/>
-	<classpathentry kind="lib" path="libs/joda-time-2.0.jar"/>
-	<classpathentry kind="lib" path="libs/crashlytics.jar"/>
-	<classpathentry kind="lib" path="libs/libGoogleAnalyticsV2.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jWebSocketClientAPI-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jWebSocketCommon-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jWebSocketJavaSEClient-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/gson-2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jmdns.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/joda-time-2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/crashlytics.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/libGoogleAnalyticsV2.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

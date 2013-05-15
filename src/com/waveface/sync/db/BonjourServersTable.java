@@ -21,8 +21,11 @@ public class BonjourServersTable implements BaseColumns {
 	public static final String TABLE_NAME = "BonjourServers";
 	public static final String COLUMN_SERVER_ID = "id";	
 	public static final String COLUMN_SERVER_NAME = "serverName";
-	public static final String COLUMN_SERVER_OS = "folderName";
-	public static final String COLUMN_WS_LOCATION = "freeSpace";
+	public static final String COLUMN_IP = "serverIP";
+	public static final String COLUMN_WS_PORT = "wsPort";
+	public static final String COLUMN_NOTIFY_PORT = "notifyPort";
+	public static final String COLUMN_REST_PORT = "restPort";
+	
 	
 	private BonjourServersTable() {
 

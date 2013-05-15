@@ -47,7 +47,7 @@ public class InfiniteService extends Service{
 
 	//TIMER
     private final int UPDATE_INTERVAL = 30 * 1000;
-    private Timer BackupTimer = new Timer();
+    private Timer BackupTimer = null;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -56,9 +56,10 @@ public class InfiniteService extends Service{
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {		
-		if(BackupTimer==null){
-			BackupTimer = new Timer();
+		if(BackupTimer!=null){
+			return Service.START_NOT_STICKY;
 		}
+		BackupTimer = new Timer();
         BackupTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -90,6 +91,8 @@ public class InfiniteService extends Service{
 		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);
 		registerReceiver(mReceiver, filter);
 
+//		connectPCWithPairedServer();
+		
 		RuntimeState.mAutoConnectMode = ServersLogic.hasBackupedServers(this);
 		setupMDNS();
 		
@@ -182,10 +185,20 @@ public class InfiniteService extends Service{
     	                final ServerEntity entity = new ServerEntity();
     	            	entity.serverName = si.getName();
     					entity.serverId = si.getPropertyString(Constant.PARAM_SERVER_ID);
+    					entity.ip = si.getHostAddress();    					
     					entity.wsPort = si.getPropertyString(Constant.PARAM_WS_PORT);
+    					if(TextUtils.isEmpty(entity.wsPort)){
+    						entity.wsPort = "";
+    					}
     					entity.notifyPort = si.getPropertyString(Constant.PARAM_NOTIFY_PORT);
+       					if(TextUtils.isEmpty(entity.notifyPort)){
+    						entity.notifyPort = "";
+    					}
     					entity.restPort = si.getPropertyString(Constant.PARAM_REST_PORT);    					
-    	                entity.wsLocation = "ws://"+si.getHostAddress()+":"+entity.wsPort;
+       					if(TextUtils.isEmpty(entity.restPort)){
+    						entity.restPort = "";
+    					}
+    					entity.wsLocation = "ws://"+si.getHostAddress()+":"+entity.wsPort;
     	                Log.d(TAG, "Resolved SERVER NAME:"+entity.serverName);
     	                ServersLogic.updateBonjourServer(mContext, entity);
     	        		mPairedServers = ServersLogic.getBackupedServers(mContext);
@@ -221,7 +234,8 @@ public class InfiniteService extends Service{
 
                 @Override
                 public void serviceAdded(ServiceEvent event) {
-                	mJMDNS.requestServiceInfo(event.getType(), event.getName(), 1);
+                	mJMDNS.requestServiceInfo(event.getType(), event.getName(), true, 1);
+//                	mJMDNS.requestServiceInfo(event.getType(), event.getName(), 1);
                 }
             });
             RuntimeState.isMDNSSetUped = true;
@@ -232,6 +246,26 @@ public class InfiniteService extends Service{
             return;
         }
     }
+	private void connectPCWithPairedServer() {
+		mPairedServers = ServersLogic.getBackupedServers(this);
+		if(mPairedServers.size()>0){
+			ServerEntity entity = mPairedServers.get(0);
+			if(!TextUtils.isEmpty(entity.ip) && !TextUtils.isEmpty(entity.notifyPort)){
+				//CONNECT FIRST FOR THREE TIME
+				String wsLocation ="ws://"+entity.ip+":"+entity.notifyPort;
+				int retryCount= 0;
+				while(retryCount<3 &&NetworkUtil.isWifiNetworkAvailable(mContext) && RuntimeState.OnWebSocketOpened==false){
+					ServersLogic.startWSServerConnect(this, wsLocation, entity.serverId,entity.serverName, entity.ip,entity.notifyPort,entity.restPort);
+					try {
+						Thread.sleep(50);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					retryCount++;
+				}
+			}
+		}
+	}
 	private void autoPairingConnect(){
 		ServerEntity pairedServer = null;
 		ServerEntity bonjourServer = null;		
@@ -244,7 +278,7 @@ public class InfiniteService extends Service{
 				mCondidateServerId = pairedServer.serverId;
 				mCondidateWSLocation = bonjourServer.wsLocation;
 				Log.d(TAG, "PAIRING WITH "+pairedServer.serverName+","+bonjourServer.wsLocation);
-				ServersLogic.startWSServerConnect(this, mCondidateWSLocation, mCondidateServerId);
+				ServersLogic.startWSServerConnect(this, mCondidateWSLocation, mCondidateServerId,bonjourServer.serverName,bonjourServer.ip,bonjourServer.notifyPort,bonjourServer.restPort);
 				while(!RuntimeState.OnWebSocketOpened){
 					try {
 						Thread.sleep(50);
