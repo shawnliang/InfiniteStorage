@@ -90,13 +90,21 @@ namespace InfiniteStorage.Notify
 			{
 				int nSent = 0;
 
+				int page_no = 1;
+				int page_count = (all.Count % 500 != 0) ? all.Count / 500 + 1 : all.Count / 500;
+
 				do
 				{
 					var batch = all.Skip(nSent).Take(500).ToList();
 
 					var msg = JsonConvert.SerializeObject(new
 					{
-						file_changes = batch
+						total_count = all.Count,
+						page_count = page_count,
+						page_no = page_no++,
+						page_size = batch.Count,
+
+						file_changes = batch,
 					});
 
 					ctx.Send(msg);
