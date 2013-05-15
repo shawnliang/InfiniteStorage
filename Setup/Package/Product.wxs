@@ -40,6 +40,19 @@
       <Directory Id="DesktopFolder" Name="Desktop" />
     </Directory>
 
+    <CustomAction Id="AddUrlAcl" Directory="INSTALLLOCATION"
+                      ExeCommand="[SystemFolder]netsh.exe http add urlacl url=http://+:14005/ user=users"
+                      Return="ignore" Execute="deferred" />
+
+    <InstallExecuteSequence>
+      <Custom Action="AddUrlAcl" Before="InstallFinalize"><![CDATA[NOT Installed AND VersionNT >= 601]]></Custom>
+    </InstallExecuteSequence>
+
+    <UI>
+      <ProgressText Action="AddUrlAcl">!(loc.SetUrlAcl)</ProgressText>
+    </UI>
+    
+    
     <?include Product.Uninstaller.wxi ?>
     <DirectoryRef Id="TARGETDIR">
       <Directory Id="ProgramFilesFolder">
@@ -51,7 +64,7 @@
 
           <Component Id="InfiniteStorage.exe.config" Guid="*">
             <File Id="InfiniteStorage.exe.config" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\InfiniteStorage.exe.config"/>
-            <fire:FirewallException Id="fwrule1" Name="infiniteStorage" IgnoreFailure="yes" Scope="localSubnet" Program="[INSTALLLOCATION]InfiniteStorage.exe"/>
+            <fire:FirewallException Id="fwrule1" Name="Bunny" IgnoreFailure="yes" Scope="localSubnet" Program="[INSTALLLOCATION]InfiniteStorage.exe"/>
             <fire:FirewallException Id="fwrule2" Name="bonjour.fw.1" Program="$(env.PROGRAMFILES)Bonjour\mDNSResponder.exe" IgnoreFailure="yes" Scope="localSubnet" />
             <fire:FirewallException Id="fwrule3" Name="bonjour.fw.2" Program="$(env.PROGRAMFILES(X86))Bonjour\mDNSResponder.exe" IgnoreFailure="yes" Scope="localSubnet" />
           </Component>
@@ -84,6 +97,7 @@
 
             <Component Id="nginx.exe" Guid="*">
               <File Id="nginx.exe" KeyPath="yes" Source="$(var.SolutionDir)\Libs\nginx-1.2.3\nginx.exe" />
+              <fire:FirewallException Id="fwrule4" Name="Bunny.nginx" IgnoreFailure="yes" Scope="localSubnet" Program="[INSTALLLOCATION]nginx\nginx.exe"/>
             </Component>
 
             <Directory Id="nginx.conf.dir" Name="conf">

@@ -246,21 +246,11 @@ namespace InfiniteStorage
 
 		private static ushort initRestApiServer(out HttpServer rest_server, ushort port)
 		{
-			while (true)
-			{
-				try
-				{
-					rest_server = new HttpServer(port);
-					rest_server.AddHandler("/image/", new ImageApiHandler());
-					rest_server.Start();
+			rest_server = new HttpServer(port);
+			rest_server.AddHandler("/image/", new ImageApiHandler());
+			rest_server.Start();
 
-					return port;
-				}
-				catch (HttpListenerException)
-				{
-					port++;
-				}
-			}
+			return port;
 		}
 
 		private static void invokeAnotherRunningProcess()

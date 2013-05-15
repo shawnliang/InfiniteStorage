@@ -142,7 +142,7 @@ namespace DataTool
 			{
 				foreach (var file in files)
 				{
-					textBoxNotify.AppendText(file["file_name"].Value<string>() + "\r\n");
+					textBoxNotify.AppendText(file["file_name"].Value<string>() + " => " + file["id"].Value<string>() + "\n");
 				}
 			}
 
