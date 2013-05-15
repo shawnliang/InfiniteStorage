@@ -254,9 +254,9 @@ namespace InfiniteStorage
 			rest_server.AddHandler("/label/untag", new LabelUntagApiHandler());
 			rest_server.AddHandler("/label/clear", new LabelClearApiHandler());
 			rest_server.AddHandler("/label/rename", new LabelRenameApiHandler());
-
 			rest_server.AddHandler("/label/add", new LabelAddApiHandler());
 			rest_server.AddHandler("/label/delete", new LabelDeleteApiHandler());
+			rest_server.AddHandler("/file/get", new FileGetApiHandler());
 			rest_server.Start();
 
 			return port;

@@ -87,6 +87,7 @@
     <Compile Include="Src\Class\Common\Multipart\Parser.cs" />
     <Compile Include="Src\Class\Common\Multipart\Part.cs" />
     <Compile Include="Src\Class\Common\Multipart\Serializer.cs" />
+    <Compile Include="Src\Class\REST\FileGetApiHandler.cs" />
     <Compile Include="Src\Class\REST\ImageApiHandler.cs" />
     <Compile Include="Src\Class\NginxUtility.cs" />
     <Compile Include="Src\Class\Normalizer.cs" />
