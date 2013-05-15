@@ -92,6 +92,9 @@ CREATE INDEX [idx_Files_seq_1] ON [Files](
 ALTER TABLE [Files] ADD COLUMN [deleted] BOOLEAN NULL;
 
 ALTER TABLE [Files] ADD COLUMN [thumb_ready] BOOLEAN NULL;
+
+Update [Files] set deleted = 0, thumb_ready = 0;
+
 ", conn);
 						cmd.ExecuteNonQuery();
 
