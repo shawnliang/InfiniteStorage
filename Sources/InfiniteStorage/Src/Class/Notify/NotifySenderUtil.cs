@@ -15,7 +15,7 @@ namespace InfiniteStorage.Notify
 			{
 				var result = from f in db.Object.Files
 							 join d in db.Object.Devices on f.device_id equals d.device_id
-							 where f.seq >= from_seq && f.type == (int)FileAssetType.image
+							 where f.seq >= from_seq && (f.type == (int)FileAssetType.image || f.type == (int)FileAssetType.audio)
 							 orderby f.seq ascending
 							 select new FileChangeData
 							 {
