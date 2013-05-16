@@ -3,7 +3,7 @@ using System.Windows;
 using Waveface.ClientFramework;
 using Waveface.Model;
 
-namespace WpfApplication3
+namespace Waveface.Client
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml

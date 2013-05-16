@@ -4,8 +4,8 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
-	x:Class="WpfApplication3.PhotoViewerControl"
-    xmlns:l="clr-namespace:WpfApplication3"
+	x:Class="Waveface.Client.PhotoViewerControl"
+    xmlns:l="clr-namespace:Waveface.Client"
 	x:Name="UserControl"
 	Loaded="WindowLoaded"
 	d:DesignWidth="760" d:DesignHeight="504">

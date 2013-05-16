@@ -4,8 +4,8 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
-	x:Class="WpfApplication3.ContentItem"
-    xmlns:l="clr-namespace:WpfApplication3"
+	x:Class="Waveface.Client.ContentItem"
+    xmlns:l="clr-namespace:Waveface.Client"
 	x:Name="UserControl"
 	d:DesignWidth="602" d:DesignHeight="371">
     <UserControl.Resources>

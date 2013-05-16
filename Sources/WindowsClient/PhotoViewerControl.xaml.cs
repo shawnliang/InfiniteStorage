@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace WpfApplication3
+namespace Waveface.Client
 {
 	/// <summary>
 	/// Interaction logic for PhotoViewerControl.xaml

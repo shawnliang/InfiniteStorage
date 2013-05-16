@@ -5,7 +5,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
 	mc:Ignorable="d"
-	x:Class="WpfApplication3.DeviceListItem"
+	x:Class="Waveface.Client.DeviceListItem"
 	x:Name="UserControl" d:DesignHeight="41.334" Width="135.75">
 
 	<DockPanel x:Name="LayoutRoot">

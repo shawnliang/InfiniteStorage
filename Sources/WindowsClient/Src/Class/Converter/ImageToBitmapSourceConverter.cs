@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace WpfApplication3
+namespace Waveface.Client
 {
 	public class ImageToBitmapSourceConverter : IValueConverter
 	{

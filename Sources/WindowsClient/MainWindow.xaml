@@ -1,8 +1,8 @@
 ﻿<Window
-    x:Class="WpfApplication3.MainWindow"
+    x:Class="Waveface.Client.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:WpfApplication3" 
+        xmlns:local="clr-namespace:Waveface.Client" 
      xmlns:fw="clr-namespace:Waveface.ClientFramework;assembly=Waveface.ClientFramework"
        xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
         Title="MainWindow" Height="498.5" Width="807" Loaded="Window_Loaded">

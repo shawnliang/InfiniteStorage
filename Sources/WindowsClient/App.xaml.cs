@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace WpfApplication3
+namespace Waveface.Client
 {
 	/// <summary>
 	/// Interaction logic for App.xaml
