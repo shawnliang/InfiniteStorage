@@ -48,7 +48,7 @@ namespace InfiniteStorage
 					var line = template.ReadLine();
 
 					line = line.Replace("${listen}", port.ToString());
-					line = line.Replace("${root}", origFileDir);
+					line = line.Replace("${thumb_root}", "");
 					line = line.Replace("${access_log}", Path.Combine(log_dir, "access.log"));
 					line = line.Replace("${error_log}", Path.Combine(log_dir, "error.log"));
 					line = line.Replace("${pid}", Path.Combine(log_dir, "pid.file"));
@@ -58,6 +58,7 @@ namespace InfiniteStorage
 					line = line.Replace("${fastcgi_temp_path}", temp_dir);
 					line = line.Replace("${uwsgi_temp_path}", temp_dir);
 					line = line.Replace("${scgi_temp_path}", temp_dir);
+					
 
 					target_cfg.WriteLine(line);
 				}

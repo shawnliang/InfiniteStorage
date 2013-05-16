@@ -146,6 +146,10 @@ namespace InfiniteStorage
 			{
 				FirstUseDialog.Instance.Show();
 			}
+			else
+			{
+				ThumbnailCreator.Instance.Start();
+			}
 
 
 			ProgramIPC.Instance.OnWinMsg += (s, e) =>
@@ -158,7 +162,6 @@ namespace InfiniteStorage
 			updator.StartLoop();
 
 			NginxUtility.Instance.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
-
 			Application.Run();
 		}
 
@@ -340,7 +343,7 @@ namespace InfiniteStorage
 				NginxUtility.Instance.Stop(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
 				notifier.Stop();
 				backup_server.Stop();
-
+				ThumbnailCreator.Instance.Stop();
 				if (m_notifyIcon != null)
 					m_notifyIcon.Dispose();
 			}

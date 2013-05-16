@@ -61,7 +61,7 @@ namespace InfiniteStorage.Model
 					{
 						var cmd = new SQLiteCommand(
 @"CREATE TABLE [Files] (
-[file_id] NVARCHAR(36)  NOT NULL PRIMARY KEY,
+[file_id] GUID  NOT NULL PRIMARY KEY,
 [file_name] NVARCHAR(100)  NOT NULL,
 [file_path] NVARCHAR(1024)  NOT NULL,
 [file_size] INTEGER  NULL,

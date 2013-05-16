@@ -59,7 +59,7 @@ namespace InfiniteStorage.REST
 
 			}
 
-			respondSuccess(result);
+			respondSuccess(new { files = result });
 		}
 	}
 }

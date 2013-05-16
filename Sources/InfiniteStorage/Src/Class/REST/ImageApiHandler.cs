@@ -9,6 +9,14 @@ using System.IO;
 
 namespace InfiniteStorage.REST
 {
+	enum IMG_SIZE{
+		small,
+		medium,
+		large,
+		origin
+	}
+
+
 	class ImageApiHandler : HttpHandler
 	{
 		public override void HandleRequest()
@@ -21,8 +29,13 @@ namespace InfiniteStorage.REST
 			if (segments.Length != 3)
 				throw new Exception("url path format error: " + Request.Url.AbsolutePath);
 
+			
+
 			var file_id = new Guid(segments[1]);
-			var size = segments[2];
+
+			IMG_SIZE size = IMG_SIZE.large;
+			if (!Enum.TryParse<IMG_SIZE>(segments[2], out size))
+				size = IMG_SIZE.large;
 
 
 			FileResult file = null;
@@ -34,6 +47,7 @@ namespace InfiniteStorage.REST
 						where f.file_id == file_id
 						select new FileResult
 						{
+							file_id = f.file_id,
 							saved_path = f.saved_path,
 							thumb_ready = f.thumb_ready,
 							deleted = f.deleted,
@@ -50,7 +64,21 @@ namespace InfiniteStorage.REST
 
 			Response.StatusCode = (int)HttpStatusCode.Moved;
 
-			var url = new UriBuilder("http", Request.Url.Host, 12888, Path.Combine(file.folder, file.saved_path)).ToString();
+			string file_relative_path;
+			if (size == IMG_SIZE.origin)
+			{
+				file_relative_path = Path.Combine(file.folder, file.saved_path);
+			}
+			else
+			{
+				file_relative_path = Path.Combine(".thumbs", file.file_id.ToString() + "." + size.ToString() + ".thumb");
+				
+				var full_path = Path.Combine(MyFileFolder.Photo, file_relative_path);
+				if (!File.Exists(full_path))
+					file_relative_path = Path.Combine(file.folder, file.saved_path);
+			}
+			
+			var url = new UriBuilder("http", Request.Url.Host, 12888, file_relative_path).ToString();
 			Response.AddHeader("Location", url);
 			Response.Close();
 		}
@@ -58,6 +86,7 @@ namespace InfiniteStorage.REST
 
 	internal class FileResult
 	{
+		public Guid file_id { get; set; }
 		public string saved_path { get; set; }
 		public string folder { get; set; }
 		public bool deleted { get; set; }

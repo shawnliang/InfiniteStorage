@@ -71,6 +71,8 @@ namespace InfiniteStorage
 
 				NginxUtility.Instance.Start(bunnyAppData);
 
+				ThumbnailCreator.Instance.Start();
+
 				try
 				{
 					transferringControl1.WebSocketContext.handleApprove();
