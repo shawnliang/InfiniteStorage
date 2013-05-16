@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+
 import com.waveface.sync.entity.LabelEntity;
 import com.waveface.sync.provider.SyncProvider;
 
@@ -32,15 +33,15 @@ public class LabelTable implements BaseColumns {
 
 	}
 	
-	public static int updateLabel(Context context, LabelEntity entity) {
+	public static int updateLabel(Context context, String labelId,String labelName) {
 		int result = 0;
 		
 		ContentResolver cr = context.getContentResolver();
 		try {
 		
 			ContentValues cv = new ContentValues();
-			cv.put(LabelTable.COLUMN_LABEL_ID, entity.label_id);
-			cv.put(LabelTable.COLUMN_LABEL_NAME, entity.label_name);
+			cv.put(LabelTable.COLUMN_LABEL_ID, labelId);
+			cv.put(LabelTable.COLUMN_LABEL_NAME, labelName);
 
 			// insert label
 			result = cr.bulkInsert(LabelTable.CONTENT_URI,
@@ -50,6 +51,20 @@ public class LabelTable implements BaseColumns {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	public static int getLabelCount(Context context) {
+		Cursor cursor = context.getContentResolver().query(
+				LabelTable.CONTENT_URI, 
+				new String[] {LabelTable.COLUMN_LABEL_ID}, 
+				null, 
+				null, null);
+		int count = 0;
+		if(cursor != null && cursor.moveToFirst())
+			count = cursor.getCount();
+		if (cursor != null)
+			cursor.close();
+		return count;
 	}
 	
 	
