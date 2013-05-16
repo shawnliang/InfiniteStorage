@@ -1,0 +1,58 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="WpfApplication3.ContentItem"
+    xmlns:l="clr-namespace:WpfApplication3"
+	x:Name="UserControl"
+	d:DesignWidth="602" d:DesignHeight="371">
+    <UserControl.Resources>
+        <l:ImageToBitmapSourceConverter x:Key="converter" />
+        <Storyboard x:Key="ShowInfo">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="photoInfo">
+                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+            <BeginStoryboard x:Name="ShowInfo_BeginStoryboard" Storyboard="{StaticResource ShowInfo}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+            <RemoveStoryboard BeginStoryboardName="ShowInfo_BeginStoryboard"/>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.Effect>
+            <DropShadowEffect Direction="270"/>
+        </Grid.Effect>
+        <!--<Viewbox Stretch="Fill" DockPanel.Dock="Top">
+            <Canvas x:Name="ImgCanvas" ClipToBounds="True"  Height="371" Width="602">
+                <ContentControl x:Name="ImgContentCtrl" Canvas.Left="0" Canvas.Top="1"  Height="371" Width="602">-->
+                    <!--<Grid x:Name="ImgGrid">-->
+                        <Image x:Name="image" Source ="{Binding Image, IsAsync=True, Converter={StaticResource converter}}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" OpacityMask="Black">
+                            <Image.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Image.RenderTransform>
+                        </Image>
+                        <!--<Thumb x:Name="ImgThumb" Opacity="0"/>-->
+                    <!--</Grid>-->
+                <!--</ContentControl>
+            </Canvas>
+        </Viewbox>-->
+
+        <Grid x:Name="photoInfo" Visibility="Collapsed">
+            <Rectangle x:Name="rectangle" Fill="#E5000000" Height="25" Margin="-1,0,-1,-1" VerticalAlignment="Bottom" StrokeThickness="0" Opacity="0.5"/>
+            <TextBlock x:Name="DateTaken" Margin="8,0,32,5" TextWrapping="Wrap" Text="{Binding Name, IsAsync=True}" VerticalAlignment="Bottom" FontSize="10.667" Opacity="0.6"/>
+        </Grid>
+
+    </Grid>
+</UserControl>
