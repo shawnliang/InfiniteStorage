@@ -34,7 +34,6 @@ namespace InfiniteStorage.REST
 				{
 					label_id = label.label_id,
 					label_name = label.name,
-					deleted = label.deleted,
 					files = util.QueryLabeledFiles(label.label_id).Select(x=>x.id).ToList()
 				};
 
