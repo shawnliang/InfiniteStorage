@@ -95,18 +95,11 @@ namespace Wammer.Station
 
 			if (string.Compare(Request.HttpMethod, "POST", true) == 0)
 			{
-				var buff = new byte[65535];
-				var nread = 0;
-				var content = new MemoryStream(postBufferSize());
-
-				while ((nread = request.InputStream.Read(buff, 0, buff.Length)) > 0)
-				{
-					content.Write(buff, 0, nread);
-				}
+				var content = readPostContent(request);
 
 				Action action = () =>
 				{
-					RawPostData = buff.ToArray();
+					RawPostData = content.ToArray();
 					ParseAndHandleRequest();
 				};
 
@@ -115,6 +108,19 @@ namespace Wammer.Station
 			}
 
 			ParseAndHandleRequest();
+		}
+
+		private MemoryStream readPostContent(HttpListenerRequest request)
+		{
+			var buff = new byte[65535];
+			var nread = 0;
+			var content = new MemoryStream(postBufferSize());
+
+			while ((nread = request.InputStream.Read(buff, 0, buff.Length)) > 0)
+			{
+				content.Write(buff, 0, nread);
+			}
+			return content;
 		}
 
 		private int postBufferSize()
