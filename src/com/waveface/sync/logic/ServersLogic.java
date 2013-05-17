@@ -304,7 +304,7 @@ public class ServersLogic {
 		ContentResolver cr = context.getContentResolver();
 		try {
 			cursor = cr.query(BonjourServersTable.CONTENT_URI, null, null,
-					null, null);
+					null, BonjourServersTable.COLUMN_SERVER_NAME);
 
 			if (cursor != null && cursor.getCount() > 0) {
 				int count = cursor.getCount();

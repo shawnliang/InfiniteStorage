@@ -103,7 +103,6 @@ public class ServerChooserFragment extends FragmentBase
 		ListView listview = (ListView) mRootView.findViewById(R.id.listview);
 		ArrayList<ServerEntity> serverEntityList =ServersLogic.getBonjourServers(getActivity());
 		mAdapter = new ServerChooseAdapter(getActivity(), serverEntityList);
-    	mAdapter.setData(serverEntityList);
 		listview.setAdapter(mAdapter);
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
