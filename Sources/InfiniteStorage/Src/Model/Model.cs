@@ -41,6 +41,8 @@ namespace InfiniteStorage.Model
 
 		public string saved_path { get; set; }
 
+		public string parent_folder { get; set; }
+
 		public long seq { get; set; }
 
 		public bool thumb_ready { get; set; }

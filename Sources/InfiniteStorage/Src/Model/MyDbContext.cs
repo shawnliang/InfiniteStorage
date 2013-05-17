@@ -50,7 +50,9 @@ namespace InfiniteStorage.Model
 [device_id] NVARCHAR(36)  UNIQUE NULL PRIMARY KEY,
 [device_name] NVARCHAR(80)  NULL,
 [folder_name] NVARCHAR      NULL
-);", conn);
+);
+
+", conn);
 						cmd.ExecuteNonQuery();
 
 						updateDbSchemaVersion(conn, 1);
@@ -66,14 +68,26 @@ namespace InfiniteStorage.Model
 [file_path] NVARCHAR(1024)  NOT NULL,
 [file_size] INTEGER  NULL,
 [saved_path] NVARCHAR NULL,
+[parent_folder] NVARCHAR NULL,
 [device_id] NVARCHAR(36)  NULL,
 [type] INTEGER NOT NULL,
-[event_time] TIMESTAMP NULL
+[event_time] TIMESTAMP NULL,
+[seq] INTEGER NULL,
+[deleted] BOOLEAN NULL,
+[thumb_ready] BOOLEAN NULL
+
 );
 
 CREATE INDEX [idx_Files_path_1] ON [Files](
-[file_path]  ASC
-);", conn);
+[file_path]  ASC);
+
+CREATE INDEX [idx_Files_parent_folder_1] ON [Files](
+[parent_folder]  ASC);
+
+CREATE INDEX [idx_Files_seq_1] ON [Files](
+[seq]  ASC);
+
+", conn);
 						cmd.ExecuteNonQuery();
 
 						updateDbSchemaVersion(conn, 2);
@@ -81,28 +95,6 @@ CREATE INDEX [idx_Files_path_1] ON [Files](
 					}
 
 					if (schemaVersion == 2L)
-					{
-						var cmd = new SQLiteCommand(
-@"ALTER TABLE [Files] ADD COLUMN [seq] INTEGER NULL;
-
-CREATE INDEX [idx_Files_seq_1] ON [Files](
-[seq]  ASC
-);
-
-ALTER TABLE [Files] ADD COLUMN [deleted] BOOLEAN NULL;
-
-ALTER TABLE [Files] ADD COLUMN [thumb_ready] BOOLEAN NULL;
-
-Update [Files] set deleted = 0, thumb_ready = 0;
-
-", conn);
-						cmd.ExecuteNonQuery();
-
-						updateDbSchemaVersion(conn, 3);
-						schemaVersion = 3;
-					}
-
-					if (schemaVersion == 3L)
 					{
 						var cmd = new SQLiteCommand(
 @"CREATE TABLE [LabelFiles] (
@@ -114,23 +106,14 @@ PRIMARY KEY ([label_id],[file_id])
 CREATE TABLE [Labels] (
 [label_id] GUID  UNIQUE NOT NULL PRIMARY KEY,
 [name] NVARCHAR(200)  NULL,
-[seq] INTEGER  NOT NULL
-);", conn);
-						cmd.ExecuteNonQuery();
-						updateDbSchemaVersion(conn, 4);
-						schemaVersion = 4;
-					}
+[seq] INTEGER  NOT NULL,
+[deleted] BOOLEAN NULL
+);
 
-					if (schemaVersion == 4L)
-					{
-						var cmd = new SQLiteCommand(
-@"ALTER TABLE [Labels] ADD COLUMN [deleted] BOOLEAN NULL;
-
-Update [Labels] set deleted = 0;
 ", conn);
 						cmd.ExecuteNonQuery();
-						updateDbSchemaVersion(conn, 5);
-						schemaVersion = 5;
+						updateDbSchemaVersion(conn, 3);
+						schemaVersion = 3;
 					}
 
 					transaction.Commit();

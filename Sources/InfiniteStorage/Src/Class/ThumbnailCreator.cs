@@ -64,7 +64,7 @@ namespace InfiniteStorage
 				}
 				catch (Exception err)
 				{
-
+					log4net.LogManager.GetLogger(GetType()).Warn("Failed to generate thumbnails", err);
 				}
 				finally
 				{

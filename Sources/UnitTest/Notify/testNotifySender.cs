@@ -99,13 +99,7 @@ namespace UnitTest.Notify
 			notifyCtx.Setup(x => x.subscribe_labels).Returns(true);
 
 			var allLabels = new List<Label> { new Label { label_id = Guid.NewGuid(), name = "name1", seq = 1000 } };
-			var labelFiles = new List<FileChangeData> { 
-				new FileChangeData { id = Guid.NewGuid(), device_folder = "a", saved_path = "b"}, 
-				new FileChangeData { id = Guid.NewGuid(), device_folder = "a", saved_path = "b"}
-			};
-
 			util.Setup(x => x.QueryAllLabels()).Returns(allLabels);
-			util.Setup(x => x.QueryLabeledFiles(allLabels.ElementAt(0).label_id)).Returns(labelFiles);
 
 
 			var sender = new NotifySender(notifyCtx.Object, util.Object);
@@ -119,11 +113,9 @@ namespace UnitTest.Notify
 			Assert.IsNotNull(sentData);
 			var o = JObject.Parse(sentData);
 
-			Assert.AreEqual(allLabels.ElementAt(0).label_id.ToString(), o["label_id"].Value<string>());
-			Assert.AreEqual(allLabels.ElementAt(0).name, o["label_name"].Value<string>());
-			Assert.AreEqual(2, o["files"].Count());
-			Assert.AreEqual(labelFiles[0].id.ToString(), o["files"].ElementAt(0)["id"].Value<string>());
-			Assert.AreEqual(labelFiles[1].id.ToString(), o["files"].ElementAt(1)["id"].Value<string>());
+			Assert.AreEqual(allLabels[0].label_id.ToString(), o["label_change"]["label_id"]);
+			Assert.AreEqual(allLabels[0].name, o["label_change"]["label_name"]);
+			Assert.AreEqual(allLabels[0].seq, o["label_change"]["seq"]);
 
 			Assert.AreEqual(1000L, sender.label_seq[allLabels[0].label_id]);
 		}
@@ -142,8 +134,6 @@ namespace UnitTest.Notify
 			};
 
 			util.Setup(x => x.QueryAllLabels()).Returns(allLabels);
-			util.Setup(x => x.QueryLabeledFiles(allLabels.ElementAt(0).label_id)).Returns(labelFiles);
-
 
 			var sender = new NotifySender(notifyCtx.Object, util.Object);
 			sender.Notify();

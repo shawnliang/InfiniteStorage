@@ -38,7 +38,6 @@ namespace InfiniteStorage.WebsocketProtocol
 					throw new IOException("Unable to move temp file to storage. temp_file:" + ctx.temp_file.Path + ", file_name: " + ctx.fileCtx.file_name, e);
 				}
 
-
 				var fileAsset = new FileAsset
 				{
 					device_id = ctx.device_id,
@@ -46,6 +45,7 @@ namespace InfiniteStorage.WebsocketProtocol
 					file_id = Guid.NewGuid(),
 					file_name = ctx.fileCtx.file_name,
 					file_path = Path.Combine(ctx.fileCtx.folder, ctx.fileCtx.file_name),
+					parent_folder = ctx.fileCtx.folder,
 					file_size = ctx.fileCtx.file_size,
 					type = (int)ctx.fileCtx.type,
 					saved_path = saved.relative_file_path,

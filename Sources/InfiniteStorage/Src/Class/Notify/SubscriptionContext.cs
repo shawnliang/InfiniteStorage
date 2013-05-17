@@ -12,6 +12,7 @@ namespace InfiniteStorage.Notify
 		public string device_name { get; private set; }
 		public string device_id { get; private set; }
 		public long files_from_seq { get; set; }
+		public long labels_from_seq { get; set; }
 		public bool subscribe_files { get; set; }
 		public bool subscribe_labels { get; set; }
 

@@ -17,6 +17,7 @@ namespace InfiniteStorage.Notify
 		private const string PROPERTY_SUBSCRIBE = "subscribe";
 		private const string PROPERTY_FILES_FROM_SEQ = "files_from_seq";
 		private const string PROPERTY_LABELS = "labels";
+		private const string PROPERTY_LABELS_FROM_SEQ = "labels_from_seq";
 
 		public event EventHandler<NotifyChannelEventArgs> Subscribing;
 
@@ -51,6 +52,7 @@ namespace InfiniteStorage.Notify
 			if (subsribe[PROPERTY_LABELS] != null)
 			{
 				Ctx.subscribe_labels = subsribe[PROPERTY_LABELS].Value<bool>();
+				Ctx.labels_from_seq = (subsribe[PROPERTY_LABELS_FROM_SEQ] != null) ? subsribe[PROPERTY_LABELS_FROM_SEQ].Value<long>() : 0;
 			}
 
 			raiseSubscribingEvent(svc, Ctx);

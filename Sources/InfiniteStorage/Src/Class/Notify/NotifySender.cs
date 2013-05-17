@@ -45,17 +45,18 @@ namespace InfiniteStorage.Notify
 
 				if (oldSeq < label.seq)
 				{
-					var files = util.QueryLabeledFiles(label.label_id);
-
 					try
 					{
 						ctx.Send(JsonConvert.SerializeObject(new
-						{
-							label_id = label.label_id,
-							label_name = label.name,
-							deleted = label.deleted,
-							files = files
-						}));
+							{
+								label_change = new 
+								{
+									label_id = label.label_id,
+									label_name = label.name,
+									deleted = label.deleted,
+									seq = label.seq
+								}
+							}));
 
 						setOldLabelSeq(label);
 					}

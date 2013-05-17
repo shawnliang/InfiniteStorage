@@ -51,7 +51,7 @@ namespace UnitTest.Notify
 		    var msg = JsonConvert.SerializeObject(new
 		    {
 		        connect = new { device_id = "dev", device_name = "name" },
-		        subscribe = new { labels = true }
+		        subscribe = new { labels = true, labels_from_seq = 1023 }
 		    });
 
 
@@ -63,6 +63,7 @@ namespace UnitTest.Notify
 		    Assert.AreEqual("dev", ctx.device_id);
 			Assert.AreEqual(false, ctx.subscribe_files);
 			Assert.AreEqual(true, ctx.subscribe_labels);
+			Assert.AreEqual(1023, ctx.labels_from_seq);
 		}
 
 		[TestMethod]
