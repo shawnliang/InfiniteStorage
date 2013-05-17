@@ -62,7 +62,8 @@ public class DNSQuestion extends DNSComponent {
         type = Type.getType(buffer.readShort());
         int qclass = buffer.readShort();
         if (qclass != 1) {
-            throw new DNSException("only class IN supported.  (got "+qclass+")");
+            //TODO:Mark First and then???
+        	//throw new DNSException("only class IN supported.  (got "+qclass+")");
         }
     }
     

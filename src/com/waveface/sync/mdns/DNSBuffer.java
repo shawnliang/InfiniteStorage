@@ -93,7 +93,13 @@ public class DNSBuffer {
     }
     
     public String readLabel() {
-        byte lengthByte = readByte();
+        byte lengthByte = 0;
+		try {
+			lengthByte = readByte();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+//			e.printStackTrace();
+		}
         byte hiBits = (byte) ((lengthByte>>>6) & 0x03);
         if (hiBits == 3) {
             // handle compressed names
