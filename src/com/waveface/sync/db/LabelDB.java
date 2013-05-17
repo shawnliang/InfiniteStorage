@@ -21,7 +21,7 @@ public class LabelDB {
 	public static void updateLabelInfo(Context context,LabelEntity.Label label,FileEntity fileEntity){
 		
 		
-		deleteLabel(context,label.label_id);
+		//deleteLabel(context,label.label_id);
 		updateLabel(context, label.label_id,label.label_name);
 		updateLabelFiles(context,label);
 		updateFiles(context,fileEntity);
