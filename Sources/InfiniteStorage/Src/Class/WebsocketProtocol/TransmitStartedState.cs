@@ -45,10 +45,10 @@ namespace InfiniteStorage.WebsocketProtocol
 					file_id = Guid.NewGuid(),
 					file_name = ctx.fileCtx.file_name,
 					file_path = Path.Combine(ctx.fileCtx.folder, ctx.fileCtx.file_name),
-					parent_folder = ctx.fileCtx.folder,
 					file_size = ctx.fileCtx.file_size,
 					type = (int)ctx.fileCtx.type,
 					saved_path = saved.relative_file_path,
+					parent_folder = Path.GetDirectoryName(saved.relative_file_path),
 					seq = Util.GetNextSeq()
 				};
 				Util.SaveFileRecord(fileAsset);

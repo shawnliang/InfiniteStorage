@@ -53,10 +53,10 @@ namespace UnitTest
 					!f.file_id.Equals(Guid.Empty) &&
 					f.file_name == ctx.fileCtx.file_name &&
 					f.file_path == Path.Combine(ctx.fileCtx.folder, ctx.fileCtx.file_name) &&
-					f.parent_folder == Path.GetDirectoryName(f.file_path) &&
 					f.file_size == ctx.fileCtx.file_size &&
 					f.type == (int)ctx.fileCtx.type &&
 					f.saved_path == saved.relative_file_path &&
+					f.parent_folder == Path.GetDirectoryName(saved.relative_file_path) &&
 					f.seq == 112345)
 				)).Verifiable();
 
