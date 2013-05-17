@@ -29,7 +29,8 @@ namespace InfiniteStorage.REST
 				{
 					label_id = label.label_id,
 					label_name = label.name,
-					files = util.QueryLabeledFiles(label.label_id).Select(x => x.id).ToList()
+					files = util.QueryLabeledFiles(label.label_id).Select(x => x.id).ToList(),
+					seq = label.seq
 				};
 
 				result.Add(data);
