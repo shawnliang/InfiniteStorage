@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using InfiniteStorage.Model;
+using System;
 using System.Linq;
-using System.Text;
 using Wammer.Station;
-using InfiniteStorage.Model;
-using System.Net;
 
 namespace InfiniteStorage.REST
 {
@@ -20,8 +17,8 @@ namespace InfiniteStorage.REST
 			using (var db = new MyDbContext())
 			{
 				var labeledFile = (from lb in db.Object.LabelFiles
-								  where lb.label_id == label_id && lb.file_id == file_id
-								  select lb).FirstOrDefault();
+								   where lb.label_id == label_id && lb.file_id == file_id
+								   select lb).FirstOrDefault();
 
 				if (labeledFile != null)
 				{

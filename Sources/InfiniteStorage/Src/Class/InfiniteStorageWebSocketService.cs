@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WebSocketSharp.Server;
-using WebSocketSharp;
-using System.IO;
+﻿using InfiniteStorage.WebsocketProtocol;
 using log4net;
-using InfiniteStorage.Properties;
-using InfiniteStorage.WebsocketProtocol;
+using System;
+using System.IO;
+using WebSocketSharp;
+using WebSocketSharp.Server;
 
 namespace InfiniteStorage
 {
-	class InfiniteStorageWebSocketService: WebSocketService
+	class InfiniteStorageWebSocketService : WebSocketService
 	{
 		private static ILog logger = LogManager.GetLogger("WebsocketService");
 		private ProtocolHanlder handler;
@@ -32,7 +28,7 @@ namespace InfiniteStorage
 
 			var storage = new FlatFileStorage(new DirOrganizerProxy());
 
-			var ctx = new ProtocolContext(new TempFileFactory(MyFileFolder.Temp), storage, new UnconnectedState()) 
+			var ctx = new ProtocolContext(new TempFileFactory(MyFileFolder.Temp), storage, new UnconnectedState())
 			{
 				SendFunc = this.Send,
 				StopFunc = this.Stop

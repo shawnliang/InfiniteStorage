@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using InfiniteStorage.Properties;
+﻿using InfiniteStorage.Properties;
 using InfiniteStorage.WebsocketProtocol;
+using System;
+using System.Windows.Forms;
 
 namespace InfiniteStorage
 {
@@ -21,7 +15,7 @@ namespace InfiniteStorage
 		}
 
 		public BackupProgressDialog(ProtocolContext ctx)
-			:this()
+			: this()
 		{
 			this.WSCtx = ctx;
 		}
@@ -42,7 +36,7 @@ namespace InfiniteStorage
 				{
 					TitleLabel.Text = string.Format(Resources.BackupProgressTitle_Finished, WSCtx.device_name);
 					overallLabel.Text = (WSCtx.NoMoreToTransfer()) ?
-						string.Format(Resources.BackupProgressTitle_BackupComplete, WSCtx.total_count):
+						string.Format(Resources.BackupProgressTitle_BackupComplete, WSCtx.total_count) :
 						string.Format(Resources.FirstUse_TransferStopped, WSCtx.device_name, WSCtx.recved_files);
 
 					curFileLabel.Text = "";

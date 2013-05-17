@@ -1,12 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using InfiniteStorage.Notify;
+using InfiniteStorage.WebsocketProtocol;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using InfiniteStorage.Notify;
 using Newtonsoft.Json;
-using InfiniteStorage.WebsocketProtocol;
 
 namespace UnitTest.Notify
 {
@@ -48,19 +44,19 @@ namespace UnitTest.Notify
 		[TestMethod]
 		public void happyCase_labels()
 		{
-		    var msg = JsonConvert.SerializeObject(new
-		    {
-		        connect = new { device_id = "dev", device_name = "name" },
-		        subscribe = new { labels = true }
-		    });
+			var msg = JsonConvert.SerializeObject(new
+			{
+				connect = new { device_id = "dev", device_name = "name" },
+				subscribe = new { labels = true }
+			});
 
 
-		    SubscriptionContext ctx = null;
-		    handler.Subscribing += (s, e) => { ctx = e.Ctx; };
-		    handler.HandleMessage(svc.Object, new WebSocketSharp.MessageEventArgs(msg));
+			SubscriptionContext ctx = null;
+			handler.Subscribing += (s, e) => { ctx = e.Ctx; };
+			handler.HandleMessage(svc.Object, new WebSocketSharp.MessageEventArgs(msg));
 
-		    Assert.AreEqual("name", ctx.device_name);
-		    Assert.AreEqual("dev", ctx.device_id);
+			Assert.AreEqual("name", ctx.device_name);
+			Assert.AreEqual("dev", ctx.device_id);
 			Assert.AreEqual(false, ctx.subscribe_files);
 			Assert.AreEqual(true, ctx.subscribe_labels);
 		}

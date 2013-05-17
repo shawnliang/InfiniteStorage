@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using InfiniteStorage.WebsocketProtocol;
+﻿using InfiniteStorage.WebsocketProtocol;
 
 namespace InfiniteStorage
 {
@@ -26,7 +22,7 @@ namespace InfiniteStorage
 		/// Gets the number of bytes written to the temp file
 		/// </summary>
 		long BytesWritten { get; }
-		
+
 		/// <summary>
 		/// Writes data to the end of this temp file
 		/// </summary>

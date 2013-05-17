@@ -1,12 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using InfiniteStorage.WebsocketProtocol;
-using Moq;
-using InfiniteStorage;
+﻿using InfiniteStorage;
 using InfiniteStorage.Model;
+using InfiniteStorage.WebsocketProtocol;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 using System.IO;
 
 namespace UnitTest
@@ -31,7 +28,7 @@ namespace UnitTest
 			ctx = new ProtocolContext(fac.Object, storage.Object, null)
 			{
 				device_id = "dev_id",
-				fileCtx = new FileContext() { file_name = "n", file_size = 1000, folder = "f", datetime = DateTime.Now, type = FileAssetType.image},
+				fileCtx = new FileContext() { file_name = "n", file_size = 1000, folder = "f", datetime = DateTime.Now, type = FileAssetType.image },
 				temp_file = temp.Object
 			};
 		}
@@ -43,7 +40,7 @@ namespace UnitTest
 			var saved = new SavedPath { device_folder = "fff", relative_file_path = "rrr" };
 
 			temp.Setup(x => x.EndWrite()).Verifiable();
-			temp.Setup(x=>x.Path).Returns("path1").Verifiable();
+			temp.Setup(x => x.Path).Returns("path1").Verifiable();
 			storage.Setup(x => x.MoveToStorage("path1", ctx.fileCtx)).Returns(saved).Verifiable();
 			util.Setup(x => x.GetNextSeq()).Returns(112345).Verifiable();
 			util.Setup(x => x.SaveFileRecord(It.Is<FileAsset>(
@@ -61,7 +58,7 @@ namespace UnitTest
 
 
 			var state = new TransmitStartedState() { Util = util.Object };
-			
+
 			ctx.SetState(state);
 			ctx.handleFileEndCmd(new TextCommand { action = "file-end", file_name = "f.jpg" });
 

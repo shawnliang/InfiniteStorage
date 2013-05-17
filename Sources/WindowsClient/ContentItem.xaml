@@ -53,7 +53,7 @@
             <Rectangle x:Name="rectangle" Fill="#E5000000" Height="37.5" Margin="-1,0,-1,-1" VerticalAlignment="Bottom" StrokeThickness="0" Opacity="0.5"/>
             <TextBlock x:Name="DateTaken" Margin="8,0,32,5" TextWrapping="Wrap" Text="{Binding Name, IsAsync=True}" VerticalAlignment="Bottom" FontSize="14.667" Opacity="0.6"/>
         </Grid>
-        <l:LabelTag HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30"/>
+        <l:LabelTag x:Name="ltTag" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30"/>
 
     </Grid>
 </UserControl>

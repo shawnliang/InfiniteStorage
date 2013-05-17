@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Wammer.Station;
-using InfiniteStorage.Model;
-using System.Net;
+﻿using InfiniteStorage.Model;
+using System;
 using System.IO;
+using System.Linq;
+using System.Net;
+using Wammer.Station;
 
 namespace InfiniteStorage.REST
 {
-	enum IMG_SIZE{
+	enum IMG_SIZE
+	{
 		small,
 		medium,
 		large,
@@ -29,7 +28,7 @@ namespace InfiniteStorage.REST
 			if (segments.Length != 3)
 				throw new Exception("url path format error: " + Request.Url.AbsolutePath);
 
-			
+
 
 			var file_id = new Guid(segments[1]);
 
@@ -72,12 +71,12 @@ namespace InfiniteStorage.REST
 			else
 			{
 				file_relative_path = Path.Combine(".thumbs", file.file_id.ToString() + "." + size.ToString() + ".thumb");
-				
+
 				var full_path = Path.Combine(MyFileFolder.Photo, file_relative_path);
 				if (!File.Exists(full_path))
 					file_relative_path = Path.Combine(file.folder, file.saved_path);
 			}
-			
+
 			var url = new UriBuilder("http", Request.Url.Host, 12888, file_relative_path).ToString();
 			Response.AddHeader("Location", url);
 			Response.Close();

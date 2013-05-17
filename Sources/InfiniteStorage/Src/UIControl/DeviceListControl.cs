@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using InfiniteStorage.Model;
+﻿using InfiniteStorage.Model;
 using InfiniteStorage.Properties;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace InfiniteStorage
 {
@@ -39,7 +35,7 @@ namespace InfiniteStorage
 			if (!DesignMode)
 			{
 				bgPopulate.RunWorkerAsync();
-				
+
 				radioAllow.Checked = !Settings.Default.RejectOtherDevices;
 				radioDisallow.Checked = Settings.Default.RejectOtherDevices;
 
@@ -57,7 +53,7 @@ namespace InfiniteStorage
 
 		private void bgPopulate_DoWork(object sender, DoWorkEventArgs e)
 		{
-			e.Result = populateData(); 
+			e.Result = populateData();
 		}
 
 		private void bgPopulate_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

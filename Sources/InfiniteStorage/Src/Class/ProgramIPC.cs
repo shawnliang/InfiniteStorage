@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using InfiniteStorage.Win32;
+using System;
 using System.Diagnostics;
-using InfiniteStorage.Win32;
+using System.Linq;
 using System.Reflection;
 
 namespace InfiniteStorage

@@ -119,9 +119,24 @@ namespace Waveface.Client
 		}
 
 		#region Event Process
-		private void onMouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void content_TagStatusChanged(object sender, System.EventArgs e)
 		{
-			LabeledContents.Add(lbxContentContainer.SelectedItem as IContentEntity);
+			//TODO: 待重構
+			var content = lbxContentContainer.SelectedItem as IContentEntity;
+			var contentControl = sender as ContentItem;
+
+			if (!contentControl.Tagged)
+			{
+				LabeledContents.Remove(content);
+				ClientFramework.Client.Default.UnTag(content);
+				return;
+			}
+
+			if (LabeledContents.Contains(content))
+				return;
+
+			LabeledContents.Add(content);
+			ClientFramework.Client.Default.Tag(content);
 		}
 		#endregion
 	}

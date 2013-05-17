@@ -1,11 +1,11 @@
-﻿using System;
+﻿using log4net;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading;
-using log4net;
-using Newtonsoft.Json;
 
 
 namespace Wammer.Station
@@ -90,7 +90,7 @@ namespace Wammer.Station
 			}
 		}
 
-		
+
 
 		/// <summary>
 		/// Finds the best match.
@@ -340,7 +340,8 @@ namespace Wammer.Station
 				using (var output = new StreamWriter(response.OutputStream))
 				{
 					output.WriteLine(JsonConvert.SerializeObject(
-						new {
+						new
+						{
 							api_ret_code = 400,
 							api_ret_message = e.ToString(),
 							status = (int)HttpStatusCode.BadRequest

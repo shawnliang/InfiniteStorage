@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using InfiniteStorage.Model;
+using System;
 using System.Linq;
-using System.Text;
 using Wammer.Station;
-using InfiniteStorage.Model;
-using System.Net;
 
 namespace InfiniteStorage.REST
 {

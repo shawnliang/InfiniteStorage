@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Newtonsoft.Json;
 
 namespace InfiniteStorage.Notify
 {
@@ -39,7 +38,7 @@ namespace InfiniteStorage.Notify
 		{
 			var labels = util.QueryAllLabels();
 
-			foreach(var label in labels)
+			foreach (var label in labels)
 			{
 				var oldSeq = getOldLabelSeq(label);
 

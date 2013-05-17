@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using InfiniteStorage.Properties;
+using System;
 using System.IO;
-using InfiniteStorage.Properties;
+using System.Windows.Forms;
 
 namespace InfiniteStorage
 {
@@ -85,7 +79,7 @@ namespace InfiniteStorage
 
 			set
 			{
-				switch(value)
+				switch (value)
 				{
 					case InfiniteStorage.LocationType.SingleFolder:
 						radioSingleFolder.Checked = true;
