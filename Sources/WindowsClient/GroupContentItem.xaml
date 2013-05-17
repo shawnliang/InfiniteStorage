@@ -17,7 +17,7 @@
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
-        <BitmapImage x:Key="placeholder" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\larry\Documents\Visual Studio 2012\Projects\WpfApplication3\WpfApplication3\pplaceholder.png"/>
+        <BitmapImage x:Key="placeholder" >pplaceholder.png</BitmapImage>
     </UserControl.Resources>
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="Mouse.MouseEnter">
