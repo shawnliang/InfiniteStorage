@@ -180,12 +180,14 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	}
 	
 	private void autoSlideNext() {
-		mCurrentPosition++;
-		mViewAnimator.showNext();
-		mPager.setVisibility(View.INVISIBLE);
-		mPager.setCurrentItem(mCurrentPosition);
-		setAnimatorImage(mCurrentPosition+1, getNextView());
-		mSlideShowHandler.postDelayed(mSlideNextRunnable, AUTO_SLIDE_SHOW_DELAY_MILLIS);
+		if(mCurrentPosition+1 < mCursor.getCount()) {
+			mCurrentPosition++;
+			mViewAnimator.showNext();
+			mPager.setVisibility(View.INVISIBLE);
+			mPager.setCurrentItem(mCurrentPosition);
+			setAnimatorImage(mCurrentPosition+1, getNextView());
+			mSlideShowHandler.postDelayed(mSlideNextRunnable, AUTO_SLIDE_SHOW_DELAY_MILLIS);
+		}
 	}
 	
 	private void startSlideShow() {
@@ -215,11 +217,10 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 			attr.setDoneScaleType(ScaleType.CENTER_CROP);
 			attr.setLoadFromThread(true);
 			attr.setMaxSize(1920, 1080);
-			mImageManager.getImage(
-					mServerUrl + Constant.URL_IMAGE + "/" + 
+			String url = mServerUrl + Constant.URL_IMAGE + "/" + 
 					mCursor.getString(mCursor.getColumnIndex(LabelFileTable.COLUMN_FILE_ID)) + 
-					Constant.URL_IMAGE_LARGE, attr);
-			mImageManager.getImage(mCursor.getString(0), attr);
+					Constant.URL_IMAGE_LARGE;
+			mImageManager.getImage( url , attr);
 		}
 	}
 	
