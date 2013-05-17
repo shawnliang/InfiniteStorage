@@ -1,14 +1,12 @@
-﻿using System;
+﻿using InfiniteStorage.Model;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using InfiniteStorage.Model;
-using Wammer.Utility;
-using InfiniteStorage.Notify;
-using System.IO;
-using System.Drawing;
 using System.Data.SQLite;
+using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using Wammer.Utility;
 
 namespace InfiniteStorage
 {
@@ -128,11 +126,11 @@ namespace InfiniteStorage
 			}
 		}
 
-		private void generateThumbnail(FileAsset file, Dictionary<string ,Device> devices)
+		private void generateThumbnail(FileAsset file, Dictionary<string, Device> devices)
 		{
 			var file_path = Path.Combine(MyFileFolder.Photo, devices[file.device_id].folder_name, file.saved_path);
-			
-			using(var m = readFilesToMemory(file_path))
+
+			using (var m = readFilesToMemory(file_path))
 			{
 				var imgSize = ImageHelper.GetImageSize(m);
 				m.Position = 0;
@@ -179,7 +177,7 @@ namespace InfiniteStorage
 		private static MemoryStream readFilesToMemory(string file)
 		{
 			var m = new MemoryStream();
-			
+
 			using (var f = File.OpenRead(file))
 			{
 				f.CopyTo(m);
@@ -194,7 +192,7 @@ namespace InfiniteStorage
 			using (var db = new MyDbContext())
 			{
 				var query = from f in db.Object.Files
-							where f.seq >= fromSeq && !f.deleted && !f.thumb_ready && f.type == (int) FileAssetType.image
+							where f.seq >= fromSeq && !f.deleted && !f.thumb_ready && f.type == (int)FileAssetType.image
 							orderby f.seq ascending
 							select f;
 

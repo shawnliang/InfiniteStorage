@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using InfiniteStorage.Properties;
+using InfiniteStorage.WebsocketProtocol;
+using InfiniteStorage.Win32;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using InfiniteStorage.Properties;
-using InfiniteStorage.WebsocketProtocol;
-using InfiniteStorage.Win32;
 
 namespace InfiniteStorage
 {
@@ -67,7 +66,8 @@ namespace InfiniteStorage
 
 		public void OnDeviceConnected(object sender, WebsocketEventArgs evt)
 		{
-			SynchronizationContextHelper.SendMainSyncContext(() => {
+			SynchronizationContextHelper.SendMainSyncContext(() =>
+			{
 				showNotifyIconMenu(evt.ctx);
 				showProgressDialog(evt.ctx);
 			});
@@ -225,7 +225,7 @@ namespace InfiniteStorage
 		public void OnDeviceDisconnected(object sender, WebsocketEventArgs evt)
 		{
 			SynchronizationContextHelper.SendMainSyncContext(() => { removeDeviceFromNotifyIconMenu(evt); });
-			
+
 		}
 
 		public void OnDevicePairingRequesting(object sender, WebsocketProtocol.WebsocketEventArgs args)
@@ -309,6 +309,6 @@ namespace InfiniteStorage
 				log4net.LogManager.GetLogger(GetType()).Warn("Error in showApproveDialog", err);
 			}
 		}
-		
+
 	}
 }

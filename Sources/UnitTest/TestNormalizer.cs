@@ -1,9 +1,5 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using InfiniteStorage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using InfiniteStorage;
 
 namespace UnitTest
 {
@@ -32,8 +28,8 @@ namespace UnitTest
 
 			Normalizer.NormalizeToInt(1024 * 1024, 1024 * 1023, out a, out b);
 
-			Assert.AreEqual(1024*1024, a);
-			Assert.AreEqual(1024*1023, b);
+			Assert.AreEqual(1024 * 1024, a);
+			Assert.AreEqual(1024 * 1023, b);
 		}
 	}
 }

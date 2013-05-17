@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using InfiniteStorage.Properties;
-using System.Reflection;
-using System.IO;
+﻿using InfiniteStorage.Properties;
+using System;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Windows.Forms;
 
 namespace InfiniteStorage
 {

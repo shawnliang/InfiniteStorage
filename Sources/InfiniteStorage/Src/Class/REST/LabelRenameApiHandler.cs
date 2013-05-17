@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using InfiniteStorage.Model;
+using System;
 using System.Linq;
-using System.Text;
 using Wammer.Station;
-using InfiniteStorage.Model;
-using System.Net;
 
 namespace InfiniteStorage.REST
 {
@@ -26,7 +23,7 @@ namespace InfiniteStorage.REST
 				if (label == null)
 					throw new Exception("label_id not exist:" + label_id);
 
-				
+
 				label.name = name;
 				label.seq = SeqNum.GetNextSeq();
 				db.Object.SaveChanges();

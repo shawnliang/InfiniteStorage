@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using InfiniteStorage.Properties;
+using System;
 using System.Data.SQLite;
 using System.IO;
-using InfiniteStorage.Properties;
 
 namespace InfiniteStorage.Model
 {
 	public class MyDbContext : IDisposable
 	{
 		public InfiniteStorageContext Object { get; private set; }
-		public static string ConnectionString { get;private set; }
+		public static string ConnectionString { get; private set; }
 		public static string DbFilePath { get; private set; }
 
 		static MyDbContext()

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Diagnostics;
 
 namespace InfiniteStorage
 {
@@ -39,7 +36,7 @@ namespace InfiniteStorage
 			var temp_dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny", "kemp");
 
 			File.Copy(Path.Combine(nginx_dir, @"conf\mime.types"), Path.Combine(cfg_dir, "mime.types"));
-			
+
 			using (var template = new StreamReader(Path.Combine(nginx_dir, @"conf\nginx.conf.template")))
 			using (var target_cfg = new StreamWriter(Path.Combine(cfg_dir, "nginx.cfg")))
 			{
@@ -58,7 +55,7 @@ namespace InfiniteStorage
 					line = line.Replace("${fastcgi_temp_path}", temp_dir);
 					line = line.Replace("${uwsgi_temp_path}", temp_dir);
 					line = line.Replace("${scgi_temp_path}", temp_dir);
-					
+
 
 					target_cfg.WriteLine(line);
 				}

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using InfiniteStorage.Model;
+using System;
 using System.Linq;
-using System.Text;
 using Wammer.Station;
-using InfiniteStorage.Model;
-using System.Net;
 
 namespace InfiniteStorage.REST
 {
@@ -21,8 +18,8 @@ namespace InfiniteStorage.REST
 			{
 
 				bool alreadyTaged = (from lf in db.Object.LabelFiles
-								   where lf.label_id == label_id && lf.file_id == file_id
-								   select lf).Any();
+									 where lf.label_id == label_id && lf.file_id == file_id
+									 select lf).Any();
 
 				if (!alreadyTaged)
 				{

@@ -1,12 +1,7 @@
-﻿using System;
+﻿using InfiniteStorage.Model;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Wammer.Station;
-using InfiniteStorage.Model;
-using System.Net;
-using System.IO;
-using Newtonsoft.Json;
 
 namespace InfiniteStorage.REST
 {
@@ -28,13 +23,13 @@ namespace InfiniteStorage.REST
 
 			var result = new List<object>();
 
-			foreach(var label in labels)
+			foreach (var label in labels)
 			{
 				var data = new
 				{
 					label_id = label.label_id,
 					label_name = label.name,
-					files = util.QueryLabeledFiles(label.label_id).Select(x=>x.id).ToList()
+					files = util.QueryLabeledFiles(label.label_id).Select(x => x.id).ToList()
 				};
 
 				result.Add(data);

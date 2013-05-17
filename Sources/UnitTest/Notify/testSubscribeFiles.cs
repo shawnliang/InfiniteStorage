@@ -1,12 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿﻿using InfiniteStorage.Notify;
+using InfiniteStorage.WebsocketProtocol;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using InfiniteStorage.Notify;
 using Newtonsoft.Json;
-using InfiniteStorage.WebsocketProtocol;
 
 namespace UnitTest.Notify
 {

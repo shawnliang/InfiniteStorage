@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace InfiniteStorage.WebsocketProtocol
 {
@@ -12,12 +9,12 @@ namespace InfiniteStorage.WebsocketProtocol
 		}
 
 		public ProtocolErrorException(string message)
-			:base(message)
+			: base(message)
 		{
 		}
 
 		public ProtocolErrorException(string message, Exception innerException)
-			:base(message, innerException)
+			: base(message, innerException)
 		{
 		}
 	}

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Data.SQLite;
-using InfiniteStorage.Model;
-using WebSocketSharp;
+﻿using InfiniteStorage.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Data;
+using System.Data.SQLite;
+using System.Windows.Forms;
+using WebSocketSharp;
 
 namespace DataTool
 {
@@ -56,11 +51,11 @@ namespace DataTool
 						cmd1.Parameters.Add(new SQLiteParameter("@devid", dev_id));
 						cmd1.Parameters.Add(new SQLiteParameter("@evtTime", DateTime.Now));
 						cmd1.Parameters.Add(new SQLiteParameter("@fid", Guid.NewGuid()));
-						cmd1.Parameters.Add(new SQLiteParameter("@fname", "file"+i+".jpg"));
+						cmd1.Parameters.Add(new SQLiteParameter("@fname", "file" + i + ".jpg"));
 						cmd1.Parameters.Add(new SQLiteParameter("@fpath", "path" + i + ".jpg"));
 						cmd1.Parameters.Add(new SQLiteParameter("@fsize", 12345678));
 						cmd1.Parameters.Add(new SQLiteParameter("@path", @"2012\2012-10\file" + i + ".jpg"));
-						cmd1.Parameters.Add(new SQLiteParameter("@seq", i+1));
+						cmd1.Parameters.Add(new SQLiteParameter("@seq", i + 1));
 
 						cmd1.ExecuteNonQuery();
 					}
@@ -93,7 +88,8 @@ namespace DataTool
 			object data;
 
 			if (subcribeFiles.Checked)
-				data = new {
+				data = new
+				{
 					connect = new
 					{
 						device_id = Guid.NewGuid().ToString(),
@@ -107,7 +103,8 @@ namespace DataTool
 					}
 				};
 			else
-				data = new {
+				data = new
+				{
 					connect = new
 					{
 						device_id = Guid.NewGuid().ToString(),
@@ -128,10 +125,11 @@ namespace DataTool
 		{
 			if (textBoxNotify.InvokeRequired)
 			{
-				textBoxNotify.Invoke(new MethodInvoker(() => {
+				textBoxNotify.Invoke(new MethodInvoker(() =>
+				{
 					client_OnMessage(sender, e);
 				}));
-				
+
 				return;
 			}
 

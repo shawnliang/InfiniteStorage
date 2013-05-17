@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using InfiniteStorage.Model;
 using InfiniteStorage.Properties;
-using InfiniteStorage.Model;
 using Microsoft.Win32;
+using System;
+using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
 
 
 namespace InfiniteStorage
@@ -102,7 +97,7 @@ namespace InfiniteStorage
 
 			using (var db = new MyDbContext())
 			{
-				
+
 				foreach (var dev in deviceListControl.DeletedDevices)
 				{
 					db.Object.Database.ExecuteSqlCommand("delete from Devices where device_id=?", dev.device_id);
@@ -115,7 +110,8 @@ namespace InfiniteStorage
 			{
 				var devConns = conns.Where((x) => x.device_id == dev.device_id);
 
-				devConns.ToList().ForEach(x => {
+				devConns.ToList().ForEach(x =>
+				{
 					try
 					{
 						x.Stop(WebSocketSharp.Frame.CloseStatusCode.POLICY_VIOLATION, "Removed by user");

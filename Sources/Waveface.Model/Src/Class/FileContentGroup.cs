@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Waveface.Model
 {
-	public class FileContentGroup:ContentGroup
+	public class FileContentGroup : ContentGroup
 	{
 		#region Constructor
 		public FileContentGroup()
@@ -20,7 +14,7 @@ namespace Waveface.Model
 		public FileContentGroup(Uri uri)
 			: base(uri.LocalPath.GetHashCode().ToString(), Path.GetFileName(uri.LocalPath), uri)
 		{
-			SetContents((contents) => 
+			SetContents((contents) =>
 			{
 				var path = uri.LocalPath;
 				var directories = Directory.GetDirectories(path);
@@ -36,7 +30,7 @@ namespace Waveface.Model
 				{
 					contents.Add(new Content(new Uri(file)));
 				}
-			});		
+			});
 		}
 		#endregion
 	}

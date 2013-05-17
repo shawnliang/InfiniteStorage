@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace InfiniteStorage.WebsocketProtocol
 {
@@ -128,7 +125,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		public void Send(object data)
 		{
 			var msg = data as string;
-			if(msg == null)
+			if (msg == null)
 				msg = JsonConvert.SerializeObject(data, new JsonSerializerSettings { DateTimeZoneHandling = DateTimeZoneHandling.Utc, NullValueHandling = NullValueHandling.Ignore, DateFormatHandling = DateFormatHandling.IsoDateFormat });
 
 			SendFunc(msg);

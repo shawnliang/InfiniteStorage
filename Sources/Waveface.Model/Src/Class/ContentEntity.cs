@@ -27,7 +27,7 @@ namespace Waveface.Model
 		/// <value>
 		/// The ID.
 		/// </value>
-		public string ID
+		public virtual string ID
 		{
 			get
 			{
@@ -45,7 +45,7 @@ namespace Waveface.Model
 		/// <value>
 		/// The name.
 		/// </value>
-		public string Name
+		public virtual string Name
 		{
 			get
 			{
@@ -63,7 +63,7 @@ namespace Waveface.Model
 		/// <value>
 		/// The location.
 		/// </value>
-		public Uri Uri
+		public virtual Uri Uri
 		{
 			get;
 			protected set;
@@ -74,13 +74,13 @@ namespace Waveface.Model
 		/// Gets or sets the parent.
 		/// </summary>
 		/// <value>The parent.</value>
-		public IContentEntity Parent
+		public virtual IContentEntity Parent
 		{
 			get { return _parent; }
 			internal set { _parent = value; }
 		}
 
-		public string ContentPath
+		public virtual string ContentPath
 		{
 			get
 			{
@@ -90,7 +90,7 @@ namespace Waveface.Model
 			}
 		}
 
-		public Image Image
+		public virtual Image Image
 		{
 			get
 			{
@@ -100,31 +100,31 @@ namespace Waveface.Model
 			}
 		}
 
-		public System.Drawing.Image Thumbnail
+		public virtual System.Drawing.Image Thumbnail
 		{
 			get;
 			internal set;
 		}
 
-		public long Size
+		public virtual long Size
 		{
 			get;
 			internal set;
 		}
 
-		public System.DateTime CreateTime
+		public virtual DateTime CreateTime
 		{
 			get;
 			internal set;
 		}
 
-		public System.DateTime ModifyTime
+		public virtual DateTime ModifyTime
 		{
 			get;
 			internal set;
 		}
 
-		public string Description
+		public virtual string Description
 		{
 			get
 			{
@@ -136,7 +136,7 @@ namespace Waveface.Model
 			}
 		}
 
-		public System.Collections.Generic.Dictionary<string, string> Memo
+		public virtual Dictionary<string, string> Memo
 		{
 			get
 			{
@@ -179,7 +179,7 @@ namespace Waveface.Model
 		/// <returns></returns>
 		private string GetContentPath()
 		{
-			return (Parent == null) ? 
+			return (Parent == null) ?
 				string.Format(@"{0}", this.Name) :
 				string.Format(@"{0}\{1}", Parent.ContentPath, this.Name);
 		}

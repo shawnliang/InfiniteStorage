@@ -1,12 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using InfiniteStorage;
-using InfiniteStorage.WebsocketProtocol;
-using Moq;
+﻿using InfiniteStorage;
 using InfiniteStorage.Model;
+using InfiniteStorage.WebsocketProtocol;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Newtonsoft.Json.Linq;
 using WebSocketSharp.Frame;
 
@@ -21,7 +17,7 @@ namespace UnitTest
 			var util = new Mock<IConnectMsgHandlerUtil>();
 			util.Setup(x => x.GetServerId()).Returns("server_id1").Verifiable();
 			util.Setup(x => x.GetPhotoFolder()).Returns(@"c:\folder1\").Verifiable();
-			util.Setup(x=>x.GetFreeSpace(It.IsAny<string>())).Returns(123456).Verifiable();
+			util.Setup(x => x.GetFreeSpace(It.IsAny<string>())).Returns(123456).Verifiable();
 			util.Setup(x => x.GetUniqueDeviceFolder("na")).Returns("ggyyUnique_dev_name").Verifiable();
 			util.Setup(x => x.Save(It.Is<Device>(
 				(d) =>
@@ -35,7 +31,7 @@ namespace UnitTest
 
 			var state = new WaitForApproveState();
 			var ctx = new ProtocolContext(null, storage.Object, state) { device_id = "dd", device_name = "na" };
-			
+
 			string sentData = null;
 			ctx.SendFunc = (t) => { sentData = t; };
 

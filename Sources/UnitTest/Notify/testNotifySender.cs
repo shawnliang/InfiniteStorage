@@ -1,13 +1,11 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using InfiniteStorage.Model;
+using InfiniteStorage.Notify;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using InfiniteStorage;
-using InfiniteStorage.Notify;
-using InfiniteStorage.Model;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace UnitTest.Notify
 {
@@ -54,7 +52,7 @@ namespace UnitTest.Notify
 			};
 			util.Setup(x => x.QueryChangedFiles(1000)).Returns(retFiles);
 
-			
+
 			var sender = new NotifySender(notifyCtx.Object, util.Object);
 			sender.Notify();
 
@@ -62,10 +60,10 @@ namespace UnitTest.Notify
 			notifyCtx.VerifyAll();
 			Assert.AreEqual(1001, sender.file_seq);
 			Assert.IsNotNull(sentData);
-			
+
 			var o = JObject.Parse(sentData);
 			Assert.IsNotNull(o["file_changes"]);
-			
+
 			var fileChanges = o["file_changes"];
 			Assert.IsTrue(fileChanges.Type == JTokenType.Array);
 			Assert.AreEqual(1, fileChanges.Count());
@@ -106,7 +104,7 @@ namespace UnitTest.Notify
 			sender.label_seq.Add(allLabels[0].label_id, 5);
 			sender.Notify();
 
-			
+
 			notifyCtx.VerifyAll();
 			util.VerifyAll();
 

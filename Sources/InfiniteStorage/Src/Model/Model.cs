@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Common;
 using System.Data.Entity;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace InfiniteStorage.Model
@@ -31,7 +31,7 @@ namespace InfiniteStorage.Model
 		public string file_path { get; set; }
 
 		public long file_size { get; set; }
-		
+
 		public string device_id { get; set; }
 
 		public DateTime event_time { get; set; }
@@ -83,10 +83,10 @@ namespace InfiniteStorage.Model
 		audio = 2,
 	}
 
-	public class InfiniteStorageContext: DbContext
+	public class InfiniteStorageContext : DbContext
 	{
 		public DbSet<Device> Devices { get; set; }
-		
+
 		public DbSet<FileAsset> Files { get; set; }
 
 		public DbSet<Label> Labels { get; set; }
@@ -94,7 +94,7 @@ namespace InfiniteStorage.Model
 		public DbSet<LabeledFile> LabelFiles { get; set; }
 
 		public InfiniteStorageContext(DbConnection conn, bool contextOwnsConnection)
-			:base(conn, contextOwnsConnection)
+			: base(conn, contextOwnsConnection)
 		{
 		}
 

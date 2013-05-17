@@ -1,5 +1,4 @@
 ﻿using AppLimit.NetSparkle;
-using Microsoft.Win32;
 using System;
 
 namespace Waveface.Common

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using InfiniteStorage.WebsocketProtocol;
-using InfiniteStorage;
-using Moq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using InfiniteStorage;
 using InfiniteStorage.Model;
+using InfiniteStorage.WebsocketProtocol;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Newtonsoft.Json.Linq;
+using System;
 
 namespace UnitTest
 {
@@ -17,7 +13,7 @@ namespace UnitTest
 	{
 		ProtocolContext ctx = null;
 		Mock<IFileStorage> fileStorage;
-		
+
 		[TestInitialize]
 		public void setup()
 		{
@@ -100,7 +96,8 @@ namespace UnitTest
 			var handler = new ConnectMsgHandler() { Util = util.Object };
 
 			handler.HandleConnectMsg(
-				new TextCommand {
+				new TextCommand
+				{
 					action = "connect",
 					device_name = "dev",
 					device_id = "id1",

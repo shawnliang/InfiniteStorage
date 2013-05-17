@@ -1,13 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using InfiniteStorage;
-using Moq;
-using WebSocketSharp;
-using Newtonsoft.Json;
+﻿using InfiniteStorage;
 using InfiniteStorage.WebsocketProtocol;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Newtonsoft.Json;
+using WebSocketSharp;
 
 namespace UnitTest
 {
@@ -107,11 +103,11 @@ namespace UnitTest
 		[TestMethod]
 		public void protocolHandlerSendConnectMsgToProperHandler()
 		{
-			var connectMSg =new TextCommand{ action = "connect", device_name = "de", device_id = "id"};
+			var connectMSg = new TextCommand { action = "connect", device_name = "de", device_id = "id" };
 
 
 			var ctx = new Mock<IProtocolHandlerContext>();
-			ctx.Setup(x=>x.handleConnectCmd(It.Is<TextCommand>( cmd => cmd.action == "connect" && cmd.device_id == "id" && cmd.device_name == "de"))).Verifiable();
+			ctx.Setup(x => x.handleConnectCmd(It.Is<TextCommand>(cmd => cmd.action == "connect" && cmd.device_id == "id" && cmd.device_name == "de"))).Verifiable();
 			var protoHdr = new ProtocolHanlder(ctx.Object);
 
 			protoHdr.HandleMessage(new MessageEventArgs(JsonConvert.SerializeObject(connectMSg)));
@@ -173,7 +169,7 @@ namespace UnitTest
 		public void do_not_handle_closed_ctx()
 		{
 			var ctx = new Mock<IProtocolHandlerContext>();
-			ctx.Setup(x=>x.IsClosed).Returns(true);
+			ctx.Setup(x => x.IsClosed).Returns(true);
 
 			var handler = new ProtocolHanlder(ctx.Object);
 

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 
 namespace InfiniteStorage
@@ -15,7 +12,7 @@ namespace InfiniteStorage
 			get
 			{
 				if (userFolder == null)
-					 userFolder = Environment.GetEnvironmentVariable("UserProfile");
+					userFolder = Environment.GetEnvironmentVariable("UserProfile");
 				return userFolder;
 			}
 		}

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using InfiniteStorage;
-using Moq;
+﻿using InfiniteStorage;
 using InfiniteStorage.WebsocketProtocol;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
 
 namespace UnitTest
 {
@@ -26,7 +23,7 @@ namespace UnitTest
 		[TestMethod]
 		public void imageMimeTypesAreSavedToPhotoLocation()
 		{
-			var fileCtx = new FileContext { file_name = "a.jpg", type= InfiniteStorage.Model.FileAssetType.image, datetime = new DateTime(2010, 10, 12) };
+			var fileCtx = new FileContext { file_name = "a.jpg", type = InfiniteStorage.Model.FileAssetType.image, datetime = new DateTime(2010, 10, 12) };
 
 			var fileMover = new Mock<IFileMove>();
 			fileMover.Setup(x => x.Move("temp.jpg", @"pp\dev\xxxxxx\yyyyyy\a.jpg")).Returns(@"pp\dev\xxxxxx\yyyyyy\a.jpg").Verifiable();
@@ -64,7 +61,7 @@ namespace UnitTest
 
 			var stor = new FlatFileStorage(dirOrg.Object);
 			stor.FileMover = fileMover.Object;
-			
+
 			stor.StorageLocationProvider = loc.Object;
 			stor.setDeviceName("dev");
 			stor.MoveToStorage("temp.jpg", fileCtx);

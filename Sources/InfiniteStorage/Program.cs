@@ -1,20 +1,17 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Linq;
-using InfiniteStorage.Model;
+﻿using InfiniteStorage.Model;
+using InfiniteStorage.Notify;
 using InfiniteStorage.Properties;
+using InfiniteStorage.REST;
 using InfiniteStorage.Win32;
-using WebSocketSharp.Server;
+using System;
+using System.Drawing;
 using System.IO;
 using System.Management;
 using System.Security.Cryptography;
 using System.Text;
-using InfiniteStorage.WebsocketProtocol;
-using InfiniteStorage.Notify;
+using System.Windows.Forms;
 using Wammer.Station;
-using System.Net;
-using InfiniteStorage.REST;
+using WebSocketSharp.Server;
 
 namespace InfiniteStorage
 {
@@ -124,7 +121,7 @@ namespace InfiniteStorage
 				m_bonjourService = new BonjourService();
 				m_bonjourService.Error += new EventHandler<BonjourErrorEventArgs>(m_bonjourService_Error);
 
-				
+
 				m_bonjourService.Register(backup_port, notify_port, rest_port, Settings.Default.ServerId);
 
 				// bonjour record sometimes disappear for unknown reason.

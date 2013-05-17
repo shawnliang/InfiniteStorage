@@ -1,12 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using InfiniteStorage.WebsocketProtocol;
-using InfiniteStorage;
+﻿using InfiniteStorage;
 using InfiniteStorage.Model;
+using InfiniteStorage.WebsocketProtocol;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 
 namespace UnitTest
 {
@@ -28,10 +25,10 @@ namespace UnitTest
 		[TestMethod]
 		public void testFileStart()
 		{
-			fac.Setup(x=>x.CreateTempFile()).Returns(tempFile.Object).Verifiable();
+			fac.Setup(x => x.CreateTempFile()).Returns(tempFile.Object).Verifiable();
 
 			var state = new TransmitInitState();
-			var ctx =new ProtocolContext(fac.Object, storage.Object, state);
+			var ctx = new ProtocolContext(fac.Object, storage.Object, state);
 			var cmd = new TextCommand
 			{
 				action = "file-start",
@@ -43,7 +40,7 @@ namespace UnitTest
 				total_count = 1000,
 				backuped_count = 333,
 			};
-			
+
 			ctx.handleFileStartCmd(cmd);
 
 			Assert.AreEqual(cmd.file_name, ctx.fileCtx.file_name);
@@ -88,7 +85,7 @@ namespace UnitTest
 				action = "file-start",
 				file_name = "name",
 				file_size = 1234,
-				type ="~~~~~~~ooxx123",
+				type = "~~~~~~~ooxx123",
 				folder = "/sto/pp",
 				datetime = DateTime.Now
 			};
