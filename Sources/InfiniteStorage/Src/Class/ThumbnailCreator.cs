@@ -94,7 +94,9 @@ namespace InfiniteStorage
 			}
 
 			markFilesHavingThumbnail(successFiles);
-			from = successFiles.Max(x => x.seq);
+
+			if (successFiles.Any())
+				from = successFiles.Max(x => x.seq);
 		}
 
 		private void markFilesHavingThumbnail(List<FileAsset> successFiles)

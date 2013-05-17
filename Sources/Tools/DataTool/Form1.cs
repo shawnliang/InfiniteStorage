@@ -146,7 +146,7 @@ namespace DataTool
 				}
 			}
 
-			var label = o["label_id"];
+			var label = o["label_change"];
 			if (label != null)
 			{
 				textBoxNotify.AppendText("\r\n" + e.Data + "\r\n");

@@ -107,6 +107,7 @@
     <Compile Include="Src\Class\REST\LabelAddApiHandler.cs" />
     <Compile Include="Src\Class\REST\LabelClearApiHandler.cs" />
     <Compile Include="Src\Class\REST\LabelDeleteApiHandler.cs" />
+    <Compile Include="Src\Class\REST\LabelGetApiHandler.cs" />
     <Compile Include="Src\Class\REST\LabelListApiHandler.cs" />
     <Compile Include="Src\Class\REST\LabelRenameApiHandler.cs" />
     <Compile Include="Src\Class\REST\LabelTagApiHandler.cs" />
