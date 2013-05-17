@@ -34,20 +34,12 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.waveface.exception.WammerServerException;
-import com.waveface.service.HttpInvoker;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
-import com.waveface.sync.RuntimeState;
 import com.waveface.sync.db.BonjourServersTable;
-import com.waveface.sync.db.LabelDB;
-import com.waveface.sync.entity.FileEntity;
-import com.waveface.sync.entity.LabelEntity;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.ui.adapter.ServerChooseAdapter;
-import com.waveface.sync.util.NetworkUtil;
 
 
 public class ServerChooserFragment extends FragmentBase 

@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
+import com.waveface.sync.db.LabelDB;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.image.MediaStoreImage;
 import com.waveface.sync.logic.BackupLogic;
@@ -71,6 +73,10 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
+		Cursor allLabel = LabelDB.getAllLabes(getActivity());
+		allLabel.moveToFirst();
+		int labelsCount =  allLabel.getCount();
+		allLabel.close();
 		//START UP SERVICE
 		new InvokeServiceTask().execute(new Void[]{});
 		

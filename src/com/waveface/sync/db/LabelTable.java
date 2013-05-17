@@ -28,12 +28,13 @@ public class LabelTable implements BaseColumns {
 	public static final String TABLE_NAME = "Labels";
 	public static final String COLUMN_LABEL_ID = "id";	
 	public static final String COLUMN_LABEL_NAME = "labelName";
+	public static final String COLUMN_SEQ = "seq";
 	
 	private LabelTable() {
 
 	}
 	
-	public static int updateLabel(Context context, String labelId,String labelName) {
+	public static int updateLabel(Context context, String labelId,String labelName,String seq) {
 		int result = 0;
 		
 		ContentResolver cr = context.getContentResolver();
@@ -42,7 +43,7 @@ public class LabelTable implements BaseColumns {
 			ContentValues cv = new ContentValues();
 			cv.put(LabelTable.COLUMN_LABEL_ID, labelId);
 			cv.put(LabelTable.COLUMN_LABEL_NAME, labelName);
-
+			cv.put(LabelTable.COLUMN_SEQ, seq);
 			// insert label
 			result = cr.bulkInsert(LabelTable.CONTENT_URI,
 						new ContentValues[] { cv });

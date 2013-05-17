@@ -18,8 +18,13 @@ public class LabelEntity {
 	@SerializedName("label_id")
 	public String label_id;
 
+	@SerializedName("seq")
+	public String seq;
+	
 	@SerializedName("label_name")
 	public String label_name;
+	
+	
 	
 	public String[] files;
 	}

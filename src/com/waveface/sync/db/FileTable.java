@@ -6,15 +6,15 @@ import com.waveface.sync.provider.SyncProvider;
 
 public class FileTable implements BaseColumns {
 
-	public static final String FILE_NAME = "lFile";
+	public static final String FILES_NAME = "files";
 	public static final Uri FILE_URI = Uri.parse("content://"
-			+ SyncProvider.AUTHORITY + "/" + FILE_NAME);
+			+ SyncProvider.AUTHORITY + "/" + FILES_NAME);
 	public static final Uri CONTENT_URI =  FILE_URI;
-	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.wammer.sync.file";
-	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.wammer.sync.file";
-	public static final String DEFAULT_SORT_ORDER = FileTable.FILE_NAME+" DESC";
+	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.wammer.sync.files";
+	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.wammer.sync.files";
+	public static final String DEFAULT_SORT_ORDER = FileTable.FILES_NAME+" DESC";
 
-	public static final String TABLE_NAME = "File";
+	public static final String TABLE_NAME = "Files";
 	public static final String COLUMN_FILE_ID = "fileId";
 	public static final String COLUMN_FILE_NAME = "fileName";
 	public static final String COLUMN_FOLDER = "folder";

@@ -155,7 +155,7 @@ public class Constant {
 	
 	// FOR LABEL DATE PARAMETER
 	public final static String PARAM_FILES = "files";
-
+	public final static String PARAM_SEQ = "seq";
 	
 	// FOR QUEUE JOB STATUS
 	public final static String PREFS_NAME = "InfinitePref";

@@ -13,6 +13,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.net.Uri;
 import android.text.TextUtils;
+
+import com.waveface.sync.db.LabelFileView;
 import com.waveface.sync.db.PairedServersTable;
 import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.db.DatabaseHelper;
@@ -38,7 +40,11 @@ public class SyncProvider extends ContentProvider {
 
 	private final static int FILES = 13;
 	private final static int FILES_ID = 14;
+
 	
+	private final static int LABELFILEVIEWS = 101;
+	private final static int LABELFILEVIEWS_ID = 102;
+
 	public static final String AUTHORITY = "com.waveface.sync";
 
 	private static UriMatcher sUriMatcher;
@@ -57,11 +63,21 @@ public class SyncProvider extends ContentProvider {
 		//FOR LABEL
 		sUriMatcher.addURI(AUTHORITY, LabelTable.LABELS_NAME, LABELS);
 		sUriMatcher.addURI(AUTHORITY, LabelTable.LABELS_NAME + "/*", LABELS_ID);
+
+		//FOR FILES
+		sUriMatcher.addURI(AUTHORITY, FileTable.FILES_NAME, FILES);
+		sUriMatcher.addURI(AUTHORITY, FileTable.FILES_NAME + "/*", FILES_ID);		
 		
 		//FOR LABEL FILES
 		sUriMatcher.addURI(AUTHORITY, LabelFileTable.LABELFILE_NAME, LABELFILES);
 		sUriMatcher.addURI(AUTHORITY, LabelFileTable.LABELFILE_NAME + "/*", LABELFILES_ID);
 				
+		//FOR LABEL FILES VIEW
+		sUriMatcher.addURI(AUTHORITY, LabelFileView.LABEL_FILE_VIEW_NAME, LABELFILEVIEWS);
+		sUriMatcher.addURI(AUTHORITY, LabelFileView.LABEL_FILE_VIEW_NAME + "/*", LABELFILEVIEWS_ID);
+
+	
+	
 	}
 
 	private DatabaseHelper mOpenHelper;
@@ -176,6 +192,10 @@ public class SyncProvider extends ContentProvider {
 			return FileTable.CONTENT_TYPE;
 		case FILES_ID:
 			return FileTable.CONTENT_ITEM_TYPE;				
+		case LABELFILEVIEWS:
+			return LabelFileView.CONTENT_TYPE;
+		case LABELFILEVIEWS_ID:
+			return LabelFileView.CONTENT_ITEM_TYPE;				
 		default:
 			throw new IllegalArgumentException("Unknown post type: " + uri);
 		}
@@ -235,7 +255,7 @@ public class SyncProvider extends ContentProvider {
 			break;
 		case FILES:
 			rowId = db.insert(FileTable.TABLE_NAME,
-					FileTable.FILE_NAME, values);
+					FileTable.FILES_NAME, values);
 			if (rowId > 0) {
 				Uri queueUri = ContentUris.withAppendedId(
 						FileTable.CONTENT_URI, rowId);
@@ -296,7 +316,79 @@ public class SyncProvider extends ContentProvider {
 			c.setNotificationUri(getContext().getContentResolver(),
 					BonjourServersTable.CONTENT_URI);
 			break;
-
+		case LABELS:
+			if (TextUtils.isEmpty(sortOrder)) {
+				orderBy = LabelTable.DEFAULT_SORT_ORDER;
+			} else {
+				orderBy = sortOrder;
+			}
+			c = mDb.query(LabelTable.TABLE_NAME, projection, where,
+					whereArgs, null, null, orderBy);
+			c.setNotificationUri(getContext().getContentResolver(),
+					LabelTable.CONTENT_URI);
+			break;
+		case LABELS_ID:
+			String labelId = uri.getLastPathSegment();
+			c = executeGeneralQuery(labelId, LabelTable.TABLE_NAME,
+					LabelTable.COLUMN_LABEL_ID, where, whereArgs);
+			c.setNotificationUri(getContext().getContentResolver(),
+					LabelTable.CONTENT_URI);
+			break;
+		case LABELFILES:
+			if (TextUtils.isEmpty(sortOrder)) {
+				orderBy = LabelFileTable.DEFAULT_SORT_ORDER;
+			} else {
+				orderBy = sortOrder;
+			}
+			c = mDb.query(LabelFileTable.TABLE_NAME, projection, where,
+					whereArgs, null, null, orderBy);
+			c.setNotificationUri(getContext().getContentResolver(),
+					LabelFileTable.CONTENT_URI);
+			break;
+		case LABELFILES_ID:
+			String labelFileId = uri.getLastPathSegment();
+			c = executeGeneralQuery(labelFileId, LabelFileTable.TABLE_NAME,
+					LabelFileTable.COLUMN_LABEL_ID, where, whereArgs);
+			c.setNotificationUri(getContext().getContentResolver(),
+					LabelFileTable.CONTENT_URI);
+			break;
+		case FILES:
+			if (TextUtils.isEmpty(sortOrder)) {
+				orderBy = FileTable.DEFAULT_SORT_ORDER;
+			} else {
+				orderBy = sortOrder;
+			}
+			c = mDb.query(FileTable.TABLE_NAME, projection, where,
+					whereArgs, null, null, orderBy);
+			c.setNotificationUri(getContext().getContentResolver(),
+					FileTable.CONTENT_URI);
+			break;
+		case FILES_ID:
+			String fileId = uri.getLastPathSegment();
+			c = executeGeneralQuery(fileId, LabelFileTable.TABLE_NAME,
+					FileTable.COLUMN_FILE_ID, where, whereArgs);
+			c.setNotificationUri(getContext().getContentResolver(),
+					FileTable.CONTENT_URI);
+			break;
+		case LABELFILEVIEWS:
+			if (TextUtils.isEmpty(sortOrder)) {
+				orderBy = LabelFileView.DEFAULT_SORT_ORDER;
+			} else {
+				orderBy = sortOrder;
+			}
+			c = mDb.query(LabelFileView.VIEW_NAME, projection, where,
+					whereArgs, null, null, orderBy);
+			c.setNotificationUri(getContext().getContentResolver(),
+					LabelFileView.CONTENT_URI);
+			break;
+		case LABELFILEVIEWS_ID:
+			String labelFileViewId = uri.getLastPathSegment();
+			c = executeGeneralQuery(labelFileViewId, LabelFileView.VIEW_NAME,
+					LabelFileView.COLUMN_LABEL_ID, where, whereArgs);
+			c.setNotificationUri(getContext().getContentResolver(),
+					LabelFileView.CONTENT_URI);
+			break;
+			
 		default:
 			c = new DummyCursor();
 			break;
@@ -442,13 +534,15 @@ public class SyncProvider extends ContentProvider {
 				insert = db.compileStatement("INSERT OR REPLACE INTO "
 						+ LabelTable.TABLE_NAME + "("
 						+ LabelTable.COLUMN_LABEL_ID + ","
-						+ LabelTable.COLUMN_LABEL_NAME + ")"
-						+ " values (?,?)");
+						+ LabelTable.COLUMN_LABEL_NAME + ","
+						+ LabelTable.COLUMN_SEQ + ")"
+						+ " values (?,?,?)");
 
 				for (ContentValues value : values) {
 					// bind the 1-indexed ?'s to the values specified
 					insert.bindString(1, value.getAsString(LabelTable.COLUMN_LABEL_ID));
 					insert.bindString(2, value.getAsString(LabelTable.COLUMN_LABEL_NAME));
+					insert.bindString(3, value.getAsString(LabelTable.COLUMN_SEQ));
 					insert.execute();
 				}
 				db.setTransactionSuccessful();
