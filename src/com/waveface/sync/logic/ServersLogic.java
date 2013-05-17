@@ -21,6 +21,7 @@ import com.waveface.sync.db.BackupedServersTable;
 import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.entity.ConnectForGTVEntity;
 import com.waveface.sync.entity.ServerEntity;
+import com.waveface.sync.mdns.DataPacket;
 import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.websocket.RuntimeWebClient;
 
@@ -183,7 +184,32 @@ public class ServersLogic {
 		return datas;
 	}
 
-
+	public static int addBonjourServer(Context context, DataPacket packet) {
+		ServerEntity entity = new ServerEntity();
+		entity.serverId = packet.serverInfo.serverId;
+		entity.serverName = packet.serverInfo.serverName;
+		entity.ip = packet.serverIp;
+		if(TextUtils.isEmpty(packet.serverInfo.wsPort)){
+			entity.wsPort = "";
+		}
+		else{
+			entity.wsPort = packet.serverInfo.wsPort;
+		}
+		if(TextUtils.isEmpty(packet.serverInfo.restPort)){
+			entity.restPort = "";
+		}
+		else{
+			entity.restPort = packet.serverInfo.restPort;
+		}
+		if(TextUtils.isEmpty(packet.serverInfo.notifyPort)){
+			entity.notifyPort = "";
+		}
+		else{
+			entity.notifyPort = packet.serverInfo.notifyPort;
+		}
+				
+		return updateBonjourServer(context,entity);
+	}
 
 	public static int updateBonjourServer(Context context, ServerEntity entity) {
 		int result = 0;

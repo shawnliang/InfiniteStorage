@@ -81,6 +81,7 @@ public class Constant {
 	
 	//SERVICE SETTING
     public static String INFINTE_STORAGE = "_infinite-storage._tcp.local.";
+	public static String BONJOUR_NAME = "infiniteDisplay";
 	
 	//File Type
 	public static final int TYPE_IMAGE = 1;

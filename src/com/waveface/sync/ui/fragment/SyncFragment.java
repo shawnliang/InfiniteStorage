@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
+//import com.waveface.mdns.DNSThread;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
@@ -73,6 +74,8 @@ public class SyncFragment extends Fragment implements OnClickListener {
 
 	private SharedPreferences mPrefs;
 	private Editor mEditor;
+	
+//    private DNSThread dnsThread = null;
 
 	private final static int IMAGE_HEIGHT = 110;
 	private final static int IMAGE_WIDTH = 110;
@@ -84,8 +87,8 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
 		//START UP SERVICE
-		new InvokeServiceTask().execute(new Void[]{});
-		
+//		new InvokeServiceTask().execute(new Void[]{});
+		getActivity().startService(new Intent(getActivity(), InfiniteService.class));
 		View root = inflater.inflate(R.layout.fragment_sync, container, false);
 
 		mPrefs = getActivity().getSharedPreferences(Constant.PREFS_NAME,
@@ -218,7 +221,27 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	public void onResume() {
 		super.onResume();
 		refreshLayout();
+//       if (dnsThread != null) {
+//            Log.e(TAG, "DNS hread should be null!");
+//            dnsThread.submitQuit();
+//        }
+//    	dnsThread = new DNSThread(getActivity());
+//    	dnsThread.start();
+	
 	}
+    @Override
+	public void onPause() {
+        super.onPause();
+        Log.v(TAG, "pause activity");
+                
+//        if (dnsThread == null) {
+//            Log.e(TAG, "netThread should not be null!");
+//            return;
+//        }
+//        dnsThread.submitQuit();
+//        dnsThread = null;
+    }
+
 	@Override
 	public void onStart() {
 		super.onStart();

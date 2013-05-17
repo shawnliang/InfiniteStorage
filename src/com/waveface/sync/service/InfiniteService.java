@@ -1,14 +1,8 @@
 package com.waveface.sync.service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.jmdns.JmDNS;
-import javax.jmdns.ServiceEvent;
-import javax.jmdns.ServiceInfo;
-import javax.jmdns.ServiceListener;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -18,16 +12,19 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.text.TextUtils;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.RuntimeState;
 import com.waveface.sync.entity.ServerEntity;
-import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
+import com.waveface.sync.mdns.DNSThread;
 import com.waveface.sync.util.Log;
 import com.waveface.sync.util.NetworkUtil;
+//import javax.jmdns.JmDNS;
+//import javax.jmdns.ServiceListener;
 
 public class InfiniteService extends Service{
 	private static final String TAG = InfiniteService.class.getSimpleName();
@@ -36,10 +33,11 @@ public class InfiniteService extends Service{
 	private Editor mEditor;
 
 	private WifiManager.MulticastLock mLock;
-	private JmDNS mJMDNS = null;
-    private ServiceListener mListener = null;
+//	private JmDNS mJMDNS = null;
+//    private ServiceListener mListener = null;
     private long mMDNSSetupTime;
- 	
+    private DNSThread dnsThread = null;
+    
 	//DATA 
 	private ArrayList<ServerEntity> mPairedServers ;
 	private String mCondidateServerId ;
@@ -92,10 +90,12 @@ public class InfiniteService extends Service{
 		registerReceiver(mReceiver, filter);
 
 //		connectPCWithPairedServer();
+		Log.d(TAG,"Wi-Fi-Network:"+NetworkUtil.isWifiNetworkAvailable(mContext));
 		
 		RuntimeState.mAutoConnectMode = ServersLogic.hasBackupedServers(this);
-		setupMDNS();
-		
+
+		new SetupMDNS().execute(new Void[]{});
+//		setupMDNS();
 		Log.d(TAG, "onCreate");
 	}
 
@@ -137,31 +137,6 @@ public class InfiniteService extends Service{
 		super.onDestroy();
 	}
 
-	private void releaseMDNS() {
-	   	ServersLogic.purgeAllBonjourServer(mContext);
-		if (mJMDNS != null) {
-	        if (mListener != null) {
-	            mJMDNS.removeServiceListener(Constant.INFINTE_STORAGE, mListener);
-	            mListener = null;
-	        }
-	        mJMDNS.unregisterAllServices();
-	        try {
-	            mJMDNS.close();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	        mJMDNS = null;
-		}
-	    try {
-	    	mLock.release();
-	    } catch (Throwable th) {
-	    	Log.e(TAG, th.getMessage());
-	        // ignoring this exception, probably wakeLock was already released
-	    }
-	    finally{
-	    	RuntimeState.isMDNSSetUped = false;
-	    }
-	}
 	
 	@Override
 	public void onStart(Intent intent, int startid) {
@@ -169,83 +144,125 @@ public class InfiniteService extends Service{
 	}
 
     private void setupMDNS() {
-    	mMDNSSetupTime = System.currentTimeMillis();
-        WifiManager wifi = (WifiManager) getSystemService(android.content.Context.WIFI_SERVICE);
-        mLock = wifi.createMulticastLock("infiniteS");
-//        lock.setReferenceCounted(true);
-        mLock.acquire();
-        try {
-            mJMDNS = JmDNS.create();
-            mJMDNS.addServiceListener(Constant.INFINTE_STORAGE,		mListener = new ServiceListener() {
-                @SuppressWarnings("deprecation")
-				@Override
-                public void serviceResolved(ServiceEvent ev) {
-                	ServiceInfo si = ev.getInfo();
-                	if(!TextUtils.isEmpty(si.getPropertyString(Constant.PARAM_SERVER_ID))){
-    	                final ServerEntity entity = new ServerEntity();
-    	            	entity.serverName = si.getName();
-    					entity.serverId = si.getPropertyString(Constant.PARAM_SERVER_ID);
-    					entity.ip = si.getHostAddress();    					
-    					entity.wsPort = si.getPropertyString(Constant.PARAM_WS_PORT);
-    					if(TextUtils.isEmpty(entity.wsPort)){
-    						entity.wsPort = "";
-    					}
-    					entity.notifyPort = si.getPropertyString(Constant.PARAM_NOTIFY_PORT);
-       					if(TextUtils.isEmpty(entity.notifyPort)){
-    						entity.notifyPort = "";
-    					}
-    					entity.restPort = si.getPropertyString(Constant.PARAM_REST_PORT);    					
-       					if(TextUtils.isEmpty(entity.restPort)){
-    						entity.restPort = "";
-    					}
-    					entity.wsLocation = "ws://"+si.getHostAddress()+":"+entity.wsPort;
-    	                Log.d(TAG, "Resolved SERVER NAME:"+entity.serverName);
-    	                ServersLogic.updateBonjourServer(mContext, entity);
-    	        		mPairedServers = ServersLogic.getBackupedServers(mContext);
-    	        		if(mPairedServers.size()!=0){
-    	        			RuntimeState.mAutoConnectMode = true ;
-    	        		}
-	                	if(RuntimeState.mAutoConnectMode 
-	                			&& NetworkUtil.isWifiNetworkAvailable(mContext) 
-	                			&& RuntimeState.OnWebSocketOpened == false){
-		                	if(ServersLogic.canPairedServers(mContext, entity.serverId)){
-    	                		Intent intent = new Intent(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING);
-    		                	intent.putExtra(Constant.EXTRA_BONJOUR_AUTO_PAIR_STATUS, Constant.BONJOUR_PAIRING);
-    		                	mContext.sendBroadcast(intent);
-    		                	autoPairingConnect();
-		                	}
-	                	}
-//    	                }
-                	}
-                }
-
-                @Override
-                public void serviceRemoved(ServiceEvent ev) {
-                	ServiceInfo si = ev.getInfo();
-    				//CHECK IF CONNECTING SERVER
-    				String serverId = si.getPropertyString(Constant.PARAM_SERVER_ID);
-    				 Log.d(TAG, "Remove SERVER NAME:"+si.getName());
-    				if(serverId.equals(RuntimeState.mWebSocketServerId)){
-    					RuntimeState.setServerStatus(Constant.BS_ACTION_SERVER_REMOVED);
-    					ServersLogic.updateBackupedServerStatus(mContext, serverId, Constant.SERVER_OFFLINE);
-    				}
-    				ServersLogic.purgeBonjourServerByServerId(mContext, serverId);
-                }
-
-                @Override
-                public void serviceAdded(ServiceEvent event) {
-                	mJMDNS.requestServiceInfo(event.getType(), event.getName(), true, 1);
-//                	mJMDNS.requestServiceInfo(event.getType(), event.getName(), 1);
-                }
-            });
-            RuntimeState.isMDNSSetUped = true;
-        } 
-        catch (Exception e) {
-        	RuntimeState.isMDNSSetUped = false;
-        	Log.e(TAG, e.getMessage());
-            return;
+        if (dnsThread != null) {
+            Log.e(TAG, "DNS hread should be null!");
+            dnsThread.submitQuit();
         }
+    	dnsThread = new DNSThread(mContext);
+    	dnsThread.start();
+    	dnsThread.submitQuit();
+//    	mMDNSSetupTime = System.currentTimeMillis();
+//        WifiManager wifi = (WifiManager) getSystemService(android.content.Context.WIFI_SERVICE);
+//        mLock = wifi.createMulticastLock("infiniteS");
+////        mLock.setReferenceCounted(true);
+//        mLock.acquire();
+//        try {
+//            mJMDNS = JmDNS.create();
+//            mJMDNS.addServiceListener(Constant.INFINTE_STORAGE,	mListener = new ServiceListener() {
+//                @SuppressWarnings("deprecation")
+//				@Override
+//                public void serviceResolved(ServiceEvent ev) {
+//                	ServiceInfo si = ev.getInfo();
+//                	if(!TextUtils.isEmpty(si.getPropertyString(Constant.PARAM_SERVER_ID))){
+//    	                final ServerEntity entity = new ServerEntity();
+//    	            	entity.serverName = si.getName();
+//    					entity.serverId = si.getPropertyString(Constant.PARAM_SERVER_ID);
+//    					entity.ip = si.getHostAddress();    					
+//    					entity.wsPort = si.getPropertyString(Constant.PARAM_WS_PORT);
+//    					if(TextUtils.isEmpty(entity.wsPort)){
+//    						entity.wsPort = "";
+//    					}
+//    					entity.notifyPort = si.getPropertyString(Constant.PARAM_NOTIFY_PORT);
+//       					if(TextUtils.isEmpty(entity.notifyPort)){
+//    						entity.notifyPort = "";
+//    					}
+//    					entity.restPort = si.getPropertyString(Constant.PARAM_REST_PORT);    					
+//       					if(TextUtils.isEmpty(entity.restPort)){
+//    						entity.restPort = "";
+//    					}
+//    					entity.wsLocation = "ws://"+si.getHostAddress()+":"+entity.wsPort;
+//    	                Log.d(TAG, "Resolved SERVER NAME:"+entity.serverName);
+//    	                ServersLogic.updateBonjourServer(mContext, entity);
+//    	        		mPairedServers = ServersLogic.getBackupedServers(mContext);
+//    	        		if(mPairedServers.size()!=0){
+//    	        			RuntimeState.mAutoConnectMode = true ;
+//    	        		}
+//	                	if(RuntimeState.mAutoConnectMode 
+//	                			&& NetworkUtil.isWifiNetworkAvailable(mContext) 
+//	                			&& RuntimeState.OnWebSocketOpened == false){
+//		                	if(ServersLogic.canPairedServers(mContext, entity.serverId)){
+//    	                		Intent intent = new Intent(Constant.ACTION_BONJOUR_SERVER_AUTO_PAIRING);
+//    		                	intent.putExtra(Constant.EXTRA_BONJOUR_AUTO_PAIR_STATUS, Constant.BONJOUR_PAIRING);
+//    		                	mContext.sendBroadcast(intent);
+//    		                	autoPairingConnect();
+//		                	}
+//	                	}
+////    	                }
+//                	}
+//                }
+//
+//                @Override
+//                public void serviceRemoved(ServiceEvent ev) {
+//                	ServiceInfo si = ev.getInfo();
+//    				//CHECK IF CONNECTING SERVER
+////    				String serverId = si.getPropertyString(Constant.PARAM_SERVER_ID);
+////    				 Log.d(TAG, "Remove SERVER NAME:"+si.getName());
+////    				if(serverId.equals(RuntimeState.mWebSocketServerId)){
+////    					RuntimeState.setServerStatus(Constant.BS_ACTION_SERVER_REMOVED);
+////    					ServersLogic.updateBackupedServerStatus(mContext, serverId, Constant.SERVER_OFFLINE);
+////    				}
+////    				ServersLogic.purgeBonjourServerByServerId(mContext, serverId);
+//                }
+//
+//                @Override
+//                public void serviceAdded(ServiceEvent event) {
+//                	ServiceInfo si = event.getInfo();
+//                	Log.d(TAG, "DNS:"+event.getDNS());
+//                	Log.d(TAG, "INFO:"+event.getInfo());
+//                	Log.d(TAG, "NAME:"+event.getName());
+//                	Log.d(TAG, "Source:"+event.getSource());
+//                	Log.d(TAG, "Type:"+event.getType());
+//                	//                	mJMDNS.requestServiceInfo(event.getType(), event.getName(), true, 1);
+////              	    mJMDNS.requestServiceInfo(event.getType(), event.getName(), 0);
+//                }
+//            });
+//            RuntimeState.isMDNSSetUped = true;
+//        } 
+//        catch (Exception e) {
+//        	RuntimeState.isMDNSSetUped = false;
+//        	Log.e(TAG, e.getMessage());
+//            return;
+//        }
     }
+	private void releaseMDNS() {
+	   	ServersLogic.purgeAllBonjourServer(mContext);
+	   	if(dnsThread!=null){
+	   		dnsThread = null;
+	   	}
+//		if (mJMDNS != null) {
+//	        if (mListener != null) {
+//	            mJMDNS.removeServiceListener(Constant.INFINTE_STORAGE, mListener);
+//	            mListener = null;
+//	        }
+//	        mJMDNS.unregisterAllServices();
+//	        try {
+//	            mJMDNS.close();
+//	        } catch (IOException e) {
+//	            e.printStackTrace();
+//	        }
+//	        mJMDNS = null;
+//		}
+//	    try {
+//	    	mLock.release();
+//	    } catch (Throwable th) {
+//	    	Log.e(TAG, th.getMessage());
+//	        // ignoring this exception, probably wakeLock was already released
+//	    }
+//	    finally{
+//	    	RuntimeState.isMDNSSetUped = false;
+//	    }
+	}
+
 	private void connectPCWithPairedServer() {
 		mPairedServers = ServersLogic.getBackupedServers(this);
 		if(mPairedServers.size()>0){
@@ -288,5 +305,22 @@ public class InfiniteService extends Service{
 				}
 			}
 		}
+	}
+	
+	class SetupMDNS extends AsyncTask<Void,Void,Void>{
+		@Override
+		protected Void doInBackground(Void... params) {
+			setupMDNS();
+			return null;
+		}	
+	}
+	class ResetMDNS extends AsyncTask<Void,Void,Void>{
+		@Override
+		protected Void doInBackground(Void... params) {
+			Log.d(TAG, "reset MDNS");
+			releaseMDNS();
+			setupMDNS();
+			return null;
+		}	
 	}
 }

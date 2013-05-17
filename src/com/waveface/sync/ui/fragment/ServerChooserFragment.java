@@ -112,12 +112,12 @@ public class ServerChooserFragment extends FragmentBase
 		displayProgressBar();
 		
 		//OPEN WI-Fi SETTING
-		if(!NetworkUtil.isWifiNetworkAvailable(getActivity())){
-			openDialog(getActivity(),Constant.NETWORK_IS_NOT_WIFI);
-		}
-		else{
-			detectInstall();
-		}
+//		if(!NetworkUtil.isWifiNetworkAvailable(getActivity())){
+//			openDialog(getActivity(),Constant.NETWORK_IS_NOT_WIFI);
+//		}
+//		else{
+//			detectInstall();
+//		}
 		return mRootView;
 	}
 
@@ -232,7 +232,6 @@ public class ServerChooserFragment extends FragmentBase
 					if(action.equals(Constant.NETWORK_IS_NOT_WIFI)){
 						startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
 						dialog.cancel();
-						detectInstall();
 					}
 					else{
 						dialog.cancel();

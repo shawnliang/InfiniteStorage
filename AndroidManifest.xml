@@ -27,7 +27,6 @@
     <uses-feature android:name="com.google.android.tv" android:required="true"/>
 
     <application
-        android:name="com.waveface.sync.Starter"
         android:allowBackup="false"
         android:debuggable="true"
         android:hardwareAccelerated="true"
@@ -35,6 +34,9 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@style/AppTheme" >
+        <activity android:name="com.waveface.sync.MulticastTestActivity"
+                  android:label="@string/app_name">
+        </activity>        
         <activity
             android:name="com.waveface.sync.ui.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -42,7 +44,6 @@
             android:theme="@android:style/Theme.Light.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -77,7 +78,6 @@
         <meta-data
             android:name="com.crashlytics.ApiKey"
             android:value="2de93f37d61a80e50febf2dfa9e0b80d5105afd0" />
-
     </application>
 
 </manifest>

@@ -16,12 +16,12 @@ public class Starter extends Application {
 	
 	@Override
 	public void onCreate() {
-		boolean isDebuggable = (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
-		if(isDebuggable){
-			setupCrashlytics();
-		}
+//		boolean isDebuggable = (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
+//		if(isDebuggable){
+//			setupCrashlytics();
+//		}
 		
-		initialDirectory();
+//		initialDirectory();
 		super.onCreate();
 	}
 

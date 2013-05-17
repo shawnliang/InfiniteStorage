@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 
+//import com.waveface.mdns.DNSThread;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
@@ -26,7 +27,8 @@ public class MainActivity extends FragmentActivity {
 	private String TAG = MainActivity.class.getSimpleName();
 	private SlidingMenu mSlidingMenu;
 	private String mCurrentFragmentName = null;
-	
+//    private DNSThread dnsThread = null;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,5 +71,29 @@ public class MainActivity extends FragmentActivity {
 		super.onDestroy();
 		RuntimeState.isAppLaunching = false;
 	}
-    
+	@Override
+	protected void onResume() {
+		super.onResume();
+//       if (dnsThread != null) {
+//            Log.e(TAG, "DNS hread should be null!");
+//            dnsThread.submitQuit();
+//        }
+//    	dnsThread = new DNSThread(this);
+//    	dnsThread.start();
+	
+	}
+
+    @Override
+	protected void onPause() {
+        super.onPause();
+        Log.v(TAG, "pause activity");
+                
+//        if (dnsThread == null) {
+//            Log.e(TAG, "netThread should not be null!");
+//            return;
+//        }
+//        dnsThread.submitQuit();
+//        dnsThread = null;
+    }
+
 }
