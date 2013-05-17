@@ -12,10 +12,16 @@ import android.util.Log;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
+import com.waveface.sync.event.LabelImportedEvent;
+import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.ui.fragment.FragmentBase;
+import com.waveface.sync.ui.fragment.PlaybackFragment;
 import com.waveface.sync.ui.fragment.SlidingMenuFragment;
 import com.waveface.sync.ui.fragment.SyncFragment;
+import com.waveface.sync.ui.fragment.SyncInProgressFragment;
 import com.waveface.sync.ui.widget.SlidingMenu;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -33,6 +39,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate");
+		EventBus.getDefault().register(this);
 		sendBroadcast(new Intent(Constant.ACTION_INFINITE_STORAGE_ALARM));
 		setContentView(R.layout.activity_main);
 		RuntimeState.isAppLaunching = true;
@@ -41,16 +48,34 @@ public class MainActivity extends FragmentActivity {
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 			SlidingMenuFragment menu = new SlidingMenuFragment();
 			transaction.add(R.id.container_sliding_menu, menu).commit();
-			SyncFragment photoJournal = new SyncFragment();
-			transaction = getSupportFragmentManager().beginTransaction();
-			transaction.add(R.id.container_content, photoJournal, SyncFragment.class.getSimpleName()).commit();
-			mCurrentFragmentName = SyncFragment.class.getSimpleName();
+			
+			if(ServersLogic.hasBackupedServers(this) == false) {
+				SyncFragment photoJournal = new SyncFragment();
+				transaction = getSupportFragmentManager().beginTransaction();
+				transaction.add(R.id.container_content, photoJournal, SyncFragment.class.getSimpleName()).commit();
+				mCurrentFragmentName = SyncFragment.class.getSimpleName();
+			} else {
+				SyncInProgressFragment photoJournal = new SyncInProgressFragment();
+				transaction = getSupportFragmentManager().beginTransaction();
+				transaction.add(R.id.container_content, photoJournal, SyncInProgressFragment.class.getSimpleName()).commit();
+				mCurrentFragmentName = SyncInProgressFragment.class.getSimpleName();
+			}
 		}
 
         mSlidingMenu = (SlidingMenu) findViewById(R.id.sliding_menu);
         mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 		
         getWindow().setBackgroundDrawable(null);
+	}
+	
+	public void onEvent(LabelImportedEvent event) {
+		if(event.status == LabelImportedEvent.STATUS_DONE) {
+			PlaybackFragment photoJournal = new PlaybackFragment();
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			transaction = getSupportFragmentManager().beginTransaction();
+			transaction.replace(R.id.container_content, photoJournal, PlaybackFragment.class.getSimpleName()).commit();
+			mCurrentFragmentName = PlaybackFragment.class.getSimpleName();
+		}
 	}
 	
 	@Override
@@ -70,6 +95,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		RuntimeState.isAppLaunching = false;
+		EventBus.getDefault().unregister(this);
 	}
 	@Override
 	protected void onResume() {

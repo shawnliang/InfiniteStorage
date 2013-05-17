@@ -30,9 +30,9 @@ public class FragmentBase extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (ViewUtil.qualifiedTabletLayout(getActivity()) == false) {
-			getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		}
+//		if (ViewUtil.qualifiedTabletLayout(getActivity()) == false) {
+//			getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//		}
 	}
 
 	@Override

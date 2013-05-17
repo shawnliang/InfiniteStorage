@@ -28,6 +28,7 @@
 
     <application
         android:allowBackup="false"
+        android:name="com.waveface.sync.SyncApplication"
         android:debuggable="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"

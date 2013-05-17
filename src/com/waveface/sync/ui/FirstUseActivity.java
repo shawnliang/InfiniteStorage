@@ -30,9 +30,9 @@ public class FirstUseActivity extends FragmentActivity implements onFragmentChan
 		}
 		getWindow().setBackgroundDrawable(null);
 		setContentView(R.layout.activity_base);
-		if (Constant.PHONE) {
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		}
+//		if (Constant.PHONE) {
+//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//		}
 		if (savedInstanceState == null) {
 			ServerChooserFragment fragment = new ServerChooserFragment();
 			getSupportFragmentManager().beginTransaction()

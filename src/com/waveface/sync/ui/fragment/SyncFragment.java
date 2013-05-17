@@ -73,14 +73,9 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
-		Cursor allLabel = LabelDB.getAllLabes(getActivity());
-		allLabel.moveToFirst();
-		int labelsCount =  allLabel.getCount();
-		allLabel.close();
 		//START UP SERVICE
 		new InvokeServiceTask().execute(new Void[]{});
 		
-		getActivity().startService(new Intent(getActivity(), InfiniteService.class));
 		View root = inflater.inflate(R.layout.fragment_sync, container, false);
 
 		mPrefs = getActivity().getSharedPreferences(Constant.PREFS_NAME,

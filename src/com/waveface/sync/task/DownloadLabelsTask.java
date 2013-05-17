@@ -15,12 +15,16 @@ import com.waveface.sync.db.LabelDB;
 import com.waveface.sync.entity.FileEntity;
 import com.waveface.sync.entity.LabelEntity;
 import com.waveface.sync.entity.ServerEntity;
+import com.waveface.sync.event.LabelImportedEvent;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.util.Log;
+
+import de.greenrobot.event.EventBus;
 
 public class DownloadLabelsTask extends AsyncTask<Void,Void,Void>{
 	
 	private static final String TAG = DownloadLabelsTask.class.getSimpleName();
+	private int mLabelCount = 0;
 
 	private Context mContext;
 	public DownloadLabelsTask(Context context){
@@ -46,6 +50,7 @@ public class DownloadLabelsTask extends AsyncTask<Void,Void,Void>{
 			Log.d(TAG, "jsonOutString ="+jsonOutput);
 			entity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.class);
 			if(entity!=null){
+				LabelImportedEvent event = new LabelImportedEvent(0);
 				for(LabelEntity.Label label: entity.labels){
 					if(label.files!=null)
 					if(label.files.length>0){
@@ -65,6 +70,8 @@ public class DownloadLabelsTask extends AsyncTask<Void,Void,Void>{
 					}
 					// update label info
 					LabelDB.updateLabelInfo(mContext, label, fileEntity);
+					event.status = LabelImportedEvent.STATUS_SYNCING;
+					EventBus.getDefault().post(event);
 				}
 			}
 
@@ -73,7 +80,7 @@ public class DownloadLabelsTask extends AsyncTask<Void,Void,Void>{
 			e.printStackTrace();
 			return null;
 		}
-		Cursor cursor = LabelDB.getAllLabes(mContext);
+		Cursor cursor = LabelDB.getAllLabels(mContext);
 		String labelId = null;
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();
@@ -96,6 +103,7 @@ public class DownloadLabelsTask extends AsyncTask<Void,Void,Void>{
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();
 			int count = cursor.getCount();
+			mLabelCount = count;
 			for(int i=0;i < count;i++){
 			   Log.d(TAG, "Label ID:"+cursor.getString(0));
 			   Log.d(TAG, "File ID:"+cursor.getString(1));
@@ -105,5 +113,13 @@ public class DownloadLabelsTask extends AsyncTask<Void,Void,Void>{
 		}		
 		cursor =null;
 		return null;
+	}
+	
+	@Override
+	protected void onPostExecute(Void result) {
+		super.onPostExecute(result);
+		LabelImportedEvent event = new LabelImportedEvent(mLabelCount);
+		event.status = LabelImportedEvent.STATUS_DONE;
+		EventBus.getDefault().post(event);
 	}
 }

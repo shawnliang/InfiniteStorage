@@ -152,9 +152,9 @@ public class ServerChooserFragment extends FragmentBase
 		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);		
         getActivity().registerReceiver(mReceiver, filter);
 
-		if (Constant.PHONE) {
-			getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		}
+//		if (Constant.PHONE) {
+//			getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//		}
 
 		mContentObserver = new BonjourServerContentObserver();
 		ContentResolver cr = getActivity().getContentResolver();

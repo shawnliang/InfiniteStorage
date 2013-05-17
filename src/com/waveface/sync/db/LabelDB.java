@@ -21,7 +21,7 @@ public class LabelDB {
 
 		// deleteLabel(context,label.label_id);
 		updateLabel(context, label.label_id, label.label_name, label.seq);
-//		removeAllFileInLabel(context, label.label_id);
+		removeAllFileInLabel(context, label.label_id);
 		updateLabelFiles(context, label);
 		updateFiles(context, fileEntity);
 	}
@@ -122,12 +122,11 @@ public class LabelDB {
 				+ "=?", new String[] { labelId });
 	}
 
-	public static Cursor getAllLabes(Context context) {
+	public static Cursor getAllLabels(Context context) {
 		Cursor cursor = context.getContentResolver().query(
 				LabelTable.CONTENT_URI,
 				new String[] { LabelTable.COLUMN_LABEL_ID,
 						LabelTable.COLUMN_LABEL_NAME }, null, null, null);
-
 		return cursor;
 	}
 

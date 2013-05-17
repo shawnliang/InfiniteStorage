@@ -152,6 +152,10 @@ public class Constant {
 	//FOR LABEL RESTFUL API
 	public final static String URL_GET_ALL_LABELS = "/label/list_all";
 	public final static String URL_GET_FILE = "/file/get";
+	public final static String URL_IMAGE = "/image";
+	public final static String URL_IMAGE_LARGE = "/large";
+	public final static String URL_IMAGE_MEDIUM = "/medium";
+	public final static String URL_IMAGE_SMALL = "/small";
 	
 	// FOR LABEL DATE PARAMETER
 	public final static String PARAM_FILES = "files";

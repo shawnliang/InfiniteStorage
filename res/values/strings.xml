@@ -127,5 +127,9 @@
     <string name="support">Contact us</string>
     <string name="version">Version </string>
     <string name="add_pc_content">You just can backup to one pc one time.Files will not back up to Pc which you connected before.</string>
+    
+    <!-- SYNC FRAGMENT -->
+    <string name="sync_title">Favorite Player </string>
+    <string name="sync_content">Your favorites will be ready in %1$d minute</string>
 
 </resources>
