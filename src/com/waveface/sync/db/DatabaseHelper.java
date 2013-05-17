@@ -9,8 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.waveface.sync.util.Log;
 
-
-
 public class DatabaseHelper extends SQLiteOpenHelper {
 	public static final String DATABASE_NAME = "infinites.db";
 
@@ -24,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private final boolean DEBUGGABLE;
 
 	private interface Views {
-		String VIEW_LABEL_FILE = "labelFileView";
+		String VIEW_LABEL_FILE = LabelFileView.VIEW_NAME;
 	}
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -71,15 +69,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		sqlBuilder = new StringBuilder();
 		sqlBuilder.append("Create Table {0} (")
 		  .append(LabelTable.COLUMN_LABEL_ID + " TEXT PRIMARY KEY,")
-		  .append(LabelTable.COLUMN_LABEL_NAME + " TEXT NOT NULL );");		
+		  .append(LabelTable.COLUMN_LABEL_NAME + " TEXT NOT NULL ,")
+		  .append( LabelTable.COLUMN_SEQ + " TEXT NOT NULL );");		
 		createTable(db, sqlBuilder.toString(), LabelTable.TABLE_NAME);
 		
 		// Create Label Files table
 		sqlBuilder = new StringBuilder();
 		sqlBuilder.append("Create Table {0} (")
-		  .append(LabelFileTable.COLUMN_LABEL_ID + " TEXT PRIMARY KEY,")
+		  .append(LabelFileTable.COLUMN_LABEL_ID + " TEXT NOT NULL ,")
 		  .append(LabelFileTable.COLUMN_FILE_ID+ " TEXT NOT NULL ,")
-		  .append(LabelFileTable.COLUMN_ORDER + " TEXT NOT NULL );");		
+		  .append(LabelFileTable.COLUMN_ORDER + " TEXT NOT NULL ,")		
+		  .append(" PRIMARY KEY ( "+LabelFileTable.COLUMN_LABEL_ID+","+LabelFileTable.COLUMN_FILE_ID+"));");
 		createTable(db, sqlBuilder.toString(), LabelFileTable.TABLE_NAME);
 		
 		// Create Files table
@@ -128,7 +128,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	      .append(" B."+FileTable.COLUMN_DEV_NAME+" AS "+LabelFileView.COLUMN_DEV_NAME+",")
 		  .append(" B."+FileTable.COLUMN_DEV_TYPE+" AS "+LabelFileView.COLUMN_DEV_TYPE)
 	      .append(" FROM "+LabelFileTable.TABLE_NAME+" A,"+FileTable.TABLE_NAME+" B")
-	      .append(" WHERE A."+LabelFileTable.COLUMN_FILE_ID+"=B."+FileTable.COLUMN_FILE_ID);
+	      .append(" WHERE A."+LabelFileTable.COLUMN_FILE_ID+"= B."+FileTable.COLUMN_FILE_ID);
 
 		sql = sqlBuilder.toString();
 		db.execSQL(sql);

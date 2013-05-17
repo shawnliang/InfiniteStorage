@@ -39,6 +39,8 @@ public class DownloadLabelsTask extends AsyncTask<Void,Void,Void>{
 		FileEntity fileEntity=null;
 		String files="";
 		try {
+			
+			
 			String jsonOutput =	HttpInvoker.executePost(getAllLablesURL,param, Constant.CLOUD_CONNECTION_TIMEOUT, Constant.CLOUD_CONNECTION_TIMEOUT);
 			
 			Log.d(TAG, "jsonOutString ="+jsonOutput);
@@ -71,12 +73,37 @@ public class DownloadLabelsTask extends AsyncTask<Void,Void,Void>{
 			e.printStackTrace();
 			return null;
 		}
+		Cursor cursor = LabelDB.getAllLabes(mContext);
+		String labelId = null;
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			labelId = cursor.getString(0);
+			
+		}
+		cursor = LabelDB.getLabelFilesByLabelId(mContext,labelId);
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			int count = cursor.getCount();
+			for(int i=0;i < count;i++){
+			   Log.d(TAG, "LABEL FILE TABLE Label ID:"+cursor.getString(0));
+			   Log.d(TAG, "LABEL FILE TABLE File ID:"+cursor.getString(1));
+			   cursor.moveToNext();
+			}
+			cursor.close();
+		}		
 		
-		Cursor allLabel = LabelDB.getAllLabes(mContext);
-		allLabel.moveToFirst();
-		int labelsCount =  allLabel.getCount();
-		allLabel.close();
-		
+		cursor = LabelDB.getFilesByLabelId(mContext,labelId,3);
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			int count = cursor.getCount();
+			for(int i=0;i < count;i++){
+			   Log.d(TAG, "Label ID:"+cursor.getString(0));
+			   Log.d(TAG, "File ID:"+cursor.getString(1));
+			   cursor.moveToNext();
+			}
+			cursor.close();
+		}		
+		cursor =null;
 		return null;
 	}
 }

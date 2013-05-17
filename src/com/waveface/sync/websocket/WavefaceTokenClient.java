@@ -27,18 +27,11 @@ import org.jwebsocket.util.Tools;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.text.TextUtils;
-
 import com.waveface.sync.Constant;
 import com.waveface.sync.RuntimeState;
-import com.waveface.sync.db.LabelDB;
-import com.waveface.sync.db.LabelFileTable;
-import com.waveface.sync.db.LabelTable;
 import com.waveface.sync.entity.LabelEntity;
-
 import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.util.Log;
 
 public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements WebSocketTokenClient {
 	private static final String TAG = WavefaceTokenClient.class.getSimpleName();
