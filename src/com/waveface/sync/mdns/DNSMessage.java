@@ -183,7 +183,8 @@ public class DNSMessage {
         		else{
         			serverInfo.serverName = entryKey;
         		}
-	            Log.d("APPEND STRING", "ANSWER KEY:"+entry.getKey());
+    	        Log.d("DNSMessage", "SERVER NAME:"+serverInfo.serverName);
+
 	            for (DNSAnswer a : entry.getValue()){
 	                dataType = a.type.toString();
 	                answerValue = a.getRdataString();
@@ -209,7 +210,7 @@ public class DNSMessage {
 	                	matchIndex = answerValue.indexOf(MDNSConstant.BS_ID);
 	            		if(matchIndex>0){
 	            			serverInfo.serverName = answerValue.substring(0, matchIndex-1);
-	            	        Log.d("APPEND STRING", "SERVER NAME:"+serverInfo.serverName);
+	            	        Log.d("DNSMessage", "SERVER NAME:"+serverInfo.serverName);
 	            		}
 	                }
 	            }

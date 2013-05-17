@@ -178,12 +178,12 @@ public class MulticastTestActivity extends Activity implements OnEditorActionLis
                 packetListAdapter.addPacket((DataPacket)msg.obj);
                 listView.setSelection(packetListAdapter.getCount() - 1);
                 break;
-//            case MSG_ERROR:
+            case MSG_ERROR:
 //                DataPacket packet = new DataPacket();
 //                packet.description = ((Throwable)msg.obj).getMessage();
 //                packetListAdapter.addPacket(packet);
 //                listView.setSelection(packetListAdapter.getCount() - 1);
-//                break;
+                break;
             default:
                 Log.w(TAG, "unknown activity message code: "+msg);
                 break;
