@@ -1,0 +1,22 @@
+<component name="libraryTable">
+  <library name="dexedLibs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/jmdns-23554fc084632e7298889605c61de162.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/crashlytics-b50a617b7fe774329ff2477de476f3ce.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/javolution-5.5.1-a22518b38dcab8e26d02f688af472d05.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/jWebSocketJavaSEClient-1.0-878cfa69a984c2c92438db53c0f739f4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/jackson-mapper-asl-1.9.3-4151f81b51919d6628ab83052386bbfc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/android-support-v4-e9db14ae84cddc769383e8d674225d4e.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/jWebSocketCommon-1.0-9f37b9529815616f5b3e6e306f648c33.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/gson-2.0-1c83ae58b7a4b4661a9c7cf9f504b446.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/jackson-core-asl-1.9.3-200717c6ee1df01e1bea86ad69393a7a.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/ocpsoft-pretty-time-1.0.7-4b5dc60a5cc68c4252547b37c7e4d866.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/jakarta-oro-17aac648d5a208cb642ebb27f82bb846.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/jWebSocketClientAPI-1.0-29696f631fdc2728e7bc92efe4d482ce.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/annotations-423bf803e228f610b3326a35bfc86324.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/joda-time-2.0-6d92bd23a9a5cfe999b8cc9a3e0b9ace.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
