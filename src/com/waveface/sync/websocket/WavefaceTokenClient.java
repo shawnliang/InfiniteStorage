@@ -26,6 +26,7 @@ import org.jwebsocket.token.WebSocketResponseTokenListener;
 import org.jwebsocket.util.Tools;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.text.TextUtils;
 
@@ -159,20 +160,6 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 				//LabelDB.updateLabelInfo(mContext,entity);
 			}
 			
-			//get label info
-			Cursor labelCursor = LabelTable.getLabels(mContext);
-			labelCursor.moveToFirst();
-			int labelCount =labelCursor.getCount();
-			Log.d(TAG, "label count="+labelCount);
-			String labelId = labelCursor.getColumnName(labelCursor.getColumnIndex(LabelTable.COLUMN_LABEL_ID));
-			Log.d(TAG, "labelId="+labelId);
-			labelCursor.close();
-			//get label's file info
-			Cursor fileCursor= LabelFileTable.getLableFiles(mContext, labelId);
-			fileCursor.moveToFirst();
-			int fileCount =fileCursor.getCount();
-			Log.d(TAG, "file count="+fileCount);
-			fileCursor.close();
 			
 			//ORIGINAL Web Socket Code
 			Token lToken = packetToToken(aPacket);
@@ -191,7 +178,8 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		public void processClosed(WebSocketClientEvent aEvent) {
 			RuntimeState.setServerStatus(Constant.WS_ACTION_SOCKET_CLOSED);
 	    	ServersLogic.updateAllBackedServerStatus(mContext,Constant.SERVER_OFFLINE);
-	    	
+	    	Intent intent = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_DISCONNECTED);
+	    	mContext.sendBroadcast(intent);
 		}
 
 		/**

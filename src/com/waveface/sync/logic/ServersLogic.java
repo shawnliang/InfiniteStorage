@@ -17,7 +17,7 @@ import android.util.Log;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.RuntimeState;
-import com.waveface.sync.db.BackupedServersTable;
+import com.waveface.sync.db.PairedServersTable;
 import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.entity.ConnectForGTVEntity;
 import com.waveface.sync.entity.ServerEntity;
@@ -32,10 +32,10 @@ public class ServersLogic {
 			String serverId, String status) {
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
-		cv.put(BackupedServersTable.COLUMN_STATUS, status);
+		cv.put(PairedServersTable.COLUMN_STATUS, status);
 		// update
-		return cr.update(BackupedServersTable.CONTENT_URI, cv,
-				BackupedServersTable.COLUMN_SERVER_ID + "=?",
+		return cr.update(PairedServersTable.CONTENT_URI, cv,
+				PairedServersTable.COLUMN_SERVER_ID + "=?",
 				new String[] { serverId });
 	}
 
@@ -65,29 +65,48 @@ public class ServersLogic {
 		int result = 0;
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
-		cv.put(BackupedServersTable.COLUMN_SERVER_ID, entity.serverId);
-		cv.put(BackupedServersTable.COLUMN_SERVER_NAME, entity.serverName);
+		cv.put(PairedServersTable.COLUMN_SERVER_ID, entity.serverId);
+		cv.put(PairedServersTable.COLUMN_SERVER_NAME, entity.serverName);
 		if(TextUtils.isEmpty(entity.status)){
 			entity.status="";
 		}		
-		cv.put(BackupedServersTable.COLUMN_STATUS, entity.status);
-		cv.put(BackupedServersTable.COLUMN_IP, entity.ip);
+		cv.put(PairedServersTable.COLUMN_STATUS, entity.status);
+		cv.put(PairedServersTable.COLUMN_IP, entity.ip);
 		if(TextUtils.isEmpty(entity.notifyPort)){
 			entity.notifyPort="";
 		}
-		cv.put(BackupedServersTable.COLUMN_NOTIFY_PORT, entity.notifyPort);		
+		cv.put(PairedServersTable.COLUMN_NOTIFY_PORT, entity.notifyPort);		
 		if(TextUtils.isEmpty(entity.restPort)){
 			entity.restPort="";
 		}
-		cv.put(BackupedServersTable.COLUMN_REST_PORT, entity.restPort);
+		cv.put(PairedServersTable.COLUMN_REST_PORT, entity.restPort);
 		if(TextUtils.isEmpty(entity.wsPort)){
 			entity.wsPort="";
 		}
-		cv.put(BackupedServersTable.COLUMN_WS_PORT, entity.wsPort);
-		
-				result = cr.bulkInsert(BackupedServersTable.CONTENT_URI,
-						new ContentValues[] { cv });
-		
+		cv.put(PairedServersTable.COLUMN_WS_PORT, entity.wsPort);
+		Cursor cursor = null;
+		try {
+			cursor = cr.query(PairedServersTable.CONTENT_URI, null,
+					PairedServersTable.COLUMN_SERVER_ID + " =?",
+					new String[] { entity.serverId},null);
+			if (cursor != null && cursor.getCount() > 0) {
+				cursor.close();
+				cursor = null;
+				result = cr.update(PairedServersTable.CONTENT_URI,
+							cv,PairedServersTable.COLUMN_SERVER_ID+"=?",new String[]{entity.serverId});
+			}
+			else{				
+				   result = cr.bulkInsert(PairedServersTable.CONTENT_URI,
+							new ContentValues[] { cv });
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+				cursor = null;
+			}
+		}
 		return result;
 	}
 
@@ -96,11 +115,11 @@ public class ServersLogic {
 		ContentResolver cr = context.getContentResolver();
 		Cursor cursor = null;
 		try {
-			cursor = cr.query(BackupedServersTable.CONTENT_URI, null,
-					BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+			cursor = cr.query(PairedServersTable.CONTENT_URI, null,
+					PairedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
 					new String[] { Constant.SERVER_DENIED_BY_SERVER,
 							   Constant.SERVER_DENIED_BY_CLIENT}, 
-					BackupedServersTable.COLUMN_SERVER_ID + " LIMIT 1");
+					PairedServersTable.COLUMN_SERVER_ID + " LIMIT 1");
 			if (cursor != null && cursor.getCount() > 0) {
 				hasServer = true;
 				cursor.close();
@@ -121,12 +140,12 @@ public class ServersLogic {
 		ContentResolver cr = context.getContentResolver();
 		Cursor cursor = null;
 		try {
-			cursor = cr.query(BackupedServersTable.CONTENT_URI, null,
-					BackupedServersTable.COLUMN_SERVER_ID+"=? AND "+ 
-			        BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+			cursor = cr.query(PairedServersTable.CONTENT_URI, null,
+					PairedServersTable.COLUMN_SERVER_ID+"=? AND "+ 
+			        PairedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
 					new String[] { serverId,Constant.SERVER_DENIED_BY_SERVER,
 							   Constant.SERVER_DENIED_BY_CLIENT}, 
-					BackupedServersTable.COLUMN_SERVER_ID + " LIMIT 1");
+					PairedServersTable.COLUMN_SERVER_ID + " LIMIT 1");
 			if (cursor != null && cursor.getCount() > 0) {
 				canPair = true;
 				cursor.close();
@@ -150,8 +169,8 @@ public class ServersLogic {
 		Cursor cursor = null;
 		ContentResolver cr = context.getContentResolver();
 		try {
-			cursor = cr.query(BackupedServersTable.CONTENT_URI, null,
-					BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+			cursor = cr.query(PairedServersTable.CONTENT_URI, null,
+					PairedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
 					new String[] { Constant.SERVER_DENIED_BY_SERVER,
 								   Constant.SERVER_DENIED_BY_CLIENT}, null);
 
@@ -160,13 +179,13 @@ public class ServersLogic {
 				cursor.moveToFirst();
 				for (int i = 0; i < count; i++) {
 					entity = new ServerEntity();
-					entity.serverId = cursor.getString(cursor.getColumnIndex(BackupedServersTable.COLUMN_SERVER_ID));
-					entity.serverName = cursor.getString(cursor.getColumnIndex(BackupedServersTable.COLUMN_SERVER_NAME));
-					entity.status = cursor.getString(cursor.getColumnIndex(BackupedServersTable.COLUMN_STATUS));
-					entity.ip = cursor.getString(cursor.getColumnIndex(BackupedServersTable.COLUMN_IP));
-					entity.notifyPort = cursor.getString(cursor.getColumnIndex(BackupedServersTable.COLUMN_NOTIFY_PORT));
-					entity.restPort =cursor.getString(cursor.getColumnIndex(BackupedServersTable.COLUMN_REST_PORT));
-					entity.wsPort = cursor.getString(cursor.getColumnIndex(BackupedServersTable.COLUMN_WS_PORT));
+					entity.serverId = cursor.getString(cursor.getColumnIndex(PairedServersTable.COLUMN_SERVER_ID));
+					entity.serverName = cursor.getString(cursor.getColumnIndex(PairedServersTable.COLUMN_SERVER_NAME));
+					entity.status = cursor.getString(cursor.getColumnIndex(PairedServersTable.COLUMN_STATUS));
+					entity.ip = cursor.getString(cursor.getColumnIndex(PairedServersTable.COLUMN_IP));
+					entity.notifyPort = cursor.getString(cursor.getColumnIndex(PairedServersTable.COLUMN_NOTIFY_PORT));
+					entity.restPort =cursor.getString(cursor.getColumnIndex(PairedServersTable.COLUMN_REST_PORT));
+					entity.wsPort = cursor.getString(cursor.getColumnIndex(PairedServersTable.COLUMN_WS_PORT));
 					datas.add(entity);
 					cursor.moveToNext();
 				}
@@ -323,9 +342,9 @@ public class ServersLogic {
 		ContentResolver cr = context.getContentResolver();
 		Cursor cursor = null;
 		try {
-			cursor = cr.query(BackupedServersTable.CONTENT_URI,
-					new String[] { BackupedServersTable.COLUMN_SERVER_ID },
-					BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+			cursor = cr.query(PairedServersTable.CONTENT_URI,
+					new String[] { PairedServersTable.COLUMN_SERVER_ID },
+					PairedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
 					new String[] { Constant.SERVER_DENIED_BY_SERVER,
 							   Constant.SERVER_DENIED_BY_CLIENT}, null);
 
@@ -409,9 +428,9 @@ public class ServersLogic {
 		Cursor cursor = null;
 		ContentResolver cr = context.getContentResolver();
 		try {
-			cursor = cr.query(BackupedServersTable.CONTENT_URI, 
-					new String[]{BackupedServersTable.COLUMN_SERVER_NAME},
-					BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+			cursor = cr.query(PairedServersTable.CONTENT_URI, 
+					new String[]{PairedServersTable.COLUMN_SERVER_NAME},
+					PairedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
 					new String[] { Constant.SERVER_DENIED_BY_SERVER,
 							   Constant.SERVER_DENIED_BY_CLIENT}, null);
 
@@ -436,9 +455,9 @@ public class ServersLogic {
 	public static int updateAllBackedServerStatus(Context context,String status) {
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
-		cv.put(BackupedServersTable.COLUMN_STATUS, status);
-		return cr.update(BackupedServersTable.CONTENT_URI, cv,
-				BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+		cv.put(PairedServersTable.COLUMN_STATUS, status);
+		return cr.update(PairedServersTable.CONTENT_URI, cv,
+				PairedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
 				new String[] { Constant.SERVER_DENIED_BY_SERVER,
 						   Constant.SERVER_DENIED_BY_CLIENT});
 	}
@@ -464,6 +483,15 @@ public class ServersLogic {
 			RuntimeWebClient.setURL(wsLocation);
 			try {
 				RuntimeWebClient.open();
+				//ADD SERVER DATA
+				ServerEntity entity = new ServerEntity();
+				entity.serverId=serverId;
+				entity.serverName = serverName;
+				entity.ip=ip;
+				entity.notifyPort=notifyPort;
+				entity.restPort=restPort;
+				updateBackupedServer(context, entity);
+
 				//TODO:CHANGE TO NEW PROTOCAL
 				Intent intent = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
 				context.sendBroadcast(intent);
@@ -475,19 +503,12 @@ public class ServersLogic {
 						.getDeviceNameForDisplay(context);
 				connectForGTV.setConnect(connect);
 				ConnectForGTVEntity.Subscribe subscribe = new ConnectForGTVEntity.Subscribe();
-				subscribe.labels=true;
+				subscribe.labels=false;
 				connectForGTV.setSubscribe(subscribe);
 				Log.d(TAG, "send message="+RuntimeState.GSON.toJson(connectForGTV));
 				RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));
 				//TODO:ADD PAIRED SERVER
 				
-				ServerEntity entity = new ServerEntity();
-				entity.serverId=serverId;
-				entity.serverName = serverName;
-				entity.ip=ip;
-				entity.notifyPort=notifyPort;
-				entity.restPort=restPort;
-				updateBackupedServer(context, entity);
 				
 			} catch (WebSocketException e) {
 				e.printStackTrace();
@@ -499,16 +520,16 @@ public class ServersLogic {
 		int result = 0;
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
-		cv.put(BackupedServersTable.COLUMN_STATUS, status);
+		cv.put(PairedServersTable.COLUMN_STATUS, status);
 		Cursor cursor = null;
 		try {
-			cursor = cr.query(BackupedServersTable.CONTENT_URI,
-					new String[] { BackupedServersTable.COLUMN_SERVER_ID },
-					BackupedServersTable.COLUMN_SERVER_ID + " =? ",
+			cursor = cr.query(PairedServersTable.CONTENT_URI,
+					new String[] { PairedServersTable.COLUMN_SERVER_ID },
+					PairedServersTable.COLUMN_SERVER_ID + " =? ",
 					new String[] { serverId }, null);
 			if (cursor != null && cursor.getCount() > 0) {
-				result = cr.update(BackupedServersTable.CONTENT_URI, cv,
-						BackupedServersTable.COLUMN_SERVER_ID + "=?",
+				result = cr.update(PairedServersTable.CONTENT_URI, cv,
+						PairedServersTable.COLUMN_SERVER_ID + "=?",
 						new String[] { serverId });
 				cursor.close();
 			}
@@ -539,8 +560,8 @@ public class ServersLogic {
 		ContentResolver cr = context.getContentResolver();
 		Cursor cursor = null;
 		try {
-			cursor = cr.query(BackupedServersTable.CONTENT_URI, null,
-					BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+			cursor = cr.query(PairedServersTable.CONTENT_URI, null,
+					PairedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
 					new String[] { Constant.SERVER_DENIED_BY_SERVER,
 							   Constant.SERVER_DENIED_BY_CLIENT}, null);
 			if (cursor != null && cursor.getCount() > 0) {

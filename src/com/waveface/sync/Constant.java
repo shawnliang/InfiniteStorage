@@ -22,6 +22,7 @@ public class Constant {
 	public final static String ACTION_FILE_DELETED = "com.waveface.sync.action.FILE_DELETED";	
 	public final static String ACTION_INFINITE_STORAGE_ALARM = "com.waveface.sync.action.INFINITE_STORAGE_ALARM";
 	public final static String ACTION_WEB_SOCKET_SERVER_CONNECTED = "com.waveface.sync.action.WEB_SOCKET_SERVER_CONNECTED";
+	public final static String ACTION_WEB_SOCKET_SERVER_DISCONNECTED = "com.waveface.sync.action.WEB_SOCKET_SERVER_DISCONNECTED";	
 	public final static String ACTION_RELEASE_PAIRED_SERVER_BY_CLIENT = "com.waveface.sync.action.RELEASE_PAIRED_SERVER_BY_CLIENT";	
 	
 
@@ -148,6 +149,14 @@ public class Constant {
 	public final static String PARAM_SERVER_OS = "os";		
 	public final static String PARAM_RESULT = "result";
 	
+	//FOR LABEL RESTFUL API
+	public final static String URL_GET_ALL_LABELS = "/label/list_all";
+	public final static String URL_GET_FILE = "/file/get";
+	
+	// FOR LABEL DATE PARAMETER
+	public final static String PARAM_FILES = "files";
+
+	
 	// FOR QUEUE JOB STATUS
 	public final static String PREFS_NAME = "InfinitePref";
 	public final static String PREF_NOTIFICATION_ID = "notification_id";
@@ -160,7 +169,7 @@ public class Constant {
 
     //FOR BONJOUR SERVER ALARM SETTING
 	public final static String PREF_BONJOUR_SERVER_ALRM_ENNABLED = "bonjour_alarm_enabled";
-
+	
 	//FOR MEDIA Import
 	public final static String PREF_AUTO_IMPORT_ENABLED = "auto_import_enabled";
 	public final static String PREF_AUTO_IMPORT_BORN_TIME ="auto_import_born_time";

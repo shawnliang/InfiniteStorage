@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.net.Uri;
 import android.text.TextUtils;
-import com.waveface.sync.db.BackupedServersTable;
+import com.waveface.sync.db.PairedServersTable;
 import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.db.DatabaseHelper;
 import com.waveface.sync.db.FileTable;
@@ -47,8 +47,8 @@ public class SyncProvider extends ContentProvider {
 		sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
 		//FOR BACKUPED SERVER
-		sUriMatcher.addURI(AUTHORITY, BackupedServersTable.BACKUPED_SERVERS_NAME, BACKUPED_SERVERS);
-		sUriMatcher.addURI(AUTHORITY, BackupedServersTable.BACKUPED_SERVERS_NAME + "/*", BACKUPED_SERVERS_ID);
+		sUriMatcher.addURI(AUTHORITY, PairedServersTable.BACKUPED_SERVERS_NAME, BACKUPED_SERVERS);
+		sUriMatcher.addURI(AUTHORITY, PairedServersTable.BACKUPED_SERVERS_NAME + "/*", BACKUPED_SERVERS_ID);
 
 		//FOR BONJOUR SERVER
 		sUriMatcher.addURI(AUTHORITY, BonjourServersTable.BONJOUR_SERVERS_NAME, BONJOUR_SERVERS);
@@ -111,10 +111,10 @@ public class SyncProvider extends ContentProvider {
 
 		switch (match) {
 		case BACKUPED_SERVERS:
-			tableName = BackupedServersTable.TABLE_NAME;
+			tableName = PairedServersTable.TABLE_NAME;
 			break;
 		case BACKUPED_SERVERS_ID:
-			tableName = BackupedServersTable.TABLE_NAME;
+			tableName = PairedServersTable.TABLE_NAME;
 			where = (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
 			break;			
 		case BONJOUR_SERVERS:
@@ -157,9 +157,9 @@ public class SyncProvider extends ContentProvider {
 	public String getType(Uri uri) {
 		switch (sUriMatcher.match(uri)) {
 		case BACKUPED_SERVERS:
-			return BackupedServersTable.CONTENT_TYPE;
+			return PairedServersTable.CONTENT_TYPE;
 		case BACKUPED_SERVERS_ID:
-			return BackupedServersTable.CONTENT_ITEM_TYPE;
+			return PairedServersTable.CONTENT_ITEM_TYPE;
 		case BONJOUR_SERVERS:
 			return BonjourServersTable.CONTENT_TYPE;
 		case BONJOUR_SERVERS_ID:
@@ -195,11 +195,11 @@ public class SyncProvider extends ContentProvider {
 
 		switch (sUriMatcher.match(uri)) {
 		case BACKUPED_SERVERS:
-			rowId = db.insert(BackupedServersTable.TABLE_NAME,
-					BackupedServersTable.BACKUPED_SERVERS_NAME, values);
+			rowId = db.insert(PairedServersTable.TABLE_NAME,
+					PairedServersTable.BACKUPED_SERVERS_NAME, values);
 			if (rowId > 0) {
 				Uri queueUri = ContentUris.withAppendedId(
-						BackupedServersTable.CONTENT_URI, rowId);
+						PairedServersTable.CONTENT_URI, rowId);
 				getContext().getContentResolver().notifyChange(queueUri, null);
 				return queueUri;
 			}
@@ -266,17 +266,17 @@ public class SyncProvider extends ContentProvider {
 		switch (match) {
 		case BACKUPED_SERVERS:
 
-			c = mDb.query(BackupedServersTable.TABLE_NAME, projection, where,
+			c = mDb.query(PairedServersTable.TABLE_NAME, projection, where,
 					whereArgs, null, null, null);
 			c.setNotificationUri(getContext().getContentResolver(),
-					BackupedServersTable.CONTENT_URI);
+					PairedServersTable.CONTENT_URI);
 			break;
 		case BACKUPED_SERVERS_ID:
 			String serverId = uri.getLastPathSegment();
-			c = executeGeneralQuery(serverId, BackupedServersTable.TABLE_NAME,
-					BackupedServersTable.COLUMN_SERVER_ID, where, whereArgs);
+			c = executeGeneralQuery(serverId, PairedServersTable.TABLE_NAME,
+					PairedServersTable.COLUMN_SERVER_ID, where, whereArgs);
 			c.setNotificationUri(getContext().getContentResolver(),
-					BackupedServersTable.CONTENT_URI);
+					PairedServersTable.CONTENT_URI);
 			break;
 		case BONJOUR_SERVERS:
 			if (TextUtils.isEmpty(sortOrder)) {
@@ -312,15 +312,15 @@ public class SyncProvider extends ContentProvider {
 		int matchUri = sUriMatcher.match(uri);
 		switch (matchUri) {
 		case BACKUPED_SERVERS:
-			affected = db.update(BackupedServersTable.TABLE_NAME, values, where,
+			affected = db.update(PairedServersTable.TABLE_NAME, values, where,
 					whereArgs);
 			//SEND CUMTOMIZED NOTIFY INFO
 			sendCustomizedNotifyChangedInfo(matchUri);
 			break;
 		case BACKUPED_SERVERS_ID:
 			String serverId = uri.getPathSegments().get(1);
-			affected = db.update(BackupedServersTable.TABLE_NAME, values,
-					BackupedServersTable.COLUMN_SERVER_ID
+			affected = db.update(PairedServersTable.TABLE_NAME, values,
+					PairedServersTable.COLUMN_SERVER_ID
 							+ "='"
 							+ serverId
 							+ "'"
@@ -368,24 +368,24 @@ public class SyncProvider extends ContentProvider {
 			try {
 				// standard SQL insert statement, that can be reused
 				insert = db.compileStatement("INSERT INTO "
-						+ BackupedServersTable.TABLE_NAME + "("
-						+ BackupedServersTable.COLUMN_SERVER_ID + ","
-						+ BackupedServersTable.COLUMN_SERVER_NAME + ","
-						+ BackupedServersTable.COLUMN_STATUS + ","
-						+ BackupedServersTable.COLUMN_IP + ","
-						+ BackupedServersTable.COLUMN_WS_PORT + ","
-						+ BackupedServersTable.COLUMN_NOTIFY_PORT + ","
-						+ BackupedServersTable.COLUMN_REST_PORT  + ")"
+						+ PairedServersTable.TABLE_NAME + "("
+						+ PairedServersTable.COLUMN_SERVER_ID + ","
+						+ PairedServersTable.COLUMN_SERVER_NAME + ","
+						+ PairedServersTable.COLUMN_STATUS + ","
+						+ PairedServersTable.COLUMN_IP + ","
+						+ PairedServersTable.COLUMN_WS_PORT + ","
+						+ PairedServersTable.COLUMN_NOTIFY_PORT + ","
+						+ PairedServersTable.COLUMN_REST_PORT  + ")"
 						+ " values (?,?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
-					insert.bindString(1, value.getAsString(BackupedServersTable.COLUMN_SERVER_ID));
-					insert.bindString(2, value.getAsString(BackupedServersTable.COLUMN_SERVER_NAME));
-					insert.bindString(3, value.getAsString(BackupedServersTable.COLUMN_STATUS));
-					insert.bindString(4, value.getAsString(BackupedServersTable.COLUMN_IP));
-					insert.bindString(5, value.getAsString(BackupedServersTable.COLUMN_WS_PORT));
-					insert.bindString(6, value.getAsString(BackupedServersTable.COLUMN_NOTIFY_PORT));
-					insert.bindString(7, value.getAsString(BackupedServersTable.COLUMN_REST_PORT));
+					insert.bindString(1, value.getAsString(PairedServersTable.COLUMN_SERVER_ID));
+					insert.bindString(2, value.getAsString(PairedServersTable.COLUMN_SERVER_NAME));
+					insert.bindString(3, value.getAsString(PairedServersTable.COLUMN_STATUS));
+					insert.bindString(4, value.getAsString(PairedServersTable.COLUMN_IP));
+					insert.bindString(5, value.getAsString(PairedServersTable.COLUMN_WS_PORT));
+					insert.bindString(6, value.getAsString(PairedServersTable.COLUMN_NOTIFY_PORT));
+					insert.bindString(7, value.getAsString(PairedServersTable.COLUMN_REST_PORT));
 				
 					insert.execute();
 				}
@@ -540,7 +540,7 @@ public class SyncProvider extends ContentProvider {
 			break;
 		case BACKUPED_SERVERS:
 		case BACKUPED_SERVERS_ID:
-			getContext().getContentResolver().notifyChange(BackupedServersTable.BACKUPED_SERVER_URI, null);
+			getContext().getContentResolver().notifyChange(PairedServersTable.BACKUPED_SERVER_URI, null);
 			break;
 		}
 	}

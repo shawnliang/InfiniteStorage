@@ -139,8 +139,7 @@ public class LabelDB {
 	
 	
 	
-	public static Cursor getAllLabes(Context context) {
-		
+	public static Cursor getAllLabes(Context context) {		
 		Cursor cursor = context.getContentResolver()
 				.query(LabelTable.CONTENT_URI,
 						new String[]{LabelTable.COLUMN_LABEL_ID,

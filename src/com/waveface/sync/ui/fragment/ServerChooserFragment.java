@@ -265,7 +265,7 @@ public class ServerChooserFragment extends FragmentBase
 	private void clickToLinkServer(ServerEntity entity){
 //		mProgressDialog = ProgressDialog.show(getActivity(), "",getString(R.string.pairing));
 //		mProgressDialog.setCancelable(true);
-		openDialog(getActivity(),Constant.WS_ACTION_WAIT_FOR_PAIR);
+//		openDialog(getActivity(),Constant.WS_ACTION_WAIT_FOR_PAIR);
 		String wsLocation = "ws://"+entity.ip+":"+entity.notifyPort;
 		HashMap<String,String> param = new HashMap<String,String>();
 		param.put(Constant.PARAM_SERVER_WS_LOCATION, wsLocation);
@@ -304,65 +304,15 @@ public class ServerChooserFragment extends FragmentBase
 	class LinkBonjourServer extends AsyncTask<HashMap<String,String>,Void,Void>{
 
 		@Override
-		protected Void doInBackground(HashMap<String,String>... params) {
-			
+		protected Void doInBackground(HashMap<String,String>... params) {			
 			String wsLocation = params[0].get(Constant.PARAM_SERVER_WS_LOCATION);
 			String serverId = params[0].get(Constant.PARAM_SERVER_ID);
 			String serverName = params[0].get(Constant.PARAM_SERVER_NAME);			
 			String ip=params[0].get(Constant.PARAM_SERVER_IP);
 			String notifyPort =params[0].get(Constant.PARAM_NOTIFY_PORT);
 			String restPort =params[0].get(Constant.PARAM_REST_PORT);
-			
-			String restfulAPIURL ="http://"+ip+":"+restPort;
-			String getAllLablesURL = restfulAPIURL + "/label/list_all";
-			String getFileURL = restfulAPIURL + "/file/get";
-			HashMap<String, String> param = new HashMap<String, String>();
-			LabelEntity entity = null;
-			FileEntity fileEntity=null;
-			String files="";
-			try {
-				
-			
-				String jsonOutput =	HttpInvoker.executePost(getAllLablesURL,param, Constant.CLOUD_CONNECTION_TIMEOUT, Constant.CLOUD_CONNECTION_TIMEOUT);
-				Log.d(TAG, "jsonOutString ="+jsonOutput);
-				entity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.class);
-				if(entity!=null){
-					for(LabelEntity.Label label: entity.labels){
-						if(label.files!=null)
-						if(label.files.length>0){
-							 for(String f:label.files){
-								  files+=f+",";
-							  }
-							 files=files.substring(0, files.length()-1);
-							 param.clear();
-							 param.put("files", files.trim());
-							 jsonOutput = HttpInvoker.executePost(getFileURL, param,  Constant.CLOUD_CONNECTION_TIMEOUT, Constant.CLOUD_CONNECTION_TIMEOUT);
-							 
-							 //FileEntity
-							 fileEntity = RuntimeState.GSON.fromJson(jsonOutput, FileEntity.class);	 
-							 Log.d(TAG, "file fileEntity ="+fileEntity);
-							 Log.d(TAG, "file jsonOutString ="+jsonOutput);
-							 
-						}
-						// update label info
-						LabelDB.updateLabelInfo(getActivity(), label, fileEntity);
-					}
-				}
-
-			} catch (WammerServerException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return null;
-			}
-			
-			Cursor allLabel = LabelDB.getAllLabes(getActivity());
-			allLabel.moveToFirst();
-			int labelsCount =  allLabel.getCount();
-			allLabel.close();
-			
-		//	ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort);
+			ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort);			
 			return null;
 		}
-		
 	}
 }

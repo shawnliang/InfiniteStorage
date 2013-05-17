@@ -39,7 +39,6 @@ import com.waveface.sync.logic.BackupLogic;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.service.InfiniteService;
 import com.waveface.sync.ui.FirstUseActivity;
-import com.waveface.sync.util.DeviceUtil;
 import com.waveface.sync.util.NetworkUtil;
 
 public class SyncFragment extends Fragment implements OnClickListener {
@@ -49,28 +48,14 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	private Handler mHandler = new Handler();
 
 	// UI
-	private TextView mDevice;
-	private TextView mTotalInfo;
-	private TextView mNowPeriod;
-	private TextView mPhotoCount;
-	private TextView mPhotoSize;
-	private TextView mVideoCount;
-	private TextView mVideoSize;
-	private TextView mAudioCount;
-	private TextView mAudioSize;
 	private RelativeLayout mRLSetting;
 	private ImageView mIvAddPc;
-	private RelativeLayout rlBackupContent;
-	private ImageView ivPC;
-	private ImageView ivFile;
-	private ImageView ivPlay;
-	private TextView tvBackupPC;
-	private TextView tvContent;
-	private TextView tvDetail;
-	private TextView tvLastBackupTime;
+	private TextView tvConnectPC;
+
+	
 
 	private ProgressDialog mProgressDialog;
-	private MediaStoreImage mMediaImage;
+	
 
 	private SharedPreferences mPrefs;
 	private Editor mEditor;
@@ -87,17 +72,14 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
 		//START UP SERVICE
-//		new InvokeServiceTask().execute(new Void[]{});
+		new InvokeServiceTask().execute(new Void[]{});
+		
 		getActivity().startService(new Intent(getActivity(), InfiniteService.class));
 		View root = inflater.inflate(R.layout.fragment_sync, container, false);
 
 		mPrefs = getActivity().getSharedPreferences(Constant.PREFS_NAME,
 				Context.MODE_PRIVATE);
 		mEditor = mPrefs.edit();
-
-		mMediaImage = new MediaStoreImage(getActivity(), IMAGE_WIDTH,
-				IMAGE_HEIGHT);
-
 
 		// SETTINGS
 		ImageView iv = (ImageView) root.findViewById(R.id.ivSettings);
@@ -108,13 +90,16 @@ public class SyncFragment extends Fragment implements OnClickListener {
 
 		mIvAddPc = (ImageView) root.findViewById(R.id.ivAddpc);
 		mIvAddPc.setOnClickListener(this);
+		
+		tvConnectPC = (TextView) root.findViewById(R.id.tvConnectPC);
+
 		return root;
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-//		refreshLayout();
+		refreshLayout();
 
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_BONJOUR_SERVER_MANUAL_PAIRING);
@@ -125,7 +110,7 @@ public class SyncFragment extends Fragment implements OnClickListener {
 
 	
 		// GET PAIRED SERVERS
-		firsttimeDispaly();
+//		firsttimeDispaly();
 
 		boolean alarmEnable = mPrefs.getBoolean(
 				Constant.PREF_BONJOUR_SERVER_ALRM_ENNABLED, false);
@@ -221,25 +206,11 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	public void onResume() {
 		super.onResume();
 		refreshLayout();
-//       if (dnsThread != null) {
-//            Log.e(TAG, "DNS hread should be null!");
-//            dnsThread.submitQuit();
-//        }
-//    	dnsThread = new DNSThread(getActivity());
-//    	dnsThread.start();
-	
 	}
     @Override
 	public void onPause() {
         super.onPause();
         Log.v(TAG, "pause activity");
-                
-//        if (dnsThread == null) {
-//            Log.e(TAG, "netThread should not be null!");
-//            return;
-//        }
-//        dnsThread.submitQuit();
-//        dnsThread = null;
     }
 
 	@Override
@@ -257,54 +228,23 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	}
 
 	public void refreshLayout() {
-
+		mPairedServers = ServersLogic.getBackupedServers(getActivity());
 		// REFRESH SETTING AREA
 		if (ServersLogic.hasBackupedServers(getActivity())) {
-			mRLSetting.setVisibility(View.GONE);
+			if(RuntimeState.OnWebSocketOpened){
+			   tvConnectPC.setText(getActivity().getString(R.string.backup_linked,mPairedServers.get(0).serverName));
+			}
+			else{
+				   tvConnectPC.setText(getActivity().getString(R.string.backup_wait_for_linked,mPairedServers.get(0).serverName));				
+			}
+			mIvAddPc.setVisibility(View.GONE);
 		} else {
-			mRLSetting.setVisibility(View.VISIBLE);
+			tvConnectPC.setText(R.string.connect_a_pc);
+			mIvAddPc.setVisibility(View.VISIBLE);
 		}
 	}
 
 	public void displayProgressingInfo() {
-	}
-
-	// public void refreshServerStatus(){
-	// mAdapter.setData(ServersLogic.getBackupedServers(this));
-	// if(ServersLogic.hasBackupedServers(this)){
-	// mRLSetting.setVisibility(View.GONE);
-	// }
-	// }
-
-	private void displayBackingUpImage() {
-		if (!TextUtils.isEmpty(RuntimeState.mFilename)) {
-			switch (RuntimeState.mFileType) {
-			case Constant.TYPE_AUDIO:
-			case Constant.TYPE_VIDEO:
-				ivPlay.setVisibility(View.VISIBLE);
-				break;
-			case Constant.TYPE_IMAGE:
-				ivPlay.setVisibility(View.INVISIBLE);
-				break;
-			}
-			if (RuntimeState.mFileType != Constant.TYPE_AUDIO) {
-
-				try {
-					Bitmap b = mMediaImage.getBitmap(RuntimeState.mMediaID,
-							RuntimeState.mFileType, RuntimeState.mFilename);
-					if (b != null) {
-						ivFile.setImageBitmap(b);
-					} else {
-						ivFile.setImageResource(R.drawable.ic_photos);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					ivFile.setImageResource(R.drawable.ic_photos);
-				}
-			}
-		} else {
-			ivFile.setImageResource(R.drawable.ic_photos);
-		}
 	}
 
 	@Override
@@ -318,12 +258,6 @@ public class SyncFragment extends Fragment implements OnClickListener {
 						Constant.REQUEST_CODE_OPEN_SERVER_CHOOSER);
 				EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_LABEL_ADD_PC, null);
 			}
-			// else{
-			// startIntent = new Intent(MainActivity.this,
-			// AddServerActivity.class);
-			// startActivityForResult(startIntent,
-			// Constant.REQUEST_CODE_ADD_SERVER);
-			// }
 			break;
 		}
 	}

@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 8;
 	private static final String[] TABLE_NAME_LIST = {
 			BonjourServersTable.TABLE_NAME,
-			BackupedServersTable.TABLE_NAME};
+			PairedServersTable.TABLE_NAME};
 
 
 	private final boolean DEBUGGABLE;
@@ -47,14 +47,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		// Create Backuped Servers table
 		sqlBuilder = new StringBuilder();
 		sqlBuilder.append("Create Table {0} (")
-		  .append(BackupedServersTable.COLUMN_SERVER_ID + " TEXT PRIMARY KEY,")
-		  .append(BackupedServersTable.COLUMN_SERVER_NAME+" TEXT NOT NULL DEFAULT ''' ,")
-		  .append(BackupedServersTable.COLUMN_STATUS+" TEXT NOT NULL,")
-		  .append(BackupedServersTable.COLUMN_IP+" TEXT NOT NULL,")
-		  .append(BackupedServersTable.COLUMN_WS_PORT+" TEXT NOT NULL,")
-		  .append(BackupedServersTable.COLUMN_NOTIFY_PORT+" TEXT NOT NULL,")
-		  .append(BackupedServersTable.COLUMN_REST_PORT+ " TEXT );");
-		createTable(db, sqlBuilder.toString(), BackupedServersTable.TABLE_NAME);
+		  .append(PairedServersTable.COLUMN_SERVER_ID + " TEXT PRIMARY KEY,")
+		  .append(PairedServersTable.COLUMN_SERVER_NAME+" TEXT NOT NULL DEFAULT ''' ,")
+		  .append(PairedServersTable.COLUMN_STATUS+" TEXT NOT NULL,")
+		  .append(PairedServersTable.COLUMN_IP+" TEXT NOT NULL,")
+		  .append(PairedServersTable.COLUMN_WS_PORT+" TEXT NOT NULL,")
+		  .append(PairedServersTable.COLUMN_NOTIFY_PORT+" TEXT NOT NULL,")
+		  .append(PairedServersTable.COLUMN_REST_PORT+ " TEXT );");
+		createTable(db, sqlBuilder.toString(), PairedServersTable.TABLE_NAME);
 
 		// Create BonjourServers table
 		sqlBuilder = new StringBuilder();

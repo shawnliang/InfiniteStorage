@@ -5,7 +5,7 @@ import android.provider.BaseColumns;
 
 import com.waveface.sync.provider.SyncProvider;
 
-public class BackupedServersTable implements BaseColumns {
+public class PairedServersTable implements BaseColumns {
 
 	public static final String BACKUPED_SERVERS_NAME = "backupedServers";
 	public static final Uri BACKUPED_SERVER_URI = Uri.parse("content://"
@@ -23,7 +23,7 @@ public class BackupedServersTable implements BaseColumns {
 	public static final String COLUMN_REST_PORT = "restPort";
 	public static final String COLUMN_STATUS = "status";
 	
-	private BackupedServersTable() {
+	private PairedServersTable() {
 
 	}
 }

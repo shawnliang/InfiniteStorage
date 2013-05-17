@@ -29,6 +29,9 @@
     <string name="backup_folder">備份目錄 %1$s</string>    
     <string name="backup_info">已備份 %1$d 張照片, %2$d 個影片檔, %3$d 個聲音檔</string>
     <string name="backup_last_local_time">上次更新時間 %1$s</string>
+    <string name="backup_linked">已和連結到 %1$s</string>
+    <string name="backup_wait_for_linked">等待連結到 %1$s</string>    
+    
     
     <!-- PROGRESS INFO -->
     <string name="backup_info_empty">整理資料中 ....</string>

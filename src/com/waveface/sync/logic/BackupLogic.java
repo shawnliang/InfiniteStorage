@@ -29,7 +29,7 @@ import android.text.TextUtils;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.RuntimeState;
-import com.waveface.sync.db.BackupedServersTable;
+import com.waveface.sync.db.PairedServersTable;
 import com.waveface.sync.entity.FileBackupEntity;
 import com.waveface.sync.util.FileUtil;
 import com.waveface.sync.util.Log;
@@ -152,11 +152,11 @@ public class BackupLogic {
 		ContentResolver cr = context.getContentResolver();
 		Cursor cursor = null;
 		try {
-			cursor = cr.query(BackupedServersTable.CONTENT_URI, new String[] {
-					BackupedServersTable.COLUMN_SERVER_ID },
-					BackupedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
+			cursor = cr.query(PairedServersTable.CONTENT_URI, new String[] {
+					PairedServersTable.COLUMN_SERVER_ID },
+					PairedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
 					new String[] { Constant.SERVER_DENIED_BY_SERVER,
-							   Constant.SERVER_DENIED_BY_CLIENT}, BackupedServersTable.COLUMN_SERVER_ID+" LIMIT 1");
+							   Constant.SERVER_DENIED_BY_CLIENT}, PairedServersTable.COLUMN_SERVER_ID+" LIMIT 1");
 			if (cursor != null && cursor.getCount() > 0) {
 				cursor.moveToFirst();
 				serverId = cursor.getString(0);
