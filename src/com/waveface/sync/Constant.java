@@ -44,6 +44,9 @@ public class Constant {
 	public static final int BONJOUR_PAIRING = 1;
 	public static final int BONJOUR_PAIRED = 2;
 	
+	public static final int CLOUD_CONNECTION_TIMEOUT = 20000;
+	public static final int CLOUD_SOCKET_TIMEOUT = 20000;
+	
 	//ALARM INTERVAL
 	public static final long ALARM_INTERVAL =  1 *30 * 1000;
 

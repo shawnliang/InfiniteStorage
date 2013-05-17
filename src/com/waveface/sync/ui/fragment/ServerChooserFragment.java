@@ -1,7 +1,11 @@
 package com.waveface.sync.ui.fragment;
 
+
 import java.util.ArrayList;
+
+
 import java.util.HashMap;
+
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -13,6 +17,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.database.ContentObserver;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,9 +35,15 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.waveface.exception.WammerServerException;
+import com.waveface.service.HttpInvoker;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
+import com.waveface.sync.RuntimeState;
 import com.waveface.sync.db.BonjourServersTable;
+import com.waveface.sync.db.LabelDB;
+import com.waveface.sync.entity.FileEntity;
+import com.waveface.sync.entity.LabelEntity;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.ui.adapter.ServerChooseAdapter;
@@ -263,7 +274,7 @@ public class ServerChooserFragment extends FragmentBase
 		param.put(Constant.PARAM_SERVER_IP, entity.ip);
 		param.put(Constant.PARAM_NOTIFY_PORT, entity.notifyPort);
 		param.put(Constant.PARAM_REST_PORT,entity.restPort);
-		new LinkBonjourServer().execute(param);
+	    new LinkBonjourServer().execute(param);
     }
 	@Override
 	public void onClick(View v) {
@@ -289,6 +300,7 @@ public class ServerChooserFragment extends FragmentBase
 	public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 	}
 	
+
 	class LinkBonjourServer extends AsyncTask<HashMap<String,String>,Void,Void>{
 
 		@Override
@@ -300,7 +312,55 @@ public class ServerChooserFragment extends FragmentBase
 			String ip=params[0].get(Constant.PARAM_SERVER_IP);
 			String notifyPort =params[0].get(Constant.PARAM_NOTIFY_PORT);
 			String restPort =params[0].get(Constant.PARAM_REST_PORT);
-			ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort);
+			
+			String restfulAPIURL ="http://"+ip+":"+restPort;
+			String getAllLablesURL = restfulAPIURL + "/label/list_all";
+			String getFileURL = restfulAPIURL + "/file/get";
+			HashMap<String, String> param = new HashMap<String, String>();
+			LabelEntity entity = null;
+			FileEntity fileEntity=null;
+			String files="";
+			try {
+				
+			
+				String jsonOutput =	HttpInvoker.executePost(getAllLablesURL,param, Constant.CLOUD_CONNECTION_TIMEOUT, Constant.CLOUD_CONNECTION_TIMEOUT);
+				Log.d(TAG, "jsonOutString ="+jsonOutput);
+				entity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.class);
+				if(entity!=null){
+					for(LabelEntity.Label label: entity.labels){
+						if(label.files!=null)
+						if(label.files.length>0){
+							 for(String f:label.files){
+								  files+=f+",";
+							  }
+							 files=files.substring(0, files.length()-1);
+							 param.clear();
+							 param.put("files", files.trim());
+							 jsonOutput = HttpInvoker.executePost(getFileURL, param,  Constant.CLOUD_CONNECTION_TIMEOUT, Constant.CLOUD_CONNECTION_TIMEOUT);
+							 
+							 //FileEntity
+							 fileEntity = RuntimeState.GSON.fromJson(jsonOutput, FileEntity.class);	 
+							 Log.d(TAG, "file fileEntity ="+fileEntity);
+							 Log.d(TAG, "file jsonOutString ="+jsonOutput);
+							 
+						}
+						// update label info
+						LabelDB.updateLabelInfo(getActivity(), label, fileEntity);
+					}
+				}
+
+			} catch (WammerServerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+			
+			Cursor allLabel = LabelDB.getAllLabes(getActivity());
+			allLabel.moveToFirst();
+			int labelsCount =  allLabel.getCount();
+			allLabel.close();
+			
+		//	ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort);
 			return null;
 		}
 		

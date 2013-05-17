@@ -1,5 +1,7 @@
 package com.waveface.sync.websocket;
 
+
+
 import java.util.Map;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -24,16 +26,16 @@ import org.jwebsocket.token.WebSocketResponseTokenListener;
 import org.jwebsocket.util.Tools;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.text.TextUtils;
 
-import com.google.gson.JsonSyntaxException;
 import com.waveface.sync.Constant;
 import com.waveface.sync.RuntimeState;
+import com.waveface.sync.db.LabelDB;
 import com.waveface.sync.db.LabelFileTable;
 import com.waveface.sync.db.LabelTable;
 import com.waveface.sync.entity.LabelEntity;
+
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.util.Log;
 
@@ -139,25 +141,22 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 
 		@Override
 		public void processPacket(WebSocketClientEvent aEvent, WebSocketPacket aPacket) {
+			
+			
 			String jsonOutput = aPacket.getUTF8();
 			LabelEntity entity = null;
 			try {
 				if(!TextUtils.isEmpty(jsonOutput))
 					entity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.class);
-			} catch (JsonSyntaxException e) {
+			
+			} catch (Exception e) {
 				e.printStackTrace();
-				Log.e(Constant.JSON_ERROR_TAG, jsonOutput);
-				Log.e(Constant.JSON_ERROR_TAG, e.getLocalizedMessage());
+			
 			}
 			//TODO:handle retrive label
 			
 			if(entity!=null){
-			   //update label info
-				//ServersLogic.updateLabelInfo(mContext,entity);
-				//update label
-				LabelTable.updateLabel(mContext, entity);
-				//update label's file
-				LabelFileTable.updateLabelFiles(mContext, entity.label_id, entity.files);
+				//LabelDB.updateLabelInfo(mContext,entity);
 			}
 			
 			//get label info
@@ -166,6 +165,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 			int labelCount =labelCursor.getCount();
 			Log.d(TAG, "label count="+labelCount);
 			String labelId = labelCursor.getColumnName(labelCursor.getColumnIndex(LabelTable.COLUMN_LABEL_ID));
+			Log.d(TAG, "labelId="+labelId);
 			labelCursor.close();
 			//get label's file info
 			Cursor fileCursor= LabelFileTable.getLableFiles(mContext, labelId);

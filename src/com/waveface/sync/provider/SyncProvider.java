@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import com.waveface.sync.db.BackupedServersTable;
 import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.db.DatabaseHelper;
+import com.waveface.sync.db.FileTable;
 import com.waveface.sync.db.LabelFileTable;
 import com.waveface.sync.db.LabelTable;
 
@@ -35,6 +36,8 @@ public class SyncProvider extends ContentProvider {
 	private final static int LABELFILES = 11;
 	private final static int LABELFILES_ID = 12;
 
+	private final static int FILES = 13;
+	private final static int FILES_ID = 14;
 	
 	public static final String AUTHORITY = "com.waveface.sync";
 
@@ -120,8 +123,28 @@ public class SyncProvider extends ContentProvider {
 		case BONJOUR_SERVERS_ID:
 			tableName = BonjourServersTable.TABLE_NAME;
 			where = (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
+			break;	
+		case LABELS:
+			tableName = LabelTable.TABLE_NAME;
+			break;
+		case LABELS_ID:
+			tableName = LabelTable.TABLE_NAME;
+			where = (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
+			break;				
+		case LABELFILES:
+			tableName = LabelFileTable.TABLE_NAME;
+			break;
+		case LABELFILES_ID:
+			tableName = LabelFileTable.TABLE_NAME;
+			where = (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
+			break;
+		case FILES:
+			tableName = FileTable.TABLE_NAME;
+			break;
+		case FILES_ID:
+			tableName = FileTable.TABLE_NAME;
+			where = (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
 			break;			
-
 		default:
 			throw new IllegalArgumentException("unknown post element: " + uri);
 		}
@@ -141,6 +164,18 @@ public class SyncProvider extends ContentProvider {
 			return BonjourServersTable.CONTENT_TYPE;
 		case BONJOUR_SERVERS_ID:
 			return BonjourServersTable.CONTENT_ITEM_TYPE;
+		case LABELS:
+			return LabelTable.CONTENT_TYPE;
+		case LABELS_ID:
+			return LabelTable.CONTENT_ITEM_TYPE;	
+		case LABELFILES:
+			return LabelFileTable.CONTENT_TYPE;
+		case LABELFILES_ID:
+			return LabelFileTable.CONTENT_ITEM_TYPE;
+		case FILES:
+			return FileTable.CONTENT_TYPE;
+		case FILES_ID:
+			return FileTable.CONTENT_ITEM_TYPE;				
 		default:
 			throw new IllegalArgumentException("Unknown post type: " + uri);
 		}
@@ -197,7 +232,17 @@ public class SyncProvider extends ContentProvider {
 				getContext().getContentResolver().notifyChange(queueUri, null);
 				return queueUri;
 			}	
-			break;			
+			break;
+		case FILES:
+			rowId = db.insert(FileTable.TABLE_NAME,
+					FileTable.FILE_NAME, values);
+			if (rowId > 0) {
+				Uri queueUri = ContentUris.withAppendedId(
+						FileTable.CONTENT_URI, rowId);
+				getContext().getContentResolver().notifyChange(queueUri, null);
+				return queueUri;
+			}	
+			break;				
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
 		}
@@ -251,15 +296,6 @@ public class SyncProvider extends ContentProvider {
 			c.setNotificationUri(getContext().getContentResolver(),
 					BonjourServersTable.CONTENT_URI);
 			break;
-
-		case LABELS_ID:
-			String labelId = uri.getLastPathSegment();
-			c = executeGeneralQuery(labelId, LabelTable.TABLE_NAME,
-					LabelTable.COLUMN_LABEL_ID, where, whereArgs);
-			c.setNotificationUri(getContext().getContentResolver(),
-					LabelTable.CONTENT_URI);
-			break;
-			
 
 		default:
 			c = new DummyCursor();
@@ -431,13 +467,15 @@ public class SyncProvider extends ContentProvider {
 				insert = db.compileStatement("INSERT OR REPLACE INTO "
 						+ LabelFileTable.TABLE_NAME + "("
 						+ LabelFileTable.COLUMN_LABEL_ID + ","
-						+ LabelFileTable.COLUMN_FILE_ID + ")"
-						+ " values (?,?)");
+						+LabelFileTable.COLUMN_FILE_ID + ","
+						+LabelFileTable.COLUMN_ORDER+ ")"
+						+ " values (?,?,?)");
 
 				for (ContentValues value : values) {
 					// bind the 1-indexed ?'s to the values specified
 					insert.bindString(1, value.getAsString(LabelFileTable.COLUMN_LABEL_ID));
 					insert.bindString(2, value.getAsString(LabelFileTable.COLUMN_FILE_ID));
+					insert.bindString(3, value.getAsString(LabelFileTable.COLUMN_ORDER));
 					insert.execute();
 				}
 				db.setTransactionSuccessful();
@@ -448,7 +486,44 @@ public class SyncProvider extends ContentProvider {
 				}
 				db.endTransaction();
 			}
-			return numInserted;			
+			return numInserted;	
+		case FILES:
+			db.beginTransaction();
+			try {
+				// standard SQL insert statement, that can be reused
+				insert = db.compileStatement("INSERT OR REPLACE INTO "
+						+ FileTable.TABLE_NAME + "("
+						+ FileTable.COLUMN_FILE_ID + ","
+						+ FileTable.COLUMN_FILE_NAME + ","
+						+ FileTable.COLUMN_FOLDER + ","
+						+ FileTable.COLUMN_THUMB_READY + ","
+						+ FileTable.COLUMN_TYPE + ","
+						+ FileTable.COLUMN_DEV_ID + ","
+						+ FileTable.COLUMN_DEV_NAME + ","
+						+FileTable.COLUMN_DEV_TYPE+ ")"
+						+ " values (?,?,?,?,?,?,?,?)");
+
+				for (ContentValues value : values) {
+					// bind the 1-indexed ?'s to the values specified
+					insert.bindString(1, value.getAsString(FileTable.COLUMN_FILE_ID));
+					insert.bindString(2, value.getAsString(FileTable.COLUMN_FILE_NAME));
+					insert.bindString(3, value.getAsString(FileTable.COLUMN_FOLDER));
+					insert.bindString(4, value.getAsString(FileTable.COLUMN_THUMB_READY));
+					insert.bindString(5, value.getAsString(FileTable.COLUMN_TYPE));
+					insert.bindString(6, value.getAsString(FileTable.COLUMN_DEV_ID));
+					insert.bindString(7, value.getAsString(FileTable.COLUMN_DEV_NAME));
+					insert.bindString(8, value.getAsString(FileTable.COLUMN_DEV_TYPE));
+					insert.execute();
+				}
+				db.setTransactionSuccessful();
+				numInserted = values.length;
+			} finally {
+				if (insert != null) {
+					insert.close();
+				}
+				db.endTransaction();
+			}
+			return numInserted;				
 		default:
 			throw new UnsupportedOperationException("unsupported uri: " + uri);
 		}
