@@ -121,6 +121,7 @@
       <DependentUpon>BackupProgressDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Src\Class\IFileStorageLocationProvider.cs" />
+    <Compile Include="Src\DB\DBInitializer.cs" />
     <Compile Include="Src\UIControl\AboutControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -171,8 +172,6 @@
     <Compile Include="Src\Dialog\PairingRequestDialog.Designer.cs">
       <DependentUpon>PairingRequestDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Src\Model\Model.cs" />
-    <Compile Include="Src\Model\MyDbContext.cs" />
     <Compile Include="Src\UIControl\BackupLocationControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -321,6 +320,12 @@
     <None Include="Resources\Bunnydesktop.ico" />
     <None Include="Resources\ChooseThisPCOnYourPhone.png" />
     <None Include="Resources\Tea-Cup1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfiniteStorage.DB\InfiniteStorage.DB.csproj">
+      <Project>{793d45b0-147c-4304-8578-7ff2792102c8}</Project>
+      <Name>InfiniteStorage.DB</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

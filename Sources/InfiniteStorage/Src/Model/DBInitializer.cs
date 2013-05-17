@@ -1,38 +1,18 @@
-﻿using InfiniteStorage.Properties;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Data.SQLite;
 using System.IO;
+using InfiniteStorage.Properties;
 
 namespace InfiniteStorage.Model
 {
-	public class MyDbContext : IDisposable
+	static class DBInitializer
 	{
-		public InfiniteStorageContext Object { get; private set; }
-		public static string ConnectionString { get; private set; }
-		public static string DbFilePath { get; private set; }
-
-		static MyDbContext()
-		{
-			var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName);
-
-			DbFilePath = Path.Combine(appDir, "database.s3db");
-			ConnectionString = "Data Source=" + DbFilePath;
-		}
-
-		public MyDbContext()
-		{
-			var conn = new SQLiteConnection(ConnectionString);
-			Object = new InfiniteStorageContext(conn, true);
-		}
-
-		public void Dispose()
-		{
-			Object.Dispose();
-		}
-
 		public static void InitialzeDatabaseSchema()
 		{
-			using (var conn = new SQLiteConnection(ConnectionString))
+			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
 			{
 				conn.Open();
 
@@ -118,6 +98,7 @@ CREATE TABLE [Labels] (
 			}
 		}
 
+
 		private static long getDbSchemaVersion(SQLiteConnection conn)
 		{
 			var cmd = new SQLiteCommand("PRAGMA user_version;", conn);
@@ -129,5 +110,6 @@ CREATE TABLE [Labels] (
 			var cmd = new SQLiteCommand(string.Format("PRAGMA user_version={0};", version), conn);
 			return cmd.ExecuteNonQuery();
 		}
+
 	}
 }

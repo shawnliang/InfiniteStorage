@@ -87,7 +87,11 @@ CREATE TABLE [Labels] (
 [deleted] BOOLEAN NULL
 );
 
+INSERT INTO [Labels] (label_id, name, seq, deleted)
+VALUES (@labelId, 'TAG', 1, 0);
+
 ", conn);
+						cmd.Parameters.Add(new SQLiteParameter("@labelId", Guid.NewGuid()));
 						cmd.ExecuteNonQuery();
 						updateDbSchemaVersion(conn, 3);
 						schemaVersion = 3;

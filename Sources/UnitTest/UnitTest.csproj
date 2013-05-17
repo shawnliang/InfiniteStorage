@@ -69,6 +69,10 @@
     <Compile Include="testWaitingForApprove.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InfiniteStorage.DB\InfiniteStorage.DB.csproj">
+      <Project>{793d45b0-147c-4304-8578-7ff2792102c8}</Project>
+      <Name>InfiniteStorage.DB</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfiniteStorage\InfiniteStorage.csproj">
       <Project>{0CE50F48-3081-423A-8CCB-7515811392C5}</Project>
       <Name>InfiniteStorage</Name>
