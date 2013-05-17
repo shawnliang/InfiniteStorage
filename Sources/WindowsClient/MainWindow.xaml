@@ -9,7 +9,7 @@
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type wvmodel:Service}">
-            <Label Content="{Binding Name}" Foreground="White"/>
+            <Label Content="{Binding Name}" Foreground="White" Height="40" VerticalContentAlignment="Center"/>
         </DataTemplate>
 
         <!-- Photo Template -->
@@ -95,7 +95,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="150"/>
         </Grid.ColumnDefinitions>
-        <Grid Background="#FF5D5D5D" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Margin="0,0,0,1">
+        <Grid Background="#FF5D5D5D" Grid.Column="0" Grid.Row="0" Margin="0,0,0,1">
             <Grid.Effect>
                 <DropShadowEffect ShadowDepth="1" BlurRadius="1" Direction="270"/>
             </Grid.Effect>
@@ -104,12 +104,23 @@
                     <DropShadowEffect/>
                 </Label.Effect>
             </Label>
-            <Grid Background="#FF5D5D5D" Grid.Row="0" Margin="150,0,0,0">
+        </Grid>
+        <Grid Background="#FF5D5D5D" Grid.Column="1" Grid.Row="0" Margin="0,0,0,1">
+            <Grid.Effect>
+                <DropShadowEffect ShadowDepth="1" BlurRadius="1" Direction="270"/>
+            </Grid.Effect>
+            <Grid Background="#FF5D5D5D" Grid.Row="0">
                 <WrapPanel VerticalAlignment="Center">
                     <local:BackButton Content="BackButton" Height="20"   VerticalAlignment="Center" Width="20" Click="BackButton_Click" Margin="2"/>
                     <Label x:Name="lblContentLocation" Content="{Binding SelectedItem.Parent.ContentPath , ElementName=lbxContentContainer}" Foreground="White"/>
                 </WrapPanel>
             </Grid>
+        </Grid>
+        <Grid Background="#FF5D5D5D" Grid.Column="2" Grid.Row="0" Margin="0,0,0,1">
+            <Grid.Effect>
+                <DropShadowEffect ShadowDepth="1" BlurRadius="1" Direction="270"/>
+            </Grid.Effect>
+            <Label Content="Labeled photos" Foreground="#FFE0E0E0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
         <ListBox x:Name="lbxDeviceContainer" Grid.Column="0" Grid.Row="1" Background="#FF2E2E2E" BorderBrush="{x:Null}"
                   ItemsSource="{Binding IsAsync=True}"
@@ -138,6 +149,14 @@
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="1" ShadowDepth="1" Direction="180"/>
             </Grid.Effect>
+
+            <Button Content="Play" HorizontalAlignment="Left" Height="31" Margin="10,100,0,0" VerticalAlignment="Top" Width="130"/>
+            <Button Content="Share" HorizontalAlignment="Left" Height="31" Margin="10,136,0,0" VerticalAlignment="Top" Width="130"/>
+            <Label x:Name="lblLabeledCount" HorizontalAlignment="Left" Height="32" Margin="10,12,0,0" Content="{Binding Count}" ContentStringFormat="{}Labeled {0} photos" VerticalAlignment="Top" Width="130" Foreground="White" HorizontalContentAlignment="Center"/>
+
+            <Label HorizontalAlignment="Left" Height="25" Margin="10,70,0,0" Content="Action:" VerticalAlignment="Top" Width="130" Foreground="White" HorizontalContentAlignment="Left"/>
+
+
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
 
                 <ListBox x:Name="lbxLabeledContentContainer"
@@ -157,8 +176,8 @@
             <ScrollViewer x:Name="svContentContainer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <ListBox x:Name="lbxContentContainer"
 		Style="{StaticResource PhotoListBoxStyle}" 
+                         ItemsSource="{Binding IsAsync=True}"
           IsSynchronizedWithCurrentItem="True"
-          ItemsSource="{Binding IsAsync=True}"
           Margin="5"
           SelectedIndex="0"
 		  MouseDoubleClick="OnPhotoClick"

@@ -3,18 +3,21 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:local="clr-namespace:Waveface.Client"
+	xmlns:l="clr-namespace:Waveface.Client"
 	mc:Ignorable="d"
 	x:Class="Waveface.Client.GroupContentItem"
 	x:Name="UserControl"
 	d:DesignWidth="100" d:DesignHeight="100">
 
-	  <UserControl.Resources>
+
+    <UserControl.Resources>
+        <l:ImageToBitmapSourceConverter x:Key="converter" />
         <Storyboard x:Key="ShowInfo">
             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="info">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
+        <BitmapImage x:Key="placeholder" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="C:\Users\larry\Documents\Visual Studio 2012\Projects\WpfApplication3\WpfApplication3\pplaceholder.png"/>
     </UserControl.Resources>
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="Mouse.MouseEnter">
@@ -26,13 +29,50 @@
     </UserControl.Triggers>
 
 
-	<Grid x:Name="LayoutRoot">
-		<Path Data="M0.5,0.5 L30.75,0.5 30.75,5.5 79.5,5.5 79.5,87.25 0.5,87.25 0.5,7 0.5,5.5 z" Fill="#FFFEF8B6" Stretch="Fill" Stroke="#FFC8AE70" Margin="5"/>
+    <Grid x:Name="LayoutRoot">
+        <Image Source ="{Binding Contents[2].Image, TargetNullValue={StaticResource placeholder}, IsAsync=True, Converter={StaticResource converter}}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" OpacityMask="Black">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="3"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+            <Image.Effect>
+                <DropShadowEffect Direction="270"/>
+            </Image.Effect>
+        </Image>
+        <Image Source ="{Binding Contents[1].Image, TargetNullValue={StaticResource placeholder}, IsAsync=True, Converter={StaticResource converter}}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" OpacityMask="Black">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-3"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+            <Image.Effect>
+                <DropShadowEffect Direction="270"/>
+            </Image.Effect>
+        </Image>
+        <Image x:Name="image" Source ="{Binding Contents[0].Image, TargetNullValue={StaticResource placeholder}, IsAsync=True, Converter={StaticResource converter}}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" OpacityMask="Black">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+            <Image.Effect>
+                <DropShadowEffect Direction="270"/>
+            </Image.Effect>
+        </Image>
 
-		
         <Grid x:Name="info" Visibility="Collapsed">
-            <Rectangle x:Name="rectangle" Fill="#E5000000" Height="25" Margin="-1,0,-1,-1" VerticalAlignment="Bottom" StrokeThickness="0" Opacity="0.5"/>
-            <TextBlock x:Name="DateTaken" Margin="8,0,32,5" TextWrapping="Wrap" Text="{Binding Name, IsAsync=True}" VerticalAlignment="Bottom" FontSize="10.667" Opacity="0.6"/>
+            <Rectangle x:Name="rectangle" Fill="#E5000000" Height="37.5" Margin="-1,0,-1,-1" VerticalAlignment="Bottom" StrokeThickness="0" Opacity="0.5"/>
+            <TextBlock x:Name="DateTaken" Margin="8,0,32,5" TextWrapping="Wrap" Text="{Binding Name, IsAsync=True}" VerticalAlignment="Bottom" FontSize="14.667" Opacity="0.6"/>
         </Grid>
-	</Grid>
+    </Grid>
 </UserControl>

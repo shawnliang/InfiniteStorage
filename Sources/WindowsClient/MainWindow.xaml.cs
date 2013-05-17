@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Input;
 using Waveface.ClientFramework;
 using Waveface.Model;
 
@@ -11,7 +12,7 @@ namespace Waveface.Client
 	public partial class MainWindow : Window
 	{
 		#region Var
-		public static readonly DependencyProperty _labeledContents = DependencyProperty.Register("LabeledContents", typeof(ObservableCollection<IContentEntity>), typeof(MainWindow), new UIPropertyMetadata(new ObservableCollection<IContentEntity>(), new PropertyChangedCallback(OnLabeledContentsChanged)));
+		public static readonly DependencyProperty _labeledContents = DependencyProperty.Register("LabeledContents", typeof(ObservableCollection<IContentEntity>), typeof(MainWindow), new UIPropertyMetadata(new ObservableCollection<IContentEntity>(), null));
 		#endregion
 
 		#region Property
@@ -28,7 +29,7 @@ namespace Waveface.Client
 		}
 		#endregion
 
-		
+
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -37,14 +38,18 @@ namespace Waveface.Client
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			this.lbxDeviceContainer.DataContext = BunnyServiceSupplier.Instance.Services;
-			this.lbxLabeledContentContainer.DataContext = LabeledContents;
+			this.lblLabeledCount.DataContext = LabeledContents;
+			//this.lbxLabeledContentContainer.DataContext = LabeledContents;
 		}
 
-		private void OnPhotoClick(object sender, RoutedEventArgs e)
+		private void OnPhotoClick(object sender, MouseButtonEventArgs e)
 		{
+			if (e.ChangedButton != MouseButton.Left)
+				return;
+
 			var group = (lbxContentContainer.SelectedItem as IContentGroup);
 
-			if(group == null)
+			if (group == null)
 			{
 				pvcViewer.SelectedSource = lbxContentContainer.SelectedItem;
 				pvcViewer.Source = ((lbxContentContainer.SelectedItem as IContent).Parent as IContentGroup).Contents;
@@ -71,7 +76,7 @@ namespace Waveface.Client
 					return;
 
 				var currentContentEntity = (lbxContentContainer.SelectedItem as IContentEntity);
-				if(currentContentEntity.Parent == null || currentContentEntity.Parent.Parent == null)
+				if (currentContentEntity.Parent == null || currentContentEntity.Parent.Parent == null)
 				{
 					lbxContentContainer.DataContext = (lbxDeviceContainer.SelectedItem as IService).Contents;
 					return;
@@ -112,17 +117,8 @@ namespace Waveface.Client
 		{
 			lbxContentContainer.DataContext = (lbxDeviceContainer.SelectedItem as IService).Contents;
 		}
-		
+
 		#region Event Process
-		private static void OnLabeledContentsChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-		{
-			if (o == null)
-				return;
-
-			var control = o as DeviceListItem;
-			control.DeviceName = (string)e.NewValue;
-		}
-
 		private void onMouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			LabeledContents.Add(lbxContentContainer.SelectedItem as IContentEntity);

@@ -67,6 +67,9 @@
     <Compile Include="GroupContentItem.xaml.cs">
       <DependentUpon>GroupContentItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LabelTag.xaml.cs">
+      <DependentUpon>LabelTag.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PhotoViewerControl.xaml.cs">
       <DependentUpon>PhotoViewerControl.xaml</DependentUpon>
     </Compile>
@@ -84,7 +87,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DeviceListItem.xaml">
+    <Page Include="LabelTag.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -95,9 +98,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DeviceListItem.xaml.cs">
-      <DependentUpon>DeviceListItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -151,6 +151,18 @@
       <Project>{5fdf66ea-3a88-45ac-a032-a2771e3afcc7}</Project>
       <Name>Waveface.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pplaceholder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="labelinvisible.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="labelmouseover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="labelselected.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\.NETFramework\v4.5\Microsoft.Expression.Blend.WPF.targets" />
