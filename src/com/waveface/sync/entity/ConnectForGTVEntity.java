@@ -42,7 +42,7 @@ public class ConnectForGTVEntity {
 		public boolean labels;
 		
 		@SerializedName("labels_from_seq")
-		public boolean labels_from_seq;
+		public String labels_from_seq;
 
 	}
 

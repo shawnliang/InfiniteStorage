@@ -187,7 +187,9 @@ public class DNSMessage {
 
 	            for (DNSAnswer a : entry.getValue()){
 	                dataType = a.type.toString();
+	                
 	                answerValue = a.getRdataString();
+        	        Log.d("DNSMessage", "VALUE:"+answerValue);
 	                if(dataType.equals("TXT")){
 		                dataArray = answerValue.split(",");
 	                	for(int i = 0 ; i<dataArray.length;i++){
@@ -210,7 +212,7 @@ public class DNSMessage {
 	                	matchIndex = answerValue.indexOf(MDNSConstant.BS_ID);
 	            		if(matchIndex>0){
 	            			serverInfo.serverName = answerValue.substring(0, matchIndex-1);
-	            	        Log.d("DNSMessage", "SERVER NAME:"+serverInfo.serverName);
+	            	        Log.d("DNSMessage", "PTR SERVER NAME:"+serverInfo.serverName);
 	            		}
 	                }
 	            }

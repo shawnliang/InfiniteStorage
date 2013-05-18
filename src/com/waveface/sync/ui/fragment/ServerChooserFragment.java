@@ -2,6 +2,8 @@ package com.waveface.sync.ui.fragment;
 
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 import java.util.HashMap;
@@ -34,6 +36,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.db.BonjourServersTable;
@@ -55,7 +59,8 @@ public class ServerChooserFragment extends FragmentBase
 	private TextView mTvSearch;
 	private AlertDialog mAlertDialog;
 	private AlertDialog mSendEmailDialog;
-	
+	private static final int WORKER_DELAY_SECONDS = 30;
+	private static final int WORKER_PERIOD_SECONDS = 30;	
 
 
 	//DATA
@@ -302,8 +307,44 @@ public class ServerChooserFragment extends FragmentBase
 			String ip=params[0].get(Constant.PARAM_SERVER_IP);
 			String notifyPort =params[0].get(Constant.PARAM_NOTIFY_PORT);
 			String restPort =params[0].get(Constant.PARAM_REST_PORT);
-			ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort);			
+			ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort);	
+			
+			
+//			Timer mWorkerTimer = new Timer();
+//			mWorkerTimer.schedule(new WorkerTimerTask(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort), 
+//					1 * 1000, 
+//					WORKER_PERIOD_SECONDS * 1000);
+			
 			return null;
+		}
+	}
+	
+	
+	public  class WorkerTimerTask extends TimerTask {
+		
+		private Context context;
+		private String wsLocation;
+		private String serverId;
+		private String serverName;
+		private String ip;
+		private String notifyPort;
+		private String restPort;
+		
+		public WorkerTimerTask(Context context,String wsLocation,String serverId, String serverName, String ip,String notifyPort, String restPort ){
+			context=this.context;
+			wsLocation=this.wsLocation;
+			serverId=this.serverId;
+			serverName=this.serverName;
+			ip=this.ip;
+			notifyPort=this.notifyPort;
+			restPort=this.restPort;
+		}
+
+		@Override
+		public void run() {
+			Log.v(TAG, "enter WorkerTimerTask.run()");
+			ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort);	
+			Log.v(TAG, "exit WorkerTimerTask.run()");
 		}
 	}
 }

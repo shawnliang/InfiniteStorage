@@ -495,8 +495,6 @@ public class ServersLogic {
 				updateBackupedServer(context, entity);
 
 				//TODO:CHANGE TO NEW PROTOCAL
-				Intent intent = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
-				context.sendBroadcast(intent);
 				
 				Log.d(TAG, "onCreateView");
 				
@@ -507,24 +505,30 @@ public class ServersLogic {
 					cursor.moveToFirst();
 					labelId = cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_LABEL_ID));
 					labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
-				}
-				
 				
 				if(cursor.getCount()>0){
-				//ConnectEntity connect = new ConnectEntity();
-				ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
-				ConnectForGTVEntity.Connect  connect = new ConnectForGTVEntity.Connect();
-				connect.deviceId=DeviceUtil.id(context);
-				connect.deviceName = DeviceUtil
-						.getDeviceNameForDisplay(context);
-				connectForGTV.setConnect(connect);
-				ConnectForGTVEntity.Subscribe subscribe = new ConnectForGTVEntity.Subscribe();
-				subscribe.labels=true;
-				connectForGTV.setSubscribe(subscribe);
-				Log.d(TAG, "send message="+RuntimeState.GSON.toJson(connectForGTV));
-				RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));
-				}
-				
+						//ConnectEntity connect = new ConnectEntity();
+						ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
+						ConnectForGTVEntity.Connect  connect = new ConnectForGTVEntity.Connect();
+						connect.deviceId=DeviceUtil.id(context);
+						connect.deviceName = DeviceUtil
+								.getDeviceNameForDisplay(context);
+						connectForGTV.setConnect(connect);
+						ConnectForGTVEntity.Subscribe subscribe = new ConnectForGTVEntity.Subscribe();
+						subscribe.labels=true;
+						connectForGTV.setSubscribe(subscribe);
+						Log.d(TAG, "send message="+RuntimeState.GSON.toJson(connectForGTV));
+						RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));
+						
+						Intent intent = new Intent(Constant.ACTION_LABELCHANGE);
+						context.sendBroadcast(intent);
+					}
+				}else{
+					//label is no data ,get data from bunny
+					Intent intent = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
+					context.sendBroadcast(intent);
+
+				}	
 				
 			} catch (WebSocketException e) {
 				e.printStackTrace();

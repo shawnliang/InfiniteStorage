@@ -24,6 +24,7 @@ public class Constant {
 	public final static String ACTION_WEB_SOCKET_SERVER_CONNECTED = "com.waveface.sync.action.WEB_SOCKET_SERVER_CONNECTED";
 	public final static String ACTION_WEB_SOCKET_SERVER_DISCONNECTED = "com.waveface.sync.action.WEB_SOCKET_SERVER_DISCONNECTED";	
 	public final static String ACTION_RELEASE_PAIRED_SERVER_BY_CLIENT = "com.waveface.sync.action.RELEASE_PAIRED_SERVER_BY_CLIENT";	
+	public final static String ACTION_LABELCHANGE = "com.waveface.sync.action.LABELCHANGE";
 	
 
 	//BUNDLE DATA
@@ -151,12 +152,14 @@ public class Constant {
 	
 	//FOR LABEL RESTFUL API
 	public final static String URL_GET_ALL_LABELS = "/label/list_all";
+	public final static String URL_GET_LABEL = "/label/get";
 	public final static String URL_GET_FILE = "/file/get";
+	
 	
 	// FOR LABEL DATE PARAMETER
 	public final static String PARAM_FILES = "files";
 	public final static String PARAM_SEQ = "seq";
-	
+	public final static String PARAM_LABEL_ID = "label_id";
 	// FOR QUEUE JOB STATUS
 	public final static String PREFS_NAME = "InfinitePref";
 	public final static String PREF_NOTIFICATION_ID = "notification_id";

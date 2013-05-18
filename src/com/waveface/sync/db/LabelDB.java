@@ -21,7 +21,7 @@ public class LabelDB {
 
 		// deleteLabel(context,label.label_id);
 		updateLabel(context, label.label_id, label.label_name, label.seq);
-//		removeAllFileInLabel(context, label.label_id);
+		removeAllFileInLabel(context, label.label_id);
 		updateLabelFiles(context, label);
 		updateFiles(context, fileEntity);
 	}
@@ -117,16 +117,41 @@ public class LabelDB {
 		cursor.close();
 	}
 
-	private static int removeAllFileInLabel(Context context, String labelId) {
-		return context.getContentResolver().delete(LabelFileTable.CONTENT_URI, LabelFileTable.COLUMN_LABEL_ID
-				+ "=?", new String[] { labelId });
+//	private static int removeAllFileLabel(Context context, String labelId) {
+//		return context.getContentResolver().delete(LabelFileTable.CONTENT_URI, LabelFileTable.COLUMN_LABEL_ID
+//				+ "=?", new String[] { labelId });
+//	}
+//	
+//	
+	
+	private static void removeAllFileInLabel(Context context, String labelId) {
+		ContentResolver cr = context.getContentResolver();
+		Cursor cursor = cr.query(
+				LabelFileTable.CONTENT_URI, 
+				new String[] {LabelFileTable.COLUMN_FILE_ID},
+				LabelFileTable.COLUMN_LABEL_ID+" = ?", 
+				new String[] {labelId}, null);
+		while (cursor!=null && cursor.moveToNext()) {
+			cr.delete(FileTable.CONTENT_URI, 
+					FileTable.COLUMN_FILE_ID+"=?", 
+					new String[]{cursor.getString(0)});
+			Log.v(TAG, "delete file "+cursor.getString(0));
+		}
+		if (cursor!=null)
+			cursor.close();
+		cr.delete(LabelFileTable.CONTENT_URI, 
+				LabelFileTable.COLUMN_LABEL_ID+"=?", 
+				new String[]{labelId});
+
 	}
+	
+	
 
 	public static Cursor getAllLabes(Context context) {
 		Cursor cursor = context.getContentResolver().query(
 				LabelTable.CONTENT_URI,
 				new String[] { LabelTable.COLUMN_LABEL_ID,
-						LabelTable.COLUMN_LABEL_NAME }, null, null, null);
+						LabelTable.COLUMN_LABEL_NAME,LabelTable.COLUMN_SEQ }, null, null, null);
 
 		return cursor;
 	}

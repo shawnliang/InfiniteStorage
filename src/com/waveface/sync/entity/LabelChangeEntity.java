@@ -1,18 +1,18 @@
 package com.waveface.sync.entity;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
+public class LabelChangeEntity {
+	
+	
+	@SerializedName("label_change")
+	public Label label_change;
 
-public class LabelEntity {
-
-	@SerializedName("labels")
-	public List<Label> labels = new ArrayList<Label>();
-
-
-
-	public class Label{	
+	
+	
+	
+	public class Label{
+	
 	@SerializedName("label_id")
 	public String label_id;
 
@@ -21,10 +21,9 @@ public class LabelEntity {
 
 	@SerializedName("label_name")
 	public String label_name;
-
-
-
-	public String[] files;
+	
+	@SerializedName("deleted")
+	public String deleted;
 	}
 
 }
