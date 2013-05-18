@@ -49,6 +49,10 @@ namespace InfiniteStorage.Model
 
 		public bool deleted { get; set; }
 
+		public int width { get; set; }
+
+		public int height { get; set; }
+
 		public virtual Device device { get; set; }
 	}
 
@@ -76,6 +80,40 @@ namespace InfiniteStorage.Model
 		public Guid file_id { get; set; }
 	}
 
+	[Table("PendingFiles")]
+	public class PendingFile
+	{
+		[Key]
+		public Guid file_id { get; set; }
+
+		public string file_name { get; set; }
+
+		public string file_path { get; set; }
+
+		public long file_size { get; set; }
+
+		public string device_id { get; set; }
+
+		public DateTime event_time { get; set; }
+
+		// .net 4.0 does not support enum fields for entity model, so use integer instead
+		public int type { get; set; }
+
+		public string saved_path { get; set; }
+
+		public long seq { get; set; }
+
+		public bool thumb_ready { get; set; }
+
+		public bool deleted { get; set; }
+
+		public int width { get; set; }
+
+		public int height { get; set; }
+
+		public virtual Device device { get; set; }
+	}
+
 	public enum FileAssetType
 	{
 		image = 0,
@@ -92,6 +130,8 @@ namespace InfiniteStorage.Model
 		public DbSet<Label> Labels { get; set; }
 
 		public DbSet<LabeledFile> LabelFiles { get; set; }
+
+		public DbSet<PendingFile> PendingFiles { get; set; }
 
 		public InfiniteStorageContext(DbConnection conn, bool contextOwnsConnection)
 			: base(conn, contextOwnsConnection)

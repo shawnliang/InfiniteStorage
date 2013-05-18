@@ -74,15 +74,19 @@ namespace InfiniteStorage
 
 		private void generateThumbnails()
 		{
-			List<FileAsset> files = getNoThumbnailFiles(from);
-			Dictionary<string, Device> devices = getAllDevices();
+			List<PendingFile> files = getNoThumbnailFiles(from);
 
-			var successFiles = new List<FileAsset>();
+			var successFiles = new List<PendingFile>();
 			foreach (var file in files)
 			{
 				try
 				{
-					generateThumbnail(file, devices);
+					int width, height;
+					generateThumbnail(file, out width, out height);
+
+
+					file.width = width;
+					file.height = height;
 					successFiles.Add(file);
 				}
 				catch (Exception e)
@@ -97,7 +101,7 @@ namespace InfiniteStorage
 				from = successFiles.Max(x => x.seq);
 		}
 
-		private void markFilesHavingThumbnail(List<FileAsset> successFiles)
+		private void markFilesHavingThumbnail(List<PendingFile> successFiles)
 		{
 			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
 			{
@@ -107,17 +111,23 @@ namespace InfiniteStorage
 				{
 					var cmd = conn.CreateCommand();
 					cmd.Connection = conn;
-					cmd.CommandText = "update [Files] set thumb_ready = 1 where file_id = @fid";
+					cmd.CommandText = "update [PendingFiles] set thumb_ready = 1, width = @width, height = @height where file_id = @fid";
 					cmd.CommandType = System.Data.CommandType.Text;
 
-					var fid = cmd.CreateParameter();
-					fid.ParameterName = "@fid";
+					var fid = new SQLiteParameter("@fid");
+					var width = new SQLiteParameter("@width");
+					var height = new SQLiteParameter("@height");
 
 					cmd.Parameters.Add(fid);
+					cmd.Parameters.Add(width);
+					cmd.Parameters.Add(height);
 
 					foreach (var file in successFiles)
 					{
 						fid.Value = file.file_id;
+						width.Value = file.width;
+						height.Value = file.height;
+
 						cmd.ExecuteNonQuery();
 					}
 
@@ -126,49 +136,56 @@ namespace InfiniteStorage
 			}
 		}
 
-		private void generateThumbnail(FileAsset file, Dictionary<string, Device> devices)
+		private void generateThumbnail(PendingFile file, out int width, out int height)
 		{
-			var file_path = Path.Combine(MyFileFolder.Photo, devices[file.device_id].folder_name, file.saved_path);
+			var file_path = Path.Combine(MyFileFolder.Photo, ".pending", file.saved_path);
 
 			using (var m = readFilesToMemory(file_path))
+			using (var fullImage = new Bitmap(m))
 			{
-				var imgSize = ImageHelper.GetImageSize(m);
-				m.Position = 0;
+				width = fullImage.Width;
+				height = fullImage.Height;
 
-				var longSide = Math.Max(imgSize.Width, imgSize.Height);
-
-				if (longSide < 512)
+				var longSide = Math.Max(fullImage.Width, fullImage.Height);
+				
+				if (longSide < 256)
 					return;
 
-				using (var fullImage = new Bitmap(m))
+				var orientation = ImageHelper.ImageOrientation(fullImage);
+
+				if (longSide > 2048)
 				{
-					var orientation = ImageHelper.ImageOrientation(fullImage);
-
-					if (longSide > 2048)
+					using (var thum = ImageHelper.ScaleBasedOnLongSide(fullImage, 2048))
 					{
-						using (var thum = ImageHelper.ScaleBasedOnLongSide(fullImage, 2048))
-						{
-							ImageHelper.CorrectOrientation(orientation, thum);
-							thum.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".large.thumb"), ImageFormat.Jpeg);
-						}
+						ImageHelper.CorrectOrientation(orientation, thum);
+						thum.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".large.thumb"), ImageFormat.Jpeg);
 					}
+				}
 
-					if (longSide > 1024)
+				if (longSide > 1024)
+				{
+					using (var thum = ImageHelper.ScaleBasedOnLongSide(fullImage, 1024))
 					{
-						using (var thum = ImageHelper.ScaleBasedOnLongSide(fullImage, 1024))
-						{
-							ImageHelper.CorrectOrientation(orientation, thum);
-							thum.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".medium.thumb"), ImageFormat.Jpeg);
-						}
+						ImageHelper.CorrectOrientation(orientation, thum);
+						thum.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".medium.thumb"), ImageFormat.Jpeg);
 					}
+				}
 
-					if (longSide > 512)
+				if (longSide > 512)
+				{
+					using (var thum = ImageHelper.ScaleBasedOnLongSide(fullImage, 512))
 					{
-						using (var thum = ImageHelper.ScaleBasedOnLongSide(fullImage, 512))
-						{
-							ImageHelper.CorrectOrientation(orientation, thum);
-							thum.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".small.thumb"), ImageFormat.Jpeg);
-						}
+						ImageHelper.CorrectOrientation(orientation, thum);
+						thum.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".small.thumb"), ImageFormat.Jpeg);
+					}
+				}
+
+				if (longSide > 256)
+				{
+					using (var thum = ImageHelper.ScaleBasedOnLongSide(fullImage, 256))
+					{
+						ImageHelper.CorrectOrientation(orientation, thum);
+						thum.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".tiny.thumb"), ImageFormat.Jpeg);
 					}
 				}
 			}
@@ -187,11 +204,11 @@ namespace InfiniteStorage
 			return m;
 		}
 
-		private List<FileAsset> getNoThumbnailFiles(long fromSeq)
+		private List<PendingFile> getNoThumbnailFiles(long fromSeq)
 		{
 			using (var db = new MyDbContext())
 			{
-				var query = from f in db.Object.Files
+				var query = from f in db.Object.PendingFiles
 							where f.seq >= fromSeq && !f.deleted && !f.thumb_ready && f.type == (int)FileAssetType.image
 							orderby f.seq ascending
 							select f;

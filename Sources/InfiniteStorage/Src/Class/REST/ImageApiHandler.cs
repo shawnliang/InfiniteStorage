@@ -9,6 +9,7 @@ namespace InfiniteStorage.REST
 {
 	enum IMG_SIZE
 	{
+		tiny,
 		small,
 		medium,
 		large,
@@ -52,6 +53,20 @@ namespace InfiniteStorage.REST
 							deleted = f.deleted,
 							folder = d.folder_name
 						}).FirstOrDefault();
+
+				if (file == null)
+
+					file = (from f in db.Object.PendingFiles
+							join d in db.Object.Devices on f.device_id equals d.device_id
+							where f.file_id == file_id
+							select new FileResult
+							{
+								file_id = f.file_id,
+								saved_path = f.saved_path,
+								thumb_ready = f.thumb_ready,
+								deleted = f.deleted,
+								folder = ".pending"
+							}).FirstOrDefault();
 			}
 
 			if (file == null || file.deleted)

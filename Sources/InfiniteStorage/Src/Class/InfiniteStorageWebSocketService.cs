@@ -26,7 +26,7 @@ namespace InfiniteStorage
 				dir.Attributes = FileAttributes.Hidden | dir.Attributes;
 			}
 
-			var storage = new FlatFileStorage(new DirOrganizerProxy());
+			var storage = new PendingFileStorage();
 
 			var ctx = new ProtocolContext(new TempFileFactory(MyFileFolder.Temp), storage, new UnconnectedState())
 			{

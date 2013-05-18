@@ -51,8 +51,9 @@ namespace InfiniteStorage.Model
 [event_time] TIMESTAMP NULL,
 [seq] INTEGER NULL,
 [deleted] BOOLEAN NULL,
-[thumb_ready] BOOLEAN NULL
-
+[thumb_ready] BOOLEAN NULL,
+[width] INTEGER NULL,
+[height] INTEGER NULL
 );
 
 CREATE INDEX [idx_Files_path_1] ON [Files](
@@ -95,6 +96,39 @@ VALUES (@labelId, 'TAG', 1, 0);
 						cmd.ExecuteNonQuery();
 						updateDbSchemaVersion(conn, 3);
 						schemaVersion = 3;
+					}
+
+					if (schemaVersion == 3L)
+					{
+						var cmd = new SQLiteCommand(
+@"CREATE TABLE [PendingFiles] (
+[file_id] GUID  NOT NULL PRIMARY KEY,
+[file_name] NVARCHAR(100)  NOT NULL,
+[file_path] NVARCHAR(1024)  NOT NULL,
+[file_size] INTEGER  NULL,
+[saved_path] NVARCHAR NULL,
+[device_id] NVARCHAR(36)  NULL,
+[type] INTEGER NOT NULL,
+[event_time] TIMESTAMP NULL,
+[seq] INTEGER NULL,
+[deleted] BOOLEAN NULL,
+[thumb_ready] BOOLEAN NULL,
+[width] INTEGER NULL,
+[height] INTEGER NULL
+);
+
+
+CREATE INDEX [idx_PendingFiles_seq_1] ON [PendingFiles](
+[seq]  ASC);
+
+CREATE INDEX [idx_PendingFiles_file_path_1] ON [PendingFiles](
+[file_path]  ASC);
+
+", conn);
+						cmd.ExecuteNonQuery();
+
+						updateDbSchemaVersion(conn, 4);
+						schemaVersion = 4;
 					}
 
 					transaction.Commit();
