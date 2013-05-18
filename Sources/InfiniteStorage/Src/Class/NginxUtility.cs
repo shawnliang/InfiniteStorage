@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace InfiniteStorage
@@ -70,14 +71,38 @@ namespace InfiniteStorage
 
 		public void Start(string cfg_dir)
 		{
-			var processes = Process.GetProcessesByName("nginx");
-			if (processes != null)
-			{
-				Stop(cfg_dir);
-			}
 
-			start(cfg_dir);
-			reload(cfg_dir);
+			System.Threading.Tasks.Task.Factory.StartNew(() =>
+			{
+
+				Process[] processes;
+
+				do
+				{
+					processes = Process.GetProcessesByName("nginx");
+					if (processes != null)
+					{
+						Stop(cfg_dir);
+						foreach (var p in processes)
+						{
+							try
+							{
+								p.Kill();
+							}
+							catch
+							{
+
+							}
+						}
+					}
+
+					start(cfg_dir);
+					reload(cfg_dir);
+
+					processes = Process.GetProcessesByName("nginx");
+				}
+				while (processes == null || !processes.Any());
+			});
 		}
 
 		private void start(string cfg_dir)
