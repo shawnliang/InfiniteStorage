@@ -72,11 +72,7 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		Log.d(TAG, "onCreateView");
-		Cursor allLabel = LabelDB.getAllLabes(getActivity());
-		allLabel.moveToFirst();
-		int labelsCount =  allLabel.getCount();
-		allLabel.close();
+	
 		//START UP SERVICE
 		new InvokeServiceTask().execute(new Void[]{});
 		

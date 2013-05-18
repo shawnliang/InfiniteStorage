@@ -130,6 +130,8 @@ public class LabelDB {
 
 		return cursor;
 	}
+	
+
 
 	public static Cursor getLabelByLabelId(Context context, String labelId) {
 

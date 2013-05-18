@@ -17,6 +17,8 @@ import android.util.Log;
 
 import com.waveface.sync.Constant;
 import com.waveface.sync.RuntimeState;
+import com.waveface.sync.db.LabelDB;
+import com.waveface.sync.db.LabelTable;
 import com.waveface.sync.db.PairedServersTable;
 import com.waveface.sync.db.BonjourServersTable;
 import com.waveface.sync.entity.ConnectForGTVEntity;
@@ -495,6 +497,20 @@ public class ServersLogic {
 				//TODO:CHANGE TO NEW PROTOCAL
 				Intent intent = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
 				context.sendBroadcast(intent);
+				
+				Log.d(TAG, "onCreateView");
+				
+				Cursor cursor = LabelDB.getAllLabes(context);
+				String labelId = null;
+				String labSeq =null;
+				if(cursor!=null && cursor.getCount()>0){
+					cursor.moveToFirst();
+					labelId = cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_LABEL_ID));
+					labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
+				}
+				
+				
+				if(cursor.getCount()>0){
 				//ConnectEntity connect = new ConnectEntity();
 				ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
 				ConnectForGTVEntity.Connect  connect = new ConnectForGTVEntity.Connect();
@@ -503,11 +519,11 @@ public class ServersLogic {
 						.getDeviceNameForDisplay(context);
 				connectForGTV.setConnect(connect);
 				ConnectForGTVEntity.Subscribe subscribe = new ConnectForGTVEntity.Subscribe();
-				subscribe.labels=false;
+				subscribe.labels=true;
 				connectForGTV.setSubscribe(subscribe);
 				Log.d(TAG, "send message="+RuntimeState.GSON.toJson(connectForGTV));
 				RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));
-				//TODO:ADD PAIRED SERVER
+				}
 				
 				
 			} catch (WebSocketException e) {
