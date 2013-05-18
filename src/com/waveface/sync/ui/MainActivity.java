@@ -16,10 +16,8 @@ import com.waveface.sync.event.LabelImportedEvent;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.ui.fragment.FragmentBase;
 import com.waveface.sync.ui.fragment.PlaybackFragment;
-import com.waveface.sync.ui.fragment.SlidingMenuFragment;
 import com.waveface.sync.ui.fragment.SyncFragment;
 import com.waveface.sync.ui.fragment.SyncInProgressFragment;
-import com.waveface.sync.ui.widget.SlidingMenu;
 
 import de.greenrobot.event.EventBus;
 
@@ -31,7 +29,6 @@ import de.greenrobot.event.EventBus;
  */
 public class MainActivity extends FragmentActivity {
 	private String TAG = MainActivity.class.getSimpleName();
-	private SlidingMenu mSlidingMenu;
 	private String mCurrentFragmentName = null;
 //    private DNSThread dnsThread = null;
     
@@ -46,8 +43,6 @@ public class MainActivity extends FragmentActivity {
 		
 		if(savedInstanceState == null) {
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-			SlidingMenuFragment menu = new SlidingMenuFragment();
-			transaction.add(R.id.container_sliding_menu, menu).commit();
 			
 			if(ServersLogic.hasBackupedServers(this) == false) {
 				SyncFragment photoJournal = new SyncFragment();
@@ -61,9 +56,6 @@ public class MainActivity extends FragmentActivity {
 				mCurrentFragmentName = SyncInProgressFragment.class.getSimpleName();
 			}
 		}
-
-        mSlidingMenu = (SlidingMenu) findViewById(R.id.sliding_menu);
-        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 		
         getWindow().setBackgroundDrawable(null);
 	}
@@ -81,9 +73,7 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-    	if(mSlidingMenu.isMenuShowing())
-    		mSlidingMenu.showContent();
-    	else if(TextUtils.isEmpty(mCurrentFragmentName) == false) {
+    	if(TextUtils.isEmpty(mCurrentFragmentName) == false) {
     		Fragment fragment = getSupportFragmentManager().findFragmentByTag(mCurrentFragmentName);
     		if(fragment != null && fragment instanceof FragmentBase) {
     			((FragmentBase)fragment).onBackPressed();

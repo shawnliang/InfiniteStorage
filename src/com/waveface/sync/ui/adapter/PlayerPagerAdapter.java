@@ -70,7 +70,10 @@ public class PlayerPagerAdapter extends PagerAdapter{
 			attr.setMaxSize(1920, 1080);
 			attr.setLoadFromThread(true);
 			attr.setDoneScaleType(ScaleType.CENTER_CROP);
-			mImageManager.getImage(mServerUrl + Constant.URL_IMAGE + "/" + mCursor.getString(mCursor.getColumnIndex(LabelFileTable.COLUMN_FILE_ID)) + Constant.URL_IMAGE_LARGE, attr);
+			mImageManager.getImage(
+					mServerUrl + Constant.URL_IMAGE + "/" + 
+					mCursor.getString(mCursor.getColumnIndex(LabelFileTable.COLUMN_FILE_ID)) + 
+					Constant.URL_IMAGE_LARGE, attr);
 			container.addView(root);
 		}
 		return root;

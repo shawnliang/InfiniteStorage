@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="libs/jWebSocketJavaSEClient-1.0.jar"/>
 	<classpathentry kind="lib" path="libs/libGoogleAnalyticsV2.jar"/>
 	<classpathentry kind="lib" path="libs/ocpsoft-pretty-time-1.0.7.jar"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
