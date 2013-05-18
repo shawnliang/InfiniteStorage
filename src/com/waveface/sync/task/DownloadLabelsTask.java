@@ -92,11 +92,16 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 				for (LabelEntity.Label label : entity.labels) {
 					if (label.files == null)
 						continue;
+					syncingEvent.totalFile = label.files.length;
 					for (int i = 0; i < label.files.length; ++i) {
 						String url = restfulAPIURL + Constant.URL_IMAGE + "/"
 								+ label.files[i] + Constant.URL_IMAGE_LARGE;
+						
+						long time = System.currentTimeMillis();
 						mImageManager.getImageWithoutThread(url, null);
-
+						time = System.currentTimeMillis() - time;
+						syncingEvent.singleTime = time;
+						syncingEvent.currentFile++;
 						EventBus.getDefault().post(syncingEvent);
 					}
 

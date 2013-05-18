@@ -6,6 +6,7 @@ import com.waveface.sync.event.LabelImportedEvent;
 import de.greenrobot.event.EventBus;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,24 @@ import android.widget.TextView;
 
 public class SyncInProgressFragment extends Fragment{
 	private TextView mSyncContent;
+	LabelImportedEvent mEvent;
+	
+	private Handler mHandler = new Handler();
+	private Runnable mUpdateStatusRunnable = new Runnable() {
+		
+		@Override
+		public void run() {
+			mSyncContent.setVisibility(View.VISIBLE);
+			long total = mEvent.singleTime * (mEvent.totalFile - mEvent.currentFile) / (60 * 1000);
+			if(total > 0) {
+			mSyncContent.setText(
+					String.format(getActivity().getResources().getString(R.string.sync_content_one_more), Long.toString(total)));
+			} else {
+				mSyncContent.setText(
+						getActivity().getResources().getString(R.string.sync_content_one));
+			}
+		}
+	};
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +57,10 @@ public class SyncInProgressFragment extends Fragment{
 	}
 	
 	public void onEvent(LabelImportedEvent event) {
+		if(event.status == LabelImportedEvent.STATUS_SYNCING) {
+			mEvent = event;
+			mHandler.post(mUpdateStatusRunnable);
+		}
 	}
 
 }
