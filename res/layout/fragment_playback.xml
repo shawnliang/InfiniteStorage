@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:background="#000000">
-    
+    android:layout_height="match_parent"
+    android:background="#000000" >
+
     <ViewAnimator
         android:id="@+id/background_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-        
+
         <ImageView
             android:id="@+id/view1"
             android:layout_width="match_parent"
@@ -20,19 +20,38 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop" />
-        
+
         <ImageView
             android:id="@+id/view3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop" />
-        
     </ViewAnimator>
-    
-    
+
     <android.support.v4.view.ViewPager
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/pager"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ViewAnimator
+        android:id="@+id/play_animator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dip"
+        android:inAnimation="@android:anim/fade_in"
+        android:outAnimation="@android:anim/fade_out" >
+
+        <ImageView
+            android:id="@+id/image_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/playback_play" />
+
+        <View
+            android:layout_width="1dip"
+            android:layout_height="1dip" />
+    </ViewAnimator>
+
 </RelativeLayout>

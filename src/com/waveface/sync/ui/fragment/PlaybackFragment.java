@@ -24,8 +24,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -36,20 +39,23 @@ import android.widget.ImageView;
 import android.widget.ViewAnimator;
 import android.widget.ImageView.ScaleType;
 
-public class PlaybackFragment extends Fragment implements OnPageChangeListener {
+public class PlaybackFragment extends Fragment implements OnPageChangeListener, OnClickListener {
 	public static final String TAG = PlaybackFragment.class.getSimpleName(); 
 	private ViewAnimator mViewAnimator;
+	private ViewAnimator mPlayAnimator;
 	private Cursor mCursor;
 	
 	private ViewPager mPager;
 	
 	private ImageManager mImageManager;
 	
+	private static final int AUTO_SLIDE_SHOW_FIRST_DELAY_MILLIS = 5000;
 	private static final int AUTO_SLIDE_SHOW_DELAY_MILLIS = 3000;
-	private static final int AUTO_SLIDE_SHOW_AFTER_CONTROL_DELAY_MILLIS = 10000;
+	private static final int AUTO_SLIDE_SHOW_AFTER_CONTROL_DELAY_MILLIS = 15000;
 	
 	private Animation mFadeIn, mFadeOut;
 	private String mServerUrl;
+	private ImageView mPlaySlideShow;
 	
 	public boolean mPagerReady = true;
 	
@@ -94,6 +100,14 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 		mPager = (ViewPager) root.findViewById(R.id.pager);
 		mPager.setAdapter(new PlayerPagerAdapter(getActivity(), labelId));
 		mPager.setOnPageChangeListener(this);
+		mPager.setOnKeyListener(new OnKeyListener() {
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if(event.getAction() == KeyEvent.ACTION_UP)
+					EventBus.getDefault().post(new DispatchKeyEvent(keyCode));
+				return true;
+			}
+		});
 		
 		mFadeIn = new AlphaAnimation(0, 1);
 		mFadeIn.setInterpolator(new DecelerateInterpolator()); //add this
@@ -110,6 +124,11 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 		mViewAnimator.setOutAnimation(mFadeOut);
 		setAnimatorImage(0, 0);
 		setAnimatorImage(1, 1);
+		
+		mPlaySlideShow = (ImageView) root.findViewById(R.id.image_play);
+		mPlaySlideShow.setOnClickListener(this);
+		
+		mPlayAnimator = (ViewAnimator) root.findViewById(R.id.play_animator);
 		
 		mFadeIn.setAnimationListener(new AnimationListener() {
 			
@@ -145,28 +164,44 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	@Override
 	public void onResume() {
 		super.onResume();
-		delaySlideShow(AUTO_SLIDE_SHOW_DELAY_MILLIS);
+		delaySlideShow(AUTO_SLIDE_SHOW_FIRST_DELAY_MILLIS);
 	}
 	
 
 	public void onEvent(DispatchKeyEvent e) {
+		Log.d(TAG, "e.keycode:" + e.keycode);
 		stopSlideShow();
 		mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
 		delaySlideShow(AUTO_SLIDE_SHOW_AFTER_CONTROL_DELAY_MILLIS);
-//		mPager.setVisibility(View.INVISIBLE);
+
+		boolean switchPlayMode = false;
+		if(mPlayAnimator.getDisplayedChild() == 1) {
+			// we were playing, just stop because key
+			// show the play icon
+			switchPlayMode = true;
+			mPlayAnimator.showNext();
+		}
+		
 		switch(e.keycode) {
-		case android.view.KeyEvent.KEYCODE_DPAD_LEFT:
+		case KeyEvent.KEYCODE_DPAD_LEFT:
+		case KeyEvent.KEYCODE_MEDIA_REWIND:
 			Log.d(TAG, "onEvent left");
 			if(mCurrentPosition > 0) {
-				mCurrentPosition--;
 				mPager.setCurrentItem(mCurrentPosition, true);
 			}
 			break;
-		case android.view.KeyEvent.KEYCODE_DPAD_RIGHT:
+		case KeyEvent.KEYCODE_DPAD_RIGHT:
+		case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
 			Log.d(TAG, "onEvent right");
 			if(mCurrentPosition < mCursor.getCount()-1) {
-				mCurrentPosition++;
 				mPager.setCurrentItem(mCurrentPosition, true);
+			}
+			break;
+		case KeyEvent.KEYCODE_ENTER:
+		case KeyEvent.KEYCODE_MEDIA_PLAY:
+			if(mPlayAnimator.getDisplayedChild() == 0 && switchPlayMode == false) {
+				mPlayAnimator.showNext();
+				delaySlideShow(AUTO_SLIDE_SHOW_DELAY_MILLIS);
 			}
 			break;
 		}
@@ -192,6 +227,8 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	
 	private void startSlideShow() {
 		Log.d(TAG, "startSlideShow");
+		if(mPlayAnimator.getDisplayedChild() == 0)
+			mPlayAnimator.showNext();
 		mSlideShowHandler.postDelayed(mSlideNextRunnable, 0);
 	}
 	
@@ -202,7 +239,7 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	}
 	
 	private void delaySlideShow(int delayMillis) {
-		Log.d(TAG, "delaySlideShow");
+		Log.d(TAG, "delaySlideShow:" + delayMillis);
 		mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
 		mSlideShowHandler.postDelayed(mSlideShowRunnable, delayMillis);
 	}
@@ -242,9 +279,13 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 
 	@Override
 	public void onPageScrollStateChanged(int state) {
+		Log.d(TAG, "onPageScrollStateChanged:" + state);
 		if(state != 0) {
-			if(state == 1)
+			if(state == 1) {
 				mViewAnimator.setVisibility(View.INVISIBLE);
+				if(mPlayAnimator.getDisplayedChild() == 1)
+					mPlayAnimator.showNext();
+			}
 			mPagerReady = false;
 			mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
 			stopSlideShow();
@@ -272,6 +313,16 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 			if(mCurrentPosition-1 >= 0)
 				setAnimatorImage(mCurrentPosition-1, getPreviousView());
 			
+		}
+	}
+
+	@Override
+	public void onClick(View view) {
+		switch(view.getId()) {
+		case R.id.image_play:
+			mPlayAnimator.showNext();
+			delaySlideShow(AUTO_SLIDE_SHOW_DELAY_MILLIS);
+			break;
 		}
 	}
 }

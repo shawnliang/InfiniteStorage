@@ -9,11 +9,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 
 //import com.waveface.mdns.DNSThread;
 import com.waveface.sync.Constant;
 import com.waveface.sync.R;
 import com.waveface.sync.RuntimeState;
+import com.waveface.sync.event.DispatchKeyEvent;
 import com.waveface.sync.event.LabelImportedEvent;
 import com.waveface.sync.logic.ServersLogic;
 import com.waveface.sync.ui.fragment.FragmentBase;
@@ -123,4 +125,10 @@ public class MainActivity extends FragmentActivity {
 //        dnsThread = null;
     }
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		Log.d(TAG, "onKeyDown:"  + keyCode);
+		EventBus.getDefault().post(new DispatchKeyEvent(keyCode));
+		return true;
+	}
 }
