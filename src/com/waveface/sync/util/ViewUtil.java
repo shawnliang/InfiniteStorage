@@ -1,6 +1,5 @@
 package com.waveface.sync.util;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;

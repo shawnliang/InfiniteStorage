@@ -2,6 +2,8 @@ package com.waveface.sync.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -31,6 +33,19 @@ public class MainActivity extends FragmentActivity {
 	private String TAG = MainActivity.class.getSimpleName();
 	private String mCurrentFragmentName = null;
 //    private DNSThread dnsThread = null;
+	
+	private Handler mHander = new Handler();
+	private Runnable mShowPlaybackRunnable = new Runnable() {
+		
+		@Override
+		public void run() {
+			PlaybackFragment photoJournal = new PlaybackFragment();
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			transaction = getSupportFragmentManager().beginTransaction();
+			transaction.replace(R.id.container_content, photoJournal, PlaybackFragment.class.getSimpleName()).commit();
+			mCurrentFragmentName = PlaybackFragment.class.getSimpleName();
+		}
+	};
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +77,7 @@ public class MainActivity extends FragmentActivity {
 	
 	public void onEvent(LabelImportedEvent event) {
 		if(event.status == LabelImportedEvent.STATUS_DONE) {
-			PlaybackFragment photoJournal = new PlaybackFragment();
-			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-			transaction = getSupportFragmentManager().beginTransaction();
-			transaction.replace(R.id.container_content, photoJournal, PlaybackFragment.class.getSimpleName()).commit();
-			mCurrentFragmentName = PlaybackFragment.class.getSimpleName();
+			mHander.post(mShowPlaybackRunnable);
 		}
 	}
 	

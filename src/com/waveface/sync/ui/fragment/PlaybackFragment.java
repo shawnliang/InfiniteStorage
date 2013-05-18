@@ -216,7 +216,8 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 			ImageAttribute attr = new ImageAttribute(iv);
 			attr.setDoneScaleType(ScaleType.CENTER_CROP);
 			attr.setLoadFromThread(true);
-			attr.setMaxSize(1920, 1080);
+			attr.setMaxSizeEqualsScreenSize(getActivity());
+			
 			String url = mServerUrl + Constant.URL_IMAGE + "/" + 
 					mCursor.getString(mCursor.getColumnIndex(LabelFileTable.COLUMN_FILE_ID)) + 
 					Constant.URL_IMAGE_LARGE;
