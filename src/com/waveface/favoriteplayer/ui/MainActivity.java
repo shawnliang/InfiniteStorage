@@ -22,6 +22,7 @@ import com.waveface.favoriteplayer.task.DownloadLabelsTask;
 import com.waveface.favoriteplayer.ui.fragment.FragmentBase;
 import com.waveface.favoriteplayer.ui.fragment.PlaybackFragment;
 import com.waveface.favoriteplayer.ui.fragment.SyncFragment;
+import com.waveface.favoriteplayer.ui.fragment.SyncFragmentBase.onSyncFragmentChangedListener;
 import com.waveface.favoriteplayer.ui.fragment.SyncInProgressFragment;
 
 import de.greenrobot.event.EventBus;
@@ -32,7 +33,7 @@ import de.greenrobot.event.EventBus;
  * 
  * @see SystemUiHider
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements onSyncFragmentChangedListener{
 	private String TAG = MainActivity.class.getSimpleName();
 	private String mCurrentFragmentName = null;
 //    private DNSThread dnsThread = null;
@@ -48,6 +49,15 @@ public class MainActivity extends FragmentActivity {
 			transaction.replace(R.id.container_content, photoJournal, PlaybackFragment.class.getSimpleName()).commit();
 			mCurrentFragmentName = PlaybackFragment.class.getSimpleName();
 		}
+	};
+	
+	private Runnable mReplaceContentToSyncRunnable = new Runnable() {
+		@Override
+		public void run() {
+			showSyncInProgressFragment(true);
+			new DownloadLabelsTask(MainActivity.this).execute(new Void[]{});
+		}
+		
 	};
     
 	@Override
@@ -71,10 +81,7 @@ public class MainActivity extends FragmentActivity {
 
 				new DownloadLabelsTask(this).execute(new Void[]{});
 				
-				SyncInProgressFragment photoJournal = new SyncInProgressFragment();
-				transaction = getSupportFragmentManager().beginTransaction();
-				transaction.add(R.id.container_content, photoJournal, SyncInProgressFragment.class.getSimpleName()).commit();
-				mCurrentFragmentName = SyncInProgressFragment.class.getSimpleName();
+				showSyncInProgressFragment(false);
 			}
 		}
 		
@@ -86,12 +93,27 @@ public class MainActivity extends FragmentActivity {
 		if(event.status == LabelImportedEvent.STATUS_DONE) {
 			mHander.post(mShowPlaybackRunnable);
 		}
-
+	}
+	
+	private void showSyncInProgressFragment(boolean replace) {
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		SyncInProgressFragment photoJournal = new SyncInProgressFragment();
+		transaction = getSupportFragmentManager().beginTransaction();
+		if(replace) {
+			transaction.replace(R.id.container_content, photoJournal, SyncInProgressFragment.class.getSimpleName()).commit();
+		} else {
+			transaction.add(R.id.container_content, photoJournal, SyncInProgressFragment.class.getSimpleName()).commit();
+		}
+		mCurrentFragmentName = SyncInProgressFragment.class.getSimpleName();
 	}
 	
 	public void onEvent(WebSocketEvent event) {
 		if(event.status == WebSocketEvent.STATUS_CONNECT) {
-			new DownloadLabelsTask(this).execute(new Void[]{});			
+			if(SyncFragment.class.getSimpleName().equals(mCurrentFragmentName)) {
+				// since sync fragment is opening first use activity, can't do anything
+			} else if(SyncInProgressFragment.class.getSimpleName().equals(mCurrentFragmentName)){
+				new DownloadLabelsTask(this).execute(new Void[]{});
+			}
 		}
 	}
 	
@@ -142,5 +164,17 @@ public class MainActivity extends FragmentActivity {
 		Log.d(TAG, "onKeyDown:"  + keyCode);
 		EventBus.getDefault().post(new DispatchKeyEvent(keyCode));
 		return true;
+	}
+
+	@Override
+	public void done(String id) {
+		if(SyncFragment.class.getSimpleName().equals(mCurrentFragmentName)) {
+			mHander.post(mReplaceContentToSyncRunnable);
+		}
+	}
+
+	@Override
+	public void fail(String id) {
+		
 	}
 }

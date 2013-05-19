@@ -43,7 +43,7 @@ import com.waveface.favoriteplayer.service.InfiniteService;
 import com.waveface.favoriteplayer.ui.FirstUseActivity;
 import com.waveface.favoriteplayer.util.NetworkUtil;
 
-public class SyncFragment extends Fragment implements OnClickListener {
+public class SyncFragment extends SyncFragmentBase implements OnClickListener {
 
 	private String TAG = SyncFragment.class.getSimpleName();
 
@@ -167,11 +167,12 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			String action = intent.getAction();
 			Log.d(TAG, "action:" + intent.getAction());
 			if (Constant.ACTION_SCAN_FILE.equals(action)
-					|| Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED
-							.equals(action)
 					|| Constant.ACTION_FILE_DELETED.equals(action)) {
 				refreshLayout();
-			} else if (Constant.ACTION_BACKUP_START.equals(action)
+			} else if(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED
+					.equals(action)) {
+				
+			}else if (Constant.ACTION_BACKUP_START.equals(action)
 					|| Constant.ACTION_BACKUP_DONE.equals(action)) {
 				displayProgressingInfo();
 			} else if (Constant.ACTION_NETWORK_STATE_CHANGE.equals(action)) {
@@ -199,6 +200,7 @@ public class SyncFragment extends Fragment implements OnClickListener {
 				// mAdapter.setData(ServersLogic.getBackupedServers(this));
 			}
 		}
+		syncDone();
 	}
 
 	@Override
@@ -259,5 +261,10 @@ public class SyncFragment extends Fragment implements OnClickListener {
 			}
 			break;
 		}
+	}
+
+	@Override
+	protected String getFragmentId() {
+		return TAG;
 	}
 }
