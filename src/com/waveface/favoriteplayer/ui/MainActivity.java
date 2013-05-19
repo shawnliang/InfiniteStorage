@@ -17,6 +17,7 @@ import com.waveface.favoriteplayer.RuntimeState;
 import com.waveface.favoriteplayer.event.DispatchKeyEvent;
 import com.waveface.favoriteplayer.event.LabelImportedEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
+import com.waveface.favoriteplayer.task.DownloadLabelsTask;
 import com.waveface.favoriteplayer.ui.fragment.FragmentBase;
 import com.waveface.favoriteplayer.ui.fragment.PlaybackFragment;
 import com.waveface.favoriteplayer.ui.fragment.SyncFragment;
@@ -66,6 +67,9 @@ public class MainActivity extends FragmentActivity {
 				transaction.add(R.id.container_content, photoJournal, SyncFragment.class.getSimpleName()).commit();
 				mCurrentFragmentName = SyncFragment.class.getSimpleName();
 			} else {
+
+				new DownloadLabelsTask(this).execute(new Void[]{});
+				
 				SyncInProgressFragment photoJournal = new SyncInProgressFragment();
 				transaction = getSupportFragmentManager().beginTransaction();
 				transaction.add(R.id.container_content, photoJournal, SyncInProgressFragment.class.getSimpleName()).commit();
@@ -74,6 +78,7 @@ public class MainActivity extends FragmentActivity {
 		}
 		
         getWindow().setBackgroundDrawable(null);
+        sendBroadcast(new Intent(Constant.ACTION_INFINITE_STORAGE_ALARM));
 	}
 	
 	public void onEvent(LabelImportedEvent event) {

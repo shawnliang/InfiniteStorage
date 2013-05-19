@@ -73,8 +73,6 @@ public class SyncFragment extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
-		//START UP SERVICE
-		new InvokeServiceTask().execute(new Void[]{});
 		
 		View root = inflater.inflate(R.layout.fragment_sync, container, false);
 
@@ -260,13 +258,6 @@ public class SyncFragment extends Fragment implements OnClickListener {
 				EasyTracker.getTracker().sendEvent(Constant.CATEGORY_UI, Constant.ANALYTICS_ACTION_BTN_PRESS, Constant.ANALYTICS_LABEL_ADD_PC, null);
 			}
 			break;
-		}
-	}
-	class InvokeServiceTask extends AsyncTask<Void,Void,Void>{
-		@Override
-		protected Void doInBackground(Void... params) {
-			getActivity().startService(new Intent(getActivity(), InfiniteService.class));
-			return null;
 		}
 	}
 }
