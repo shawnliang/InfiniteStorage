@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
 import com.waveface.favoriteplayer.entity.ServerEntity;
+import com.waveface.favoriteplayer.event.WebSocketEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.mdns.DNSThread;
 import com.waveface.favoriteplayer.task.DownloadLabelsTask;
@@ -81,9 +82,7 @@ public class InfiniteService extends Service{
 		mEditor = mPrefs.edit();
 
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);
-		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
-		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_DISCONNECTED);		
+		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);	
 		registerReceiver(mReceiver, filter);
 		
 		connectPCWithPairedServer();
@@ -113,12 +112,6 @@ public class InfiniteService extends Service{
 						}
 					}
 				}
-			}
-			else if (Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED.equals(action)) {
-				new DownloadLabelsTask(mContext).execute(new Void[]{});
-			}
-			else if (Constant.ACTION_WEB_SOCKET_SERVER_DISCONNECTED.equals(action)) {
-				//TODO : WHAT YOU WANT
 			}
 		}
 	};

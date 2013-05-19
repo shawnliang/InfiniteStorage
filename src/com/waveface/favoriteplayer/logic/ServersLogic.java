@@ -21,9 +21,12 @@ import com.waveface.favoriteplayer.db.PairedServersTable;
 import com.waveface.favoriteplayer.db.BonjourServersTable;
 import com.waveface.favoriteplayer.entity.ConnectForGTVEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
+import com.waveface.favoriteplayer.event.WebSocketEvent;
 import com.waveface.favoriteplayer.mdns.DataPacket;
 import com.waveface.favoriteplayer.util.DeviceUtil;
 import com.waveface.favoriteplayer.websocket.RuntimeWebClient;
+
+import de.greenrobot.event.EventBus;
 
 public class ServersLogic {
 	private static String TAG = ServersLogic.class.getSimpleName();
@@ -493,8 +496,8 @@ public class ServersLogic {
 				updateBackupedServer(context, entity);
 
 				//TODO:CHANGE TO NEW PROTOCAL
-				Intent intent = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
-				context.sendBroadcast(intent);
+				context.sendBroadcast(new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED));
+				EventBus.getDefault().post(new WebSocketEvent(WebSocketEvent.STATUS_CONNECT));
 				//ConnectEntity connect = new ConnectEntity();
 				ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
 				ConnectForGTVEntity.Connect  connect = new ConnectForGTVEntity.Connect();

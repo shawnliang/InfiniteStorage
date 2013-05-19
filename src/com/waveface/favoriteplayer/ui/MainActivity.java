@@ -16,6 +16,7 @@ import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.RuntimeState;
 import com.waveface.favoriteplayer.event.DispatchKeyEvent;
 import com.waveface.favoriteplayer.event.LabelImportedEvent;
+import com.waveface.favoriteplayer.event.WebSocketEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.task.DownloadLabelsTask;
 import com.waveface.favoriteplayer.ui.fragment.FragmentBase;
@@ -84,6 +85,13 @@ public class MainActivity extends FragmentActivity {
 	public void onEvent(LabelImportedEvent event) {
 		if(event.status == LabelImportedEvent.STATUS_DONE) {
 			mHander.post(mShowPlaybackRunnable);
+		}
+
+	}
+	
+	public void onEvent(WebSocketEvent event) {
+		if(event.status == WebSocketEvent.STATUS_CONNECT) {
+			new DownloadLabelsTask(this).execute(new Void[]{});			
 		}
 	}
 	
