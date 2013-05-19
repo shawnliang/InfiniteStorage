@@ -27,11 +27,13 @@ public class SyncInProgressFragment extends Fragment {
 			long total = mEvent.singleTime
 					* (mEvent.totalFile - mEvent.currentFile) / (60 * 1000);
 			if (total > 0) {
-				mSyncContent.setText(String.format(getActivity().getResources()
+				if(mSyncContent != null)
+					mSyncContent.setText(String.format(getActivity().getResources()
 						.getString(R.string.sync_content_one_more), Long
 						.toString(total)));
 			} else {
-				mSyncContent.setText(getActivity().getResources().getString(
+				if(mSyncContent != null)
+					mSyncContent.setText(getActivity().getResources().getString(
 						R.string.sync_content_one));
 			}
 		}
