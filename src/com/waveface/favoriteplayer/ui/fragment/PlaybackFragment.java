@@ -285,8 +285,8 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 	// user scroll 0->1->2->0
 	// user touch  0->1->0
 	// auto play   0->2->0
-	int pagerLastState;
-	int pagerState = PAGER_STATE_NONE;
+	int mPagerLastState;
+	int mPagerState = PAGER_STATE_NONE;
 	private static final int PAGER_STATE_NONE 			= 0;
 	private static final int PAGER_STATE_USER_SCROLL 	= 1;
 	private static final int PAGER_STATE_USER_TOUCH 	= 2;
@@ -295,8 +295,8 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 	public void onPageScrollStateChanged(int state) {
 		Log.d(TAG, "onPageScrollStateChanged:" + state);
 		
-		if(state == 0 && pagerState != PAGER_STATE_NONE) {
-			switch(pagerState) {
+		if(state == 0 && mPagerState != PAGER_STATE_NONE) {
+			switch(mPagerState) {
 			case PAGER_STATE_USER_SCROLL:
 			case PAGER_STATE_USER_TOUCH:
 				delaySlideShow(AUTO_SLIDE_SHOW_AFTER_CONTROL_DELAY_MILLIS);
@@ -311,39 +311,22 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 			mViewAnimator.setVisibility(View.VISIBLE);
 			
 
-			pagerState = PAGER_STATE_NONE;
+			mPagerState = PAGER_STATE_NONE;
 		} else if(state == 1) {
 			// since this state will only happen when user intercept, pause play
 			mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
 			stopSlideShow();
 			
-			pagerState = PAGER_STATE_USER_TOUCH;
+			mPagerState = PAGER_STATE_USER_TOUCH;
 		} else if(state == 2) {
-			if(pagerLastState != 0) {
-				pagerState = PAGER_STATE_USER_SCROLL;
+			if(mPagerLastState != 0) {
+				mPagerState = PAGER_STATE_USER_SCROLL;
 			} else {
-				pagerState = PAGER_STATE_AUTO_PLAY;
+				mPagerState = PAGER_STATE_AUTO_PLAY;
 			}
 		}
 		
-		pagerLastState = state;
-		
-//		if(state != 0) {
-//			mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
-//			stopSlideShow();
-//			if(state == 1) {
-//				// this is trigger by user touch
-//				delaySlideShow(AUTO_SLIDE_SHOW_AFTER_CONTROL_DELAY_MILLIS);
-//				mViewAnimator.setVisibility(View.INVISIBLE);
-//				if(mPlayAnimator.getDisplayedChild() == 1)
-//					mPlayAnimator.showNext();
-//			} else if(state == 2){
-//				// scrolled
-//				
-//			}
-//		} else {
-//			mViewAnimator.setVisibility(View.VISIBLE);
-//		}
+		mPagerLastState = state;
 	}
 
 	@Override
