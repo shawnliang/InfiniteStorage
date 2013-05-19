@@ -256,7 +256,7 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 			ImageView iv = (ImageView) mViewAnimator.getChildAt(viewPosition);
 			
 			ImageAttribute attr = new ImageAttribute(iv);
-			attr.setDoneScaleType(ScaleType.CENTER_CROP);
+			attr.setDoneScaleType(ScaleType.FIT_CENTER);
 			attr.setLoadFromThread(true);
 			attr.setMaxSizeEqualsScreenSize(getActivity());
 			
