@@ -61,7 +61,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
 import com.waveface.exception.WammerServerException;
-import com.waveface.sync.util.Log;
+import com.waveface.favoriteplayer.util.Log;
 
 
 public class HttpInvoker {
