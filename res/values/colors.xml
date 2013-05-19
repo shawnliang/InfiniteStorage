@@ -1,5 +1,5 @@
 <resources>
-
+	<color name="black">#000000</color>
     <color name="black_overlay">#66000000</color>
 	<color name="article_pop_activity_background">#55000000</color>  
     <color name="linked">#6600FF00</color>

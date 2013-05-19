@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Welcome to Bunny!</string>
-    <string name="app_name">Bunny</string>
+    <string name="app_name">FavoritePlayer</string>
     <string name="title_activity_bonjour_servers">BonjourServers</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>

@@ -197,6 +197,10 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 				delaySlideShow(AUTO_SLIDE_SHOW_DELAY_MILLIS);
 			}
 			break;
+		case KeyEvent.KEYCODE_BACK:
+			if(switchPlayMode == false)
+				getActivity().finish();
+			break;
 		}
 	}
 	

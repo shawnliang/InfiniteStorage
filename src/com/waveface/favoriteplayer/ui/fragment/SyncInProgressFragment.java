@@ -1,6 +1,7 @@
 package com.waveface.favoriteplayer.ui.fragment;
 
 import com.waveface.favoriteplayer.R;
+import com.waveface.favoriteplayer.event.DispatchKeyEvent;
 import com.waveface.favoriteplayer.event.LabelImportedEvent;
 
 import de.greenrobot.event.EventBus;
@@ -8,6 +9,7 @@ import de.greenrobot.event.EventBus;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +63,15 @@ public class SyncInProgressFragment extends Fragment {
 		if (event.status == LabelImportedEvent.STATUS_SYNCING) {
 			mEvent = event;
 			mHandler.post(mUpdateStatusRunnable);
+		}
+	}
+
+	public void onEvent(DispatchKeyEvent e) {
+
+		switch (e.keycode) {
+		case KeyEvent.KEYCODE_BACK:
+			getActivity().finish();
+			break;
 		}
 	}
 
