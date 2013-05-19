@@ -159,6 +159,7 @@ namespace InfiniteStorage
 			updator.StartLoop();
 
 			NginxUtility.Instance.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
+			PendingFileMonitor.Instance.Start();
 			Application.Run();
 		}
 
@@ -338,6 +339,7 @@ namespace InfiniteStorage
 		{
 			try
 			{
+				PendingFileMonitor.Instance.Stop();
 				NginxUtility.Instance.Stop(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
 				notifier.Stop();
 				backup_server.Stop();

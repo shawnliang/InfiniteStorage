@@ -91,6 +91,7 @@
     <Compile Include="Src\Class\Common\Multipart\Parser.cs" />
     <Compile Include="Src\Class\Common\Multipart\Part.cs" />
     <Compile Include="Src\Class\Common\Multipart\Serializer.cs" />
+    <Compile Include="Src\Class\PendingFileMonitor.cs" />
     <Compile Include="Src\Class\PendingFileStorage.cs" />
     <Compile Include="Src\Class\REST\FileGetApiHandler.cs" />
     <Compile Include="Src\Class\REST\ImageApiHandler.cs" />
@@ -123,6 +124,12 @@
     </Compile>
     <Compile Include="Src\Class\IFileStorageLocationProvider.cs" />
     <Compile Include="Src\DB\DBInitializer.cs" />
+    <Compile Include="Src\Dialog\FakeSplitEventForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Src\Dialog\FakeSplitEventForm.Designer.cs">
+      <DependentUpon>FakeSplitEventForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Src\UIControl\AboutControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -233,6 +240,9 @@
     </Compile>
     <EmbeddedResource Include="Src\Dialog\BackupProgressDialog.resx">
       <DependentUpon>BackupProgressDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Src\Dialog\FakeSplitEventForm.resx">
+      <DependentUpon>FakeSplitEventForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\AboutControl.resx">
       <DependentUpon>AboutControl.cs</DependentUpon>
