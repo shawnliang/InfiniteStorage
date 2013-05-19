@@ -114,8 +114,6 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 		
 		mViewAnimator = (ViewAnimator) root.findViewById(R.id.background_view);
 		mViewAnimator.setDisplayedChild(0);
-		mViewAnimator.setInAnimation(mFadeIn);
-		mViewAnimator.setOutAnimation(mFadeOut);
 		resetToFirst();
 		
 		mPlaySlideShow = (ImageView) root.findViewById(R.id.image_play);
@@ -217,6 +215,8 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 	private void autoSlideNext() {
 		if(mCurrentPosition+1 < mCursor.getCount()) {
 			mCurrentPosition++;
+			mViewAnimator.setInAnimation(mFadeIn);
+			mViewAnimator.setOutAnimation(mFadeOut);
 			mViewAnimator.showNext();
 			mPager.setVisibility(View.INVISIBLE);
 			mPager.setCurrentItem(mCurrentPosition);
@@ -300,7 +300,6 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 			case PAGER_STATE_USER_SCROLL:
 			case PAGER_STATE_USER_TOUCH:
 				delaySlideShow(AUTO_SLIDE_SHOW_AFTER_CONTROL_DELAY_MILLIS);
-				mViewAnimator.setVisibility(View.INVISIBLE);
 				if(mPlayAnimator.getDisplayedChild() == 1)
 					mPlayAnimator.showNext();
 				break;
@@ -308,6 +307,8 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 				break;
 			}
 			
+			mViewAnimator.setInAnimation(null);
+			mViewAnimator.setOutAnimation(null);
 			mViewAnimator.setVisibility(View.VISIBLE);
 			
 
@@ -316,6 +317,8 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 			// since this state will only happen when user intercept, pause play
 			mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
 			stopSlideShow();
+			
+			mViewAnimator.setVisibility(View.INVISIBLE);
 			
 			mPagerState = PAGER_STATE_USER_TOUCH;
 		} else if(state == 2) {
@@ -338,22 +341,27 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 		if(page > mCurrentPosition) {
 			mViewAnimator.showNext();
 			mCurrentPosition++;
-			if(mCurrentPosition+1 < mCursor.getCount()-1)
-			setAnimatorImage(mCurrentPosition+1, getNextView());
+			if(mCurrentPosition+1 < mCursor.getCount()) {
+				setAnimatorImage(mCurrentPosition+1, getNextView());
+			}
 		} else if(page < mCurrentPosition){
 			mViewAnimator.showPrevious();
 			mCurrentPosition--;
-			if(mCurrentPosition-1 >= 0)
+			if(mCurrentPosition-1 >= 0) {
 				setAnimatorImage(mCurrentPosition-1, getPreviousView());
-			
+			}
 		}
 	}
 	
 	private void resetToFirst() {
+		mViewAnimator.setInAnimation(null);
+		mViewAnimator.setOutAnimation(null);
+
+		mCurrentPosition = 0;
 		mPager.setCurrentItem(0);
 		setAnimatorImage(0, 0);
 		setAnimatorImage(1, 1);
-		mCurrentPosition = 0;
+		mViewAnimator.setDisplayedChild(0);
 	}
 
 	@Override
