@@ -34,6 +34,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ViewAnimator;
 import android.widget.ImageView.ScaleType;
 
@@ -115,8 +116,7 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 		mViewAnimator.setDisplayedChild(0);
 		mViewAnimator.setInAnimation(mFadeIn);
 		mViewAnimator.setOutAnimation(mFadeOut);
-		setAnimatorImage(0, 0);
-		setAnimatorImage(1, 1);
+		resetToFirst();
 		
 		mPlaySlideShow = (ImageView) root.findViewById(R.id.image_play);
 		mPlaySlideShow.setOnClickListener(this);
@@ -193,6 +193,9 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 		case KeyEvent.KEYCODE_ENTER:
 		case KeyEvent.KEYCODE_MEDIA_PLAY:
 			if(mPlayAnimator.getDisplayedChild() == 0 && switchPlayMode == false) {
+				if(mCurrentPosition+1 >= mCursor.getCount()) {
+					resetToFirst();
+				}
 				mPlayAnimator.showNext();
 				delaySlideShow(AUTO_SLIDE_SHOW_DELAY_MILLIS);
 			}
@@ -219,14 +222,19 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 			mPager.setCurrentItem(mCurrentPosition);
 			setAnimatorImage(mCurrentPosition+1, getNextView());
 			mSlideShowHandler.postDelayed(mSlideNextRunnable, AUTO_SLIDE_SHOW_DELAY_MILLIS);
-		} 
+		}  else {
+			// hit end
+			Toast.makeText(getActivity(), R.string.everything_played, Toast.LENGTH_SHORT).show();
+			if(mPlayAnimator.getDisplayedChild() == 1)
+				mPlayAnimator.showNext();
+		}
 	}
 	
 	private void startSlideShow() {
 		Log.d(TAG, "startSlideShow");
 		if(mPlayAnimator.getDisplayedChild() == 0)
 			mPlayAnimator.showNext();
-		mSlideShowHandler.postDelayed(mSlideNextRunnable, 0);
+		mSlideShowHandler.postDelayed(mSlideNextRunnable, AUTO_SLIDE_SHOW_DELAY_MILLIS);
 	}
 	
 	private void stopSlideShow() {
@@ -274,22 +282,68 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 		return next;
 	}
 
+	// user scroll 0->1->2->0
+	// user touch  0->1->0
+	// auto play   0->2->0
+	int pagerLastState;
+	int pagerState = PAGER_STATE_NONE;
+	private static final int PAGER_STATE_NONE 			= 0;
+	private static final int PAGER_STATE_USER_SCROLL 	= 1;
+	private static final int PAGER_STATE_USER_TOUCH 	= 2;
+	private static final int PAGER_STATE_AUTO_PLAY	 	= 3;
 	@Override
 	public void onPageScrollStateChanged(int state) {
 		Log.d(TAG, "onPageScrollStateChanged:" + state);
-		if(state != 0) {
-			if(state == 1) {
-				// this is trigger by user touch
+		
+		if(state == 0 && pagerState != PAGER_STATE_NONE) {
+			switch(pagerState) {
+			case PAGER_STATE_USER_SCROLL:
+			case PAGER_STATE_USER_TOUCH:
 				delaySlideShow(AUTO_SLIDE_SHOW_AFTER_CONTROL_DELAY_MILLIS);
 				mViewAnimator.setVisibility(View.INVISIBLE);
 				if(mPlayAnimator.getDisplayedChild() == 1)
 					mPlayAnimator.showNext();
+				break;
+			case PAGER_STATE_AUTO_PLAY:
+				break;
 			}
+			
+			mViewAnimator.setVisibility(View.VISIBLE);
+			
+
+			pagerState = PAGER_STATE_NONE;
+		} else if(state == 1) {
+			// since this state will only happen when user intercept, pause play
 			mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
 			stopSlideShow();
-		} else {
-			mViewAnimator.setVisibility(View.VISIBLE);
+			
+			pagerState = PAGER_STATE_USER_TOUCH;
+		} else if(state == 2) {
+			if(pagerLastState != 0) {
+				pagerState = PAGER_STATE_USER_SCROLL;
+			} else {
+				pagerState = PAGER_STATE_AUTO_PLAY;
+			}
 		}
+		
+		pagerLastState = state;
+		
+//		if(state != 0) {
+//			mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
+//			stopSlideShow();
+//			if(state == 1) {
+//				// this is trigger by user touch
+//				delaySlideShow(AUTO_SLIDE_SHOW_AFTER_CONTROL_DELAY_MILLIS);
+//				mViewAnimator.setVisibility(View.INVISIBLE);
+//				if(mPlayAnimator.getDisplayedChild() == 1)
+//					mPlayAnimator.showNext();
+//			} else if(state == 2){
+//				// scrolled
+//				
+//			}
+//		} else {
+//			mViewAnimator.setVisibility(View.VISIBLE);
+//		}
 	}
 
 	@Override
@@ -311,13 +365,23 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 			
 		}
 	}
+	
+	private void resetToFirst() {
+		mPager.setCurrentItem(0);
+		setAnimatorImage(0, 0);
+		setAnimatorImage(1, 1);
+		mCurrentPosition = 0;
+	}
 
 	@Override
 	public void onClick(View view) {
 		switch(view.getId()) {
 		case R.id.image_play:
+			if(mCurrentPosition+1 >= mCursor.getCount()) {
+				resetToFirst();
+			}
 			mPlayAnimator.showNext();
-			delaySlideShow(AUTO_SLIDE_SHOW_DELAY_MILLIS);
+			delaySlideShow(0);
 			break;
 		}
 	}
