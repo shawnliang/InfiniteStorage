@@ -94,7 +94,8 @@ namespace InfiniteStorage
 
 			nginxProcess = start(cfg_dir, (s, e) =>
 			{
-				Start(cfg_dir);
+				if (!stopping)
+					Start(cfg_dir);
 			});
 
 			reload(cfg_dir);
