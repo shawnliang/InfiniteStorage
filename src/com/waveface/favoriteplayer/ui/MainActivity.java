@@ -45,7 +45,7 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 		public void run() {
 			PlaybackFragment photoJournal = new PlaybackFragment();
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-			transaction = getSupportFragmentManager().beginTransaction();
+			transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 			transaction.replace(R.id.container_content, photoJournal, PlaybackFragment.class.getSimpleName()).commit();
 			mCurrentFragmentName = PlaybackFragment.class.getSimpleName();
 		}
@@ -71,17 +71,15 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 		
 		if(savedInstanceState == null) {
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 			
 			if(ServersLogic.hasBackupedServers(this) == false) {
 				SyncFragment photoJournal = new SyncFragment();
-				transaction = getSupportFragmentManager().beginTransaction();
 				transaction.add(R.id.container_content, photoJournal, SyncFragment.class.getSimpleName()).commit();
 				mCurrentFragmentName = SyncFragment.class.getSimpleName();
-			} else {
-
-				new DownloadLabelsTask(this).execute(new Void[]{});
-				
+			} else {				
 				showSyncInProgressFragment(false);
+				new DownloadLabelsTask(this).execute(new Void[]{});
 			}
 		}
 		
@@ -97,8 +95,8 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 	
 	private void showSyncInProgressFragment(boolean replace) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 		SyncInProgressFragment photoJournal = new SyncInProgressFragment();
-		transaction = getSupportFragmentManager().beginTransaction();
 		if(replace) {
 			transaction.replace(R.id.container_content, photoJournal, SyncInProgressFragment.class.getSimpleName()).commit();
 		} else {
