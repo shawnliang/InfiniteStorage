@@ -14,7 +14,7 @@
 
         <!-- Photo Template -->
         <DataTemplate DataType="{x:Type wvmodel:ContentGroup}">
-            <local:GroupContentItem/>
+            <local:GroupContentItem Padding="10"/>
         </DataTemplate>
 
         <!-- Photo Template -->

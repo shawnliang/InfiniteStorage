@@ -12,6 +12,7 @@ namespace Waveface.ClientFramework
 	public class BunnyContent : Content
 	{
 
+		#region Property
 		public override string ID
 		{
 			get
@@ -19,6 +20,16 @@ namespace Waveface.ClientFramework
 				return GetContentID();
 			}
 		}
+
+		public override System.Drawing.Image Thumbnail
+		{
+			get
+			{
+				return GetContentThumbnail();
+			}
+		} 
+		#endregion
+
 
 		#region Constructor
 		public BunnyContent()
@@ -34,9 +45,12 @@ namespace Waveface.ClientFramework
 
 
 		#region Private Method
+		/// <summary>
+		/// Gets the content ID.
+		/// </summary>
+		/// <returns></returns>
 		private string GetContentID()
 		{
-			//var resourceFolderValue = Registry.CurrentUser.OpenSubKey("Software").OpenSubKey("BunnyHome").GetValue("ResourceFolder").ToString();
 			var savedPath = this.ContentPath;
 
 			var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
@@ -54,6 +68,18 @@ namespace Waveface.ClientFramework
 			conn.Close();
 
 			return contentID;
+		}
+
+		/// <summary>
+		/// Gets the content thumbnail.
+		/// </summary>
+		/// <returns></returns>
+		private System.Drawing.Image GetContentThumbnail()
+		{
+			var resourceFolderValue = Registry.CurrentUser.OpenSubKey("Software").OpenSubKey("BunnyHome").GetValue("ResourceFolder").ToString();
+			var imageFile = string.Format(@"{0}\.thumbs\{1}.small.thumb", resourceFolderValue, this.ID);
+
+			return System.Drawing.Image.FromFile(imageFile);
 		}
 		#endregion
 	}

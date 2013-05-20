@@ -17,7 +17,8 @@ namespace Waveface.ClientFramework
 	public static class StationAPI
 	{
 		#region Const
-		private const string API_BASE_URL = @"http://127.0.0.1:14005";
+		private const string PORT = "14005";
+		private const string API_BASE_URL = @"http://127.0.0.1:" + PORT;
 		private const string LABEL_API_BASE_URL = API_BASE_URL + @"/label";
 		#endregion
 
