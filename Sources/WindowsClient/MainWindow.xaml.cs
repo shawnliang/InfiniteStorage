@@ -11,20 +11,12 @@ namespace Waveface.Client
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		#region Var
-		public static readonly DependencyProperty _labeledContents = DependencyProperty.Register("LabeledContents", typeof(ObservableCollection<IContentEntity>), typeof(MainWindow), new UIPropertyMetadata(new ObservableCollection<IContentEntity>(), null));
-		#endregion
-
 		#region Property
-		public ObservableCollection<IContentEntity> LabeledContents
+		public ReadOnlyObservableCollection<IContentEntity> LabeledContents
 		{
 			get
 			{
-				return (ObservableCollection<IContentEntity>)GetValue(_labeledContents);
-			}
-			set
-			{
-				SetValue(_labeledContents, value);
+				return Waveface.ClientFramework.Client.Default.TaggedContents;
 			}
 		}
 		#endregion
@@ -37,7 +29,7 @@ namespace Waveface.Client
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			this.lbxDeviceContainer.DataContext = BunnyServiceSupplier.Instance.Services;
+			this.lbxDeviceContainer.DataContext = Waveface.ClientFramework.Client.Default.Services;
 			this.lblLabeledCount.DataContext = LabeledContents;
 			//this.lbxLabeledContentContainer.DataContext = LabeledContents;
 		}
@@ -127,7 +119,6 @@ namespace Waveface.Client
 
 			if (!contentControl.Tagged)
 			{
-				LabeledContents.Remove(content);
 				ClientFramework.Client.Default.UnTag(content);
 				return;
 			}
@@ -135,7 +126,6 @@ namespace Waveface.Client
 			if (LabeledContents.Contains(content))
 				return;
 
-			LabeledContents.Add(content);
 			ClientFramework.Client.Default.Tag(content);
 		}
 		#endregion
