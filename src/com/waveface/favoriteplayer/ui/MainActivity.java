@@ -65,7 +65,7 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate");
 		EventBus.getDefault().register(this);
-		sendBroadcast(new Intent(Constant.ACTION_INFINITE_STORAGE_ALARM));
+		sendBroadcast(new Intent(Constant.ACTION_FAVORITE_PLAYER_ALARM));
 		setContentView(R.layout.activity_main);
 		RuntimeState.isAppLaunching = true;
 		
@@ -84,7 +84,7 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 		}
 		
         getWindow().setBackgroundDrawable(null);
-        sendBroadcast(new Intent(Constant.ACTION_INFINITE_STORAGE_ALARM));
+        sendBroadcast(new Intent(Constant.ACTION_FAVORITE_PLAYER_ALARM));
 	}
 	
 	public void onEvent(LabelImportedEvent event) {

@@ -54,25 +54,25 @@
             android:theme="@style/Theme.Transparent" >
         </activity>
         <provider
-            android:name="com.waveface.favoriteplayer.provider.SyncProvider"
+            android:name="com.waveface.favoriteplayer.provider.PlayerProvider"
             android:authorities="com.waveface.favoriteplayer"
             android:exported="false"
             android:syncable="true" />
 
         <receiver
-            android:name="com.waveface.favoriteplayer.service.InfiniteReceiver"
+            android:name="com.waveface.favoriteplayer.service.PlayerReceiver"
             android:enabled="true"
             android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.TIME_TICK" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="com.waveface.favoriteplayer.action.INFINITE_STORAGE_ALARM" />
+                <action android:name="com.waveface.favoriteplayer.action.FAVORITE_PLAYER_ALARM" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name="com.waveface.favoriteplayer.service.InfiniteService"
+            android:name="com.waveface.favoriteplayer.service.PlayerService"
             android:enabled="true"
             android:exported="false" />
 
