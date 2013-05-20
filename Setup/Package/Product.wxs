@@ -89,6 +89,31 @@
             <File Id="InfiniteStorage.db.dll.config" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\InfiniteStorage.db.dll.config" />
           </Component>
 
+
+          <Component Id="Waveface.Client.exe" Guid="*">
+            <File Id="Waveface.Client.exe" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Waveface.Client.exe" />
+          </Component>
+
+          <Component Id="Microsoft.Expression.Drawing.dll" Guid="*">
+            <File Id="Microsoft.Expression.Drawing.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Microsoft.Expression.Drawing.dll" />
+          </Component>
+
+          <Component Id="Waveface.ClientFramework.dll" Guid="*">
+            <File Id="Waveface.ClientFramework.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Waveface.ClientFramework.dll" />
+          </Component>
+
+          <Component Id="Waveface.Model.dll" Guid="*">
+            <File Id="Waveface.Model.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Waveface.Model.dll" />
+          </Component>
+
+          <Component Id="pplaceholder.png" Guid="*">
+            <File Id="pplaceholder.png" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\pplaceholder.png" />
+          </Component>
+
+          <Component Id="Waveface.Client.exe.config" Guid="*">
+            <File Id="Waveface.Client.exe.config" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Waveface.Client.exe.config" />
+          </Component>
+
           <Component Id="Mono.Zeroconf.dll" Guid="*">
             <File Id="Mono.Zeroconf.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Mono.Zeroconf.dll" />
           </Component>
@@ -209,6 +234,13 @@
       <ComponentRef Id='InfiniteStorage.exe' />
       <ComponentRef Id='InfiniteStorage.db.dll' />
       <ComponentRef Id='InfiniteStorage.db.dll.config' />
+      <ComponentRef Id='Waveface.Client.exe'/>
+      <ComponentRef Id='Microsoft.Expression.Drawing.dll'/>
+      <ComponentRef Id='Waveface.ClientFramework.dll'/>
+      <ComponentRef Id='Waveface.Model.dll'/>
+      <ComponentRef Id='pplaceholder.png'/>
+      <ComponentRef Id='Waveface.Client.exe.config'/>
+
       <ComponentRef Id="Mono.Zeroconf.dll" />
       <ComponentRef Id="Mono.Zeroconf.Providers.Bonjour.dll" />
       <ComponentRef Id="MZClient.exe" />
