@@ -55,7 +55,7 @@ public class BackupLogic {
 		// NEW
 		int type = AlarmManager.ELAPSED_REALTIME_WAKEUP;
 		long triggerTime = SystemClock.elapsedRealtime();
-		Intent intent = new Intent(Constant.ACTION_INFINITE_STORAGE_ALARM);
+		Intent intent = new Intent(Constant.ACTION_FAVORITE_PLAYER_ALARM);
 		PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		// alarmManager.setRepeating(type, triggerTime,interval, sender);

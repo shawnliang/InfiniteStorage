@@ -20,7 +20,7 @@ public class Constant {
 	public final static String ACTION_BACKUP_DONE = "com.waveface.favoriteplayer.action.BACKUP_DONE";	
 	public final static String ACTION_SCAN_FILE = "com.waveface.favoriteplayer.action.SCAN_FILE";
 	public final static String ACTION_FILE_DELETED = "com.waveface.favoriteplayer.action.FILE_DELETED";	
-	public final static String ACTION_INFINITE_STORAGE_ALARM = "com.waveface.favoriteplayer.action.INFINITE_STORAGE_ALARM";
+	public final static String ACTION_FAVORITE_PLAYER_ALARM = "com.waveface.favoriteplayer.action.FAVORITE_PLAYER_ALARM";
 	public final static String ACTION_WEB_SOCKET_SERVER_CONNECTED = "com.waveface.favoriteplayer.action.WEB_SOCKET_SERVER_CONNECTED";
 	public final static String ACTION_WEB_SOCKET_SERVER_DISCONNECTED = "com.waveface.favoriteplayer.action.WEB_SOCKET_SERVER_DISCONNECTED";	
 	public final static String ACTION_RELEASE_PAIRED_SERVER_BY_CLIENT = "com.waveface.favoriteplayer.action.RELEASE_PAIRED_SERVER_BY_CLIENT";	
