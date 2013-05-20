@@ -171,8 +171,6 @@
         </Grid>
 
         <Grid Grid.Column="1" Grid.Row="1">
-            <local:PhotoViewerControl x:Name="pvcViewer" Visibility="Collapsed"/>
-
             <ScrollViewer x:Name="svContentContainer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <ListBox x:Name="lbxContentContainer"
 		Style="{StaticResource PhotoListBoxStyle}" 
