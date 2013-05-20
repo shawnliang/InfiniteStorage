@@ -115,12 +115,14 @@ namespace Waveface.Client
 		private void lbxDeviceContainer_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
 			lblContentLocation.DataContext = null;
+			ChangeToGalleryView();
 			lbxContentContainer.DataContext = (lbxDeviceContainer.SelectedItem as IService).Contents;
 		}
 
 		private void lbxDeviceContainer_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			lblContentLocation.DataContext = null;
+			ChangeToGalleryView();
 			lbxContentContainer.DataContext = (lbxDeviceContainer.SelectedItem as IService).Contents;
 		}
 
