@@ -49,7 +49,7 @@
         </Style>
 
         <!-- Labeled photo catalog view -->
-        <Style TargetType="{x:Type ListBox}" x:Key="LabledPhotoListBoxStyle">
+        <!--<Style TargetType="{x:Type ListBox}" x:Key="LabledPhotoListBoxStyle">
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -61,7 +61,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style>-->
 
         <!-- Style for an individual generic item -->
         <Style TargetType="{x:Type ListBoxItem}">
@@ -112,7 +112,7 @@
             <Grid Background="#FF5D5D5D" Grid.Row="0">
                 <WrapPanel VerticalAlignment="Center">
                     <local:BackButton Content="BackButton" Height="20"   VerticalAlignment="Center" Width="20" Click="BackButton_Click" Margin="2"/>
-                    <Label x:Name="lblContentLocation" Content="{Binding SelectedItem.Parent.ContentPath , ElementName=lbxContentContainer}" Foreground="White"/>
+                    <Label x:Name="lblContentLocation" Content="{Binding ContentPath}" Foreground="White"/>
                 </WrapPanel>
             </Grid>
         </Grid>
@@ -157,7 +157,7 @@
             <Label HorizontalAlignment="Left" Height="25" Margin="10,70,0,0" Content="Action:" VerticalAlignment="Top" Width="130" Foreground="White" HorizontalContentAlignment="Left"/>
 
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <!--<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
 
                 <ListBox x:Name="lbxLabeledContentContainer"
         		Style="{StaticResource LabledPhotoListBoxStyle}" 
@@ -167,7 +167,7 @@
         		SelectionMode="Extended"
         		VirtualizingStackPanel.IsVirtualizing="True" 
 				VirtualizingStackPanel.VirtualizationMode="Recycling"/>
-            </ScrollViewer>
+            </ScrollViewer>-->
         </Grid>
 
         <Grid Grid.Column="1" Grid.Row="1">

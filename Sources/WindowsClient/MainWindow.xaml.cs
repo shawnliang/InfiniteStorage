@@ -39,7 +39,6 @@ namespace Waveface.Client
 		{
 			this.lbxDeviceContainer.DataContext = BunnyServiceSupplier.Instance.Services;
 			this.lblLabeledCount.DataContext = LabeledContents;
-			//this.lbxLabeledContentContainer.DataContext = LabeledContents;
 		}
 
 		private void OnPhotoClick(object sender, MouseButtonEventArgs e)
@@ -57,6 +56,7 @@ namespace Waveface.Client
 				return;
 			}
 
+			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = group.Contents;
 		}
 
@@ -72,17 +72,21 @@ namespace Waveface.Client
 		{
 			if (IsGalleryView())
 			{
-				if (lbxContentContainer.SelectedItem == null)
+				var group = lblContentLocation.DataContext as IContentEntity;
+				if (group == null)
 					return;
 
-				var currentContentEntity = (lbxContentContainer.SelectedItem as IContentEntity);
-				if (currentContentEntity.Parent == null || currentContentEntity.Parent.Parent == null)
+				group = group.Parent;
+
+				if (group == null)
 				{
+					lblContentLocation.DataContext = null;
 					lbxContentContainer.DataContext = (lbxDeviceContainer.SelectedItem as IService).Contents;
 					return;
 				}
-
-				lbxContentContainer.DataContext = (currentContentEntity.Parent.Parent as IContentGroup).Contents;
+				
+				lblContentLocation.DataContext = group;
+				lbxContentContainer.DataContext = (group as IContentGroup).Contents;
 				return;
 			}
 			ChangeToGalleryView();
@@ -110,11 +114,13 @@ namespace Waveface.Client
 
 		private void lbxDeviceContainer_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
+			lblContentLocation.DataContext = null;
 			lbxContentContainer.DataContext = (lbxDeviceContainer.SelectedItem as IService).Contents;
 		}
 
 		private void lbxDeviceContainer_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
+			lblContentLocation.DataContext = null;
 			lbxContentContainer.DataContext = (lbxDeviceContainer.SelectedItem as IService).Contents;
 		}
 
