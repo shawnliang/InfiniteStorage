@@ -50,9 +50,12 @@ namespace Waveface.Client
 
 			if (group == null)
 			{
-				pvcViewer.SelectedSource = lbxContentContainer.SelectedItem;
-				pvcViewer.Source = ((lbxContentContainer.SelectedItem as IContent).Parent as IContentGroup).Contents;
-				ChangeToPhotoView();
+				var viewer = new PhotoViewer();
+				viewer.Owner = this;
+				viewer.pvcViewer.SelectedSource = lbxContentContainer.SelectedItem;
+				viewer.pvcViewer.Source = ((lbxContentContainer.SelectedItem as IContent).Parent as IContentGroup).Contents;
+				//ChangeToPhotoView();
+				viewer.ShowDialog();
 				return;
 			}
 
@@ -60,18 +63,18 @@ namespace Waveface.Client
 			lbxContentContainer.DataContext = group.Contents;
 		}
 
-		private void ChangeToPhotoView()
-		{
-			if (IsPhotoView())
-				return;
-			pvcViewer.Visibility = System.Windows.Visibility.Visible;
-			svContentContainer.Visibility = System.Windows.Visibility.Collapsed;
-		}
+		//private void ChangeToPhotoView()
+		//{
+		//	if (IsPhotoView())
+		//		return;
+		//	pvcViewer.Visibility = System.Windows.Visibility.Visible;
+		//	svContentContainer.Visibility = System.Windows.Visibility.Collapsed;
+		//}
 
 		private void BackButton_Click(object sender, System.Windows.RoutedEventArgs e)
 		{
-			if (IsGalleryView())
-			{
+			//if (IsGalleryView())
+			//{
 				var group = lblContentLocation.DataContext as IContentEntity;
 				if (group == null)
 					return;
@@ -88,41 +91,41 @@ namespace Waveface.Client
 				lblContentLocation.DataContext = group;
 				lbxContentContainer.DataContext = (group as IContentGroup).Contents;
 				return;
-			}
-			ChangeToGalleryView();
+			//}
+			//ChangeToGalleryView();
 		}
 
-		private bool IsPhotoView()
-		{
-			return pvcViewer.Visibility == System.Windows.Visibility.Visible;
-		}
+		//private bool IsPhotoView()
+		//{
+		//	return pvcViewer.Visibility == System.Windows.Visibility.Visible;
+		//}
 
-		private bool IsGalleryView()
-		{
-			return svContentContainer.Visibility == System.Windows.Visibility.Visible;
-		}
+		//private bool IsGalleryView()
+		//{
+		//	return svContentContainer.Visibility == System.Windows.Visibility.Visible;
+		//}
 
 
-		private void ChangeToGalleryView()
-		{
-			if (IsGalleryView())
-				return;
-			pvcViewer.Source = null;
-			pvcViewer.Visibility = System.Windows.Visibility.Collapsed;
-			svContentContainer.Visibility = System.Windows.Visibility.Visible;
-		}
+		//private void ChangeToGalleryView()
+		//{
+		//	if (IsGalleryView())
+		//		return;
+		//	pvcViewer.Source = null;
+		//	pvcViewer.Visibility = System.Windows.Visibility.Collapsed;
+		//	svContentContainer.Visibility = System.Windows.Visibility.Visible;
+		//}
 
 		private void lbxDeviceContainer_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
 			lblContentLocation.DataContext = null;
-			ChangeToGalleryView();
+			//ChangeToGalleryView();
 			lbxContentContainer.DataContext = (lbxDeviceContainer.SelectedItem as IService).Contents;
 		}
 
 		private void lbxDeviceContainer_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			lblContentLocation.DataContext = null;
-			ChangeToGalleryView();
+			//ChangeToGalleryView();
 			lbxContentContainer.DataContext = (lbxDeviceContainer.SelectedItem as IService).Contents;
 		}
 
