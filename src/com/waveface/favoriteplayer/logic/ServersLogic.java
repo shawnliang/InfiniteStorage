@@ -53,6 +53,8 @@ public class ServersLogic {
 		entity.serverOS = pairedServer.serverOS;
 		entity.wsLocation = pairedServer.wsLocation;
 		entity.status = Constant.SERVER_LINKING;
+		
+		
 		if (accept) {
 			SharedPreferences mPrefs = context.getSharedPreferences(
 					Constant.PREFS_NAME, Context.MODE_PRIVATE);
@@ -409,8 +411,10 @@ public class ServersLogic {
 					entity = new ServerEntity();
 					entity.serverId = cursor.getString(0);
 					entity.serverName = cursor.getString(1);
-					entity.serverOS = cursor.getString(2);
-					entity.wsLocation = cursor.getString(3);
+					entity.ip = cursor.getString(2);
+					entity.wsPort = cursor.getString(3);
+					entity.notifyPort = cursor.getString(4);
+					entity.reason = cursor.getString(5);
 					cursor.moveToNext();
 				}
 				cursor.close();
@@ -478,14 +482,15 @@ public class ServersLogic {
 				new String[] { serverId });
 	}
 
-	public static void startWSServerConnect(Context context, String wsLocation,
-			String serverId,String serverName,String ip ,String notifyPort,String restPort) {
+	public static synchronized void startWSServerConnect(Context context, String wsLocation,
+			String serverId,String serverName,String ip ,String notifyPort,String restPort,boolean autoConnect) {
 		// SETUP WS URL ANDLink to WS
 		if (RuntimeState.OnWebSocketOpened == false) {
 			RuntimeWebClient.init(context);
 			RuntimeWebClient.setURL(wsLocation);
 			try {
 				RuntimeWebClient.open();
+				RuntimeState.setServerStatus(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
 				//ADD SERVER DATA
 				ServerEntity entity = new ServerEntity();
 				entity.serverId=serverId;
@@ -493,8 +498,9 @@ public class ServersLogic {
 				entity.ip=ip;
 				entity.notifyPort=notifyPort;
 				entity.restPort=restPort;
+//				if(!autoConnect){
 				updateBackupedServer(context, entity);
-
+//				}
 				//TODO:CHANGE TO NEW PROTOCAL
 				context.sendBroadcast(new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED));
 				EventBus.getDefault().post(new WebSocketEvent(WebSocketEvent.STATUS_CONNECT));
@@ -509,10 +515,7 @@ public class ServersLogic {
 				subscribe.labels=false;
 				connectForGTV.setSubscribe(subscribe);
 				Log.d(TAG, "send message="+RuntimeState.GSON.toJson(connectForGTV));
-				RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));
-				//TODO:ADD PAIRED SERVER
-				
-				
+				RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));				
 			} catch (WebSocketException e) {
 				e.printStackTrace();
 			}

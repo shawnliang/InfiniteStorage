@@ -21,6 +21,7 @@ import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.LabelImportedEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.util.Log;
+import com.waveface.favoriteplayer.util.NetworkUtil;
 
 import de.greenrobot.event.EventBus;
 
@@ -40,7 +41,8 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 
 	@Override
 	protected Void doInBackground(Void... params) {
-
+		if(NetworkUtil.isWifiNetworkAvailable(mContext) == false)
+			return null;
 		ArrayList<ServerEntity> servers = ServersLogic
 				.getBackupedServers(mContext);
 		ServerEntity pairedServer = servers.get(0);
