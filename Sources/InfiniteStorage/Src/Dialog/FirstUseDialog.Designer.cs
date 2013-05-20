@@ -41,10 +41,6 @@
 			this.label4 = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
 			this.storageLocationControl1 = new InfiniteStorage.StorageLocationControl();
-			this.tabChooseOrganizeMethod = new System.Windows.Forms.TabPage();
-			this.organizeSelectionControl1 = new InfiniteStorage.OrganizeSelectionControl();
-			this.label8 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
 			this.tabInstalledSuccess = new System.Windows.Forms.TabPage();
 			this.transferringControl1 = new InfiniteStorage.TransferringControl();
 			this.panel1.SuspendLayout();
@@ -52,7 +48,6 @@
 			this.tabWelcomeAndWaitConnect.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
 			this.tabChooseLocation.SuspendLayout();
-			this.tabChooseOrganizeMethod.SuspendLayout();
 			this.tabInstalledSuccess.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -93,14 +88,13 @@
 			// 
 			this.tabControlEx1.Controls.Add(this.tabWelcomeAndWaitConnect);
 			this.tabControlEx1.Controls.Add(this.tabChooseLocation);
-			this.tabControlEx1.Controls.Add(this.tabChooseOrganizeMethod);
 			this.tabControlEx1.Controls.Add(this.tabInstalledSuccess);
 			this.tabControlEx1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControlEx1.HideTabs = true;
 			this.tabControlEx1.Location = new System.Drawing.Point(0, 0);
 			this.tabControlEx1.Multiline = true;
 			this.tabControlEx1.Name = "tabControlEx1";
-			this.tabControlEx1.PageIndex = 3;
+			this.tabControlEx1.PageIndex = 1;
 			this.tabControlEx1.SelectedIndex = 0;
 			this.tabControlEx1.Size = new System.Drawing.Size(628, 288);
 			this.tabControlEx1.TabIndex = 1;
@@ -204,50 +198,6 @@
 			this.storageLocationControl1.StoragePath = "";
 			this.storageLocationControl1.TabIndex = 0;
 			// 
-			// tabChooseOrganizeMethod
-			// 
-			this.tabChooseOrganizeMethod.Controls.Add(this.organizeSelectionControl1);
-			this.tabChooseOrganizeMethod.Controls.Add(this.label8);
-			this.tabChooseOrganizeMethod.Controls.Add(this.label2);
-			this.tabChooseOrganizeMethod.Location = new System.Drawing.Point(0, 0);
-			this.tabChooseOrganizeMethod.Name = "tabChooseOrganizeMethod";
-			this.tabChooseOrganizeMethod.Padding = new System.Windows.Forms.Padding(3);
-			this.tabChooseOrganizeMethod.Size = new System.Drawing.Size(628, 288);
-			this.tabChooseOrganizeMethod.TabIndex = 1;
-			this.tabChooseOrganizeMethod.Text = "設定檔案分類方式";
-			this.tabChooseOrganizeMethod.UseVisualStyleBackColor = true;
-			// 
-			// organizeSelectionControl1
-			// 
-			this.organizeSelectionControl1.BackColor = System.Drawing.Color.Transparent;
-			this.organizeSelectionControl1.Location = new System.Drawing.Point(68, 97);
-			this.organizeSelectionControl1.Name = "organizeSelectionControl1";
-			this.organizeSelectionControl1.OrganizeBy = InfiniteStorage.OrganizeMethod.YearMonthDay;
-			this.organizeSelectionControl1.Size = new System.Drawing.Size(436, 158);
-			this.organizeSelectionControl1.TabIndex = 3;
-			// 
-			// label8
-			// 
-			this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.label8.Location = new System.Drawing.Point(68, 77);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(484, 2);
-			this.label8.TabIndex = 2;
-			// 
-			// label2
-			// 
-			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-			this.label2.Location = new System.Drawing.Point(12, 23);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(596, 45);
-			this.label2.TabIndex = 1;
-			this.label2.Text = "不只是幫您安全把檔案送回電腦，還幫您按照日期收納，讓您快速找尋跟瀏覽";
-			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
 			// tabInstalledSuccess
 			// 
 			this.tabInstalledSuccess.Controls.Add(this.transferringControl1);
@@ -285,7 +235,6 @@
 			this.tabWelcomeAndWaitConnect.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
 			this.tabChooseLocation.ResumeLayout(false);
-			this.tabChooseOrganizeMethod.ResumeLayout(false);
 			this.tabInstalledSuccess.ResumeLayout(false);
 			this.ResumeLayout(false);
 
@@ -299,12 +248,8 @@
 		private System.Windows.Forms.Button nextButton;
 		private System.Windows.Forms.Button prevButton;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.TabPage tabChooseOrganizeMethod;
 		private System.Windows.Forms.TabPage tabInstalledSuccess;
 		private System.Windows.Forms.Label hrLine;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label label8;
-		private OrganizeSelectionControl organizeSelectionControl1;
 		private System.Windows.Forms.Label instruction1;
 		private System.Windows.Forms.PictureBox pictureBox4;
 		private System.Windows.Forms.TabPage tabChooseLocation;
