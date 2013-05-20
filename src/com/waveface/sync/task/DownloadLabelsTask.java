@@ -1,6 +1,7 @@
 package com.waveface.sync.task;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 
 import android.content.Context;
@@ -16,7 +17,6 @@ import com.waveface.sync.entity.FileEntity;
 import com.waveface.sync.entity.LabelEntity;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.service.LabelHandle;
 import com.waveface.sync.util.Log;
 
 public class DownloadLabelsTask extends AsyncTask<Void,Void,Void>{
@@ -66,7 +66,7 @@ public class DownloadLabelsTask extends AsyncTask<Void,Void,Void>{
 						 
 					}
 					// update label info
-					LabelDB.updateLabelInfo(mContext, label, fileEntity);
+					LabelDB.updateLabelInfo(mContext, label, fileEntity,false);
 				}
 			}
 

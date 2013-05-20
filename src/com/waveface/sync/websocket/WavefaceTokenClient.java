@@ -3,6 +3,7 @@ package com.waveface.sync.websocket;
 
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +41,6 @@ import com.waveface.sync.entity.LabelChangeEntity;
 import com.waveface.sync.entity.LabelEntity;
 import com.waveface.sync.entity.ServerEntity;
 import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.service.LabelHandle;
 import com.waveface.sync.util.Log;
 
 public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements WebSocketTokenClient {
@@ -179,7 +179,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 						 //FileEntity
 						 FileEntity fileEntity = RuntimeState.GSON.fromJson(jsonOutput, FileEntity.class);	 
 						
-						 LabelDB.updateLabelInfo(mContext, labelEntity, fileEntity);
+						 LabelDB.updateLabelInfo(mContext, labelEntity, fileEntity,true);
 						
 				   }
 			} catch (Exception e) {

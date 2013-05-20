@@ -507,7 +507,7 @@ public class ServersLogic {
 					labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
 				
 				if(cursor.getCount()>0){
-						//ConnectEntity connect = new ConnectEntity();
+						
 						ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
 						ConnectForGTVEntity.Connect  connect = new ConnectForGTVEntity.Connect();
 						connect.deviceId=DeviceUtil.id(context);
@@ -516,10 +516,11 @@ public class ServersLogic {
 						connectForGTV.setConnect(connect);
 						ConnectForGTVEntity.Subscribe subscribe = new ConnectForGTVEntity.Subscribe();
 						subscribe.labels=true;
+						subscribe.labels_from_seq=labSeq;
 						connectForGTV.setSubscribe(subscribe);
 						Log.d(TAG, "send message="+RuntimeState.GSON.toJson(connectForGTV));
 						RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));
-						
+						//send broadcast label change
 						Intent intent = new Intent(Constant.ACTION_LABELCHANGE);
 						context.sendBroadcast(intent);
 					}

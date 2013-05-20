@@ -2,6 +2,7 @@ package com.waveface.sync.ui.fragment;
 
 
 import java.util.ArrayList;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,7 +20,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.database.ContentObserver;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,6 +36,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 
 
 import com.waveface.sync.Constant;
@@ -307,13 +308,12 @@ public class ServerChooserFragment extends FragmentBase
 			String ip=params[0].get(Constant.PARAM_SERVER_IP);
 			String notifyPort =params[0].get(Constant.PARAM_NOTIFY_PORT);
 			String restPort =params[0].get(Constant.PARAM_REST_PORT);
-			ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort);	
+			//ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort);	
 			
-			
-//			Timer mWorkerTimer = new Timer();
-//			mWorkerTimer.schedule(new WorkerTimerTask(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort), 
-//					1 * 1000, 
-//					WORKER_PERIOD_SECONDS * 1000);
+			Timer workerTimer = new Timer();
+			workerTimer.schedule(new WorkerTimerTask(getActivity(),wsLocation,serverId, serverName,ip,notifyPort, restPort), 
+					WORKER_DELAY_SECONDS * 1000, 
+					WORKER_PERIOD_SECONDS * 60000);
 			
 			return null;
 		}
@@ -331,13 +331,13 @@ public class ServerChooserFragment extends FragmentBase
 		private String restPort;
 		
 		public WorkerTimerTask(Context context,String wsLocation,String serverId, String serverName, String ip,String notifyPort, String restPort ){
-			context=this.context;
-			wsLocation=this.wsLocation;
-			serverId=this.serverId;
-			serverName=this.serverName;
-			ip=this.ip;
-			notifyPort=this.notifyPort;
-			restPort=this.restPort;
+			this.context=context;
+			this.wsLocation=wsLocation;
+			this.serverId=serverId;
+			this.serverName=serverName;
+			this.ip=ip;
+			this.notifyPort=notifyPort;
+			this.restPort=restPort;
 		}
 
 		@Override

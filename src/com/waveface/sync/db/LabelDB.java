@@ -17,9 +17,11 @@ public class LabelDB {
 	public static String TAG = "LabelDB";
 
 	public static void updateLabelInfo(Context context,
-			LabelEntity.Label label, FileEntity fileEntity) {
+			LabelEntity.Label label, FileEntity fileEntity ,boolean isChangeLabel) {
 
-		// deleteLabel(context,label.label_id);
+		if(isChangeLabel){
+		deleteLabel(context,label.label_id);
+		}
 		updateLabel(context, label.label_id, label.label_name, label.seq);
 		removeAllFileInLabel(context, label.label_id);
 		updateLabelFiles(context, label);
@@ -103,7 +105,7 @@ public class LabelDB {
 
 	public static void deleteLabel(Context context, String labelId) {
 		ContentResolver cr = context.getContentResolver();
-		removeAllFileInLabel(context, labelId);
+		//removeAllFileInLabel(context, labelId);
 		Cursor cursor = cr.query(LabelTable.CONTENT_URI,
 				new String[] { LabelTable.COLUMN_LABEL_ID },
 				LabelTable.COLUMN_LABEL_ID + " = ?", new String[] { labelId },
