@@ -67,7 +67,6 @@
                     IsSynchronizedWithCurrentItem="True"
 					ItemsPanel="{DynamicResource ItemsPanelTemplate1}" 
 					ItemContainerStyle="{DynamicResource ListBoxItemStyle}" 
-					SelectionChanged="lbImages_SelectionChanged"
                     SelectionMode="Extended"
 					ItemsSource="{Binding}" 
 					VerticalAlignment="Bottom"

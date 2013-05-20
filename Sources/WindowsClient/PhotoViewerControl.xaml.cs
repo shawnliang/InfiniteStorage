@@ -19,15 +19,15 @@ namespace Waveface.Client
 		}
 
 
-		public Object SelectedSource
+		public int SelectedIndex
 		{
 			get
 			{
-				return ImgObject.DataContext;
+				return lbImages.SelectedIndex;
 			}
 			set
 			{
-				ImgObject.DataContext = value;
+				lbImages.SelectedIndex = value;
 			}
 		}
 
@@ -42,6 +42,23 @@ namespace Waveface.Client
 				lbImages.DataContext = value;
 			}
 		}
+
+
+		public void Previous()
+		{
+			var value = lbImages.SelectedIndex - 1;
+
+			if (value < 0)
+				value = lbImages.Items.Count - 1;
+
+			lbImages.SelectedIndex = value;
+		}
+
+		public void Next()
+		{
+			lbImages.SelectedIndex = (lbImages.SelectedIndex + 1) % lbImages.Items.Count;
+		}
+
 
 		private void WindowLoaded(object sender, RoutedEventArgs e)
 		{
@@ -95,14 +112,6 @@ namespace Waveface.Client
 				}
 			}
 			myScale.ScaleY = myScale.ScaleX;
-		}
-
-
-		private void lbImages_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{	//if (lbImages.SelectedIndex == -1)
-			//	return;
-
-			//this.SelectedPhoto = (Model.ContentItem)lbImages.SelectedItem;
 		}
 	}
 }

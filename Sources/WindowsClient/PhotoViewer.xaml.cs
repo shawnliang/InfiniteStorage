@@ -30,5 +30,27 @@ namespace Waveface.Client
 
 			this.Close();
 		}
+
+
+		private void Window_KeyDown(object sender, KeyEventArgs e)
+		{
+			switch (e.Key)
+			{
+				case Key.Escape:
+					this.Close();
+					break;
+				case Key.Left:
+					pvcViewer.Previous();
+					break;
+ 				case Key.Right:
+					pvcViewer.Next();
+					break;
+			}
+		}
+
+		private void Window_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			this.Close();
+		}
 	}
 }
