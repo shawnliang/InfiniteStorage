@@ -185,7 +185,7 @@ namespace Wammer.Utility
 			}
 			catch (Exception e)
 			{
-				throw new Exception("Seems the attachment is not a valid image");
+				throw new Exception("Seems the attachment is not a valid image", e);
 			}
 		}
 

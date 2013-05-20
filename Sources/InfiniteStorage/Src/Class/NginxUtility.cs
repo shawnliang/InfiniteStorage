@@ -14,6 +14,9 @@ namespace InfiniteStorage
 		private static string nginx_dir;
 		private static NginxUtility instance = new NginxUtility();
 
+		private Process nginxProcess;
+		private bool stopping = false;
+
 		static NginxUtility()
 		{
 			install_dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -71,47 +74,41 @@ namespace InfiniteStorage
 
 		public void Start(string cfg_dir)
 		{
-
-			System.Threading.Tasks.Task.Factory.StartNew(() =>
+			stopping = false;
+			var processes = Process.GetProcessesByName("nginx");
+			if (processes != null)
 			{
-
-				Process[] processes;
-
-				do
+				cmd(cfg_dir, "-s stop");
+				foreach (var p in processes)
 				{
-					processes = Process.GetProcessesByName("nginx");
-					if (processes != null)
+					try
 					{
-						Stop(cfg_dir);
-						foreach (var p in processes)
-						{
-							try
-							{
-								p.Kill();
-							}
-							catch
-							{
-
-							}
-						}
+						p.Kill();
 					}
+					catch
+					{
 
-					start(cfg_dir);
-					reload(cfg_dir);
-
-					processes = Process.GetProcessesByName("nginx");
+					}
 				}
-				while (processes == null || !processes.Any());
+			}
+
+			nginxProcess = start(cfg_dir, (s, e) =>
+			{
+				if (!stopping)
+					Start(cfg_dir);
 			});
+
+			reload(cfg_dir);
 		}
 
-		private void start(string cfg_dir)
+		private Process start(string cfg_dir, EventHandler onExit = null)
 		{
-			cmd(cfg_dir, "");
+			return cmd(cfg_dir, "", onExit);
 		}
 
 		public void Stop(string cfg_dir)
 		{
+			stopping = true;
 			cmd(cfg_dir, "-s stop");
 		}
 
@@ -120,13 +117,19 @@ namespace InfiniteStorage
 			cmd(cfg_dir, "-s reload");
 		}
 
-		private void cmd(string cfg_dir, string cmd)
+		private Process cmd(string cfg_dir, string cmd, EventHandler onExit = null)
 		{
 			var arg = string.Format("-c \"{0}\"", Path.Combine(cfg_dir, "nginx.cfg"));
 
 			var nginx_exe = Path.Combine(nginx_dir, "nginx.exe");
 
 			var p = new Process();
+
+			if (onExit != null)
+			{
+				p.EnableRaisingEvents = true;
+				p.Exited += onExit;
+			}
 
 			p.StartInfo = new ProcessStartInfo
 			{
@@ -137,6 +140,8 @@ namespace InfiniteStorage
 				UseShellExecute = false
 			};
 			p.Start();
+
+			return p;
 		}
 	}
 }
