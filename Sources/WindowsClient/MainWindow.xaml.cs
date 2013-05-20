@@ -52,8 +52,9 @@ namespace Waveface.Client
 			{
 				var viewer = new PhotoViewer();
 				viewer.Owner = this;
+				viewer.pvcViewer.Source = lbxContentContainer.DataContext;
 				viewer.pvcViewer.SelectedIndex = lbxContentContainer.SelectedIndex;
-				viewer.pvcViewer.Source = ((lbxContentContainer.SelectedItem as IContent).Parent as IContentGroup).Contents;
+			
 				//ChangeToPhotoView();
 				viewer.ShowDialog();
 				return;
