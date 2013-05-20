@@ -3,13 +3,13 @@ package com.waveface.favoriteplayer.db;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import com.waveface.favoriteplayer.provider.SyncProvider;
+import com.waveface.favoriteplayer.provider.PlayerProvider;
 
 public class BonjourServersTable implements BaseColumns {
 
 	public static final String BONJOUR_SERVERS_NAME = "bonjourServers";
 	public static final Uri BONJOUR_SERVER_URI = Uri.parse("content://"
-			+ SyncProvider.AUTHORITY + "/" + BONJOUR_SERVERS_NAME);
+			+ PlayerProvider.AUTHORITY + "/" + BONJOUR_SERVERS_NAME);
 	public static final Uri CONTENT_URI = BONJOUR_SERVER_URI;
 //	public static final Uri BONJOUR_NOTIFY_URI = Uri.parse("content://"
 //			+ SyncProvider.AUTHORITY + ".update." + BONJOUR_SERVERS_NAME);

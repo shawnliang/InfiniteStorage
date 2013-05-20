@@ -25,8 +25,8 @@ import com.waveface.favoriteplayer.task.DownloadLabelsTask;
 import com.waveface.favoriteplayer.util.Log;
 import com.waveface.favoriteplayer.util.NetworkUtil;
 
-public class InfiniteService extends Service{
-	private static final String TAG = InfiniteService.class.getSimpleName();
+public class PlayerService extends Service{
+	private static final String TAG = PlayerService.class.getSimpleName();
 	private Context mContext;
 	private static SharedPreferences mPrefs ;
 	private Editor mEditor;

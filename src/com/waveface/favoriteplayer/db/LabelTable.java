@@ -10,13 +10,13 @@ import android.provider.BaseColumns;
 
 
 import com.waveface.favoriteplayer.entity.LabelEntity;
-import com.waveface.favoriteplayer.provider.SyncProvider;
+import com.waveface.favoriteplayer.provider.PlayerProvider;
 
 public class LabelTable implements BaseColumns {
 
 	public static final String LABELS_NAME = "labels";
 	public static final Uri LABELS_URI = Uri.parse("content://"
-			+ SyncProvider.AUTHORITY + "/" + LABELS_NAME);
+			+ PlayerProvider.AUTHORITY + "/" + LABELS_NAME);
 	public static final Uri CONTENT_URI =  LABELS_URI;
 //	public static final Uri BONJOUR_NOTIFY_URI = Uri.parse("content://"
 //			+ SyncProvider.AUTHORITY + ".update." + BONJOUR_SERVERS_NAME);

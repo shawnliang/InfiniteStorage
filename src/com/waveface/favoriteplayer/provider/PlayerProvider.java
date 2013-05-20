@@ -23,7 +23,7 @@ import com.waveface.favoriteplayer.db.LabelFileTable;
 import com.waveface.favoriteplayer.db.LabelTable;
 
 
-public class SyncProvider extends ContentProvider {
+public class PlayerProvider extends ContentProvider {
 
 
 	private final static int BACKUPED_SERVERS = 5;
@@ -98,10 +98,10 @@ public class SyncProvider extends ContentProvider {
 
 	}
 
-	public SyncProvider() {
+	public PlayerProvider() {
 	}
 
-	public SyncProvider(Context context) {
+	public PlayerProvider(Context context) {
 		init();
 	}
 

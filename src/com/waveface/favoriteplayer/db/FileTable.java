@@ -2,13 +2,13 @@ package com.waveface.favoriteplayer.db;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
-import com.waveface.favoriteplayer.provider.SyncProvider;
+import com.waveface.favoriteplayer.provider.PlayerProvider;
 
 public class FileTable implements BaseColumns {
 
 	public static final String FILES_NAME = "files";
 	public static final Uri FILE_URI = Uri.parse("content://"
-			+ SyncProvider.AUTHORITY + "/" + FILES_NAME);
+			+ PlayerProvider.AUTHORITY + "/" + FILES_NAME);
 	public static final Uri CONTENT_URI =  FILE_URI;
 	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.favoritplayer.files";
 	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.favoritplayer.files";

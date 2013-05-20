@@ -39,7 +39,7 @@ import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.image.MediaStoreImage;
 import com.waveface.favoriteplayer.logic.BackupLogic;
 import com.waveface.favoriteplayer.logic.ServersLogic;
-import com.waveface.favoriteplayer.service.InfiniteService;
+import com.waveface.favoriteplayer.service.PlayerService;
 import com.waveface.favoriteplayer.ui.FirstUseActivity;
 import com.waveface.favoriteplayer.util.NetworkUtil;
 

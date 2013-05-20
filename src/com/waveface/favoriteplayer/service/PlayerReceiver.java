@@ -11,14 +11,14 @@ import com.waveface.favoriteplayer.RuntimeState;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.util.NetworkUtil;
 
-public class InfiniteReceiver extends BroadcastReceiver {
-	private static final String TAG = InfiniteReceiver.class.getSimpleName();
+public class PlayerReceiver extends BroadcastReceiver {
+	private static final String TAG = PlayerReceiver.class.getSimpleName();
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		String action = intent.getAction();
 		Log.d(TAG, "onReceive:" + action);
 		if(context!= null){ 
-			context.startService(new Intent(context, InfiniteService.class));
+			context.startService(new Intent(context, PlayerService.class));
 			if(!TextUtils.isEmpty(action) && action.equals("android.net.conn.CONNECTIVITY_CHANGE")){
 				Intent inte = new Intent(Constant.ACTION_NETWORK_STATE_CHANGE);
 

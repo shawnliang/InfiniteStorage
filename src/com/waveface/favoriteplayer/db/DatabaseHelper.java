@@ -4,22 +4,18 @@ import java.text.MessageFormat;
 
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.waveface.favoriteplayer.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-	public static final String DATABASE_NAME = "infinites.db";
+	public static final String DATABASE_NAME = "favoriteplayer.db";
 
 	private static final String TAG = DatabaseHelper.class.getSimpleName();
-	private static final int DATABASE_VERSION = 8;
+	private static final int DATABASE_VERSION = 1;
 	private static final String[] TABLE_NAME_LIST = {
 			BonjourServersTable.TABLE_NAME,
 			PairedServersTable.TABLE_NAME};
-
-
-	private final boolean DEBUGGABLE;
 
 	private interface Views {
 		String VIEW_LABEL_FILE = LabelFileView.VIEW_NAME;
@@ -27,7 +23,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		Log.d(TAG, "Finishing Constructing DatabaseHelper");
-		DEBUGGABLE = (0 != (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
 	}
 
 	private void createTable(SQLiteDatabase db, String sql, String tableName) {
@@ -38,7 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		Log.i(TAG, "onCreate at WammerProvider!!!!");
+		Log.i(TAG, "onCreate!!!!");
 		StringBuilder sqlBuilder = new StringBuilder();
 
 
@@ -103,13 +98,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		Log.i(TAG, "onUpgrade()");
-//		if (newVersion > oldVersion) {
 		for (String tableName : TABLE_NAME_LIST) {
 			db.execSQL("DROP TABLE IF EXISTS " + tableName);
 			Log.d(TAG, "drop table "+tableName);
 		}
 		onCreate(db);
-//		}
 	}
 	
 	private void createView(SQLiteDatabase db) {
