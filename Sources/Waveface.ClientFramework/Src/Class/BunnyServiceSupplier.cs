@@ -10,16 +10,16 @@ namespace Waveface.ClientFramework
 	public class BunnyServiceSupplier : ServiceSupplier
 	{
 		#region Static Var
-		private static BunnyServiceSupplier _instance;
+		private static BunnyServiceSupplier _default;
 		#endregion
 
 
 		#region Public Static Property
-		public static BunnyServiceSupplier Instance
+		public static BunnyServiceSupplier Default
 		{
 			get
 			{
-				return _instance ?? (_instance = new BunnyServiceSupplier());
+				return _default ?? (_default = new BunnyServiceSupplier());
 			}
 		}
 		#endregion
@@ -30,7 +30,10 @@ namespace Waveface.ClientFramework
 		{
 			get { throw new NotImplementedException(); }
 		}
+		#endregion
 
+
+		#region Public Property
 		public override string ID
 		{
 			get { throw new NotImplementedException(); }

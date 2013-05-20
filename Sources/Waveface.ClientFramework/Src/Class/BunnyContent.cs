@@ -27,7 +27,15 @@ namespace Waveface.ClientFramework
 			{
 				return GetContentThumbnail();
 			}
-		} 
+		}
+
+		public override bool Liked
+		{
+			get
+			{
+				return GetLiked();
+			}
+		}
 		#endregion
 
 
@@ -61,7 +69,7 @@ namespace Waveface.ClientFramework
 
 			conn.Open();
 
-			var cmd = new SQLiteCommand(string.Format("SELECT * FROM Files where saved_path = '{0}'", savedPath), conn);
+			var cmd = new SQLiteCommand(string.Format("SELECT file_id FROM Files where saved_path = '{0}'", savedPath), conn);
 
 			var contentID = cmd.ExecuteScalar().ToString();
 
@@ -80,6 +88,28 @@ namespace Waveface.ClientFramework
 			var imageFile = string.Format(@"{0}\.thumbs\{1}.small.thumb", resourceFolderValue, this.ID);
 
 			return System.Drawing.Image.FromFile(imageFile);
+		}
+
+		private bool GetLiked()
+		{
+			var savedPath = this.ContentPath;
+
+			var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
+
+			var dbFilePath = Path.Combine(appDir, "database.s3db");
+
+			var conn = new SQLiteConnection(string.Format("Data source={0}", dbFilePath));
+
+			conn.Open();
+
+			var cmd = new SQLiteCommand("SELECT label_id FROM LabelFiles where file_id = @fid", conn);
+			cmd.Parameters.Add(new SQLiteParameter("@fid", new Guid(ID)));
+
+			var liked =  cmd.ExecuteScalar() != null;
+
+			conn.Close();
+
+			return liked;
 		}
 		#endregion
 	}

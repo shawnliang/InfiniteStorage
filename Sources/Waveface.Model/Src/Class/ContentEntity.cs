@@ -124,6 +124,12 @@ namespace Waveface.Model
 			internal set;
 		}
 
+		public virtual bool Liked 
+		{
+			get; 
+			internal set; 
+		}
+
 		public virtual string Description
 		{
 			get
@@ -182,6 +188,38 @@ namespace Waveface.Model
 			return (Parent == null) ?
 				string.Format(@"{0}", this.Name) :
 				string.Format(@"{0}\{1}", Parent.ContentPath, this.Name);
+		}
+		#endregion
+
+
+		#region Public Method
+		public override string ToString()
+		{
+			return this.Name;
+		}
+
+		public override bool Equals(object obj)
+		{
+			//檢查參數是否為null
+			if (obj == null)
+				return false;
+
+			//檢查是否與自身是相同物件
+			if (object.ReferenceEquals(this, obj))
+				return true;
+
+			//檢查是否型態相等
+			var value = obj as ContentEntity;
+			if (value == null)
+				return false;
+
+			//比較內容是否相等
+			return this.Uri.LocalPath == value.Uri.LocalPath;
+		}
+
+		public override int GetHashCode()
+		{
+			return this.Uri.LocalPath.GetHashCode();
 		}
 		#endregion
 	}
