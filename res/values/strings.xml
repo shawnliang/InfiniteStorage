@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Welcome to Bunny!</string>
-    <string name="app_name">Bunny</string>
+    <string name="app_name">FavoritePlayer</string>
     <string name="title_activity_bonjour_servers">BonjourServers</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
@@ -127,5 +127,13 @@
     <string name="support">Contact us</string>
     <string name="version">Version </string>
     <string name="add_pc_content">You just can backup to one pc one time.Files will not back up to Pc which you connected before.</string>
+    
+    <!-- SYNC FRAGMENT -->
+    <string name="sync_title">Favorite Player </string>
+    <string name="sync_content_connect_server">Conecting server</string>
+    <string name="sync_content_one_more">Your favorites will be ready in %1$s minutes</string>
+    <string name="sync_content_one">Your favorites will be ready in 1 minute</string>
 
+    <!-- PLAYBACK FRAGMENT  -->
+    <string name="everything_played">Everything played</string>
 </resources>

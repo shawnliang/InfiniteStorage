@@ -2,22 +2,24 @@ package com.waveface.sync.task;
 
 import java.util.ArrayList;
 
+
 import java.util.HashMap;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.waveface.exception.WammerServerException;
+import com.waveface.favoriteplayer.Constant;
+import com.waveface.favoriteplayer.RuntimeState;
+import com.waveface.favoriteplayer.db.LabelDB;
+import com.waveface.favoriteplayer.entity.FileEntity;
+import com.waveface.favoriteplayer.entity.LabelEntity;
+import com.waveface.favoriteplayer.entity.ServerEntity;
+import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.service.HttpInvoker;
-import com.waveface.sync.Constant;
-import com.waveface.sync.RuntimeState;
-import com.waveface.sync.db.LabelDB;
-import com.waveface.sync.entity.FileEntity;
-import com.waveface.sync.entity.LabelEntity;
-import com.waveface.sync.entity.ServerEntity;
-import com.waveface.sync.logic.ServersLogic;
-import com.waveface.sync.util.Log;
+
 
 public class DownloadLabelsTask extends AsyncTask<Void,Void,Void>{
 	
@@ -75,7 +77,7 @@ public class DownloadLabelsTask extends AsyncTask<Void,Void,Void>{
 			e.printStackTrace();
 			return null;
 		}
-		Cursor cursor = LabelDB.getAllLabes(mContext);
+		Cursor cursor = LabelDB.getAllLabels(mContext);
 		String labelId = null;
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();

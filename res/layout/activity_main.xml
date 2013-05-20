@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.waveface.sync.ui.widget.SlidingMenu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sliding="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/sliding_menu"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"	
-    sliding:viewAbove="@layout/layout_main_content"
-    sliding:viewBehind="@layout/layout_main_sliding_menu"
-    sliding:behindScrollScale="0.5"
-    sliding:shadowDrawable="@drawable/slidemenu_shadow"
-    sliding:shadowWidth="15dip"
-    sliding:behindOffset="120dip" />
+    android:layout_height="match_parent" />

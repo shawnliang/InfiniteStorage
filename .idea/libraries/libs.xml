@@ -1,0 +1,25 @@
+<component name="libraryTable">
+  <library name="libs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/jakarta-oro.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jackson-core-asl-1.9.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jWebSocketCommon-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/httpmime-4.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jackson-mapper-asl-1.9.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/apache-mime4j-0.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jWebSocketClientAPI-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/ocpsoft-pretty-time-1.0.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/javolution-5.5.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/imagemanager.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/libGoogleAnalyticsV2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/joda-time-2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jWebSocketJavaSEClient-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/gson-2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/android-support-v4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/crashlytics.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/httpclient-4.1.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
