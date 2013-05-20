@@ -49,6 +49,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTool", "Sources\Tools\D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfiniteStorage.DB", "Sources\InfiniteStorage.DB\InfiniteStorage.DB.csproj", "{793D45B0-147C-4304-8578-7FF2792102C8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waveface.Model", "Sources\Waveface.Model\Waveface.Model.csproj", "{5FDF66EA-3A88-45AC-A032-A2771E3AFCC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waveface.ClientFramework", "Sources\Waveface.ClientFramework\Waveface.ClientFramework.csproj", "{535C6E29-0E0D-43A5-8740-B869F2EE900E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waveface.Client", "Sources\WindowsClient\Waveface.Client.csproj", "{39EFB0A3-3E10-4E80-B518-97526F76508D}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = InfiniteStorage.vsmdi
@@ -180,6 +186,42 @@ Global
 		{793D45B0-147C-4304-8578-7FF2792102C8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{793D45B0-147C-4304-8578-7FF2792102C8}.Release|Win32.ActiveCfg = Release|Any CPU
 		{793D45B0-147C-4304-8578-7FF2792102C8}.Release|x86.ActiveCfg = Release|Any CPU
+		{5FDF66EA-3A88-45AC-A032-A2771E3AFCC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FDF66EA-3A88-45AC-A032-A2771E3AFCC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FDF66EA-3A88-45AC-A032-A2771E3AFCC7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5FDF66EA-3A88-45AC-A032-A2771E3AFCC7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5FDF66EA-3A88-45AC-A032-A2771E3AFCC7}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{5FDF66EA-3A88-45AC-A032-A2771E3AFCC7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5FDF66EA-3A88-45AC-A032-A2771E3AFCC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FDF66EA-3A88-45AC-A032-A2771E3AFCC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FDF66EA-3A88-45AC-A032-A2771E3AFCC7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5FDF66EA-3A88-45AC-A032-A2771E3AFCC7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5FDF66EA-3A88-45AC-A032-A2771E3AFCC7}.Release|Win32.ActiveCfg = Release|Any CPU
+		{5FDF66EA-3A88-45AC-A032-A2771E3AFCC7}.Release|x86.ActiveCfg = Release|Any CPU
+		{535C6E29-0E0D-43A5-8740-B869F2EE900E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{535C6E29-0E0D-43A5-8740-B869F2EE900E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{535C6E29-0E0D-43A5-8740-B869F2EE900E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{535C6E29-0E0D-43A5-8740-B869F2EE900E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{535C6E29-0E0D-43A5-8740-B869F2EE900E}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{535C6E29-0E0D-43A5-8740-B869F2EE900E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{535C6E29-0E0D-43A5-8740-B869F2EE900E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{535C6E29-0E0D-43A5-8740-B869F2EE900E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{535C6E29-0E0D-43A5-8740-B869F2EE900E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{535C6E29-0E0D-43A5-8740-B869F2EE900E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{535C6E29-0E0D-43A5-8740-B869F2EE900E}.Release|Win32.ActiveCfg = Release|Any CPU
+		{535C6E29-0E0D-43A5-8740-B869F2EE900E}.Release|x86.ActiveCfg = Release|Any CPU
+		{39EFB0A3-3E10-4E80-B518-97526F76508D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39EFB0A3-3E10-4E80-B518-97526F76508D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39EFB0A3-3E10-4E80-B518-97526F76508D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{39EFB0A3-3E10-4E80-B518-97526F76508D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{39EFB0A3-3E10-4E80-B518-97526F76508D}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{39EFB0A3-3E10-4E80-B518-97526F76508D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{39EFB0A3-3E10-4E80-B518-97526F76508D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39EFB0A3-3E10-4E80-B518-97526F76508D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39EFB0A3-3E10-4E80-B518-97526F76508D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{39EFB0A3-3E10-4E80-B518-97526F76508D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{39EFB0A3-3E10-4E80-B518-97526F76508D}.Release|Win32.ActiveCfg = Release|Any CPU
+		{39EFB0A3-3E10-4E80-B518-97526F76508D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
