@@ -12,8 +12,8 @@ public class LabelFileTable implements BaseColumns {
 	public static final Uri LABELFILE_URI = Uri.parse("content://"
 			+ SyncProvider.AUTHORITY + "/" + LABELFILE_NAME);
 	public static final Uri CONTENT_URI =  LABELFILE_URI;
-	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.wammer.sync.labelfile";
-	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.wammer.sync.labelfile";
+	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.favoritplayer.labelfile";
+	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.favoritplayer.labelfile";
 	public static final String DEFAULT_SORT_ORDER = LabelFileTable.COLUMN_ORDER;
 
 	public static final String TABLE_NAME = "Labelfile";

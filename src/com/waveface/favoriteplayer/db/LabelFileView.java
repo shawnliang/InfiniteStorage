@@ -12,8 +12,8 @@ public class LabelFileView {
 	public static final Uri LABEL_FILE_VIEW_URI = Uri.parse("content://"
 			+ SyncProvider.AUTHORITY + "/" + LABEL_FILE_VIEW_NAME);
 	public static final Uri CONTENT_URI = LABEL_FILE_VIEW_URI;
-	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.wammer.dev.labelFileView";
-	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.wammer.dev.labelFileView";
+	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.favoritplayer.labelFileView";
+	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.favoritplayer.labelFileView";
     public static final String DEFAULT_SORT_ORDER = LabelFileView.COLUMN_ORDER ;
 
 	public static final String VIEW_NAME = "LabelFileView";

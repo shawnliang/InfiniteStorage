@@ -14,8 +14,8 @@ public class BonjourServersTable implements BaseColumns {
 //	public static final Uri BONJOUR_NOTIFY_URI = Uri.parse("content://"
 //			+ SyncProvider.AUTHORITY + ".update." + BONJOUR_SERVERS_NAME);
 
-	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.wammer.sync.bonjourServers";
-	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.wammer.sync.bonjourServers";
+	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.favoritplayer.bonjourServers";
+	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.favoritplayer.bonjourServers";
 	public static final String DEFAULT_SORT_ORDER = BonjourServersTable.COLUMN_SERVER_NAME+" DESC";
 
 	public static final String TABLE_NAME = "BonjourServers";

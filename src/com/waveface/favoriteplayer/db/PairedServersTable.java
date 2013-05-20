@@ -11,8 +11,8 @@ public class PairedServersTable implements BaseColumns {
 	public static final Uri BACKUPED_SERVER_URI = Uri.parse("content://"
 			+ SyncProvider.AUTHORITY + "/" + BACKUPED_SERVERS_NAME);
 	public static final Uri CONTENT_URI = BACKUPED_SERVER_URI;
-	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.wammer.sync.backupedServers";
-	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.wammer.sync.backupedServers";
+	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.favoritplayer.backupedServers";
+	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.favoritplayer.backupedServers";
 
 	public static final String TABLE_NAME = "BackupedServers";
 	public static final String COLUMN_SERVER_ID = "id";	
