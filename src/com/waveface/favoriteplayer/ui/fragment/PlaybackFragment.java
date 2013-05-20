@@ -136,6 +136,7 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 			
 			@Override
 			public void onAnimationEnd(Animation animation) {
+				Log.d(TAG, "=======onAnimationEnd");
 				mPager.setVisibility(View.VISIBLE);
 			}
 		});
@@ -178,6 +179,8 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 		case KeyEvent.KEYCODE_MEDIA_REWIND:
 			Log.d(TAG, "onEvent left");
 			if(mCurrentPosition > 0) {
+				mViewAnimator.setVisibility(View.INVISIBLE);
+				mPager.setVisibility(View.VISIBLE);
 				mPager.setCurrentItem(mCurrentPosition-1, true);
 			}
 			break;
@@ -185,6 +188,8 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 		case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
 			Log.d(TAG, "onEvent right");
 			if(mCurrentPosition < mCursor.getCount()-1) {
+				mViewAnimator.setVisibility(View.INVISIBLE);
+				mPager.setVisibility(View.VISIBLE);
 				mPager.setCurrentItem(mCurrentPosition+1, true);
 			}
 			break;
@@ -192,6 +197,7 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 		case KeyEvent.KEYCODE_MEDIA_PLAY:
 			if(mPlayAnimator.getDisplayedChild() == 0 && switchPlayMode == false) {
 				if(mCurrentPosition+1 >= mCursor.getCount()) {
+					mViewAnimator.setVisibility(View.INVISIBLE);
 					resetToFirst();
 				}
 				mPlayAnimator.showNext();
