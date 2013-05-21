@@ -29,7 +29,7 @@ namespace InfiniteStorage
 			}
 		}
 
-		public void Register(ushort backup_port, ushort notify_port, ushort rest_port, string server_id)
+		public void Register(ushort backup_port, ushort notify_port, ushort rest_port, string server_id, bool is_accepting = true)
 		{
 			m_svc.Name = ServiceName;
 			m_svc.Port = (short)backup_port;
@@ -42,6 +42,8 @@ namespace InfiniteStorage
 			txt.Add("notify_port", notify_port.ToString());
 			txt.Add("rest_port", rest_port.ToString());
 			txt.Add("version", "1.0");
+			txt.Add("service_name", ServiceName);
+			txt.Add("isAccepting", is_accepting ? "true" : "false");
 
 			m_svc.TxtRecord = txt;
 			m_svc.Register();
