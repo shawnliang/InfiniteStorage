@@ -9,7 +9,6 @@
 	x:Name="UserControl"
 	d:DesignWidth="602" d:DesignHeight="371">
     <UserControl.Resources>
-        <l:ImageToBitmapSourceConverter x:Key="converter" />
         <Storyboard x:Key="ShowInfo">
             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="photoInfo">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
@@ -33,7 +32,7 @@
             <Canvas x:Name="ImgCanvas" ClipToBounds="True"  Height="371" Width="602">
                 <ContentControl x:Name="ImgContentCtrl" Canvas.Left="0" Canvas.Top="1"  Height="371" Width="602">-->
                     <!--<Grid x:Name="ImgGrid">-->
-        <Image x:Name="image" Source ="{Binding Thumbnail, IsAsync=True, Converter={StaticResource converter}}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" OpacityMask="Black">
+        <Image x:Name="image" Source ="{Binding ThumbnailSource, IsAsync=True}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" OpacityMask="Black">
                             <Image.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>

@@ -5,12 +5,18 @@ using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Waveface.Model;
 
 namespace Waveface.ClientFramework
 {
 	public class BunnyContent : Content
 	{
+		#region Var
+		private BitmapSource _imageSource;
+		private BitmapSource _thumbnailSource;
+		#endregion
 
 		#region Property
 		public override string ID
@@ -18,6 +24,73 @@ namespace Waveface.ClientFramework
 			get
 			{
 				return GetContentID();
+			}
+		}
+
+		public BitmapSource ImageSource 
+		{
+			get
+			{
+				if (_imageSource == null)
+				{
+					var file = this.Uri.LocalPath;
+					if (!File.Exists(file))
+						return null;
+					_imageSource = BitmapFrame.Create(this.Uri);
+
+					var metadata = _imageSource.Metadata as BitmapMetadata;
+					Rotation rotate = Rotation.Rotate0;
+
+					ushort value = (ushort)metadata.GetQuery("/app1/{ushort=0}/{ushort=274}");
+					if (value == 6)
+					{
+						rotate = Rotation.Rotate90;
+					}
+					else if (value == 8)
+					{
+						rotate = Rotation.Rotate270;
+					}
+					else if (value == 3)
+					{
+						rotate = Rotation.Rotate180;
+					}
+
+					var transform = default(RotateTransform);
+					switch (rotate)
+					{
+						case Rotation.Rotate90:
+							transform = new RotateTransform(90);
+							break;
+						case Rotation.Rotate180:
+							transform = new RotateTransform(180);
+							break;
+						case Rotation.Rotate270:
+							transform = new RotateTransform(270);
+							break;
+					}
+
+					if (transform != null)
+					{
+						_imageSource = new TransformedBitmap(_imageSource, transform);
+						_imageSource.Freeze();
+					}
+				}
+				return _imageSource;
+			}
+		}
+
+		public BitmapSource ThumbnailSource
+		{
+			get
+			{
+				if (_thumbnailSource == null)
+				{
+					var file = GetThumbnailFile();
+					if (!File.Exists(file))
+						return null;
+					_thumbnailSource = BitmapFrame.Create(new Uri(file));
+				}
+				return _thumbnailSource;
 			}
 		}
 
@@ -84,10 +157,16 @@ namespace Waveface.ClientFramework
 		/// <returns></returns>
 		private System.Drawing.Image GetContentThumbnail()
 		{
-			var resourceFolderValue = Registry.CurrentUser.OpenSubKey("Software").OpenSubKey("BunnyHome").GetValue("ResourceFolder").ToString();
-			var imageFile = string.Format(@"{0}\.thumbs\{1}.small.thumb", resourceFolderValue, this.ID);
+			var imageFile = GetThumbnailFile();
 
 			return System.Drawing.Image.FromFile(imageFile);
+		}
+
+		private string GetThumbnailFile()
+		{
+			var resourceFolderValue = Registry.CurrentUser.OpenSubKey("Software").OpenSubKey("BunnyHome").GetValue("ResourceFolder").ToString();
+			var imageFile = string.Format(@"{0}\.thumbs\{1}.small.thumb", resourceFolderValue, this.ID);
+			return imageFile;
 		}
 
 		private bool GetLiked()
