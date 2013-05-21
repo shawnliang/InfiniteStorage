@@ -93,6 +93,7 @@
     <Compile Include="Src\Class\Common\Multipart\Serializer.cs" />
     <Compile Include="Src\Class\PendingFileMonitor.cs" />
     <Compile Include="Src\Class\PendingFileStorage.cs" />
+    <Compile Include="Src\Class\PendingSortData.cs" />
     <Compile Include="Src\Class\REST\FileGetApiHandler.cs" />
     <Compile Include="Src\Class\REST\ImageApiHandler.cs" />
     <Compile Include="Src\Class\NginxUtility.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Src\Class\REST\LabelTagApiHandler.cs" />
     <Compile Include="Src\Class\REST\LabelUntagApiHandler.cs" />
     <Compile Include="Src\Class\REST\PendingGetApiHandler.cs" />
+    <Compile Include="Src\Class\REST\PendingSortApiHandler.cs" />
     <Compile Include="Src\Class\SeqNum.cs" />
     <Compile Include="Src\Class\ThumbnailCreator.cs" />
     <Compile Include="Src\Dialog\BackupProgressDialog.cs">
