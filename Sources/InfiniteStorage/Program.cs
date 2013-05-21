@@ -261,6 +261,7 @@ namespace InfiniteStorage
 			rest_server.AddHandler("/file/get", new FileGetApiHandler());
 			rest_server.AddHandler("/pending/get", new PendingGetApiHandler());
 			rest_server.AddHandler("/pending/sort", new PendingSortApiHandler());
+			rest_server.AddHandler("/label_cover", new LabelCoverApiHandler());
 			rest_server.Start();
 
 			return port;

@@ -109,6 +109,7 @@
     <Compile Include="Src\Class\Notify\SubscriptionContext.cs" />
     <Compile Include="Src\Class\REST\LabelAddApiHandler.cs" />
     <Compile Include="Src\Class\REST\LabelClearApiHandler.cs" />
+    <Compile Include="Src\Class\REST\LabelCoverApiHandler.cs" />
     <Compile Include="Src\Class\REST\LabelDeleteApiHandler.cs" />
     <Compile Include="Src\Class\REST\LabelGetApiHandler.cs" />
     <Compile Include="Src\Class\REST\LabelListApiHandler.cs" />
@@ -330,6 +331,9 @@
     <Content Include="..\..\Libs\System.Data.SQLite.1.0.84.0\net40\x86\SQLite.Interop.dll">
       <Link>x86\SQLite.Interop.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Empty.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\Bunnydesktop.ico" />
     <None Include="Resources\ChooseThisPCOnYourPhone.png" />
