@@ -37,6 +37,7 @@ namespace Waveface.Client
 			switch (e.Key)
 			{
 				case Key.Escape:
+				case Key.Back:
 					this.Close();
 					break;
 				case Key.Left:

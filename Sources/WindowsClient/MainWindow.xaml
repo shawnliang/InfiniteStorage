@@ -5,7 +5,7 @@
         xmlns:local="clr-namespace:Waveface.Client" 
      xmlns:fw="clr-namespace:Waveface.ClientFramework;assembly=Waveface.ClientFramework"
        xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
-        Title="MainWindow" Height="498.5" Width="807" Loaded="Window_Loaded">
+        Title="MainWindow" Height="498.5" Width="807" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type wvmodel:Service}">
