@@ -132,5 +132,11 @@ namespace Waveface.Client
 					break;
 			}
 		}
+
+		private void content_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			var contentControl = sender as ContentItem;
+			contentControl.Tagged = !contentControl.Tagged;
+		}
 	}
 }
