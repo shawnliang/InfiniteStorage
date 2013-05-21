@@ -68,8 +68,10 @@
                     SelectionMode="Extended"
 					ItemsSource="{Binding}" 
 					VerticalAlignment="Bottom"
+					HorizontalAlignment="Center"
                     VirtualizingStackPanel.IsVirtualizing="True" 
                     VirtualizingStackPanel.VirtualizationMode="Recycling" 
+					ScrollViewer.HorizontalScrollBarVisibility="Auto"
                     Visibility="Collapsed"/>
     </Grid>
 </UserControl>

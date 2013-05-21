@@ -99,7 +99,7 @@
             <Grid.Effect>
                 <DropShadowEffect ShadowDepth="1" BlurRadius="1" Direction="270"/>
             </Grid.Effect>
-            <Label Content="Waveface" Foreground="#FFE0E0E0" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" FontSize="22" FontWeight="Bold" FontFamily="Aharoni">
+            <Label Content="Favorite" Foreground="#FFE0E0E0" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" FontSize="22" FontWeight="Bold" FontFamily="Aharoni">
                 <Label.Effect>
                     <DropShadowEffect/>
                 </Label.Effect>
