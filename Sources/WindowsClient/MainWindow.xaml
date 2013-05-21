@@ -116,8 +116,8 @@
           Orientation="Horizontal" 
           Minimum="200" 
           Maximum="400" 
-          Value="240" 
-          TickFrequency="80"
+          Value="200" 
+          TickFrequency="50"
           TickPlacement="BottomRight" 
           SmallChange="5"
           LargeChange="20" DockPanel.Dock="Right" VerticalAlignment="Center" />
