@@ -39,40 +39,48 @@ namespace Waveface.ClientFramework
 					_imageSource = BitmapFrame.Create(this.Uri);
 
 					var metadata = _imageSource.Metadata as BitmapMetadata;
-					Rotation rotate = Rotation.Rotate0;
+					if (metadata != null)
+					{
+						Rotation rotate = Rotation.Rotate0;
 
-					ushort value = (ushort)metadata.GetQuery("/app1/{ushort=0}/{ushort=274}");
-					if (value == 6)
-					{
-						rotate = Rotation.Rotate90;
-					}
-					else if (value == 8)
-					{
-						rotate = Rotation.Rotate270;
-					}
-					else if (value == 3)
-					{
-						rotate = Rotation.Rotate180;
-					}
+						var metaValue = metadata.GetQuery("/app1/{ushort=0}/{ushort=274}");
 
-					var transform = default(RotateTransform);
-					switch (rotate)
-					{
-						case Rotation.Rotate90:
-							transform = new RotateTransform(90);
-							break;
-						case Rotation.Rotate180:
-							transform = new RotateTransform(180);
-							break;
-						case Rotation.Rotate270:
-							transform = new RotateTransform(270);
-							break;
-					}
+						if (metaValue != null)
+						{
+							ushort value = (ushort)metaValue;
+							if (value == 6)
+							{
+								rotate = Rotation.Rotate90;
+							}
+							else if (value == 8)
+							{
+								rotate = Rotation.Rotate270;
+							}
+							else if (value == 3)
+							{
+								rotate = Rotation.Rotate180;
+							}
 
-					if (transform != null)
-					{
-						_imageSource = new TransformedBitmap(_imageSource, transform);
-						_imageSource.Freeze();
+							var transform = default(RotateTransform);
+							switch (rotate)
+							{
+								case Rotation.Rotate90:
+									transform = new RotateTransform(90);
+									break;
+								case Rotation.Rotate180:
+									transform = new RotateTransform(180);
+									break;
+								case Rotation.Rotate270:
+									transform = new RotateTransform(270);
+									break;
+							}
+
+							if (transform != null)
+							{
+								_imageSource = new TransformedBitmap(_imageSource, transform);
+								_imageSource.Freeze();
+							}
+						}
 					}
 				}
 				return _imageSource;
