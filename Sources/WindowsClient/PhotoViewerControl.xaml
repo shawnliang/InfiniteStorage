@@ -10,8 +10,6 @@
 	Loaded="WindowLoaded"
 	d:DesignWidth="760" d:DesignHeight="504">
     <UserControl.Resources>
-        <l:ImageToBitmapSourceConverter x:Key="converter" />
-
         <ItemsPanelTemplate x:Key="ItemsPanelTemplate1">
             <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
         </ItemsPanelTemplate>
@@ -26,7 +24,7 @@
 							HorizontalAlignment="Center" VerticalAlignment="Center"
 							BorderThickness="1" Opacity="70">
                                 <Image x:Name="img" ToolTipService.Placement="Top"
-									Source="{Binding Thumbnail, IsAsync=True, Converter={StaticResource converter}}" Height="64" Stretch="Fill" Width="64"/>
+									Source="{Binding ThumbnailSource, IsAsync=True}" Height="64" Stretch="Fill" Width="64"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -56,7 +54,7 @@
             <Canvas x:Name="ImgCanvas" ClipToBounds="True" Height="371" Width="602">
                 <ContentControl x:Name="ImgContentCtrl" Height="371" Width="602" Canvas.Left="0" Canvas.Top="1">
                     <Grid x:Name="ImgGrid">
-                        <Image x:Name="ImgObject" Source="{Binding SelectedItem.Image, IsAsync=True, ElementName=lbImages, Converter={StaticResource converter}}"/>
+                        <Image x:Name="ImgObject" Source="{Binding SelectedItem.ImageSource, IsAsync=True, ElementName=lbImages}"/>
                         <Thumb x:Name="ImgThumb" Opacity="0" DragDelta="ImgThumb_DragDelta" MouseWheel="ImgThumb_MouseWheel"/>
                     </Grid>
                 </ContentControl>
