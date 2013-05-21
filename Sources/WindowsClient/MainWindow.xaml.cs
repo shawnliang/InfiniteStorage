@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using Waveface.ClientFramework;
@@ -25,6 +26,8 @@ namespace Waveface.Client
 		public MainWindow()
 		{
 			InitializeComponent();
+
+			AppDomain.CurrentDomain.UnhandledException += NBug.Handler.UnhandledException;
 		}
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
