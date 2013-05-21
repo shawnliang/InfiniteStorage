@@ -97,8 +97,7 @@ namespace Waveface.Client
 				//  Limit zoom-in to 500%
 				if ((myScale.ScaleX < 5))
 				{
-					//  Zoom-in in 10% increments
-					myScale.ScaleX += 0.1;
+					ZoomIn();
 				}
 				//  When mouse wheel is scrolled down...
 			}
@@ -107,10 +106,22 @@ namespace Waveface.Client
 				//  Limit zoom-out to 80%
 				if ((myScale.ScaleX > 0.8))
 				{
-					//  Zoom-out by 10%
-					myScale.ScaleX -= 0.1;
+					ZoomOut();
 				}
 			}
+		}
+
+		public void ZoomOut()
+		{
+			//  Zoom-out by 10%
+			myScale.ScaleX -= 0.1;
+			myScale.ScaleY = myScale.ScaleX;
+		}
+
+		public void ZoomIn()
+		{
+			//  Zoom-in in 10% increments
+			myScale.ScaleX += 0.1;
 			myScale.ScaleY = myScale.ScaleX;
 		}
 	}

@@ -46,6 +46,12 @@ namespace Waveface.Client
  				case Key.Right:
 					pvcViewer.Next();
 					break;
+				case Key.OemPlus:
+					pvcViewer.ZoomIn();
+					break;
+				case Key.OemMinus:
+					pvcViewer.ZoomOut();
+					break;
 			}
 		}
 
