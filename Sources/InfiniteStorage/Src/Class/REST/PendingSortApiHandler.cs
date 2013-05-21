@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Wammer.Station;
+using Newtonsoft.Json;
 
 namespace InfiniteStorage.REST
 {
@@ -13,6 +14,7 @@ namespace InfiniteStorage.REST
 		{
 			CheckParameter("how");
 
+			var how = JsonConvert.DeserializeObject<PendingSortData>(Parameters["how"]);
 
 			respondSuccess();
 		}

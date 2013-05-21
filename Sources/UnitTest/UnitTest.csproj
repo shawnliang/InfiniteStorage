@@ -63,6 +63,7 @@
     <Compile Include="testFileMover.cs" />
     <Compile Include="testFileStorage.cs" />
     <Compile Include="TestNormalizer.cs" />
+    <Compile Include="testPendingSortData.cs" />
     <Compile Include="testProtocolHandler.cs" />
     <Compile Include="TestTempFile.cs" />
     <Compile Include="testTransmitInitState.cs" />
