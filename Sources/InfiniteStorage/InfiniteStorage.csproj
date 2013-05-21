@@ -114,6 +114,7 @@
     <Compile Include="Src\Class\REST\LabelRenameApiHandler.cs" />
     <Compile Include="Src\Class\REST\LabelTagApiHandler.cs" />
     <Compile Include="Src\Class\REST\LabelUntagApiHandler.cs" />
+    <Compile Include="Src\Class\REST\PendingGetApiHandler.cs" />
     <Compile Include="Src\Class\SeqNum.cs" />
     <Compile Include="Src\Class\ThumbnailCreator.cs" />
     <Compile Include="Src\Dialog\BackupProgressDialog.cs">
