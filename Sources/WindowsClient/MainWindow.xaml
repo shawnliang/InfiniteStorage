@@ -40,8 +40,8 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBox}" >
                         <WrapPanel Margin="5" IsItemsHost="True" Orientation="Horizontal" 
-                        ItemHeight="240" 
-                       ItemWidth="240"
+                        ItemHeight="{Binding ElementName=ZoomSlider, Path='Value'}"  
+                       ItemWidth="{Binding ElementName=ZoomSlider, Path='Value'}" 
                        VerticalAlignment="Top" HorizontalAlignment="Stretch" />
                     </ControlTemplate>
                 </Setter.Value>
@@ -110,10 +110,23 @@
                 <DropShadowEffect ShadowDepth="1" BlurRadius="1" Direction="270"/>
             </Grid.Effect>
             <Grid Background="#FF5D5D5D" Grid.Row="0">
-                <WrapPanel VerticalAlignment="Center">
+				<DockPanel>
+						 <Slider Name="ZoomSlider"
+          Width="100"
+          Orientation="Horizontal" 
+          Minimum="200" 
+          Maximum="400" 
+          Value="240" 
+          TickFrequency="80"
+          TickPlacement="BottomRight" 
+          SmallChange="5"
+          LargeChange="20" DockPanel.Dock="Right" VerticalAlignment="Center" />
+                <WrapPanel VerticalAlignment="Center"  DockPanel.Dock="Left">
                     <local:BackButton Content="BackButton" Height="20"   VerticalAlignment="Center" Width="20" Click="BackButton_Click" Margin="2"/>
                     <Label x:Name="lblContentLocation" Content="{Binding ContentPath}" Foreground="White"/>
                 </WrapPanel>
+			
+		  </DockPanel>
             </Grid>
         </Grid>
         <Grid Background="#FF5D5D5D" Grid.Column="2" Grid.Row="0" Margin="0,0,0,1">
@@ -131,19 +144,6 @@
                 <DropShadowEffect BlurRadius="1" ShadowDepth="1" Direction="0"/>
             </ListBox.Effect>
         </ListBox>
-        <!--<DockPanel Background="#FF252424" Grid.Row="2" Grid.ColumnSpan="2">
-            <Slider Name="ZoomSlider" 
-		  DockPanel.Dock="Right"
-          Margin="0,0,0,0" 
-          Orientation="Horizontal" 
-          Minimum="80" 
-          Maximum="320" 
-          Value="160" 
-          TickFrequency="80"
-          TickPlacement="BottomRight" 
-          SmallChange="5"
-          LargeChange="20" />
-        </DockPanel>-->
 
         <Grid Grid.Column="2" Grid.Row="1" Background="#FF2E2E2E">
             <Grid.Effect>
@@ -157,17 +157,6 @@
             <Label HorizontalAlignment="Left" Height="25" Margin="10,70,0,0" Content="Action:" VerticalAlignment="Top" Width="130" Foreground="White" HorizontalContentAlignment="Left"/>
 
 
-            <!--<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-
-                <ListBox x:Name="lbxLabeledContentContainer"
-        		Style="{StaticResource LabledPhotoListBoxStyle}" 
-        		IsSynchronizedWithCurrentItem="True"
-        		ItemsSource="{Binding IsAsync=True}"
-				Margin="5" 
-        		SelectionMode="Extended"
-        		VirtualizingStackPanel.IsVirtualizing="True" 
-				VirtualizingStackPanel.VirtualizationMode="Recycling"/>
-            </ScrollViewer>-->
         </Grid>
 
         <Grid Grid.Column="1" Grid.Row="1">
