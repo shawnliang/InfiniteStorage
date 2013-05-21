@@ -38,7 +38,7 @@ namespace InfiniteStorage
 			{
 				var files = from f in db.Object.PendingFiles
 							join d in db.Object.Devices on f.device_id equals d.device_id
-							where f.seq <= seq && !f.deleted && f.thumb_ready
+							where f.seq <= seq && !f.deleted
 							select new
 							{
 								file = f,

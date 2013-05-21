@@ -126,6 +126,12 @@
             <File Id="MZClient.exe" KeyPath="yes" Source="$(var.SolutionDir)\Libs\Mono.Zeroconf\MZClient.exe" />
           </Component>
 
+          <Directory Id="Resources" Name="Resources">
+            <Component Id="Empty.png" Guid="*">
+              <File Id="Empty.png" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Resources\Empty.png" />
+            </Component>
+          </Directory>
+          
           <Directory Id="nginx" Name="nginx">
 
             <Component Id="nginx.exe" Guid="*">
@@ -269,7 +275,7 @@
       <ComponentRef Id="_50x.html"/>
       <ComponentRef Id="nginx.logs.dir.empty"/>
       <ComponentRef Id="nginx.temps.dir.empty"/>
-      
+      <ComponentRef Id="Empty.png"/>
     </Feature>
 
     <!--
