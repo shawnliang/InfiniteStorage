@@ -131,6 +131,19 @@ CREATE INDEX [idx_PendingFiles_file_path_1] ON [PendingFiles](
 						schemaVersion = 4;
 					}
 
+					if (schemaVersion == 4L)
+					{
+						var cmd = new SQLiteCommand(
+@"ALTER TABLE [Labels] Add Column [auto] BOOLEAN NULL;
+
+update [Labels] set auto = 0;
+", conn);
+						cmd.ExecuteNonQuery();
+
+						updateDbSchemaVersion(conn, 5);
+						schemaVersion = 5;
+					}
+
 					transaction.Commit();
 				}
 			}

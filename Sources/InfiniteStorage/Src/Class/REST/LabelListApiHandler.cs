@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Wammer.Station;
+using System;
 
 namespace InfiniteStorage.REST
 {
@@ -25,12 +26,16 @@ namespace InfiniteStorage.REST
 
 			foreach (var label in labels)
 			{
+				var files = util.QueryLabeledFiles(label.label_id).Select(x => x.id).ToList();
+
 				var data = new
 				{
 					label_id = label.label_id,
 					label_name = label.name,
-					files = util.QueryLabeledFiles(label.label_id).Select(x => x.id).ToList(),
-					seq = label.seq
+					files = files,
+					seq = label.seq,
+					cover_url = "/label_cover/" + label.label_id.ToString(),
+					auto = label.auto
 				};
 
 				result.Add(data);
