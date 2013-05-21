@@ -263,9 +263,9 @@ public class ServerChooserFragment extends FragmentBase
 //		mProgressDialog = ProgressDialog.show(getActivity(), "",getString(R.string.pairing));
 //		mProgressDialog.setCancelable(true);
 //		openDialog(getActivity(),Constant.WS_ACTION_WAIT_FOR_PAIR);
-		String wsLocation = "ws://"+entity.ip+":"+entity.notifyPort;
+//		String wsLocation = "ws://"+entity.ip+":"+entity.notifyPort;
 		HashMap<String,String> param = new HashMap<String,String>();
-		param.put(Constant.PARAM_SERVER_WS_LOCATION, wsLocation);
+//		param.put(Constant.PARAM_SERVER_WS_LOCATION, wsLocation);
 		param.put(Constant.PARAM_SERVER_ID, entity.serverId);
 		param.put(Constant.PARAM_SERVER_NAME, entity.serverName);		
 		param.put(Constant.PARAM_SERVER_IP, entity.ip);
@@ -299,22 +299,16 @@ public class ServerChooserFragment extends FragmentBase
 	
 
 	class LinkBonjourServer extends AsyncTask<HashMap<String,String>,Void,Void>{
-
 		@Override
 		protected Void doInBackground(HashMap<String,String>... params) {			
-			String wsLocation = params[0].get(Constant.PARAM_SERVER_WS_LOCATION);
 			String serverId = params[0].get(Constant.PARAM_SERVER_ID);
 			String serverName = params[0].get(Constant.PARAM_SERVER_NAME);			
 			String ip=params[0].get(Constant.PARAM_SERVER_IP);
 			String notifyPort =params[0].get(Constant.PARAM_NOTIFY_PORT);
 			String restPort =params[0].get(Constant.PARAM_REST_PORT);
-			//ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort);	
-			
-			Timer workerTimer = new Timer();
-			workerTimer.schedule(new WorkerTimerTask(getActivity(),wsLocation,serverId, serverName,ip,notifyPort, restPort), 
-					WORKER_DELAY_SECONDS * 1000, 
-					WORKER_PERIOD_SECONDS * 10000);
-			
+
+			String wsLocation = "ws://"+ip+":"+notifyPort;
+			ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort,true);			
 			return null;
 		}
 	}
@@ -343,7 +337,7 @@ public class ServerChooserFragment extends FragmentBase
 		@Override
 		public void run() {
 			Log.v(TAG, "enter WorkerTimerTask.run()");
-			ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort);	
+			//ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort);	
 			Log.v(TAG, "exit WorkerTimerTask.run()");
 		}
 	}

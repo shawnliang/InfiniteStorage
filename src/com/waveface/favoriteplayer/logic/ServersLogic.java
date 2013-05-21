@@ -58,6 +58,8 @@ public class ServersLogic {
 		entity.serverOS = pairedServer.serverOS;
 		entity.wsLocation = pairedServer.wsLocation;
 		entity.status = Constant.SERVER_LINKING;
+		
+		
 		if (accept) {
 			SharedPreferences mPrefs = context.getSharedPreferences(
 					Constant.PREFS_NAME, Context.MODE_PRIVATE);
@@ -414,8 +416,10 @@ public class ServersLogic {
 					entity = new ServerEntity();
 					entity.serverId = cursor.getString(0);
 					entity.serverName = cursor.getString(1);
-					entity.serverOS = cursor.getString(2);
-					entity.wsLocation = cursor.getString(3);
+					entity.ip = cursor.getString(2);
+					entity.wsPort = cursor.getString(3);
+					entity.notifyPort = cursor.getString(4);
+					entity.reason = cursor.getString(5);
 					cursor.moveToNext();
 				}
 				cursor.close();
@@ -483,14 +487,15 @@ public class ServersLogic {
 				new String[] { serverId });
 	}
 
-	public static void startWSServerConnect(Context context, String wsLocation,
-			String serverId,String serverName,String ip ,String notifyPort,String restPort) {
+	public static synchronized void startWSServerConnect(Context context, String wsLocation,
+			String serverId,String serverName,String ip ,String notifyPort,String restPort,boolean autoConnect) {
 		// SETUP WS URL ANDLink to WS
 		if (RuntimeState.OnWebSocketOpened == false) {
 			RuntimeWebClient.init(context);
 			RuntimeWebClient.setURL(wsLocation);
 			try {
 				RuntimeWebClient.open();
+				RuntimeState.setServerStatus(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
 				//ADD SERVER DATA
 				ServerEntity entity = new ServerEntity();
 				entity.serverId=serverId;
@@ -498,46 +503,27 @@ public class ServersLogic {
 				entity.ip=ip;
 				entity.notifyPort=notifyPort;
 				entity.restPort=restPort;
+//				if(!autoConnect){
 				updateBackupedServer(context, entity);
-
+//				}
 				//TODO:CHANGE TO NEW PROTOCAL
 
-				
-				Log.d(TAG, "onCreateView");
-				
-				Cursor cursor = LabelDB.getAllLabels(context);
-				String labelId = null;
-				String labSeq =null;
-				if(cursor!=null && cursor.getCount()>0){
-					cursor.moveToFirst();
-					labelId = cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_LABEL_ID));
-					labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
-				
-				if(cursor.getCount()>0){
-						
-						ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
-						ConnectForGTVEntity.Connect  connect = new ConnectForGTVEntity.Connect();
-						connect.deviceId=DeviceUtil.id(context);
-						connect.deviceName = DeviceUtil
-								.getDeviceNameForDisplay(context);
-						connectForGTV.setConnect(connect);
-						ConnectForGTVEntity.Subscribe subscribe = new ConnectForGTVEntity.Subscribe();
-						subscribe.labels=true;
-						subscribe.labels_from_seq=labSeq;
-						connectForGTV.setSubscribe(subscribe);
-						Log.d(TAG, "send message="+RuntimeState.GSON.toJson(connectForGTV));
-						RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));
-						//send broadcast label change
-						Intent intent = new Intent(Constant.ACTION_LABEL_CHANGE);
-						context.sendBroadcast(intent);
-					}
-				}else{
-					//label is no data ,get data from bunny
-					Intent intent = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
-					context.sendBroadcast(intent);
 
-				}	
-				
+				context.sendBroadcast(new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED));
+				EventBus.getDefault().post(new WebSocketEvent(WebSocketEvent.STATUS_CONNECT));
+				//ConnectEntity connect = new ConnectEntity();
+				ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
+				ConnectForGTVEntity.Connect  connect = new ConnectForGTVEntity.Connect();
+				connect.deviceId=DeviceUtil.id(context);
+				connect.deviceName = DeviceUtil
+						.getDeviceNameForDisplay(context);
+				connectForGTV.setConnect(connect);
+				ConnectForGTVEntity.Subscribe subscribe = new ConnectForGTVEntity.Subscribe();
+				subscribe.labels=false;
+				connectForGTV.setSubscribe(subscribe);
+				Log.d(TAG, "send message="+RuntimeState.GSON.toJson(connectForGTV));
+				RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));				
+
 			} catch (WebSocketException e) {
 				e.printStackTrace();
 			}
