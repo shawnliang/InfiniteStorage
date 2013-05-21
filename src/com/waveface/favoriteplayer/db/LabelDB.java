@@ -2,6 +2,7 @@ package com.waveface.favoriteplayer.db;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -11,6 +12,8 @@ import android.util.Log;
 
 import com.waveface.favoriteplayer.entity.FileEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
+import com.waveface.favoriteplayer.util.StringUtil;
+
 
 public class LabelDB {
 
@@ -22,23 +25,26 @@ public class LabelDB {
 		if(isChangeLabel){
 		deleteLabel(context,label.label_id);
 		}
-		updateLabel(context, label.label_id, label.label_name, label.seq);
+		//StringUtil.localtimeToIso8601(new Date())
+		updateLabel(context, label);
 		removeAllFileInLabel(context, label.label_id);
 		updateLabelFiles(context, label);
 		updateFiles(context, fileEntity);
 	}
 
-	public static int updateLabel(Context context, String labelId,
-			String labelName, String seq) {
+	public static int updateLabel(Context context, LabelEntity.Label label) {
 		int result = 0;
 
 		ContentResolver cr = context.getContentResolver();
 		try {
 
 			ContentValues cv = new ContentValues();
-			cv.put(LabelTable.COLUMN_LABEL_ID, labelId);
-			cv.put(LabelTable.COLUMN_LABEL_NAME, labelName);
-			cv.put(LabelTable.COLUMN_SEQ, seq);
+			cv.put(LabelTable.COLUMN_LABEL_ID, label.label_id);
+			cv.put(LabelTable.COLUMN_LABEL_NAME, label.label_name);
+			cv.put(LabelTable.COLUMN_SEQ, label.seq);
+			cv.put(LabelTable.COLUMN_UPDATE_TIME, StringUtil.localtimeToIso8601(new Date()));
+			cv.put(LabelTable.COLUMN_COVER_URL, label.cover_url);
+			cv.put(LabelTable.COLUMN_AUTO, label.auto);
 			// insert label
 			result = cr.bulkInsert(LabelTable.CONTENT_URI,
 					new ContentValues[] { cv });
@@ -91,6 +97,8 @@ public class LabelDB {
 					cv.put(FileTable.COLUMN_DEV_ID, file.dev_id);
 					cv.put(FileTable.COLUMN_DEV_NAME, file.dev_name);
 					cv.put(FileTable.COLUMN_DEV_TYPE, file.dev_type);
+					cv.put(FileTable.COLUMN_WIDTH, file.width);
+					cv.put(FileTable.COLUMN_HEIGHT, file.height);
 					datas.add(cv);
 				}
 				ContentValues[] cvs = new ContentValues[datas.size()];
@@ -170,6 +178,19 @@ public class LabelDB {
 
 		return cursor;
 	}
+	
+	
+	public static Cursor getMAXSEQLabel(Context context) {
+
+		Cursor cursor = context.getContentResolver().query(
+				LabelTable.CONTENT_URI,
+				new String[] { LabelTable.COLUMN_LABEL_ID,
+						LabelTable.COLUMN_LABEL_NAME,LabelTable.COLUMN_SEQ,LabelTable.COLUMN_COVER_URL,LabelTable.COLUMN_AUTO },
+				null, null,
+				LabelTable.COLUMN_SEQ + " DESC LIMIT 1");
+
+		return cursor;
+	}
 
 	public static Cursor getFilesByLabelId(Context context, String labelId,
 			int limit) {
@@ -185,6 +206,8 @@ public class LabelDB {
 						LabelFileView.COLUMN_TYPE, 
 						LabelFileView.COLUMN_DEV_ID,
 						LabelFileView.COLUMN_DEV_NAME,
+						LabelFileView.COLUMN_HEIGHT,
+						LabelFileView.COLUMN_WIDTH,
 						LabelFileView.COLUMN_DEV_TYPE },
 				LabelFileView.COLUMN_LABEL_ID + " = ?",
 				new String[] { labelId },

@@ -535,14 +535,20 @@ public class PlayerProvider extends ContentProvider {
 						+ LabelTable.TABLE_NAME + "("
 						+ LabelTable.COLUMN_LABEL_ID + ","
 						+ LabelTable.COLUMN_LABEL_NAME + ","
-						+ LabelTable.COLUMN_SEQ + ")"
-						+ " values (?,?,?)");
+						+ LabelTable.COLUMN_SEQ + ","
+						+ LabelTable.COLUMN_UPDATE_TIME + ","
+						+ LabelTable.COLUMN_COVER_URL + ","
+						+ LabelTable.COLUMN_AUTO + ")"
+						+ " values (?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
 					// bind the 1-indexed ?'s to the values specified
 					insert.bindString(1, value.getAsString(LabelTable.COLUMN_LABEL_ID));
 					insert.bindString(2, value.getAsString(LabelTable.COLUMN_LABEL_NAME));
 					insert.bindString(3, value.getAsString(LabelTable.COLUMN_SEQ));
+					insert.bindString(4, value.getAsString(LabelTable.COLUMN_UPDATE_TIME));
+					insert.bindString(5, value.getAsString(LabelTable.COLUMN_COVER_URL));
+					insert.bindString(6, value.getAsString(LabelTable.COLUMN_AUTO));
 					insert.execute();
 				}
 				db.setTransactionSuccessful();
@@ -594,8 +600,10 @@ public class PlayerProvider extends ContentProvider {
 						+ FileTable.COLUMN_TYPE + ","
 						+ FileTable.COLUMN_DEV_ID + ","
 						+ FileTable.COLUMN_DEV_NAME + ","
+						+ FileTable.COLUMN_WIDTH + ","
+						+ FileTable.COLUMN_HEIGHT + ","
 						+FileTable.COLUMN_DEV_TYPE+ ")"
-						+ " values (?,?,?,?,?,?,?,?)");
+						+ " values (?,?,?,?,?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
 					// bind the 1-indexed ?'s to the values specified
@@ -606,7 +614,9 @@ public class PlayerProvider extends ContentProvider {
 					insert.bindString(5, value.getAsString(FileTable.COLUMN_TYPE));
 					insert.bindString(6, value.getAsString(FileTable.COLUMN_DEV_ID));
 					insert.bindString(7, value.getAsString(FileTable.COLUMN_DEV_NAME));
-					insert.bindString(8, value.getAsString(FileTable.COLUMN_DEV_TYPE));
+					insert.bindString(8, value.getAsString(FileTable.COLUMN_WIDTH));
+					insert.bindString(9, value.getAsString(FileTable.COLUMN_HEIGHT));
+					insert.bindString(10, value.getAsString(FileTable.COLUMN_DEV_TYPE));
 					insert.execute();
 				}
 				db.setTransactionSuccessful();

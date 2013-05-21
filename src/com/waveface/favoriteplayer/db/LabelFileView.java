@@ -27,5 +27,6 @@ public class LabelFileView {
 	public static final String COLUMN_DEV_ID = "dev_id";
 	public static final String COLUMN_DEV_NAME = "dev_name";
 	public static final String COLUMN_DEV_TYPE = "dev_type";
-
+	public static final String COLUMN_WIDTH="width";
+	public static final String COLUMN_HEIGHT="height";
 }

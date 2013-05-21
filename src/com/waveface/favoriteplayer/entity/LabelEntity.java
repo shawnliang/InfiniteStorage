@@ -22,7 +22,11 @@ public class LabelEntity {
 	@SerializedName("label_name")
 	public String label_name;
 
-
+	@SerializedName("cover_url")
+	public String cover_url;
+	
+	@SerializedName("auto")
+	public String auto;
 
 	public String[] files;
 	}

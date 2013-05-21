@@ -505,7 +505,7 @@ public class ServersLogic {
 				
 				Log.d(TAG, "onCreateView");
 				
-				Cursor cursor = LabelDB.getAllLabels(context);
+				Cursor cursor = LabelDB.getMAXSEQLabel(context);
 				String labelId = null;
 				String labSeq =null;
 				if(cursor!=null && cursor.getCount()>0){
