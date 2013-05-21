@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Waveface.ClientFramework;
 using Waveface.Model;
@@ -88,16 +89,32 @@ namespace Waveface.Client
 			return;
 		}
 
-		private void lbxDeviceContainer_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-		{
-			lblContentLocation.DataContext = null;
-			lbxContentContainer.DataContext = (lbxDeviceContainer.SelectedItem as IService).Contents;
-		}
+		//private void lbxDeviceContainer_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		//{
+		//	lblContentLocation.DataContext = null;
+		//	lbxContentContainer.DataContext = (lbxDeviceContainer.SelectedItem as IService).Contents;
+		//}
 
-		private void lbxDeviceContainer_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
-			lblContentLocation.DataContext = null;
-			lbxContentContainer.DataContext = (lbxDeviceContainer.SelectedItem as IService).Contents;
+			var ti = sender as TreeViewItem;
+			if (ti != null)
+			{
+				//ToDo: 待重構
+				var service = ti.DataContext as IService;
+
+				if (service != null)
+				{
+					lblContentLocation.DataContext = null;
+					lbxContentContainer.DataContext = service.Contents;
+				}
+				else
+				{
+					lblContentLocation.DataContext = ti.DataContext;
+					lbxContentContainer.DataContext = (ti.DataContext as IContentGroup).Contents;
+				}
+			}
+
 		}
 
 		#region Event Process
