@@ -85,9 +85,9 @@
 
     </Window.Resources>
 
-    <Grid Background="#FF222222">
+    <Grid Background="#FF3F3F3F">
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="302*"/>
             <!--<RowDefinition Height="25"/>-->
         </Grid.RowDefinitions>
@@ -96,54 +96,40 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="150"/>
         </Grid.ColumnDefinitions>
-        <Grid Background="#FF5D5D5D" Grid.Column="0" Grid.Row="0" Margin="0,0,0,1">
+        <Grid Background="#FF7F7F7F" Grid.Column="0" Grid.Row="0" Margin="0,0,0,1">
             <Grid.Effect>
                 <DropShadowEffect ShadowDepth="1" BlurRadius="1" Direction="270"/>
             </Grid.Effect>
-            <Label Content="Favorite" Foreground="#FFE0E0E0" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" FontSize="22" FontWeight="Bold" FontFamily="Aharoni">
-                <Label.Effect>
-                    <DropShadowEffect/>
-                </Label.Effect>
-            </Label>
+            <Label Content="Favorite" Foreground="#FFD8D8D8" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" FontSize="22" FontWeight="Bold" FontFamily="Aharoni" FontStyle="Italic"/>
         </Grid>
         <Grid Background="#FF5D5D5D" Grid.Column="1" Grid.Row="0" Margin="0,0,0,1">
             <Grid.Effect>
                 <DropShadowEffect ShadowDepth="1" BlurRadius="1" Direction="270"/>
             </Grid.Effect>
-            <Grid Background="#FF5D5D5D" Grid.Row="0">
+            <Grid Background="#FF7F7F7F" Grid.Row="0">
 				<DockPanel>
-						 <Slider Name="ZoomSlider"
-          Width="100"
-          Orientation="Horizontal" 
-          Minimum="200" 
-          Maximum="400" 
-          Value="200" 
-          TickFrequency="50"
-          TickPlacement="BottomRight" 
-          SmallChange="5"
-          LargeChange="20" DockPanel.Dock="Right" VerticalAlignment="Center" />
+						
                 <WrapPanel VerticalAlignment="Center"  DockPanel.Dock="Left">
                     <local:BackButton Content="BackButton" Height="20"   VerticalAlignment="Center" Width="20" Click="BackButton_Click" Margin="2"/>
-                    <Label x:Name="lblContentLocation" Content="{Binding ContentPath}" Foreground="White"/>
+                    <Label x:Name="lblContentLocation" Content="{Binding Name}" Foreground="White"/>
                 </WrapPanel>
 			
 		  </DockPanel>
             </Grid>
         </Grid>
-        <Grid Background="#FF5D5D5D" Grid.Column="2" Grid.Row="0" Margin="0,0,0,1">
+        <Grid Background="#FF7F7F7F" Grid.Column="2" Grid.Row="0" Margin="0,0,0,1">
             <Grid.Effect>
                 <DropShadowEffect ShadowDepth="1" BlurRadius="1" Direction="270"/>
             </Grid.Effect>
-            <Label Content="Labeled photos" Foreground="#FFE0E0E0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
 
-        <Grid Grid.Column="0" Grid.Row="1" Background="#FF2E2E2E">
+        <Grid Grid.Column="0" Grid.Row="1" Background="#FF595959">
             <Grid.RowDefinitions>
                 <RowDefinition Height="25"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Background="#FF0B0B0B">
-                <Label Content="Sources" Foreground="#FF7F7F7F"/>
+            <Grid Grid.Row="0" Background="#FF595959">
+                <Label Content="Sources" Foreground="#FFA5A5A5"/>
             </Grid>
             <TreeView x:Name="lbxDeviceContainer"  Grid.Row="1" Background="{x:Null}" BorderBrush="{x:Null}"
                   ItemsSource="{Binding IsAsync=True}"
@@ -168,13 +154,13 @@
                 <HierarchicalDataTemplate ItemsSource="{Binding Path=Contents}">
 
                     <!-- Display the AnimalCategory by showing it's Category string -->
-                    <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" Foreground="White"/>
+                        <Label FontWeight="Bold" Content="{Binding Path=Name}" Foreground="White"/>
 
                     <!-- Specify the nested template for the individual Animal items
              that are within the AnimalCategories.  E.g. “California Newt”, etc. -->
                     <HierarchicalDataTemplate.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Path=Name}" Foreground="White"/>
+                            <Label Content="{Binding Path=Name}" Foreground="White" Height="30" VerticalContentAlignment="Center"/>
                         </DataTemplate>
                     </HierarchicalDataTemplate.ItemTemplate>
 
@@ -183,22 +169,43 @@
         </TreeView>
         </Grid>
 
-        <Grid Grid.Column="2" Grid.Row="1" Background="#FF2E2E2E">
+        <Grid Grid.Column="2" Grid.Row="1" Background="#FF595959">
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="1" ShadowDepth="1" Direction="180"/>
             </Grid.Effect>
+            <Button Content="Share" HorizontalAlignment="Left" Height="31" Margin="10,159.333,0,0" VerticalAlignment="Top" Width="130" Background="#FF7F7F7F" BorderBrush="{x:Null}" Foreground="White"/>
+            <Label x:Name="lblLabeledCount" HorizontalAlignment="Left" Height="32" Margin="10,12,0,0" Content="{Binding Count}" ContentStringFormat="{}Labeled {0} photos" VerticalAlignment="Top" Width="130" Foreground="#FFF2F2DA" HorizontalContentAlignment="Center"/>
+            <Grid Margin="10,70.667,10,0">
 
-            <Button Content="Play" HorizontalAlignment="Left" Height="31" Margin="10,100,0,0" VerticalAlignment="Top" Width="130"/>
-            <Button Content="Share" HorizontalAlignment="Left" Height="31" Margin="10,136,0,0" VerticalAlignment="Top" Width="130"/>
-            <Label x:Name="lblLabeledCount" HorizontalAlignment="Left" Height="32" Margin="10,12,0,0" Content="{Binding Count}" ContentStringFormat="{}Labeled {0} photos" VerticalAlignment="Top" Width="130" Foreground="White" HorizontalContentAlignment="Center"/>
+            	<Label HorizontalAlignment="Left" Height="25" Margin="66,0,0,0" Content="On     Off" VerticalAlignment="Top" Width="64" Foreground="#FFA5A5A5" HorizontalContentAlignment="Left"/>
+            	<Label HorizontalAlignment="Left" Height="25" Margin="0,26.667,0,0" Content="On TV" VerticalAlignment="Top" Width="64" Foreground="#FFC1F2DA" HorizontalContentAlignment="Left"/>
+            	<Label HorizontalAlignment="Left" Height="25" Margin="0,51.667,0,0" Content="On Cloud" VerticalAlignment="Top" Width="64" Foreground="#FFC1F2DA" HorizontalContentAlignment="Left"/>
+            	<Grid Margin="76.334,32.667,11,28.666">
+            		<RadioButton Content="RadioButton" HorizontalAlignment="Left" Height="15.334" VerticalAlignment="Top" Width="12.666" RenderTransformOrigin="0.632,-0.174"/>
+            		<RadioButton Content="RadioButton" HorizontalAlignment="Left" Height="15.334" Margin="30,0,0,0" VerticalAlignment="Top" Width="12.666" RenderTransformOrigin="0.632,-0.174"/>
+         
+            	</Grid>
+            	<Grid Margin="76.334,57.667,11,3.666">
+         
+            		<RadioButton Content="RadioButton" HorizontalAlignment="Left" Height="15.334" VerticalAlignment="Top" Width="12.666" RenderTransformOrigin="0.632,-0.174"/>
+            		<RadioButton Content="RadioButton" HorizontalAlignment="Left" Height="15.334" Margin="30,0,0,0" VerticalAlignment="Top" Width="12.666" RenderTransformOrigin="0.632,-0.174"/>
 
-            <Label HorizontalAlignment="Left" Height="25" Margin="10,70,0,0" Content="Action:" VerticalAlignment="Top" Width="130" Foreground="White" HorizontalContentAlignment="Left"/>
+
+            	</Grid>
+
+
+            </Grid>
 
 
         </Grid>
 
         <Grid Grid.Column="1" Grid.Row="1">
-            <ScrollViewer x:Name="svContentContainer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+			<Grid>
+				 <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <ScrollViewer x:Name="svContentContainer" Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <ListBox x:Name="lbxContentContainer"
 		Style="{StaticResource PhotoListBoxStyle}" 
                          ItemsSource="{Binding IsAsync=True}"
@@ -220,7 +227,19 @@
                     </ListBox.Resources>
                 </ListBox>
             </ScrollViewer>
-
+			<Grid Grid.Row="1" Background="#FF7F7F7F" Margin="1,0">
+				 <Slider Name="ZoomSlider"
+          Width="100"
+          Orientation="Horizontal" 
+          Minimum="200" 
+          Maximum="400" 
+          Value="200" 
+          TickFrequency="50"
+          TickPlacement="None" 
+          SmallChange="5"
+          LargeChange="20" VerticalAlignment="Center" HorizontalAlignment="Left" BorderThickness="10,0,0,0" />
+				</Grid>
+			</Grid>
         </Grid>
     </Grid>
 </Window>

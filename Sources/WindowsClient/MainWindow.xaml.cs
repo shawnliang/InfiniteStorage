@@ -89,30 +89,18 @@ namespace Waveface.Client
 			return;
 		}
 
-		//private void lbxDeviceContainer_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-		//{
-		//	lblContentLocation.DataContext = null;
-		//	lbxContentContainer.DataContext = (lbxDeviceContainer.SelectedItem as IService).Contents;
-		//}
-
 		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			var ti = sender as TreeViewItem;
 			if (ti != null)
 			{
-				//ToDo: 待重構
-				var service = ti.DataContext as IService;
+				var group = ti.DataContext as IContentGroup;
 
-				if (service != null)
-				{
-					lblContentLocation.DataContext = null;
-					lbxContentContainer.DataContext = service.Contents;
-				}
-				else
-				{
-					lblContentLocation.DataContext = ti.DataContext;
-					lbxContentContainer.DataContext = (ti.DataContext as IContentGroup).Contents;
-				}
+				if (group == null)
+					return;
+
+				lblContentLocation.DataContext = group;
+				lbxContentContainer.DataContext = group.Contents;
 			}
 
 		}
