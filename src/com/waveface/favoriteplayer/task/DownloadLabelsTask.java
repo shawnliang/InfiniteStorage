@@ -45,6 +45,8 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 			return null;
 		ArrayList<ServerEntity> servers = ServersLogic
 				.getBackupedServers(mContext);
+		if(servers.size()==0)
+			return null;
 		ServerEntity pairedServer = servers.get(0);
 		String restfulAPIURL = "http://" + pairedServer.ip + ":"
 				+ pairedServer.restPort;
