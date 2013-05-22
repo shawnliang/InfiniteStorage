@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 
-//import com.waveface.mdns.DNSThread;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.RuntimeState;
@@ -20,11 +19,13 @@ import com.waveface.favoriteplayer.event.WebSocketEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.task.DownloadLabelsTask;
 import com.waveface.favoriteplayer.ui.fragment.FragmentBase;
+import com.waveface.favoriteplayer.ui.fragment.PlaybackFragment;
 import com.waveface.favoriteplayer.ui.fragment.SyncFragment;
 import com.waveface.favoriteplayer.ui.fragment.SyncFragmentBase.onSyncFragmentChangedListener;
 import com.waveface.favoriteplayer.ui.fragment.SyncInProgressFragment;
 
 import de.greenrobot.event.EventBus;
+//import com.waveface.mdns.DNSThread;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -44,6 +45,24 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 		public void run() {
 			startActivity(new Intent(MainActivity.this, MainTabActivity.class));
 			finish();
+//			if(OverviewFragment.class.getSimpleName().equals(mCurrentFragmentName) == false) {
+//				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//				OverviewFragment overview = new OverviewFragment();
+//				transaction.replace(R.id.container_content, overview, OverviewFragment.class.getSimpleName()).commit();
+//				mCurrentFragmentName = OverviewFragment.class.getSimpleName();
+//			}
+			//TEST FOR VIDEO PLAY
+//			VideoFragment videos = new VideoFragment();
+//			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//			transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+//			transaction.replace(R.id.container_content, videos, VideoFragment.class.getSimpleName()).commit();
+//			mCurrentFragmentName = VideoFragment.class.getSimpleName();
+			
+//			PlaybackFragment photoJournal = new PlaybackFragment();
+//			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//			transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+//			transaction.replace(R.id.container_content, photoJournal, PlaybackFragment.class.getSimpleName()).commit();
+//			mCurrentFragmentName = PlaybackFragment.class.getSimpleName();
 		}
 	};
 	
@@ -62,7 +81,6 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 		Log.d(TAG, "onCreate");
 		EventBus.getDefault().register(this);
 		setContentView(R.layout.activity_main);
-		RuntimeState.isAppLaunching = true;
 		
 		if(savedInstanceState == null) {
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -123,7 +141,6 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		RuntimeState.isAppLaunching = false;
 		EventBus.getDefault().unregister(this);
 	}
 	@Override

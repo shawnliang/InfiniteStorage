@@ -353,6 +353,25 @@ public class StringUtil {
 		return getLocalDate(System.currentTimeMillis());
 	}
 	
+	public static String localtimeToIso8601(Date date) {
+		if (date == null) {
+			return null;
+		} else {
+			long selectedDate = date.getTime();
+			int offsetFromUtc = Calendar.getInstance().getTimeZone()
+					.getOffset(0);
+			date = new Date(selectedDate - offsetFromUtc);
+			return toIso8601(date);
+		}
+	}
+	
+	public static String toIso8601(Date date) {
+		if (date == null) {
+			return "";
+		}
+		return new SimpleDateFormat(ISO_8601_DATE_FORMAT, Locale.getDefault()).format(date);
+	}
+	
 	public static String getLocalDate(long millsecond) {
 		SimpleDateFormat dateFormatGmt = new SimpleDateFormat(ISO_8601_DATE_FORMAT);
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));

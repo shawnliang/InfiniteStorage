@@ -30,7 +30,7 @@ public class RuntimeWebClient {
 	public static void init(Context context) {
 		mContext = context;
 		mWebSocketClient = new WavefaceTokenClient(mContext);
-		mWebSocketClient.addListener(new Listener());
+//		mWebSocketClient.addListener(new Listener());
 	}
 
 	public static void loadSettings() {

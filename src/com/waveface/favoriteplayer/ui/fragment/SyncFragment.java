@@ -72,7 +72,9 @@ public class SyncFragment extends SyncFragmentBase implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		Log.d(TAG, "onCreateView");
+	
+		//START UP SERVICE
+
 		
 		View root = inflater.inflate(R.layout.fragment_sync, container, false);
 

@@ -29,9 +29,9 @@ public class RuntimeState{
 	public static boolean isScaning = false;
 	public static boolean wasFirstTimeImportScanDone = false;	
 	public static boolean isBackuping = false;
+	public static boolean isSyncing = false;
+	
 
-	public static boolean isServiceRunnng = false;
-	public static boolean isAppLaunching = false;
 	public static boolean isNotificationShowing = false;
 
 	public static boolean isMDNSSetUped = false;

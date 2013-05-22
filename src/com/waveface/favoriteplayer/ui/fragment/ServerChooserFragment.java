@@ -4,6 +4,10 @@ package com.waveface.favoriteplayer.ui.fragment;
 import java.util.ArrayList;
 
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+
 import java.util.HashMap;
 
 
@@ -17,7 +21,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.database.ContentObserver;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,12 +37,14 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.db.BonjourServersTable;
 import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.ui.adapter.ServerChooseAdapter;
+
 
 
 public class ServerChooserFragment extends FragmentBase 
@@ -55,7 +60,7 @@ public class ServerChooserFragment extends FragmentBase
 	private TextView mTvSearch;
 	private AlertDialog mAlertDialog;
 	private AlertDialog mSendEmailDialog;
-	
+
 
 
 	//DATA
@@ -302,7 +307,16 @@ public class ServerChooserFragment extends FragmentBase
 			String restPort =params[0].get(Constant.PARAM_REST_PORT);
 			String wsLocation = "ws://"+ip+":"+notifyPort;
 			ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort,true);			
+			
+//			Timer workerTimer = new Timer();
+//			workerTimer.schedule(new WorkerTimerTask(getActivity(),wsLocation,serverId, serverName,ip,notifyPort, restPort), 
+//					WORKER_DELAY_SECONDS * 1000, 
+//					WORKER_PERIOD_SECONDS * 10000);
+			
 			return null;
 		}
 	}
+	
+	
+
 }

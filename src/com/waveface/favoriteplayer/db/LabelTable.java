@@ -29,30 +29,15 @@ public class LabelTable implements BaseColumns {
 	public static final String COLUMN_LABEL_ID = "id";	
 	public static final String COLUMN_LABEL_NAME = "labelName";
 	public static final String COLUMN_SEQ = "seq";
+	public static final String COLUMN_UPDATE_TIME = "update_time";
+	public static final String COLUMN_COVER_URL = "cover_url";
+	public static final String COLUMN_AUTO = "auto";// auto=true: edited by station ;is auto generated label, such as "today" and "this week"? 
 	
 	private LabelTable() {
 
 	}
 	
-	public static int updateLabel(Context context, String labelId,String labelName,String seq) {
-		int result = 0;
-		
-		ContentResolver cr = context.getContentResolver();
-		try {
-		
-			ContentValues cv = new ContentValues();
-			cv.put(LabelTable.COLUMN_LABEL_ID, labelId);
-			cv.put(LabelTable.COLUMN_LABEL_NAME, labelName);
-			cv.put(LabelTable.COLUMN_SEQ, seq);
-			// insert label
-			result = cr.bulkInsert(LabelTable.CONTENT_URI,
-						new ContentValues[] { cv });
-		
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
+
 	
 	public static int getLabelCount(Context context) {
 		Cursor cursor = context.getContentResolver().query(
