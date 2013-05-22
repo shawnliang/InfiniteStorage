@@ -1,6 +1,7 @@
 package com.waveface.favoriteplayer.service;
 
 import java.util.ArrayList;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -10,17 +11,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.text.TextUtils;
 
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
+import com.waveface.favoriteplayer.db.LabelDB;
+import com.waveface.favoriteplayer.db.LabelTable;
+import com.waveface.favoriteplayer.entity.ConnectForGTVEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
+import com.waveface.favoriteplayer.event.WebSocketEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.mdns.DNSThread;
+import com.waveface.favoriteplayer.util.DeviceUtil;
 import com.waveface.favoriteplayer.util.Log;
 import com.waveface.favoriteplayer.util.NetworkUtil;
+
+import de.greenrobot.event.EventBus;
+
 
 public class PlayerService extends Service{
 	private static final String TAG = PlayerService.class.getSimpleName();
@@ -37,7 +47,9 @@ public class PlayerService extends Service{
 	//TIMER
     private final int UPDATE_INTERVAL = 30 * 1000;
     private Timer BackupTimer = null;
-
+    private Timer mWorkerTimer;
+	private static final int WORKER_DELAY_SECONDS = 30;
+	private static final int WORKER_PERIOD_SECONDS = 60;	
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -87,6 +99,11 @@ public class PlayerService extends Service{
 		RuntimeState.mAutoConnectMode = ServersLogic.hasBackupedServers(this);		
 		new SetupMDNS().execute(new Void[]{});
 		Log.d(TAG, "onCreate");
+		
+		mWorkerTimer = new Timer();
+		mWorkerTimer.schedule(new WorkerTimerTask(), 
+				WORKER_DELAY_SECONDS * 1000, 
+				WORKER_PERIOD_SECONDS * 1000);
 	}
 
 	
@@ -107,9 +124,6 @@ public class PlayerService extends Service{
 							Log.d(TAG, "reset MDNS");
 							setupMDNS();
 						}
-					}
-					else if(actionContent.equals(Constant.ACTION_LABEL_CHANGE)){
-						
 					}
 				}
 			}
@@ -220,5 +234,39 @@ public class PlayerService extends Service{
 			setupMDNS();
 			return null;
 		}	
+	}
+	
+	class WorkerTimerTask extends TimerTask {
+
+		@Override
+		public void run() {
+			Log.v(TAG, "enter WorkerTimerTask.run()");
+			Log.d(TAG, "onCreateView");
+			Cursor cursor = LabelDB.getMAXSEQLabel(mContext);
+			EventBus.getDefault().post(new WebSocketEvent(WebSocketEvent.STATUS_CONNECT));
+
+			String labelId = null;
+			String labSeq ="0";
+			if(cursor!=null && cursor.getCount()>0){
+				cursor.moveToFirst();
+				labelId = cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_LABEL_ID));
+				labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
+				//send broadcast label change
+				//context.sendBroadcast(new Intent(Constant.ACTION_LABEL_CHANGE));					
+			}
+			
+			ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
+			ConnectForGTVEntity.Connect  connect = new ConnectForGTVEntity.Connect();
+			connect.deviceId=DeviceUtil.id(mContext);
+			connect.deviceName = DeviceUtil
+					.getDeviceNameForDisplay(mContext);
+			connectForGTV.setConnect(connect);
+			ConnectForGTVEntity.Subscribe subscribe = new ConnectForGTVEntity.Subscribe();
+			subscribe.labels=true;
+			subscribe.labels_from_seq = labSeq;
+			connectForGTV.setSubscribe(subscribe);
+			Log.d(TAG, "send message="+RuntimeState.GSON.toJson(connectForGTV));
+			Log.v(TAG, "exit WorkerTimerTask.run()");
+		}
 	}
 }
