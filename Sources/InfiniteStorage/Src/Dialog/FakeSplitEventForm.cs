@@ -13,6 +13,9 @@ using System.IO;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.Reflection;
+using Newtonsoft.Json;
+using System.Net;
+using System.Web;
 
 namespace InfiniteStorage
 {
@@ -36,57 +39,136 @@ namespace InfiniteStorage
 
 			using (var db = new MyDbContext())
 			{
-				var files = from f in db.Object.PendingFiles
+				var pending_files = from f in db.Object.PendingFiles
 							join d in db.Object.Devices on f.device_id equals d.device_id
 							where f.seq <= seq && !f.deleted
+							orderby d.device_id, f.event_time ascending
 							select new
 							{
 								file = f,
 								device = d
 							};
 
-				foreach (var f in files)
+
+
+				var start = DateTime.MinValue;
+				var events = new List<PendingEvent>();
+				var inMonth = new List<PendingFile>();
+				string dev_id = null;
+
+				foreach (var file in pending_files)
 				{
-					var storage = new FlatFileStorage(new DirOrganizerProxy());
-					storage.setDeviceName(f.device.folder_name);
+					var time = file.file.event_time.ToLocalTime();
 
-					var ctx = new FileContext {
-						datetime = f.file.event_time,
-						file_name = f.file.file_name,
-						file_size = f.file.file_size,
-						folder = Path.GetDirectoryName(f.file.file_path),
-						type = (FileAssetType)f.file.type
-					};
-
-					var file_path = Path.Combine(MyFileFolder.Photo, ".pending", f.file.saved_path);
-
-					var saved = storage.MoveToStorage(file_path, ctx);
-
-					db.Object.Files.Add(new FileAsset
+					if (dev_id != file.device.device_id)
 					{
-						deleted = f.file.deleted,
-						device_id = f.file.device_id,
-						event_time = f.file.event_time,
-						file_id = f.file.file_id,
-						file_name = f.file.file_name,
-						file_path = f.file.file_path,
-						file_size = f.file.file_size,
-						height = f.file.height,
-						parent_folder = Path.GetDirectoryName(saved.relative_file_path),
-						saved_path = saved.relative_file_path,
-						seq = SeqNum.GetNextSeq(),
-						thumb_ready = f.file.thumb_ready,
-						type = f.file.type,
-						width = f.file.width
-					});
+						if (dev_id != null)
+						{
+							if (inMonth.Any())
+							{
+								events.Add(new PendingEvent
+								{
+									files = inMonth.Select(x => x.file_id).ToList(),
+									time_start = inMonth.Max(x => x.event_time),
+									time_end = inMonth.Min(x => x.event_time),
+									type = (int)EventType.Monthly
+								});
 
+								
+							}
 
-					processed.Add(f.file.file_id);
+							if (events.Any())
+								submit_rest(events, dev_id);
+						}
 
-					File.Delete(file_path);
+						inMonth.Clear();
+						dev_id = file.device.device_id;
+						
+					}
+
+					if (start.Year == time.Year && start.Month == time.Month)
+					{
+						inMonth.Add(file.file);
+						start = file.file.event_time;
+					}
+					else
+					{
+						if (inMonth.Any())
+						{
+							events.Add(new PendingEvent
+							{
+								files = inMonth.Select(x => x.file_id).ToList(),
+								time_start = inMonth.Max(x => x.event_time),
+								time_end = inMonth.Min(x => x.event_time),
+								type = (int)EventType.Monthly
+							});
+						}
+
+						inMonth.Clear();
+						inMonth.Add(file.file);
+						start = file.file.event_time;
+					}
 				}
 
-				db.Object.SaveChanges();
+
+				if (inMonth.Any())
+				{
+					events.Add(new PendingEvent
+					{
+						files = inMonth.Select(x => x.file_id).ToList(),
+						time_start = inMonth.Max(x => x.event_time),
+						time_end = inMonth.Min(x => x.event_time),
+						type = (int)EventType.Monthly
+					});
+				}
+
+				if (events.Any())
+					submit_rest(events, dev_id);
+
+
+
+				//foreach (var f in files)
+				//{
+				//    var storage = new FlatFileStorage(new DirOrganizerProxy());
+				//    storage.setDeviceName(f.device.folder_name);
+
+				//    var ctx = new FileContext {
+				//        datetime = f.file.event_time,
+				//        file_name = f.file.file_name,
+				//        file_size = f.file.file_size,
+				//        folder = Path.GetDirectoryName(f.file.file_path),
+				//        type = (FileAssetType)f.file.type
+				//    };
+
+				//    var file_path = Path.Combine(MyFileFolder.Photo, ".pending", f.file.saved_path);
+
+				//    var saved = storage.MoveToStorage(file_path, ctx);
+
+				//    db.Object.Files.Add(new FileAsset
+				//    {
+				//        deleted = f.file.deleted,
+				//        device_id = f.file.device_id,
+				//        event_time = f.file.event_time,
+				//        file_id = f.file.file_id,
+				//        file_name = f.file.file_name,
+				//        file_path = f.file.file_path,
+				//        file_size = f.file.file_size,
+				//        height = f.file.height,
+				//        parent_folder = Path.GetDirectoryName(saved.relative_file_path),
+				//        saved_path = saved.relative_file_path,
+				//        seq = SeqNum.GetNextSeq(),
+				//        thumb_ready = f.file.thumb_ready,
+				//        type = f.file.type,
+				//        width = f.file.width
+				//    });
+
+
+				//    processed.Add(f.file.file_id);
+
+				//    File.Delete(file_path);
+				//}
+
+				//db.Object.SaveChanges();
 			}
 
 
@@ -115,6 +197,21 @@ namespace InfiniteStorage
 			Process.Start(Path.Combine(dir, "Waveface.Client.exe"));
 
 			Close();
+		}
+
+		private void submit_rest(List<PendingEvent> events, string dev_id)
+		{
+			var data = HttpUtility.UrlEncode(JsonConvert.SerializeObject(new PendingSortData
+			{
+				device_id = dev_id,
+				events = events
+			}));
+
+			using (var agent = new WebClient())
+			{
+				agent.Headers.Add("content-type", "application/x-www-form-urlencoded");
+				agent.UploadString("http://localhost:14005/pending/sort", "POST", "how=" + data);
+			}
 		}
 	}
 }
