@@ -65,7 +65,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		sqlBuilder.append("Create Table {0} (")
 		  .append(LabelTable.COLUMN_LABEL_ID + " TEXT PRIMARY KEY,")
 		  .append(LabelTable.COLUMN_LABEL_NAME + " TEXT NOT NULL ,")
-		  .append( LabelTable.COLUMN_SEQ + " TEXT NOT NULL );");		
+		  .append(LabelTable.COLUMN_SEQ + " TEXT NOT NULL ,")
+		    .append(LabelTable.COLUMN_UPDATE_TIME + " TEXT NOT NULL ,")
+		     .append(LabelTable.COLUMN_COVER_URL + " TEXT NOT NULL ,")
+		  .append( LabelTable.COLUMN_AUTO + " TEXT NOT NULL );");		
 		createTable(db, sqlBuilder.toString(), LabelTable.TABLE_NAME);
 		
 		// Create Label Files table
@@ -87,6 +90,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		  .append(FileTable.COLUMN_TYPE+ " TEXT NOT NULL ,")
 		  .append(FileTable.COLUMN_DEV_ID+ " TEXT NOT NULL ,")
 		  .append(FileTable.COLUMN_DEV_NAME+ " TEXT NOT NULL ,")
+		  .append(FileTable.COLUMN_WIDTH+ " TEXT NOT NULL ,")
+		  .append(FileTable.COLUMN_HEIGHT+ " TEXT NOT NULL ,")
 		  .append(FileTable.COLUMN_DEV_TYPE + " TEXT NOT NULL );");		
 		createTable(db, sqlBuilder.toString(), FileTable.TABLE_NAME);
 		
@@ -119,6 +124,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	      .append(" B."+FileTable.COLUMN_TYPE+" AS "+LabelFileView.COLUMN_TYPE+",")
 	      .append(" B."+FileTable.COLUMN_DEV_ID+" AS "+LabelFileView.COLUMN_DEV_ID+",")
 	      .append(" B."+FileTable.COLUMN_DEV_NAME+" AS "+LabelFileView.COLUMN_DEV_NAME+",")
+	      .append(" B."+FileTable.COLUMN_HEIGHT+" AS "+LabelFileView.COLUMN_HEIGHT+",")
+	      .append(" B."+FileTable.COLUMN_WIDTH+" AS "+LabelFileView.COLUMN_WIDTH+",")
 		  .append(" B."+FileTable.COLUMN_DEV_TYPE+" AS "+LabelFileView.COLUMN_DEV_TYPE)
 	      .append(" FROM "+LabelFileTable.TABLE_NAME+" A,"+FileTable.TABLE_NAME+" B")
 	      .append(" WHERE A."+LabelFileTable.COLUMN_FILE_ID+"= B."+FileTable.COLUMN_FILE_ID);

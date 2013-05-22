@@ -5,14 +5,16 @@ public class Constant {
 	//DEVICE TYPE
 	public static boolean PHONE = true;
 
-	public final static String APP_FOLDER = "/InfiniteStorage";
+	public final static String APP_FOLDER = "/FavoritePlayer";
+	public final static String VIDEO_FOLDER = APP_FOLDER+"/Video";
+	
 	
 	public final static String ACTION_NETWORK_STATE_CHANGE = "com.waveface.favoriteplayer.action.NETWORK_STATE_CHANGE";	
 	public final static String ACTION_WS_SERVER_NOTIFY = "com.waveface.favoriteplayer.action.WS_SERVER_NOTIFY";	
 
 	public final static String ACTION_BONJOUR_SERVER_MANUAL_PAIRING = "com.waveface.favoriteplayer.action.BONJOUR_SERVER_MANUAL_PAIRING";	
 	public final static String ACTION_BONJOUR_SERVER_AUTO_PAIRING = "com.waveface.favoriteplayer.action.BONJOUR_SERVER_AUTO_PAIRING";	
-	
+
 	public final static String ACTION_BONJOUR_MULTICAT_EVENT = "com.waveface.favoriteplayer.action.BONJOUR_MULTICAT_EVENT";	
 	public final static String ACTION_UPLOADING_FILE = "com.waveface.favoriteplayer.action.UPLOADING_FILE";		
 	public final static String ACTION_BACKUP_FILE = "com.waveface.favoriteplayer.action.BACKUP_FILE";	
@@ -24,6 +26,7 @@ public class Constant {
 	public final static String ACTION_WEB_SOCKET_SERVER_CONNECTED = "com.waveface.favoriteplayer.action.WEB_SOCKET_SERVER_CONNECTED";
 	public final static String ACTION_WEB_SOCKET_SERVER_DISCONNECTED = "com.waveface.favoriteplayer.action.WEB_SOCKET_SERVER_DISCONNECTED";	
 	public final static String ACTION_RELEASE_PAIRED_SERVER_BY_CLIENT = "com.waveface.favoriteplayer.action.RELEASE_PAIRED_SERVER_BY_CLIENT";	
+    public final static String ACTION_LABEL_CHANGE="com.waveface.favoriteplayer.action.LABEL_CHANGE";	
 	
 
 	//BUNDLE DATA
@@ -151,16 +154,19 @@ public class Constant {
 	
 	//FOR LABEL RESTFUL API
 	public final static String URL_GET_ALL_LABELS = "/label/list_all";
+	public final static String URL_GET_LABEL = "/label/get";
 	public final static String URL_GET_FILE = "/file/get";
 	public final static String URL_IMAGE = "/image";
 	public final static String URL_IMAGE_LARGE = "/large";
 	public final static String URL_IMAGE_MEDIUM = "/medium";
 	public final static String URL_IMAGE_SMALL = "/small";
+	public final static String URL_IMAGE_ORIGIN="origin";
+	
 	
 	// FOR LABEL DATE PARAMETER
 	public final static String PARAM_FILES = "files";
 	public final static String PARAM_SEQ = "seq";
-	
+	public final static String PARAM_LABEL_ID = "label_id";
 	// FOR QUEUE JOB STATUS
 	public final static String PREFS_NAME = "InfinitePref";
 	public final static String PREF_NOTIFICATION_ID = "notification_id";

@@ -108,6 +108,9 @@ public class PlayerService extends Service{
 							setupMDNS();
 						}
 					}
+					else if(actionContent.equals(Constant.ACTION_LABEL_CHANGE)){
+						
+					}
 				}
 			}
 		}

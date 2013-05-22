@@ -2,6 +2,10 @@ package com.waveface.favoriteplayer.websocket;
 
 
 
+import java.util.ArrayList;
+
+
+import java.util.HashMap;
 import java.util.Map;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -28,10 +32,17 @@ import org.jwebsocket.util.Tools;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
+import com.waveface.favoriteplayer.db.LabelDB;
+import com.waveface.favoriteplayer.entity.FileEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
+import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.logic.ServersLogic;
+import com.waveface.service.HttpInvoker;
+import com.waveface.sync.entity.LabelChangeEntity;
+
 
 public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements WebSocketTokenClient {
 	private static final String TAG = WavefaceTokenClient.class.getSimpleName();
@@ -138,22 +149,44 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 			
 			
 			String jsonOutput = aPacket.getUTF8();
-			LabelEntity entity = null;
+		
+			//TODO:handle retrive label
+			LabelChangeEntity entity = null;
 			try {
 				if(!TextUtils.isEmpty(jsonOutput))
-					entity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.class);
-			
+					entity = RuntimeState.GSON.fromJson(jsonOutput, LabelChangeEntity.class);
+				   if(entity!=null) {
+				      ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(mContext);
+						ServerEntity pairedServer = servers.get(0);
+						String restfulAPIURL ="http://"+pairedServer.ip+":"+pairedServer.restPort;
+						String getLabelURL = restfulAPIURL + Constant.URL_GET_LABEL;
+						String files="";
+						String getFileURL = restfulAPIURL + Constant.URL_GET_FILE;
+						HashMap<String, String> param = new HashMap<String, String>();
+						param.clear();
+						param.put(Constant.PARAM_LABEL_ID, entity.label_change.label_id);
+						jsonOutput =HttpInvoker.executePost(getLabelURL,param, Constant.CLOUD_CONNECTION_TIMEOUT, Constant.CLOUD_CONNECTION_TIMEOUT);
+						
+						LabelEntity.Label labelEntity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.Label.class);	
+						
+						 for(String f:labelEntity.files){
+							  files+=f+",";
+						  }
+						 files=files.substring(0, files.length()-1);
+						 param.clear();
+						 param.put(Constant.PARAM_FILES, files.trim());
+						 jsonOutput = HttpInvoker.executePost(getFileURL, param,  Constant.CLOUD_CONNECTION_TIMEOUT, Constant.CLOUD_CONNECTION_TIMEOUT);
+						 
+						 //FileEntity
+						 FileEntity fileEntity = RuntimeState.GSON.fromJson(jsonOutput, FileEntity.class);	 
+						
+						 LabelDB.updateLabelInfo(mContext, labelEntity, fileEntity,true);
+						
+				   }
 			} catch (Exception e) {
 				e.printStackTrace();
-			
 			}
-			//TODO:handle retrive label
-			
-			if(entity!=null){
-				//LabelDB.updateLabelInfo(mContext,entity);
-			}
-			
-			
+
 			//ORIGINAL Web Socket Code
 			Token lToken = packetToToken(aPacket);
 			//Notifying listeners
