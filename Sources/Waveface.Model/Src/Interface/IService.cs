@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Waveface.Model
 {
@@ -23,6 +24,10 @@ namespace Waveface.Model
 		IEnumerable<IContentEntity> Contents { get; }
 
 		string Description { get; }
+		#endregion
+
+		#region Event
+		event EventHandler<ContentPropertyChangeEventArgs> ContentPropertyChanged;
 		#endregion
 	}
 }

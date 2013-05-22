@@ -14,9 +14,11 @@ namespace Waveface.ClientFramework
 	public class BunnyContent : Content
 	{
 		#region Var
+		private bool _likedInited;
 		private BitmapSource _imageSource;
 		private BitmapSource _thumbnailSource;
 		#endregion
+
 
 		#region Property
 		public override string ID
@@ -114,7 +116,16 @@ namespace Waveface.ClientFramework
 		{
 			get
 			{
-				return GetLiked();
+				if (!_likedInited)
+				{
+					_likedInited = true;
+					base._liked = GetLiked();
+				}
+				return base.Liked;
+			}
+			set
+			{
+				base.Liked = value;
 			}
 		}
 		#endregion

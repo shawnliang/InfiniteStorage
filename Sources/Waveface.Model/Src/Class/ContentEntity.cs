@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 namespace Waveface.Model
@@ -8,7 +9,7 @@ namespace Waveface.Model
 	/// <summary>
 	/// 
 	/// </summary>
-	public class ContentEntity : IContentEntity
+	public class ContentEntity : IContentEntity, INotifyPropertyChanged
 	{
 		#region Var
 		private string _id;
@@ -124,11 +125,6 @@ namespace Waveface.Model
 			internal set;
 		}
 
-		public virtual bool Liked 
-		{
-			get; 
-			internal set; 
-		}
 
 		public virtual string Description
 		{
@@ -155,6 +151,11 @@ namespace Waveface.Model
 				_memo = value;
 			}
 		}
+		#endregion
+
+
+		#region Event
+		public event PropertyChangedEventHandler PropertyChanged;
 		#endregion
 
 
@@ -188,6 +189,22 @@ namespace Waveface.Model
 			return (Parent == null) ?
 				string.Format(@"{0}", this.Name) :
 				string.Format(@"{0}\{1}", Parent.ContentPath, this.Name);
+		}
+		#endregion
+
+
+		#region Protected Method
+		protected void OnPropertyChanged(string propertyName)
+		{
+			OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
+		}
+
+		protected void OnPropertyChanged(PropertyChangedEventArgs e)
+		{
+			if (PropertyChanged == null)
+				return;
+
+			PropertyChanged(this, e);
 		}
 		#endregion
 

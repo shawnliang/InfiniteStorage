@@ -90,8 +90,6 @@ namespace Waveface.Model
 		/// </value>
 		DateTime ModifyTime { get; }
 
-		bool Liked { get; }
-
 		/// <summary>
 		/// Gets or sets the description.
 		/// </summary>

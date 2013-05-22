@@ -111,6 +111,7 @@
             </Grid.Effect>
             <Grid Background="#FF5D5D5D" Grid.Row="0">
 				<DockPanel>
+					 <Button Content="Mark All" DockPanel.Dock="Right" Height="25" Background="#FF595959" Foreground="#FFFFFFE5" Click="Button_Click"/>
 						 <Slider Name="ZoomSlider"
           Width="100"
           Orientation="Horizontal" 
@@ -121,6 +122,7 @@
           TickPlacement="BottomRight" 
           SmallChange="5"
           LargeChange="20" DockPanel.Dock="Right" VerticalAlignment="Center" />
+		 
                 <WrapPanel VerticalAlignment="Center"  DockPanel.Dock="Left">
                     <local:BackButton Content="BackButton" Height="20"   VerticalAlignment="Center" Width="20" Click="BackButton_Click" Margin="2"/>
                     <Label x:Name="lblContentLocation" Content="{Binding ContentPath}" Foreground="White"/>

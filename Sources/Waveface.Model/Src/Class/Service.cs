@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace Waveface.Model
 {
@@ -28,6 +29,7 @@ namespace Waveface.Model
 				if (_observableContents == null)
 				{
 					_observableContents = new ObservableCollection<IContentEntity>();
+					_observableContents.CollectionChanged += _observableContents_CollectionChanged;
 				}
 				return _observableContents;
 			}
@@ -95,6 +97,10 @@ namespace Waveface.Model
 		}
 		#endregion
 
+		#region Event
+		public event EventHandler<ContentPropertyChangeEventArgs> ContentPropertyChanged;
+		#endregion
+
 
 		#region Constructor
 		public Service()
@@ -138,6 +144,13 @@ namespace Waveface.Model
 		}
 		#endregion
 
+		protected void OnContentPropertyChanged(ContentPropertyChangeEventArgs e)
+		{
+			if (ContentPropertyChanged == null)
+				return;
+			ContentPropertyChanged(this, e);
+		}
+
 
 		#region Public Method
 		public override string ToString()
@@ -145,5 +158,22 @@ namespace Waveface.Model
 			return this.Name;
 		}
 		#endregion
+
+
+		void _observableContents_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			if (e.Action == NotifyCollectionChangedAction.Add)
+			{
+				foreach (IContentGroup item in e.NewItems)
+				{
+					item.ContentPropertyChanged += item_ContentPropertyChanged;
+				}
+			}
+		}
+
+		void item_ContentPropertyChanged(object sender, ContentPropertyChangeEventArgs e)
+		{
+			OnContentPropertyChanged(e);
+		}
 	}
 }
