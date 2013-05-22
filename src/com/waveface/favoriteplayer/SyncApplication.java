@@ -4,6 +4,7 @@ import idv.jason.lib.imagemanager.ImageManager;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 
 public class SyncApplication extends Application{
 	private ImageManager mImageManager;
@@ -21,5 +22,7 @@ public class SyncApplication extends Application{
 		super.onCreate();
 		
 		mImageManager = ImageManager.getInstance(this);
+
+		sendBroadcast(new Intent(Constant.ACTION_FAVORITE_PLAYER_ALARM));
 	}
 }

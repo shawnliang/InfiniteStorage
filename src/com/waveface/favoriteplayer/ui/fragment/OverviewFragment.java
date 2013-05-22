@@ -19,8 +19,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 
-public class OverviewFragment extends Fragment{
+public class OverviewFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener{
 	private TwoWayView mList;
 	private int mType = OVERVIEW_VIEW_TYPE_LABEL;
 	
@@ -32,6 +35,9 @@ public class OverviewFragment extends Fragment{
 			Bundle savedInstanceState) {
 		View root = inflater.inflate(R.layout.fragment_overview, container, false);
 		mList = (TwoWayView) root.findViewById(R.id.list);
+		mList.setLongClickable(true);
+		mList.setOnItemLongClickListener(this);
+		mList.setOnItemClickListener(this);
 		
 		Bundle data = null;
 		if(savedInstanceState == null) {
@@ -41,7 +47,7 @@ public class OverviewFragment extends Fragment{
 		}
 		
 		if(data != null) {
-			mType = data.getInt(Constant.ARGUMENT1);
+//			mType = data.getInt(Constant.ARGUMENT1);
 		}
 		
 		new PrepareViewTask().execute(null, null, null);
@@ -95,5 +101,17 @@ public class OverviewFragment extends Fragment{
 				mList.setAdapter(adapter);
 			}
 		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
+			long arg3) {
+		return true;
 	}
 }

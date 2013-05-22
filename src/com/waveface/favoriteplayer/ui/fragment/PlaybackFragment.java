@@ -74,6 +74,8 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		EventBus.getDefault().register(this);
 		ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(getActivity());
 		ServerEntity pairedServer = servers.get(0);
 		mServerUrl ="http://"+pairedServer.ip+":"+pairedServer.restPort;
@@ -140,8 +142,6 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 				mPager.setVisibility(View.VISIBLE);
 			}
 		});
-		
-		EventBus.getDefault().register(this);
 		return root;
 	}
 	
