@@ -232,4 +232,5 @@ public class Constant {
 
 	// passing to bundle
 	public static final String ARGUMENT1 = "argument1";
+	public static final String ARGUMENT2 = "argument2";
 }

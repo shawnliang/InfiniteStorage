@@ -1,8 +1,44 @@
 package com.waveface.favoriteplayer.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class OverviewData {
+
+public class OverviewData implements Parcelable{
 	public String url;
-	public boolean landscape = true;
+	public boolean landscape;
+	
+	public static final Parcelable.Creator<OverviewData> CREATOR = new Creator<OverviewData>() {
+
+		@Override
+		public OverviewData[] newArray(int size) {
+			return new OverviewData[size];
+		}
+
+		@Override
+		public OverviewData createFromParcel(Parcel source) {
+			return new OverviewData(source);
+		}
+	};
+	
+	public OverviewData() {
+		url = null;
+		landscape = false;
+	}
+	
+	public OverviewData(Parcel in) {
+		url = in.readString();
+		landscape = in.readInt() == 1 ? true:false;
+	}
+	
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		out.writeString(url);
+		out.writeInt(landscape?1:0);
+	}
 }
 
