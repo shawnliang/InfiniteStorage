@@ -147,9 +147,6 @@
                 </Style>
 
             </TreeView.Resources>
-            <TreeView.Effect>
-                <DropShadowEffect BlurRadius="1" ShadowDepth="1" Direction="0"/>
-            </TreeView.Effect>
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Path=Contents}">
 
