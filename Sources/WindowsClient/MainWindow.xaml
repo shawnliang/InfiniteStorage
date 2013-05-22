@@ -178,13 +178,13 @@
             	<Label HorizontalAlignment="Left" Height="25" Margin="0,26.667,0,0" Content="On TV" VerticalAlignment="Top" Width="64" Foreground="#FFC1F2DA" HorizontalContentAlignment="Left"/>
             	<Label HorizontalAlignment="Left" Height="25" Margin="0,51.667,0,0" Content="On Cloud" VerticalAlignment="Top" Width="64" Foreground="#FFC1F2DA" HorizontalContentAlignment="Left"/>
             	<Grid Margin="76.334,32.667,11,28.666">
-            		<RadioButton Content="RadioButton" HorizontalAlignment="Left" Height="15.334" VerticalAlignment="Top" Width="12.666" RenderTransformOrigin="0.632,-0.174"/>
+            		<RadioButton Content="RadioButton" HorizontalAlignment="Left" Height="15.334" VerticalAlignment="Top" Width="12.666" RenderTransformOrigin="0.632,-0.174" IsChecked="True"/>
             		<RadioButton Content="RadioButton" HorizontalAlignment="Left" Height="15.334" Margin="30,0,0,0" VerticalAlignment="Top" Width="12.666" RenderTransformOrigin="0.632,-0.174"/>
          
             	</Grid>
             	<Grid Margin="76.334,57.667,11,3.666">
          
-            		<RadioButton Content="RadioButton" HorizontalAlignment="Left" Height="15.334" VerticalAlignment="Top" Width="12.666" RenderTransformOrigin="0.632,-0.174"/>
+            		<RadioButton Content="RadioButton" HorizontalAlignment="Left" Height="15.334" VerticalAlignment="Top" Width="12.666" RenderTransformOrigin="0.632,-0.174" IsChecked="True"/>
             		<RadioButton Content="RadioButton" HorizontalAlignment="Left" Height="15.334" Margin="30,0,0,0" VerticalAlignment="Top" Width="12.666" RenderTransformOrigin="0.632,-0.174"/>
 
 
