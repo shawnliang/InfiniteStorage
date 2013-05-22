@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using InfiniteStorage.Model;
+using System.Diagnostics;
 
 namespace InfiniteStorage
 {
@@ -53,6 +54,7 @@ namespace InfiniteStorage
 
 		private void showUI()
 		{
+
 			if (dialog.IsDisposed)
 			{
 				dialog = new FakeSplitEventForm();
@@ -61,6 +63,27 @@ namespace InfiniteStorage
 			dialog.Show();
 			dialog.Activate();
 			dialog.BringToFront();
+
+/*
+			var devices = getPendingSources();
+
+			foreach (var device in devices)
+			{
+				ImportUIPresenter.Instance.Show(device);
+			}
+*/
+		}
+
+		private List<string> getPendingSources()
+		{
+			using (var db = new MyDbContext())
+			{
+				var q = from f in db.Object.PendingFiles
+						where !f.deleted && (f.thumb_ready && f.type == (int)FileAssetType.image || f.type == (int)FileAssetType.video)
+						select f.device_id;
+
+				return q.Distinct().ToList();
+			}
 		}
 
 		private bool newFilesComing()
