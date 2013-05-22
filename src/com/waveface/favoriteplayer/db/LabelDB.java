@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.waveface.favoriteplayer.entity.FileEntity;
@@ -43,7 +44,13 @@ public class LabelDB {
 			cv.put(LabelTable.COLUMN_LABEL_NAME, label.label_name);
 			cv.put(LabelTable.COLUMN_SEQ, label.seq);
 			cv.put(LabelTable.COLUMN_UPDATE_TIME, StringUtil.localtimeToIso8601(new Date()));
+			if(TextUtils.isEmpty(label.cover_url)){
+				label.cover_url = "";
+			}
 			cv.put(LabelTable.COLUMN_COVER_URL, label.cover_url);
+			if(TextUtils.isEmpty(label.auto)){
+				label.auto = "";
+			}			
 			cv.put(LabelTable.COLUMN_AUTO, label.auto);
 			// insert label
 			result = cr.bulkInsert(LabelTable.CONTENT_URI,
@@ -250,5 +257,18 @@ public class LabelDB {
 				LabelFileTable.DEFAULT_SORT_ORDER);
 		return cursor;
 	}
-
+	public static String getVideoLabelId(Context context) {
+		String labelId = null;
+		Cursor cursor = context.getContentResolver().query(
+				LabelTable.CONTENT_URI,
+				new String[]{LabelTable.COLUMN_LABEL_ID},
+				LabelTable.COLUMN_LABEL_NAME + " = ?",
+				new String[] { "videos" },null);
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			labelId = cursor.getString(0);
+		}
+		cursor.close();
+		return labelId;
+	}
 }

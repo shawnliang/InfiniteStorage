@@ -32,8 +32,6 @@ public class RuntimeState{
 	public static boolean isSyncing = false;
 	
 
-	public static boolean isServiceRunnng = false;
-	public static boolean isAppLaunching = false;
 	public static boolean isNotificationShowing = false;
 
 	public static boolean isMDNSSetUped = false;
