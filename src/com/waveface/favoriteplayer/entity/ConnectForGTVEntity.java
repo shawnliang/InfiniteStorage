@@ -40,6 +40,9 @@ public class ConnectForGTVEntity {
 	public static class Subscribe{
 		@SerializedName("labels")
 		public boolean labels;
+		
+		@SerializedName("labels_from_seq")
+		public String labels_from_seq;
 
 	}
 

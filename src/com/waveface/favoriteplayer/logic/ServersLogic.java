@@ -1,6 +1,7 @@
 package com.waveface.favoriteplayer.logic;
 
 import java.util.ArrayList;
+
 import java.util.TreeSet;
 
 import org.jwebsocket.kit.WebSocketException;
@@ -15,8 +16,11 @@ import android.database.Cursor;
 import android.text.TextUtils;
 import android.util.Log;
 
+
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
+import com.waveface.favoriteplayer.db.LabelDB;
+import com.waveface.favoriteplayer.db.LabelTable;
 import com.waveface.favoriteplayer.db.PairedServersTable;
 import com.waveface.favoriteplayer.db.BonjourServersTable;
 import com.waveface.favoriteplayer.entity.ConnectForGTVEntity;
@@ -27,6 +31,7 @@ import com.waveface.favoriteplayer.util.DeviceUtil;
 import com.waveface.favoriteplayer.websocket.RuntimeWebClient;
 
 import de.greenrobot.event.EventBus;
+
 
 public class ServersLogic {
 	private static String TAG = ServersLogic.class.getSimpleName();
@@ -491,6 +496,9 @@ public class ServersLogic {
 			try {
 				RuntimeWebClient.open();
 				RuntimeState.setServerStatus(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
+				Intent intent = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
+				context.sendBroadcast(intent);
+
 				//ADD SERVER DATA
 				ServerEntity entity = new ServerEntity();
 				entity.serverId=serverId;
@@ -502,9 +510,23 @@ public class ServersLogic {
 				updateBackupedServer(context, entity);
 //				}
 				//TODO:CHANGE TO NEW PROTOCAL
-				context.sendBroadcast(new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED));
+
+
+				
+				Log.d(TAG, "onCreateView");
+				Cursor cursor = LabelDB.getMAXSEQLabel(context);
 				EventBus.getDefault().post(new WebSocketEvent(WebSocketEvent.STATUS_CONNECT));
-				//ConnectEntity connect = new ConnectEntity();
+
+				String labelId = null;
+				String labSeq ="0";
+				if(cursor!=null && cursor.getCount()>0){
+					cursor.moveToFirst();
+					labelId = cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_LABEL_ID));
+					labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
+					//send broadcast label change
+					context.sendBroadcast(new Intent(Constant.ACTION_LABEL_CHANGE));					
+				}
+				
 				ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
 				ConnectForGTVEntity.Connect  connect = new ConnectForGTVEntity.Connect();
 				connect.deviceId=DeviceUtil.id(context);
@@ -512,10 +534,11 @@ public class ServersLogic {
 						.getDeviceNameForDisplay(context);
 				connectForGTV.setConnect(connect);
 				ConnectForGTVEntity.Subscribe subscribe = new ConnectForGTVEntity.Subscribe();
-				subscribe.labels=false;
+				subscribe.labels=true;
+				subscribe.labels_from_seq = labSeq;
 				connectForGTV.setSubscribe(subscribe);
 				Log.d(TAG, "send message="+RuntimeState.GSON.toJson(connectForGTV));
-				RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));				
+				RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));
 			} catch (WebSocketException e) {
 				e.printStackTrace();
 			}

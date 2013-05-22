@@ -19,10 +19,13 @@ public class FileTable implements BaseColumns {
 	public static final String COLUMN_FILE_NAME = "fileName";
 	public static final String COLUMN_FOLDER = "folder";
 	public static final String COLUMN_THUMB_READY = "thumb_ready";
-	public static final String COLUMN_TYPE = "type";
+	public static final String COLUMN_TYPE = "type";//0:phot,1:video
 	public static final String COLUMN_DEV_ID = "dev_id";
 	public static final String COLUMN_DEV_NAME = "dev_name";
 	public static final String COLUMN_DEV_TYPE = "dev_type";
+	public static final String COLUMN_WIDTH="width";
+	public static final String COLUMN_HEIGHT="height";
+	
 	
 //	public static int updateLabelFiles(Context context, String labelId,String[] files) {
 //		int result = 0;

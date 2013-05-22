@@ -21,16 +21,20 @@ public class Starter extends Application {
 //			setupCrashlytics();
 //		}
 		
-//		initialDirectory();
+		initialDirectory();
 		super.onCreate();
 	}
 
 	private void initialDirectory() {
 		File dir = Environment.getExternalStorageDirectory();
-		File imageFileDir = null;
-		imageFileDir = new File(dir, Constant.APP_FOLDER);
-		if (!imageFileDir.exists())
-			imageFileDir.mkdir();
+		File fileDir = null;
+		fileDir = new File(dir, Constant.APP_FOLDER);
+		if (!fileDir.exists())
+			fileDir.mkdir();
+		fileDir = new File(dir, Constant.VIDEO_FOLDER);
+		if (!fileDir.exists())
+			fileDir.mkdir();
+		
 	}
 	public void setupCrashlytics() {
 		PackageManager packageManager = getPackageManager();

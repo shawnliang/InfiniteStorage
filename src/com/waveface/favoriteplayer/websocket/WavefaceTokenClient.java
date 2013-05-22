@@ -2,6 +2,18 @@ package com.waveface.favoriteplayer.websocket;
 
 
 
+import idv.jason.lib.imagemanager.ImageManager;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+
+
+import java.util.HashMap;
 import java.util.Map;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -9,6 +21,13 @@ import java.util.concurrent.TimeUnit;
 
 import javolution.util.FastMap;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.jwebsocket.api.WebSocketClientEvent;
 import org.jwebsocket.api.WebSocketClientListener;
 import org.jwebsocket.api.WebSocketClientTokenListener;
@@ -27,11 +46,27 @@ import org.jwebsocket.util.Tools;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.os.Environment;
 import android.text.TextUtils;
+
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
+import com.waveface.favoriteplayer.SyncApplication;
+import com.waveface.favoriteplayer.db.LabelDB;
+import com.waveface.favoriteplayer.db.LabelFileView;
+import com.waveface.favoriteplayer.entity.FileEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
+import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.logic.ServersLogic;
+import com.waveface.favoriteplayer.util.FileUtil;
+import com.waveface.favoriteplayer.util.Log;
+import com.waveface.favoriteplayer.util.NetworkUtil;
+import com.waveface.service.HttpInvoker;
+import com.waveface.sync.entity.LabelChangeEntity;
+
+import de.greenrobot.event.EventBus;
+
 
 public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements WebSocketTokenClient {
 	private static final String TAG = WavefaceTokenClient.class.getSimpleName();
@@ -138,22 +173,93 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 			
 			
 			String jsonOutput = aPacket.getUTF8();
-			LabelEntity entity = null;
+		Log.d(TAG, "WebSocket jsonOutput="+jsonOutput);
+		
+		if (NetworkUtil.isWifiNetworkAvailable(mContext)){	
+			//TODO:handle retrive label
+			LabelChangeEntity entity = null;
 			try {
 				if(!TextUtils.isEmpty(jsonOutput))
-					entity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.class);
-			
+					entity = RuntimeState.GSON.fromJson(jsonOutput, LabelChangeEntity.class);
+				   if(entity!=null) {
+				      ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(mContext);
+						ServerEntity pairedServer = servers.get(0);
+						String restfulAPIURL ="http://"+pairedServer.ip+":"+pairedServer.restPort;
+						String getLabelURL = restfulAPIURL + Constant.URL_GET_LABEL;
+						String files="";
+						String getFileURL = restfulAPIURL + Constant.URL_GET_FILE;
+						HashMap<String, String> param = new HashMap<String, String>();
+						param.clear();
+						param.put(Constant.PARAM_LABEL_ID, entity.label_change.label_id);
+						jsonOutput =HttpInvoker.executePost(getLabelURL,param, Constant.CLOUD_CONNECTION_TIMEOUT, Constant.CLOUD_CONNECTION_TIMEOUT);
+						
+						LabelEntity.Label labelEntity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.Label.class);	
+						
+						 for(String f:labelEntity.files){
+							  files+=f+",";
+						  }
+						 files=files.substring(0, files.length()-1);
+						 param.clear();
+						 param.put(Constant.PARAM_FILES, files.trim());
+						 jsonOutput = HttpInvoker.executePost(getFileURL, param,  Constant.CLOUD_CONNECTION_TIMEOUT, Constant.CLOUD_CONNECTION_TIMEOUT);
+						 
+						 //FileEntity
+						 FileEntity fileEntity = RuntimeState.GSON.fromJson(jsonOutput, FileEntity.class);	 
+						
+						 LabelDB.updateLabelInfo(mContext, labelEntity, fileEntity,true);
+						 File root = Environment.getExternalStorageDirectory();
+						 ImageManager	imageManager = SyncApplication.getWavefacePlayerApplication(mContext)
+									.getImageManager();
+						 
+							Cursor filecursor = LabelDB.getLabelFileViewByLabelId(mContext,
+									labelEntity.label_id);
+							if (filecursor != null && filecursor.getCount() > 0) {
+								filecursor.moveToFirst();
+								int count = filecursor.getCount();
+								for (int j = 0; j < count; j++) {
+
+									String type = filecursor
+											.getString(filecursor
+													.getColumnIndex(LabelFileView.COLUMN_TYPE));
+									String fileId = filecursor
+											.getString(filecursor
+													.getColumnIndex(LabelFileView.COLUMN_FILE_ID));
+									String fileName = filecursor
+											.getString(filecursor
+													.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
+									Log.d(TAG, "filename:" + fileName);
+									Log.d(TAG, "fileId:" + fileId);
+									
+									if (type.equals("1")) {
+										String url = restfulAPIURL + Constant.URL_IMAGE + "/" + fileId
+												+ "/" + Constant.URL_IMAGE_ORIGIN;
+										String fullFilename = root.getAbsolutePath()
+												+ Constant.VIDEO_FOLDER+ "/" + fileName;
+										if(!FileUtil.isFileExisted(fullFilename)){
+											downloadVideo(fileId, fullFilename,url);
+										}
+									} else {
+										String url = restfulAPIURL
+												+ Constant.URL_IMAGE + "/" + fileId
+												+ Constant.URL_IMAGE_LARGE;
+										imageManager.getImageWithoutThread(url,
+												null);
+									}
+									long time = System.currentTimeMillis();
+									time = System.currentTimeMillis() - time;
+//									syncingEvent.singleTime = time;
+//									syncingEvent.currentFile++;
+//									EventBus.getDefault().post(syncingEvent);
+									filecursor.moveToNext();
+								}
+								filecursor.close();
+							}
+							mContext.sendBroadcast(new Intent(Constant.ACTION_LABEL_CHANGE));
+				   }
 			} catch (Exception e) {
 				e.printStackTrace();
-			
 			}
-			//TODO:handle retrive label
-			
-			if(entity!=null){
-				//LabelDB.updateLabelInfo(mContext,entity);
-			}
-			
-			
+		}
 			//ORIGINAL Web Socket Code
 			Token lToken = packetToToken(aPacket);
 			//Notifying listeners
@@ -419,5 +525,40 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 	public void getConnections() throws WebSocketException {
 		Token lToken = TokenFactory.createToken(NS_ADMIN_PLUGIN, "getConnections");
 		sendToken(lToken);
+	}
+	
+	public static void downloadVideo(String fileId, String fileName,
+			String url) {
+
+		HttpClient client = new DefaultHttpClient();
+		HttpGet request = new HttpGet();
+		try {
+			BufferedOutputStream bout = new BufferedOutputStream(
+					new FileOutputStream(fileName));
+			request.setURI(new URI(url));
+			HttpResponse response = client.execute(request);
+			StatusLine status = response.getStatusLine();
+//			Log.d("Test", "Statusline: " + status);
+//			Log.d("Test", "Statuscode: " + status.getStatusCode());
+
+			HttpEntity entity = response.getEntity();
+//			Log.d("Test", "Length: " + entity.getContentLength());
+//			Log.d("Test", "type: " + entity.getContentType());
+			entity.writeTo(bout);
+
+			bout.flush();
+			bout.close();
+
+		} catch (URISyntaxException e) {
+			Log.e(TAG, e.getLocalizedMessage());
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			Log.e(TAG, e.getLocalizedMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			Log.e(TAG, e.getLocalizedMessage());
+			e.printStackTrace();
+			// textView1.append("IOException");
+		}
 	}
 }
