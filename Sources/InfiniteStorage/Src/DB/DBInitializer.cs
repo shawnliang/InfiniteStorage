@@ -8,11 +8,14 @@ using InfiniteStorage.Properties;
 
 namespace InfiniteStorage.Model
 {
-	static class DBInitializer
+	public static class DBInitializer
 	{
-		public static void InitialzeDatabaseSchema()
+		public static void InitialzeDatabaseSchema(string connString = null)
 		{
-			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
+			if (connString == null)
+				connString = MyDbContext.ConnectionString;
+
+			using (var conn = new SQLiteConnection(connString))
 			{
 				conn.Open();
 
@@ -146,6 +149,7 @@ update [Labels] set auto = 0;
 
 					transaction.Commit();
 				}
+
 			}
 		}
 

@@ -5,13 +5,20 @@ using System.Text;
 
 namespace InfiniteStorage
 {
-	class PendingSortData
+	public class PendingSortData
 	{
+		public string device_id { get; set; }
 		public List<Guid> discard { get; set; }
 		public List<PendingEvent> events { get; set; }
 	}
 
-	class PendingEvent
+	public enum EventType
+	{
+		Monthly = 0,
+		Manual = 1
+	}
+
+	public class PendingEvent
 	{
 		public DateTime time_start { get; set; }
 		public DateTime time_end { get; set; }
