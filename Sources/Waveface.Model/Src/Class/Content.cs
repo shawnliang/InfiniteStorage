@@ -3,6 +3,30 @@ namespace Waveface.Model
 {
 	public class Content : ContentEntity, IContent
 	{
+		#region Protected Var
+		protected bool _liked;
+		#endregion
+
+
+		#region Public Property
+		public virtual bool Liked
+		{
+			get
+			{
+				return _liked;
+			}
+			set
+			{
+				if (_liked == value)
+					return;
+
+				_liked = value;
+				OnPropertyChanged("Liked");
+			}
+		} 
+		#endregion
+
+
 		#region Constructor
 		public Content()
 		{

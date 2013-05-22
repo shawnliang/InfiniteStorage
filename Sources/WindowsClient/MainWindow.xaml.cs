@@ -105,7 +105,7 @@ namespace Waveface.Client
 
 				if (service != null)
 				{
-					lblContentLocation.DataContext = null;
+			lblContentLocation.DataContext = null;
 					lbxContentContainer.DataContext = service.Contents;
 				}
 				else
@@ -113,29 +113,35 @@ namespace Waveface.Client
 					lblContentLocation.DataContext = ti.DataContext;
 					lbxContentContainer.DataContext = (ti.DataContext as IContentGroup).Contents;
 				}
-			}
+		}
 
 		}
 
 		#region Event Process
 		private void content_TagStatusChanged(object sender, System.EventArgs e)
 		{
-			//TODO: 待重構
-			var content = lbxContentContainer.SelectedItem as IContentEntity;
-			var contentControl = sender as ContentItem;
-
-			if (!contentControl.Tagged)
-			{
-				ClientFramework.Client.Default.UnTag(content);
-				return;
-			}
-
-			if (LabeledContents.Contains(content))
-				return;
-
-			ClientFramework.Client.Default.Tag(content);
+			//var content = lbxContentContainer.SelectedItem as IContentEntity;
+			//ToggleContentTagStatus(content as IContent);
 		}
+
+		//private void ToggleContentTagStatus(IContent content)
+		//{
+		//	if (content == null)
+		//		return;
+
+		//	if (content.Liked)
+		//	{
+		//		ClientFramework.Client.Default.UnTag(content);
+		//		return;
+		//	}
+
+		//	if (LabeledContents.Contains(content))
+		//		return;
+
+		//	ClientFramework.Client.Default.Tag(content);
+		//}
 		#endregion
+
 
 		private void Window_KeyDown(object sender, KeyEventArgs e)
 		{
@@ -154,6 +160,17 @@ namespace Waveface.Client
 		{
 			var contentControl = sender as ContentItem;
 			contentControl.Tagged = !contentControl.Tagged;
+		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			foreach (IContent content in lbxContentContainer.Items)
+			{
+				if (!content.Liked)
+				{
+					content.Liked = true;
+				}
+			}
 		}
 	}
 }

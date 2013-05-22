@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Waveface.Client.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Expression.Drawing" />
     <Reference Include="NBug, Version=1.1.0.0, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">

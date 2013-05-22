@@ -78,6 +78,14 @@ namespace Waveface.ClientFramework
 		}
 		#endregion
 
+		public Client()
+		{
+			foreach (var service in Services)
+			{
+				service.ContentPropertyChanged += service_ContentPropertyChanged;
+			}
+		}
+
 
 
 		#region Private Method
@@ -124,24 +132,18 @@ namespace Waveface.ClientFramework
 		}
 		#endregion
 
-
-		#region Public Method
-		public void Tag(IContentEntity content)
+		void service_ContentPropertyChanged(object sender, ContentPropertyChangeEventArgs e)
 		{
+			var content = e.Content as IContent;
+
+			m_TaggedContents.Remove(content);
 			if (content.Liked)
-				return;
-			m_TaggedContents.Remove(content);
-			m_TaggedContents.Add(content);
-			StationAPI.Tag(content.ID, m_LabelID);
+			{
+				m_TaggedContents.Add(content);
+				StationAPI.Tag(content.ID, m_LabelID);
+			}
+			else
+				StationAPI.UnTag(content.ID, m_LabelID);
 		}
-
-		public void UnTag(IContentEntity content)
-		{
-			if (!content.Liked)
-				return;
-			m_TaggedContents.Remove(content);
-			StationAPI.UnTag(content.ID, m_LabelID);
-		}
-		#endregion
 	}
 }
