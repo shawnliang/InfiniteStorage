@@ -36,8 +36,8 @@ namespace InfiniteStorage.REST
 									id = f.file_id,
 									file_name = f.file_name,
 									thumb_ready = f.thumb_ready,
-									width = 0, //TODO
-									height = 0,//TODO
+									width = f.width,
+									height = f.height,
 									size = f.file_size,
 									type = f.type,
 									dev_id = f.device_id,
