@@ -20,6 +20,7 @@ import com.waveface.favoriteplayer.event.WebSocketEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.task.DownloadLabelsTask;
 import com.waveface.favoriteplayer.ui.fragment.FragmentBase;
+import com.waveface.favoriteplayer.ui.fragment.OverviewFragment;
 import com.waveface.favoriteplayer.ui.fragment.PlaybackFragment;
 import com.waveface.favoriteplayer.ui.fragment.SyncFragment;
 import com.waveface.favoriteplayer.ui.fragment.SyncFragmentBase.onSyncFragmentChangedListener;
@@ -43,6 +44,12 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 		
 		@Override
 		public void run() {
+//			if(OverviewFragment.class.getSimpleName().equals(mCurrentFragmentName) == false) {
+//				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//				OverviewFragment overview = new OverviewFragment();
+//				transaction.replace(R.id.container_content, overview, OverviewFragment.class.getSimpleName()).commit();
+//				mCurrentFragmentName = OverviewFragment.class.getSimpleName();
+//			}
 			PlaybackFragment photoJournal = new PlaybackFragment();
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 			transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);

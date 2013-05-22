@@ -222,4 +222,8 @@ public class Constant {
 	public final static String SIMPLE_TIME_FORMAT = "hh:mm aa";
 
 	public final static String JSON_ERROR_TAG ="JSON_ERROR";
+	
+
+	// passing to bundle
+	public static final String ARGUMENT1 = "argument1";
 }
