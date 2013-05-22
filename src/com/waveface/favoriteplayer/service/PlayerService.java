@@ -57,6 +57,9 @@ public class PlayerService extends Service{
         BackupTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+            	if(RuntimeState.OnWebSocketOpened == false){
+            		autoPairingConnect();
+            	}
             	if(NetworkUtil.isWifiNetworkAvailable(mContext)){
                 	long fromTime = System.currentTimeMillis()-mMDNSSetupTime;
                 	if(NetworkUtil.isWifiNetworkAvailable(mContext)
@@ -111,6 +114,9 @@ public class PlayerService extends Service{
 							setupMDNS();
 						}
 					}
+					else if(actionContent.equals(Constant.ACTION_LABEL_CHANGE)){
+						
+					}
 				}
 			}
 		}
@@ -158,10 +164,16 @@ public class PlayerService extends Service{
 			ServerEntity entity = mPairedServers.get(0);
 			if(!TextUtils.isEmpty(entity.ip) && !TextUtils.isEmpty(entity.notifyPort)){
 				//CONNECT FIRST FOR THREE TIME
-				String wsLocation ="ws://"+entity.ip+":"+entity.notifyPort;
 				int retryCount= 0;
 				while(retryCount<3 &&NetworkUtil.isWifiNetworkAvailable(mContext) && RuntimeState.OnWebSocketOpened==false){
-					ServersLogic.startWSServerConnect(this, wsLocation, entity.serverId,entity.serverName, entity.ip,entity.notifyPort,entity.restPort);
+					ServersLogic.startWSServerConnect(this, 
+							"ws://"+entity.ip+":"+entity.notifyPort, 
+							entity.serverId,
+							entity.serverName, 
+							entity.ip,
+							entity.notifyPort,
+							entity.restPort
+							,true);
 					try {
 						Thread.sleep(50);
 					} catch (InterruptedException e) {
@@ -173,6 +185,8 @@ public class PlayerService extends Service{
 		}
 	}
 	private void autoPairingConnect(){
+		if(!NetworkUtil.isWifiNetworkAvailable(mContext))
+			return ;
 		ServerEntity pairedServer = null;
 		ServerEntity bonjourServer = null;		
 		mPairedServers = ServersLogic.getBackupedServers(this);
@@ -184,7 +198,14 @@ public class PlayerService extends Service{
 				mCondidateServerId = pairedServer.serverId;
 				mCondidateWSLocation = bonjourServer.wsLocation;
 				Log.d(TAG, "PAIRING WITH "+pairedServer.serverName+","+bonjourServer.wsLocation);
-				ServersLogic.startWSServerConnect(this, mCondidateWSLocation, mCondidateServerId,bonjourServer.serverName,bonjourServer.ip,bonjourServer.notifyPort,bonjourServer.restPort);
+				ServersLogic.startWSServerConnect(this, 
+						mCondidateWSLocation, 
+						mCondidateServerId,
+						bonjourServer.serverName,
+						bonjourServer.ip,
+						bonjourServer.notifyPort,
+						bonjourServer.restPort
+						,false);
 				while(!RuntimeState.OnWebSocketOpened){
 					try {
 						Thread.sleep(50);

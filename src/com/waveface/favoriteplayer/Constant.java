@@ -158,6 +158,7 @@ public class Constant {
 	public final static String URL_IMAGE_LARGE = "/large";
 	public final static String URL_IMAGE_MEDIUM = "/medium";
 	public final static String URL_IMAGE_SMALL = "/small";
+	public final static String URL_IMAGE_ORIGIN="origin";
 	
 	
 	// FOR LABEL DATE PARAMETER

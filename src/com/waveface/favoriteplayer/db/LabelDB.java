@@ -215,6 +215,33 @@ public class LabelDB {
 
 		return cursor;
 	}
+	
+	public static ArrayList getFilesByLabelId(Context context, String labelId
+			) {
+		Cursor cursor = context.getContentResolver().query(
+				LabelFileView.CONTENT_URI,
+				new String[] { 
+						LabelFileView.COLUMN_LABEL_ID,
+						LabelFileView.COLUMN_FILE_ID,
+						LabelFileView.COLUMN_ORDER,
+						LabelFileView.COLUMN_FILE_NAME,
+						LabelFileView.COLUMN_FOLDER,
+						LabelFileView.COLUMN_THUMB_READY,
+						LabelFileView.COLUMN_TYPE, 
+						LabelFileView.COLUMN_DEV_ID,
+						LabelFileView.COLUMN_DEV_NAME,
+						LabelFileView.COLUMN_HEIGHT,
+						LabelFileView.COLUMN_WIDTH,
+						LabelFileView.COLUMN_DEV_TYPE },
+				LabelFileView.COLUMN_LABEL_ID + " = ?",
+				new String[] { labelId },
+				LabelFileView.DEFAULT_SORT_ORDER );
+		
+
+		return null;
+	}
+	
+	
 	public static Cursor getLabelFilesByLabelId(Context context, String labelId) {
 		Cursor cursor = context.getContentResolver().query(
 				LabelFileTable.CONTENT_URI,
