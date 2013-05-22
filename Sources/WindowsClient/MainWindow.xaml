@@ -137,7 +137,15 @@
             <Label Content="Labeled photos" Foreground="#FFE0E0E0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
 
-        <TreeView x:Name="lbxDeviceContainer" Grid.Column="0" Grid.Row="1" Background="#FF2E2E2E" BorderBrush="{x:Null}"
+        <Grid Grid.Column="0" Grid.Row="1" Background="#FF2E2E2E">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Background="#FF0B0B0B">
+                <Label Content="Sources" Foreground="#FF7F7F7F"/>
+            </Grid>
+            <TreeView x:Name="lbxDeviceContainer"  Grid.Row="1" Background="{x:Null}" BorderBrush="{x:Null}"
                   ItemsSource="{Binding IsAsync=True}"
                  VirtualizingStackPanel.IsVirtualizing="True" 
                  VirtualizingStackPanel.VirtualizationMode="Recycling">
@@ -173,6 +181,7 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
+        </Grid>
 
         <Grid Grid.Column="2" Grid.Row="1" Background="#FF2E2E2E">
             <Grid.Effect>
