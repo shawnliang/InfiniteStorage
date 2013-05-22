@@ -54,6 +54,7 @@
     <Compile Include="Src\Class\Service.cs" />
     <Compile Include="Src\Class\ServiceSupplier.cs" />
     <Compile Include="Src\Class\ServiceSupplierInfo.cs" />
+    <Compile Include="Src\Event\ContentPropertyChangeEventArgs.cs" />
     <Compile Include="Src\Extension\CollectionExtension.cs" />
     <Compile Include="Src\Interface\IContent.cs" />
     <Compile Include="Src\Interface\IContentEntity.cs" />

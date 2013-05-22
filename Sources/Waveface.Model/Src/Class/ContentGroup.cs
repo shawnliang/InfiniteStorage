@@ -48,6 +48,10 @@ namespace Waveface.Model
 		#endregion
 
 
+		#region Event
+		public event EventHandler<ContentPropertyChangeEventArgs> ContentPropertyChanged; 
+		#endregion
+
 
 		#region Constructor
 		public ContentGroup()
@@ -81,6 +85,13 @@ namespace Waveface.Model
 
 
 		#region Protected Method
+		protected void OnContentPropertyChanged(ContentPropertyChangeEventArgs e)
+		{
+			if (ContentPropertyChanged == null)
+				return;
+			ContentPropertyChanged(this, e);
+		}
+
 		/// <summary>
 		/// Sets the contents.
 		/// </summary>
@@ -113,9 +124,26 @@ namespace Waveface.Model
 				foreach (ContentEntity item in e.NewItems)
 				{
 					item.Parent = this;
+					item.PropertyChanged += item_PropertyChanged;
+
+					var group = item as IContentGroup;
+					if (group == null)
+						continue;
+					group.ContentPropertyChanged += group_ContentPropertyChanged;
 				}
 			}
 		}
+
+		void group_ContentPropertyChanged(object sender, ContentPropertyChangeEventArgs e)
+		{
+			OnContentPropertyChanged(e);
+		}
+
+		void item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			OnContentPropertyChanged(new ContentPropertyChangeEventArgs(sender as IContentEntity, e.PropertyName));
+		}
 		#endregion
+
 	}
 }

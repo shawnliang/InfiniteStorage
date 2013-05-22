@@ -44,13 +44,13 @@ namespace Waveface.ClientFramework
 		#region Constructor
 		private BunnyServiceSupplier()
 		{
-			GetServices();
+			SetServices();
 		}
 		#endregion
 
 
 		#region Private Method
-		private void GetServices()
+		private void SetServices()
 		{
 			var services = new List<Service>();
 			var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
