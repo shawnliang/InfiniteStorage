@@ -54,6 +54,8 @@ namespace InfiniteStorage.WebsocketProtocol
 				if (ctx.fileCtx.file_size != ctx.temp_file.BytesWritten)
 					log4net.LogManager.GetLogger(typeof(TransmitStartedState)).WarnFormat("{0} is expected to have {1} bytes but {2} bytes received.", ctx.fileCtx.file_name, ctx.fileCtx.file_size, ctx.temp_file.BytesWritten);
 
+				ctx.raiseOnFileReceived();
+
 				log4net.LogManager.GetLogger("wsproto").Debug("file-end: " + ctx.fileCtx.file_name);
 			}
 			else

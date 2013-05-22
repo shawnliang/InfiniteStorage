@@ -147,6 +147,45 @@ update [Labels] set auto = 0;
 						schemaVersion = 5;
 					}
 
+					if (schemaVersion == 5L)
+					{
+						var cmd = new SQLiteCommand(
+@"
+insert into [Labels] (label_id, name, seq, deleted, auto)
+values (@id_today_photo, 'Today''s Photo', 2, 0, 1);
+
+insert into [Labels] (label_id, name, seq, deleted, auto)
+values (@id_today_video, 'Today''s video', 3, 0, 1);
+
+insert into [Labels] (label_id, name, seq, deleted, auto)
+values (@id_this_week_photo, 'This Week''s Photo', 4, 0, 1);
+
+insert into [Labels] (label_id, name, seq, deleted, auto)
+values (@id_this_week_video, 'This Week''s Video', 5, 0, 1);
+
+", conn);
+						var id_today_photo = Guid.NewGuid();
+						var id_today_video = Guid.NewGuid();
+						var id_this_week_photo = Guid.NewGuid();
+						var id_this_week_video = Guid.NewGuid();
+
+						cmd.Parameters.Add(new SQLiteParameter("@id_today_photo", id_today_photo));
+						cmd.Parameters.Add(new SQLiteParameter("@id_today_video", id_today_video));
+						cmd.Parameters.Add(new SQLiteParameter("@id_this_week_photo", id_this_week_photo));
+						cmd.Parameters.Add(new SQLiteParameter("@id_this_week_video", id_this_week_video));
+						cmd.ExecuteNonQuery();
+
+						Settings.Default.LabelPhotoToday = id_today_photo;
+						Settings.Default.LabelVideoToday = id_today_video;
+						Settings.Default.LabelPhotoThisWeek = id_this_week_photo;
+						Settings.Default.LabelVideoThisWeek = id_this_week_video;
+						Settings.Default.Save();
+
+						updateDbSchemaVersion(conn, 5);
+						schemaVersion = 5;
+					}
+
+
 					transaction.Commit();
 				}
 
