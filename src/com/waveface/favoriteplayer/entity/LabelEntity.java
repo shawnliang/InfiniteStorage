@@ -13,7 +13,6 @@ public class LabelEntity {
 	public List<Label> labels = new ArrayList<Label>();
 	
 	
-	
 	public class Label{	
 	@SerializedName("label_id")
 	public String label_id;
@@ -23,8 +22,6 @@ public class LabelEntity {
 	
 	@SerializedName("label_name")
 	public String label_name;
-	
-	
 	
 	public String[] files;
 	}

@@ -10,11 +10,11 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 
 import com.waveface.exception.WammerServerException;
-import com.waveface.service.HttpInvoker;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
 import com.waveface.favoriteplayer.SyncApplication;
 import com.waveface.favoriteplayer.db.LabelDB;
+import com.waveface.favoriteplayer.db.LabelFileView;
 import com.waveface.favoriteplayer.entity.FileEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
@@ -22,6 +22,7 @@ import com.waveface.favoriteplayer.event.LabelImportedEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.util.Log;
 import com.waveface.favoriteplayer.util.NetworkUtil;
+import com.waveface.service.HttpInvoker;
 
 import de.greenrobot.event.EventBus;
 
@@ -65,6 +66,7 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 			entity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.class);
 			if (entity != null) {
 				for (LabelEntity.Label label : entity.labels) {
+					files = "";
 					if (label.files == null)
 						continue;
 					if (label.files.length > 0) {
@@ -93,62 +95,75 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 				LabelImportedEvent syncingEvent = new LabelImportedEvent(LabelImportedEvent.STATUS_SYNCING);
 				LabelImportedEvent doneEvent = new LabelImportedEvent(LabelImportedEvent.STATUS_DONE);
 				
-				for (LabelEntity.Label label : entity.labels) {
-					if (label.files == null)
-						continue;
-					syncingEvent.totalFile = label.files.length;
-					for (int i = 0; i < label.files.length; ++i) {
-						String url = restfulAPIURL + Constant.URL_IMAGE + "/"
-								+ label.files[i] + Constant.URL_IMAGE_LARGE;
-						
-						long time = System.currentTimeMillis();
-						mImageManager.getImageWithoutThread(url, null);
-						time = System.currentTimeMillis() - time;
-						syncingEvent.singleTime = time;
-						syncingEvent.currentFile++;
-						EventBus.getDefault().post(syncingEvent);
+				
+				Cursor cursor = LabelDB.getAllLabels(mContext);
+				String labelId = null;
+				String fileId = null;
+				String type = null;
+				if(cursor!=null && cursor.getCount()>0){
+					int count = cursor.getCount();
+					cursor.moveToFirst();
+					for(int i = 0 ;  i<count;i++){
+						labelId = cursor.getString(0);
+						Cursor fileCursor = LabelDB.getFilesByLabelId(mContext, labelId,100);
+						if(fileCursor!=null && fileCursor.getCount()>0){
+							int filecount = fileCursor.getCount();
+							fileCursor.moveToFirst();
+							syncingEvent.totalFile = filecount;
+							for(int j = 0 ;  j<filecount;j++){
+								fileId = fileCursor.getString(fileCursor.getColumnIndex(LabelFileView.COLUMN_FILE_ID));
+								type = fileCursor.getString(fileCursor.getColumnIndex(LabelFileView.COLUMN_TYPE));
+								if(type.equals("0")){
+									String url = restfulAPIURL + Constant.URL_IMAGE + "/"
+											+ fileId + Constant.URL_IMAGE_LARGE;
+									long time = System.currentTimeMillis();
+									mImageManager.getImageWithoutThread(url, null);
+									time = System.currentTimeMillis() - time;
+									syncingEvent.singleTime = time;
+									syncingEvent.currentFile++;
+									EventBus.getDefault().post(syncingEvent);
+								}
+								else if(type.equals("1")){
+									//Videos
+									String url = restfulAPIURL + Constant.URL_IMAGE + "/"
+											+ fileId + Constant.URL_IMAGE;
+									Log.d(TAG, "Video url:"+url);
+								}
+								fileCursor.moveToNext();
+							}
+							EventBus.getDefault().post(doneEvent);
+							fileCursor.close();
+							fileCursor = null ;
+						}
+						cursor.moveToNext();
 					}
-
-					EventBus.getDefault().post(doneEvent);
 				}
+				cursor.close();
+				cursor = null;
+//				for (LabelEntity.Label label : entity.labels) {
+//					if (label.files == null)
+//						continue;
+//					syncingEvent.totalFile = label.files.length;
+//					for (int i = 0; i < label.files.length; ++i) {
+//						String url = restfulAPIURL + Constant.URL_IMAGE + "/"
+//								+ label.files[i] + Constant.URL_IMAGE_LARGE;
+//						
+//						long time = System.currentTimeMillis();
+//						mImageManager.getImageWithoutThread(url, null);
+//						time = System.currentTimeMillis() - time;
+//						syncingEvent.singleTime = time;
+//						syncingEvent.currentFile++;
+//						EventBus.getDefault().post(syncingEvent);
+//					}
+//
+//					EventBus.getDefault().post(doneEvent);
+//				}
 			}
 
 		} catch (WammerServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
-		Cursor cursor = LabelDB.getAllLabels(mContext);
-		String labelId = null;
-		if (cursor != null && cursor.getCount() > 0) {
-			cursor.moveToFirst();
-			labelId = cursor.getString(0);
-
-		}
-		cursor = LabelDB.getLabelFilesByLabelId(mContext, labelId);
-		if (cursor != null && cursor.getCount() > 0) {
-			cursor.moveToFirst();
-			int count = cursor.getCount();
-			for (int i = 0; i < count; i++) {
-				Log.d(TAG, "LABEL FILE TABLE Label ID:" + cursor.getString(0));
-				Log.d(TAG, "LABEL FILE TABLE File ID:" + cursor.getString(1));
-				cursor.moveToNext();
-			}
-			cursor.close();
-		}
-
-		cursor = LabelDB.getFilesByLabelId(mContext, labelId, 3);
-		if (cursor != null && cursor.getCount() > 0) {
-			cursor.moveToFirst();
-			int count = cursor.getCount();
-			for (int i = 0; i < count; i++) {
-				Log.d(TAG, "Label ID:" + cursor.getString(0));
-				Log.d(TAG, "File ID:" + cursor.getString(1));
-				cursor.moveToNext();
-			}
-			cursor.close();
-		}
-		cursor = null;
 		return null;
 	}
 }
