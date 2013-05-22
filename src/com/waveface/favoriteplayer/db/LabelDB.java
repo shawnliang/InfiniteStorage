@@ -192,8 +192,7 @@ public class LabelDB {
 		return cursor;
 	}
 
-	public static Cursor getFilesByLabelId(Context context, String labelId,
-			int limit) {
+	public static Cursor getLabelFileViewByLabelId(Context context, String labelId) {
 		Cursor cursor = context.getContentResolver().query(
 				LabelFileView.CONTENT_URI,
 				new String[] { 
@@ -209,9 +208,9 @@ public class LabelDB {
 						LabelFileView.COLUMN_HEIGHT,
 						LabelFileView.COLUMN_WIDTH,
 						LabelFileView.COLUMN_DEV_TYPE },
-				LabelFileView.COLUMN_LABEL_ID + " = ?",
-				new String[] { labelId },
-				LabelFileView.DEFAULT_SORT_ORDER + "  LIMIT " + limit);
+						null,
+						null,
+						null);
 
 		return cursor;
 	}

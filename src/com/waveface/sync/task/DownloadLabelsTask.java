@@ -96,7 +96,7 @@ public class DownloadLabelsTask extends AsyncTask<Void,Void,Void>{
 			cursor.close();
 		}		
 		
-		cursor = LabelDB.getFilesByLabelId(mContext,labelId,3);
+		//cursor = LabelDB.getFilesByLabelId(mContext,labelId,3);
 		if(cursor!=null && cursor.getCount()>0){
 			cursor.moveToFirst();
 			int count = cursor.getCount();

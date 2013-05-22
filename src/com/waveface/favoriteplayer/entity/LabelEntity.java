@@ -10,8 +10,6 @@ public class LabelEntity {
 	@SerializedName("labels")
 	public List<Label> labels = new ArrayList<Label>();
 
-
-
 	public class Label{	
 	@SerializedName("label_id")
 	public String label_id;

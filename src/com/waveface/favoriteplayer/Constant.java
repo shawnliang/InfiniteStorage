@@ -5,7 +5,9 @@ public class Constant {
 	//DEVICE TYPE
 	public static boolean PHONE = true;
 
-	public final static String APP_FOLDER = "/InfiniteStorage";
+	public final static String APP_FOLDER = "/FavoritePlayer";
+	public final static String VIDEO_FOLDER = APP_FOLDER+"/Video";
+	
 	
 	public final static String ACTION_NETWORK_STATE_CHANGE = "com.waveface.favoriteplayer.action.NETWORK_STATE_CHANGE";	
 	public final static String ACTION_WS_SERVER_NOTIFY = "com.waveface.favoriteplayer.action.WS_SERVER_NOTIFY";	

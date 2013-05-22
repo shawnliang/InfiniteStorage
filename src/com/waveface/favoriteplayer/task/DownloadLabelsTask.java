@@ -25,7 +25,6 @@ import android.os.AsyncTask;
 import android.os.Environment;
 
 import com.waveface.exception.WammerServerException;
-import com.waveface.service.HttpInvoker;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
 import com.waveface.favoriteplayer.SyncApplication;
@@ -36,8 +35,10 @@ import com.waveface.favoriteplayer.entity.LabelEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.LabelImportedEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
+import com.waveface.favoriteplayer.util.FileUtil;
 import com.waveface.favoriteplayer.util.Log;
 import com.waveface.favoriteplayer.util.NetworkUtil;
+import com.waveface.service.HttpInvoker;
 
 import de.greenrobot.event.EventBus;
 
@@ -45,22 +46,23 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 
 	private static final String TAG = DownloadLabelsTask.class.getSimpleName();
 	private ImageManager mImageManager;
-	
+
 	private Context mContext;
 
 	public DownloadLabelsTask(Context context) {
 		mContext = context;
 		mImageManager = SyncApplication.getWavefacePlayerApplication(context)
 				.getImageManager();
-		
 	}
 
 	@Override
 	protected Void doInBackground(Void... params) {
-		if(NetworkUtil.isWifiNetworkAvailable(mContext) == false)
+		if (NetworkUtil.isWifiNetworkAvailable(mContext) == false)
 			return null;
 		ArrayList<ServerEntity> servers = ServersLogic
 				.getBackupedServers(mContext);
+		if (servers.size() == 0)
+			return null;
 		ServerEntity pairedServer = servers.get(0);
 		String restfulAPIURL = "http://" + pairedServer.ip + ":"
 				+ pairedServer.restPort;
@@ -80,6 +82,7 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 			entity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.class);
 			if (entity != null) {
 				for (LabelEntity.Label label : entity.labels) {
+					files = "";
 					if (label.files == null)
 						continue;
 					if (label.files.length > 0) {
@@ -96,141 +99,116 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 						// FileEntity
 						fileEntity = RuntimeState.GSON.fromJson(jsonOutput,
 								FileEntity.class);
-						
+
 						Log.d(TAG, "file fileEntity =" + fileEntity);
 						Log.d(TAG, "file jsonOutString =" + jsonOutput);
 
 					}
 					// update label info
-					LabelDB.updateLabelInfo(mContext, label, fileEntity,false);
+					LabelDB.updateLabelInfo(mContext, label, fileEntity, false);
 				}
-				LabelImportedEvent syncingEvent = new LabelImportedEvent(LabelImportedEvent.STATUS_SYNCING);
-				LabelImportedEvent doneEvent = new LabelImportedEvent(LabelImportedEvent.STATUS_DONE);
+				LabelImportedEvent syncingEvent = new LabelImportedEvent(
+						LabelImportedEvent.STATUS_SYNCING);
+				LabelImportedEvent doneEvent = new LabelImportedEvent(
+						LabelImportedEvent.STATUS_DONE);
 
+				File root = Environment.getExternalStorageDirectory();
+				Cursor cursor = LabelDB.getAllLabels(mContext);
+				String labelId = null;
+				if (cursor != null && cursor.getCount() > 0) {
+					cursor.moveToFirst();
+					labelId = cursor.getString(0);
+					for (int i = 0; i < cursor.getCount(); i++) {
+						Cursor filecursor = LabelDB.getLabelFileViewByLabelId(mContext,
+								labelId);
+						if (filecursor != null && filecursor.getCount() > 0) {
+							filecursor.moveToFirst();
+							int count = filecursor.getCount();
+							syncingEvent.totalFile = count;
+							for (int j = 0; j < count; j++) {
 
-				
-//				for (LabelEntity.Label label : entity.labels) {
-//					if (label.files == null)
-//						continue;
-//					syncingEvent.totalFile = label.files.length;
-//					for (int i = 0; i < label.files.length; ++i) {
-//						String url = restfulAPIURL + Constant.URL_IMAGE + "/"
-//								+ label.files[i] + Constant.URL_IMAGE_LARGE;
-//						
-//						long time = System.currentTimeMillis();
-//						
-//						mImageManager.getImageWithoutThread(url, null);
-//						time = System.currentTimeMillis() - time;
-//						syncingEvent.singleTime = time;
-//						syncingEvent.currentFile++;
-//						
-//						EventBus.getDefault().post(syncingEvent);
-//					}
-//
-//					EventBus.getDefault().post(doneEvent);
-//				}
-				
-				
+								String type = filecursor
+										.getString(filecursor
+												.getColumnIndex(LabelFileView.COLUMN_TYPE));
+								String fileId = filecursor
+										.getString(filecursor
+												.getColumnIndex(LabelFileView.COLUMN_FILE_ID));
+								String fileName = filecursor
+										.getString(filecursor
+												.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
+								Log.d(TAG, "filename:" + fileName);
+								Log.d(TAG, "fileId:" + fileId);
+								
+								if (type.equals("1")) {
+									String url = restfulAPIURL + Constant.URL_IMAGE + "/" + fileId
+											+ "/" + Constant.URL_IMAGE_ORIGIN;
+									String fullFilename = root.getAbsolutePath()
+											+ Constant.VIDEO_FOLDER+ "/" + fileName;
+									if(!FileUtil.isFileExisted(fullFilename)){
+										downloadVideo(fileId, fullFilename,url);
+									}
+								} else {
+									String url = restfulAPIURL
+											+ Constant.URL_IMAGE + "/" + fileId
+											+ Constant.URL_IMAGE_LARGE;
+									mImageManager.getImageWithoutThread(url,
+											null);
+								}
+								long time = System.currentTimeMillis();
+								time = System.currentTimeMillis() - time;
+								syncingEvent.singleTime = time;
+								syncingEvent.currentFile++;
+								EventBus.getDefault().post(syncingEvent);
+								filecursor.moveToNext();
+							}
+							filecursor.close();
+						}
+					}
+					EventBus.getDefault().post(doneEvent);
+				}
+				cursor = null;
 			}
 
 		} catch (WammerServerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
-		Cursor cursor = LabelDB.getAllLabels(mContext);
-		String labelId = null;
-		if (cursor != null && cursor.getCount() > 0) {
-			cursor.moveToFirst();
-			labelId = cursor.getString(0);
-			for (int i = 0; i < cursor.getCount(); i++) {
 
-				cursor = LabelDB.getFilesByLabelId(mContext, labelId, 3);
-				if (cursor != null && cursor.getCount() > 0) {
-					cursor.moveToFirst();
-					int count = cursor.getCount();
-					for (int j = 0; j < count; j++) {
-						Log.d(TAG, "Label ID:" + cursor.getString(0));
-						Log.d(TAG, "File ID:" + cursor.getString(1));
-						
-						String type =cursor.getString(cursor.getColumnIndex(LabelFileView.COLUMN_TYPE));
-						String fileId =cursor.getString(cursor.getColumnIndex(LabelFileView.COLUMN_FILE_ID));
-						String fileName =cursor.getString(cursor.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
-						if(type.equals("1")){
-							downloadVideo(fileId,fileName,restfulAPIURL);
-						}else{
-							String url = restfulAPIURL + Constant.URL_IMAGE + "/"
-									+ fileId + Constant.URL_IMAGE_LARGE;
-							mImageManager.getImageWithoutThread(url, null);
-						}
-						cursor.moveToNext();
-					}
-					cursor.close();
-				}
-			}
-		}
-		cursor = null;
 		return null;
 	}
-	
-//	public static void downloadFile(FileEntity fileEntity,String restfulAPIURL,ImageManager mImageManager){
-//		//mImageManager.getImageWithoutThread(url, null);
-//		for(FileEntity.File file: fileEntity.files){
-//			if(file.type.equals("1")){
-//				downloadVideo(file,restfulAPIURL);
-//			}else{
-//				String url = restfulAPIURL + Constant.URL_IMAGE + "/"
-//						+ file.id + Constant.URL_IMAGE_LARGE;
-//				mImageManager.getImageWithoutThread(url, null);
-//			}
-//		}
-//		
-//	}
-	
-	
-	
-	
-	public static void downloadVideo(String fileId,String fileName,String restfulAPIURL ){
-		
+
+	public static void downloadVideo(String fileId, String fileName,
+			String url) {
+
 		HttpClient client = new DefaultHttpClient();
 		HttpGet request = new HttpGet();
-			try {
-			File root = Environment.getExternalStorageDirectory();
+		try {
 			BufferedOutputStream bout = new BufferedOutputStream(
-			new FileOutputStream(
-			root.getAbsolutePath() + Constant.APP_FOLDER+"Video"+"/"+fileName));
-			String url = restfulAPIURL + Constant.URL_IMAGE + "/"
-					+ fileId + Constant.URL_IMAGE_ORIGIN;
+					new FileOutputStream(fileName));
 			request.setURI(new URI(url));
 			HttpResponse response = client.execute(request);
 			StatusLine status = response.getStatusLine();
-			//textView1.append("status.getStatusCode(): " + status.getStatusCode() + "\n");
-			Log.d("Test", "Statusline: " + status);
-			Log.d("Test", "Statuscode: " + status.getStatusCode()); 
-			
+//			Log.d("Test", "Statusline: " + status);
+//			Log.d("Test", "Statuscode: " + status.getStatusCode());
+
 			HttpEntity entity = response.getEntity();
-			//textView1.append("length: " + entity.getContentLength() + "\n");
-			//textView1.append("type: " + entity.getContentType() + "\n");
-			Log.d("Test", "Length: " + entity.getContentLength());
-			Log.d("Test", "type: " + entity.getContentType());
-			
+//			Log.d("Test", "Length: " + entity.getContentLength());
+//			Log.d("Test", "type: " + entity.getContentType());
 			entity.writeTo(bout);
-			
+
 			bout.flush();
 			bout.close();
-			//textView1.append("OK");
-			
-			} catch (URISyntaxException e) {
-	// TODO Auto-generated catch block
-	//textView1.append("URISyntaxException");
-	} catch (ClientProtocolException e) {
-	// TODO Auto-generated catch block
-	//textView1.append("ClientProtocolException");
-	} catch (IOException e) {
-	// TODO Auto-generated catch block
-	//textView1.append("IOException");
-	} 
-		
-		
+
+		} catch (URISyntaxException e) {
+			Log.e(TAG, e.getLocalizedMessage());
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			Log.e(TAG, e.getLocalizedMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			Log.e(TAG, e.getLocalizedMessage());
+			e.printStackTrace();
+			// textView1.append("IOException");
+		}
 	}
 }
