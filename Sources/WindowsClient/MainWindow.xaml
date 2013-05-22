@@ -8,9 +8,10 @@
         Title="MainWindow" Height="498.5" Width="807" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
 
     <Window.Resources>
-        <DataTemplate DataType="{x:Type wvmodel:Service}">
+        <!--<DataTemplate DataType="{x:Type wvmodel:Service}">
             <Label Content="{Binding Name}" Foreground="White" Height="40" VerticalContentAlignment="Center"/>
-        </DataTemplate>
+        </DataTemplate>-->
+
 
         <!-- Photo Template -->
         <DataTemplate DataType="{x:Type wvmodel:ContentGroup}">
@@ -135,15 +136,52 @@
             </Grid.Effect>
             <Label Content="Labeled photos" Foreground="#FFE0E0E0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
-        <ListBox x:Name="lbxDeviceContainer" Grid.Column="0" Grid.Row="1" Background="#FF2E2E2E" BorderBrush="{x:Null}"
+
+        <Grid Grid.Column="0" Grid.Row="1" Background="#FF2E2E2E">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Background="#FF0B0B0B">
+                <Label Content="Sources" Foreground="#FF7F7F7F"/>
+            </Grid>
+            <TreeView x:Name="lbxDeviceContainer"  Grid.Row="1" Background="{x:Null}" BorderBrush="{x:Null}"
                   ItemsSource="{Binding IsAsync=True}"
-                 SelectedIndex="0"
                  VirtualizingStackPanel.IsVirtualizing="True" 
-                 VirtualizingStackPanel.VirtualizationMode="Recycling" SelectionChanged="lbxDeviceContainer_SelectionChanged" PreviewMouseLeftButtonDown="lbxDeviceContainer_PreviewMouseLeftButtonDown">
-            <ListBox.Effect>
+                 VirtualizingStackPanel.VirtualizationMode="Recycling">
+            <TreeView.Resources>
+
+                <Style
+ TargetType="TreeViewItem">
+
+                    <EventSetter
+ Event="TreeViewItem.PreviewMouseLeftButtonDown" Handler="TreeViewItem_PreviewMouseLeftButtonDown"
+ ></EventSetter>
+
+                </Style>
+
+            </TreeView.Resources>
+            <TreeView.Effect>
                 <DropShadowEffect BlurRadius="1" ShadowDepth="1" Direction="0"/>
-            </ListBox.Effect>
-        </ListBox>
+            </TreeView.Effect>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Path=Contents}">
+
+                    <!-- Display the AnimalCategory by showing it's Category string -->
+                    <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" Foreground="White"/>
+
+                    <!-- Specify the nested template for the individual Animal items
+             that are within the AnimalCategories.  E.g. “California Newt”, etc. -->
+                    <HierarchicalDataTemplate.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Name}" Foreground="White"/>
+                        </DataTemplate>
+                    </HierarchicalDataTemplate.ItemTemplate>
+
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+        </Grid>
 
         <Grid Grid.Column="2" Grid.Row="1" Background="#FF2E2E2E">
             <Grid.Effect>
