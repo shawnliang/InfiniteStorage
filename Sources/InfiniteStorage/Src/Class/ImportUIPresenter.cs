@@ -13,7 +13,8 @@ namespace InfiniteStorage
 		private LinkedList<string> devices = new LinkedList<string>();
 		private object cs = new object();
 		private Process runningProc;
-		private string UI_PROGRAM_NAME = "PendingUI.exe";
+		private string PENDING_UI_PROGRAM_NAME = "PendingUI.exe";
+		private string VIEWER_UI_PROGRAM = "Waveface.Client";
 
 		private ImportUIPresenter()
 		{
@@ -31,7 +32,7 @@ namespace InfiniteStorage
 			{
 				if (runningProc == null && devices.Count == 0)
 				{
-					runUI(device_id);
+					runPendingUI(device_id);
 				}
 				else
 				{
@@ -41,14 +42,14 @@ namespace InfiniteStorage
 			}
 		}
 
-		private void runUI(string device_id)
+		private void runPendingUI(string device_id)
 		{
 			runningProc = new Process
 			{
 				StartInfo = new ProcessStartInfo
 				{
 					Arguments = device_id,
-					FileName = UI_PROGRAM_NAME,
+					FileName = PENDING_UI_PROGRAM_NAME,
 				},
 				EnableRaisingEvents = true,
 			};
@@ -60,20 +61,49 @@ namespace InfiniteStorage
 
 		void runningProc_Exited(object sender, EventArgs e)
 		{
-			lock (cs)
+			try
 			{
-				runningProc = null;
-
-				if (devices.Any())
+				lock (cs)
 				{
-					var device = devices.First.Value;
-					devices.RemoveFirst();
+					runningProc = null;
 
-					runUI(device);
+					if (devices.Any())
+					{
+						var device = devices.First.Value;
+						devices.RemoveFirst();
+
+						runPendingUI(device);
+					}
+					else
+					{
+						if (!isViewerRunning())
+							runViewerUI();
+					}
 				}
 			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("runningProc_Exited failed", err);
+			}
+		}
 
+		private void runViewerUI()
+		{
+			Process p = new Process
+			{
+				StartInfo = new ProcessStartInfo
+				{
 
+					FileName = VIEWER_UI_PROGRAM + ".exe"
+				}
+			};
+			p.Start();
+		}
+
+		private bool isViewerRunning()
+		{
+			var proc = Process.GetProcessesByName(VIEWER_UI_PROGRAM);
+			return proc.Any();
 		}
 	}
 }

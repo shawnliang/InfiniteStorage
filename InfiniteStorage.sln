@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfiniteStorage", "Sources\InfiniteStorage\InfiniteStorage.csproj", "{0CE50F48-3081-423A-8CCB-7515811392C5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9CFD2413-3B47-41BA-BE57-4FC7A8812CBB} = {9CFD2413-3B47-41BA-BE57-4FC7A8812CBB}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "Sources\UnitTest\UnitTest.csproj", "{2F0068A2-9D6F-4BD3-AB5C-FE46BE870E7C}"
 EndProject
@@ -58,6 +61,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waveface.ClientFramework", "Sources\Waveface.ClientFramework\Waveface.ClientFramework.csproj", "{535C6E29-0E0D-43A5-8740-B869F2EE900E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waveface.Client", "Sources\WindowsClient\Waveface.Client.csproj", "{39EFB0A3-3E10-4E80-B518-97526F76508D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PendingUI", "Sources\PendingUI\PendingUI.csproj", "{9CFD2413-3B47-41BA-BE57-4FC7A8812CBB}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -226,6 +231,18 @@ Global
 		{39EFB0A3-3E10-4E80-B518-97526F76508D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{39EFB0A3-3E10-4E80-B518-97526F76508D}.Release|Win32.ActiveCfg = Release|Any CPU
 		{39EFB0A3-3E10-4E80-B518-97526F76508D}.Release|x86.ActiveCfg = Release|Any CPU
+		{9CFD2413-3B47-41BA-BE57-4FC7A8812CBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CFD2413-3B47-41BA-BE57-4FC7A8812CBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CFD2413-3B47-41BA-BE57-4FC7A8812CBB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9CFD2413-3B47-41BA-BE57-4FC7A8812CBB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9CFD2413-3B47-41BA-BE57-4FC7A8812CBB}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{9CFD2413-3B47-41BA-BE57-4FC7A8812CBB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9CFD2413-3B47-41BA-BE57-4FC7A8812CBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CFD2413-3B47-41BA-BE57-4FC7A8812CBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CFD2413-3B47-41BA-BE57-4FC7A8812CBB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9CFD2413-3B47-41BA-BE57-4FC7A8812CBB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9CFD2413-3B47-41BA-BE57-4FC7A8812CBB}.Release|Win32.ActiveCfg = Release|Any CPU
+		{9CFD2413-3B47-41BA-BE57-4FC7A8812CBB}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
