@@ -12,14 +12,11 @@ import android.view.KeyEvent;
 
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
-import com.waveface.favoriteplayer.RuntimeState;
 import com.waveface.favoriteplayer.event.DispatchKeyEvent;
 import com.waveface.favoriteplayer.event.LabelImportedEvent;
 import com.waveface.favoriteplayer.event.WebSocketEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
-import com.waveface.favoriteplayer.task.DownloadLabelsTask;
 import com.waveface.favoriteplayer.ui.fragment.FragmentBase;
-import com.waveface.favoriteplayer.ui.fragment.PlaybackFragment;
 import com.waveface.favoriteplayer.ui.fragment.SyncFragment;
 import com.waveface.favoriteplayer.ui.fragment.SyncFragmentBase.onSyncFragmentChangedListener;
 import com.waveface.favoriteplayer.ui.fragment.SyncInProgressFragment;
@@ -43,6 +40,8 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 		
 		@Override
 		public void run() {
+			startActivity(new Intent(MainActivity.this, MainTabActivity.class));
+			finish();
 //			if(OverviewFragment.class.getSimpleName().equals(mCurrentFragmentName) == false) {
 //				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 //				OverviewFragment overview = new OverviewFragment();
@@ -77,7 +76,6 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate");
 		EventBus.getDefault().register(this);
-		sendBroadcast(new Intent(Constant.ACTION_FAVORITE_PLAYER_ALARM));
 		setContentView(R.layout.activity_main);
 		
 		if(savedInstanceState == null) {
@@ -90,7 +88,7 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 				mCurrentFragmentName = SyncFragment.class.getSimpleName();
 			} else {				
 				showSyncInProgressFragment(false);
-				new DownloadLabelsTask(this).execute(new Void[]{});
+//				new DownloadLabelsTask(this).execute(new Void[]{});
 			}
 		}
 		

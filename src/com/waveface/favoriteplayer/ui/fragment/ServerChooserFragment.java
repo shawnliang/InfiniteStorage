@@ -60,8 +60,7 @@ public class ServerChooserFragment extends FragmentBase
 	private TextView mTvSearch;
 	private AlertDialog mAlertDialog;
 	private AlertDialog mSendEmailDialog;
-	private static final int WORKER_DELAY_SECONDS = 30;
-	private static final int WORKER_PERIOD_SECONDS = 30;	
+
 
 
 	//DATA
@@ -319,31 +318,5 @@ public class ServerChooserFragment extends FragmentBase
 	}
 	
 	
-	public  class WorkerTimerTask extends TimerTask {
-		
-		private Context context;
-		private String wsLocation;
-		private String serverId;
-		private String serverName;
-		private String ip;
-		private String notifyPort;
-		private String restPort;
-		
-		public WorkerTimerTask(Context context,String wsLocation,String serverId, String serverName, String ip,String notifyPort, String restPort ){
-			this.context=context;
-			this.wsLocation=wsLocation;
-			this.serverId=serverId;
-			this.serverName=serverName;
-			this.ip=ip;
-			this.notifyPort=notifyPort;
-			this.restPort=restPort;
-		}
 
-		@Override
-		public void run() {
-			Log.v(TAG, "enter WorkerTimerTask.run()");
-			//ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort);	
-			Log.v(TAG, "exit WorkerTimerTask.run()");
-		}
-	}
 }

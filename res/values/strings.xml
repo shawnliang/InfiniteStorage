@@ -136,4 +136,9 @@
 
     <!-- PLAYBACK FRAGMENT  -->
     <string name="everything_played">Everything played</string>
+    
+    <!-- TAB INFOS  -->
+    <string name="favorite">Favorite</string>
+    <string name="recent_photos">Recent Photos</string>
+    <string name="recent_videos">Recent Videos</string>
 </resources>

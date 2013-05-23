@@ -53,6 +53,17 @@
             android:launchMode="singleTop"
             android:theme="@style/Theme.Transparent" >
         </activity>
+        
+        <activity
+            android:name="com.waveface.favoriteplayer.ui.MainTabActivity"
+            android:theme="@style/HoloTheme" >
+        </activity>
+        
+        <activity
+            android:name="com.waveface.favoriteplayer.ui.FullScreenSlideShowActivity"
+            android:theme="@style/HoloTheme" >
+        </activity>
+        
         <provider
             android:name="com.waveface.favoriteplayer.provider.PlayerProvider"
             android:authorities="com.waveface.favoriteplayer"

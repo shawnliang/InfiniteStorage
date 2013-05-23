@@ -6,12 +6,17 @@
     android:layout_height="match_parent"
     android:background="#000000"
     android:orientation="vertical" >
+
     <com.waveface.favoriteplayer.ui.widget.TwoWayView
         android:id="@+id/list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:cacheColorHint="#00000000"
         android:drawSelectorOnTop="false"
+        android:fadingEdgeLength="10dip"
         android:orientation="horizontal"
+        android:requiresFadingEdge="horizontal"
+        android:scrollbarThumbHorizontal="@drawable/scrollbar_handle_holo_light"
         tools:context=".MainActivity" />
 
- </RelativeLayout>
+</RelativeLayout>
