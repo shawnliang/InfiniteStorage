@@ -28,27 +28,48 @@ namespace InfiniteStorage.REST
 				// does not work. So here a nested loop is used. Need to figure it out.
 				foreach (var fid in file_ids)
 				{
-					var query = from f in db.Object.Files
-								join d in db.Object.Devices on f.device_id equals d.device_id
-								where fid == f.file_id
-								select new FileChangeData
-								{
-									id = f.file_id,
-									file_name = f.file_name,
-									thumb_ready = f.thumb_ready,
-									width = f.width,
-									height = f.height,
-									size = f.file_size,
-									type = f.type,
-									dev_id = f.device_id,
-									dev_name = d.device_name,
-									dev_type = 0,//TODO
-									deleted = f.deleted,
-									seq = f.seq,
+					var query = (from f in db.Object.Files
+								 join d in db.Object.Devices on f.device_id equals d.device_id
+								 where fid == f.file_id
+								 select new FileChangeData
+								 {
+									 id = f.file_id,
+									 file_name = f.file_name,
+									 thumb_ready = f.thumb_ready,
+									 width = f.width,
+									 height = f.height,
+									 size = f.file_size,
+									 type = f.type,
+									 dev_id = f.device_id,
+									 dev_name = d.device_name,
+									 dev_type = 0,//TODO
+									 deleted = f.deleted,
+									 seq = f.seq,
 
-									saved_path = f.saved_path,
-									device_folder = d.folder_name
-								};
+									 saved_path = f.saved_path,
+									 device_folder = d.folder_name
+								 }).Union(
+								 from f in db.Object.PendingFiles
+								 join d in db.Object.Devices on f.device_id equals d.device_id
+								 where fid == f.file_id
+								 select new FileChangeData
+								 {
+									 id = f.file_id,
+									 file_name = f.file_name,
+									 thumb_ready = f.thumb_ready,
+									 width = f.width,
+									 height = f.height,
+									 size = f.file_size,
+									 type = f.type,
+									 dev_id = f.device_id,
+									 dev_name = d.device_name,
+									 dev_type = 0,//TODO
+									 deleted = f.deleted,
+									 seq = f.seq,
+
+									 saved_path = f.saved_path,
+									 device_folder = d.folder_name
+								 });
 
 					var file = query.FirstOrDefault();
 
