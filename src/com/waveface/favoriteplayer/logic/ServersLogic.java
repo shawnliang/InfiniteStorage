@@ -1,7 +1,6 @@
 package com.waveface.favoriteplayer.logic;
 
 import java.util.ArrayList;
-
 import java.util.TreeSet;
 
 import org.jwebsocket.kit.WebSocketException;
@@ -16,13 +15,12 @@ import android.database.Cursor;
 import android.text.TextUtils;
 import android.util.Log;
 
-
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
+import com.waveface.favoriteplayer.db.BonjourServersTable;
 import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelTable;
 import com.waveface.favoriteplayer.db.PairedServersTable;
-import com.waveface.favoriteplayer.db.BonjourServersTable;
 import com.waveface.favoriteplayer.entity.ConnectForGTVEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.WebSocketEvent;

@@ -16,7 +16,6 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.waveface.favoriteplayer.Constant;
-import com.waveface.favoriteplayer.RuntimeState;
 
 
 public class RuntimeWebClient {

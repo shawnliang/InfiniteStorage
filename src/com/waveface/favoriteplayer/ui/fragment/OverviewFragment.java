@@ -2,16 +2,6 @@ package com.waveface.favoriteplayer.ui.fragment;
 
 import java.util.ArrayList;
 
-import com.waveface.favoriteplayer.Constant;
-import com.waveface.favoriteplayer.R;
-import com.waveface.favoriteplayer.db.LabelDB;
-import com.waveface.favoriteplayer.db.LabelFileTable;
-import com.waveface.favoriteplayer.entity.OverviewData;
-import com.waveface.favoriteplayer.entity.ServerEntity;
-import com.waveface.favoriteplayer.logic.ServersLogic;
-import com.waveface.favoriteplayer.ui.adapter.OverviewAdapter;
-import com.waveface.favoriteplayer.ui.widget.TwoWayView;
-
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +12,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+
+import com.waveface.favoriteplayer.Constant;
+import com.waveface.favoriteplayer.R;
+import com.waveface.favoriteplayer.db.LabelDB;
+import com.waveface.favoriteplayer.db.LabelFileTable;
+import com.waveface.favoriteplayer.entity.OverviewData;
+import com.waveface.favoriteplayer.entity.ServerEntity;
+import com.waveface.favoriteplayer.logic.ServersLogic;
+import com.waveface.favoriteplayer.ui.adapter.OverviewAdapter;
+import com.waveface.favoriteplayer.ui.widget.TwoWayView;
 
 public class OverviewFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener{
 	private TwoWayView mList;

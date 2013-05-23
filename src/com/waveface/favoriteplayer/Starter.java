@@ -3,7 +3,6 @@ package com.waveface.favoriteplayer;
 import java.io.File;
 
 import android.app.Application;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;

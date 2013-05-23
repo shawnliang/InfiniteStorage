@@ -1,7 +1,6 @@
 package com.waveface.favoriteplayer.service;
 
 import java.util.ArrayList;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -10,7 +9,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.IBinder;

@@ -3,13 +3,11 @@ package com.waveface.favoriteplayer.ui.fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.inputmethod.InputMethodManager;
 
 import com.waveface.favoriteplayer.util.Log;
-import com.waveface.favoriteplayer.util.ViewUtil;
 
 public class FragmentBase extends Fragment {
 	public static final String TAG = FragmentBase.class.getSimpleName();

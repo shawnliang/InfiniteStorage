@@ -1,7 +1,6 @@
 package com.waveface.favoriteplayer.db;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 import android.content.ContentResolver;
@@ -9,7 +8,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.waveface.favoriteplayer.entity.FileEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;

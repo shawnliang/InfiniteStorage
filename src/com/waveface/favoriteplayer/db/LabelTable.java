@@ -1,15 +1,10 @@
 package com.waveface.favoriteplayer.db;
 
-import android.content.ContentResolver;
-
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-
-import com.waveface.favoriteplayer.entity.LabelEntity;
 import com.waveface.favoriteplayer.provider.PlayerProvider;
 
 public class LabelTable implements BaseColumns {

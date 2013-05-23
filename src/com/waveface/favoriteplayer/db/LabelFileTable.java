@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+
 import com.waveface.favoriteplayer.provider.PlayerProvider;
 
 public class LabelFileTable implements BaseColumns {
