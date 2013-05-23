@@ -1,38 +1,56 @@
 package com.waveface.favoriteplayer.mdns;
 
-import java.util.HashMap;
-
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.text.TextUtils;
 
+import com.waveface.favoriteplayer.db.BonjourServersTable;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 
 public class MatchedServer {
 
-	public static HashMap<String,ServerInfo> servers = new HashMap<String,ServerInfo>();
 	
 	public static boolean addServer(Context context,DataPacket dataPacket){
 		boolean  updated = false;
 		ServerInfo newServer = dataPacket.serverInfo;
+		Cursor cursor = null;
+		String wsPort = null;
+		String notifyPort = null;
 		if(!TextUtils.isEmpty(newServer.serverId)){ 
-			if(servers.containsKey(newServer.serverId)){
-				ServerInfo existedServer = servers.get(newServer.serverId);
-				if(TextUtils.isEmpty(existedServer.wsPort) && !TextUtils.isEmpty(newServer.wsPort)){
-					servers.put(newServer.serverId, newServer);
-					updated = true;
-				}
-				else if(!TextUtils.isEmpty(existedServer.wsPort) 
-					&& existedServer.wsPort.equals(newServer.wsPort)){
-					if(TextUtils.isEmpty(existedServer.notifyPort) && !TextUtils.isEmpty(newServer.notifyPort)){
-						servers.put(newServer.serverId, newServer);
+			//Select Bonjour Server FROM DB
+			ContentResolver cr = context.getContentResolver();
+			try {
+				cursor = cr.query(BonjourServersTable.CONTENT_URI,
+						new String[] { 
+						BonjourServersTable.COLUMN_WS_PORT, 
+						BonjourServersTable.COLUMN_NOTIFY_PORT},
+						BonjourServersTable.COLUMN_SERVER_ID + "=?",
+						new String[] { newServer.serverId }, null);
+				// update
+				if (cursor != null && cursor.getCount() > 0) {
+					cursor.moveToFirst();
+					wsPort = cursor.getString(0);
+					notifyPort = cursor.getString(1);
+					if(TextUtils.isEmpty(wsPort) && !TextUtils.isEmpty(newServer.wsPort)){
 						updated = true;
 					}
+					else if(!TextUtils.isEmpty(wsPort) 
+						&& wsPort.equals(newServer.wsPort)){
+						if(TextUtils.isEmpty(notifyPort) && !TextUtils.isEmpty(newServer.notifyPort)){
+							updated = true;
+						}
+					}					
+					cursor.close();
 				}
+				else{
+					updated = true;
+				}
+				cursor = null ;
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			else{
-				servers.put(newServer.serverId, newServer);
-				updated = true;
-			}
+
 		}
 		if(updated){
 			ServersLogic.addBonjourServer(context,dataPacket);

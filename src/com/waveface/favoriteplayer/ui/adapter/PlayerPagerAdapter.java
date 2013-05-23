@@ -1,13 +1,9 @@
 package com.waveface.favoriteplayer.ui.adapter;
 
-import java.util.ArrayList;
-
-import com.waveface.favoriteplayer.R;
-import com.waveface.favoriteplayer.SyncApplication;
-import com.waveface.favoriteplayer.entity.OverviewData;
-
 import idv.jason.lib.imagemanager.ImageAttribute;
 import idv.jason.lib.imagemanager.ImageManager;
+
+import java.util.ArrayList;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -16,6 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+
+import com.waveface.favoriteplayer.R;
+import com.waveface.favoriteplayer.SyncApplication;
+import com.waveface.favoriteplayer.entity.OverviewData;
 
 public class PlayerPagerAdapter extends PagerAdapter {
 	private LayoutInflater mInflater;

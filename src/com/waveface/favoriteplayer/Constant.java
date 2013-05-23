@@ -48,8 +48,8 @@ public class Constant {
 	public static final int BONJOUR_PAIRING = 1;
 	public static final int BONJOUR_PAIRED = 2;
 	
-	public static final int CLOUD_CONNECTION_TIMEOUT = 20000;
-	public static final int CLOUD_SOCKET_TIMEOUT = 20000;
+	public static final int STATION_CONNECTION_TIMEOUT = 20000;
+	public static final int STATION_SOCKET_TIMEOUT = 20000;
 	
 	//ALARM INTERVAL
 	public static final long ALARM_INTERVAL =  1 *30 * 1000;
@@ -95,6 +95,12 @@ public class Constant {
 	public static final int TYPE_AUDIO = 2;
 	public static final int TYPE_VIDEO = 3;	
 	public static final int TYPE_DOC = 4;	
+	
+
+	//File Type FOR DATABASE
+	public static final String FILE_TYPE_IMAGE = "0";
+	public static final String FILE_TYPE_VIDEO = "1";
+
 	
 	public static final String TRANSFER_TYPE_IMAGE = "image";
 	public static final String TRANSFER_TYPE_AUDIO = "audio";

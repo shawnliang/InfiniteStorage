@@ -1,9 +1,12 @@
 package com.waveface.favoriteplayer.util;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.channels.FileChannel;
 import java.util.Date;
 import java.util.Stack;
@@ -11,6 +14,7 @@ import java.util.Stack;
 import android.text.TextUtils;
 
 public class FileUtil {
+	private static final String TAG = FileUtil.class.getSimpleName();
 
 	public static void fileCopy( String in, String out )
             throws IOException
@@ -84,6 +88,36 @@ public class FileUtil {
 		if(TextUtils.isEmpty(filePath))
 			return false;
 		return new File(filePath).exists();
+	}
+	public static boolean downloadFile(InputStream is, String filename) {
+		boolean downloaded = false;
+		byte[] data = new byte[1024 * 10];
+		int count;
+		try {
+			File f = new File(filename);
+			FileOutputStream fos = new FileOutputStream(f);
+			long startTime = System.currentTimeMillis();
+			BufferedInputStream bis = new BufferedInputStream(is);
+			while ((count = bis.read(data)) != -1) {
+				fos.write(data, 0, count);
+			}
+			fos.flush();
+			fos.close();
+			bis.close();
+			Log.d(TAG, "download ready in"
+					+ ((System.currentTimeMillis() - startTime) / 1000)
+					+ " sec");
+			if (f.exists()) {
+				downloaded = true;
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return downloaded;
 	}
 
 }

@@ -2,14 +2,7 @@ package com.waveface.favoriteplayer.ui.fragment;
 
 
 import java.util.ArrayList;
-
-
-import java.util.Timer;
-import java.util.TimerTask;
-
-
 import java.util.HashMap;
-
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -19,7 +12,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ActivityInfo;
 import android.database.ContentObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;

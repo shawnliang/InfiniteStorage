@@ -1,8 +1,8 @@
 package com.waveface.favoriteplayer.db;
 
-import com.waveface.favoriteplayer.provider.PlayerProvider;
-
 import android.net.Uri;
+
+import com.waveface.favoriteplayer.provider.PlayerProvider;
 
 
 

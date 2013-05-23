@@ -1,9 +1,5 @@
 package com.waveface.favoriteplayer.ui.adapter;
 
-import com.waveface.favoriteplayer.R;
-import com.waveface.favoriteplayer.SyncApplication;
-import com.waveface.favoriteplayer.entity.OverviewData;
-
 import idv.jason.lib.imagemanager.ImageAttribute;
 import idv.jason.lib.imagemanager.ImageManager;
 import android.content.Context;
@@ -12,6 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+
+import com.waveface.favoriteplayer.R;
+import com.waveface.favoriteplayer.SyncApplication;
+import com.waveface.favoriteplayer.entity.OverviewData;
 
 public class OverviewAdapter extends BaseAdapter{
 	private OverviewData mDatas[];

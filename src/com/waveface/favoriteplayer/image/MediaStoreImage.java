@@ -16,7 +16,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import com.waveface.favoriteplayer.Constant;
-import com.waveface.favoriteplayer.RuntimeState;
 import com.waveface.favoriteplayer.util.FileUtil;
 import com.waveface.favoriteplayer.util.ImageUtil;
 

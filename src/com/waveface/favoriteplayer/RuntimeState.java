@@ -1,7 +1,6 @@
 package com.waveface.favoriteplayer;
 
 import android.content.Context;
-import android.content.Intent;
 
 import com.google.gson.Gson;
 import com.waveface.favoriteplayer.util.NetworkUtil;

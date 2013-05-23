@@ -1,7 +1,6 @@
 package com.waveface.favoriteplayer.db;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 import android.content.ContentResolver;
@@ -9,7 +8,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.waveface.favoriteplayer.entity.FileEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
@@ -24,7 +22,7 @@ public class LabelDB {
 			LabelEntity.Label label, FileEntity fileEntity ,boolean isChangeLabel) {
 
 		if(isChangeLabel){
-		deleteLabel(context,label.label_id);
+			deleteLabel(context,label.label_id);
 		}
 		//StringUtil.localtimeToIso8601(new Date())
 		updateLabel(context, label);
@@ -143,25 +141,34 @@ public class LabelDB {
 	
 	private static void removeAllFileInLabel(Context context, String labelId) {
 		ContentResolver cr = context.getContentResolver();
-		Cursor cursor = cr.query(
-				LabelFileTable.CONTENT_URI, 
-				new String[] {LabelFileTable.COLUMN_FILE_ID},
-				LabelFileTable.COLUMN_LABEL_ID+" = ?", 
-				new String[] {labelId}, null);
-		while (cursor!=null && cursor.moveToNext()) {
-			cr.delete(FileTable.CONTENT_URI, 
-					FileTable.COLUMN_FILE_ID+"=?", 
-					new String[]{cursor.getString(0)});
-			Log.v(TAG, "delete file "+cursor.getString(0));
-		}
-		if (cursor!=null)
-			cursor.close();
+//		Cursor cursor = cr.query(
+//				LabelFileTable.CONTENT_URI, 
+//				new String[] {LabelFileTable.COLUMN_FILE_ID},
+//				LabelFileTable.COLUMN_LABEL_ID+" = ?", 
+//				new String[] {labelId}, null);
+//		while (cursor!=null && cursor.moveToNext()) {
+//			cr.delete(FileTable.CONTENT_URI, 
+//					FileTable.COLUMN_FILE_ID+"=?", 
+//					new String[]{cursor.getString(0)});
+//			Log.v(TAG, "delete file "+cursor.getString(0));
+//		}
+//		if (cursor!=null)
+//			cursor.close();
 		cr.delete(LabelFileTable.CONTENT_URI, 
 				LabelFileTable.COLUMN_LABEL_ID+"=?", 
 				new String[]{labelId});
 
 	}
 	
+	
+	public static Cursor getPhotoLabelId(Context context) {
+		return context.getContentResolver().query(
+				LabelTable.CONTENT_URI,
+				new String[]{LabelTable.COLUMN_LABEL_ID},
+				LabelTable.COLUMN_LABEL_NAME + " != ?",
+				new String[] { "videos" },null);
+	}
+
 	
 
 	public static Cursor getAllLabels(Context context) {

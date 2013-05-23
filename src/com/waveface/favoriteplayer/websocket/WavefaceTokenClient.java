@@ -11,11 +11,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-
-
 import java.util.HashMap;
 import java.util.Map;
-
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -64,8 +61,6 @@ import com.waveface.favoriteplayer.util.Log;
 import com.waveface.favoriteplayer.util.NetworkUtil;
 import com.waveface.service.HttpInvoker;
 import com.waveface.sync.entity.LabelChangeEntity;
-
-import de.greenrobot.event.EventBus;
 
 
 public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements WebSocketTokenClient {
@@ -191,7 +186,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 						HashMap<String, String> param = new HashMap<String, String>();
 						param.clear();
 						param.put(Constant.PARAM_LABEL_ID, entity.label_change.label_id);
-						jsonOutput =HttpInvoker.executePost(getLabelURL,param, Constant.CLOUD_CONNECTION_TIMEOUT, Constant.CLOUD_CONNECTION_TIMEOUT);
+						jsonOutput =HttpInvoker.executePost(getLabelURL,param, Constant.STATION_CONNECTION_TIMEOUT, Constant.STATION_CONNECTION_TIMEOUT);
 						
 						LabelEntity.Label labelEntity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.Label.class);	
 						
@@ -201,7 +196,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 						 files=files.substring(0, files.length()-1);
 						 param.clear();
 						 param.put(Constant.PARAM_FILES, files.trim());
-						 jsonOutput = HttpInvoker.executePost(getFileURL, param,  Constant.CLOUD_CONNECTION_TIMEOUT, Constant.CLOUD_CONNECTION_TIMEOUT);
+						 jsonOutput = HttpInvoker.executePost(getFileURL, param,  Constant.STATION_CONNECTION_TIMEOUT, Constant.STATION_CONNECTION_TIMEOUT);
 						 
 						 //FileEntity
 						 FileEntity fileEntity = RuntimeState.GSON.fromJson(jsonOutput, FileEntity.class);	 

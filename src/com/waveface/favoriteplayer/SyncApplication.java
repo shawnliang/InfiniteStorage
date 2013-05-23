@@ -1,8 +1,8 @@
 package com.waveface.favoriteplayer;
 
-import java.io.File;
-
 import idv.jason.lib.imagemanager.ImageManager;
+
+import java.io.File;
 
 import android.app.Application;
 import android.content.Context;

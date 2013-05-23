@@ -1,41 +1,20 @@
 package com.waveface.favoriteplayer.logic;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TreeSet;
-
-import org.jwebsocket.kit.WebSocketException;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.SystemClock;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 
 import com.waveface.favoriteplayer.Constant;
-import com.waveface.favoriteplayer.RuntimeState;
 import com.waveface.favoriteplayer.db.PairedServersTable;
-import com.waveface.favoriteplayer.entity.FileBackupEntity;
-import com.waveface.favoriteplayer.util.FileUtil;
 import com.waveface.favoriteplayer.util.Log;
-import com.waveface.favoriteplayer.util.MediaFile;
-import com.waveface.favoriteplayer.util.StringUtil;
-import com.waveface.favoriteplayer.websocket.RuntimeWebClient;
 
 public class BackupLogic {
 	private static String TAG = BackupLogic.class.getSimpleName();

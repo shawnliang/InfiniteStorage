@@ -187,10 +187,9 @@ public class DNSMessage {
 
 	            for (DNSAnswer a : entry.getValue()){
 	                dataType = a.type.toString();
-	                
 	                answerValue = a.getRdataString();
-        	        Log.d("DNSMessage", "VALUE:"+answerValue);
 	                if(dataType.equals("TXT")){
+	                	Log.d("DNSMessage", "TXT VALUE:"+answerValue);
 		                dataArray = answerValue.split(",");
 	                	for(int i = 0 ; i<dataArray.length;i++){
 	                		keyValue = dataArray[i].split("=");

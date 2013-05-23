@@ -1,9 +1,5 @@
 package com.waveface.favoriteplayer.ui;
 
-import com.waveface.favoriteplayer.R;
-import com.waveface.favoriteplayer.ui.fragment.OverviewFragment;
-import com.waveface.favoriteplayer.ui.fragment.PlaybackFragment;
-
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
@@ -11,6 +7,10 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.TextView;
+
+import com.waveface.favoriteplayer.R;
+import com.waveface.favoriteplayer.ui.fragment.OverviewFragment;
+import com.waveface.favoriteplayer.ui.fragment.PlaybackFragment;
 
 public class MainTabActivity extends FragmentActivity{
 	private FragmentTabHost mTabHost;

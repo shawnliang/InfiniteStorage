@@ -2,7 +2,6 @@ package com.waveface.favoriteplayer.ui.fragment;
 
 import java.util.ArrayList;
 
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -11,13 +10,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,19 +23,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
-
-//import com.waveface.mdns.DNSThread;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.RuntimeState;
-import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.entity.ServerEntity;
-import com.waveface.favoriteplayer.image.MediaStoreImage;
 import com.waveface.favoriteplayer.logic.BackupLogic;
 import com.waveface.favoriteplayer.logic.ServersLogic;
-import com.waveface.favoriteplayer.service.PlayerService;
+import com.waveface.favoriteplayer.task.DownloadLabelsTask;
+
 import com.waveface.favoriteplayer.ui.FirstUseActivity;
 import com.waveface.favoriteplayer.util.NetworkUtil;
+//import com.waveface.mdns.DNSThread;
 
 public class SyncFragment extends SyncFragmentBase implements OnClickListener {
 
@@ -173,6 +165,7 @@ public class SyncFragment extends SyncFragmentBase implements OnClickListener {
 				refreshLayout();
 			} else if(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED
 					.equals(action)) {
+				new DownloadLabelsTask(getActivity()).execute(new Void[]{});
 				
 			}else if (Constant.ACTION_BACKUP_START.equals(action)
 					|| Constant.ACTION_BACKUP_DONE.equals(action)) {

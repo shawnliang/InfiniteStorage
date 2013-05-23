@@ -1,11 +1,5 @@
 package com.waveface.favoriteplayer.ui.fragment;
 
-import com.waveface.favoriteplayer.R;
-import com.waveface.favoriteplayer.event.DispatchKeyEvent;
-import com.waveface.favoriteplayer.event.LabelImportedEvent;
-
-import de.greenrobot.event.EventBus;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -14,6 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.waveface.favoriteplayer.R;
+import com.waveface.favoriteplayer.event.DispatchKeyEvent;
+import com.waveface.favoriteplayer.event.LabelImportedEvent;
+
+import de.greenrobot.event.EventBus;
 
 public class SyncInProgressFragment extends Fragment {
 	private TextView mSyncContent;

@@ -2,22 +2,10 @@ package com.waveface.favoriteplayer.task;
 
 import idv.jason.lib.imagemanager.ImageManager;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -75,10 +63,10 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 
 		try {
 			String jsonOutput = HttpInvoker.executePost(getAllLablesURL, param,
-					Constant.CLOUD_CONNECTION_TIMEOUT,
-					Constant.CLOUD_CONNECTION_TIMEOUT);
+					Constant.STATION_CONNECTION_TIMEOUT,
+					Constant.STATION_CONNECTION_TIMEOUT);
 
-			Log.d(TAG, "jsonOutString =" + jsonOutput);
+			Log.d(TAG, "Labels jsonOutString =" + jsonOutput);
 			entity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.class);
 			if (entity != null) {
 				for (LabelEntity.Label label : entity.labels) {
@@ -93,8 +81,8 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 						param.clear();
 						param.put(Constant.PARAM_FILES, files.trim());
 						jsonOutput = HttpInvoker.executePost(getFileURL, param,
-								Constant.CLOUD_CONNECTION_TIMEOUT,
-								Constant.CLOUD_CONNECTION_TIMEOUT);
+								Constant.STATION_CONNECTION_TIMEOUT,
+								Constant.STATION_CONNECTION_TIMEOUT);
 
 						// FileEntity
 						fileEntity = RuntimeState.GSON.fromJson(jsonOutput,
@@ -110,6 +98,8 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 						LabelImportedEvent.STATUS_SYNCING);
 				LabelImportedEvent doneEvent = new LabelImportedEvent(
 						LabelImportedEvent.STATUS_DONE);
+				
+				EventBus.getDefault().post(doneEvent);
 
 				File root = Environment.getExternalStorageDirectory();
 				Cursor cursor = LabelDB.getAllLabels(mContext);
@@ -138,7 +128,7 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 								Log.d(TAG, "filename:" + fileName);
 								Log.d(TAG, "fileId:" + fileId);
 								
-								if (type.equals("1")) {
+								if (type.equals(Constant.FILE_TYPE_VIDEO)) {
 									String url = restfulAPIURL + Constant.URL_IMAGE + "/" + fileId
 											+ "/" + Constant.URL_IMAGE_ORIGIN;
 									String fullFilename = root.getAbsolutePath()
@@ -175,39 +165,16 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 
 		return null;
 	}
-
 	public static void downloadVideo(String fileId, String fileName,
 			String url) {
-
-		HttpClient client = new DefaultHttpClient();
-		HttpGet request = new HttpGet();
+		InputStream is = null;
 		try {
-			BufferedOutputStream bout = new BufferedOutputStream(
-					new FileOutputStream(fileName));
-			request.setURI(new URI(url));
-			HttpResponse response = client.execute(request);
-			StatusLine status = response.getStatusLine();
-//			Log.d("Test", "Statusline: " + status);
-//			Log.d("Test", "Statuscode: " + status.getStatusCode());
-
-			HttpEntity entity = response.getEntity();
-//			Log.d("Test", "Length: " + entity.getContentLength());
-//			Log.d("Test", "type: " + entity.getContentType());
-			entity.writeTo(bout);
-
-			bout.flush();
-			bout.close();
-
-		} catch (URISyntaxException e) {
-			Log.e(TAG, e.getLocalizedMessage());
+			is = HttpInvoker.getInputStreamFromUrl(url);
+		} catch (WammerServerException e) {
 			e.printStackTrace();
-		} catch (ClientProtocolException e) {
-			Log.e(TAG, e.getLocalizedMessage());
-			e.printStackTrace();
-		} catch (IOException e) {
-			Log.e(TAG, e.getLocalizedMessage());
-			e.printStackTrace();
-			// textView1.append("IOException");
+		}
+		if(is!=null){
+			FileUtil.downloadFile(is,fileName);
 		}
 	}
 }

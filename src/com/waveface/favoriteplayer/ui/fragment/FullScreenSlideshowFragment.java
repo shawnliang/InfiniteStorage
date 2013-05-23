@@ -1,14 +1,9 @@
 package com.waveface.favoriteplayer.ui.fragment;
 
-import java.util.ArrayList;
-
 import idv.jason.lib.imagemanager.ImageAttribute;
 import idv.jason.lib.imagemanager.ImageManager;
 
-import com.waveface.favoriteplayer.Constant;
-import com.waveface.favoriteplayer.R;
-import com.waveface.favoriteplayer.SyncApplication;
-import com.waveface.favoriteplayer.entity.OverviewData;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,9 +17,14 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
-import android.widget.ImageView.ScaleType;
+
+import com.waveface.favoriteplayer.Constant;
+import com.waveface.favoriteplayer.R;
+import com.waveface.favoriteplayer.SyncApplication;
+import com.waveface.favoriteplayer.entity.OverviewData;
 
 public class FullScreenSlideshowFragment extends Fragment {
 	private ViewAnimator mViewAnimator;

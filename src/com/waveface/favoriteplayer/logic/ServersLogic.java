@@ -1,7 +1,6 @@
 package com.waveface.favoriteplayer.logic;
 
 import java.util.ArrayList;
-
 import java.util.TreeSet;
 
 import org.jwebsocket.kit.WebSocketException;
@@ -16,13 +15,12 @@ import android.database.Cursor;
 import android.text.TextUtils;
 import android.util.Log;
 
-
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
+import com.waveface.favoriteplayer.db.BonjourServersTable;
 import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelTable;
 import com.waveface.favoriteplayer.db.PairedServersTable;
-import com.waveface.favoriteplayer.db.BonjourServersTable;
 import com.waveface.favoriteplayer.entity.ConnectForGTVEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.WebSocketEvent;
@@ -496,8 +494,7 @@ public class ServersLogic {
 			try {
 				RuntimeWebClient.open();
 				RuntimeState.setServerStatus(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
-				Intent intent = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
-				context.sendBroadcast(intent);
+
 
 				//ADD SERVER DATA
 				ServerEntity entity = new ServerEntity();
@@ -510,7 +507,8 @@ public class ServersLogic {
 				updateBackupedServer(context, entity);
 //				}
 				//TODO:CHANGE TO NEW PROTOCAL
-
+				Intent intent = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
+				context.sendBroadcast(intent);
 
 				
 				Log.d(TAG, "onCreateView");
@@ -526,6 +524,8 @@ public class ServersLogic {
 					//send broadcast label change
 					context.sendBroadcast(new Intent(Constant.ACTION_LABEL_CHANGE));					
 				}
+				
+				
 				
 				ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
 				ConnectForGTVEntity.Connect  connect = new ConnectForGTVEntity.Connect();

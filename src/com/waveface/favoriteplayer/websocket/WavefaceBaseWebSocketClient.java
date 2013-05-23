@@ -46,8 +46,6 @@ import org.jwebsocket.kit.WebSocketHandshake;
 import org.jwebsocket.kit.WebSocketProtocolAbstraction;
 import org.jwebsocket.kit.WebSocketSubProtocol;
 
-import android.util.Log;
-
 import com.waveface.favoriteplayer.RuntimeState;
 
 public class WavefaceBaseWebSocketClient implements WebSocketClient {

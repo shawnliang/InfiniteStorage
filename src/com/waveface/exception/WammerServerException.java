@@ -1,17 +1,12 @@
 package com.waveface.exception;
 
 import java.io.BufferedReader;
-
-
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
-import org.apache.http.conn.ConnectTimeoutException;
 
 
 
