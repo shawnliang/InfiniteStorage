@@ -32,7 +32,7 @@ namespace InfiniteStorage
 				if (!newFilesComing())
 				{
 					var duration = DateTime.Now - prevTimeOfNewFileComing;
-					if (duration > TimeSpan.FromSeconds(30.0))
+					if (duration > TimeSpan.FromSeconds(9.0))
 					{
 						if (showUIAtSeq != prevSeq)
 						{

@@ -10,18 +10,17 @@ namespace InfiniteStorage
 	{
 		public string GetEventFolder(PendingEvent evt)
 		{
-			var title = evt.title;
+			var folder_name = evt.title;
 
-			if (!string.IsNullOrEmpty(title))
-				title = sanitizeFolderName(title);
+			if (string.IsNullOrEmpty(folder_name))
+			{
+				var evtTime = evt.time_start.ToLocalTime();
+				folder_name = string.Format("{0} ~ {1}", evtTime.ToString("yyyy-MM-dd HH-mm-ss"), evt.time_end.ToLocalTime().ToString("yyyy-MM-dd HH-mm-ss"));
+			}
+			else
+				folder_name = sanitizeFolderName(folder_name);
 
-			var evtTime = evt.time_start.ToLocalTime();
-
-			return string.Format(@"{0}\{1}\{2}",
-				evtTime.ToString("yyyy"),
-				evtTime.ToString("yyyy-MM"),
-				string.IsNullOrEmpty(title) ? string.Format("{0} ~ {1}", evtTime.ToString("yyyy-MM-dd HH-mm-ss"), evt.time_end.ToLocalTime().ToString("yyyy-MM-dd HH-mm-ss")) : title				
-				);
+			return folder_name;
 		}
 
 		private static string sanitizeFolderName(string name)
@@ -40,9 +39,7 @@ namespace InfiniteStorage
 		{
 			var evtTime = evt.time_start.ToLocalTime();
 
-			return string.Format(@"{0}\{1}",
-				evtTime.ToString("yyyy"),
-				evtTime.ToString("yyyy-MM"));
+			return evtTime.ToString("yyyy-MM");
 		}
 	}
 }
