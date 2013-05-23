@@ -117,7 +117,20 @@
           <Component Id="Mono.Zeroconf.dll" Guid="*">
             <File Id="Mono.Zeroconf.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Mono.Zeroconf.dll" />
           </Component>
+          
+          <Component Id="System.Windows.Interactivity.dll" Guid="*">
+            <File Id="System.Windows.Interactivity.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Windows.Interactivity.dll" />
+          </Component>
 
+          <Component Id="PendingUI.exe" Guid="*">
+            <File Id="PendingUI.exe" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\PendingUI.exe" />
+          </Component>
+
+          <Component Id="PendingUI.exe.config" Guid="*">
+            <File Id="PendingUI.exe.config" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\PendingUI.exe.config" />
+          </Component>
+          
+          
           <Component Id="Mono.Zeroconf.Providers.Bonjour.dll" Guid="*">
             <File Id="Mono.Zeroconf.Providers.Bonjour.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Mono.Zeroconf.Providers.Bonjour.dll" />
           </Component>
@@ -257,7 +270,9 @@
       <ComponentRef Id="NBug.config" />
       <ComponentRef Id="AppLimit.NetSparkle.dll" />
       <ComponentRef Id="AppLimit.NetSparkle.resources.dll_zhTW" />
-
+      <ComponentRef Id="PendingUI.exe"/>
+      <ComponentRef Id="PendingUI.exe.config"/>
+      <ComponentRef Id="System.Windows.Interactivity.dll"/>
 
       <ComponentRef Id="EntityFramework.dll" />
       <ComponentRef Id="InfiniteStorage.exe.config" />

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 
 namespace InfiniteStorage
 {
@@ -12,7 +14,7 @@ namespace InfiniteStorage
 
 		private LinkedList<string> devices = new LinkedList<string>();
 		private object cs = new object();
-		private Process runningProc;
+		private Process pendingUIProcess;
 		private string PENDING_UI_PROGRAM_NAME = "PendingUI.exe";
 		private string VIEWER_UI_PROGRAM = "Waveface.Client";
 
@@ -30,7 +32,7 @@ namespace InfiniteStorage
 		{
 			lock (cs)
 			{
-				if (runningProc == null && devices.Count == 0)
+				if (pendingUIProcess == null && devices.Count == 0)
 				{
 					runPendingUI(device_id);
 				}
@@ -44,28 +46,34 @@ namespace InfiniteStorage
 
 		private void runPendingUI(string device_id)
 		{
-			runningProc = new Process
+			pendingUIProcess = new Process
 			{
 				StartInfo = new ProcessStartInfo
 				{
 					Arguments = device_id,
-					FileName = PENDING_UI_PROGRAM_NAME,
+					FileName = Path.Combine(getProgDir(), PENDING_UI_PROGRAM_NAME),
 				},
 				EnableRaisingEvents = true,
 			};
 
-			runningProc.Exited += new EventHandler(runningProc_Exited);
+			pendingUIProcess.Exited += new EventHandler(pendingUIProcess_Exited);
 
-			runningProc.Start();
+			pendingUIProcess.Start();
 		}
 
-		void runningProc_Exited(object sender, EventArgs e)
+		private static string getProgDir()
+		{
+			var progDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+			return progDir;
+		}
+
+		void pendingUIProcess_Exited(object sender, EventArgs e)
 		{
 			try
 			{
 				lock (cs)
 				{
-					runningProc = null;
+					pendingUIProcess = null;
 
 					if (devices.Any())
 					{
@@ -93,8 +101,7 @@ namespace InfiniteStorage
 			{
 				StartInfo = new ProcessStartInfo
 				{
-
-					FileName = VIEWER_UI_PROGRAM + ".exe"
+					FileName = Path.Combine(getProgDir(), VIEWER_UI_PROGRAM + ".exe")
 				}
 			};
 			p.Start();
