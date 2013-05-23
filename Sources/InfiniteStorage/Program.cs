@@ -27,6 +27,7 @@ namespace InfiniteStorage
 		static WebSocketServer<NotifyWebSocketService> notify_server;
 		static HttpServer rest_server;
 		static Notifier notifier;
+		static AutoLabelController autoLabel = new AutoLabelController();
 
 		private static System.Threading.Mutex m_InstanceMutex { get; set; }
 
@@ -79,6 +80,8 @@ namespace InfiniteStorage
 			SeqNum.InitFromDB();
 
 			initNotifyIcon();
+
+			InfiniteStorageWebSocketService.FileReceived += autoLabel.FileReceived;
 
 			m_NotifyTimer = new Timer();
 			m_NotifyTimer.Tick += new EventHandler(m_NotifyTimer_Tick);

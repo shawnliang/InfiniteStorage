@@ -181,8 +181,8 @@ values (@id_this_week_video, 'This Week''s Video', 5, 0, 1);
 						Settings.Default.LabelVideoThisWeek = id_this_week_video;
 						Settings.Default.Save();
 
-						updateDbSchemaVersion(conn, 5);
-						schemaVersion = 5;
+						updateDbSchemaVersion(conn, 6);
+						schemaVersion = 6;
 					}
 
 
