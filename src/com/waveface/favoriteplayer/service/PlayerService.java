@@ -82,6 +82,10 @@ public class PlayerService extends Service{
     						setupMDNS();
                 	}                	            	
             	}
+            	//
+            	if(NetworkUtil.isWifiNetworkAvailable(mContext)){
+            		sendSubcribe();
+            	}            	
             }
         }, 0, UPDATE_INTERVAL);
 	    return Service.START_NOT_STICKY;
@@ -99,12 +103,7 @@ public class PlayerService extends Service{
 		Log.d(TAG,"Wi-Fi-Network:"+NetworkUtil.isWifiNetworkAvailable(mContext));		
 		RuntimeState.mAutoConnectMode = ServersLogic.hasBackupedServers(this);		
 		new SetupMDNS().execute(new Void[]{});
-		Log.d(TAG, "onCreate");
-		
-		mWorkerTimer = new Timer();
-		mWorkerTimer.schedule(new WorkerTimerTask(), 
-				WORKER_DELAY_SECONDS * 1000, 
-				WORKER_PERIOD_SECONDS * 1000);
+		Log.d(TAG, "onCreate");		
 	}
 
 	
@@ -237,42 +236,32 @@ public class PlayerService extends Service{
 		}	
 	}
 	
-	class WorkerTimerTask extends TimerTask {
-
-		@Override
-		public void run() {
-			Log.v(TAG, "enter WorkerTimerTask.run()");
-			Log.d(TAG, "onCreateView");
-			Cursor cursor = LabelDB.getMAXSEQLabel(mContext);
-			EventBus.getDefault().post(new WebSocketEvent(WebSocketEvent.STATUS_CONNECT));
-
-			String labelId = null;
-			String labSeq ="0";
-			if(cursor!=null && cursor.getCount()>0){
-				cursor.moveToFirst();
-				labelId = cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_LABEL_ID));
-				labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
-				//send broadcast label change
-				//context.sendBroadcast(new Intent(Constant.ACTION_LABEL_CHANGE));					
-			}
-			
-			ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
-			ConnectForGTVEntity.Connect  connect = new ConnectForGTVEntity.Connect();
-			connect.deviceId=DeviceUtil.id(mContext);
-			connect.deviceName = DeviceUtil
-					.getDeviceNameForDisplay(mContext);
-			connectForGTV.setConnect(connect);
-			ConnectForGTVEntity.Subscribe subscribe = new ConnectForGTVEntity.Subscribe();
-			subscribe.labels=true;
-			subscribe.labels_from_seq = labSeq;
-			connectForGTV.setSubscribe(subscribe);
-			try {
-				RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));
-			} catch (WebSocketException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		public void sendSubcribe() {
+			if(RuntimeState.OnWebSocketOpened){
+				Cursor cursor = LabelDB.getMAXSEQLabel(mContext);
+				EventBus.getDefault().post(new WebSocketEvent(WebSocketEvent.STATUS_CONNECT));
+				String labSeq ="0";
+				if(cursor!=null && cursor.getCount()>0){
+					cursor.moveToFirst();
+					labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
+				}
+				
+				ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
+				ConnectForGTVEntity.Connect  connect = new ConnectForGTVEntity.Connect();
+				connect.deviceId=DeviceUtil.id(mContext);
+				connect.deviceName = DeviceUtil
+						.getDeviceNameForDisplay(mContext);
+				connectForGTV.setConnect(connect);
+				ConnectForGTVEntity.Subscribe subscribe = new ConnectForGTVEntity.Subscribe();
+				subscribe.labels=true;
+				subscribe.labels_from_seq = labSeq;
+				connectForGTV.setSubscribe(subscribe);
+				try {
+					RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));
+				} catch (WebSocketException e) {
+					e.printStackTrace();
+				}
 			}
 			Log.v(TAG, "exit WorkerTimerTask.run()");
 		}
-	}
 }
