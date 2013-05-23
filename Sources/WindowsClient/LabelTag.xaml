@@ -24,8 +24,7 @@
 	</UserControl.Triggers>
 
 	<Grid x:Name="LayoutRoot">
-		<Image Source="labelinvisible.png" Stretch="Fill"/>
-		<Image x:Name="image" Source="labelmouseover.png" Stretch="Fill" Visibility="Collapsed"/>
-		<Image x:Name="imgSelected" Source="labelselected.png" Stretch="Fill" Visibility="Collapsed"/>
+		<Image x:Name="image" Source="notfavoriteicon.png" Stretch="Fill"/>
+		<Image x:Name="imgSelected" Source="favoriteicon.png" Stretch="Fill" Visibility="Collapsed"/>
 	</Grid>
 </UserControl>

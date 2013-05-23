@@ -145,8 +145,8 @@ namespace Waveface.Client
 
 		private void content_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			var contentControl = sender as ContentItem;
-			contentControl.Tagged = !contentControl.Tagged;
+			//var contentControl = sender as ContentItem;
+			//contentControl.Tagged = !contentControl.Tagged;
 		}
 
 		private void Button_Click(object sender, RoutedEventArgs e)

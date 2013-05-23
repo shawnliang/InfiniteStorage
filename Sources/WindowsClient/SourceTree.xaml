@@ -1,0 +1,51 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="Waveface.Client.SourceTree"
+	x:Name="UserControl"
+	d:DesignWidth="200" d:DesignHeight="392.26">
+
+	<Grid x:Name="LayoutRoot">
+		<TreeView 
+			x:Name="lbxDeviceContainer" 
+			Background="{x:Null}" 
+			BorderBrush="{x:Null}"
+			ItemsSource="{Binding IsAsync=True}"
+			VirtualizingStackPanel.IsVirtualizing="True" 
+			VirtualizingStackPanel.VirtualizationMode="Recycling" FontFamily="Segoe UI Light" FontSize="16">
+			<TreeView.Resources>
+				<SolidColorBrush Color="Transparent" x:Key="{x:Static SystemColors.HighlightBrushKey}"/>
+				<SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
+				<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+			</TreeView.Resources>
+
+			<TreeView.ItemTemplate>
+								<HierarchicalDataTemplate ItemsSource="{Binding Contents}">
+
+					<Label FontWeight="Bold" Content="{Binding Name}" Foreground="White"/>
+
+					<HierarchicalDataTemplate.ItemTemplate>
+
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<Image x:Name="icon" Source="album.png"/>
+								<Label x:Name="sourceName" Content="{Binding Name}" Foreground="White" Height="30" VerticalContentAlignment="Center"/>
+							</StackPanel>
+							    <DataTemplate.Triggers>
+        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}" Value="True">
+            <Setter TargetName="icon" Property="Source" Value="albumselected.png"/>
+			 <Setter TargetName="sourceName" Property="FontWeight" Value="Bold"/>
+        </DataTrigger>
+    </DataTemplate.Triggers>
+						</DataTemplate>
+					</HierarchicalDataTemplate.ItemTemplate>
+		</HierarchicalDataTemplate>
+
+
+			</TreeView.ItemTemplate>
+		</TreeView>
+	</Grid>
+</UserControl>
