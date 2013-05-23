@@ -9,9 +9,13 @@
 	x:Name="UserControl"
 	d:DesignWidth="602" d:DesignHeight="371">
     <UserControl.Resources>
+    	<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Storyboard x:Key="ShowInfo">
             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="photoInfo">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+            </ObjectAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ltTag">
+            	<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
     </UserControl.Resources>
@@ -49,10 +53,10 @@
         </Viewbox>-->
 
         <Grid x:Name="photoInfo" Visibility="Collapsed">
-            <Rectangle x:Name="rectangle" Fill="#E5000000" Height="37.5" Margin="-1,0,-1,-1" VerticalAlignment="Bottom" StrokeThickness="0" Opacity="0.5"/>
-            <TextBlock x:Name="DateTaken" Margin="8,0,32,5" TextWrapping="Wrap" Text="{Binding Name, IsAsync=True}" VerticalAlignment="Bottom" FontSize="13" Opacity="0.6"/>
+            <Rectangle x:Name="rectangle" Grid.Row="0" Fill="#E5000000" Height="37.5" Margin="-1,0,-1,-1" VerticalAlignment="Bottom" StrokeThickness="0" Opacity="0.65"/>
+            <TextBlock x:Name="DateTaken" Margin="8,0,32,5" TextWrapping="Wrap" Text="{Binding Name, IsAsync=True}" VerticalAlignment="Bottom" FontSize="13" Opacity="0.6" FontFamily="Segoe UI Light"/>
         </Grid>
-        <l:LabelTag x:Name="ltTag" Tagged="{Binding Liked, Mode=TwoWay}" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30"/>
+        <l:LabelTag x:Name="ltTag" Tagged="{Binding Liked, Mode=TwoWay}" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30" Visibility="{Binding Tagged, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=ltTag}"/>
 
     </Grid>
 </UserControl>

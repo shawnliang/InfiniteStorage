@@ -72,6 +72,9 @@
     <Compile Include="ContentItem.xaml.cs">
       <DependentUpon>ContentItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FavoriteAllButton.xaml.cs">
+      <DependentUpon>FavoriteAllButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GroupContentItem.xaml.cs">
       <DependentUpon>GroupContentItem.xaml</DependentUpon>
     </Compile>
@@ -84,13 +87,23 @@
     <Compile Include="PhotoViewerControl.xaml.cs">
       <DependentUpon>PhotoViewerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SourceTree.xaml.cs">
+      <DependentUpon>SourceTree.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Class\Converter\ImageToBitmapSourceConverter.cs" />
     <Compile Include="Src\Extension\CollectionExtension.cs" />
+    <Compile Include="ZoomSlider.xaml.cs">
+      <DependentUpon>ZoomSlider.xaml</DependentUpon>
+    </Compile>
     <Page Include="BackButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ContentItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="FavoriteAllButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -119,6 +132,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PhotoViewerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SourceTree.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ZoomSlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -168,18 +189,36 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="album.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="albumselected.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="favorite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="favoriteicon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="notfavoriteicon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="pplaceholder.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="labelinvisible.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="labelmouseover.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="labelselected.png" />
+    <Content Include="sliderbarbigphotoicon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sliderbarsmallphotoicon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="up.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="updis.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\.NETFramework\v4.5\Microsoft.Expression.Blend.WPF.targets" />

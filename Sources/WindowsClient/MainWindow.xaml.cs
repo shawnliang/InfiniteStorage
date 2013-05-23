@@ -79,8 +79,11 @@ namespace Waveface.Client
 
 			if (group == null)
 			{
+				var service = lbxDeviceContainer.SelectedItem as IService;
+				if (service == null)
+					return;
 				lblContentLocation.DataContext = null;
-				lbxContentContainer.DataContext = (lbxDeviceContainer.SelectedItem as IService).Contents;
+				lbxContentContainer.DataContext = service.Contents;
 				return;
 			}
 
@@ -145,8 +148,8 @@ namespace Waveface.Client
 
 		private void content_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			var contentControl = sender as ContentItem;
-			contentControl.Tagged = !contentControl.Tagged;
+			//var contentControl = sender as ContentItem;
+			//contentControl.Tagged = !contentControl.Tagged;
 		}
 
 		private void Button_Click(object sender, RoutedEventArgs e)
