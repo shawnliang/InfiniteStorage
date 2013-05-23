@@ -79,8 +79,11 @@ namespace Waveface.Client
 
 			if (group == null)
 			{
+				var service = lbxDeviceContainer.SelectedItem as IService;
+				if (service == null)
+					return;
 				lblContentLocation.DataContext = null;
-				lbxContentContainer.DataContext = (lbxDeviceContainer.SelectedItem as IService).Contents;
+				lbxContentContainer.DataContext = service.Contents;
 				return;
 			}
 

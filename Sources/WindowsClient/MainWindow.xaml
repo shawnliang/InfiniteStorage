@@ -57,8 +57,8 @@
         		<Setter.Value>
         			<ControlTemplate TargetType="{x:Type ListBox}" >
         				<WrapPanel Margin="5" IsItemsHost="True" Orientation="Horizontal" 
-        					ItemHeight="{Binding Value, ElementName=ZoomSlider}"  
-        					ItemWidth="{Binding Value, ElementName=ZoomSlider}" 
+        					ItemHeight="{Binding Value, ElementName=zoomSlider}"  
+        					ItemWidth="{Binding Value, ElementName=zoomSlider}" 
         					VerticalAlignment="Top" HorizontalAlignment="Stretch" />
         			</ControlTemplate>
         		</Setter.Value>
@@ -94,70 +94,6 @@
         <SolidColorBrush x:Key="SidePanelBackground" Color="#FF2A2A2B"/>
         <SolidColorBrush x:Key="ButtonBackground" Color="#FF7F7F7F"/>
         <SolidColorBrush x:Key="ButtonForeground" Color="White"/>
-
-		 <Style TargetType="{x:Type Thumb}">
-        <Setter Property="OverridesDefaultStyle" Value="True"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Thumb}">
-                    <Image Source="btn.png" Width="20" Height="20"/>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-	<Style TargetType="{x:Type RepeatButton}">
-<Setter Property="OverridesDefaultStyle" Value="true"/>
-<Setter Property="IsTabStop" Value="false"/>
-<Setter Property="Focusable" Value="false"/>
-<Setter Property="Template">
-<Setter.Value>
-<ControlTemplate TargetType="{x:Type RepeatButton}">
-<Rectangle Fill="Transparent"/>
-</ControlTemplate>
-</Setter.Value>
-</Setter>
-</Style>
-
-	<Style TargetType="{x:Type Slider}">
-<Setter Property="Template">
-<Setter.Value>
-<ControlTemplate TargetType="{x:Type Slider}">
-<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"><Grid>
-<Grid.RowDefinitions>
-<RowDefinition Height="Auto"/>
-<RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
-<RowDefinition Height="Auto"/>
-</Grid.RowDefinitions>
-<TickBar x:Name="TopTick" Visibility="Collapsed" Fill="{TemplateBinding Foreground}" Placement="Top" Height="4" Grid.Row="0"/>
-<TickBar x:Name="BottomTick" Visibility="Collapsed" Fill="{TemplateBinding Foreground}" Placement="Bottom" Height="4" Grid.Row="0"/>
-<Border x:Name="TrackBackground"  
- BorderThickness="1" CornerRadius="1"
- Margin="5,0" VerticalAlignment="Center" Height="4.0" Grid.Row="1" >
-	<Canvas Margin="-6,-1">
-		<Rectangle Visibility="Hidden" x:Name="PART_SelectionRange" Height="4.0"
-			Fill="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"
-			Stroke="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}"
-			StrokeThickness="1.0"/>
-	</Canvas>
-</Border>
-<Track x:Name="PART_Track" Grid.Row="1" Margin="5,0,5,3">
-<Track.DecreaseRepeatButton>
-<RepeatButton Command="{x:Static Slider.DecreaseLarge}"/>
-</Track.DecreaseRepeatButton>
-<Track.IncreaseRepeatButton>
-<RepeatButton Command="{x:Static Slider.IncreaseLarge}"/>
-</Track.IncreaseRepeatButton>
-<Track.Thumb>
-<Thumb x:Name="Thumb" Background="Black"/>                                        
-</Track.Thumb>
-</Track>
-</Grid>
-</Border>
-</ControlTemplate>
-</Setter.Value>
-</Setter>
-</Style>
     </Window.Resources>
 
 	<Grid Background="{DynamicResource ContentAreaBackground}">
@@ -284,20 +220,7 @@
 					</ListBox>
 				</ScrollViewer>
 				<Grid Grid.Row="1" Background="#FF3E3E3E" Margin="0">
-					<Slider x:Name="ZoomSlider"
-						Width="100"
-						Orientation="Horizontal" 
-						Minimum="200" 
-						Maximum="400" 
-						Value="200" 
-						TickFrequency="50"
-						TickPlacement="None" 
-						SmallChange="5"
-						LargeChange="20" VerticalAlignment="Center" HorizontalAlignment="Left" BorderThickness="10,0,0,0" >
-						<Slider.Background>
-							<ImageBrush ImageSource="slider.png"/>
-						</Slider.Background>
-					</Slider>
+					<local:ZoomSlider x:Name="zoomSlider" Margin="10,0,0,0" Minimum="200" Maximum="400" Value="200" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 					<local:FavoriteAllButton Margin="0,0,10,0" Width="100" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right"/>
 				</Grid>
 			</Grid>
