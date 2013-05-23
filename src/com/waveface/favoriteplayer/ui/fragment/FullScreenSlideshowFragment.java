@@ -85,10 +85,7 @@ public class FullScreenSlideshowFragment extends Fragment {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				Intent intent = new Intent();
-				intent.putExtra(Constant.ARGUMENT1, mCurrentPosition);
-				getActivity().setResult(Activity.RESULT_OK, intent);
-				getActivity().finish();
+				close();
 				return true;
 			}
 		});
@@ -97,6 +94,17 @@ public class FullScreenSlideshowFragment extends Fragment {
 		return root;
 	}
 	
+	private void close() {
+		Intent intent = new Intent();
+		intent.putExtra(Constant.ARGUMENT1, mCurrentPosition);
+		getActivity().setResult(Activity.RESULT_OK, intent);
+		getActivity().finish();
+	}
+	
+	
+	public void onBackPressed() {
+		close();
+	}
 	
 	@Override
 	public void onResume() {
