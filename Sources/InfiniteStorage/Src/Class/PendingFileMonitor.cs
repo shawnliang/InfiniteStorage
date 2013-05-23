@@ -17,7 +17,6 @@ namespace InfiniteStorage
 		private long showUIAtSeq = 0;
 		private long prevSeq = 0;
 		private DateTime prevTimeOfNewFileComing = DateTime.Now;
-		private FakeSplitEventForm dialog = new FakeSplitEventForm();
 
 		private PendingFileMonitor()
 		{
