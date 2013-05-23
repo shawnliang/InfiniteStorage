@@ -18,12 +18,12 @@ namespace InfiniteStorage
 {
 	static class Program
 	{
-		static BonjourService m_bonjourService;
+		//static BonjourService m_bonjourService;
 		static NotifyIcon m_notifyIcon;
 		static NotifyIconController m_notifyIconController;
 		static Timer m_NotifyTimer;
 		static System.Timers.Timer m_BackupStatusTimer;
-		static System.Timers.Timer m_ReRegBonjourTimer;
+		//static System.Timers.Timer m_ReRegBonjourTimer;
 		static WebSocketServer<InfiniteStorageWebSocketService> backup_server;
 		static WebSocketServer<NotifyWebSocketService> notify_server;
 		static HttpServer rest_server;
@@ -116,40 +116,48 @@ namespace InfiniteStorage
 
 
 
-			try
-			{
+			//try
+			//{
 				// Stop nginx here to delete possible old nginx instance.
 				// Not doing so, bounjour sevice name could become "pc name (2)"...
 				NginxUtility.Instance.Stop(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
 
-				m_bonjourService = new BonjourService();
-				m_bonjourService.Error += new EventHandler<BonjourErrorEventArgs>(m_bonjourService_Error);
 
 
-				m_bonjourService.Register(backup_port, notify_port, rest_port, Settings.Default.ServerId);
+				BonjourServiceRegistrator.Instance.SetPorts(backup_port, notify_port, rest_port);
 
-				// bonjour record sometimes disappear for unknown reason.
-				// to workaround this, we just periodically re-register with
-				// bonjour
-				startTimerToReRegisterWithBonjour(backup_port, notify_port, rest_port);
+			//    //m_bonjourService = new BonjourService();
+			//    //m_bonjourService.Error += new EventHandler<BonjourErrorEventArgs>(m_bonjourService_Error);
 
-			}
-			catch (Exception e)
+
+			//    //m_bonjourService.Register(backup_port, notify_port, rest_port, Settings.Default.ServerId);
+
+			//    //// bonjour record sometimes disappear for unknown reason.
+			//    //// to workaround this, we just periodically re-register with
+			//    //// bonjour
+			//    //startTimerToReRegisterWithBonjour(backup_port, notify_port, rest_port);
+
+			//}
+			//catch (Exception e)
+			//{
+			//    log4net.LogManager.GetLogger("main").Error("Unable to register bonjour service", e);
+			//    MessageBox.Show(e.Message, "Unable to register bonjour service", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			//    return;
+			//}
+
+
+
+			if (hasAnyRegisteredDevice())
 			{
-				log4net.LogManager.GetLogger("main").Error("Unable to register bonjour service", e);
-				MessageBox.Show(e.Message, "Unable to register bonjour service", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
-			}
+				ThumbnailCreator.Instance.Start();
+				NginxUtility.Instance.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
 
-
-
-			if (Settings.Default.IsFirstUse)
-			{
-				FirstUseDialog.Instance.Show();
+				BonjourServiceRegistrator.Instance.Register(false);
 			}
 			else
 			{
-				ThumbnailCreator.Instance.Start();
+				FirstUseDialog.Instance.Show();
+				BonjourServiceRegistrator.Instance.Register(true);
 			}
 
 
@@ -162,8 +170,6 @@ namespace InfiniteStorage
 			var updator = new Waveface.Common.AutoUpdate(false);
 			updator.StartLoop();
 
-			if (hasAnyRegisteredDevice())
-				NginxUtility.Instance.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
 
 			PendingFileMonitor.Instance.Start();
 			Application.Run();
@@ -178,37 +184,37 @@ namespace InfiniteStorage
 			}
 		}
 
-		private static void startTimerToReRegisterWithBonjour(ushort backup_port, ushort notify_port, ushort rest_port)
-		{
-			m_ReRegBonjourTimer = new System.Timers.Timer(60 * 1000);
-			m_ReRegBonjourTimer.AutoReset = true;
-			m_ReRegBonjourTimer.Elapsed += (s, e) =>
-			{
-				try
-				{
-					m_ReRegBonjourTimer.Enabled = false;
+		//private static void startTimerToReRegisterWithBonjour(ushort backup_port, ushort notify_port, ushort rest_port)
+		//{
+		//    m_ReRegBonjourTimer = new System.Timers.Timer(60 * 1000);
+		//    m_ReRegBonjourTimer.AutoReset = true;
+		//    m_ReRegBonjourTimer.Elapsed += (s, e) =>
+		//    {
+		//        try
+		//        {
+		//            m_ReRegBonjourTimer.Enabled = false;
 
-					if (m_bonjourService != null)
-					{
-						m_bonjourService.Dispose();
-						System.Threading.Thread.Sleep(500);
-					}
-					m_bonjourService = new BonjourService();
-					m_bonjourService.Error += m_bonjourService_Error;
-					m_bonjourService.Register(backup_port, notify_port, rest_port, Settings.Default.ServerId);
-				}
-				catch (Exception err)
-				{
-					log4net.LogManager.GetLogger("main").Error("Unable to register bonjour service", err);
-					m_bonjourService = null;
-				}
-				finally
-				{
-					m_ReRegBonjourTimer.Enabled = true;
-				}
-			};
-			m_ReRegBonjourTimer.Start();
-		}
+		//            if (m_bonjourService != null)
+		//            {
+		//                m_bonjourService.Dispose();
+		//                System.Threading.Thread.Sleep(500);
+		//            }
+		//            m_bonjourService = new BonjourService();
+		//            m_bonjourService.Error += m_bonjourService_Error;
+		//            m_bonjourService.Register(backup_port, notify_port, rest_port, Settings.Default.ServerId);
+		//        }
+		//        catch (Exception err)
+		//        {
+		//            log4net.LogManager.GetLogger("main").Error("Unable to register bonjour service", err);
+		//            m_bonjourService = null;
+		//        }
+		//        finally
+		//        {
+		//            m_ReRegBonjourTimer.Enabled = true;
+		//        }
+		//    };
+		//    m_ReRegBonjourTimer.Start();
+		//}
 
 		private static string generateSameServerIdForSameUserOnSamePC()
 		{

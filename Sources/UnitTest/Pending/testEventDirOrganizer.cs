@@ -22,7 +22,7 @@ namespace UnitTest.Pending
 			});
 
 
-			Assert.AreEqual(@"2012\2012-03\a_b_c_d_e_f_g_h_i_j", folder);
+			Assert.AreEqual(@"a_b_c_d_e_f_g_h_i_j", folder);
 		}
 
 		[TestMethod]
@@ -37,7 +37,7 @@ namespace UnitTest.Pending
 			});
 
 
-			Assert.AreEqual(@"2012\2012-03\2012-03-04 10-02-03 ~ 2012-03-05 00-00-00", folder);
+			Assert.AreEqual(@"2012-03-04 10-02-03 ~ 2012-03-05 00-00-00", folder);
 		}
 	}
 }

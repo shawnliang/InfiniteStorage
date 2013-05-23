@@ -30,7 +30,7 @@ namespace InfiniteStorage
 
 		private void FirstUseDialog_Load(object sender, EventArgs e)
 		{
-			instruction1.Text = string.Format(Resources.FirstUse_Instruction1, BonjourService.ServiceName);
+			//instruction1.Text = string.Format(Resources.FirstUse_Instruction1, BonjourService.ServiceName);
 
 			UpdateUI();
 		}

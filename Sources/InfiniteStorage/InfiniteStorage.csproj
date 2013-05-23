@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Src\Class\AutoLabelController.cs" />
+    <Compile Include="Src\Class\BonjourServiceRegistrator.cs" />
     <Compile Include="Src\Class\Common\AutoUpdator.cs" />
     <Compile Include="Src\Class\Common\DateTimeExtension.cs" />
     <Compile Include="Src\Class\Common\HttpHandler.cs" />
@@ -241,6 +242,12 @@
     <Compile Include="Src\UIControl\TransferringControl.Designer.cs">
       <DependentUpon>TransferringControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Src\UIControl\StartPairingUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Src\UIControl\StartPairingUserControl.Designer.cs">
+      <DependentUpon>StartPairingUserControl.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Src\Dialog\BackupProgressDialog.resx">
       <DependentUpon>BackupProgressDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -283,6 +290,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\TransferringControl.resx">
       <DependentUpon>TransferringControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Src\UIControl\StartPairingUserControl.resx">
+      <DependentUpon>StartPairingUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="..\..\Libs\nginx-1.2.3\conf\mime.types">
       <Link>nginx\conf\mime.types</Link>
@@ -331,6 +341,7 @@
     <Content Include="Resources\Empty.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\en_generic_rgb_wo_60.png" />
     <None Include="Resources\Bunnydesktop.ico" />
     <None Include="Resources\ChooseThisPCOnYourPhone.png" />
     <None Include="Resources\Tea-Cup1.png" />
