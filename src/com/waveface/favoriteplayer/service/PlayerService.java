@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.jwebsocket.kit.WebSocketException;
+
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -26,6 +28,7 @@ import com.waveface.favoriteplayer.mdns.DNSThread;
 import com.waveface.favoriteplayer.util.DeviceUtil;
 import com.waveface.favoriteplayer.util.Log;
 import com.waveface.favoriteplayer.util.NetworkUtil;
+import com.waveface.favoriteplayer.websocket.RuntimeWebClient;
 
 import de.greenrobot.event.EventBus;
 
@@ -263,7 +266,12 @@ public class PlayerService extends Service{
 			subscribe.labels=true;
 			subscribe.labels_from_seq = labSeq;
 			connectForGTV.setSubscribe(subscribe);
-			Log.d(TAG, "send message="+RuntimeState.GSON.toJson(connectForGTV));
+			try {
+				RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));
+			} catch (WebSocketException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			Log.v(TAG, "exit WorkerTimerTask.run()");
 		}
 	}

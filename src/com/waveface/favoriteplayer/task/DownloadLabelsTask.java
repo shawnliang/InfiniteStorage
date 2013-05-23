@@ -66,7 +66,7 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 					Constant.STATION_CONNECTION_TIMEOUT,
 					Constant.STATION_CONNECTION_TIMEOUT);
 
-			Log.d(TAG, "jsonOutString =" + jsonOutput);
+			Log.d(TAG, "Labels jsonOutString =" + jsonOutput);
 			entity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.class);
 			if (entity != null) {
 				for (LabelEntity.Label label : entity.labels) {

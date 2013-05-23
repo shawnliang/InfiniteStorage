@@ -494,8 +494,7 @@ public class ServersLogic {
 			try {
 				RuntimeWebClient.open();
 				RuntimeState.setServerStatus(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
-				Intent intent = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
-				context.sendBroadcast(intent);
+
 
 				//ADD SERVER DATA
 				ServerEntity entity = new ServerEntity();
@@ -508,7 +507,8 @@ public class ServersLogic {
 				updateBackupedServer(context, entity);
 //				}
 				//TODO:CHANGE TO NEW PROTOCAL
-
+				Intent intent = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
+				context.sendBroadcast(intent);
 
 				
 				Log.d(TAG, "onCreateView");
@@ -524,6 +524,8 @@ public class ServersLogic {
 					//send broadcast label change
 					context.sendBroadcast(new Intent(Constant.ACTION_LABEL_CHANGE));					
 				}
+				
+				
 				
 				ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
 				ConnectForGTVEntity.Connect  connect = new ConnectForGTVEntity.Connect();

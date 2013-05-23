@@ -89,7 +89,7 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 				mCurrentFragmentName = SyncFragment.class.getSimpleName();
 			} else {				
 				showSyncInProgressFragment(false);
-				new DownloadLabelsTask(this).execute(new Void[]{});
+				//new DownloadLabelsTask(this).execute(new Void[]{});
 			}
 		}
 		
