@@ -5,6 +5,7 @@ using InfiniteStorage.REST;
 using InfiniteStorage.Win32;
 using System;
 using System.Drawing;
+using System.Linq;
 using System.IO;
 using System.Management;
 using System.Security.Cryptography;
@@ -161,9 +162,20 @@ namespace InfiniteStorage
 			var updator = new Waveface.Common.AutoUpdate(false);
 			updator.StartLoop();
 
-			NginxUtility.Instance.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
+			if (hasAnyRegisteredDevice())
+				NginxUtility.Instance.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
+
 			PendingFileMonitor.Instance.Start();
 			Application.Run();
+		}
+
+		private static bool hasAnyRegisteredDevice()
+		{
+			using (var db = new MyDbContext())
+			{
+				return (from d in db.Object.Devices
+						select d).Any();
+			}
 		}
 
 		private static void startTimerToReRegisterWithBonjour(ushort backup_port, ushort notify_port, ushort rest_port)
