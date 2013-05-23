@@ -47,11 +47,8 @@ public class PlayerService extends Service{
 
 	//TIMER
     private final int UPDATE_INTERVAL = 30 * 1000;
-    private Timer BackupTimer = null;
-    private Timer mWorkerTimer;
-	private static final int WORKER_DELAY_SECONDS = 30;
-	private static final int WORKER_PERIOD_SECONDS = 60;	
-	
+    private Timer SyncTimer = null;
+ 	
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -59,11 +56,11 @@ public class PlayerService extends Service{
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {		
-		if(BackupTimer!=null){
+		if(SyncTimer!=null){
 			return Service.START_NOT_STICKY;
 		}
-		BackupTimer = new Timer();
-        BackupTimer.scheduleAtFixedRate(new TimerTask() {
+		SyncTimer = new Timer();
+        SyncTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
             	if(RuntimeState.OnWebSocketOpened == false){
@@ -134,8 +131,8 @@ public class PlayerService extends Service{
 	public void onDestroy() {
  		unregisterReceiver(mReceiver);
 
- 		if(BackupTimer!=null){
-			BackupTimer.cancel();
+ 		if(SyncTimer!=null){
+			SyncTimer.cancel();
 		}
 		releaseMDNS();  
 		ServersLogic.purgeAllBonjourServer(this);
