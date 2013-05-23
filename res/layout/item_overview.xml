@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="#000000"
-    android:padding="5dip" >
+    android:padding="@dimen/overview_item_padding" >
 
     <RelativeLayout
         android:id="@+id/container_imagearea"

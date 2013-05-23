@@ -6,5 +6,8 @@
     
     <dimen name="overview_image_width">200dip</dimen>
     <dimen name="overview_image_height">250dip</dimen>
+    
+    <dimen name="overview_item_padding">5dip</dimen>
+    <dimen name="overview_item_first_left_padding">100dip</dimen>
 
 </resources>

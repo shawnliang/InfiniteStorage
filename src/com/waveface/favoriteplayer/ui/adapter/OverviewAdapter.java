@@ -71,8 +71,14 @@ public class OverviewAdapter extends BaseAdapter{
 		attr.setResizeSize(width, height);
 		attr.setReflection(true);
 		mImageManager.getImage(mDatas[position].url, attr);
-		
-		
+
+		int paddingNormal = context.getResources().getDimensionPixelSize(R.dimen.overview_item_padding);
+		if(position == 0) {
+			int paddingLeft = context.getResources().getDimensionPixelSize(R.dimen.overview_item_first_left_padding);
+			convertView.setPadding(paddingLeft, paddingNormal, paddingNormal, paddingNormal);
+		} else {
+			convertView.setPadding(paddingNormal, paddingNormal, paddingNormal, paddingNormal);
+		}
 		
 		return convertView;
 	}
