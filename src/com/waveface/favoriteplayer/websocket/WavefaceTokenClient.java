@@ -165,7 +165,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 						HashMap<String, String> param = new HashMap<String, String>();
 						param.clear();
 						param.put(Constant.PARAM_LABEL_ID, entity.label_change.label_id);
-						jsonOutput =HttpInvoker.executePost(getLabelURL,param, Constant.CLOUD_CONNECTION_TIMEOUT, Constant.CLOUD_CONNECTION_TIMEOUT);
+						jsonOutput =HttpInvoker.executePost(getLabelURL,param, Constant.STATION_CONNECTION_TIMEOUT, Constant.STATION_CONNECTION_TIMEOUT);
 						
 						LabelEntity.Label labelEntity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.Label.class);	
 						
@@ -175,7 +175,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 						 files=files.substring(0, files.length()-1);
 						 param.clear();
 						 param.put(Constant.PARAM_FILES, files.trim());
-						 jsonOutput = HttpInvoker.executePost(getFileURL, param,  Constant.CLOUD_CONNECTION_TIMEOUT, Constant.CLOUD_CONNECTION_TIMEOUT);
+						 jsonOutput = HttpInvoker.executePost(getFileURL, param,  Constant.STATION_CONNECTION_TIMEOUT, Constant.STATION_CONNECTION_TIMEOUT);
 						 
 						 //FileEntity
 						 FileEntity fileEntity = RuntimeState.GSON.fromJson(jsonOutput, FileEntity.class);	 

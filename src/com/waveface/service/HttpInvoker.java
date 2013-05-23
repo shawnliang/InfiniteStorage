@@ -1,11 +1,6 @@
 package com.waveface.service;
 
 import java.io.BufferedReader;
-
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -36,11 +31,6 @@ import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.BufferedHttpEntity;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.ByteArrayBody;
-import org.apache.http.entity.mime.content.InputStreamBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicNameValuePair;
@@ -51,17 +41,10 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.apache.james.mime4j.util.CharsetUtil;
-
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.NetworkInfo.State;
-import android.net.wifi.SupplicantState;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 
 import com.waveface.exception.WammerServerException;
+import com.waveface.favoriteplayer.Constant;
+import com.waveface.favoriteplayer.entity.AttachmentViewResponse;
 import com.waveface.favoriteplayer.util.Log;
 
 
@@ -70,17 +53,22 @@ public class HttpInvoker {
 	public static String httpResponseString;
 	private static DefaultHttpClient mClient;
 	private static DefaultHttpClient mImageClient;
-	private static final String HEADER_ACCEPT_ENCODING = "Accept-encoding";
-	private static final String HEADER_WAVEFACE_STREAM = "Waveface-Stream";
-	private static final String HEADER_CONNECTION = "Connection";
 	private static final String ENCODING_GZIP = "gzip";
-	private static final String KEEP_ALIVE = "Keep-Alive";
 	private static final String CONECTION_API = "API";
 	private static final String CONECTION_IMAGE = "IMAGE";
 
 	private static final int mRetryCount = 1;
 
-
+	/**
+	 *
+	 * @param url
+	 * @return
+	 */
+	public static InputStream getInputStreamFromUrl(String url)
+			throws WammerServerException {
+		url = url.replaceAll(" ", "%20");
+		return retryStream(url, 0);
+	}
 
 	public static InputStream retryStream(String url, int count)
 			throws WammerServerException {
@@ -116,7 +104,78 @@ public class HttpInvoker {
 		}
 		return content;
 	}
+	public static AttachmentViewResponse getRedirect(String url)
+			throws WammerServerException {
+		AttachmentViewResponse RO = new AttachmentViewResponse();
+		long length = -1;
 
+		HttpGet get = new HttpGet(url);
+		HttpClient httpclient = getHttpClient(
+				Constant.STATION_CONNECTION_TIMEOUT,
+				Constant.STATION_SOCKET_TIMEOUT, CONECTION_IMAGE, mImageClient);
+		HttpResponse response = null;
+		RO.setUrl(url);
+
+		try {
+			response = httpclient.execute(get);
+			final int statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode == HttpStatus.SC_BAD_REQUEST
+					|| statusCode == HttpStatus.SC_NOT_FOUND) {
+				HttpEntity entity = response.getEntity();
+				StringBuilder builder = new StringBuilder();
+				builder.append(EntityUtils.toString(entity, "UTF-8"));
+				RO.setJson(builder.toString());
+				entity.consumeContent();
+				builder = null;
+			} else if (statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
+				Header[] headers = response.getHeaders("Location");
+				if (headers != null && headers.length != 0) {
+					String newUrl = headers[headers.length - 1].getValue();
+					// call again with new URL
+					Log.d(TAG, "newUrl=" + newUrl);
+					try {
+						RO.setUrl(newUrl);
+						RO.setContent(getInputStreamFromUrl(newUrl));
+						URLConnection newConn = (new URL(newUrl))
+								.openConnection();
+						newConn.connect();
+						length = newConn.getContentLength();
+						RO.setTotalLength(length);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else {
+					Log.d(TAG, "heder is null");
+				}
+			} else if (statusCode == HttpStatus.SC_OK) {
+				final HttpEntity entity = response.getEntity();
+				if (entity != null) {
+					if (entity.getContentType() != null)
+						RO.setMimetype(entity.getContentType().getValue());
+					InputStream inputStream = null;
+					try {
+						BufferedHttpEntity bufferedHttpEntity = new BufferedHttpEntity(
+								entity);
+						length = bufferedHttpEntity.getContentLength();
+						inputStream = bufferedHttpEntity.getContent();
+						RO.setContent(inputStream);
+					} finally {
+						if (inputStream != null) {
+							inputStream.close();
+						}
+						entity.consumeContent();
+					}
+				}
+			} else if (statusCode == HttpStatus.SC_UNAUTHORIZED) {
+				throw new WammerServerException(response);
+			}
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+			throw new WammerServerException(response, e);
+		}
+		RO.setTotalLength(length);
+		return RO;
+	}
 
 
 	public static String getStringFromUrl(String url, int connectionTimeout,

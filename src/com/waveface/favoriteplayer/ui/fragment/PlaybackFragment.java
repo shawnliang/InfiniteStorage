@@ -84,7 +84,7 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener, 
 			Bundle savedInstanceState) {
 		mImageManager = SyncApplication.getWavefacePlayerApplication(getActivity()).getImageManager();
 		String labelId = null;
-		Cursor c = LabelDB.getAllLabels(getActivity());
+		Cursor c = LabelDB.getPhotoLabelId(getActivity());
 		if(c.getCount() > 0) {
 			c.moveToFirst();
 			labelId = c.getString(0);

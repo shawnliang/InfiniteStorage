@@ -26,7 +26,6 @@ import com.waveface.favoriteplayer.ui.fragment.SyncInProgressFragment;
 import com.waveface.favoriteplayer.ui.fragment.VideoFragment;
 
 import de.greenrobot.event.EventBus;
-//import com.waveface.mdns.DNSThread;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -50,18 +49,17 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 //				transaction.replace(R.id.container_content, overview, OverviewFragment.class.getSimpleName()).commit();
 //				mCurrentFragmentName = OverviewFragment.class.getSimpleName();
 //			}
-			//TEST FOR VIDEO PLAY
-//			VideoFragment videos = new VideoFragment();
-//			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//			transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-//			transaction.replace(R.id.container_content, videos, VideoFragment.class.getSimpleName()).commit();
-//			mCurrentFragmentName = VideoFragment.class.getSimpleName();
-			
-			PlaybackFragment photoJournal = new PlaybackFragment();
+			VideoFragment videos = new VideoFragment();
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 			transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-			transaction.replace(R.id.container_content, photoJournal, PlaybackFragment.class.getSimpleName()).commit();
-			mCurrentFragmentName = PlaybackFragment.class.getSimpleName();
+			transaction.replace(R.id.container_content, videos, VideoFragment.class.getSimpleName()).commit();
+			mCurrentFragmentName = VideoFragment.class.getSimpleName();
+			
+//			PlaybackFragment photoJournal = new PlaybackFragment();
+//			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//			transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+//			transaction.replace(R.id.container_content, photoJournal, PlaybackFragment.class.getSimpleName()).commit();
+//			mCurrentFragmentName = PlaybackFragment.class.getSimpleName();
 		}
 	};
 	
@@ -69,7 +67,7 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 		@Override
 		public void run() {
 			showSyncInProgressFragment(true);
-			new DownloadLabelsTask(MainActivity.this).execute(new Void[]{});
+			//new DownloadLabelsTask(MainActivity.this).execute(new Void[]{});
 		}
 		
 	};
@@ -98,7 +96,6 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 		
         getWindow().setBackgroundDrawable(null);
         sendBroadcast(new Intent(Constant.ACTION_FAVORITE_PLAYER_ALARM));
-//        mHander.post(mShowPlaybackRunnable);
 	}
 	
 	public void onEvent(LabelImportedEvent event) {
@@ -124,7 +121,7 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 			if(SyncFragment.class.getSimpleName().equals(mCurrentFragmentName)) {
 				// since sync fragment is opening first use activity, can't do anything
 			} else if(SyncInProgressFragment.class.getSimpleName().equals(mCurrentFragmentName)){
-				new DownloadLabelsTask(this).execute(new Void[]{});
+				//new DownloadLabelsTask(this).execute(new Void[]{});
 			}
 		}
 	}
@@ -148,26 +145,12 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 	@Override
 	protected void onResume() {
 		super.onResume();
-//       if (dnsThread != null) {
-//            Log.e(TAG, "DNS hread should be null!");
-//            dnsThread.submitQuit();
-//        }
-//    	dnsThread = new DNSThread(this);
-//    	dnsThread.start();
-	
 	}
 
     @Override
 	protected void onPause() {
         super.onPause();
         Log.v(TAG, "pause activity");
-                
-//        if (dnsThread == null) {
-//            Log.e(TAG, "netThread should not be null!");
-//            return;
-//        }
-//        dnsThread.submitQuit();
-//        dnsThread = null;
     }
 
 	@Override
