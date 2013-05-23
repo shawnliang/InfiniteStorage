@@ -34,7 +34,7 @@ namespace InfiniteStorage
 
 		public SavedPath MoveToStorage(string tempfile, FileContext file)
 		{
-			var destName = Path.Combine(storage_path.Value, Path.GetFileName(tempfile));
+			var destName = Path.Combine(storage_path.Value, Path.GetFileName(tempfile) + Path.GetExtension(file.file_name) + "_");
 
 			string saved_file_path = fileMover.Move(tempfile, destName);
 

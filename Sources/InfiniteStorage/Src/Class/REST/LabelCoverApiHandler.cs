@@ -27,7 +27,7 @@ namespace InfiniteStorage.REST
 			else
 				Response.RedirectLocation = new UriBuilder(Request.Url.Scheme, Request.Url.Host, 12888, "/.resource/Empty.png").ToString();
 
-			Response.StatusCode = (int)HttpStatusCode.Moved;
+			Response.StatusCode = (int)HttpStatusCode.Found;
 			Response.Close();
 		}
 	}
