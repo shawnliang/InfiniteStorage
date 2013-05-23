@@ -179,7 +179,6 @@
     <Compile Include="Src\Class\WebsocketProtocol\ConnectMsgHandler.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ConnectMsgHandlerUtil.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\FileContext.cs" />
-    <Compile Include="Src\Class\WebsocketProtocol\DirOrganizer.cs" />
     <Compile Include="Src\Class\IProtocolHandlerContext.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\IConnectMsgHandlerUtil.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\UnconnectedState.cs" />
@@ -219,7 +218,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Src\Class\BonjourService.cs" />
-    <Compile Include="Src\Class\FlatFileStorage.cs" />
     <Compile Include="Src\Class\Log4netConfigure.cs" />
     <Compile Include="Src\Class\NotifyIconController.cs" />
     <Compile Include="Src\Class\TempFileFactory.cs" />

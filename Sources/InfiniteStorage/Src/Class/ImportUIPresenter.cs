@@ -13,7 +13,7 @@ namespace InfiniteStorage
 		private LinkedList<string> devices = new LinkedList<string>();
 		private object cs = new object();
 		private Process runningProc;
-		private string UI_PROGRAM_NAME = "Notepad.exe";
+		private string UI_PROGRAM_NAME = "PendingUI.exe";
 
 		private ImportUIPresenter()
 		{
