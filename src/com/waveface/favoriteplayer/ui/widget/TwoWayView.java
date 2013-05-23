@@ -24,8 +24,6 @@ package com.waveface.favoriteplayer.ui.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.waveface.favoriteplayer.R;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -69,6 +67,8 @@ import android.widget.AdapterView;
 import android.widget.Checkable;
 import android.widget.ListAdapter;
 import android.widget.Scroller;
+
+import com.waveface.favoriteplayer.R;
 
 /*
  * Implementation Notes:

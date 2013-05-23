@@ -16,13 +16,10 @@ import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
-
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelFileView;
-
-import de.greenrobot.event.EventBus;
 
 public class VideoFragment extends Fragment implements OnClickListener{
 	public static final String TAG = VideoFragment.class.getSimpleName(); 

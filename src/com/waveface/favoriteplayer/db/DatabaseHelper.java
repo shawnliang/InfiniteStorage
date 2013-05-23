@@ -2,10 +2,10 @@ package com.waveface.favoriteplayer.db;
 
 import java.text.MessageFormat;
 
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import com.waveface.favoriteplayer.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {

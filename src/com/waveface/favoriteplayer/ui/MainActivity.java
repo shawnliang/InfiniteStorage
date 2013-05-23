@@ -16,11 +16,12 @@ import com.waveface.favoriteplayer.event.DispatchKeyEvent;
 import com.waveface.favoriteplayer.event.LabelImportedEvent;
 import com.waveface.favoriteplayer.event.WebSocketEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
+import com.waveface.favoriteplayer.task.DownloadLabelsTask;
 import com.waveface.favoriteplayer.ui.fragment.FragmentBase;
+import com.waveface.favoriteplayer.ui.fragment.PlaybackFragment;
 import com.waveface.favoriteplayer.ui.fragment.SyncFragment;
 import com.waveface.favoriteplayer.ui.fragment.SyncFragmentBase.onSyncFragmentChangedListener;
 import com.waveface.favoriteplayer.ui.fragment.SyncInProgressFragment;
-import com.waveface.favoriteplayer.ui.fragment.VideoFragment;
 
 import de.greenrobot.event.EventBus;
 
@@ -48,17 +49,17 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 //				transaction.replace(R.id.container_content, overview, OverviewFragment.class.getSimpleName()).commit();
 //				mCurrentFragmentName = OverviewFragment.class.getSimpleName();
 //			}
-			VideoFragment videos = new VideoFragment();
-			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-			transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-			transaction.replace(R.id.container_content, videos, VideoFragment.class.getSimpleName()).commit();
-			mCurrentFragmentName = VideoFragment.class.getSimpleName();
-			
-//			PlaybackFragment photoJournal = new PlaybackFragment();
+//			VideoFragment videos = new VideoFragment();
 //			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 //			transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-//			transaction.replace(R.id.container_content, photoJournal, PlaybackFragment.class.getSimpleName()).commit();
-//			mCurrentFragmentName = PlaybackFragment.class.getSimpleName();
+//			transaction.replace(R.id.container_content, videos, VideoFragment.class.getSimpleName()).commit();
+//			mCurrentFragmentName = VideoFragment.class.getSimpleName();
+			
+			PlaybackFragment photoJournal = new PlaybackFragment();
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+			transaction.replace(R.id.container_content, photoJournal, PlaybackFragment.class.getSimpleName()).commit();
+			mCurrentFragmentName = PlaybackFragment.class.getSimpleName();
 		}
 	};
 	
@@ -88,7 +89,7 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 				mCurrentFragmentName = SyncFragment.class.getSimpleName();
 			} else {				
 				showSyncInProgressFragment(false);
-//				new DownloadLabelsTask(this).execute(new Void[]{});
+				new DownloadLabelsTask(this).execute(new Void[]{});
 			}
 		}
 		

@@ -2,19 +2,6 @@ package com.waveface.favoriteplayer.ui.fragment;
 
 import java.util.ArrayList;
 
-import com.waveface.favoriteplayer.Constant;
-import com.waveface.favoriteplayer.R;
-import com.waveface.favoriteplayer.db.LabelDB;
-import com.waveface.favoriteplayer.db.LabelFileTable;
-import com.waveface.favoriteplayer.entity.OverviewData;
-import com.waveface.favoriteplayer.entity.ServerEntity;
-import com.waveface.favoriteplayer.event.DispatchKeyEvent;
-import com.waveface.favoriteplayer.logic.ServersLogic;
-import com.waveface.favoriteplayer.ui.FullScreenSlideShowActivity;
-import com.waveface.favoriteplayer.ui.adapter.PlayerPagerAdapter;
-
-import de.greenrobot.event.EventBus;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -28,6 +15,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
+
+import com.waveface.favoriteplayer.Constant;
+import com.waveface.favoriteplayer.R;
+import com.waveface.favoriteplayer.db.LabelDB;
+import com.waveface.favoriteplayer.db.LabelFileTable;
+import com.waveface.favoriteplayer.entity.OverviewData;
+import com.waveface.favoriteplayer.entity.ServerEntity;
+import com.waveface.favoriteplayer.event.DispatchKeyEvent;
+import com.waveface.favoriteplayer.logic.ServersLogic;
+import com.waveface.favoriteplayer.ui.FullScreenSlideShowActivity;
+import com.waveface.favoriteplayer.ui.adapter.PlayerPagerAdapter;
+
+import de.greenrobot.event.EventBus;
 
 public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	public static final String TAG = PlaybackFragment.class.getSimpleName(); 

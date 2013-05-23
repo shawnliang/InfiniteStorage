@@ -9,14 +9,14 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import android.net.wifi.WifiManager.MulticastLock;
+import android.text.TextUtils;
+import android.util.Log;
+
 import com.waveface.favoriteplayer.mdns.DNSMessage;
 import com.waveface.favoriteplayer.mdns.DataPacket;
 import com.waveface.favoriteplayer.mdns.MatchedServer;
 import com.waveface.favoriteplayer.mdns.util.NetUtility;
-
-import android.net.wifi.WifiManager.MulticastLock;
-import android.text.TextUtils;
-import android.util.Log;
 
 public class NetThread extends Thread {
 

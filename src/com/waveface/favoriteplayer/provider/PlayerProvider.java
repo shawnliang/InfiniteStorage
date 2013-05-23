@@ -1,7 +1,6 @@
 package com.waveface.favoriteplayer.provider;
 
 import android.content.ContentProvider;
-
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,13 +13,13 @@ import android.database.sqlite.SQLiteStatement;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.waveface.favoriteplayer.db.LabelFileView;
-import com.waveface.favoriteplayer.db.PairedServersTable;
 import com.waveface.favoriteplayer.db.BonjourServersTable;
 import com.waveface.favoriteplayer.db.DatabaseHelper;
 import com.waveface.favoriteplayer.db.FileTable;
 import com.waveface.favoriteplayer.db.LabelFileTable;
+import com.waveface.favoriteplayer.db.LabelFileView;
 import com.waveface.favoriteplayer.db.LabelTable;
+import com.waveface.favoriteplayer.db.PairedServersTable;
 
 
 public class PlayerProvider extends ContentProvider {

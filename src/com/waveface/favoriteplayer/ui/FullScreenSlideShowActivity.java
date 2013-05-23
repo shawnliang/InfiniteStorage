@@ -1,11 +1,11 @@
 package com.waveface.favoriteplayer.ui;
 
-import com.waveface.favoriteplayer.R;
-import com.waveface.favoriteplayer.ui.fragment.FullScreenSlideshowFragment;
-
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+
+import com.waveface.favoriteplayer.R;
+import com.waveface.favoriteplayer.ui.fragment.FullScreenSlideshowFragment;
 
 public class FullScreenSlideShowActivity extends FragmentActivity {
 	@Override

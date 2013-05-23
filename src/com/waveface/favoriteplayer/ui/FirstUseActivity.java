@@ -2,17 +2,16 @@ package com.waveface.favoriteplayer.ui;
 
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import com.waveface.favoriteplayer.Constant;
+
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.ui.fragment.FragmentBase;
-import com.waveface.favoriteplayer.ui.fragment.ServerChooserFragment;
 import com.waveface.favoriteplayer.ui.fragment.FragmentBase.onFragmentChangedListener;
+import com.waveface.favoriteplayer.ui.fragment.ServerChooserFragment;
 
 
 public class FirstUseActivity extends FragmentActivity implements onFragmentChangedListener {

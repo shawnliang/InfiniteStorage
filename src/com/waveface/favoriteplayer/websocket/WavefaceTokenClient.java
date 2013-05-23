@@ -11,11 +11,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-
-
 import java.util.HashMap;
 import java.util.Map;
-
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -64,8 +61,6 @@ import com.waveface.favoriteplayer.util.Log;
 import com.waveface.favoriteplayer.util.NetworkUtil;
 import com.waveface.service.HttpInvoker;
 import com.waveface.sync.entity.LabelChangeEntity;
-
-import de.greenrobot.event.EventBus;
 
 
 public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements WebSocketTokenClient {
