@@ -9,22 +9,22 @@
 	x:Name="UserControl"
 	d:DesignWidth="237.766" d:DesignHeight="74.5">
 
-	<Grid x:Name="LayoutRoot">
-		<Rectangle HorizontalAlignment="Left" Height="74.5" VerticalAlignment="Top" Width="237.766" RadiusY="5" RadiusX="5" Opacity="0.87" Stroke="#FF474646">
-			<Rectangle.Fill>
-				<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-					<GradientStop Color="#FF403E3E" Offset="0"/>
-					<GradientStop Color="#FF191818" Offset="1"/>
-				</LinearGradientBrush>
-			</Rectangle.Fill>
-		</Rectangle>
-		<local:PreviousButton Margin="18.731,25.362,205.725,22.719" MouseDown="PreviousButton_MouseDown"/>
-        <local:NextButton Margin="112.901,25.362,111.555,22.719" MouseDown="NextButton_MouseDown"/>
-        <local:Star x:Name="staredControl" Margin="158.094,27.541,57.349,24.634" MouseDown="staredControl_MouseDown_1"/>
-		<Path Data="M310.499,473 L310.499,494.0238" HorizontalAlignment="Left" Height="41.925" Margin="139.19,17.436,0,0" Stretch="Fill" Stroke="#FF646262" StrokeThickness="0.5" VerticalAlignment="Top" Width="0.872"/>
-		<local:CloseButton Margin="193.811,28.332,21.63,23.843" MouseDown="CloseButton_MouseDown"/>
-		<Label Content="/" HorizontalAlignment="Left" Height="26.419" Margin="37.667,25.362,0,0" VerticalAlignment="Top" Width="70.234" FontFamily="Segoe UI Light" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0"/>
-		<Label x:Name="lblPageNo" Content="0" HorizontalAlignment="Left" Height="26.419" Margin="37.667,25.362,0,0" VerticalAlignment="Top" Width="31.734" FontFamily="Segoe UI Light" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14.667" Padding="0"/>
-		<Label x:Name="lblPageCount" Content="0" HorizontalAlignment="Left" Height="26.419" Margin="76.334,25.362,0,0" VerticalAlignment="Top" Width="31.567" FontFamily="Segoe UI Light" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14.667" Padding="0"/>
-	</Grid>
+    <Grid x:Name="LayoutRoot">
+        <Rectangle HorizontalAlignment="Left" Height="74.5" VerticalAlignment="Top" Width="237.766" RadiusY="5" RadiusX="5" Opacity="0.87" Stroke="#FF474646">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF403E3E" Offset="0"/>
+                    <GradientStop Color="#FF191818" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <local:PreviousButton Margin="18.731,25.362,205.725,22.719" MouseDown="PreviousButton_MouseDown" Cursor="Hand"/>
+        <local:NextButton Margin="112.901,25.362,111.555,22.719" MouseDown="NextButton_MouseDown" Cursor="Hand"/>
+        <local:Star x:Name="staredControl" Margin="158.094,27.541,57.349,24.634" MouseDown="staredControl_MouseDown_1" Cursor="Hand"/>
+        <Path Data="M310.499,473 L310.499,494.0238" HorizontalAlignment="Left" Height="41.925" Margin="139.19,17.436,0,0" Stretch="Fill" Stroke="#FF646262" StrokeThickness="0.5" VerticalAlignment="Top" Width="0.872"/>
+        <local:CloseButton Margin="193.811,28.332,21.63,23.843" MouseDown="CloseButton_MouseDown" Cursor="Hand"/>
+        <Label Content="/" HorizontalAlignment="Left" Height="26.419" Margin="37.667,25.362,0,0" VerticalAlignment="Top" Width="70.234" FontFamily="Segoe UI Light" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0"/>
+        <Label x:Name="lblPageNo" Content="0" HorizontalAlignment="Left" Height="26.419" Margin="37.667,25.362,0,0" VerticalAlignment="Top" Width="31.734" FontFamily="Segoe UI Light" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14.667" Padding="0"/>
+        <Label x:Name="lblPageCount" Content="0" HorizontalAlignment="Left" Height="26.419" Margin="76.334,25.362,0,0" VerticalAlignment="Top" Width="31.567" FontFamily="Segoe UI Light" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14.667" Padding="0"/>
+    </Grid>
 </UserControl>

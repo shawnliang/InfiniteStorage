@@ -154,7 +154,15 @@ namespace Waveface.Client
 			//contentControl.Tagged = !contentControl.Tagged;
 		}
 
-		private void Button_Click(object sender, RoutedEventArgs e)
+	
+
+		private void Button_Click_1(object sender, RoutedEventArgs e)
+		{
+			var arguments = string.Join("~" , ClientFramework.Client.Default.TaggedContents.Select(content => content.Uri.LocalPath).ToArray());
+			Process.Start("sharedFavorite", arguments);
+		}
+
+		private void FavoriteAllButton_Loaded(object sender, RoutedEventArgs e)
 		{
 			foreach (IContent content in lbxContentContainer.Items)
 			{
@@ -163,12 +171,6 @@ namespace Waveface.Client
 					content.Liked = true;
 				}
 			}
-		}
-
-		private void Button_Click_1(object sender, RoutedEventArgs e)
-		{
-			var arguments = string.Join("~" , ClientFramework.Client.Default.TaggedContents.Select(content => content.Uri.LocalPath).ToArray());
-			Process.Start("sharedFavorite", arguments);
 		}
 	}
 }
