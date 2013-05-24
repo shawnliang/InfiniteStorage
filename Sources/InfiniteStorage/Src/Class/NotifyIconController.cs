@@ -16,6 +16,7 @@ namespace InfiniteStorage
 		private Dictionary<ProtocolContext, ToolStripItem> deviceStipItems = new Dictionary<ProtocolContext, ToolStripItem>();
 		private List<BackupProgressDialog> progressDialogs = new List<BackupProgressDialog>();
 		private object cs = new object();
+		
 
 		public NotifyIconController(NotifyIcon notifyIcon)
 		{
@@ -35,6 +36,11 @@ namespace InfiniteStorage
 		public void OnOpenAudioBackupFolderMenuItemClicked(object sender, EventArgs arg)
 		{
 			openFolderInExplorer(MyFileFolder.Audio);
+		}
+
+		public void OnOpenUIMenuItemCliecked(object sender, EventArgs arg)
+		{
+			ImportUIPresenter.Instance.StartViewer();
 		}
 
 		private static void openFolderInExplorer(string folder)
@@ -85,7 +91,7 @@ namespace InfiniteStorage
 
 		private void updateNotifyIconMenu(ProtocolContext ctx)
 		{
-			ToolStripItem itemFound = findMenuItemInNotifyContextMenu(ctx);
+			ToolStripItem itemFound = findItemFromSameCtx(ctx);
 
 			if (itemFound != null)
 			{
@@ -114,7 +120,17 @@ namespace InfiniteStorage
 
 		private void showNotifyIconMenu(ProtocolContext ctx)
 		{
-			ToolStripItem itemFound = findMenuItemInNotifyContextMenu(ctx);
+
+			int index;
+			var saveDev = findItemFromSameDevice(ctx, out index);
+			if (saveDev != null)
+			{
+				notifyIcon.ContextMenuStrip.Items.RemoveAt(index + 1);
+				notifyIcon.ContextMenuStrip.Items.Remove(saveDev);
+			}
+
+
+			ToolStripItem itemFound = findItemFromSameCtx(ctx);
 
 			if (itemFound == null)
 			{
@@ -132,8 +148,9 @@ namespace InfiniteStorage
 
 				notifyIcon.ContextMenuStrip.Items.Insert(2, item);
 				notifyIcon.ContextMenuStrip.Items.Insert(3, item2);
-				notifyIcon.ShowBalloonTip(3000, Resources.ProductName, string.Format(Resources.BallonText_Transferring, ctx.device_name, ctx.total_count), ToolTipIcon.Info);
+				//notifyIcon.ShowBalloonTip(3000, Resources.ProductName, string.Format(Resources.BallonText_Transferring, ctx.device_name, ctx.total_count), ToolTipIcon.Info);
 			}
+
 		}
 
 		private void showProgressDialog(ProtocolContext ctx)
@@ -202,7 +219,31 @@ namespace InfiniteStorage
 			}
 		}
 
-		private ToolStripItem findMenuItemInNotifyContextMenu(ProtocolContext targetCtx)
+		private ToolStripItem findItemFromSameDevice(ProtocolContext targetCtx, out int index)
+		{
+			index = -1;
+			ToolStripItem itemFound = null;
+
+			//foreach (var it in notifyIcon.ContextMenuStrip.Items)
+			for (int i = 0; i < notifyIcon.ContextMenuStrip.Items.Count; i++)
+			{
+				var stripItem = notifyIcon.ContextMenuStrip.Items[i] as ToolStripItem;
+				if (stripItem != null && stripItem.Tag is ProtocolContext)
+				{
+					var ctx = stripItem.Tag as ProtocolContext;
+
+					if (ctx.device_id == targetCtx.device_id)
+					{
+						itemFound = stripItem;
+						index = i;
+						break;
+					}
+				}
+			}
+			return itemFound;
+		}
+
+		private ToolStripItem findItemFromSameCtx(ProtocolContext targetCtx)
 		{
 			ToolStripItem itemFound = null;
 

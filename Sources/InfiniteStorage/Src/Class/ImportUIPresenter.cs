@@ -112,5 +112,12 @@ namespace InfiniteStorage
 			var proc = Process.GetProcessesByName(VIEWER_UI_PROGRAM);
 			return proc.Any();
 		}
+
+		public void StartViewer()
+		{
+			if (!isViewerRunning())
+				runViewerUI();
+
+		}
 	}
 }

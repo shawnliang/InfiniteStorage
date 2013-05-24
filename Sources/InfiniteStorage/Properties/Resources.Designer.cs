@@ -329,6 +329,15 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 從 {0} 收到檔案.
+        /// </summary>
+        internal static string ProgressTooltip {
+            get {
+                return ResourceManager.GetString("ProgressTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Scanning {
@@ -363,6 +372,15 @@ namespace InfiniteStorage.Properties {
         internal static string TrayMenuItem_GettingStarted {
             get {
                 return ResourceManager.GetString("TrayMenuItem_GettingStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 開啟.
+        /// </summary>
+        internal static string TrayMenuItem_Open {
+            get {
+                return ResourceManager.GetString("TrayMenuItem_Open", resourceCulture);
             }
         }
         

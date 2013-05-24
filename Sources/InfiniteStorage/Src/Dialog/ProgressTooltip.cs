@@ -18,6 +18,8 @@ namespace InfiniteStorage
 	{
 		private static ProgressTooltip instance = new ProgressTooltip();
 
+		private string currDeviceId;
+
 		public static ProgressTooltip Instance
 		{
 			get { return instance; }
@@ -36,15 +38,17 @@ namespace InfiniteStorage
 
 			SynchronizationContextHelper.SendMainSyncContext(() =>
 			{
-				showFile(file_id, file_name, file_type);
+				showFile(file_id, file_name, file_type, args.ctx.device_name, args.ctx.device_id);
 			});
 		}
 
-		private void showFile(Guid file_id, string file_name, FileAssetType type)
+		private void showFile(Guid file_id, string file_name, FileAssetType type, string dev, string dev_id)
 		{
 			try
 			{
-				filename.Text = file_name;
+				this.filename.Text = file_name;
+				this.Text = string.Format(Resources.ProgressTooltip, dev);
+				this.currDeviceId = dev_id;
 
 				PendingFile file = null;
 				using (var db = new MyDbContext())
@@ -113,6 +117,12 @@ namespace InfiniteStorage
 				e.Cancel = true;
 				Hide();
 			}
+		}
+
+
+		private void filename_DoubleClick(object sender, EventArgs e)
+		{
+			ImportUIPresenter.Instance.Show(currDeviceId);
 		}
 	}
 }

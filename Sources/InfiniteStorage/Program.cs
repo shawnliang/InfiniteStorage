@@ -299,8 +299,10 @@ namespace InfiniteStorage
 
 			m_notifyIcon.ContextMenuStrip = new ContextMenuStrip();
 
-			var openStorageItem = m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_OpenBackupFolder, null, m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked);
-			openStorageItem.Font = new Font(openStorageItem.Font, FontStyle.Bold);
+			var openUIItem = m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Open, null, m_notifyIconController.OnOpenUIMenuItemCliecked);
+			openUIItem.Font = new Font(openUIItem.Font, FontStyle.Bold);
+
+			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_OpenBackupFolder, null, m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked);
 
 			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Preferences, null, m_notifyIconController.OnPreferencesMenuItemClicked);
 			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_AddNewSources, null, m_notifyIconController.OnAddingNewSources);
@@ -312,7 +314,7 @@ namespace InfiniteStorage
 
 			showProgramIsAtServiceBallonTips();
 
-			m_notifyIcon.DoubleClick += m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked;
+			m_notifyIcon.DoubleClick += m_notifyIconController.OnOpenUIMenuItemCliecked;
 			InfiniteStorageWebSocketService.DeviceAccepted += m_notifyIconController.OnDeviceConnected;
 			InfiniteStorageWebSocketService.DeviceDisconnected += m_notifyIconController.OnDeviceDisconnected;
 			InfiniteStorageWebSocketService.PairingRequesting += m_notifyIconController.OnDevicePairingRequesting;

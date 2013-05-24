@@ -48,12 +48,12 @@
 			// 
 			// filename
 			// 
-			this.filename.AutoSize = true;
-			this.filename.Location = new System.Drawing.Point(52, 9);
+			this.filename.Location = new System.Drawing.Point(54, 18);
 			this.filename.Name = "filename";
-			this.filename.Size = new System.Drawing.Size(55, 13);
+			this.filename.Size = new System.Drawing.Size(212, 23);
 			this.filename.TabIndex = 1;
 			this.filename.Text = "[file name]";
+			this.filename.DoubleClick += new System.EventHandler(this.filename_DoubleClick);
 			// 
 			// ProgressTooltip
 			// 
@@ -68,7 +68,6 @@
 			this.Load += new System.EventHandler(this.ProgressTooltip_Load);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
