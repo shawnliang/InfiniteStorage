@@ -43,6 +43,8 @@ import org.jwebsocket.util.Tools;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -172,7 +174,17 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		
 		if (NetworkUtil.isWifiNetworkAvailable(mContext)){	
 			//TODO:handle retrive label
-//			LabelChangeEntity entity = null;
+
+			LabelChangeEntity entity = null;
+			entity = RuntimeState.GSON.fromJson(jsonOutput, LabelChangeEntity.class);
+			
+//			SharedPreferences mPrefs = mContext.getSharedPreferences(Constant.PREFS_NAME,
+//					Context.MODE_PRIVATE);
+//			Editor mEditor = mPrefs.edit();
+//			
+			
+			mContext.sendBroadcast(new Intent(Constant.ACTION_LABEL_CHANGE));
+
 //			try {
 //				if(!TextUtils.isEmpty(jsonOutput))
 //					entity = RuntimeState.GSON.fromJson(jsonOutput, LabelChangeEntity.class);
@@ -245,15 +257,18 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 ////									syncingEvent.singleTime = time;
 ////									syncingEvent.currentFile++;
 ////									EventBus.getDefault().post(syncingEvent);
+
 //									filecursor.moveToNext();
 //								}
 //								filecursor.close();
 //							}
+
 //							mContext.sendBroadcast(new Intent(Constant.ACTION_LABEL_CHANGE));
 //				   }
 //			} catch (Exception e) {
 //				e.printStackTrace();
 //			}
+
 		}
 			//ORIGINAL Web Socket Code
 			Token lToken = packetToToken(aPacket);

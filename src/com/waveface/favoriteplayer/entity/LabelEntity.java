@@ -24,8 +24,8 @@ public class LabelEntity {
 	@SerializedName("cover_url")
 	public String cover_url;
 	
-	@SerializedName("auto")
-	public String auto;
+	@SerializedName("auto_type")
+	public String auto_type;
 
 	public String[] files;
 	}

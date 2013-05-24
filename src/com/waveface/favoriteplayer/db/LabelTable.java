@@ -13,9 +13,6 @@ public class LabelTable implements BaseColumns {
 	public static final Uri LABELS_URI = Uri.parse("content://"
 			+ PlayerProvider.AUTHORITY + "/" + LABELS_NAME);
 	public static final Uri CONTENT_URI =  LABELS_URI;
-//	public static final Uri BONJOUR_NOTIFY_URI = Uri.parse("content://"
-//			+ SyncProvider.AUTHORITY + ".update." + BONJOUR_SERVERS_NAME);
-
 	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.favoritplayer.labels";
 	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.favoritplayer.labels";
 	public static final String DEFAULT_SORT_ORDER = LabelTable.COLUMN_LABEL_NAME+" DESC";
@@ -26,8 +23,10 @@ public class LabelTable implements BaseColumns {
 	public static final String COLUMN_SEQ = "seq";
 	public static final String COLUMN_UPDATE_TIME = "update_time";
 	public static final String COLUMN_COVER_URL = "cover_url";
-	public static final String COLUMN_AUTO = "auto";// auto=true: edited by station ;is auto generated label, such as "today" and "this week"? 
-	
+	public static final String COLUMN_AUTO_TYPE = "auto_type";
+	// auto_type ; 0:favorite ; 1:Recent photo today  ; 2: Recent photo yesterday ; 3: Recent photo this week  
+	// 4:Recent video today  ; 5: Recent video yesterday ; 6: Recent video this week
+
 	private LabelTable() {
 
 	}
