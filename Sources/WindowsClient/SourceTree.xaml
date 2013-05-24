@@ -15,7 +15,9 @@
 			BorderBrush="{x:Null}"
 			ItemsSource="{Binding IsAsync=True}"
 			VirtualizingStackPanel.IsVirtualizing="True" 
-			VirtualizingStackPanel.VirtualizationMode="Recycling" FontFamily="Segoe UI Light" FontSize="16">
+			VirtualizingStackPanel.VirtualizationMode="Recycling" 
+			FontFamily="Segoe UI Light"
+			FontSize="16" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
 			<TreeView.Resources>
 				<SolidColorBrush Color="Transparent" x:Key="{x:Static SystemColors.HighlightBrushKey}"/>
 				<SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>

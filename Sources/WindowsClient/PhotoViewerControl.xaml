@@ -3,32 +3,33 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:l="clr-namespace:Waveface.Client"
+	xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
 	mc:Ignorable="d"
 	x:Class="Waveface.Client.PhotoViewerControl"
-    xmlns:l="clr-namespace:Waveface.Client"
 	x:Name="UserControl"
 	Loaded="WindowLoaded"
 	d:DesignWidth="760" d:DesignHeight="504">
     <UserControl.Resources>
         <ItemsPanelTemplate x:Key="ItemsPanelTemplate1">
-            <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
+        	<VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
         </ItemsPanelTemplate>
 
         <Style x:Key="ListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
             <!--<Setter Property="Background" Value="Transparent"/>-->
             <!--<Setter Property="Padding" Value="2,0,0,0"/>-->
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border  x:Name="Bd" SnapsToDevicePixels="true"  Background="#EEFFFFFF" BorderBrush="#FFCCCCCC"  RenderTransformOrigin="1,1" 
-							HorizontalAlignment="Center" VerticalAlignment="Center"
-							BorderThickness="1" Opacity="70">
-                                <Image x:Name="img" ToolTipService.Placement="Top"
-									Source="{Binding ThumbnailSource, IsAsync=True}" Height="64" Stretch="Fill" Width="64"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+        	<Setter Property="Template">
+        		<Setter.Value>
+        			<ControlTemplate TargetType="{x:Type ListBoxItem}">
+        				<Border  x:Name="Bd" SnapsToDevicePixels="true"  Background="#EEFFFFFF" BorderBrush="#FFCCCCCC"  RenderTransformOrigin="1,1" 
+        					HorizontalAlignment="Center" VerticalAlignment="Center"
+        					BorderThickness="1" Opacity="70">
+        					<Image x:Name="img" ToolTipService.Placement="Top"
+        						Source="{Binding ThumbnailSource, IsAsync=True}" Height="64" Stretch="Fill" Width="64"/>
+        				</Border>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
         </Style>
         <Storyboard x:Key="ShowAllContent">
         	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="lbImages">
@@ -39,39 +40,36 @@
         	</ObjectAnimationUsingKeyFrames>
         </Storyboard>
     </UserControl.Resources>
-	<UserControl.Triggers>
-		<EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="label">
-			<BeginStoryboard x:Name="ShowAllContent_BeginStoryboard" Storyboard="{StaticResource ShowAllContent}"/>
-		</EventTrigger>
-		<EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="lbImages">
-			<RemoveStoryboard BeginStoryboardName="ShowAllContent_BeginStoryboard"/>
-		</EventTrigger>
-	</UserControl.Triggers>
 
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" Margin="2.001,0,-2.001,0">
         <!-- Photo -->
-        <Viewbox Stretch="Fill" DockPanel.Dock="Top">
-            <Canvas x:Name="ImgCanvas" ClipToBounds="True" Height="371" Width="602">
-                <ContentControl x:Name="ImgContentCtrl" Height="371" Width="602" Canvas.Left="0" Canvas.Top="1">
-                    <Grid x:Name="ImgGrid">
-                        <Image x:Name="ImgObject" Source="{Binding SelectedItem.ImageSource, IsAsync=True, ElementName=lbImages}"/>
-                        <Thumb x:Name="ImgThumb" Opacity="0" DragDelta="ImgThumb_DragDelta" MouseWheel="ImgThumb_MouseWheel"/>
-                    </Grid>
-                </ContentControl>
-            </Canvas>
-        </Viewbox>
-		<Label x:Name="label" VerticalAlignment="Bottom" Height="20" Opacity="0"/>
-        <ListBox x:Name="lbImages" Background="{x:Null}" BorderBrush="{x:Null}" Opacity="70" 
-                    IsSynchronizedWithCurrentItem="True"
-					ItemsPanel="{DynamicResource ItemsPanelTemplate1}" 
-					ItemContainerStyle="{DynamicResource ListBoxItemStyle}" 
-                    SelectionMode="Extended"
-					ItemsSource="{Binding}" 
-					VerticalAlignment="Bottom"
-					HorizontalAlignment="Center"
-                    VirtualizingStackPanel.IsVirtualizing="True" 
-                    VirtualizingStackPanel.VirtualizationMode="Recycling" 
-					ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                    Visibility="Collapsed"/>
-    </Grid>
+		<Viewbox Stretch="Fill" DockPanel.Dock="Top" d:IsLocked="True">
+			<Canvas x:Name="ImgCanvas" ClipToBounds="True" Height="371" Width="602">
+				<ContentControl x:Name="ImgContentCtrl" Height="371" Width="602" Canvas.Left="0" Canvas.Top="1">
+					<Grid x:Name="ImgGrid">
+						<Image x:Name="ImgObject" Source="{Binding SelectedItem.ImageSource, ElementName=lbImages, IsAsync=True}"/>
+						<Thumb x:Name="ImgThumb" Opacity="0" DragDelta="ImgThumb_DragDelta" MouseWheel="ImgThumb_MouseWheel"/>
+					</Grid>
+				</ContentControl>
+			</Canvas>
+		</Viewbox>
+		<Rectangle x:Name="ContentName" Fill="#E5000000" Height="37.5" VerticalAlignment="Top" Opacity="0.7" RadiusX="20" RadiusY="20" Stroke="#FFF0E9E9" Margin="0" Width="250"/>
+		<Label x:Name="DateTaken" Content="{Binding SelectedItem.Name, ElementName=lbImages, IsAsync=True}" VerticalAlignment="Top" FontSize="16" Opacity="0.6" Height="37.5" FontFamily="Segoe UI Light"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Margin="0" Width="250"/>
+        <l:ViewerControl x:Name="vcViewerControl" Stared="{Binding SelectedItem.Liked, ElementName=lbImages, IsAsync=True}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,13" Next="ViewerControl_Next" Previous="ViewerControl_Previous" Close="ViewerControl_Close"/>
+
+		<Label x:Name="label" VerticalAlignment="Bottom" Height="20" Opacity="0" Visibility="Collapsed"/>
+		<ListBox x:Name="lbImages" Background="{x:Null}" BorderBrush="{x:Null}" Opacity="70" 
+			IsSynchronizedWithCurrentItem="True"
+			ItemsPanel="{DynamicResource ItemsPanelTemplate1}" 
+			ItemContainerStyle="{DynamicResource ListBoxItemStyle}" 
+			SelectionMode="Extended"
+			ItemsSource="{Binding}" 
+			VerticalAlignment="Bottom"
+			HorizontalAlignment="Center"
+			VirtualizingStackPanel.IsVirtualizing="True" 
+			VirtualizingStackPanel.VirtualizationMode="Recycling" 
+			ScrollViewer.HorizontalScrollBarVisibility="Auto"
+			Visibility="Collapsed"/>
+		
+	</Grid>
 </UserControl>

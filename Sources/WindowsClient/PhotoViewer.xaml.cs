@@ -59,5 +59,10 @@ namespace Waveface.Client
 		{
 			this.Close();
 		}
+
+		private void pvcViewer_Close(object sender, EventArgs e)
+		{
+			this.Close();
+		}
 	}
 }
