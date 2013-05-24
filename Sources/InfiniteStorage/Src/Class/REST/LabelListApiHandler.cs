@@ -35,7 +35,7 @@ namespace InfiniteStorage.REST
 					files = files,
 					seq = label.seq,
 					cover_url = "/label_cover/" + label.label_id.ToString(),
-					auto = label.auto
+					auto_type = label.auto_type
 				};
 
 				result.Add(data);

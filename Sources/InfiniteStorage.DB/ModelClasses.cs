@@ -56,6 +56,20 @@ namespace InfiniteStorage.Model
 		public virtual Device device { get; set; }
 	}
 
+
+	public enum AutoLabelType
+	{
+		NotAuto = 0,
+		
+		PhotoToday = 1,
+		PhotoYesterday = 2,
+		PhotoThisWeek = 3,
+
+		VideoToday = 4,
+		VideoYesterday = 5,
+		VideoThisWeek = 6
+	}
+
 	public class Label
 	{
 		[Key]
@@ -67,7 +81,7 @@ namespace InfiniteStorage.Model
 
 		public bool deleted { get; set; }
 
-		public bool auto { get; set; }
+		public int auto_type { get; set; }
 	}
 
 	[Table("LabelFiles")]

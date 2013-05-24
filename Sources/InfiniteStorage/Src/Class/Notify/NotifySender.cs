@@ -55,7 +55,7 @@ namespace InfiniteStorage.Notify
 									deleted = label.deleted,
 									seq = label.seq,
 									cover_url = "/label_cover/" + label.label_id.ToString(),
-									auto = label.auto
+									auto_type = label.auto_type
 								}
 							}));
 

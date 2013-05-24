@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MyDbContext.cs" />
-    <Compile Include="MocelClasses.cs" />
+    <Compile Include="ModelClasses.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -137,9 +137,9 @@ CREATE INDEX [idx_PendingFiles_file_path_1] ON [PendingFiles](
 					if (schemaVersion == 4L)
 					{
 						var cmd = new SQLiteCommand(
-@"ALTER TABLE [Labels] Add Column [auto] BOOLEAN NULL;
-
-update [Labels] set auto = 0;
+@"
+ALTER TABLE [Labels] Add Column [auto_type] BOOLEAN NULL;
+update [Labels] set auto_type = 0;
 ", conn);
 						cmd.ExecuteNonQuery();
 
@@ -151,34 +151,48 @@ update [Labels] set auto = 0;
 					{
 						var cmd = new SQLiteCommand(
 @"
-insert into [Labels] (label_id, name, seq, deleted, auto)
-values (@id_today_photo, 'Today''s Photo', 2, 0, 1);
+insert into [Labels] (label_id, name, seq, deleted, auto_type)
+values (@photoToday, 'Today''s Photo', 2, 0, 1);
 
-insert into [Labels] (label_id, name, seq, deleted, auto)
-values (@id_today_video, 'Today''s video', 3, 0, 1);
+insert into [Labels] (label_id, name, seq, deleted, auto_type)
+values (@photoYesterday, 'Yesterday''s Photo', 3, 0, 2);
 
-insert into [Labels] (label_id, name, seq, deleted, auto)
-values (@id_this_week_photo, 'This Week''s Photo', 4, 0, 1);
+insert into [Labels] (label_id, name, seq, deleted, auto_type)
+values (@photoThisWeek, 'This Week''s Photo', 4, 0, 3);
 
-insert into [Labels] (label_id, name, seq, deleted, auto)
-values (@id_this_week_video, 'This Week''s Video', 5, 0, 1);
+insert into [Labels] (label_id, name, seq, deleted, auto_type)
+values (@videoToday, 'Today''s video', 3, 0, 4);
+
+insert into [Labels] (label_id, name, seq, deleted, auto_type)
+values (@videoYesterday, 'Yesterday''s video', 3, 0, 5);
+
+insert into [Labels] (label_id, name, seq, deleted, auto_type)
+values (@videoThisWeek, 'This Weeks''s video', 3, 0, 6);
 
 ", conn);
-						var id_today_photo = Guid.NewGuid();
-						var id_today_video = Guid.NewGuid();
-						var id_this_week_photo = Guid.NewGuid();
-						var id_this_week_video = Guid.NewGuid();
+						var photoToday = Guid.NewGuid();
+						var photoYesterday = Guid.NewGuid();
+						var photoThisWeek = Guid.NewGuid();
+						var videoToday = Guid.NewGuid();
+						var videoYesterday = Guid.NewGuid();
+						var videoThisWeek = Guid.NewGuid();
 
-						cmd.Parameters.Add(new SQLiteParameter("@id_today_photo", id_today_photo));
-						cmd.Parameters.Add(new SQLiteParameter("@id_today_video", id_today_video));
-						cmd.Parameters.Add(new SQLiteParameter("@id_this_week_photo", id_this_week_photo));
-						cmd.Parameters.Add(new SQLiteParameter("@id_this_week_video", id_this_week_video));
+						cmd.Parameters.Add(new SQLiteParameter("@photoToday", photoToday));
+						cmd.Parameters.Add(new SQLiteParameter("@photoYesterday", photoYesterday));
+						cmd.Parameters.Add(new SQLiteParameter("@photoThisWeek", photoThisWeek));
+						cmd.Parameters.Add(new SQLiteParameter("@videoToday", videoToday));
+						cmd.Parameters.Add(new SQLiteParameter("@videoYesterday", videoYesterday));
+						cmd.Parameters.Add(new SQLiteParameter("@videoThisWeek", videoThisWeek));
 						cmd.ExecuteNonQuery();
 
-						Settings.Default.LabelPhotoToday = id_today_photo;
-						Settings.Default.LabelVideoToday = id_today_video;
-						Settings.Default.LabelPhotoThisWeek = id_this_week_photo;
-						Settings.Default.LabelVideoThisWeek = id_this_week_video;
+						Settings.Default.LabelPhotoToday = photoToday;
+						Settings.Default.LabelPhotoYesterday = photoYesterday;
+						Settings.Default.LabelPhotoThisWeek = photoThisWeek;
+						
+						Settings.Default.LabelVideoToday = videoToday;
+						Settings.Default.LabelVideoYesterday = videoYesterday;
+						Settings.Default.LabelVideoThisWeek = videoThisWeek;
+
 						Settings.Default.Save();
 
 						updateDbSchemaVersion(conn, 6);

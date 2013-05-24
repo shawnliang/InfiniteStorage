@@ -214,5 +214,29 @@ namespace InfiniteStorage.Properties {
                 this["LabelVideoThisWeek"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00000000-0000-0000-0000-000000000000")]
+        public global::System.Guid LabelPhotoYesterday {
+            get {
+                return ((global::System.Guid)(this["LabelPhotoYesterday"]));
+            }
+            set {
+                this["LabelPhotoYesterday"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00000000-0000-0000-0000-000000000000")]
+        public global::System.Guid LabelVideoYesterday {
+            get {
+                return ((global::System.Guid)(this["LabelVideoYesterday"]));
+            }
+            set {
+                this["LabelVideoYesterday"] = value;
+            }
+        }
     }
 }
