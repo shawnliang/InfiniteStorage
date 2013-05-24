@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Waveface.Model;
+using System.Linq;
 
 namespace Waveface.Client
 {
@@ -11,6 +14,9 @@ namespace Waveface.Client
 	public partial class PhotoViewerControl : UserControl
 	{
 		ScaleTransform myScale = new ScaleTransform();
+
+
+		public event EventHandler Close;	
 
 
 		public PhotoViewerControl()
@@ -40,7 +46,16 @@ namespace Waveface.Client
 			set
 			{
 				lbImages.DataContext = value;
+				vcViewerControl.PageCount = (value as IEnumerable<IContentEntity>).Count();
 			}
+		}
+
+
+		protected void OnClose(EventArgs e)
+		{
+			if (Close == null)
+				return;
+			Close(this, e);
 		}
 
 
@@ -52,11 +67,13 @@ namespace Waveface.Client
 				value = lbImages.Items.Count - 1;
 
 			lbImages.SelectedIndex = value;
+			vcViewerControl.PageNo = lbImages.SelectedIndex;
 		}
 
 		public void Next()
 		{
 			lbImages.SelectedIndex = (lbImages.SelectedIndex + 1) % lbImages.Items.Count;
+			vcViewerControl.PageNo = lbImages.SelectedIndex;
 		}
 
 
@@ -124,5 +141,21 @@ namespace Waveface.Client
 			myScale.ScaleX += 0.1;
 			myScale.ScaleY = myScale.ScaleX;
 		}
+
+		private void ViewerControl_Next(object sender, EventArgs e)
+		{
+			Next();
+		}
+
+		private void ViewerControl_Previous(object sender, EventArgs e)
+		{
+			Previous();
+		}
+
+		private void ViewerControl_Close(object sender, EventArgs e)
+		{
+			OnClose(EventArgs.Empty);
+		}
+
 	}
 }

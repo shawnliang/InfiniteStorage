@@ -5,6 +5,6 @@
         Title="PhotoViewer" Height="300" Width="300" MouseDoubleClick="Window_MouseDoubleClick" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" WindowState="Maximized" Background="{x:Null}" AllowsTransparency="True" KeyDown="Window_KeyDown" MouseRightButtonDown="Window_MouseRightButtonDown">
     <Grid>
         <Rectangle Opacity="0.9" Fill="#FF222222"/>
-        <local:PhotoViewerControl x:Name="pvcViewer"/>
+        <local:PhotoViewerControl x:Name="pvcViewer" Close="pvcViewer_Close"/>
     </Grid>
 </Window>

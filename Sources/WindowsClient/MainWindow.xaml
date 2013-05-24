@@ -153,7 +153,7 @@
 			<Grid.Effect>
 				<DropShadowEffect BlurRadius="1" ShadowDepth="1" Direction="180"/>
 			</Grid.Effect>
-			<Button Content="Share" HorizontalAlignment="Left" Height="31" Margin="10,159.333,0,0" VerticalAlignment="Top" Width="130" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" FontSize="16">
+			<Button Content="Add to Favorites" HorizontalAlignment="Left" Height="31" Margin="10,340.5,0,0" VerticalAlignment="Top" Width="130" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" FontSize="16" Foreground="White">
 				<Button.Background>
 					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
 						<GradientStop Color="#FF616060" Offset="0"/>
@@ -164,28 +164,32 @@
 					<DropShadowEffect BlurRadius="3" ShadowDepth="2" Direction="270" Opacity="0.3"/>
 				</Button.Effect>
 			</Button>
-			<Label x:Name="lblLabeledCount" HorizontalAlignment="Left" Height="32" Margin="10,12,0,0" Content="{Binding Count}" ContentStringFormat="Labeled {0} photos" VerticalAlignment="Top" Width="130" Foreground="#FFF2F2DA" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light"/>
-			<Grid Margin="10,70.667,10,0">
-
-				<Label HorizontalAlignment="Left" Height="25" Margin="66,0,0,0" Content="On     Off" VerticalAlignment="Top" Width="64" Foreground="#FFA5A5A5" HorizontalContentAlignment="Left" FontFamily="Segoe UI Light"/>
-				<Label HorizontalAlignment="Left" Height="25" Margin="0,26.667,0,0" Content="On TV" VerticalAlignment="Top" Width="64" Foreground="#FFC1F2DA" HorizontalContentAlignment="Left" FontFamily="Segoe UI Light"/>
-				<Label HorizontalAlignment="Left" Height="25" Margin="0,51.667,0,0" Content="On Cloud" VerticalAlignment="Top" Width="64" Foreground="#FFC1F2DA" HorizontalContentAlignment="Left" FontFamily="Segoe UI Light"/>
-				<Grid Margin="76.334,32.667,11,28.666">
-					<RadioButton Content="RadioButton" HorizontalAlignment="Left" Height="15.334" VerticalAlignment="Top" Width="12.666" RenderTransformOrigin="0.632,-0.174" IsChecked="True"/>
-					<RadioButton Content="RadioButton" HorizontalAlignment="Left" Height="15.334" Margin="30,0,0,0" VerticalAlignment="Top" Width="12.666" RenderTransformOrigin="0.632,-0.174"/>
-
-				</Grid>
-				<Grid Margin="76.334,57.667,11,3.666">
-
-					<RadioButton Content="RadioButton" HorizontalAlignment="Left" Height="15.334" VerticalAlignment="Top" Width="12.666" RenderTransformOrigin="0.632,-0.174" IsChecked="True"/>
-					<RadioButton Content="RadioButton" HorizontalAlignment="Left" Height="15.334" Margin="30,0,0,0" VerticalAlignment="Top" Width="12.666" RenderTransformOrigin="0.632,-0.174"/>
-
-
-				</Grid>
-
-
-			</Grid>
-			<Label HorizontalAlignment="Left" Height="25" Margin="42,40.667,0,0" Content="X Clear all" VerticalAlignment="Top" Width="64" Foreground="#FFA5A5A5" HorizontalContentAlignment="Left" FontFamily="Segoe UI Light"/>
+			<Button Content="Share" HorizontalAlignment="Left" Height="31" Margin="10,376.5,0,0" VerticalAlignment="Top" Width="130" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" FontSize="16" Foreground="White" Click="Button_Click_1">
+				<Button.Background>
+					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+						<GradientStop Color="#FF616060" Offset="0"/>
+						<GradientStop Color="#FF474646" Offset="1"/>
+					</LinearGradientBrush>
+				</Button.Background>
+				<Button.Effect>
+					<DropShadowEffect BlurRadius="3" ShadowDepth="2" Direction="270" Opacity="0.3"/>
+				</Button.Effect>
+			</Button>
+			<ed:RegularPolygon Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="111.333" InnerRadius="0.84" Margin="20.671,12,0,0" PointCount="5" Stretch="Fill" VerticalAlignment="Top" Width="111.334"/>
+			<Rectangle HorizontalAlignment="Left" Height="111.333" Margin="20.671,12,0,0" VerticalAlignment="Top" Width="111.334" Stroke="White"/>
+			<Label x:Name="lblLabeledCount" HorizontalAlignment="Left" Height="32" Margin="8.666,45.35,0,0" Content="{Binding Count}" ContentStringFormat=" {0} photos" VerticalAlignment="Top" Width="130" Foreground="Black" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light"/>
+			<Label x:Name="lblLabeledCount_Copy" HorizontalAlignment="Left" Height="32" Margin="8.666,65.36,0,0" Content="0 videos" VerticalAlignment="Top" Width="130" Foreground="Black" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light"/>
+			<Button Content="Clear All" HorizontalAlignment="Left" Height="31" Margin="8.666,144.333,0,0" VerticalAlignment="Top" Width="130" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" FontSize="16" Foreground="White">
+				<Button.Background>
+					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+						<GradientStop Color="#FF616060" Offset="0"/>
+						<GradientStop Color="#FF474646" Offset="1"/>
+					</LinearGradientBrush>
+				</Button.Background>
+				<Button.Effect>
+					<DropShadowEffect BlurRadius="3" ShadowDepth="2" Direction="270" Opacity="0.3"/>
+				</Button.Effect>
+			</Button>
 
 
 		</Grid>
