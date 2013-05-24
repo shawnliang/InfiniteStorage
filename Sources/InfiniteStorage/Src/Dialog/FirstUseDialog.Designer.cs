@@ -155,6 +155,7 @@
 			this.storageLocationControl1.Location = new System.Drawing.Point(68, 114);
 			this.storageLocationControl1.Name = "storageLocationControl1";
 			this.storageLocationControl1.Size = new System.Drawing.Size(492, 95);
+			this.storageLocationControl1.StoragePath = "";
 			this.storageLocationControl1.TabIndex = 0;
 			// 
 			// tabInstalledSuccess
@@ -188,6 +189,7 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "[product name]";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FirstUseDialog_FormClosing);
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FirstUseDialog_FormClosed);
 			this.Load += new System.EventHandler(this.FirstUseDialog_Load);
 			this.panel1.ResumeLayout(false);
 			this.tabControlEx1.ResumeLayout(false);

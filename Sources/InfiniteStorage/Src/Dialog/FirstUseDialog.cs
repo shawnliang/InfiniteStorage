@@ -30,8 +30,7 @@ namespace InfiniteStorage
 
 		private void FirstUseDialog_Load(object sender, EventArgs e)
 		{
-			//instruction1.Text = string.Format(Resources.FirstUse_Instruction1, BonjourService.ServiceName);
-
+			BonjourServiceRegistrator.Instance.Register(true);
 			UpdateUI();
 		}
 
@@ -48,7 +47,6 @@ namespace InfiniteStorage
 			{
 				Settings.Default.LocationType = (int)LocationType.SingleFolder;
 				Settings.Default.SingleFolderLocation = storageLocationControl1.StoragePath;
-				//Settings.Default.OrganizeMethod = (int)organizeSelectionControl1.OrganizeBy;
 				Settings.Default.Save();
 
 				// write folder location to registry so that client can get it.
@@ -99,9 +97,10 @@ namespace InfiniteStorage
 			this.Text = selectedTab.Text;
 
 
-			prevButton.Visible = false; //selectedTab == tabChooseOrganizeMethod;
+			prevButton.Visible = false;
 
 			nextButton.Text = Resources.FirstUse_Next;
+			nextButton.Visible = (selectedTab != tabWelcomeAndWaitConnect);
 
 			if (selectedTab == tabChooseLocation)
 				nextButton.Text = Resources.FirstUse_Start;
@@ -136,6 +135,11 @@ namespace InfiniteStorage
 			}
 
 			transferringControl1.StopUpdateUI();
+		}
+
+		private void FirstUseDialog_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			BonjourServiceRegistrator.Instance.Register(false);
 		}
 	}
 }

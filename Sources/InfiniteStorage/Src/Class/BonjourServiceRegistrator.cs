@@ -41,7 +41,7 @@ namespace InfiniteStorage
 				if (bonjour != null)
 				{
 					bonjour.Dispose();
-					Thread.Sleep(500);
+					Thread.Sleep(600);
 				}
 
 				if (isAccepting.HasValue)
