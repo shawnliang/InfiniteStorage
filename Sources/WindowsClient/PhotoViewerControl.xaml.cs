@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Waveface.Model;
 using System.Linq;
+using System.Windows.Input;
 
 namespace Waveface.Client
 {
@@ -154,6 +155,14 @@ namespace Waveface.Client
 
 		private void ViewerControl_Close(object sender, EventArgs e)
 		{
+			OnClose(EventArgs.Empty);
+		}
+
+		private void ImgContentCtrl_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{	
+			if (e.ChangedButton != MouseButton.Left)
+				return;
+
 			OnClose(EventArgs.Empty);
 		}
 
