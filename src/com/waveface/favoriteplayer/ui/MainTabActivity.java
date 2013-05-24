@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.ui.fragment.OverviewFragment;
 import com.waveface.favoriteplayer.ui.fragment.PlaybackFragment;
@@ -29,24 +30,34 @@ public class MainTabActivity extends FragmentActivity{
         tv.setText(getResources().getString(R.string.favorite));
         TabHost.TabSpec spec = mTabHost.newTabSpec(OverviewFragment.class.getSimpleName());
         spec.setIndicator(tabInfo);
+        
+        Bundle data = new Bundle();
+        data.putInt(Constant.ARGUMENT1, OverviewFragment.OVERVIEW_VIEW_TYPE_FAVORITE);
+        
         mTabHost.addTab(spec,
-                OverviewFragment.class, arg0);
+                OverviewFragment.class, data);
         
         tabInfo = (ViewGroup) inflater.inflate(R.layout.item_tabinfo, null, false);
         tv = (TextView) tabInfo.findViewById(R.id.tabinfo);
         tv.setText(getResources().getString(R.string.recent_photos));
         spec = mTabHost.newTabSpec(PlaybackFragment.class.getSimpleName());
         spec.setIndicator(tabInfo);        
+
+        data = new Bundle();
+        data.putInt(Constant.ARGUMENT1, OverviewFragment.OVERVIEW_VIEW_TYPE_RECENT_PHOTO);
         mTabHost.addTab(spec,
-                PlaybackFragment.class, arg0);
+        		OverviewFragment.class, data);
         
         tabInfo = (ViewGroup) inflater.inflate(R.layout.item_tabinfo, null, false);
         tv = (TextView) tabInfo.findViewById(R.id.tabinfo);
         tv.setText(getResources().getString(R.string.recent_videos));
         spec = mTabHost.newTabSpec("recent videos");
-        spec.setIndicator(tabInfo);        
+        spec.setIndicator(tabInfo);
+        
+        data = new Bundle();
+        data.putInt(Constant.ARGUMENT1, OverviewFragment.OVERVIEW_VIEW_TYPE_RECENT_VIDEO);
         mTabHost.addTab(spec,
-        		OverviewFragment.class, arg0);
+        		OverviewFragment.class, data);
 	}
 	
 }

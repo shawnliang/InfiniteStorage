@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +26,11 @@ import com.waveface.favoriteplayer.ui.widget.TwoWayView;
 
 public class OverviewFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener{
 	private TwoWayView mList;
-	private int mType = OVERVIEW_VIEW_TYPE_LABEL;
+	private int mType = OVERVIEW_VIEW_TYPE_FAVORITE;
 	
-	public static final int OVERVIEW_VIEW_TYPE_LABEL = 1;
+	public static final int OVERVIEW_VIEW_TYPE_FAVORITE = 1;
+	public static final int OVERVIEW_VIEW_TYPE_RECENT_PHOTO = 2;
+	public static final int OVERVIEW_VIEW_TYPE_RECENT_VIDEO = 3;
 
 	
 	@Override
@@ -39,6 +42,15 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		mList.setOnItemLongClickListener(this);
 		mList.setOnItemClickListener(this);
 		
+		mList.setOnKeyListener(new View.OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				// TODO: IMPLEMENT key event
+				return false;
+			}
+		});
+		
 		Bundle data = null;
 		if(savedInstanceState == null) {
 			data = getArguments();
@@ -47,7 +59,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		}
 		
 		if(data != null) {
-//			mType = data.getInt(Constant.ARGUMENT1);
+			mType = data.getInt(Constant.ARGUMENT1);
 		}
 		
 		new PrepareViewTask().execute(null, null, null);
@@ -68,7 +80,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			String serverUrl ="http://"+pairedServer.ip+":"+pairedServer.restPort;
 			
 			switch(mType) {
-			case OVERVIEW_VIEW_TYPE_LABEL:
+			case OVERVIEW_VIEW_TYPE_FAVORITE:
 				String labelId = null;
 				Cursor c = LabelDB.getAllLabels(getActivity());
 				if(c.getCount() > 0) {
