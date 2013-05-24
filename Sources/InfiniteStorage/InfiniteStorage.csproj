@@ -83,6 +83,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\Dialog\BackToPhoneDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Src\Dialog\BackToPhoneDialog.Designer.cs">
+      <DependentUpon>BackToPhoneDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Src\Dialog\ProgressTooltip.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -197,12 +203,6 @@
     <Compile Include="Src\UIControl\BackupLocationControl.Designer.cs">
       <DependentUpon>BackupLocationControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Src\Dialog\FirstUseDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Src\Dialog\FirstUseDialog.Designer.cs">
-      <DependentUpon>FirstUseDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Src\Class\OrganizeMethod.cs" />
     <Compile Include="Src\UIControl\GeneralPreferenceControl.cs">
       <SubType>UserControl</SubType>
@@ -260,6 +260,9 @@
     <Compile Include="Src\Dialog\WaitForPairingDialog.Designer.cs">
       <DependentUpon>WaitForPairingDialog.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Src\Dialog\BackToPhoneDialog.resx">
+      <DependentUpon>BackToPhoneDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\ProgressTooltip.resx">
       <DependentUpon>ProgressTooltip.cs</DependentUpon>
     </EmbeddedResource>
@@ -271,9 +274,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\OrganizeSelectionControl.resx">
       <DependentUpon>OrganizeSelectionControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Src\Dialog\FirstUseDialog.resx">
-      <DependentUpon>FirstUseDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\PairingRequestDialog.resx">
       <DependentUpon>PairingRequestDialog.cs</DependentUpon>
@@ -356,9 +356,12 @@
       <Link>x86\SQLite.Interop.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\For Shawn - Copy - Copy.png" />
+    <None Include="Resources\FAV_096.png" />
     <None Include="Resources\video %281%29.png" />
     <None Include="Resources\ajax-loader.gif" />
     <None Include="Resources\380.gif" />
+    <None Include="Resources\back.png" />
     <Content Include="Resources\Empty.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

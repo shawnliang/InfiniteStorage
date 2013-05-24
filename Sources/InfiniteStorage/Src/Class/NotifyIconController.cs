@@ -263,50 +263,52 @@ namespace InfiniteStorage
 
 		private void showApproveDialog(WebsocketProtocol.WebsocketEventArgs args)
 		{
-			if (!BonjourServiceRegistrator.Instance.IsAccepting)
+			try
 			{
-				args.ctx.handleDisapprove();
-				return;
-			}
-			else
-			{
-
-				var pairingDialog = new PairingRequestDialog(args.ctx);
-				if (pairingDialog.ShowDialog() == DialogResult.No)
+				if (!BonjourServiceRegistrator.Instance.IsAccepting)
 				{
 					args.ctx.handleDisapprove();
 					return;
 				}
-
-
-				if (WaitForPairingDialog.Instance.Visible)
-					WaitForPairingDialog.Instance.Close();
-
-				if (Settings.Default.IsFirstUse)
+				else
 				{
-					if (FirstUseDialog.Instance.Visible)
-						FirstUseDialog.Instance.Close();
 
-					FirstUseDialog.Instance.ShowSetupPage(args.ctx);
-					Settings.Default.IsFirstUse = false;
-					Settings.Default.Save();
+					var pairingDialog = new PairingRequestDialog(args.ctx);
+					if (pairingDialog.ShowDialog() == DialogResult.No)
+					{
+						args.ctx.handleDisapprove();
+						return;
+					}
+
+					args.ctx.handleApprove();
+
+					if (WaitForPairingDialog.Instance.Visible)
+						WaitForPairingDialog.Instance.Close();
+
+					if (Settings.Default.IsFirstUse)
+					{
+						Settings.Default.IsFirstUse = false;
+						Settings.Default.Save();
+					}
+
+					// Show Hint to press "start on PC"
+					var backToPhoneDialog = new BackToPhoneDialog();
+					backToPhoneDialog.Show();
+
 				}
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("showApproveDialog error", err);
 			}
 		}
 
 
 		public void OnAddingNewSources(object sender, EventArgs e)
 		{
-			if (Settings.Default.IsFirstUse)
-			{
-				FirstUseDialog.Instance.Show();
-			}
-			else
-			{
-				WaitForPairingDialog.Instance.Show();
-				WaitForPairingDialog.Instance.Activate();
-				WaitForPairingDialog.Instance.BringToFront();
-			}
+			WaitForPairingDialog.Instance.Show();
+			WaitForPairingDialog.Instance.Activate();
+			WaitForPairingDialog.Instance.BringToFront();
 		}
 	}
 }

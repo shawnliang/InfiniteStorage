@@ -68,6 +68,7 @@ namespace Gui
 						*/
 						AddStep(new BonjourInstallationStep(InstallationMode.Install));
 						AddStep(new InstallationStep(InstallationMode.Install));
+						AddStep(new InstallationLocationStep1());
 						AddStep(new FinishStep(InstallationMode.Install));
 						break;
 					case InstallationMode.Uninstall:

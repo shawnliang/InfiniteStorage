@@ -88,6 +88,26 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap back_arrow {
+            get {
+                object obj = ResourceManager.GetObject("back_arrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap backToPhone {
+            get {
+                object obj = ResourceManager.GetObject("backToPhone", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 檔案：準備中.
         /// </summary>
         internal static string BackupProgressFile_Preparing {
@@ -167,6 +187,16 @@ namespace InfiniteStorage.Properties {
         internal static string DeleteDevice_Title {
             get {
                 return ResourceManager.GetString("DeleteDevice_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FAV_096 {
+            get {
+                object obj = ResourceManager.GetObject("FAV_096", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

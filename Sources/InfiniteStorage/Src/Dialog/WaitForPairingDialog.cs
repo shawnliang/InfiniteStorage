@@ -43,8 +43,7 @@ namespace InfiniteStorage
 
 		private void WaitForPairingDialog_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			if (!Settings.Default.IsFirstUse)
-				BonjourServiceRegistrator.Instance.Register(false);
+			BonjourServiceRegistrator.Instance.Register(false);
 		}
 	}
 }

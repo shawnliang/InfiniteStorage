@@ -13,6 +13,7 @@ using System.Text;
 using System.Windows.Forms;
 using Wammer.Station;
 using WebSocketSharp.Server;
+using Microsoft.Win32;
 
 namespace InfiniteStorage
 {
@@ -69,12 +70,17 @@ namespace InfiniteStorage
 			if (string.IsNullOrEmpty(Settings.Default.ServerId))
 			{
 				Settings.Default.ServerId = generateSameServerIdForSameUserOnSamePC();
-				Settings.Default.SingleFolderLocation = MediaLibrary.UserFolder;
+				Settings.Default.SingleFolderLocation = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", "");
 				Settings.Default.OrganizeMethod = (int)OrganizeMethod.YearMonth;
 				Settings.Default.LocationType = (int)LocationType.SingleFolder;
 				Settings.Default.Save();
+
+				var bunnyAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName);
+				NginxUtility.Instance.PrepareNginxConfig(bunnyAppData, 12888, Settings.Default.SingleFolderLocation);
 			}
 
+			NginxUtility.Instance.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
+			ThumbnailCreator.Instance.Start();
 
 			SynchronizationContextHelper.SetMainSyncContext();
 			DBInitializer.InitialzeDatabaseSchema();
@@ -123,14 +129,11 @@ namespace InfiniteStorage
 
 			if (hasAnyRegisteredDevice())
 			{
-				ThumbnailCreator.Instance.Start();
-				NginxUtility.Instance.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
-
 				BonjourServiceRegistrator.Instance.Register(false);
 			}
 			else
 			{
-				FirstUseDialog.Instance.Show();
+				WaitForPairingDialog.Instance.Show();
 				BonjourServiceRegistrator.Instance.Register(true);
 			}
 

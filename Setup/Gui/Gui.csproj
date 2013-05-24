@@ -76,6 +76,12 @@
     <Compile Include="InitializationStep.Designer.cs">
       <DependentUpon>InitializationStep.cs</DependentUpon>
     </Compile>
+    <Compile Include="InstallationLocationStep1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="InstallationLocationStep1.Designer.cs">
+      <DependentUpon>InstallationLocationStep1.cs</DependentUpon>
+    </Compile>
     <Compile Include="InstallationModeStep.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -115,6 +121,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InitializationStep.resx">
       <DependentUpon>InitializationStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstallationLocationStep1.resx">
+      <DependentUpon>InstallationLocationStep1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InstallationModeStep.resx">
       <DependentUpon>InstallationModeStep.cs</DependentUpon>

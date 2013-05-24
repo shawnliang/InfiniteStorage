@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using SharpSetup.Base;
 using SharpSetup.UI.Forms.Modern;
+using Microsoft.Win32;
 
 namespace Gui
 {
@@ -27,6 +28,7 @@ namespace Gui
 		{
 			if (cbRunNow.Checked && cbRunNow.Visible)
 			{
+				Microsoft.Win32.Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", Wizard.GetVariable<string>("resourceFolder"));
 				var program = string.Format(Gui.Properties.Resources.FinishStepCommand, MsiConnection.Instance.GetPath("INSTALLLOCATION"));
 				UACHelper.CreateProcessAsStandardUser(program, "");
 			}
