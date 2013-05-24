@@ -51,7 +51,9 @@ public class RuntimeWebClient {
 	}
 
 	public static void close() throws WebSocketException {
-		mWebSocketClient.close();
+		if(mWebSocketClient!=null){
+			mWebSocketClient.close();
+		}
 	}
 
 	public static void send(String aString) throws WebSocketException {

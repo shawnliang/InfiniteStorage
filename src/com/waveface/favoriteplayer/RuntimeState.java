@@ -76,6 +76,10 @@ public class RuntimeState{
 		else if(action.equals(Constant.WS_ACTION_END_BACKUP)){
 			isBackuping = false;			
 		}		
+		else if(action.equals(Constant.WS_ACTION_SERVER_REMOVED)){
+			OnWebSocketOpened = true;			
+			mWebSocketServerId = "";			
+		}
 	}
 	public static boolean isWebSocketAvaliable(Context context){
 		if(NetworkUtil.isWifiNetworkAvailable(context) 
