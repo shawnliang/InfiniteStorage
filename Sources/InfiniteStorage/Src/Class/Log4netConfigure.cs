@@ -25,8 +25,7 @@ namespace InfiniteStorage
 
 		private static string getLog4netConfigFilePath()
 		{
-			var appdataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-			var productFolder = Path.Combine(appdataFolder, Resources.ProductName);
+			var productFolder = MyFileFolder.AppData;
 
 			if (!Directory.Exists(productFolder))
 				Directory.CreateDirectory(productFolder);

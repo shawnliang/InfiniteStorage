@@ -78,11 +78,10 @@ namespace InfiniteStorage
 				if (!Directory.Exists(Settings.Default.SingleFolderLocation))
 					Directory.CreateDirectory(Settings.Default.SingleFolderLocation);
 
-				var bunnyAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName);
-				NginxUtility.Instance.PrepareNginxConfig(bunnyAppData, 12888, Settings.Default.SingleFolderLocation);
+				NginxUtility.Instance.PrepareNginxConfig(12888, Settings.Default.SingleFolderLocation);
 			}
 
-			NginxUtility.Instance.Start(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
+			NginxUtility.Instance.Start();
 			ThumbnailCreator.Instance.Start();
 
 			SynchronizationContextHelper.SetMainSyncContext();
@@ -337,7 +336,7 @@ namespace InfiniteStorage
 			try
 			{
 				PendingFileMonitor.Instance.Stop();
-				NginxUtility.Instance.Stop(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
+				NginxUtility.Instance.Stop();
 				notifier.Stop();
 				backup_server.Stop();
 				ThumbnailCreator.Instance.Stop();

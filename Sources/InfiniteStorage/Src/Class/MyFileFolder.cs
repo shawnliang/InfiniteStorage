@@ -118,5 +118,9 @@ namespace InfiniteStorage
 			}
 		}
 
+		public static string AppData
+		{
+			get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny"); }
+		}
 	}
 }

@@ -67,7 +67,7 @@ namespace InfiniteStorage
 
 		private void openLogButton_Click(object sender, EventArgs e)
 		{
-			var file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName, "server.log");
+			var file = Path.Combine(MyFileFolder.AppData, "server.log");
 
 			if (File.Exists(file))
 				Process.Start(file);

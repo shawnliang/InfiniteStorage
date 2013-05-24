@@ -32,17 +32,17 @@ namespace InfiniteStorage
 			get { return instance; }
 		}
 
-		public void PrepareNginxConfig(string cfg_dir, ushort port, string origFileDir)
+		public void PrepareNginxConfig(ushort port, string origFileDir)
 		{
 			var install_dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 			var nginx_dir = Path.Combine(install_dir, "nginx");
-			var log_dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny", "logs");
-			var temp_dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny", "kemp");
+			var log_dir = Path.Combine(MyFileFolder.AppData, "logs");
+			var temp_dir = Path.Combine(MyFileFolder.AppData, "kemp");
 
-			File.Copy(Path.Combine(nginx_dir, @"conf\mime.types"), Path.Combine(cfg_dir, "mime.types"));
+			File.Copy(Path.Combine(nginx_dir, @"conf\mime.types"), Path.Combine(MyFileFolder.AppData, "mime.types"));
 
 			using (var template = new StreamReader(Path.Combine(nginx_dir, @"conf\nginx.conf.template")))
-			using (var target_cfg = new StreamWriter(Path.Combine(cfg_dir, "nginx.cfg")))
+			using (var target_cfg = new StreamWriter(Path.Combine(MyFileFolder.AppData, "nginx.cfg")))
 			{
 				while (!template.EndOfStream)
 				{
@@ -95,8 +95,10 @@ namespace InfiniteStorage
 			}
 		}
 
-		public void Start(string cfg_dir)
+		public void Start()
 		{
+			var cfg_dir = MyFileFolder.AppData;
+
 			stopping = false;
 			var processes = Process.GetProcessesByName("nginx");
 			if (processes != null)
@@ -118,7 +120,7 @@ namespace InfiniteStorage
 			nginxProcess = start(cfg_dir, (s, e) =>
 			{
 				if (!stopping)
-					Start(cfg_dir);
+					Start();
 			});
 
 			reload(cfg_dir);
@@ -129,10 +131,10 @@ namespace InfiniteStorage
 			return cmd(cfg_dir, "", onExit);
 		}
 
-		public void Stop(string cfg_dir)
+		public void Stop()
 		{
 			stopping = true;
-			cmd(cfg_dir, "-s stop");
+			cmd(MyFileFolder.AppData, "-s stop");
 		}
 
 		private void reload(string cfg_dir)
