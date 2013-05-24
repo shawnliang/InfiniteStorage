@@ -49,7 +49,7 @@ public class DNSThread extends Thread {
      */
     private void openSocket() throws IOException {
         multicastSocket = new MulticastSocket(MDNS_PORT);
-        multicastSocket.setTimeToLive(50);
+        multicastSocket.setTimeToLive(255);
         multicastSocket.setReuseAddress(true);
         multicastSocket.setNetworkInterface(networkInterface);
         multicastSocket.joinGroup(groupAddress);
@@ -83,7 +83,7 @@ public class DNSThread extends Thread {
         // set up the buffer for incoming packets
         byte[] responseBuffer = new byte[BUFFER_SIZE];
         DatagramPacket response = new DatagramPacket(responseBuffer, BUFFER_SIZE);
-
+        submitQuery(MDNSConstant.BONJOUR_SERVICE_ID);
         // loop!
         while (true) {
             // zero the incoming buffer for good measure.
@@ -177,7 +177,9 @@ public class DNSThread extends Thread {
     }
     public void submitQuery(String host) {
         commandQueue.offer(new QueryCommand(host));
-        multicastSocket.close();
+        if(multicastSocket!=null){
+        	multicastSocket.close();
+        }
     }
     public void submitQuit() {
         commandQueue.offer(new QuitCommand());

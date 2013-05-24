@@ -60,7 +60,7 @@ public class MulticastTestActivity extends Activity implements OnEditorActionLis
         listView = (ListView) findViewById(R.id.list_view);
         
         hostBox.setOnEditorActionListener(this);
-        hostBox.setText(MDNSConstant.BS_ID);
+        hostBox.setText(MDNSConstant.BONJOUR_SERVICE_ID);
     }
 
     /**

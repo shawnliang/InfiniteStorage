@@ -53,7 +53,8 @@ public class DNSAnswer extends DNSComponent {
             } catch (UnknownHostException e) {
                 throw new DNSException("problem parsing rdata");
             }
-        } else if (type.equals(Type.TXT)) {
+        } 
+        else if (type.equals(Type.TXT)) {
             rdataString = "";
             for (int i=0; i<rdata.length; ) {
                 int length = rdata[i++];
@@ -63,7 +64,8 @@ public class DNSAnswer extends DNSComponent {
                     rdataString += ",";
                 }
             }
-        } else if (type.equals(Type.PTR)) {
+        } 
+        else if (type.equals(Type.PTR)) {
             // rewind the buffer to the beginning of the
             // name (just after the 16-bit name-length field)
             // and reparse the name to allow for compression
@@ -74,7 +76,8 @@ public class DNSAnswer extends DNSComponent {
             if (oldoffset != buffer.offset) {
                 throw new DNSException("bad PTR rdata");
             }
-        } else {
+        } 
+        else {
             rdataString = "data["+rdata.length+"]";
         }
 

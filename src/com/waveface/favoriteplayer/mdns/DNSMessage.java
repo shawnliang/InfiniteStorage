@@ -101,7 +101,6 @@ public class DNSMessage {
     
     private void parse(byte[] packet, int offset, int length) {
         DNSBuffer buffer = new DNSBuffer(packet, offset, length);
-        
         // header
         messageId = buffer.readShort();
         buffer.readShort(); // flags
@@ -175,7 +174,7 @@ public class DNSMessage {
         	String answerValue = null;
         	String[] dataArray = null;
         	String[] keyValue = null;        	
-        	int matchIndex = entryKey.indexOf(MDNSConstant.BS_ID);
+        	int matchIndex = entryKey.indexOf(MDNSConstant.BONJOUR_SERVICE_ID);
         	if(matchIndex>=0){
         		if(matchIndex>0){
         			serverInfo.serverName = entryKey.substring(0, matchIndex-1);
@@ -208,7 +207,7 @@ public class DNSMessage {
 	                	}
 	                }
 	                else if(dataType.equals("PTR")){
-	                	matchIndex = answerValue.indexOf(MDNSConstant.BS_ID);
+	                	matchIndex = answerValue.indexOf(MDNSConstant.BONJOUR_SERVICE_ID);
 	            		if(matchIndex>0){
 	            			serverInfo.serverName = answerValue.substring(0, matchIndex-1);
 	            	        Log.d("DNSMessage", "PTR SERVER NAME:"+serverInfo.serverName);
