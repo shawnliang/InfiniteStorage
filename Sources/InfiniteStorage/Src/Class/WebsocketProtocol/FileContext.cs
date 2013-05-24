@@ -10,5 +10,6 @@ namespace InfiniteStorage.WebsocketProtocol
 		public string folder { get; set; }
 		public DateTime datetime { get; set; }
 		public FileAssetType type { get; set; }
+		public Guid file_id { get; set; }
 	}
 }

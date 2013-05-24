@@ -16,6 +16,7 @@ namespace InfiniteStorage
 		public static event EventHandler<WebsocketEventArgs> DeviceDisconnected;
 		public static event EventHandler<WebsocketEventArgs> PairingRequesting;
 		public static event EventHandler<WebsocketEventArgs> TotalCountUpdated;
+		public static event EventHandler<WebsocketEventArgs> FileReceived;
 
 		public InfiniteStorageWebSocketService()
 		{
@@ -26,7 +27,7 @@ namespace InfiniteStorage
 				dir.Attributes = FileAttributes.Hidden | dir.Attributes;
 			}
 
-			var storage = new FlatFileStorage(new DirOrganizerProxy());
+			var storage = new PendingFileStorage();
 
 			var ctx = new ProtocolContext(new TempFileFactory(MyFileFolder.Temp), storage, new UnconnectedState())
 			{
@@ -34,52 +35,17 @@ namespace InfiniteStorage
 				StopFunc = this.Stop
 			};
 
-			ctx.OnConnectAccepted += new EventHandler<WebsocketEventArgs>(ctx_OnConnectAccepted);
-			ctx.OnPairingRequired += new EventHandler<WebsocketEventArgs>(ctx_OnPairingRequired);
-			ctx.OnTotalCountUpdated += new EventHandler<WebsocketEventArgs>(ctx_OnTotalCountUpdated);
+			ctx.OnConnectAccepted += DeviceAccepted;
+			ctx.OnPairingRequired += PairingRequesting;
+			ctx.OnTotalCountUpdated += TotalCountUpdated;
+			ctx.OnFileReceived += FileReceived;
 
 			handler = new ProtocolHanlder(ctx);
-		}
-
-		void ctx_OnTotalCountUpdated(object sender, WebsocketEventArgs e)
-		{
-			raiseTotalCountUpdatedEvent(e);
-		}
-
-		void ctx_OnPairingRequired(object sender, WebsocketEventArgs e)
-		{
-			raisePairingRequestingEvent(e);
-		}
-
-		void ctx_OnConnectAccepted(object sender, WebsocketEventArgs e)
-		{
-			raiseDeviceConnectedEvent(e);
-		}
-
-		private void raiseDeviceConnectedEvent(WebsocketEventArgs e)
-		{
-			var handler = DeviceAccepted;
-			if (handler != null)
-				handler(this, e);
 		}
 
 		private void raiseDeviceDisconnectedEvent(WebsocketEventArgs e)
 		{
 			var handler = DeviceDisconnected;
-			if (handler != null)
-				handler(this, e);
-		}
-
-		private void raisePairingRequestingEvent(WebsocketEventArgs e)
-		{
-			var handler = PairingRequesting;
-			if (handler != null)
-				handler(this, e);
-		}
-
-		private void raiseTotalCountUpdatedEvent(WebsocketEventArgs e)
-		{
-			var handler = TotalCountUpdated;
 			if (handler != null)
 				handler(this, e);
 		}

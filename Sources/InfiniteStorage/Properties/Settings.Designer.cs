@@ -166,5 +166,53 @@ namespace InfiniteStorage.Properties {
                 this["IsUpgraded"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00000000-0000-0000-0000-000000000000")]
+        public global::System.Guid LabelPhotoToday {
+            get {
+                return ((global::System.Guid)(this["LabelPhotoToday"]));
+            }
+            set {
+                this["LabelPhotoToday"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00000000-0000-0000-0000-000000000000")]
+        public global::System.Guid LabelVideoToday {
+            get {
+                return ((global::System.Guid)(this["LabelVideoToday"]));
+            }
+            set {
+                this["LabelVideoToday"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00000000-0000-0000-0000-000000000000")]
+        public global::System.Guid LabelPhotoThisWeek {
+            get {
+                return ((global::System.Guid)(this["LabelPhotoThisWeek"]));
+            }
+            set {
+                this["LabelPhotoThisWeek"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00000000-0000-0000-0000-000000000000")]
+        public global::System.Guid LabelVideoThisWeek {
+            get {
+                return ((global::System.Guid)(this["LabelVideoThisWeek"]));
+            }
+            set {
+                this["LabelVideoThisWeek"] = value;
+            }
+        }
     }
 }

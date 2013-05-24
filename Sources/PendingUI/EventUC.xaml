@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="Waveface.EventUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:PendingUI="clr-namespace:Waveface" mc:Ignorable="d" SizeChanged="UserControl_SizeChanged" 
+             d:DesignWidth="480">
+    <UserControl.Resources>
+        <PendingUI:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
+    </UserControl.Resources>
+
+    <Grid x:Name="gridMain">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="28"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <i:Interaction.Behaviors>
+            <PendingUI:IgnoreMouseWheelBehavior />
+        </i:Interaction.Behaviors>
+
+        <Image Margin="4,8,4,0" VerticalAlignment="Top" Source="/PendingUI;component/Images/clock.png" />
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32" />
+                <RowDefinition Height="24" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBox x:Name="tbDescribe" Grid.Row="0" Margin="0,4,8,0" Width="256" VerticalContentAlignment="Center" FontSize="14" HorizontalAlignment="Left" TextChanged="tbDescribe_TextChanged">
+                <TextBox.Style>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                        <Style.Triggers>
+                            <Trigger Property="PendingUI:WatermarkTextBehavior.IsWatermarked" Value="True">
+                                <Setter Property="Foreground" Value="Gray" />
+                                <Setter Property="FontStyle" Value="Italic" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+                <i:Interaction.Behaviors>
+                    <PendingUI:WatermarkTextBehavior Text="Describe the event..." />
+                </i:Interaction.Behaviors>
+            </TextBox>
+
+            <StackPanel Grid.Row="1" Margin="0, 4, 0, 0" Orientation="Horizontal">
+                <TextBlock x:Name="tbTitle" Text="2013.5.20, 11:59" FontSize="14" FontWeight="SemiBold" Height="23"/>
+                <TextBlock x:Name="tbTimeAgo" Margin="4,2,0,0" Text="Yesterday" FontSize="12" />
+                <TextBlock x:Name="tbTotalCount" Margin="12,2,0,0" Text="99 Photos" FontSize="12" />
+            </StackPanel>
+
+            <ListBox BorderThickness="0" Background="#fcfcfc" SelectionMode="Multiple" Grid.Row="2" Margin="0,8" x:Name="lbEvent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemContainerStyle="{StaticResource SimpleListBoxItem}" Loaded="lbEvent_Loaded">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <Border BorderBrush="White" BorderThickness="1" Background="Transparent">
+                                <Grid>
+                                    <Rectangle Fill="#44000000" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}"/>
+                                    
+                                    <Image Source="{Binding BitmapImage}" Stretch="Fill"  Width="64"
+                                    Height="64" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" />
+
+                                    <Image Source="{Binding BitmapImage}" Stretch="UniformToFill"  Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=Width}"
+                                    Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=Height}" 
+                                    Visibility="{Binding Path=IsPhoto, Converter={StaticResource BoolToHiddenConverter}}"       />
+
+                                    <!--Image Source="/PendingUI;component/Images/checkmark.png" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=IsSelected}"
+                                        Stretch="Uniform" Width="20" Height="20" Margin="-8"  HorizontalAlignment="Right" VerticalAlignment="Top"/>
+
+                                    <Rectangle Fill="#44000000" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/-->
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </Grid>
+    </Grid>
+</UserControl>

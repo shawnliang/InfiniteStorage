@@ -30,7 +30,7 @@ namespace InfiniteStorage
 
 		private void FirstUseDialog_Load(object sender, EventArgs e)
 		{
-			instruction1.Text = string.Format(Resources.FirstUse_Instruction1, BonjourService.ServiceName);
+			//instruction1.Text = string.Format(Resources.FirstUse_Instruction1, BonjourService.ServiceName);
 
 			UpdateUI();
 		}
@@ -44,11 +44,11 @@ namespace InfiniteStorage
 
 		private void nextButton_Click(object sender, EventArgs e)
 		{
-			if (tabControlEx1.SelectedTab == tabChooseOrganizeMethod)
+			if (tabControlEx1.SelectedTab == tabChooseLocation)
 			{
 				Settings.Default.LocationType = (int)LocationType.SingleFolder;
 				Settings.Default.SingleFolderLocation = storageLocationControl1.StoragePath;
-				Settings.Default.OrganizeMethod = (int)organizeSelectionControl1.OrganizeBy;
+				//Settings.Default.OrganizeMethod = (int)organizeSelectionControl1.OrganizeBy;
 				Settings.Default.Save();
 
 				// write folder location to registry so that client can get it.
@@ -96,11 +96,11 @@ namespace InfiniteStorage
 			this.Text = selectedTab.Text;
 
 
-			prevButton.Visible = selectedTab == tabChooseOrganizeMethod;
+			prevButton.Visible = false;//selectedTab == tabChooseOrganizeMethod;
 
 			nextButton.Text = Resources.FirstUse_Next;
 
-			if (selectedTab == tabChooseOrganizeMethod)
+			if (selectedTab == tabChooseLocation)
 				nextButton.Text = Resources.FirstUse_Start;
 
 			if (selectedTab == tabInstalledSuccess)
@@ -125,7 +125,7 @@ namespace InfiniteStorage
 			var curTab = tabControlEx1.SelectedTab;
 
 			if (e.CloseReason == CloseReason.UserClosing &&
-				(curTab == tabChooseLocation || curTab == tabChooseOrganizeMethod))
+				(curTab == tabChooseLocation))
 			{
 				MessageBox.Show(Resources.FirstUse_NoExitBeforeAcceptComplete, Resources.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				e.Cancel = true;

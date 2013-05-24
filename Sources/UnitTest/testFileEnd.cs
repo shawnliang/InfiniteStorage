@@ -61,6 +61,9 @@ namespace UnitTest
 			var state = new TransmitStartedState() { Util = util.Object };
 
 			ctx.SetState(state);
+
+			bool called = false;
+			ctx.OnFileReceived += (s, e) => { called = true; };
 			ctx.handleFileEndCmd(new TextCommand { action = "file-end", file_name = "f.jpg" });
 
 			Assert.AreEqual(1, ctx.recved_files);
@@ -69,6 +72,7 @@ namespace UnitTest
 			util.VerifyAll();
 			temp.VerifyAll();
 			storage.VerifyAll();
+			Assert.IsTrue(called);
 		}
 
 		[TestMethod]

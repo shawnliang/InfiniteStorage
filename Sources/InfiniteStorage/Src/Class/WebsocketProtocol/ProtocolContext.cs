@@ -28,6 +28,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		public event EventHandler<WebsocketEventArgs> OnConnectAccepted;
 		public event EventHandler<WebsocketEventArgs> OnPairingRequired;
 		public event EventHandler<WebsocketEventArgs> OnTotalCountUpdated;
+		public event EventHandler<WebsocketEventArgs> OnFileReceived;
 
 		public ProtocolContext(ITempFileFactory factory, IFileStorage storage, AbstractProtocolState initialState)
 		{
@@ -116,6 +117,15 @@ namespace InfiniteStorage.WebsocketProtocol
 		public void raiseOnTotalCountUpdated()
 		{
 			var handler = OnTotalCountUpdated;
+			if (handler != null)
+			{
+				handler(this, new WebsocketEventArgs(this));
+			}
+		}
+
+		internal void raiseOnFileReceived()
+		{
+			var handler = OnFileReceived;
 			if (handler != null)
 			{
 				handler(this, new WebsocketEventArgs(this));

@@ -70,6 +70,29 @@ namespace InfiniteStorage
 
 			if (!Directory.Exists(temp_dir))
 				Directory.CreateDirectory(temp_dir);
+
+
+			var resFolder = Path.Combine(origFileDir, ".resource");
+			if (!Directory.Exists(resFolder))
+			{
+
+				var dir = new DirectoryInfo(resFolder);
+				dir.Create();
+				dir.Attributes |= FileAttributes.Hidden;
+			}
+
+			copyFolder(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Resources"), resFolder);
+		}
+
+		private static void copyFolder(string from, string to)
+		{
+			var froms = Directory.GetFiles(from);
+			foreach (var file in froms)
+			{
+				var file_name = Path.GetFileName(file);
+
+				File.Copy(file, Path.Combine(to, file_name));
+			}
 		}
 
 		public void Start(string cfg_dir)

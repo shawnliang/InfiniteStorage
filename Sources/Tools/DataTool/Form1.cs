@@ -83,6 +83,7 @@ namespace DataTool
 		{
 			client = new WebSocket(textBox1.Text);
 			client.OnMessage += client_OnMessage;
+			client.OnError += new EventHandler<ErrorEventArgs>(client_OnError);
 			client.Connect();
 
 			object data;
@@ -119,6 +120,11 @@ namespace DataTool
 
 
 			client.Send(JsonConvert.SerializeObject(data));
+		}
+
+		void client_OnError(object sender, ErrorEventArgs e)
+		{
+			var error = "";
 		}
 
 		void client_OnMessage(object sender, MessageEventArgs e)
