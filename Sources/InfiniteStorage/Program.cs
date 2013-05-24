@@ -120,10 +120,6 @@ namespace InfiniteStorage
 				return;
 			}
 
-			// Stop nginx here to delete possible old nginx instance.
-			// Not doing so, bounjour sevice name could become "pc name (2)"...
-			NginxUtility.Instance.Stop(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
-
 			BonjourServiceRegistrator.Instance.SetPorts(backup_port, notify_port, rest_port);
 
 
