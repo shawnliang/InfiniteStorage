@@ -25,10 +25,10 @@ namespace Waveface.Client
 
 		private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-			if (e.ChangedButton != MouseButton.Left)
-				return;
+			//if (e.ChangedButton != MouseButton.Left)
+			//	return;
 
-			this.Close();
+			//this.Close();
 		}
 
 
