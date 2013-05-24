@@ -49,7 +49,7 @@ public class PlayerService extends Service{
     private final int UPDATE_INTERVAL = 30 * 1000;
     private Timer BackupTimer = null;
     private Timer mWorkerTimer;
-	private static final int WORKER_DELAY_SECONDS = 30;
+	private static final int WORKER_DELAY_SECONDS = 60;
 	private static final int WORKER_PERIOD_SECONDS = 60;	
 	
 	@Override
