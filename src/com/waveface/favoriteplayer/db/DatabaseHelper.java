@@ -68,7 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		  .append(LabelTable.COLUMN_SEQ + " TEXT NOT NULL ,")
 		    .append(LabelTable.COLUMN_UPDATE_TIME + " TEXT NOT NULL ,")
 		     .append(LabelTable.COLUMN_COVER_URL + " TEXT NOT NULL ,")
-		  .append( LabelTable.COLUMN_AUTO + " TEXT NOT NULL );");		
+		  .append( LabelTable.COLUMN_AUTO_TYPE + " TEXT NOT NULL );");		
 		createTable(db, sqlBuilder.toString(), LabelTable.TABLE_NAME);
 		
 		// Create Label Files table

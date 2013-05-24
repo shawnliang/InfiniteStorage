@@ -537,7 +537,7 @@ public class PlayerProvider extends ContentProvider {
 						+ LabelTable.COLUMN_SEQ + ","
 						+ LabelTable.COLUMN_UPDATE_TIME + ","
 						+ LabelTable.COLUMN_COVER_URL + ","
-						+ LabelTable.COLUMN_AUTO + ")"
+						+ LabelTable.COLUMN_AUTO_TYPE + ")"
 						+ " values (?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
@@ -547,7 +547,7 @@ public class PlayerProvider extends ContentProvider {
 					insert.bindString(3, value.getAsString(LabelTable.COLUMN_SEQ));
 					insert.bindString(4, value.getAsString(LabelTable.COLUMN_UPDATE_TIME));
 					insert.bindString(5, value.getAsString(LabelTable.COLUMN_COVER_URL));
-					insert.bindString(6, value.getAsString(LabelTable.COLUMN_AUTO));
+					insert.bindString(6, value.getAsString(LabelTable.COLUMN_AUTO_TYPE));
 					insert.execute();
 				}
 				db.setTransactionSuccessful();

@@ -1,6 +1,7 @@
 package com.waveface.favoriteplayer.db;
 
 import java.util.ArrayList;
+
 import java.util.Date;
 
 import android.content.ContentResolver;
@@ -12,6 +13,7 @@ import android.text.TextUtils;
 import com.waveface.favoriteplayer.entity.FileEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
 import com.waveface.favoriteplayer.util.StringUtil;
+
 
 
 public class LabelDB {
@@ -46,10 +48,10 @@ public class LabelDB {
 				label.cover_url = "";
 			}
 			cv.put(LabelTable.COLUMN_COVER_URL, label.cover_url);
-			if(TextUtils.isEmpty(label.auto)){
-				label.auto = "";
+			if(TextUtils.isEmpty(label.auto_type)){
+				label.auto_type = "";
 			}			
-			cv.put(LabelTable.COLUMN_AUTO, label.auto);
+			cv.put(LabelTable.COLUMN_AUTO_TYPE, label.auto_type);
 			// insert label
 			result = cr.bulkInsert(LabelTable.CONTENT_URI,
 					new ContentValues[] { cv });
@@ -194,12 +196,25 @@ public class LabelDB {
 	}
 	
 	
+	public static Cursor getCategoryLabelByLabelId(Context context, String labelId,String type) {
+
+		Cursor cursor = context.getContentResolver().query(
+				LabelTable.CONTENT_URI,
+				new String[] { LabelTable.COLUMN_LABEL_ID,
+						LabelTable.COLUMN_LABEL_NAME },
+				LabelTable.COLUMN_LABEL_ID + " = ? AND "+LabelTable.COLUMN_AUTO_TYPE +"= ?" , new String[] { labelId,type },
+				null);
+
+		return cursor;
+	}
+	
+	
 	public static Cursor getMAXSEQLabel(Context context) {
 
 		Cursor cursor = context.getContentResolver().query(
 				LabelTable.CONTENT_URI,
 				new String[] { LabelTable.COLUMN_LABEL_ID,
-						LabelTable.COLUMN_LABEL_NAME,LabelTable.COLUMN_SEQ,LabelTable.COLUMN_COVER_URL,LabelTable.COLUMN_AUTO },
+						LabelTable.COLUMN_LABEL_NAME,LabelTable.COLUMN_SEQ,LabelTable.COLUMN_COVER_URL,LabelTable.COLUMN_AUTO_TYPE },
 				null, null,
 				LabelTable.COLUMN_SEQ + " DESC LIMIT 1");
 
@@ -229,30 +244,7 @@ public class LabelDB {
 		return cursor;
 	}
 	
-	public static ArrayList getFilesByLabelId(Context context, String labelId
-			) {
-		Cursor cursor = context.getContentResolver().query(
-				LabelFileView.CONTENT_URI,
-				new String[] { 
-						LabelFileView.COLUMN_LABEL_ID,
-						LabelFileView.COLUMN_FILE_ID,
-						LabelFileView.COLUMN_ORDER,
-						LabelFileView.COLUMN_FILE_NAME,
-						LabelFileView.COLUMN_FOLDER,
-						LabelFileView.COLUMN_THUMB_READY,
-						LabelFileView.COLUMN_TYPE, 
-						LabelFileView.COLUMN_DEV_ID,
-						LabelFileView.COLUMN_DEV_NAME,
-						LabelFileView.COLUMN_HEIGHT,
-						LabelFileView.COLUMN_WIDTH,
-						LabelFileView.COLUMN_DEV_TYPE },
-				LabelFileView.COLUMN_LABEL_ID + " = ?",
-				new String[] { labelId },
-				LabelFileView.DEFAULT_SORT_ORDER );
-		
 
-		return null;
-	}
 	
 	
 	public static Cursor getLabelFilesByLabelId(Context context, String labelId) {

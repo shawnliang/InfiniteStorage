@@ -96,6 +96,16 @@ public class Constant {
 	public static final int TYPE_VIDEO = 3;	
 	public static final int TYPE_DOC = 4;	
 	
+	//LABEL AUTO_Type
+	public static final int TYPE_FAVORITE = 0;
+	public static final int TYPE_RECENT_PHOTO_TODAY = 1;
+	public static final int TYPE_RECENT_PHOTO_YESTERDAY = 2;
+	public static final int TYPE_RECENT_PHOTO_THISWEEK = 3;
+	public static final int TYPE_RECENT_VIDEO_TODAY = 4;
+	public static final int TYPE_RECENT_VIDEO_YESTERDAY = 5;
+	public static final int TYPE_RECENT_VIDEO_THISWEEK = 6;
+	
+	
 
 	//File Type FOR DATABASE
 	public static final String FILE_TYPE_IMAGE = "0";
