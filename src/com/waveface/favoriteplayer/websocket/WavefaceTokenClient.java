@@ -172,88 +172,88 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		
 		if (NetworkUtil.isWifiNetworkAvailable(mContext)){	
 			//TODO:handle retrive label
-			LabelChangeEntity entity = null;
-			try {
-				if(!TextUtils.isEmpty(jsonOutput))
-					entity = RuntimeState.GSON.fromJson(jsonOutput, LabelChangeEntity.class);
-				   if(entity!=null) {
-				      ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(mContext);
-						ServerEntity pairedServer = servers.get(0);
-						String restfulAPIURL ="http://"+pairedServer.ip+":"+pairedServer.restPort;
-						String getLabelURL = restfulAPIURL + Constant.URL_GET_LABEL;
-						String files="";
-						String getFileURL = restfulAPIURL + Constant.URL_GET_FILE;
-						HashMap<String, String> param = new HashMap<String, String>();
-						param.clear();
-						param.put(Constant.PARAM_LABEL_ID, entity.label_change.label_id);
-						jsonOutput =HttpInvoker.executePost(getLabelURL,param, Constant.STATION_CONNECTION_TIMEOUT, Constant.STATION_CONNECTION_TIMEOUT);
-						
-						LabelEntity.Label labelEntity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.Label.class);	
-						
-						 for(String f:labelEntity.files){
-							  files+=f+",";
-						  }
-						 files=files.substring(0, files.length()-1);
-						 param.clear();
-						 param.put(Constant.PARAM_FILES, files.trim());
-						 jsonOutput = HttpInvoker.executePost(getFileURL, param,  Constant.STATION_CONNECTION_TIMEOUT, Constant.STATION_CONNECTION_TIMEOUT);
-						 
-						 //FileEntity
-						 FileEntity fileEntity = RuntimeState.GSON.fromJson(jsonOutput, FileEntity.class);	 
-						
-						 LabelDB.updateLabelInfo(mContext, labelEntity, fileEntity,true);
-						 File root = Environment.getExternalStorageDirectory();
-						 ImageManager	imageManager = SyncApplication.getWavefacePlayerApplication(mContext)
-									.getImageManager();
-						 
-							Cursor filecursor = LabelDB.getLabelFileViewByLabelId(mContext,
-									labelEntity.label_id);
-							if (filecursor != null && filecursor.getCount() > 0) {
-								filecursor.moveToFirst();
-								int count = filecursor.getCount();
-								for (int j = 0; j < count; j++) {
-
-									String type = filecursor
-											.getString(filecursor
-													.getColumnIndex(LabelFileView.COLUMN_TYPE));
-									String fileId = filecursor
-											.getString(filecursor
-													.getColumnIndex(LabelFileView.COLUMN_FILE_ID));
-									String fileName = filecursor
-											.getString(filecursor
-													.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
-									Log.d(TAG, "filename:" + fileName);
-									Log.d(TAG, "fileId:" + fileId);
-									
-									if (type.equals("1")) {
-										String url = restfulAPIURL + Constant.URL_IMAGE + "/" + fileId
-												+ "/" + Constant.URL_IMAGE_ORIGIN;
-										String fullFilename = root.getAbsolutePath()
-												+ Constant.VIDEO_FOLDER+ "/" + fileName;
-										if(!FileUtil.isFileExisted(fullFilename)){
-											downloadVideo(fileId, fullFilename,url);
-										}
-									} else {
-										String url = restfulAPIURL
-												+ Constant.URL_IMAGE + "/" + fileId
-												+ Constant.URL_IMAGE_LARGE;
-										imageManager.getImageWithoutThread(url,
-												null);
-									}
-									long time = System.currentTimeMillis();
-									time = System.currentTimeMillis() - time;
-//									syncingEvent.singleTime = time;
-//									syncingEvent.currentFile++;
-//									EventBus.getDefault().post(syncingEvent);
-									filecursor.moveToNext();
-								}
-								filecursor.close();
-							}
-							mContext.sendBroadcast(new Intent(Constant.ACTION_LABEL_CHANGE));
-				   }
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+//			LabelChangeEntity entity = null;
+//			try {
+//				if(!TextUtils.isEmpty(jsonOutput))
+//					entity = RuntimeState.GSON.fromJson(jsonOutput, LabelChangeEntity.class);
+//				   if(entity!=null) {
+//				      ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(mContext);
+//						ServerEntity pairedServer = servers.get(0);
+//						String restfulAPIURL ="http://"+pairedServer.ip+":"+pairedServer.restPort;
+//						String getLabelURL = restfulAPIURL + Constant.URL_GET_LABEL;
+//						String files="";
+//						String getFileURL = restfulAPIURL + Constant.URL_GET_FILE;
+//						HashMap<String, String> param = new HashMap<String, String>();
+//						param.clear();
+//						param.put(Constant.PARAM_LABEL_ID, entity.label_change.label_id);
+//						jsonOutput =HttpInvoker.executePost(getLabelURL,param, Constant.STATION_CONNECTION_TIMEOUT, Constant.STATION_CONNECTION_TIMEOUT);
+//						
+//						LabelEntity.Label labelEntity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.Label.class);	
+//						
+//						 for(String f:labelEntity.files){
+//							  files+=f+",";
+//						  }
+//						 files=files.substring(0, files.length()-1);
+//						 param.clear();
+//						 param.put(Constant.PARAM_FILES, files.trim());
+//						 jsonOutput = HttpInvoker.executePost(getFileURL, param,  Constant.STATION_CONNECTION_TIMEOUT, Constant.STATION_CONNECTION_TIMEOUT);
+//						 
+//						 //FileEntity
+//						 FileEntity fileEntity = RuntimeState.GSON.fromJson(jsonOutput, FileEntity.class);	 
+//						
+//						 LabelDB.updateLabelInfo(mContext, labelEntity, fileEntity,true);
+//						 File root = Environment.getExternalStorageDirectory();
+//						 ImageManager	imageManager = SyncApplication.getWavefacePlayerApplication(mContext)
+//									.getImageManager();
+//						 
+//							Cursor filecursor = LabelDB.getLabelFileViewByLabelId(mContext,
+//									labelEntity.label_id);
+//							if (filecursor != null && filecursor.getCount() > 0) {
+//								filecursor.moveToFirst();
+//								int count = filecursor.getCount();
+//								for (int j = 0; j < count; j++) {
+//
+//									String type = filecursor
+//											.getString(filecursor
+//													.getColumnIndex(LabelFileView.COLUMN_TYPE));
+//									String fileId = filecursor
+//											.getString(filecursor
+//													.getColumnIndex(LabelFileView.COLUMN_FILE_ID));
+//									String fileName = filecursor
+//											.getString(filecursor
+//													.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
+//									Log.d(TAG, "filename:" + fileName);
+//									Log.d(TAG, "fileId:" + fileId);
+//									
+//									if (type.equals("1")) {
+//										String url = restfulAPIURL + Constant.URL_IMAGE + "/" + fileId
+//												+ "/" + Constant.URL_IMAGE_ORIGIN;
+//										String fullFilename = root.getAbsolutePath()
+//												+ Constant.VIDEO_FOLDER+ "/" + fileName;
+//										if(!FileUtil.isFileExisted(fullFilename)){
+//											downloadVideo(fileId, fullFilename,url);
+//										}
+//									} else {
+//										String url = restfulAPIURL
+//												+ Constant.URL_IMAGE + "/" + fileId
+//												+ Constant.URL_IMAGE_LARGE;
+//										imageManager.getImageWithoutThread(url,
+//												null);
+//									}
+//									long time = System.currentTimeMillis();
+//									time = System.currentTimeMillis() - time;
+////									syncingEvent.singleTime = time;
+////									syncingEvent.currentFile++;
+////									EventBus.getDefault().post(syncingEvent);
+//									filecursor.moveToNext();
+//								}
+//								filecursor.close();
+//							}
+//							mContext.sendBroadcast(new Intent(Constant.ACTION_LABEL_CHANGE));
+//				   }
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
 		}
 			//ORIGINAL Web Socket Code
 			Token lToken = packetToToken(aPacket);
