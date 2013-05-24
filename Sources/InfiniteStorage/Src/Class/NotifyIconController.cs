@@ -288,7 +288,7 @@ namespace InfiniteStorage
 						FirstUseDialog.Instance.Close();
 
 					FirstUseDialog.Instance.ShowSetupPage(args.ctx);
-					Settings.Default.IsFirstUse = true;
+					Settings.Default.IsFirstUse = false;
 					Settings.Default.Save();
 				}
 			}
