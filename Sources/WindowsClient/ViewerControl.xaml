@@ -20,7 +20,7 @@
 		</Rectangle>
 		<local:PreviousButton Margin="18.731,25.362,205.725,22.719" MouseDown="PreviousButton_MouseDown"/>
         <local:NextButton Margin="112.901,25.362,111.555,22.719" MouseDown="NextButton_MouseDown"/>
-        <local:Star x:Name="staredControl" Margin="158.094,27.541,57.349,24.634"/>
+        <local:Star x:Name="staredControl" Margin="158.094,27.541,57.349,24.634" MouseDown="staredControl_MouseDown_1"/>
 		<Path Data="M310.499,473 L310.499,494.0238" HorizontalAlignment="Left" Height="41.925" Margin="139.19,17.436,0,0" Stretch="Fill" Stroke="#FF646262" StrokeThickness="0.5" VerticalAlignment="Top" Width="0.872"/>
 		<local:CloseButton Margin="193.811,28.332,21.63,23.843" MouseDown="CloseButton_MouseDown"/>
 		<Label Content="/" HorizontalAlignment="Left" Height="26.419" Margin="37.667,25.362,0,0" VerticalAlignment="Top" Width="70.234" FontFamily="Segoe UI Light" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0"/>

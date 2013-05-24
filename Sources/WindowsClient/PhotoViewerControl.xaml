@@ -43,9 +43,9 @@
 
     <Grid x:Name="LayoutRoot" Margin="2.001,0,-2.001,0">
         <!-- Photo -->
-		<Viewbox Stretch="Fill" DockPanel.Dock="Top" d:IsLocked="True">
+		<Viewbox Stretch="Fill" DockPanel.Dock="Top">
 			<Canvas x:Name="ImgCanvas" ClipToBounds="True" Height="371" Width="602">
-				<ContentControl x:Name="ImgContentCtrl" Height="371" Width="602" Canvas.Left="0" Canvas.Top="1">
+				<ContentControl x:Name="ImgContentCtrl" Height="371" Width="602" Canvas.Left="0" Canvas.Top="1" MouseDoubleClick="ImgContentCtrl_MouseDoubleClick">
 					<Grid x:Name="ImgGrid">
 						<Image x:Name="ImgObject" Source="{Binding SelectedItem.ImageSource, ElementName=lbImages, IsAsync=True}"/>
 						<Thumb x:Name="ImgThumb" Opacity="0" DragDelta="ImgThumb_DragDelta" MouseWheel="ImgThumb_MouseWheel"/>
@@ -55,7 +55,7 @@
 		</Viewbox>
 		<Rectangle x:Name="ContentName" Fill="#E5000000" Height="37.5" VerticalAlignment="Top" Opacity="0.7" RadiusX="20" RadiusY="20" Stroke="#FFF0E9E9" Margin="0" Width="250"/>
 		<Label x:Name="DateTaken" Content="{Binding SelectedItem.Name, ElementName=lbImages, IsAsync=True}" VerticalAlignment="Top" FontSize="16" Opacity="0.6" Height="37.5" FontFamily="Segoe UI Light"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Margin="0" Width="250"/>
-        <l:ViewerControl x:Name="vcViewerControl" Stared="{Binding SelectedItem.Liked, ElementName=lbImages, IsAsync=True}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,13" Next="ViewerControl_Next" Previous="ViewerControl_Previous" Close="ViewerControl_Close"/>
+        <l:ViewerControl x:Name="vcViewerControl" Stared="{Binding SelectedItem.Liked, ElementName=lbImages, Mode=TwoWay, IsAsync=True}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,13" Next="ViewerControl_Next" Previous="ViewerControl_Previous" Close="ViewerControl_Close"/>
 
 		<Label x:Name="label" VerticalAlignment="Bottom" Height="20" Opacity="0" Visibility="Collapsed"/>
 		<ListBox x:Name="lbImages" Background="{x:Null}" BorderBrush="{x:Null}" Opacity="70" 
