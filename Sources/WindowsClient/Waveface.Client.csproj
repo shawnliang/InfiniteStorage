@@ -40,11 +40,16 @@
   <PropertyGroup>
     <StartupObject>Waveface.Client.App</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>FAV_512.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Expression.Controls" />
     <Reference Include="Microsoft.Expression.Drawing" />
     <Reference Include="NBug, Version=1.1.0.0, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NBug.1.1.1\lib\net40-client\NBug.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -68,6 +73,9 @@
     <Compile Include="BackButton.xaml.cs">
       <DependentUpon>BackButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CloseButton.xaml.cs">
+      <DependentUpon>CloseButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ContentItem.xaml.cs">
       <DependentUpon>ContentItem.xaml</DependentUpon>
     </Compile>
@@ -80,21 +88,37 @@
     <Compile Include="LabelTag.xaml.cs">
       <DependentUpon>LabelTag.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NextButton.xaml.cs">
+      <DependentUpon>NextButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PhotoViewer.xaml.cs">
       <DependentUpon>PhotoViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="PhotoViewerControl.xaml.cs">
       <DependentUpon>PhotoViewerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PreviousButton.xaml.cs">
+      <DependentUpon>PreviousButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SourceTree.xaml.cs">
       <DependentUpon>SourceTree.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Class\Converter\ImageToBitmapSourceConverter.cs" />
     <Compile Include="Src\Extension\CollectionExtension.cs" />
+    <Compile Include="Star.xaml.cs">
+      <DependentUpon>Star.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewerControl.xaml.cs">
+      <DependentUpon>ViewerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ZoomSlider.xaml.cs">
       <DependentUpon>ZoomSlider.xaml</DependentUpon>
     </Compile>
     <Page Include="BackButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CloseButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -126,6 +150,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="NextButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="PhotoViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -134,7 +162,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="PreviousButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SourceTree.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Star.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewerControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -200,6 +240,7 @@
     <Content Include="favoriteicon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="FAV_512.ico" />
     <Content Include="notfavoriteicon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

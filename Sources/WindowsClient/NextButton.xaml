@@ -1,0 +1,23 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="Waveface.Client.NextButton"
+	x:Name="UserControl"
+	d:DesignWidth="13.31" d:DesignHeight="26.419">
+
+	<Grid x:Name="LayoutRoot">
+		<Path Data="M8.3334999,0 L8.3334999,4.1667499 8.3970003,4.1667499 8.3970003,12.50025 8.3334999,12.50025 8.3334999,16.667 0,8.3334999 z" Fill="#FFF3F3F7" HorizontalAlignment="Left" Height="26.419" Stretch="Fill" StrokeThickness="0" VerticalAlignment="Top" Width="13.31" RenderTransformOrigin="0.5,0.5">
+			<Path.RenderTransform>
+				<TransformGroup>
+					<ScaleTransform ScaleY="1" ScaleX="-1"/>
+					<SkewTransform AngleY="0" AngleX="0"/>
+					<RotateTransform Angle="0"/>
+					<TranslateTransform/>
+				</TransformGroup>
+			</Path.RenderTransform>
+		</Path>
+	</Grid>
+</UserControl>
