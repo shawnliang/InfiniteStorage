@@ -122,7 +122,7 @@ public class SyncFragment extends SyncFragmentBase implements OnClickListener {
 
 	private void firsttimeDispaly() {
 		//HAS PAIRED SERVER
-		mPairedServers = ServersLogic.getBackupedServers(getActivity());
+		mPairedServers = ServersLogic.getPairedServer(getActivity());
 		if (mProgressDialog == null) {
 			if (NetworkUtil.isWifiNetworkAvailable(getActivity())
 					&& RuntimeState.OnWebSocketOpened == false) {
@@ -224,7 +224,7 @@ public class SyncFragment extends SyncFragmentBase implements OnClickListener {
 	}
 
 	public void refreshLayout() {
-		mPairedServers = ServersLogic.getBackupedServers(getActivity());
+		mPairedServers = ServersLogic.getPairedServer(getActivity());
 		// REFRESH SETTING AREA
 		if (ServersLogic.hasBackupedServers(getActivity())) {
 			if(RuntimeState.OnWebSocketOpened){

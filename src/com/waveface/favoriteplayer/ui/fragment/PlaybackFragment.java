@@ -50,7 +50,7 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		String labelId = null;		
-		ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(getActivity());
+		ArrayList<ServerEntity> servers = ServersLogic.getPairedServer(getActivity());
 		ServerEntity pairedServer = servers.get(0);
 		String serverUrl ="http://"+pairedServer.ip+":"+pairedServer.restPort;
 		

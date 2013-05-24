@@ -49,7 +49,7 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 		if (NetworkUtil.isWifiNetworkAvailable(mContext) == false)
 			return null;
 		ArrayList<ServerEntity> servers = ServersLogic
-				.getBackupedServers(mContext);
+				.getPairedServer(mContext);
 		if (servers.size() == 0)
 			return null;
 		ServerEntity pairedServer = servers.get(0);
