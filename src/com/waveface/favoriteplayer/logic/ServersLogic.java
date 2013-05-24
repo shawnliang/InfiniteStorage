@@ -18,7 +18,9 @@ import android.util.Log;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
 import com.waveface.favoriteplayer.db.BonjourServersTable;
+import com.waveface.favoriteplayer.db.FileTable;
 import com.waveface.favoriteplayer.db.LabelDB;
+import com.waveface.favoriteplayer.db.LabelFileTable;
 import com.waveface.favoriteplayer.db.LabelTable;
 import com.waveface.favoriteplayer.db.PairedServersTable;
 import com.waveface.favoriteplayer.entity.ConnectForGTVEntity;
@@ -171,13 +173,22 @@ public class ServersLogic {
 	}
 
 	
-	public static ArrayList<ServerEntity> getBackupedServers(Context context) {
+	public static ArrayList<ServerEntity> getPairedServer(Context context) {
 		ArrayList<ServerEntity> datas = new ArrayList<ServerEntity>();
 		ServerEntity entity = null;
 		Cursor cursor = null;
 		ContentResolver cr = context.getContentResolver();
 		try {
-			cursor = cr.query(PairedServersTable.CONTENT_URI, null,
+			cursor = cr.query(PairedServersTable.CONTENT_URI, 
+					new String[]{
+					PairedServersTable.COLUMN_SERVER_ID,
+					PairedServersTable.COLUMN_SERVER_NAME,
+					PairedServersTable.COLUMN_STATUS,
+					PairedServersTable.COLUMN_IP,
+					PairedServersTable.COLUMN_NOTIFY_PORT,
+					PairedServersTable.COLUMN_REST_PORT,
+					PairedServersTable.COLUMN_WS_PORT
+					},
 					PairedServersTable.COLUMN_STATUS + " NOT IN(?,?)",
 					new String[] { Constant.SERVER_DENIED_BY_SERVER,
 								   Constant.SERVER_DENIED_BY_CLIENT}, null);
@@ -187,13 +198,13 @@ public class ServersLogic {
 				cursor.moveToFirst();
 				for (int i = 0; i < count; i++) {
 					entity = new ServerEntity();
-					entity.serverId = cursor.getString(cursor.getColumnIndex(PairedServersTable.COLUMN_SERVER_ID));
-					entity.serverName = cursor.getString(cursor.getColumnIndex(PairedServersTable.COLUMN_SERVER_NAME));
-					entity.status = cursor.getString(cursor.getColumnIndex(PairedServersTable.COLUMN_STATUS));
-					entity.ip = cursor.getString(cursor.getColumnIndex(PairedServersTable.COLUMN_IP));
-					entity.notifyPort = cursor.getString(cursor.getColumnIndex(PairedServersTable.COLUMN_NOTIFY_PORT));
-					entity.restPort =cursor.getString(cursor.getColumnIndex(PairedServersTable.COLUMN_REST_PORT));
-					entity.wsPort = cursor.getString(cursor.getColumnIndex(PairedServersTable.COLUMN_WS_PORT));
+					entity.serverId = cursor.getString(0);
+					entity.serverName = cursor.getString(1);
+					entity.status = cursor.getString(2);
+					entity.ip = cursor.getString(3);
+					entity.notifyPort = cursor.getString(4);
+					entity.restPort =cursor.getString(5);
+					entity.wsPort = cursor.getString(6);
 					datas.add(entity);
 					cursor.moveToNext();
 				}
@@ -217,19 +228,19 @@ public class ServersLogic {
 		entity.serverName = packet.serverInfo.serverName;
 		entity.ip = packet.serverIp;
 		if(TextUtils.isEmpty(packet.serverInfo.wsPort)){
-			entity.wsPort = "";
+			entity.wsPort = "13895";
 		}
 		else{
 			entity.wsPort = packet.serverInfo.wsPort;
 		}
 		if(TextUtils.isEmpty(packet.serverInfo.restPort)){
-			entity.restPort = "";
+			entity.restPort = "13995";
 		}
 		else{
 			entity.restPort = packet.serverInfo.restPort;
 		}
 		if(TextUtils.isEmpty(packet.serverInfo.notifyPort)){
-			entity.notifyPort = "";
+			entity.notifyPort = "14005";
 		}
 		else{
 			entity.notifyPort = packet.serverInfo.notifyPort;
@@ -253,11 +264,11 @@ public class ServersLogic {
 			cv.put(BonjourServersTable.COLUMN_IP, entity.ip);			
 			cv.put(BonjourServersTable.COLUMN_WS_PORT, entity.wsPort);
 			if(TextUtils.isEmpty(entity.notifyPort)){
-				entity.notifyPort = "";
+				entity.notifyPort = "13995";
 			}
 			cv.put(BonjourServersTable.COLUMN_NOTIFY_PORT, entity.notifyPort);
 			if(TextUtils.isEmpty(entity.restPort)){
-				entity.restPort = "";
+				entity.restPort = "14005";
 			}
 			cv.put(BonjourServersTable.COLUMN_REST_PORT, entity.restPort);
 
@@ -628,16 +639,28 @@ public class ServersLogic {
 
 	public static void disconnectPairedServer(Context context){
 		if(ServersLogic.hasBackupedServers(context)){	
+			//1.CLOSE WEB SOCKET CLIENT
 			try {
 				RuntimeWebClient.close();
 			} catch (WebSocketException e) {
 				e.printStackTrace();
 			}
-			//2.kill all backuped server data
-		    context.getContentResolver().delete(PairedServersTable.CONTENT_URI,
-		    		null,null);
 		    RuntimeState.setServerStatus(Constant.WS_ACTION_SERVER_REMOVED);
+			//2.kill all paired server data and relative data
+		    ContentResolver cr = context.getContentResolver();
+		    cr.delete(PairedServersTable.CONTENT_URI,null,null);
+		    cr.delete(LabelTable.CONTENT_URI,null,null);
+		    cr.delete(FileTable.CONTENT_URI,null,null);
+		    cr.delete(LabelFileTable.CONTENT_URI,null,null);
 		}
+	}
+
+	public static String getWebSocketURL(Context context){
+		return "";
+	}
+
+	public static String getServerURL(Context context){
+		return "";
 	}
 	
 //	public static int updateLabelInfo(Context context, LabelEntity entity) {

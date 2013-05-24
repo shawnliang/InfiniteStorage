@@ -78,7 +78,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			if(getActivity() == null)
 				return null;
 			ArrayList<OverviewData> datas = new ArrayList<OverviewData>();
-			ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(getActivity());
+			ArrayList<ServerEntity> servers = ServersLogic.getPairedServer(getActivity());
 			ServerEntity pairedServer = servers.get(0);
 			if(TextUtils.isEmpty(pairedServer.restPort)){
 				pairedServer.restPort ="14005";
