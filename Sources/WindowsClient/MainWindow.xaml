@@ -6,7 +6,7 @@
        xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" mc:Ignorable="d"
     x:Class="Waveface.Client.MainWindow"
-        Title="Favorite" Height="498.5" Width="807" Loaded="Window_Loaded" KeyDown="Window_KeyDown" WindowState="Maximized">
+        Title="Favorite" Height="498.5" Width="807" Loaded="Window_Loaded" KeyDown="Window_KeyDown" WindowState="Maximized" Icon="FAV_512.ico">
 
     <Window.Resources>
         <!--<DataTemplate DataType="{x:Type wvmodel:Service}">
@@ -153,7 +153,7 @@
 			<Grid.Effect>
 				<DropShadowEffect BlurRadius="1" ShadowDepth="1" Direction="180"/>
 			</Grid.Effect>
-			<Button Content="Add to Favorites" HorizontalAlignment="Left" Height="31" Margin="10,340.5,0,0" VerticalAlignment="Top" Width="130" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" FontSize="16" Foreground="White">
+			<Button Content="Add to Favorites" HorizontalAlignment="Center" Height="31" Margin="0,0,0,40" VerticalAlignment="Bottom" Width="130" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" FontSize="16" Foreground="White">
 				<Button.Background>
 					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
 						<GradientStop Color="#FF616060" Offset="0"/>
@@ -164,7 +164,7 @@
 					<DropShadowEffect BlurRadius="3" ShadowDepth="2" Direction="270" Opacity="0.3"/>
 				</Button.Effect>
 			</Button>
-			<Button Content="Share" HorizontalAlignment="Left" Height="31" Margin="10,376.5,0,0" VerticalAlignment="Top" Width="130" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" FontSize="16" Foreground="White" Click="Button_Click_1">
+			<Button Content="Share" HorizontalAlignment="Center" Height="31" Margin="0,0,0,5" VerticalAlignment="Bottom" Width="130" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" FontSize="16" Foreground="White" Click="Button_Click_1">
 				<Button.Background>
 					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
 						<GradientStop Color="#FF616060" Offset="0"/>
