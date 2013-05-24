@@ -147,7 +147,7 @@ public class Constant {
 	public final static String WS_ACTION_WAIT_FOR_PAIR = "wait-for-pair";
 	public final static String WS_ACTION_ACCEPT = "accept";
 	public final static String WS_ACTION_DENIED = "denied";
-	
+	public final static String WS_ACTION_SERVER_REMOVED = "server_removed";
 	//NETWORK
 	public final static String NETWORK_IS_NOT_WIFI = "network_is_not_wifi";
 	

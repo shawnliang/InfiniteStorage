@@ -252,7 +252,13 @@ public class ServersLogic {
 			cv.put(BonjourServersTable.COLUMN_SERVER_NAME, entity.serverName);
 			cv.put(BonjourServersTable.COLUMN_IP, entity.ip);			
 			cv.put(BonjourServersTable.COLUMN_WS_PORT, entity.wsPort);
+			if(TextUtils.isEmpty(entity.notifyPort)){
+				entity.notifyPort = "";
+			}
 			cv.put(BonjourServersTable.COLUMN_NOTIFY_PORT, entity.notifyPort);
+			if(TextUtils.isEmpty(entity.restPort)){
+				entity.restPort = "";
+			}
 			cv.put(BonjourServersTable.COLUMN_REST_PORT, entity.restPort);
 
 			// update
@@ -495,7 +501,6 @@ public class ServersLogic {
 				RuntimeWebClient.open();
 				RuntimeState.setServerStatus(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
 
-
 				//ADD SERVER DATA
 				ServerEntity entity = new ServerEntity();
 				entity.serverId=serverId;
@@ -621,7 +626,19 @@ public class ServersLogic {
 		return entity;
 	}
 
-
+	public static void disconnectPairedServer(Context context){
+		if(ServersLogic.hasBackupedServers(context)){	
+			try {
+				RuntimeWebClient.close();
+			} catch (WebSocketException e) {
+				e.printStackTrace();
+			}
+			//2.kill all backuped server data
+		    context.getContentResolver().delete(PairedServersTable.CONTENT_URI,
+		    		null,null);
+		    RuntimeState.setServerStatus(Constant.WS_ACTION_SERVER_REMOVED);
+		}
+	}
 	
 //	public static int updateLabelInfo(Context context, LabelEntity entity) {
 //		int result = 0;
