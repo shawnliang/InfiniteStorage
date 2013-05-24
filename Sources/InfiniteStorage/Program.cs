@@ -75,6 +75,9 @@ namespace InfiniteStorage
 				Settings.Default.LocationType = (int)LocationType.SingleFolder;
 				Settings.Default.Save();
 
+				if (!Directory.Exists(Settings.Default.SingleFolderLocation))
+					Directory.CreateDirectory(Settings.Default.SingleFolderLocation);
+
 				var bunnyAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName);
 				NginxUtility.Instance.PrepareNginxConfig(bunnyAppData, 12888, Settings.Default.SingleFolderLocation);
 			}
