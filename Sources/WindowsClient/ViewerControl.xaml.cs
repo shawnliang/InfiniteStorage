@@ -138,5 +138,11 @@ namespace Waveface.Client
 		{
 			OnClose(EventArgs.Empty);
 		}
+
+
+		private void staredControl_MouseDown_1(object sender, MouseButtonEventArgs e)
+		{
+			this.Stared = !this.Stared; 
+		}
 	}
 }
