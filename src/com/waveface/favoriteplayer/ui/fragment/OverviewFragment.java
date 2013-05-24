@@ -67,51 +67,55 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		return root;
 	}
 	
-	private class PrepareViewTask extends AsyncTask<Void, Void, OverviewData[]> {
+	private class PrepareViewTask extends AsyncTask<Void, Void, ArrayList<OverviewData>> {
+		private String mServerUrl = null; 
 
 		@Override
-		protected OverviewData[] doInBackground(Void... params) {
-
+		protected ArrayList<OverviewData> doInBackground(Void... params) {
 			if(getActivity() == null)
 				return null;
-			OverviewData datas[] = null;
+			ArrayList<OverviewData> datas = new ArrayList<OverviewData>();
 			ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(getActivity());
 			ServerEntity pairedServer = servers.get(0);
-			String serverUrl ="http://"+pairedServer.ip+":"+pairedServer.restPort;
+			mServerUrl ="http://"+pairedServer.ip+":"+pairedServer.restPort;
 			
 			switch(mType) {
 			case OVERVIEW_VIEW_TYPE_FAVORITE:
-				String labelId = null;
-				Cursor c = LabelDB.getAllLabels(getActivity());
-				if(c.getCount() > 0) {
-					c.moveToFirst();
-					labelId = c.getString(0);
-				}
-				c.close();
-				c = LabelDB.getLabelFilesByLabelId(getActivity(), labelId);
+				fillData(datas, Constant.TYPE_FAVORITE);
+				break;
 				
-				datas = new OverviewData[c.getCount()];
-				for(int i=0; i<c.getCount(); ++i) {
-					c.moveToPosition(i);
-					OverviewData data = new OverviewData();
-					data.url = serverUrl + Constant.URL_IMAGE + "/" + 
-							c.getString(c.getColumnIndex(LabelFileTable.COLUMN_FILE_ID)) + 
-							Constant.URL_IMAGE_MEDIUM;
-					datas[i] = data;
-				}
-				c.close();
+			case OVERVIEW_VIEW_TYPE_RECENT_PHOTO:
+				fillData(datas, Constant.TYPE_RECENT_PHOTO_TODAY);
+				fillData(datas, Constant.TYPE_RECENT_PHOTO_YESTERDAY);
+				fillData(datas, Constant.TYPE_RECENT_PHOTO_THISWEEK);
+				break;
 				
+			case OVERVIEW_VIEW_TYPE_RECENT_VIDEO:
+				fillData(datas, Constant.TYPE_RECENT_VIDEO_TODAY);
+				fillData(datas, Constant.TYPE_RECENT_VIDEO_YESTERDAY);
+				fillData(datas, Constant.TYPE_RECENT_VIDEO_THISWEEK);
 				break;
 			}
 			return datas;
 		}
 		
 		@Override
-		protected void onPostExecute(OverviewData[] datas) {
+		protected void onPostExecute(ArrayList<OverviewData> datas) {
 			if(datas != null) {
 				OverviewAdapter adapter = new OverviewAdapter(getActivity(), datas);
 				mList.setAdapter(adapter);
 			}
+		}
+		
+		private void fillData(ArrayList<OverviewData> datas, int type) {
+			Cursor c = LabelDB.getCategoryLabelByLabelId(getActivity(), type);
+			if(c.moveToFirst()) {
+				OverviewData data = new OverviewData();
+				data.url = mServerUrl + c.getString(1);
+				data.title = c.getString(2);
+				datas.add(data);
+			}
+			c.close();
 		}
 	}
 

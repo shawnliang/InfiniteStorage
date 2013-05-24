@@ -196,13 +196,14 @@ public class LabelDB {
 	}
 	
 	
-	public static Cursor getCategoryLabelByLabelId(Context context, String labelId,String type) {
+	public static Cursor getCategoryLabelByLabelId(Context context, int type) {
 
 		Cursor cursor = context.getContentResolver().query(
 				LabelTable.CONTENT_URI,
 				new String[] { LabelTable.COLUMN_LABEL_ID,
+						LabelTable.COLUMN_COVER_URL,
 						LabelTable.COLUMN_LABEL_NAME },
-				LabelTable.COLUMN_LABEL_ID + " = ? AND "+LabelTable.COLUMN_AUTO_TYPE +"= ?" , new String[] { labelId,type },
+				LabelTable.COLUMN_AUTO_TYPE +"= ?" , new String[] { Integer.toString(type) },
 				null);
 
 		return cursor;

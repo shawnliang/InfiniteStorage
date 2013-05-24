@@ -92,6 +92,8 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 						Log.d(TAG, "file jsonOutString =" + jsonOutput);
 						// update label info
 						LabelDB.updateLabelInfo(mContext, label, fileEntity, false);
+					}else{
+						LabelDB.updateLabel(mContext, label);
 					}
 				}
 				LabelImportedEvent syncingEvent = new LabelImportedEvent(
