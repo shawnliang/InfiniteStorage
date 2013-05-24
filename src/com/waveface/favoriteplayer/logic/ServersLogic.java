@@ -47,30 +47,6 @@ public class ServersLogic {
 				new String[] { serverId });
 	}
 
-	public static void updateBackupedServerByServerNotify(Context context,
-			ServerEntity entity, boolean accept) {
-		// Update Server Info
-		ServerEntity pairedServer = getBonjourServerByServerId(context,
-				RuntimeState.mWebSocketServerId);
-		if (TextUtils.isEmpty(entity.serverName)) {
-			entity.serverName = pairedServer.serverName;
-		}
-		entity.serverOS = pairedServer.serverOS;
-		entity.wsLocation = pairedServer.wsLocation;
-		entity.status = Constant.SERVER_LINKING;
-		
-		
-		if (accept) {
-			SharedPreferences mPrefs = context.getSharedPreferences(
-					Constant.PREFS_NAME, Context.MODE_PRIVATE);
-			Editor mEditor = mPrefs.edit();
-			mEditor.putString(Constant.PREF_STATION_WEB_SOCKET_URL,
-					entity.wsLocation);
-			mEditor.commit();
-		}
-		updateBackupedServer(context, entity);
-	}
-
 	public static int updateBackupedServer(Context context, ServerEntity entity) {
 		int result = 0;
 		ContentResolver cr = context.getContentResolver();
@@ -83,15 +59,15 @@ public class ServersLogic {
 		cv.put(PairedServersTable.COLUMN_STATUS, entity.status);
 		cv.put(PairedServersTable.COLUMN_IP, entity.ip);
 		if(TextUtils.isEmpty(entity.notifyPort)){
-			entity.notifyPort="";
+			entity.notifyPort="13995";
 		}
 		cv.put(PairedServersTable.COLUMN_NOTIFY_PORT, entity.notifyPort);		
 		if(TextUtils.isEmpty(entity.restPort)){
-			entity.restPort="";
+			entity.restPort="14005";
 		}
 		cv.put(PairedServersTable.COLUMN_REST_PORT, entity.restPort);
 		if(TextUtils.isEmpty(entity.wsPort)){
-			entity.wsPort="";
+			entity.wsPort="13895";
 		}
 		cv.put(PairedServersTable.COLUMN_WS_PORT, entity.wsPort);
 		Cursor cursor = null;
