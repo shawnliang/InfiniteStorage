@@ -71,7 +71,7 @@ namespace InfiniteStorage.Notify
 
 		private long getOldLabelSeq(Model.Label label)
 		{
-			var oldSeq = -1L;
+			var oldSeq = ctx.labels_from_seq;
 			if (label_seq.ContainsKey(label.label_id))
 				oldSeq = label_seq[label.label_id];
 			return oldSeq;

@@ -100,7 +100,9 @@ namespace DataTool
 					subscribe = new
 					{
 						files_from_seq = Int64.Parse(fileSeq.Text),
-						labels = subscribeLabels.Checked
+						labels = subscribeLabels.Checked,
+						labels_from_seq = int.Parse(label_seq.Text),
+
 					}
 				};
 			else
@@ -114,7 +116,8 @@ namespace DataTool
 
 					subscribe = new
 					{
-						labels = subscribeLabels.Checked
+						labels = subscribeLabels.Checked,
+						labels_from_seq = int.Parse(label_seq.Text),
 					}
 				};
 

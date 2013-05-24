@@ -9,6 +9,8 @@ namespace InfiniteStorage.Notify
 
 		long files_from_seq { get; }
 
+		long labels_from_seq { get; set; }
+
 		bool subscribe_files { get; }
 
 		bool subscribe_labels { get; }

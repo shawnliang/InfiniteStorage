@@ -39,6 +39,7 @@
 			this.subscribeLabels = new System.Windows.Forms.CheckBox();
 			this.subcribeFiles = new System.Windows.Forms.CheckBox();
 			this.fileSeq = new System.Windows.Forms.TextBox();
+			this.label_seq = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
 			// generateButton
@@ -133,7 +134,7 @@
 			this.subcribeFiles.AutoSize = true;
 			this.subcribeFiles.Checked = true;
 			this.subcribeFiles.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.subcribeFiles.Location = new System.Drawing.Point(140, 204);
+			this.subcribeFiles.Location = new System.Drawing.Point(277, 204);
 			this.subcribeFiles.Name = "subcribeFiles";
 			this.subcribeFiles.Size = new System.Drawing.Size(115, 17);
 			this.subcribeFiles.TabIndex = 9;
@@ -142,17 +143,26 @@
 			// 
 			// fileSeq
 			// 
-			this.fileSeq.Location = new System.Drawing.Point(261, 201);
+			this.fileSeq.Location = new System.Drawing.Point(398, 201);
 			this.fileSeq.Name = "fileSeq";
 			this.fileSeq.Size = new System.Drawing.Size(100, 20);
 			this.fileSeq.TabIndex = 10;
 			this.fileSeq.Text = "19995";
+			// 
+			// label_seq
+			// 
+			this.label_seq.Location = new System.Drawing.Point(119, 204);
+			this.label_seq.Name = "label_seq";
+			this.label_seq.Size = new System.Drawing.Size(100, 20);
+			this.label_seq.TabIndex = 11;
+			this.label_seq.Text = "0";
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(527, 423);
+			this.Controls.Add(this.label_seq);
 			this.Controls.Add(this.fileSeq);
 			this.Controls.Add(this.subcribeFiles);
 			this.Controls.Add(this.subscribeLabels);
@@ -184,6 +194,7 @@
 		private System.Windows.Forms.CheckBox subscribeLabels;
 		private System.Windows.Forms.CheckBox subcribeFiles;
 		private System.Windows.Forms.TextBox fileSeq;
+		private System.Windows.Forms.TextBox label_seq;
 	}
 }
 
