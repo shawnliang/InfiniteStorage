@@ -37,6 +37,7 @@ public class SyncApplication extends Application{
 		super.onCreate();
 		initialDirectory();
 		mImageManager = ImageManager.getInstance(this);
+		mImageManager.setDownloadPath(new File(Environment.getExternalStorageDirectory(), "FavoritePlayer/Images").getAbsolutePath());
 
 		sendBroadcast(new Intent(Constant.ACTION_FAVORITE_PLAYER_ALARM));
 	}

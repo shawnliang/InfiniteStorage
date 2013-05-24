@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.SyncApplication;
@@ -21,6 +20,7 @@ public class OverviewAdapter extends BaseAdapter{
 	
 	private class ViewHolder {
 		public ImageView image;
+		public ImageView reflection;
 	}
 	
 	public OverviewAdapter(Context context, OverviewData[] datas) {
@@ -54,15 +54,31 @@ public class OverviewAdapter extends BaseAdapter{
 			convertView = mInflater.inflate(R.layout.item_overview, parent, false);
 			holder = new ViewHolder();
 			holder.image = (ImageView) convertView.findViewById(R.id.image);
+			holder.reflection = (ImageView) convertView.findViewById(R.id.reflection_image);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
+		int width = context.getResources().getDimensionPixelSize(R.dimen.overview_image_width);
+		int height = context.getResources().getDimensionPixelSize(R.dimen.overview_image_height);
+		
 		ImageAttribute attr = new ImageAttribute(holder.image);
-		attr.setMaxSizeEqualsScreenSize(context);
-		attr.setDoneScaleType(ScaleType.CENTER_CROP);
+		attr.setResizeSize(width, height);
 		mImageManager.getImage(mDatas[position].url, attr);
+		
+		attr = new ImageAttribute(holder.reflection);
+		attr.setResizeSize(width, height);
+		attr.setReflection(true);
+		mImageManager.getImage(mDatas[position].url, attr);
+
+		int paddingNormal = context.getResources().getDimensionPixelSize(R.dimen.overview_item_padding);
+		if(position == 0) {
+			int paddingLeft = context.getResources().getDimensionPixelSize(R.dimen.overview_item_first_left_padding);
+			convertView.setPadding(paddingLeft, paddingNormal, paddingNormal, paddingNormal);
+		} else {
+			convertView.setPadding(paddingNormal, paddingNormal, paddingNormal, paddingNormal);
+		}
 		
 		return convertView;
 	}

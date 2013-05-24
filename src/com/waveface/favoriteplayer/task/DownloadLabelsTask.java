@@ -99,7 +99,7 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 				LabelImportedEvent doneEvent = new LabelImportedEvent(
 						LabelImportedEvent.STATUS_DONE);
 				
-				EventBus.getDefault().post(doneEvent);
+//				EventBus.getDefault().post(doneEvent);
 
 				File root = Environment.getExternalStorageDirectory();
 				Cursor cursor = LabelDB.getAllLabels(mContext);
@@ -140,6 +140,7 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 									String url = restfulAPIURL
 											+ Constant.URL_IMAGE + "/" + fileId
 											+ Constant.URL_IMAGE_LARGE;
+									
 									mImageManager.getImageWithoutThread(url,
 											null);
 								}

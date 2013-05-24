@@ -1,15 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dip"
-    android:layout_height="300dip"
-    android:background="@drawable/list_selector"
-    android:orientation="vertical">
-    
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dip"
-        android:id="@+id/image"
-        />
-    
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#000000"
+    android:padding="@dimen/overview_item_padding" >
+
+    <RelativeLayout
+        android:id="@+id/container_imagearea"
+        android:layout_width="@dimen/overview_image_width"
+        android:layout_height="@dimen/overview_image_height"
+        android:layout_centerVertical="true"
+        android:background="@drawable/list_selector"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:paddingTop="5dip"
+        android:paddingBottom="5dip" >
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="@dimen/overview_image_width"
+        android:layout_height="@dimen/overview_image_height"
+        android:layout_below="@+id/container_imagearea"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:paddingTop="0dip"
+        android:paddingBottom="0dip" >
+
+        <ImageView
+            android:id="@+id/reflection_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+</RelativeLayout>

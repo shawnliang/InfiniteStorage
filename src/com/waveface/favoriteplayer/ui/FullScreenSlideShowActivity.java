@@ -24,4 +24,14 @@ public class FullScreenSlideShowActivity extends FragmentActivity {
 			transaction.add(R.id.content, fragment, FullScreenSlideshowFragment.class.getSimpleName()).commit();
 		}
 	}
+	
+	@Override
+	public void onBackPressed() {
+		FullScreenSlideshowFragment fragment = (FullScreenSlideshowFragment) getSupportFragmentManager().
+				findFragmentByTag(FullScreenSlideshowFragment.class.getSimpleName());
+		if(fragment != null) {
+			fragment.onBackPressed();
+		}
+		
+	}
 }
