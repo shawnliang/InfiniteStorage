@@ -47,8 +47,13 @@ public class PlayerService extends Service{
 
 	//TIMER
     private final int UPDATE_INTERVAL = 30 * 1000;
+
+    private Timer BackupTimer = null;
+    private Timer mWorkerTimer;
+	private static final int WORKER_DELAY_SECONDS = 60;
+	private static final int WORKER_PERIOD_SECONDS = 60;	
     private Timer SyncTimer = null;
- 	
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
