@@ -298,13 +298,7 @@ public class ServerChooserFragment extends FragmentBase
 			String notifyPort =params[0].get(Constant.PARAM_NOTIFY_PORT);
 			String restPort =params[0].get(Constant.PARAM_REST_PORT);
 			String wsLocation = "ws://"+ip+":"+notifyPort;
-			ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort,true);			
-			
-//			Timer workerTimer = new Timer();
-//			workerTimer.schedule(new WorkerTimerTask(getActivity(),wsLocation,serverId, serverName,ip,notifyPort, restPort), 
-//					WORKER_DELAY_SECONDS * 1000, 
-//					WORKER_PERIOD_SECONDS * 10000);
-			
+			ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort,true);						
 			return null;
 		}
 	}
