@@ -17,6 +17,7 @@ import android.os.IBinder;
 import android.text.TextUtils;
 
 import com.waveface.favoriteplayer.Constant;
+import com.waveface.favoriteplayer.MDNSConstant;
 import com.waveface.favoriteplayer.RuntimeState;
 import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelTable;
@@ -46,12 +47,8 @@ public class PlayerService extends Service{
 	private String mCondidateWSLocation ;
 
 	//TIMER
-    private final int UPDATE_INTERVAL = 30 * 1000;
+    private final int UPDATE_INTERVAL = 10 * 1000;
 
-    private Timer BackupTimer = null;
-    private Timer mWorkerTimer;
-	private static final int WORKER_DELAY_SECONDS = 60;
-	private static final int WORKER_PERIOD_SECONDS = 60;	
     private Timer SyncTimer = null;
 
 	@Override
@@ -75,8 +72,8 @@ public class PlayerService extends Service{
             	if(NetworkUtil.isWifiNetworkAvailable(mContext)){
                 	long fromTime = System.currentTimeMillis()-mMDNSSetupTime;
                 	if(NetworkUtil.isWifiNetworkAvailable(mContext)
-                			&& RuntimeState.isMDNSSetUped  
-                			&& fromTime > (60*1000)
+//                			&& RuntimeState.isMDNSSetUped  
+//                			&& fromTime > (60*1000)
                 			&& RuntimeState .OnWebSocketOpened == false){
                 		    Log.d(TAG, "reset MDNS FOR WAIT FOR 1 Minutes");
 //    						releaseMDNS();
@@ -104,7 +101,8 @@ public class PlayerService extends Service{
 		connectPCWithPairedServer();
 		Log.d(TAG,"Wi-Fi-Network:"+NetworkUtil.isWifiNetworkAvailable(mContext));		
 		RuntimeState.mAutoConnectMode = ServersLogic.hasBackupedServers(this);		
-		new SetupMDNS().execute(new Void[]{});
+//		new SetupMDNS().execute(new Void[]{});
+		setupMDNS();
 		Log.d(TAG, "onCreate");		
 	}
 
@@ -153,18 +151,25 @@ public class PlayerService extends Service{
 	}
 
     private void setupMDNS() {
-        if (mDNSThread != null) {
-            Log.e(TAG, "DNS hread should be null!");
-            mDNSThread.submitQuit();
-            return;
+        if (mDNSThread == null) {
+        	mDNSThread = new DNSThread(mContext);
+        	mDNSThread.start();
         }
-    	mDNSThread = new DNSThread(mContext);
-    	mDNSThread.start();
-    	mDNSThread.submitQuit();
+    	mDNSThread.submitQuery(MDNSConstant.BONJOUR_SERVICE_ID);
+
+//    	if (mDNSThread != null) {
+//            Log.e(TAG, "DNS hread should be null!");
+//            mDNSThread.submitQuit();
+//            return;
+//        }
+//    	mDNSThread = new DNSThread(mContext);
+//    	mDNSThread.start();
+//    	mDNSThread.submitQuery(MDNSConstant.BONJOUR_SERVICE_ID);
     }
 	private void releaseMDNS() {
 	   	ServersLogic.purgeAllBonjourServer(mContext);
 	   	if(mDNSThread!=null){
+	   		mDNSThread.submitQuit();
 	   		mDNSThread = null;
 	   	}
 	}
