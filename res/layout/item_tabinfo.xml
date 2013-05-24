@@ -9,6 +9,7 @@
         android:id="@+id/tabinfo"
         android:layout_width="match_parent"
         android:layout_height="40dip"
+        android:layout_marginTop="40dip"
         android:layout_marginBottom="10dip"
         android:gravity="center"
         android:textColor="@drawable/tab_textcolor"

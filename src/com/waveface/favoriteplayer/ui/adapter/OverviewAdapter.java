@@ -75,6 +75,7 @@ public class OverviewAdapter extends BaseAdapter{
 		attr = new ImageAttribute(holder.reflection);
 		attr.setResizeSize(width, height);
 		attr.setReflection(true);
+		attr.setHighQuality(true);
 		mImageManager.getImage(mDatas.get(position).url, attr);
 		
 		holder.labelText.setText(mDatas.get(position).title);
