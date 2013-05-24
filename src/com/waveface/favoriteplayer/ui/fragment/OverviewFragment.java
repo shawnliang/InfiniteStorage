@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ import com.waveface.favoriteplayer.ui.adapter.OverviewAdapter;
 import com.waveface.favoriteplayer.ui.widget.TwoWayView;
 
 public class OverviewFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener{
+	public static final String TAG = OverviewFragment.class.getSimpleName();
 	private TwoWayView mList;
 	private int mType = OVERVIEW_VIEW_TYPE_FAVORITE;
 	
@@ -77,8 +80,11 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			ArrayList<OverviewData> datas = new ArrayList<OverviewData>();
 			ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(getActivity());
 			ServerEntity pairedServer = servers.get(0);
+			if(TextUtils.isEmpty(pairedServer.restPort)){
+				pairedServer.restPort ="14005";
+			}
 			mServerUrl ="http://"+pairedServer.ip+":"+pairedServer.restPort;
-			
+			Log.d(TAG, "mServerUrl:" +mServerUrl);
 			switch(mType) {
 			case OVERVIEW_VIEW_TYPE_FAVORITE:
 				fillData(datas, Constant.TYPE_FAVORITE);

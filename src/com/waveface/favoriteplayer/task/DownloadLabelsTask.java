@@ -11,6 +11,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.waveface.exception.WammerServerException;
 import com.waveface.favoriteplayer.Constant;
@@ -52,6 +53,9 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 		if (servers.size() == 0)
 			return null;
 		ServerEntity pairedServer = servers.get(0);
+		if(TextUtils.isEmpty(pairedServer.restPort)){
+			pairedServer.restPort ="14005";
+		}
 		String restfulAPIURL = "http://" + pairedServer.ip + ":"
 				+ pairedServer.restPort;
 		String getAllLablesURL = restfulAPIURL + Constant.URL_GET_ALL_LABELS;
