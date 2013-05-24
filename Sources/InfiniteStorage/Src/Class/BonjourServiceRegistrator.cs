@@ -41,7 +41,7 @@ namespace InfiniteStorage
 				if (bonjour != null)
 				{
 					bonjour.Dispose();
-					Thread.SpinWait(10000);
+					Thread.Sleep(500);
 				}
 
 				if (isAccepting.HasValue)
@@ -56,6 +56,11 @@ namespace InfiniteStorage
 		void bonjour_Error(object sender, BonjourErrorEventArgs e)
 		{
 			log4net.LogManager.GetLogger(GetType()).Warn("bonjour service error: " + e.error.ToString());
+		}
+
+		public bool IsAccepting
+		{
+			get { return is_accepting; }
 		}
 	}
 }

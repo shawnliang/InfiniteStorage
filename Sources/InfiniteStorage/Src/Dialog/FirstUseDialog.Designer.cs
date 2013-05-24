@@ -33,13 +33,13 @@
 			this.prevButton = new System.Windows.Forms.Button();
 			this.tabControlEx1 = new InfiniteStorage.TabControlEx();
 			this.tabWelcomeAndWaitConnect = new System.Windows.Forms.TabPage();
+			this.startPairingUserControl1 = new InfiniteStorage.StartPairingUserControl();
 			this.tabChooseLocation = new System.Windows.Forms.TabPage();
 			this.label4 = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
 			this.storageLocationControl1 = new InfiniteStorage.StorageLocationControl();
 			this.tabInstalledSuccess = new System.Windows.Forms.TabPage();
 			this.transferringControl1 = new InfiniteStorage.TransferringControl();
-			this.startPairingUserControl1 = new InfiniteStorage.StartPairingUserControl();
 			this.panel1.SuspendLayout();
 			this.tabControlEx1.SuspendLayout();
 			this.tabWelcomeAndWaitConnect.SuspendLayout();
@@ -53,7 +53,7 @@
 			this.panel1.Controls.Add(this.nextButton);
 			this.panel1.Controls.Add(this.prevButton);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel1.Location = new System.Drawing.Point(0, 288);
+			this.panel1.Location = new System.Drawing.Point(0, 323);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(628, 46);
 			this.panel1.TabIndex = 0;
@@ -92,7 +92,7 @@
 			this.tabControlEx1.Name = "tabControlEx1";
 			this.tabControlEx1.PageIndex = 1;
 			this.tabControlEx1.SelectedIndex = 0;
-			this.tabControlEx1.Size = new System.Drawing.Size(628, 288);
+			this.tabControlEx1.Size = new System.Drawing.Size(628, 323);
 			this.tabControlEx1.TabIndex = 1;
 			this.tabControlEx1.SelectedIndexChanged += new System.EventHandler(this.tabControlEx1_SelectedIndexChanged);
 			// 
@@ -103,9 +103,17 @@
 			this.tabWelcomeAndWaitConnect.Location = new System.Drawing.Point(0, 0);
 			this.tabWelcomeAndWaitConnect.Name = "tabWelcomeAndWaitConnect";
 			this.tabWelcomeAndWaitConnect.Padding = new System.Windows.Forms.Padding(3);
-			this.tabWelcomeAndWaitConnect.Size = new System.Drawing.Size(628, 288);
+			this.tabWelcomeAndWaitConnect.Size = new System.Drawing.Size(628, 323);
 			this.tabWelcomeAndWaitConnect.TabIndex = 0;
 			this.tabWelcomeAndWaitConnect.Text = "歡迎使用 Bunny";
+			// 
+			// startPairingUserControl1
+			// 
+			this.startPairingUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.startPairingUserControl1.Location = new System.Drawing.Point(3, 3);
+			this.startPairingUserControl1.Name = "startPairingUserControl1";
+			this.startPairingUserControl1.Size = new System.Drawing.Size(622, 317);
+			this.startPairingUserControl1.TabIndex = 0;
 			// 
 			// tabChooseLocation
 			// 
@@ -115,7 +123,7 @@
 			this.tabChooseLocation.Location = new System.Drawing.Point(0, 0);
 			this.tabChooseLocation.Name = "tabChooseLocation";
 			this.tabChooseLocation.Padding = new System.Windows.Forms.Padding(3);
-			this.tabChooseLocation.Size = new System.Drawing.Size(628, 288);
+			this.tabChooseLocation.Size = new System.Drawing.Size(628, 323);
 			this.tabChooseLocation.TabIndex = 3;
 			this.tabChooseLocation.Text = "選擇備份資料夾位置";
 			this.tabChooseLocation.UseVisualStyleBackColor = true;
@@ -147,7 +155,6 @@
 			this.storageLocationControl1.Location = new System.Drawing.Point(68, 114);
 			this.storageLocationControl1.Name = "storageLocationControl1";
 			this.storageLocationControl1.Size = new System.Drawing.Size(492, 95);
-			this.storageLocationControl1.StoragePath = "";
 			this.storageLocationControl1.TabIndex = 0;
 			// 
 			// tabInstalledSuccess
@@ -156,7 +163,7 @@
 			this.tabInstalledSuccess.Location = new System.Drawing.Point(0, 0);
 			this.tabInstalledSuccess.Name = "tabInstalledSuccess";
 			this.tabInstalledSuccess.Padding = new System.Windows.Forms.Padding(3);
-			this.tabInstalledSuccess.Size = new System.Drawing.Size(628, 288);
+			this.tabInstalledSuccess.Size = new System.Drawing.Size(628, 323);
 			this.tabInstalledSuccess.TabIndex = 2;
 			this.tabInstalledSuccess.Text = "設定完成";
 			this.tabInstalledSuccess.UseVisualStyleBackColor = true;
@@ -166,23 +173,15 @@
 			this.transferringControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.transferringControl1.Location = new System.Drawing.Point(3, 3);
 			this.transferringControl1.Name = "transferringControl1";
-			this.transferringControl1.Size = new System.Drawing.Size(622, 282);
+			this.transferringControl1.Size = new System.Drawing.Size(622, 317);
 			this.transferringControl1.TabIndex = 0;
 			this.transferringControl1.WebSocketContext = null;
-			// 
-			// startPairingUserControl1
-			// 
-			this.startPairingUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.startPairingUserControl1.Location = new System.Drawing.Point(3, 3);
-			this.startPairingUserControl1.Name = "startPairingUserControl1";
-			this.startPairingUserControl1.Size = new System.Drawing.Size(622, 282);
-			this.startPairingUserControl1.TabIndex = 0;
 			// 
 			// FirstUseDialog
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(628, 334);
+			this.ClientSize = new System.Drawing.Size(628, 369);
 			this.Controls.Add(this.tabControlEx1);
 			this.Controls.Add(this.panel1);
 			this.Name = "FirstUseDialog";

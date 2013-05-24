@@ -83,6 +83,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\Dialog\ProgressTooltip.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Src\Dialog\ProgressTooltip.Designer.cs">
+      <DependentUpon>ProgressTooltip.cs</DependentUpon>
+    </Compile>
     <Compile Include="Src\Class\AutoLabelController.cs" />
     <Compile Include="Src\Class\BonjourServiceRegistrator.cs" />
     <Compile Include="Src\Class\Common\AutoUpdator.cs" />
@@ -248,6 +254,15 @@
     <Compile Include="Src\UIControl\StartPairingUserControl.Designer.cs">
       <DependentUpon>StartPairingUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Src\Dialog\WaitForPairingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Src\Dialog\WaitForPairingDialog.Designer.cs">
+      <DependentUpon>WaitForPairingDialog.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Src\Dialog\ProgressTooltip.resx">
+      <DependentUpon>ProgressTooltip.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\BackupProgressDialog.resx">
       <DependentUpon>BackupProgressDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -294,6 +309,9 @@
     <EmbeddedResource Include="Src\UIControl\StartPairingUserControl.resx">
       <DependentUpon>StartPairingUserControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Src\Dialog\WaitForPairingDialog.resx">
+      <DependentUpon>WaitForPairingDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="..\..\Libs\nginx-1.2.3\conf\mime.types">
       <Link>nginx\conf\mime.types</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -338,6 +356,9 @@
       <Link>x86\SQLite.Interop.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\video %281%29.png" />
+    <None Include="Resources\ajax-loader.gif" />
+    <None Include="Resources\380.gif" />
     <Content Include="Resources\Empty.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

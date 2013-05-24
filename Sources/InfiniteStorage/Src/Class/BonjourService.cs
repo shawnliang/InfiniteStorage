@@ -43,7 +43,7 @@ namespace InfiniteStorage
 			txt.Add("rest_port", rest_port.ToString());
 			txt.Add("version", "1.0");
 			txt.Add("service_name", ServiceName);
-			txt.Add("is_accepting", is_accepting ? "true" : "false");
+			txt.Add("waiting_for_pair", is_accepting ? "true" : "false");
 
 			m_svc.TxtRecord = txt;
 			m_svc.Register();

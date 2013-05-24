@@ -75,7 +75,10 @@ namespace InfiniteStorage
 					log4net.LogManager.GetLogger(GetType()).Warn("Unable to send approve msg", err);
 				}
 
+				MessageBox.Show(Resources.FirstUse_GoBackToPhoneToStart, Resources.FirstUse_Start, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
 				tabControlEx1.NextPage();
+				Close();
 			}
 			else if (tabControlEx1.IsLastPage)
 			{
@@ -96,7 +99,7 @@ namespace InfiniteStorage
 			this.Text = selectedTab.Text;
 
 
-			prevButton.Visible = false;//selectedTab == tabChooseOrganizeMethod;
+			prevButton.Visible = false; //selectedTab == tabChooseOrganizeMethod;
 
 			nextButton.Text = Resources.FirstUse_Next;
 

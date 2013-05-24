@@ -16,8 +16,9 @@ namespace InfiniteStorage
 		public static event EventHandler<WebsocketEventArgs> DeviceDisconnected;
 		public static event EventHandler<WebsocketEventArgs> PairingRequesting;
 		public static event EventHandler<WebsocketEventArgs> TotalCountUpdated;
+		public static event EventHandler<WebsocketEventArgs> FileEnding;
 		public static event EventHandler<WebsocketEventArgs> FileReceived;
-
+		
 		public InfiniteStorageWebSocketService()
 		{
 			if (!Directory.Exists(MyFileFolder.Temp))
@@ -39,6 +40,7 @@ namespace InfiniteStorage
 			ctx.OnPairingRequired += PairingRequesting;
 			ctx.OnTotalCountUpdated += TotalCountUpdated;
 			ctx.OnFileReceived += FileReceived;
+			ctx.OnFileEnding += FileEnding;
 
 			handler = new ProtocolHanlder(ctx);
 		}

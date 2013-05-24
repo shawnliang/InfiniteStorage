@@ -53,17 +53,6 @@ namespace InfiniteStorage
 
 		private void showUI()
 		{
-			/*
-			if (dialog.IsDisposed)
-			{
-				dialog = new FakeSplitEventForm();
-			}
-			dialog.seq = prevSeq;
-			dialog.Show();
-			dialog.Activate();
-			dialog.BringToFront();
-			*/
-
 			var devices = getPendingSources();
 
 			foreach (var device in devices)

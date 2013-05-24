@@ -23,6 +23,8 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			ctx.temp_file.EndWrite();
 
+			ctx.raiseOnFileEnding();
+
 			if (!Util.HasDuplicateFile(ctx.fileCtx, ctx.device_id))
 			{
 				SavedPath saved = null;

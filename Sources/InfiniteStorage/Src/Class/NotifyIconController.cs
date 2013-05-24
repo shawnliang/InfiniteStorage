@@ -70,6 +70,7 @@ namespace InfiniteStorage
 			{
 				showNotifyIconMenu(evt.ctx);
 				showProgressDialog(evt.ctx);
+				ProgressTooltip.Instance.ShowWaitingDevice(evt.ctx.device_name);
 			});
 		}
 
@@ -262,53 +263,50 @@ namespace InfiniteStorage
 
 		private void showApproveDialog(WebsocketProtocol.WebsocketEventArgs args)
 		{
-			var dialog = new PairingRequestDialog(args.ctx);
-
-			if (FirstUseDialog.Instance.Visible)
+			if (!BonjourServiceRegistrator.Instance.IsAccepting)
 			{
-				dialog.StartPosition = FormStartPosition.CenterParent;
+				args.ctx.handleDisapprove();
+				return;
 			}
 			else
 			{
-				dialog.StartPosition = FormStartPosition.Manual;
 
-				var x = Screen.PrimaryScreen.WorkingArea.Width - dialog.Width;
-				var y = Screen.PrimaryScreen.WorkingArea.Height - dialog.Height;
-				dialog.Location = new System.Drawing.Point(x, y);
-			}
-
-			var result = dialog.ShowDialog();
-
-			try
-			{
-				if (result != DialogResult.Yes)
+				var pairingDialog = new PairingRequestDialog(args.ctx);
+				if (pairingDialog.ShowDialog() == DialogResult.No)
 				{
 					args.ctx.handleDisapprove();
+					return;
 				}
-				else
+
+
+				if (WaitForPairingDialog.Instance.Visible)
+					WaitForPairingDialog.Instance.Close();
+
+				if (Settings.Default.IsFirstUse)
 				{
+					if (FirstUseDialog.Instance.Visible)
+						FirstUseDialog.Instance.Close();
 
-					if (Settings.Default.IsFirstUse)
-					{
-						if (FirstUseDialog.Instance.Visible)
-							FirstUseDialog.Instance.Close();
-
-						FirstUseDialog.Instance.ShowSetupPage(args.ctx);
-
-						Settings.Default.IsFirstUse = false;
-						Settings.Default.Save();
-					}
-					else
-					{
-						args.ctx.handleApprove();
-					}
+					FirstUseDialog.Instance.ShowSetupPage(args.ctx);
+					Settings.Default.IsFirstUse = true;
+					Settings.Default.Save();
 				}
-			}
-			catch (Exception err)
-			{
-				log4net.LogManager.GetLogger(GetType()).Warn("Error in showApproveDialog", err);
 			}
 		}
 
+
+		public void OnAddingNewSources(object sender, EventArgs e)
+		{
+			if (Settings.Default.IsFirstUse)
+			{
+				FirstUseDialog.Instance.Show();
+			}
+			else
+			{
+				WaitForPairingDialog.Instance.Show();
+				WaitForPairingDialog.Instance.Activate();
+				WaitForPairingDialog.Instance.BringToFront();
+			}
+		}
 	}
 }

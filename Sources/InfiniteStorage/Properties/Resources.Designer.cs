@@ -180,6 +180,15 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 請在手機上按下開始, 就立即傳輸檔案.
+        /// </summary>
+        internal static string FirstUse_GoBackToPhoneToStart {
+            get {
+                return ResourceManager.GetString("FirstUse_GoBackToPhoneToStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 請回到手機，指定備份到這台電腦 - {0}.
         /// </summary>
         internal static string FirstUse_Instruction1 {
@@ -225,7 +234,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 開始備份.
+        ///   Looks up a localized string similar to 配對完成.
         /// </summary>
         internal static string FirstUse_Start {
             get {
@@ -292,10 +301,29 @@ namespace InfiniteStorage.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Scanning {
+            get {
+                object obj = ResourceManager.GetObject("Scanning", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Tea_Cup1 {
             get {
                 object obj = ResourceManager.GetObject("Tea_Cup1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 新增手機或平板....
+        /// </summary>
+        internal static string TrayMenuItem_AddNewSources {
+            get {
+                return ResourceManager.GetString("TrayMenuItem_AddNewSources", resourceCulture);
             }
         }
         
@@ -350,6 +378,26 @@ namespace InfiniteStorage.Properties {
         internal static string VersionLable {
             get {
                 return ResourceManager.GetString("VersionLable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap video {
+            get {
+                object obj = ResourceManager.GetObject("video", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Waiting {
+            get {
+                object obj = ResourceManager.GetObject("Waiting", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

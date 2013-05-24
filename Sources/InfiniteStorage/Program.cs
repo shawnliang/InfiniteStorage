@@ -23,7 +23,7 @@ namespace InfiniteStorage
 		static NotifyIconController m_notifyIconController;
 		static Timer m_NotifyTimer;
 		static System.Timers.Timer m_BackupStatusTimer;
-		//static System.Timers.Timer m_ReRegBonjourTimer;
+		static System.Timers.Timer m_ReRegBonjourTimer;
 		static WebSocketServer<InfiniteStorageWebSocketService> backup_server;
 		static WebSocketServer<NotifyWebSocketService> notify_server;
 		static HttpServer rest_server;
@@ -81,7 +81,7 @@ namespace InfiniteStorage
 			SeqNum.InitFromDB();
 
 			initNotifyIcon();
-
+			InfiniteStorageWebSocketService.FileReceived += ProgressTooltip.Instance.OnFileEnding;
 			InfiniteStorageWebSocketService.FileReceived += autoLabel.FileReceived;
 
 			m_NotifyTimer = new Timer();
@@ -114,37 +114,11 @@ namespace InfiniteStorage
 				return;
 			}
 
+			// Stop nginx here to delete possible old nginx instance.
+			// Not doing so, bounjour sevice name could become "pc name (2)"...
+			NginxUtility.Instance.Stop(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
 
-
-			//try
-			//{
-				// Stop nginx here to delete possible old nginx instance.
-				// Not doing so, bounjour sevice name could become "pc name (2)"...
-				NginxUtility.Instance.Stop(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Resources.ProductName));
-
-
-
-				BonjourServiceRegistrator.Instance.SetPorts(backup_port, notify_port, rest_port);
-
-			//    //m_bonjourService = new BonjourService();
-			//    //m_bonjourService.Error += new EventHandler<BonjourErrorEventArgs>(m_bonjourService_Error);
-
-
-			//    //m_bonjourService.Register(backup_port, notify_port, rest_port, Settings.Default.ServerId);
-
-			//    //// bonjour record sometimes disappear for unknown reason.
-			//    //// to workaround this, we just periodically re-register with
-			//    //// bonjour
-			//    //startTimerToReRegisterWithBonjour(backup_port, notify_port, rest_port);
-
-			//}
-			//catch (Exception e)
-			//{
-			//    log4net.LogManager.GetLogger("main").Error("Unable to register bonjour service", e);
-			//    MessageBox.Show(e.Message, "Unable to register bonjour service", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			//    return;
-			//}
-
+			BonjourServiceRegistrator.Instance.SetPorts(backup_port, notify_port, rest_port);
 
 
 			if (hasAnyRegisteredDevice())
@@ -160,6 +134,10 @@ namespace InfiniteStorage
 				BonjourServiceRegistrator.Instance.Register(true);
 			}
 
+			// bonjour record sometimes disappear for unknown reason.
+			// to workaround this, we just re-register with bonjour
+			// every minute.
+			startTimerToReRegisterWithBonjour();
 
 			ProgramIPC.Instance.OnWinMsg += (s, e) =>
 			{
@@ -184,37 +162,28 @@ namespace InfiniteStorage
 			}
 		}
 
-		//private static void startTimerToReRegisterWithBonjour(ushort backup_port, ushort notify_port, ushort rest_port)
-		//{
-		//    m_ReRegBonjourTimer = new System.Timers.Timer(60 * 1000);
-		//    m_ReRegBonjourTimer.AutoReset = true;
-		//    m_ReRegBonjourTimer.Elapsed += (s, e) =>
-		//    {
-		//        try
-		//        {
-		//            m_ReRegBonjourTimer.Enabled = false;
-
-		//            if (m_bonjourService != null)
-		//            {
-		//                m_bonjourService.Dispose();
-		//                System.Threading.Thread.Sleep(500);
-		//            }
-		//            m_bonjourService = new BonjourService();
-		//            m_bonjourService.Error += m_bonjourService_Error;
-		//            m_bonjourService.Register(backup_port, notify_port, rest_port, Settings.Default.ServerId);
-		//        }
-		//        catch (Exception err)
-		//        {
-		//            log4net.LogManager.GetLogger("main").Error("Unable to register bonjour service", err);
-		//            m_bonjourService = null;
-		//        }
-		//        finally
-		//        {
-		//            m_ReRegBonjourTimer.Enabled = true;
-		//        }
-		//    };
-		//    m_ReRegBonjourTimer.Start();
-		//}
+		private static void startTimerToReRegisterWithBonjour()
+		{
+			m_ReRegBonjourTimer = new System.Timers.Timer(60 * 1000);
+			m_ReRegBonjourTimer.AutoReset = true;
+			m_ReRegBonjourTimer.Elapsed += (s, e) =>
+			{
+				try
+				{
+					m_ReRegBonjourTimer.Enabled = false;
+					BonjourServiceRegistrator.Instance.Register();
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger("main").Error("Unable to register bonjour service", err);
+				}
+				finally
+				{
+					m_ReRegBonjourTimer.Enabled = true;
+				}
+			};
+			m_ReRegBonjourTimer.Start();
+		}
 
 		private static string generateSameServerIdForSameUserOnSamePC()
 		{
@@ -331,7 +300,7 @@ namespace InfiniteStorage
 			openStorageItem.Font = new Font(openStorageItem.Font, FontStyle.Bold);
 
 			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Preferences, null, m_notifyIconController.OnPreferencesMenuItemClicked);
-
+			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_AddNewSources, null, m_notifyIconController.OnAddingNewSources);
 			m_notifyIcon.ContextMenuStrip.Items.Add("-");
 
 			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Quit, null, m_notifyIconController.OnQuitMenuItemClicked);
