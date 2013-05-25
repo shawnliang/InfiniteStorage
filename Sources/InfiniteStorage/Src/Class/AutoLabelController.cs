@@ -27,6 +27,12 @@ namespace InfiniteStorage
 						updateLabels(args, labels);
 					}
 
+					if (withinYesterday(file.datetime))
+					{
+						var labels = new Guid[] { Settings.Default.LabelPhotoYesterday };
+						updateLabels(args, labels);
+					}
+
 					if (withinThisWeek(file.datetime))
 					{
 						var labels = new Guid[] { Settings.Default.LabelPhotoThisWeek };
@@ -43,6 +49,12 @@ namespace InfiniteStorage
 						updateLabels(args, labels);
 					}
 
+					if (withinYesterday(file.datetime))
+					{
+						var labels = new Guid[] { Settings.Default.LabelVideoYesterday };
+						updateLabels(args, labels);
+					}
+
 					if (withinThisWeek(file.datetime))
 					{
 						var labels = new Guid[] { Settings.Default.LabelVideoThisWeek };
@@ -55,6 +67,13 @@ namespace InfiniteStorage
 			{
 				log4net.LogManager.GetLogger(GetType()).Warn("unable to auto label on file: " + args.ctx.fileCtx.file_id, e);
 			}
+		}
+
+		private bool withinYesterday(DateTime dateTime)
+		{
+			var yesterday = DateTime.Now.AddDays(-1.0);
+
+			return dateTime.Year == yesterday.Year && dateTime.Month == yesterday.Month && dateTime.Day == yesterday.Day;
 		}
 
 		private bool withinThisWeek(DateTime dateTime)
