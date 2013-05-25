@@ -76,7 +76,7 @@ namespace InfiniteStorage
 			{
 				showNotifyIconMenu(evt.ctx);
 				showProgressDialog(evt.ctx);
-				ProgressTooltip.Instance.ShowWaitingDevice(evt.ctx.device_name);
+				//ProgressTooltip.Instance.ShowWaitingDevice(evt.ctx.device_name);
 			});
 		}
 

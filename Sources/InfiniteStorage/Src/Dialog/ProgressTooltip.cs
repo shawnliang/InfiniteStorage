@@ -119,8 +119,12 @@ namespace InfiniteStorage
 			}
 		}
 
-
 		private void filename_DoubleClick(object sender, EventArgs e)
+		{
+			ImportUIPresenter.Instance.Show(currDeviceId);
+		}
+
+		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			ImportUIPresenter.Instance.Show(currDeviceId);
 		}
