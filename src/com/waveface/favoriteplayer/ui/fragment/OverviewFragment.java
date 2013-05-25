@@ -187,6 +187,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 											.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
 							Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(fileName, 
 							        Thumbnails.MINI_KIND);
+
 							mImageManager.setBitmapToFile(bmThumbnail, fileName, null, false);
 							data.url = fileName;
 						}

@@ -19,6 +19,7 @@ import com.waveface.favoriteplayer.event.OverviewItemClickEvent;
 import com.waveface.favoriteplayer.ui.fragment.OverviewFragment;
 import com.waveface.favoriteplayer.ui.fragment.PlaybackFragment;
 import com.waveface.favoriteplayer.ui.fragment.VideoFragment;
+import com.waveface.favoriteplayer.ui.fragment.VideoPagerFragment;
 
 import de.greenrobot.event.EventBus;
 
@@ -60,8 +61,8 @@ public class MainTabActivity extends FragmentActivity{
 			break;
 		case OverviewFragment.OVERVIEW_VIEW_TYPE_RECENT_VIDEO:
 			transaction = getSupportFragmentManager().beginTransaction();
-			mCurrentFragment = PlaybackFragment.class.getSimpleName();
-			VideoFragment video = new VideoFragment();
+			mCurrentFragment = VideoPagerFragment.class.getSimpleName();
+			VideoPagerFragment video = new VideoPagerFragment();
 			data = new Bundle();
 			data.putString(Constant.ARGUMENT1, event.labelId);
 			video.setArguments(data);

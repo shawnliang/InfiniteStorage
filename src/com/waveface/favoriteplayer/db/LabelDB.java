@@ -238,8 +238,8 @@ public class LabelDB {
 						LabelFileView.COLUMN_HEIGHT,
 						LabelFileView.COLUMN_WIDTH,
 						LabelFileView.COLUMN_DEV_TYPE },
-						null,
-						null,
+						LabelFileView.COLUMN_LABEL_ID + "=?",
+						new String[] { labelId},
 						null);
 
 		return cursor;

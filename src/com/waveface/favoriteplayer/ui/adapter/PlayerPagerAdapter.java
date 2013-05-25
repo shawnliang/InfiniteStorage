@@ -9,6 +9,7 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -18,7 +19,7 @@ import com.waveface.favoriteplayer.SyncApplication;
 import com.waveface.favoriteplayer.entity.OverviewData;
 import com.waveface.favoriteplayer.entity.PlaybackData;
 
-public class PlayerPagerAdapter extends PagerAdapter {
+public class PlayerPagerAdapter extends PagerAdapter implements OnClickListener {
 	private LayoutInflater mInflater;
 	private ImageManager mImageManager;
 
@@ -58,7 +59,15 @@ public class PlayerPagerAdapter extends PagerAdapter {
 		attr.setDoneScaleType(ScaleType.FIT_CENTER);
 		mImageManager.getImage(mDatas.get(position).url, attr);
 		container.addView(root);
+		
+		iv.setOnClickListener(this);
 		return root;
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
