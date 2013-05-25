@@ -67,6 +67,11 @@
             <fire:FirewallException Id="fwrule1" Name="Bunny" IgnoreFailure="yes" Scope="localSubnet" Program="[INSTALLLOCATION]InfiniteStorage.exe"/>
             <fire:FirewallException Id="fwrule2" Name="bonjour.fw.1" Program="$(env.PROGRAMFILES)Bonjour\mDNSResponder.exe" IgnoreFailure="yes" Scope="localSubnet" />
             <fire:FirewallException Id="fwrule3" Name="bonjour.fw.2" Program="$(env.PROGRAMFILES(X86))Bonjour\mDNSResponder.exe" IgnoreFailure="yes" Scope="localSubnet" />
+            
+            <fire:FirewallException Id="fwrule4" Name="FavoriteHome REST" Port="14005" Protocol="tcp" Scope="any" IgnoreFailure="yes" />
+            <fire:FirewallException Id="fwrule5" Name="FavoriteHome WEB" Port="12888" Protocol="tcp" Scope="any" IgnoreFailure="yes" />
+            <fire:FirewallException Id="fwrule6" Name="FavoriteHome Backup" Port="13995" Protocol="tcp" Scope="any" IgnoreFailure="yes" />
+            <fire:FirewallException Id="fwrule7" Name="FavoriteHome Notify" Port="14005" Protocol="tcp" Scope="any" IgnoreFailure="yes" />
           </Component>
 
           <Component Id="System.Data.SQLite.dll" Guid="*">
@@ -149,7 +154,7 @@
 
             <Component Id="nginx.exe" Guid="*">
               <File Id="nginx.exe" KeyPath="yes" Source="$(var.SolutionDir)\Libs\nginx-1.2.3\nginx.exe" />
-              <fire:FirewallException Id="fwrule4" Name="Bunny.nginx" IgnoreFailure="yes" Scope="localSubnet" Program="[INSTALLLOCATION]nginx\nginx.exe"/>
+              <fire:FirewallException Id="fwrule8" Name="Bunny.nginx" IgnoreFailure="yes" Scope="localSubnet" Program="[INSTALLLOCATION]nginx\nginx.exe"/>
             </Component>
 
             <Directory Id="nginx.conf.dir" Name="conf">
