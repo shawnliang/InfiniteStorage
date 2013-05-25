@@ -108,6 +108,12 @@ namespace Waveface.Model
 
 		}
 
+		public Service(IServiceSupplier supplier, string name)
+		{
+			this.Supplier = supplier;
+			this.Name = name;
+		}
+
 		public Service(IServiceSupplier supplier, string name, IEnumerable<IContentEntity> value)
 		{
 			this.Supplier = supplier;
@@ -125,7 +131,7 @@ namespace Waveface.Model
 
 
 		#region Private Method
-		private void SetContents(Action<ObservableCollection<IContentEntity>> func)
+		protected void SetContents(Action<ObservableCollection<IContentEntity>> func)
 		{
 			m_Contents = new Lazy<IEnumerable<IContentEntity>>(() =>
 			{

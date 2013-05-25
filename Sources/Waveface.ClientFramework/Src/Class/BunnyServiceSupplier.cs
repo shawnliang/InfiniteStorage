@@ -69,18 +69,8 @@ namespace Waveface.ClientFramework
 			{
 				var deviceName = dr["device_name"].ToString();
 				var folderName = dr["folder_name"].ToString();
-				services.Add(new Service(this, deviceName, (contents) =>
-				{
-					var resourceFolderValue = Registry.CurrentUser.OpenSubKey("Software").OpenSubKey("BunnyHome").GetValue("ResourceFolder").ToString();
-					var resourcePath = Path.Combine(resourceFolderValue, folderName);
-
-					var directories = Directory.GetDirectories(resourcePath);
-
-					foreach (var directory in directories)
-					{
-						contents.Add(new BunnyContentGroup(new Uri(directory)));
-					}
-				}));
+				var deviceId = dr["device_id"].ToString();
+				services.Add(new BunnyService(this, deviceName, deviceId));
 			}
 
 			conn.Close();

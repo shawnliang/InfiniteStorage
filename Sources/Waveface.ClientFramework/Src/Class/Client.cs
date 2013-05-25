@@ -106,12 +106,10 @@ namespace Waveface.ClientFramework
 
 			conn.Open();
 
-			var cmd = new SQLiteCommand("SELECT * FROM Files t1, LabelFiles t2 where t1.file_id = t2.file_id", conn);
+			var cmd = new SQLiteCommand("SELECT * FROM Files t1, LabelFiles t2, Labels t3 where t3.name = 'TAG' and t3.label_id = t2.label_id and t1.file_id = t2.file_id", conn);
 
 			var dr = cmd.ExecuteReader();
-
-			var resourceFolderValue = Registry.CurrentUser.OpenSubKey("Software").OpenSubKey("BunnyHome").GetValue("ResourceFolder").ToString();
-		
+	
 			while (dr.Read())
 			{
 				var deviceID = dr["device_id"].ToString();
@@ -122,9 +120,9 @@ namespace Waveface.ClientFramework
 
 				var savedPath = dr["saved_path"].ToString();
 
-				var file = Path.Combine(resourceFolderValue, deviceFolder, savedPath);
+				var file = Path.Combine(BunnyDB.ResourceFolder, deviceFolder, savedPath);
 
-				yield return new BunnyContent(new Uri(file));
+				yield return new BunnyContent(new Uri(file), dr["file_id"].ToString());
 			}
 
 
