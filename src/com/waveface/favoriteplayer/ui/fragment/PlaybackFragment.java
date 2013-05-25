@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -20,7 +21,7 @@ import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelFileTable;
-import com.waveface.favoriteplayer.entity.OverviewData;
+import com.waveface.favoriteplayer.entity.PlaybackData;
 import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.DispatchKeyEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
@@ -33,7 +34,7 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	public static final String TAG = PlaybackFragment.class.getSimpleName(); 
 	private ViewPager mPager;
 	
-	private ArrayList<OverviewData> mDatas;
+	private ArrayList<PlaybackData> mDatas = new ArrayList<PlaybackData>();
 	
 	private static final int AUTO_SLIDE_SHOW_FIRST_DELAY_MILLIS = 5000;
 	private static final int AUTO_SLIDE_SHOW_AFTER_CONTROL_DELAY_MILLIS = 15000;
@@ -42,6 +43,7 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	private Runnable mSlideShowRunnable = new Runnable() {
 		@Override
 		public void run() {
+			Log.d(TAG, "start slide show");
 			startSlideShow();
 		}
 	};
@@ -49,27 +51,31 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		String labelId = null;		
+		Bundle data = null;
+		if(savedInstanceState == null) {
+			data = getArguments();
+		} else {
+			data = savedInstanceState;
+		}
+		
 		ArrayList<ServerEntity> servers = ServersLogic.getPairedServer(getActivity());
 		ServerEntity pairedServer = servers.get(0);
-		String serverUrl ="http://"+pairedServer.ip+":"+pairedServer.restPort;
-		
-		Cursor c = LabelDB.getPhotoLabelId(getActivity());
-		if(c.getCount() > 0) {
-			c.moveToFirst();
-			labelId = c.getString(0);
+		if(TextUtils.isEmpty(pairedServer.restPort)){
+			pairedServer.restPort ="14005";
 		}
-		c.close();
-		c = LabelDB.getLabelFilesByLabelId(getActivity(), labelId);
+		String serverUrl ="http://"+pairedServer.ip+":"+pairedServer.restPort;
+		Log.d(TAG, "mServerUrl:" +serverUrl);
 		
-		mDatas = new ArrayList<OverviewData>(c.getCount());
+
+		String labelId = data.getString(Constant.ARGUMENT1);
+		Cursor c = LabelDB.getLabelFilesByLabelId(getActivity(), labelId);
 		for(int i=0; i<c.getCount(); ++i) {
 			c.moveToPosition(i);
-			OverviewData data = new OverviewData();
-			data.url = serverUrl + Constant.URL_IMAGE + "/" + 
-					c.getString(c.getColumnIndex(LabelFileTable.COLUMN_FILE_ID)) + 
-					Constant.URL_IMAGE_MEDIUM;
-			mDatas.add(i, data);
+			PlaybackData pd = new PlaybackData();
+			pd.url = serverUrl + Constant.URL_IMAGE + "/" +
+					c.getString(c.getColumnIndex(LabelFileTable.COLUMN_FILE_ID)) +
+					Constant.URL_IMAGE_LARGE;
+			mDatas.add(pd);
 		}
 		c.close();
 		
@@ -91,9 +97,18 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	}
 	
 	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putParcelableArrayList(Constant.ARGUMENT1, mDatas);
+		outState.putInt(Constant.ARGUMENT2, mPager.getCurrentItem());
+	}
+	
+	
+	@Override
 	public void onPause() {
 		super.onPause();
 		EventBus.getDefault().unregister(this);
+		Log.d(TAG, "stop slide show");
 		mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
 	}
 	
@@ -107,8 +122,8 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 
 	public void onEvent(DispatchKeyEvent e) {
 		Log.d(TAG, "e.keycode:" + e.keycode);
+		Log.d(TAG, "stop slide show");
 		mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
-		delaySlideShow(AUTO_SLIDE_SHOW_AFTER_CONTROL_DELAY_MILLIS);
 		
 		int currentPosition = mPager.getCurrentItem();
 
@@ -162,8 +177,8 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	}
 
 	@Override
-	public void onPageScrollStateChanged(int arg0) {
-		mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
+	public void onPageScrollStateChanged(int state) {
+		delaySlideShow(AUTO_SLIDE_SHOW_AFTER_CONTROL_DELAY_MILLIS);
 	}
 
 	@Override
@@ -172,6 +187,5 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 
 	@Override
 	public void onPageSelected(int arg0) {
-		delaySlideShow(AUTO_SLIDE_SHOW_FIRST_DELAY_MILLIS);		
 	}
 }

@@ -24,7 +24,7 @@ import android.widget.ViewAnimator;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.SyncApplication;
-import com.waveface.favoriteplayer.entity.OverviewData;
+import com.waveface.favoriteplayer.entity.PlaybackData;
 
 public class FullScreenSlideshowFragment extends Fragment {
 	private ViewAnimator mViewAnimator;
@@ -32,7 +32,7 @@ public class FullScreenSlideshowFragment extends Fragment {
 	
 	private ImageManager mImageManager;
 
-	private ArrayList<OverviewData> mDatas;
+	private ArrayList<PlaybackData> mDatas;
 
 	private int mCurrentPosition = 0;
 	

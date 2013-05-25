@@ -142,6 +142,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 				Cursor fc = LabelDB.getLabelFilesByLabelId(getActivity(), c.getString(0));
 				if(fc.getCount() > 0) {
 					OverviewData data = new OverviewData();
+					data.labelId = c.getString(0);
 					data.url = mServerUrl + c.getString(1);
 
 					switch(mType) {
@@ -188,8 +189,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 	@Override
 	public void onItemClick(AdapterView<?> listview, View view, int position, long id) {
 		OverviewItemClickEvent event = new OverviewItemClickEvent();
-		event.data = ((OverviewAdapter)listview.getAdapter()).getDatas();
-		event.position = position;
+		event.labelId = ((OverviewAdapter)listview.getAdapter()).getDatas().get(position).labelId;
 		event.type = mType;
 		EventBus.getDefault().post(event);
 	}

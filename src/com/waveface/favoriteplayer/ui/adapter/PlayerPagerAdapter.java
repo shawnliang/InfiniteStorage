@@ -16,14 +16,15 @@ import android.widget.ImageView.ScaleType;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.SyncApplication;
 import com.waveface.favoriteplayer.entity.OverviewData;
+import com.waveface.favoriteplayer.entity.PlaybackData;
 
 public class PlayerPagerAdapter extends PagerAdapter {
 	private LayoutInflater mInflater;
 	private ImageManager mImageManager;
 
-	private ArrayList<OverviewData> mDatas;
+	private ArrayList<PlaybackData> mDatas;
 
-	public PlayerPagerAdapter(Context context, ArrayList<OverviewData> datas) {
+	public PlayerPagerAdapter(Context context, ArrayList<PlaybackData> datas) {
 		mDatas = datas;
 		mInflater = LayoutInflater.from(context);
 		mImageManager = SyncApplication.getWavefacePlayerApplication(context)

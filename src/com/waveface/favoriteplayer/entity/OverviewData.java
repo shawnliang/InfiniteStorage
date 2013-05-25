@@ -8,6 +8,7 @@ public class OverviewData implements Parcelable{
 	public String url;
 	public boolean landscape;
 	public String title;
+	public String labelId;
 	
 	public static final Parcelable.Creator<OverviewData> CREATOR = new Creator<OverviewData>() {
 
@@ -26,12 +27,14 @@ public class OverviewData implements Parcelable{
 		url = null;
 		landscape = false;
 		title = null;
+		labelId = null;
 	}
 	
 	public OverviewData(Parcel in) {
 		url = in.readString();
 		landscape = in.readInt() == 1 ? true:false;
 		title = in.readString();
+		labelId = in.readString();
 	}
 	
 	@Override
@@ -43,6 +46,7 @@ public class OverviewData implements Parcelable{
 		out.writeString(url);
 		out.writeInt(landscape?1:0);
 		out.writeString(title);
+		out.writeString(labelId);
 	}
 }
 
