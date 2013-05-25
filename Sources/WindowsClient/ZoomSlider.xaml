@@ -279,12 +279,12 @@
 					<ControlTemplate TargetType="{x:Type Slider}">
 						<Grid>
 										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="10"/>
+											<ColumnDefinition Width="20"/>
 											<ColumnDefinition Width="*"/>
-											<ColumnDefinition Width="10"/>
+											<ColumnDefinition Width="20"/>
 										</Grid.ColumnDefinitions>
-										<Image Grid.Column="0" Source="sliderbarsmallphotoicon.png"/>
-										<Image Grid.Column="2" Source="sliderbarbigphotoicon.png"/>
+										<Image Grid.Column="0" Source="sliderbarsmallphotoicon.png" VerticalAlignment="Center"/>
+                            <Image Grid.Column="2" Source="sliderbarbigphotoicon.png" VerticalAlignment="Center"/>
 										<Grid Grid.Column="1">
 											<Grid.RowDefinitions>
 												<RowDefinition Height="Auto"/>

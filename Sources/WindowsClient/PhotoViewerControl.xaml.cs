@@ -68,13 +68,13 @@ namespace Waveface.Client
 				value = lbImages.Items.Count - 1;
 
 			lbImages.SelectedIndex = value;
-			vcViewerControl.PageNo = lbImages.SelectedIndex;
+			vcViewerControl.PageNo = lbImages.SelectedIndex + 1;
 		}
 
 		public void Next()
 		{
 			lbImages.SelectedIndex = (lbImages.SelectedIndex + 1) % lbImages.Items.Count;
-			vcViewerControl.PageNo = lbImages.SelectedIndex;
+			vcViewerControl.PageNo = lbImages.SelectedIndex + 1;
 		}
 
 

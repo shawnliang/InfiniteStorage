@@ -35,52 +35,55 @@ namespace Waveface.ClientFramework
 			{
 				if (_imageSource == null)
 				{
-					var file = this.Uri.LocalPath;
-					if (!File.Exists(file))
-						return null;
-					_imageSource = BitmapFrame.Create(this.Uri);
-
-					var metadata = _imageSource.Metadata as BitmapMetadata;
-					if (metadata != null)
+					lock (this)
 					{
-						Rotation rotate = Rotation.Rotate0;
+						var file = this.Uri.LocalPath;
+						if (!File.Exists(file))
+							return null;
+						_imageSource = BitmapFrame.Create(this.Uri);
 
-						var metaValue = metadata.GetQuery("/app1/{ushort=0}/{ushort=274}");
-
-						if (metaValue != null)
+						var metadata = _imageSource.Metadata as BitmapMetadata;
+						if (metadata != null)
 						{
-							ushort value = (ushort)metaValue;
-							if (value == 6)
-							{
-								rotate = Rotation.Rotate90;
-							}
-							else if (value == 8)
-							{
-								rotate = Rotation.Rotate270;
-							}
-							else if (value == 3)
-							{
-								rotate = Rotation.Rotate180;
-							}
+							Rotation rotate = Rotation.Rotate0;
 
-							var transform = default(RotateTransform);
-							switch (rotate)
-							{
-								case Rotation.Rotate90:
-									transform = new RotateTransform(90);
-									break;
-								case Rotation.Rotate180:
-									transform = new RotateTransform(180);
-									break;
-								case Rotation.Rotate270:
-									transform = new RotateTransform(270);
-									break;
-							}
+							var metaValue = metadata.GetQuery("/app1/{ushort=0}/{ushort=274}");
 
-							if (transform != null)
+							if (metaValue != null)
 							{
-								_imageSource = new TransformedBitmap(_imageSource, transform);
-								_imageSource.Freeze();
+								ushort value = (ushort)metaValue;
+								if (value == 6)
+								{
+									rotate = Rotation.Rotate90;
+								}
+								else if (value == 8)
+								{
+									rotate = Rotation.Rotate270;
+								}
+								else if (value == 3)
+								{
+									rotate = Rotation.Rotate180;
+								}
+
+								var transform = default(RotateTransform);
+								switch (rotate)
+								{
+									case Rotation.Rotate90:
+										transform = new RotateTransform(90);
+										break;
+									case Rotation.Rotate180:
+										transform = new RotateTransform(180);
+										break;
+									case Rotation.Rotate270:
+										transform = new RotateTransform(270);
+										break;
+								}
+
+								if (transform != null)
+								{
+									_imageSource = new TransformedBitmap(_imageSource, transform);
+									_imageSource.Freeze();
+								}
 							}
 						}
 					}
