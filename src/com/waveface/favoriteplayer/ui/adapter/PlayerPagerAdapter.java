@@ -16,7 +16,6 @@ import android.widget.ImageView.ScaleType;
 
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.SyncApplication;
-import com.waveface.favoriteplayer.entity.OverviewData;
 import com.waveface.favoriteplayer.entity.PlaybackData;
 
 public class PlayerPagerAdapter extends PagerAdapter implements OnClickListener {

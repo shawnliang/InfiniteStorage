@@ -4,6 +4,7 @@ import idv.jason.lib.imagemanager.ImageManager;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
@@ -30,12 +31,11 @@ import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelFileView;
 import com.waveface.favoriteplayer.entity.OverviewData;
 import com.waveface.favoriteplayer.entity.ServerEntity;
-import com.waveface.favoriteplayer.event.OverviewItemClickEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
+import com.waveface.favoriteplayer.ui.PlaybackActivity;
+import com.waveface.favoriteplayer.ui.VideoActivity;
 import com.waveface.favoriteplayer.ui.adapter.OverviewAdapter;
 import com.waveface.favoriteplayer.ui.widget.TwoWayView;
-
-import de.greenrobot.event.EventBus;
 
 public class OverviewFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener{
 	public static final String TAG = OverviewFragment.class.getSimpleName();
@@ -218,10 +218,23 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 
 	@Override
 	public void onItemClick(AdapterView<?> listview, View view, int position, long id) {
-		OverviewItemClickEvent event = new OverviewItemClickEvent();
-		event.labelId = ((OverviewAdapter)listview.getAdapter()).getDatas().get(position).labelId;
-		event.type = mType;
-		EventBus.getDefault().post(event);
+		Intent intent = null;
+		Bundle data = new Bundle();
+		switch(mType) {
+		case OverviewFragment.OVERVIEW_VIEW_TYPE_FAVORITE:
+		case OverviewFragment.OVERVIEW_VIEW_TYPE_RECENT_PHOTO:
+			intent = new Intent(getActivity(), PlaybackActivity.class);
+			data.putString(Constant.ARGUMENT1, ((OverviewAdapter)listview.getAdapter()).getDatas().get(position).labelId);
+			intent.putExtras(data);
+			startActivity(intent);
+			break;
+		case OverviewFragment.OVERVIEW_VIEW_TYPE_RECENT_VIDEO:
+			intent = new Intent(getActivity(), VideoActivity.class);
+			data.putString(Constant.ARGUMENT1, ((OverviewAdapter)listview.getAdapter()).getDatas().get(position).labelId);
+			intent.putExtras(data);
+			startActivity(intent);
+			break;
+		}
 	}
 
 	@Override
