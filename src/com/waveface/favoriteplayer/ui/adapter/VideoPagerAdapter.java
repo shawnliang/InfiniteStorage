@@ -1,17 +1,9 @@
 package com.waveface.favoriteplayer.ui.adapter;
 
-import java.util.ArrayList;
-
 import idv.jason.lib.imagemanager.ImageAttribute;
 import idv.jason.lib.imagemanager.ImageManager;
 
-import com.waveface.favoriteplayer.Constant;
-import com.waveface.favoriteplayer.R;
-import com.waveface.favoriteplayer.SyncApplication;
-import com.waveface.favoriteplayer.db.LabelDB;
-import com.waveface.favoriteplayer.db.LabelFileView;
-import com.waveface.favoriteplayer.ui.FullScreenSlideShowActivity;
-import com.waveface.favoriteplayer.ui.VideoActivity;
+import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +20,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+
+import com.waveface.favoriteplayer.Constant;
+import com.waveface.favoriteplayer.R;
+import com.waveface.favoriteplayer.SyncApplication;
+import com.waveface.favoriteplayer.db.LabelDB;
+import com.waveface.favoriteplayer.db.LabelFileView;
+import com.waveface.favoriteplayer.ui.VideoActivity;
 
 public class VideoPagerAdapter extends PagerAdapter implements OnClickListener{
 	private ImageManager mImageManager;
@@ -52,7 +51,7 @@ public class VideoPagerAdapter extends PagerAdapter implements OnClickListener{
 			Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(fileName, 
 			        Thumbnails.MINI_KIND);
 
-			mImageManager.setBitmapToFile(bmThumbnail, fileName, null, false);
+//			mImageManager.setBitmapToFile(bmThumbnail, fileName, null, false);
 			data.thumbnail = fileName;
 			mThumbnails.add(data);
 		}
@@ -84,7 +83,7 @@ public class VideoPagerAdapter extends PagerAdapter implements OnClickListener{
 		ImageView iv = (ImageView) root.findViewById(R.id.image);
 		iv.setOnClickListener(this);
 		ImageAttribute attr = new ImageAttribute(iv);
-		attr.setMaxSizeEqualsScreenSize(mInflater.getContext());
+//		attr.setMaxSizeEqualsScreenSize(mInflater.getContext());
 		attr.setDoneScaleType(ScaleType.FIT_CENTER);
 		mImageManager.getImage(mThumbnails.get(position).thumbnail, attr);
 		container.addView(root);

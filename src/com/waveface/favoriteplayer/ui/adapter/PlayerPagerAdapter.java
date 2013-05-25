@@ -16,7 +16,6 @@ import android.widget.ImageView.ScaleType;
 
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.SyncApplication;
-import com.waveface.favoriteplayer.entity.OverviewData;
 import com.waveface.favoriteplayer.entity.PlaybackData;
 
 public class PlayerPagerAdapter extends PagerAdapter implements OnClickListener {
@@ -55,7 +54,7 @@ public class PlayerPagerAdapter extends PagerAdapter implements OnClickListener 
 				false);
 		ImageView iv = (ImageView) root.findViewById(R.id.image);
 		ImageAttribute attr = new ImageAttribute(iv);
-		attr.setMaxSizeEqualsScreenSize(mInflater.getContext());
+//		attr.setMaxSizeEqualsScreenSize(mInflater.getContext());
 		attr.setDoneScaleType(ScaleType.FIT_CENTER);
 		mImageManager.getImage(mDatas.get(position).url, attr);
 		container.addView(root);

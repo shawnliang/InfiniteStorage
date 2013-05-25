@@ -1,9 +1,10 @@
 package com.waveface.favoriteplayer.ui.adapter;
 
-import java.util.ArrayList;
-
 import idv.jason.lib.imagemanager.ImageAttribute;
 import idv.jason.lib.imagemanager.ImageManager;
+
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,15 +73,15 @@ public class OverviewAdapter extends BaseAdapter{
 		int width = context.getResources().getDimensionPixelSize(R.dimen.overview_image_width);
 		int height = context.getResources().getDimensionPixelSize(R.dimen.overview_image_height);
 		
-		ImageAttribute attr = new ImageAttribute(holder.image);
-		attr.setResizeSize(width, height);
-		mImageManager.getImage(mDatas.get(position).url, attr);
-		
-		attr = new ImageAttribute(holder.reflection);
-		attr.setResizeSize(width, height);
-		attr.setReflection(true);
-		attr.setHighQuality(true);
-		mImageManager.getImage(mDatas.get(position).url, attr);
+//		ImageAttribute attr = new ImageAttribute(holder.image);
+//		attr.setResizeSize(width, height);
+//		mImageManager.getImage(mDatas.get(position).url, attr);
+//		
+//		attr = new ImageAttribute(holder.reflection);
+//		attr.setResizeSize(width, height);
+//		attr.setReflection(true);
+//		attr.setHighQuality(true);
+//		mImageManager.getImage(mDatas.get(position).url, attr);
 		
 		holder.labelText.setText(mDatas.get(position).title);
 

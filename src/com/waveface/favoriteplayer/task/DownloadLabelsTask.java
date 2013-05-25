@@ -1,5 +1,7 @@
 package com.waveface.favoriteplayer.task;
 
+
+
 import idv.jason.lib.imagemanager.ImageManager;
 
 import java.io.File;
@@ -146,8 +148,8 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 											+ Constant.URL_IMAGE + "/" + fileId
 											+ Constant.URL_IMAGE_LARGE;
 									
-									mImageManager.getImageWithoutThread(url,
-											null, false);
+//									mImageManager.getImageWithoutThread(url,
+//											null, false);
 								}
 								long time = System.currentTimeMillis();
 								time = System.currentTimeMillis() - time;

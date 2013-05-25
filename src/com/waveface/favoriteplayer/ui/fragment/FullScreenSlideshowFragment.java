@@ -128,11 +128,11 @@ public class FullScreenSlideshowFragment extends Fragment {
 		if(imagePosition >= 0 && imagePosition < mDatas.size()) {
 			ImageView iv = (ImageView) mViewAnimator.getChildAt(viewPosition);
 			
-			ImageAttribute attr = new ImageAttribute(iv);
-			attr.setDoneScaleType(ScaleType.CENTER_CROP);
-			attr.setLoadFromThread(true);
-			attr.setMaxSizeEqualsScreenSize(getActivity());
-			mImageManager.getImage( mDatas.get(imagePosition).url , attr);
+//			ImageAttribute attr = new ImageAttribute(iv);
+//			attr.setDoneScaleType(ScaleType.CENTER_CROP);
+//			attr.setLoadFromThread(true);
+//			attr.setMaxSizeEqualsScreenSize(getActivity());
+//			mImageManager.getImage( mDatas.get(imagePosition).url , attr);
 		}
 	}
 	
