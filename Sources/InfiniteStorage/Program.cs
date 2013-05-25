@@ -53,10 +53,10 @@ namespace InfiniteStorage
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
-#if DEBUG
+
 			AppDomain.CurrentDomain.UnhandledException += NBug.Handler.UnhandledException;
 			Application.ThreadException += NBug.Handler.ThreadException;
-#endif
+
 
 			Log4netConfigure.InitLog4net();
 			log4net.LogManager.GetLogger("main").Debug("==== program started ====");
