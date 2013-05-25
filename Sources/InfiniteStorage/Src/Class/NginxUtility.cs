@@ -156,6 +156,7 @@ namespace InfiniteStorage
 				p.Exited += onExit;
 			}
 
+			log4net.LogManager.GetLogger("nginx").Debug(nginx_exe + " " + arg + " " + cmd);
 			p.StartInfo = new ProcessStartInfo
 			{
 				FileName = nginx_exe,

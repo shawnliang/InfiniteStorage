@@ -53,9 +53,10 @@ namespace InfiniteStorage
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
-
+#if DEBUG
 			AppDomain.CurrentDomain.UnhandledException += NBug.Handler.UnhandledException;
 			Application.ThreadException += NBug.Handler.ThreadException;
+#endif
 
 			Log4netConfigure.InitLog4net();
 			log4net.LogManager.GetLogger("main").Debug("==== program started ====");
@@ -336,15 +337,56 @@ namespace InfiniteStorage
 			try
 			{
 				PendingFileMonitor.Instance.Stop();
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger("main").Debug("stop error", err);
+			}
+
+			try
+			{
 				NginxUtility.Instance.Stop();
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger("main").Debug("stop error", err);
+			}
+
+			try
+			{
 				notifier.Stop();
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger("main").Debug("stop error", err);
+			}
+
+			try
+			{
 				backup_server.Stop();
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger("main").Debug("stop error", err);
+			}
+
+			try
+			{
 				ThumbnailCreator.Instance.Stop();
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger("main").Debug("stop error", err);
+			}
+
+			try
+			{
 				if (m_notifyIcon != null)
 					m_notifyIcon.Dispose();
 			}
-			catch
+			catch (Exception err)
 			{
+				log4net.LogManager.GetLogger("main").Debug("stop error", err);
 			}
 		}
 
