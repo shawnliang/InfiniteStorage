@@ -2,6 +2,7 @@ package com.waveface.favoriteplayer.db;
 
 import java.util.ArrayList;
 
+
 import java.util.Date;
 
 import android.content.ContentResolver;
@@ -13,6 +14,7 @@ import android.text.TextUtils;
 import com.waveface.favoriteplayer.entity.FileEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
 import com.waveface.favoriteplayer.util.StringUtil;
+
 
 
 
@@ -220,6 +222,10 @@ public class LabelDB {
 
 		return cursor;
 	}
+
+	
+	
+
 
 	public static Cursor getLabelFileViewByLabelId(Context context, String labelId) {
 		Cursor cursor = context.getContentResolver().query(

@@ -29,6 +29,8 @@ public class RuntimeState{
 	public static boolean wasFirstTimeImportScanDone = false;	
 	public static boolean isBackuping = false;
 	public static boolean isSyncing = false;
+	public static boolean isDownloadingLabel = false;
+	
 	
 
 	public static boolean isNotificationShowing = false;

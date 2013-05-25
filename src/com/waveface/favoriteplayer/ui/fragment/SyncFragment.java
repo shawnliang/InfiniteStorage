@@ -165,7 +165,7 @@ public class SyncFragment extends SyncFragmentBase implements OnClickListener {
 				refreshLayout();
 			} else if(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED
 					.equals(action)) {
-				new DownloadLabelsTask(getActivity()).execute(new Void[]{});
+//				new DownloadLabelsTask(getActivity()).execute(new Void[]{});
 				
 			}else if (Constant.ACTION_BACKUP_START.equals(action)
 					|| Constant.ACTION_BACKUP_DONE.equals(action)) {

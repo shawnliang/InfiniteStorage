@@ -26,6 +26,7 @@ import com.waveface.favoriteplayer.entity.ConnectForGTVEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.WebSocketEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
+import com.waveface.favoriteplayer.task.DownloadLabelsTask;
 import com.waveface.favoriteplayer.util.DeviceUtil;
 import com.waveface.favoriteplayer.util.Log;
 import com.waveface.favoriteplayer.util.NetworkUtil;
@@ -43,7 +44,7 @@ public class PlayerService extends Service{
 	private Context mContext;
 
     private long mMDNSSetupTime;
-    
+    private long mSendSubcribeSetupTime;
 	//DATA 
 	private ArrayList<ServerEntity> mPairedServers ;
 	private String mCondidateServerId ;
@@ -92,7 +93,10 @@ public class PlayerService extends Service{
             	}
             	//
             	if(NetworkUtil.isWifiNetworkAvailable(mContext)){
-            		sendSubcribe();
+            		long fromTime = System.currentTimeMillis()-mSendSubcribeSetupTime;
+            		if(fromTime > (60*1000) && RuntimeState.OnWebSocketOpened==false){
+            			sendSubcribe();
+            		}
             	}            	
             }
         }, 0, UPDATE_INTERVAL);
@@ -105,6 +109,7 @@ public class PlayerService extends Service{
 
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);	
+		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
 		registerReceiver(mReceiver, filter);
 		
 		connectPCWithPairedServer();
@@ -134,6 +139,12 @@ public class PlayerService extends Service{
 							setupMDNS();
 						}
 					}
+				}
+			}
+			else if (Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED.equals(action)) {
+				if(RuntimeState.isDownloadingLabel==false){
+					RuntimeState.isDownloadingLabel = true;
+					new DownloadLabelsTask(mContext).execute(new Void[]{});
 				}
 			}
 		}
@@ -323,6 +334,8 @@ public class PlayerService extends Service{
 	}
 	
 	public void sendSubcribe() {
+		
+		mSendSubcribeSetupTime = System.currentTimeMillis();
 		if(RuntimeState.OnWebSocketOpened){
 			Cursor cursor = LabelDB.getMAXSEQLabel(mContext);
 			EventBus.getDefault().post(new WebSocketEvent(WebSocketEvent.STATUS_CONNECT));
@@ -331,7 +344,7 @@ public class PlayerService extends Service{
 				cursor.moveToFirst();
 				labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
 			}
-			
+			cursor.close();
 			ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
 			ConnectForGTVEntity.Connect  connect = new ConnectForGTVEntity.Connect();
 			connect.deviceId=DeviceUtil.id(mContext);

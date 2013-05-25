@@ -512,38 +512,11 @@ public class ServersLogic {
 				updateBackupedServer(context, entity);
 //				}
 				//TODO:CHANGE TO NEW PROTOCAL
-				Intent intent = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
-				context.sendBroadcast(intent);
+				context.sendBroadcast(new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED));
 
 				
 				Log.d(TAG, "onCreateView");
-				Cursor cursor = LabelDB.getMAXSEQLabel(context);
-				EventBus.getDefault().post(new WebSocketEvent(WebSocketEvent.STATUS_CONNECT));
 
-				String labelId = null;
-				String labSeq ="0";
-				if(cursor!=null && cursor.getCount()>0){
-					cursor.moveToFirst();
-					labelId = cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_LABEL_ID));
-					labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
-					//send broadcast label change
-					context.sendBroadcast(new Intent(Constant.ACTION_LABEL_CHANGE));					
-				}
-				
-				
-				
-				ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
-				ConnectForGTVEntity.Connect  connect = new ConnectForGTVEntity.Connect();
-				connect.deviceId=DeviceUtil.id(context);
-				connect.deviceName = DeviceUtil
-						.getDeviceNameForDisplay(context);
-				connectForGTV.setConnect(connect);
-				ConnectForGTVEntity.Subscribe subscribe = new ConnectForGTVEntity.Subscribe();
-				subscribe.labels=true;
-				subscribe.labels_from_seq = labSeq;
-				connectForGTV.setSubscribe(subscribe);
-				Log.d(TAG, "send message="+RuntimeState.GSON.toJson(connectForGTV));
-				RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));
 			} catch (WebSocketException e) {
 				e.printStackTrace();
 			}
@@ -638,6 +611,22 @@ public class ServersLogic {
 		    		null,null);
 		    RuntimeState.setServerStatus(Constant.WS_ACTION_SERVER_REMOVED);
 		}
+	}
+	
+	
+	
+	public boolean isSyncComplete(Context context,int serverMaxSeq){
+		boolean isSyncComplete =false;
+		
+		Cursor cursor = LabelDB.getMAXSEQLabel(context);
+		String labSeq=null;
+		if(cursor!=null && cursor.getCount()>0){
+			cursor.moveToFirst();
+			labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
+			isSyncComplete = Integer.valueOf(labSeq) > serverMaxSeq;
+		}
+		cursor.close();
+		return isSyncComplete;
 	}
 	
 //	public static int updateLabelInfo(Context context, LabelEntity entity) {
