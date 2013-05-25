@@ -18,6 +18,7 @@ import com.waveface.favoriteplayer.event.DispatchKeyEvent;
 import com.waveface.favoriteplayer.event.OverviewItemClickEvent;
 import com.waveface.favoriteplayer.ui.fragment.OverviewFragment;
 import com.waveface.favoriteplayer.ui.fragment.PlaybackFragment;
+import com.waveface.favoriteplayer.ui.fragment.VideoFragment;
 
 import de.greenrobot.event.EventBus;
 
@@ -41,13 +42,15 @@ public class MainTabActivity extends FragmentActivity{
 	}
 	
 	public void onEvent(OverviewItemClickEvent event) {
+		FragmentTransaction transaction;
+		Bundle data;
 		switch(event.type) {
 		case OverviewFragment.OVERVIEW_VIEW_TYPE_FAVORITE:
 		case OverviewFragment.OVERVIEW_VIEW_TYPE_RECENT_PHOTO:
-			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			transaction = getSupportFragmentManager().beginTransaction();
 			mCurrentFragment = PlaybackFragment.class.getSimpleName();
 			PlaybackFragment playback = new PlaybackFragment();
-			Bundle data = new Bundle();
+			data = new Bundle();
 			data.putString(Constant.ARGUMENT1, event.labelId);
 			playback.setArguments(data);
 			
@@ -56,6 +59,16 @@ public class MainTabActivity extends FragmentActivity{
 			transaction.commit();
 			break;
 		case OverviewFragment.OVERVIEW_VIEW_TYPE_RECENT_VIDEO:
+			transaction = getSupportFragmentManager().beginTransaction();
+			mCurrentFragment = PlaybackFragment.class.getSimpleName();
+			VideoFragment video = new VideoFragment();
+			data = new Bundle();
+			data.putString(Constant.ARGUMENT1, event.labelId);
+			video.setArguments(data);
+			
+			transaction.add(R.id.realtab_content, video, mCurrentFragment);
+			transaction.addToBackStack(mCurrentFragment);
+			transaction.commit();
 			break;
 		}
 	}

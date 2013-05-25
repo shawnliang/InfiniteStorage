@@ -1,10 +1,16 @@
 package com.waveface.favoriteplayer.ui.fragment;
 
+import idv.jason.lib.imagemanager.ImageManager;
+
 import java.util.ArrayList;
 
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore.Video.Thumbnails;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,8 +25,9 @@ import android.widget.TextView;
 
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
+import com.waveface.favoriteplayer.SyncApplication;
 import com.waveface.favoriteplayer.db.LabelDB;
-import com.waveface.favoriteplayer.db.LabelFileTable;
+import com.waveface.favoriteplayer.db.LabelFileView;
 import com.waveface.favoriteplayer.entity.OverviewData;
 import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.OverviewItemClickEvent;
@@ -40,6 +47,15 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 	public static final int OVERVIEW_VIEW_TYPE_RECENT_PHOTO = 2;
 	public static final int OVERVIEW_VIEW_TYPE_RECENT_VIDEO = 3;
 
+	
+	private ImageManager mImageManager;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		mImageManager = SyncApplication.getWavefacePlayerApplication(getActivity()).getImageManager();
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -163,6 +179,19 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 						}
 						break;
 					case OVERVIEW_VIEW_TYPE_RECENT_VIDEO:
+						Cursor lfc = LabelDB.getLabelFileViewByLabelId(getActivity(), data.labelId);
+						if(lfc.moveToFirst()) {
+							String fileName =  Environment.getExternalStorageDirectory().getAbsolutePath()
+									+ Constant.VIDEO_FOLDER+ "/"  +lfc
+									.getString(lfc
+											.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
+							Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(fileName, 
+							        Thumbnails.MINI_KIND);
+							mImageManager.setBitmapToFile(bmThumbnail, fileName, null, false);
+							data.url = fileName;
+						}
+						lfc.close();
+						
 						switch(type) {
 						case Constant.TYPE_RECENT_VIDEO_TODAY:
 							data.title = getResources().getText(R.string.today).toString();
@@ -174,7 +203,6 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 							data.title = getResources().getText(R.string.thisweek).toString();
 							break;
 						}
-						data.url = null;
 						break;
 					}
 					
