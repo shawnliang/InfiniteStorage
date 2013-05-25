@@ -1,11 +1,6 @@
 package com.waveface.favoriteplayer.websocket;
 
-
-
-import idv.jason.lib.imagemanager.ImageManager;
-
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,7 +58,6 @@ import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.LabelImportedEvent;
 import com.waveface.favoriteplayer.logic.DownloadLogic;
 import com.waveface.favoriteplayer.logic.ServersLogic;
-import com.waveface.favoriteplayer.util.FileUtil;
 import com.waveface.favoriteplayer.util.Log;
 import com.waveface.favoriteplayer.util.NetworkUtil;
 import com.waveface.service.HttpInvoker;
@@ -71,8 +65,8 @@ import com.waveface.sync.entity.LabelChangeEntity;
 
 import de.greenrobot.event.EventBus;
 
-
-public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements WebSocketTokenClient {
+public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
+		WebSocketTokenClient {
 	private static final String TAG = WavefaceTokenClient.class.getSimpleName();
 	/**
 	 * base name space for jWebSocket
@@ -91,32 +85,33 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 	// private WebSocketEncoding mEncoding;
 	private String mUsername = null;
 	private String fClientId = null;
-	private final Map<Integer, PendingResponseQueueItem> mPendingResponseQueue =
-			new FastMap<Integer, PendingResponseQueueItem>().shared();
-	private final ScheduledThreadPoolExecutor mResponseQueueExecutor =
-			new ScheduledThreadPoolExecutor(1);
+	private final Map<Integer, PendingResponseQueueItem> mPendingResponseQueue = new FastMap<Integer, PendingResponseQueueItem>()
+			.shared();
+	private final ScheduledThreadPoolExecutor mResponseQueueExecutor = new ScheduledThreadPoolExecutor(
+			1);
 	private static Context mContext;
-	
-	
+
 	/**
 	 * Default constructor
 	 */
 	public WavefaceTokenClient(Context context) {
-		this(JWebSocketCommonConstants.WS_SUBPROT_DEFAULT, JWebSocketCommonConstants.WS_ENCODING_DEFAULT);
+		this(JWebSocketCommonConstants.WS_SUBPROT_DEFAULT,
+				JWebSocketCommonConstants.WS_ENCODING_DEFAULT);
 		mContext = context;
 	}
 
 	/**
-	 *
+	 * 
 	 * @param aReliabilityOptions
 	 */
 	public WavefaceTokenClient(ReliabilityOptions aReliabilityOptions) {
-		this(JWebSocketCommonConstants.WS_SUBPROT_DEFAULT, JWebSocketCommonConstants.WS_ENCODING_DEFAULT);
+		this(JWebSocketCommonConstants.WS_SUBPROT_DEFAULT,
+				JWebSocketCommonConstants.WS_ENCODING_DEFAULT);
 		setReliabilityOptions(aReliabilityOptions);
 	}
 
 	/**
-	 *
+	 * 
 	 * @param aSubProt
 	 * @param aEncoding
 	 */
@@ -127,7 +122,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 	}
 
 	/**
-	 *
+	 * 
 	 * @param aSubProt
 	 */
 	public WavefaceTokenClient(WebSocketSubProtocol aSubProt) {
@@ -135,24 +130,23 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		addSubProtocol(mSubProt);
 		addListener(new TokenClientListener());
 	}
-	
-	
-	public void setSubProt(String aSubProt){
-		
-		if(aSubProt.equals(JWebSocketCommonConstants.WS_SUBPROT_BINARY)){
+
+	public void setSubProt(String aSubProt) {
+
+		if (aSubProt.equals(JWebSocketCommonConstants.WS_SUBPROT_BINARY)) {
 			changeNegotiatedSubProtocol(true);
-		}
-		else{
+		} else {
 			changeNegotiatedSubProtocol(false);
 		}
-		
-		mSubProt = new WebSocketSubProtocol(aSubProt, JWebSocketCommonConstants.WS_ENCODING_DEFAULT);
+
+		mSubProt = new WebSocketSubProtocol(aSubProt,
+				JWebSocketCommonConstants.WS_ENCODING_DEFAULT);
 	}
 
 	/**
 	 * WebSocketClient listener implementation that receives the data packet and
 	 * creates <tt>token</tt> objects
-	 *
+	 * 
 	 * @author aschulze
 	 */
 	class TokenClientListener implements WebSocketClientListener {
@@ -173,79 +167,96 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		}
 
 		@Override
-		public void processPacket(WebSocketClientEvent aEvent, WebSocketPacket aPacket) {
-			
-			
-		String jsonOutput = aPacket.getUTF8();
-		Log.d(TAG, "WebSocket jsonOutput="+jsonOutput);
-		
-		if (NetworkUtil.isWifiNetworkAvailable(mContext)){	
-			//TODO:handle retrive label
-			SharedPreferences mPrefs = mContext.getSharedPreferences(Constant.PREFS_NAME,
-					Context.MODE_PRIVATE);	
-			Editor mEditor = mPrefs.edit();
-			LabelChangeEntity entity = null;
-			entity = RuntimeState.GSON.fromJson(jsonOutput, LabelChangeEntity.class);
-			mEditor.putInt(Constant.PREF_SERVER_LABEL_SEQ, Integer.parseInt(entity.label_change.seq));
-			mEditor.commit();
+		public void processPacket(WebSocketClientEvent aEvent,
+				WebSocketPacket aPacket) {
 
-			
-//			mEditor.putString(Constant.PREF_SERVER_LABEL_SEQ, "");
-//			mEditor.putString(Constant.PREF_SERVER_CHANGE_LABEL_ID, "");
-//			Cursor cursor = LabelDB.getMAXSEQLabel(mContext);
-//			String labSeq=null;
-			boolean	isSyncComplete=false;
-			int  downloadLableInitStatus= mPrefs.getInt(Constant.PREF_DOWNLOAD_LABEL_INIT_STATUS, 0);
-//			if(cursor!=null && cursor.getCount()>0){
-//				cursor.moveToFirst();
-//				labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
-//				isSyncComplete= Integer.valueOf(labSeq) == Integer.valueOf(entity.label_change.seq);
-//			    Log.d(TAG, "labSeq="+labSeq);
-//				LabelImportedEvent doneEvent = new LabelImportedEvent(
-//						LabelImportedEvent.STATUS_DONE);
-//			   if(isSyncComplete){
-//					EventBus.getDefault().post(doneEvent);
-//			   }else{
-//					mEditor.putString(Constant.PREF_SERVER_LABEL_SEQ, entity.label_change.seq);
-//				//	mEditor.putString(Constant.PREF_SERVER_CHANGE_LABEL_ID, entity.label_change.label_id);
-//					mEditor.commit();
-//				}
-//			   cursor.close();
-//			}
-			
-       if(downloadLableInitStatus==1){
-    	   
-			try {
-				if(!TextUtils.isEmpty(jsonOutput))
-					entity = RuntimeState.GSON.fromJson(jsonOutput, LabelChangeEntity.class);
-				   if(entity!=null) {
-				      ArrayList<ServerEntity> servers = ServersLogic.getBackupedServers(mContext);
-						ServerEntity pairedServer = servers.get(0);
-						String restfulAPIURL ="http://"+pairedServer.ip+":"+pairedServer.restPort;
-						String getLabelURL = restfulAPIURL + Constant.URL_GET_LABEL;
-						String files="";
-						String getFileURL = restfulAPIURL + Constant.URL_GET_FILE;
-						HashMap<String, String> param = new HashMap<String, String>();
-						param.clear();
-						param.put(Constant.PARAM_LABEL_ID, entity.label_change.label_id);
-						jsonOutput =HttpInvoker.executePost(getLabelURL,param, Constant.STATION_CONNECTION_TIMEOUT, Constant.STATION_CONNECTION_TIMEOUT);
-						//single label download
-						LabelEntity.Label labelEntity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.Label.class);	
-						DownloadLogic.updateLabel(mContext, labelEntity);
+			String jsonOutput = aPacket.getUTF8();
+			Log.d(TAG, "WebSocket jsonOutput=" + jsonOutput);
 
-						mContext.sendBroadcast(new Intent(Constant.ACTION_LABEL_CHANGE));
-				   }
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (NetworkUtil.isWifiNetworkAvailable(mContext)) {
+				// TODO:handle retrive label
+				SharedPreferences mPrefs = mContext.getSharedPreferences(
+						Constant.PREFS_NAME, Context.MODE_PRIVATE);
+				Editor mEditor = mPrefs.edit();
+				LabelChangeEntity entity = null;
+				entity = RuntimeState.GSON.fromJson(jsonOutput,
+						LabelChangeEntity.class);
+				mEditor.putInt(Constant.PREF_SERVER_LABEL_SEQ,
+						Integer.parseInt(entity.label_change.seq));
+				mEditor.commit();
+
+				// mEditor.putString(Constant.PREF_SERVER_LABEL_SEQ, "");
+				// mEditor.putString(Constant.PREF_SERVER_CHANGE_LABEL_ID, "");
+				// Cursor cursor = LabelDB.getMAXSEQLabel(mContext);
+				// String labSeq=null;
+				boolean isSyncComplete = false;
+				int downloadLableInitStatus = mPrefs.getInt(
+						Constant.PREF_DOWNLOAD_LABEL_INIT_STATUS, 0);
+				// if(cursor!=null && cursor.getCount()>0){
+				// cursor.moveToFirst();
+				// labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
+				// isSyncComplete= Integer.valueOf(labSeq) ==
+				// Integer.valueOf(entity.label_change.seq);
+				// Log.d(TAG, "labSeq="+labSeq);
+				// LabelImportedEvent doneEvent = new LabelImportedEvent(
+				// LabelImportedEvent.STATUS_DONE);
+				// if(isSyncComplete){
+				// EventBus.getDefault().post(doneEvent);
+				// }else{
+				// mEditor.putString(Constant.PREF_SERVER_LABEL_SEQ,
+				// entity.label_change.seq);
+				// // mEditor.putString(Constant.PREF_SERVER_CHANGE_LABEL_ID,
+				// entity.label_change.label_id);
+				// mEditor.commit();
+				// }
+				// cursor.close();
+				// }
+
+				if (downloadLableInitStatus == 1) {
+
+					try {
+						if (!TextUtils.isEmpty(jsonOutput))
+							entity = RuntimeState.GSON.fromJson(jsonOutput,
+									LabelChangeEntity.class);
+						if (entity != null) {
+							ArrayList<ServerEntity> servers = ServersLogic
+									.getPairedServer(mContext);
+							ServerEntity pairedServer = servers.get(0);
+							String restfulAPIURL = "http://" + pairedServer.ip
+									+ ":" + pairedServer.restPort;
+							String getLabelURL = restfulAPIURL
+									+ Constant.URL_GET_LABEL;
+							String files = "";
+							String getFileURL = restfulAPIURL
+									+ Constant.URL_GET_FILE;
+							HashMap<String, String> param = new HashMap<String, String>();
+							param.clear();
+							param.put(Constant.PARAM_LABEL_ID,
+									entity.label_change.label_id);
+							jsonOutput = HttpInvoker.executePost(getLabelURL,
+									param, Constant.STATION_CONNECTION_TIMEOUT,
+									Constant.STATION_CONNECTION_TIMEOUT);
+							// single label download
+							LabelEntity.Label labelEntity = RuntimeState.GSON
+									.fromJson(jsonOutput,
+											LabelEntity.Label.class);
+							DownloadLogic.updateLabel(mContext, labelEntity);
+
+							mContext.sendBroadcast(new Intent(
+									Constant.ACTION_LABEL_CHANGE));
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 			}
-		}
-		}
-			//ORIGINAL Web Socket Code
+			// ORIGINAL Web Socket Code
 			Token lToken = packetToToken(aPacket);
-			//Notifying listeners
+			// Notifying listeners
 			for (WebSocketClientListener lListener : getListeners()) {
 				if (lListener instanceof WebSocketClientTokenListener) {
-					((WebSocketClientTokenListener) lListener).processToken(aEvent, lToken);
+					((WebSocketClientTokenListener) lListener).processToken(
+							aEvent, lToken);
 				}
 			}
 		}
@@ -256,9 +267,11 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		@Override
 		public void processClosed(WebSocketClientEvent aEvent) {
 			RuntimeState.setServerStatus(Constant.WS_ACTION_SOCKET_CLOSED);
-	    	ServersLogic.updateAllBackedServerStatus(mContext,Constant.SERVER_OFFLINE);
-	    	Intent intent = new Intent(Constant.ACTION_WEB_SOCKET_SERVER_DISCONNECTED);
-	    	mContext.sendBroadcast(intent);
+			ServersLogic.updateAllBackedServerStatus(mContext,
+					Constant.SERVER_OFFLINE);
+			Intent intent = new Intent(
+					Constant.ACTION_WEB_SOCKET_SERVER_DISCONNECTED);
+			mContext.sendBroadcast(intent);
 		}
 
 		/**
@@ -269,14 +282,15 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		}
 	}
 
-
 	@Override
-	public void addTokenClientListener(WebSocketClientTokenListener aTokenListener) {
+	public void addTokenClientListener(
+			WebSocketClientTokenListener aTokenListener) {
 		super.addListener(aTokenListener);
 	}
 
 	@Override
-	public void removeTokenClientListener(WebSocketClientTokenListener aTokenListener) {
+	public void removeTokenClientListener(
+			WebSocketClientTokenListener aTokenListener) {
 		super.removeListener(aTokenListener);
 	}
 
@@ -313,40 +327,42 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 	}
 
 	/**
-	 *
+	 * 
 	 * @param aPacket
 	 * @return
 	 */
 	public Token packetToToken(WebSocketPacket aPacket) {
 		Token lToken = null;
-		if (JWebSocketCommonConstants.WS_FORMAT_JSON.equals(mSubProt.getFormat())) {
+		if (JWebSocketCommonConstants.WS_FORMAT_JSON.equals(mSubProt
+				.getFormat())) {
 			lToken = JSONProcessor.packetToToken(aPacket);
-		}
-		else if (JWebSocketCommonConstants.WS_FORMAT_BINARY.equals(mSubProt.getFormat())) {
-			lToken =  FileProcessor.packetToToken(aPacket);
+		} else if (JWebSocketCommonConstants.WS_FORMAT_BINARY.equals(mSubProt
+				.getFormat())) {
+			lToken = FileProcessor.packetToToken(aPacket);
 		}
 		return lToken;
 	}
 
 	/**
-	 *
+	 * 
 	 * @param aToken
 	 * @return
 	 */
 	public WebSocketPacket tokenToPacket(Token aToken) {
 		WebSocketPacket lPacket = null;
 
-		if (JWebSocketCommonConstants.WS_FORMAT_JSON.equals(mSubProt.getFormat())) {
+		if (JWebSocketCommonConstants.WS_FORMAT_JSON.equals(mSubProt
+				.getFormat())) {
 			lPacket = JSONProcessor.tokenToPacket(aToken);
-		}
-		else if (JWebSocketCommonConstants.WS_FORMAT_BINARY.equals(mSubProt.getFormat())) {
+		} else if (JWebSocketCommonConstants.WS_FORMAT_BINARY.equals(mSubProt
+				.getFormat())) {
 			lPacket = FileProcessor.tokenToPacket(aToken);
-		}		
+		}
 		return lPacket;
 	}
 
 	/**
-	 *
+	 * 
 	 * @param aToken
 	 * @throws WebSocketException
 	 */
@@ -367,8 +383,8 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		@Override
 		public void run() {
 			synchronized (mPendingResponseQueue) {
-				PendingResponseQueueItem lPRQI =
-						(mUTID != null ? mPendingResponseQueue.get(mUTID) : null);
+				PendingResponseQueueItem lPRQI = (mUTID != null ? mPendingResponseQueue
+						.get(mUTID) : null);
 				if (lPRQI != null) {
 					// if so start analyzing
 					WebSocketResponseTokenListener lWSRTL = lPRQI.getListener();
@@ -384,23 +400,29 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 	}
 
 	/**
-	 *
+	 * 
 	 * @param aToken
 	 * @param aResponseListener
 	 * @throws WebSocketException
 	 */
-	public void sendToken(Token aToken, WebSocketResponseTokenListener aResponseListener) throws WebSocketException {
-		PendingResponseQueueItem lPRQI = new PendingResponseQueueItem(aToken, aResponseListener);
+	public void sendToken(Token aToken,
+			WebSocketResponseTokenListener aResponseListener)
+			throws WebSocketException {
+		PendingResponseQueueItem lPRQI = new PendingResponseQueueItem(aToken,
+				aResponseListener);
 		int lUTID = CUR_TOKEN_ID + 1;
 		mPendingResponseQueue.put(lUTID, lPRQI);
 		ResponseTimeoutTimer lRTT = new ResponseTimeoutTimer(lUTID);
-		mResponseQueueExecutor.schedule(lRTT, aResponseListener.getTimeout(), TimeUnit.MILLISECONDS);
+		mResponseQueueExecutor.schedule(lRTT, aResponseListener.getTimeout(),
+				TimeUnit.MILLISECONDS);
 		sendToken(aToken);
 	}
+
 	private final static String NS_SYSTEM_PLUGIN = NS_BASE + ".plugins.system";
 
 	@Override
-	public void login(String aUsername, String aPassword) throws WebSocketException {
+	public void login(String aUsername, String aPassword)
+			throws WebSocketException {
 
 	}
 
@@ -413,7 +435,8 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 	}
 
 	@Override
-	public void sendText(String aTarget, String aData) throws WebSocketException {
+	public void sendText(String aTarget, String aData)
+			throws WebSocketException {
 		Token lToken = TokenFactory.createToken(NS_SYSTEM_PLUGIN, "send");
 		lToken.setString("targetId", aTarget);
 		lToken.setString("sourceId", getClientId());
@@ -432,23 +455,27 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 		lToken.setBoolean("responseRequested", true);
 		sendToken(lToken);
 	}
-	private final static String NS_FILESYSTEM_PLUGIN = NS_BASE + ".plugins.filesystem";
+
+	private final static String NS_FILESYSTEM_PLUGIN = NS_BASE
+			+ ".plugins.filesystem";
 
 	// @Override
 	/**
-	 *
+	 * 
 	 * @param aData
 	 * @param aFilename
 	 * @param aScope
 	 * @param aNotify
 	 * @throws WebSocketException
 	 */
-	public void saveFile(byte[] aData, String aFilename, String aScope, Boolean aNotify) throws WebSocketException {
+	public void saveFile(byte[] aData, String aFilename, String aScope,
+			Boolean aNotify) throws WebSocketException {
 		Token lToken = TokenFactory.createToken(NS_FILESYSTEM_PLUGIN, "save");
 		lToken.setString("sourceId", getClientId());
 		lToken.setString("sender", getUsername());
 		lToken.setString("filename", aFilename);
-		// TODO: set mimetype correctly according to file extension based on configuration in jWebSocket.xml
+		// TODO: set mimetype correctly according to file extension based on
+		// configuration in jWebSocket.xml
 		lToken.setString("mimetype", "image/jpeg");
 		lToken.setString("scope", aScope);
 		lToken.setBoolean("notify", aNotify);
@@ -459,27 +486,30 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 	}
 
 	/**
-	 *
+	 * 
 	 * @param aHeader
 	 * @param aData
 	 * @param aFilename
 	 * @param aTarget
 	 * @throws WebSocketException
 	 */
-	public void sendFile(String aHeader, byte[] aData, String aFilename, String aTarget) throws WebSocketException {
-		
-//		Token lToken = TokenFactory.createToken(NS_FILESYSTEM_PLUGIN, "send");
-//		lToken.setString("sourceId", "");
-//		lToken.setString("sender", "");
-//		lToken.setString("filename", aFilename);
-//		// TODO: set mimetype correctly according to file extension based on configuration in jWebSocket.xml
-//		lToken.setString("mimetype", "image/jpeg");
-//		lToken.setString("unid", aTarget);
-//		int flags = Base64.NO_WRAP | Base64.URL_SAFE;
-//		lToken.setString("data", Base64.encodeToString(aData, flags));
-//		lToken.setString("data", Base64.encodeToString(aData, flags));
-//		sendToken(lToken);
-//		WebSocketPacket lPacket = new RawPacket(aData);
+	public void sendFile(String aHeader, byte[] aData, String aFilename,
+			String aTarget) throws WebSocketException {
+
+		// Token lToken = TokenFactory.createToken(NS_FILESYSTEM_PLUGIN,
+		// "send");
+		// lToken.setString("sourceId", "");
+		// lToken.setString("sender", "");
+		// lToken.setString("filename", aFilename);
+		// // TODO: set mimetype correctly according to file extension based on
+		// configuration in jWebSocket.xml
+		// lToken.setString("mimetype", "image/jpeg");
+		// lToken.setString("unid", aTarget);
+		// int flags = Base64.NO_WRAP | Base64.URL_SAFE;
+		// lToken.setString("data", Base64.encodeToString(aData, flags));
+		// lToken.setString("data", Base64.encodeToString(aData, flags));
+		// sendToken(lToken);
+		// WebSocketPacket lPacket = new RawPacket(aData);
 		super.send(aData);
 	}
 
@@ -493,7 +523,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 	}
 
 	/**
-	 *
+	 * 
 	 * @throws WebSocketException
 	 */
 	public void shutdown() throws WebSocketException {
@@ -503,20 +533,8 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements 
 
 	@Override
 	public void getConnections() throws WebSocketException {
-		Token lToken = TokenFactory.createToken(NS_ADMIN_PLUGIN, "getConnections");
+		Token lToken = TokenFactory.createToken(NS_ADMIN_PLUGIN,
+				"getConnections");
 		sendToken(lToken);
-	}
-	
-	public static void downloadVideo(String fileId, String fileName,
-			String url) {
-		InputStream is = null;
-		try {
-			is = HttpInvoker.getInputStreamFromUrl(url);
-		} catch (WammerServerException e) {
-			e.printStackTrace();
-		}
-		if(is!=null){
-			FileUtil.downloadFile(is,fileName);
-		}
 	}
 }

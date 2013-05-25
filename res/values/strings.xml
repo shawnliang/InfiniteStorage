@@ -141,4 +141,13 @@
     <string name="favorite">Favorite</string>
     <string name="recent_photos">Recent Photos</string>
     <string name="recent_videos">Recent Videos</string>
+    
+    <!-- OVERVIEW FRAGMENT  -->
+    <string name="no_favorite">No favorites now</string>
+    <string name="no_photo">No photos now</string>
+    <string name="no_video">No videos now</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="thisweek">This week</string>
+    
 </resources>

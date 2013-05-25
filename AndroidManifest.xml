@@ -64,6 +64,11 @@
             android:theme="@style/HoloTheme" >
         </activity>
         
+        <activity
+            android:name="com.waveface.favoriteplayer.ui.VideoActivity"
+            android:theme="@style/HoloTheme" >
+        </activity>
+        
         <provider
             android:name="com.waveface.favoriteplayer.provider.PlayerProvider"
             android:authorities="com.waveface.favoriteplayer"

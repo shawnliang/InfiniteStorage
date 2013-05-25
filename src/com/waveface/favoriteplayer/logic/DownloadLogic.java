@@ -45,8 +45,7 @@ public class DownloadLogic {
 		HashMap<String, String> param = new HashMap<String, String>();
 		String files = "";
 		String jsonOutput = "";
-		ArrayList<ServerEntity> servers = ServersLogic
-				.getBackupedServers(context);
+		ArrayList<ServerEntity> servers = ServersLogic.getPairedServer(context);
 		ServerEntity pairedServer = servers.get(0);
 		String restfulAPIURL = "http://" + pairedServer.ip + ":"
 				+ pairedServer.restPort;
@@ -110,7 +109,7 @@ public class DownloadLogic {
 					} else {
 						String url = restfulAPIURL + Constant.URL_IMAGE + "/"
 								+ fileId + Constant.URL_IMAGE_LARGE;
-						imageManager.getImageWithoutThread(url, null);
+//						imageManager.getImageWithoutThread(url, null);
 					}
 					long time = System.currentTimeMillis();
 					time = System.currentTimeMillis() - time;

@@ -4,18 +4,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:id="@+id/fragment_root"
+    android:background="#222222"
     android:orientation="vertical" >
 
     <com.waveface.favoriteplayer.ui.widget.TwoWayView
         android:id="@+id/list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:cacheColorHint="#00000000"
+        android:background="@null"
         android:drawSelectorOnTop="false"
         android:fadingEdgeLength="10dip"
         android:orientation="horizontal"
+        android:listSelector="@android:color/transparent"
         android:requiresFadingEdge="horizontal"
         android:scrollbarThumbHorizontal="@drawable/scrollbar_handle_holo_light"
         tools:context=".MainActivity" />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/text_no_content"
+        android:textSize="22sp"
+        android:textColor="#E0E0E0"
+        android:visibility="invisible"  
+        />
 </RelativeLayout>

@@ -24,7 +24,7 @@ import android.widget.ViewAnimator;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.SyncApplication;
-import com.waveface.favoriteplayer.entity.OverviewData;
+import com.waveface.favoriteplayer.entity.PlaybackData;
 
 public class FullScreenSlideshowFragment extends Fragment {
 	private ViewAnimator mViewAnimator;
@@ -32,7 +32,7 @@ public class FullScreenSlideshowFragment extends Fragment {
 	
 	private ImageManager mImageManager;
 
-	private ArrayList<OverviewData> mDatas;
+	private ArrayList<PlaybackData> mDatas;
 
 	private int mCurrentPosition = 0;
 	
@@ -128,11 +128,11 @@ public class FullScreenSlideshowFragment extends Fragment {
 		if(imagePosition >= 0 && imagePosition < mDatas.size()) {
 			ImageView iv = (ImageView) mViewAnimator.getChildAt(viewPosition);
 			
-			ImageAttribute attr = new ImageAttribute(iv);
-			attr.setDoneScaleType(ScaleType.CENTER_CROP);
-			attr.setLoadFromThread(true);
-			attr.setMaxSizeEqualsScreenSize(getActivity());
-			mImageManager.getImage( mDatas.get(imagePosition).url , attr);
+//			ImageAttribute attr = new ImageAttribute(iv);
+//			attr.setDoneScaleType(ScaleType.CENTER_CROP);
+//			attr.setLoadFromThread(true);
+//			attr.setMaxSizeEqualsScreenSize(getActivity());
+//			mImageManager.getImage( mDatas.get(imagePosition).url , attr);
 		}
 	}
 	

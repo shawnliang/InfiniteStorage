@@ -1,5 +1,7 @@
 package com.waveface.favoriteplayer.task;
 
+
+
 import idv.jason.lib.imagemanager.ImageManager;
 
 import java.io.File;
@@ -70,7 +72,7 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 				Context.MODE_PRIVATE);
 		Editor mEditor = mPrefs.edit();
 		ArrayList<ServerEntity> servers = ServersLogic
-				.getBackupedServers(mContext);
+				.getPairedServer(mContext);
 		if (servers.size() == 0)
 			return null;
 		ServerEntity pairedServer = servers.get(0);

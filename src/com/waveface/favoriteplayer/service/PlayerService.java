@@ -194,7 +194,7 @@ public class PlayerService extends Service{
     	                entity.wsLocation = "ws://"+si.getHostAddress()+":"+si.getPort();
     	                Log.d(TAG, "Resolved SERVER NAME:"+entity.serverName);
     	                ServersLogic.updateBonjourServer(mContext, entity);
-    	        		mPairedServers = ServersLogic.getBackupedServers(mContext);
+    	        		mPairedServers = ServersLogic.getPairedServer(mContext);
     	        		if(mPairedServers.size()!=0){
     	        			RuntimeState.mAutoConnectMode = true ;
     	        		}
@@ -267,7 +267,7 @@ public class PlayerService extends Service{
 	private void connectPCWithPairedServer() {
 		if(RuntimeState.OnWebSocketOpened)
 			return;
-		mPairedServers = ServersLogic.getBackupedServers(this);
+		mPairedServers = ServersLogic.getPairedServer(this);
 		if(mPairedServers.size()>0){
 			ServerEntity entity = mPairedServers.get(0);
 			if(!TextUtils.isEmpty(entity.ip) && !TextUtils.isEmpty(entity.notifyPort)){
@@ -297,7 +297,7 @@ public class PlayerService extends Service{
 			return ;
 		ServerEntity pairedServer = null;
 		ServerEntity bonjourServer = null;		
-		mPairedServers = ServersLogic.getBackupedServers(this);
+		mPairedServers = ServersLogic.getPairedServer(this);
 		Log.d(TAG, "START PAIRING LOOP");
 		for(int i = 0 ; i < mPairedServers.size();i++){
 			pairedServer = mPairedServers.get(i);

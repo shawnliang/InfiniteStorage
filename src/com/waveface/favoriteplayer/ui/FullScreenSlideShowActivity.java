@@ -3,6 +3,7 @@ package com.waveface.favoriteplayer.ui;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.ui.fragment.FullScreenSlideshowFragment;
@@ -31,7 +32,16 @@ public class FullScreenSlideShowActivity extends FragmentActivity {
 				findFragmentByTag(FullScreenSlideshowFragment.class.getSimpleName());
 		if(fragment != null) {
 			fragment.onBackPressed();
-		}
-		
+		}	
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		FullScreenSlideshowFragment fragment = (FullScreenSlideshowFragment) getSupportFragmentManager().
+				findFragmentByTag(FullScreenSlideshowFragment.class.getSimpleName());
+		if(fragment != null) {
+			fragment.onBackPressed();
+		}	
+		return true;
 	}
 }
