@@ -154,7 +154,8 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		
 		private void fillData(ArrayList<OverviewData> datas, int type) {
 			Cursor c = LabelDB.getCategoryLabelByLabelId(getActivity(), type);
-			if(c.moveToFirst()) {
+			for(int i=0; i<c.getCount(); ++i) {
+				c.moveToPosition(i);
 				Cursor fc = LabelDB.getLabelFilesByLabelId(getActivity(), c.getString(0));
 				if(fc.getCount() > 0) {
 					OverviewData data = new OverviewData();
