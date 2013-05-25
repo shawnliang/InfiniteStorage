@@ -56,11 +56,11 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 //			transaction.replace(R.id.container_content, videos, VideoFragment.class.getSimpleName()).commit();
 //			mCurrentFragmentName = VideoFragment.class.getSimpleName();
 			
-			PlaybackFragment photoJournal = new PlaybackFragment();
-			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-			transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-			transaction.replace(R.id.container_content, photoJournal, PlaybackFragment.class.getSimpleName()).commit();
-			mCurrentFragmentName = PlaybackFragment.class.getSimpleName();
+//			PlaybackFragment photoJournal = new PlaybackFragment();
+//			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//			transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+//			transaction.replace(R.id.container_content, photoJournal, PlaybackFragment.class.getSimpleName()).commit();
+//			mCurrentFragmentName = PlaybackFragment.class.getSimpleName();
 		}
 	};
 	

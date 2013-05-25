@@ -22,9 +22,12 @@ import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelFileTable;
 import com.waveface.favoriteplayer.entity.OverviewData;
 import com.waveface.favoriteplayer.entity.ServerEntity;
+import com.waveface.favoriteplayer.event.OverviewItemClickEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.ui.adapter.OverviewAdapter;
 import com.waveface.favoriteplayer.ui.widget.TwoWayView;
+
+import de.greenrobot.event.EventBus;
 
 public class OverviewFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener{
 	public static final String TAG = OverviewFragment.class.getSimpleName();
@@ -126,9 +129,12 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-		
+	public void onItemClick(AdapterView<?> listview, View view, int position, long id) {
+		OverviewItemClickEvent event = new OverviewItemClickEvent();
+		event.data = ((OverviewAdapter)listview.getAdapter()).getDatas();
+		event.position = position;
+		event.type = mType;
+		EventBus.getDefault().post(event);
 	}
 
 	@Override

@@ -34,6 +34,10 @@ public class OverviewAdapter extends BaseAdapter{
 		mImageManager = SyncApplication.getWavefacePlayerApplication(context).getImageManager();
 		mInflater = LayoutInflater.from(context);
 	}
+	
+	public ArrayList<OverviewData> getDatas() {
+		return mDatas;
+	}
 
 	@Override
 	public int getCount() {

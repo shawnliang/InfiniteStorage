@@ -148,7 +148,7 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 											+ Constant.URL_IMAGE_LARGE;
 									
 									mImageManager.getImageWithoutThread(url,
-											null);
+											null, false);
 								}
 								long time = System.currentTimeMillis();
 								time = System.currentTimeMillis() - time;
