@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.TextView;
 
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
@@ -32,6 +33,7 @@ import de.greenrobot.event.EventBus;
 public class OverviewFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener{
 	public static final String TAG = OverviewFragment.class.getSimpleName();
 	private TwoWayView mList;
+	private TextView mNoContent;
 	private int mType = OVERVIEW_VIEW_TYPE_FAVORITE;
 	
 	public static final int OVERVIEW_VIEW_TYPE_FAVORITE = 1;
@@ -43,6 +45,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View root = inflater.inflate(R.layout.fragment_overview, container, false);
+		
 		mList = (TwoWayView) root.findViewById(R.id.list);
 		mList.setLongClickable(true);
 		mList.setOnItemLongClickListener(this);
@@ -69,7 +72,20 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		}
 		
 		new PrepareViewTask().execute(null, null, null);
+
 		
+		mNoContent = (TextView) root.findViewById(R.id.text_no_content);
+		switch(mType) {
+		case OVERVIEW_VIEW_TYPE_FAVORITE:
+			mNoContent.setText(R.string.no_favorite);
+			break;
+		case OVERVIEW_VIEW_TYPE_RECENT_PHOTO:
+			mNoContent.setText(R.string.no_photo);
+			break;
+		case OVERVIEW_VIEW_TYPE_RECENT_VIDEO:
+			mNoContent.setText(R.string.no_video);
+			break;
+		}
 		return root;
 	}
 	
@@ -113,16 +129,57 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			if(datas != null) {
 				OverviewAdapter adapter = new OverviewAdapter(getActivity(), datas);
 				mList.setAdapter(adapter);
+				
+				if(datas.size() == 0) {
+					mNoContent.setVisibility(View.VISIBLE);
+				}
 			}
 		}
 		
 		private void fillData(ArrayList<OverviewData> datas, int type) {
 			Cursor c = LabelDB.getCategoryLabelByLabelId(getActivity(), type);
 			if(c.moveToFirst()) {
-				OverviewData data = new OverviewData();
-				data.url = mServerUrl + c.getString(1);
-				data.title = c.getString(2);
-				datas.add(data);
+				Cursor fc = LabelDB.getLabelFilesByLabelId(getActivity(), c.getString(0));
+				if(fc.getCount() > 0) {
+					OverviewData data = new OverviewData();
+					data.url = mServerUrl + c.getString(1);
+
+					switch(mType) {
+					case OVERVIEW_VIEW_TYPE_FAVORITE:
+						data.title = c.getString(2);
+						break;
+					case OVERVIEW_VIEW_TYPE_RECENT_PHOTO:
+						switch(type) {
+						case Constant.TYPE_RECENT_PHOTO_TODAY:
+							data.title = getResources().getText(R.string.today).toString();
+							break;
+						case Constant.TYPE_RECENT_PHOTO_YESTERDAY:
+							data.title = getResources().getText(R.string.yesterday).toString();
+							break;
+						case Constant.TYPE_RECENT_PHOTO_THISWEEK:
+							data.title = getResources().getText(R.string.thisweek).toString();
+							break;
+						}
+						break;
+					case OVERVIEW_VIEW_TYPE_RECENT_VIDEO:
+						switch(type) {
+						case Constant.TYPE_RECENT_VIDEO_TODAY:
+							data.title = getResources().getText(R.string.today).toString();
+							break;
+						case Constant.TYPE_RECENT_VIDEO_YESTERDAY:
+							data.title = getResources().getText(R.string.yesterday).toString();
+							break;
+						case Constant.TYPE_RECENT_VIDEO_THISWEEK:
+							data.title = getResources().getText(R.string.thisweek).toString();
+							break;
+						}
+						data.url = null;
+						break;
+					}
+					
+					datas.add(data);
+				}
+				fc.close();
 			}
 			c.close();
 		}

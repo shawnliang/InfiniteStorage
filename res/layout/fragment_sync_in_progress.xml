@@ -10,7 +10,7 @@
         android:layout_above="@+id/progress"
         android:layout_centerHorizontal="true"
         android:src="@drawable/ic_favorite"
-        android:layout_marginBottom="100dip"
+        android:layout_marginBottom="70dip"
         />
 
     <ProgressBar

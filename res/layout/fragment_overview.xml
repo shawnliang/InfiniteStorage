@@ -21,4 +21,14 @@
         android:requiresFadingEdge="horizontal"
         android:scrollbarThumbHorizontal="@drawable/scrollbar_handle_holo_light"
         tools:context=".MainActivity" />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/text_no_content"
+        android:textSize="22sp"
+        android:textColor="#E0E0E0"
+        android:visibility="invisible"  
+        />
 </RelativeLayout>
