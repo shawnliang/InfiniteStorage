@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>resources\Bunnydesktop.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Bunnydesktop.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AppLimit.NetSparkle">
@@ -356,8 +356,8 @@
       <Link>x86\SQLite.Interop.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Bunnydesktop.ico" />
     <None Include="Resources\For Shawn - Copy - Copy.png" />
-    <None Include="Resources\FAV_096.png" />
     <None Include="Resources\video %281%29.png" />
     <None Include="Resources\ajax-loader.gif" />
     <None Include="Resources\380.gif" />
@@ -366,7 +366,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\en_generic_rgb_wo_60.png" />
-    <None Include="Resources\Bunnydesktop.ico" />
     <None Include="Resources\ChooseThisPCOnYourPhone.png" />
     <None Include="Resources\Tea-Cup1.png" />
   </ItemGroup>
