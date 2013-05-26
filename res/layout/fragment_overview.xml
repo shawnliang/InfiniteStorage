@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragment_root"
-    android:background="#222222"
     android:orientation="vertical" >
 
     <com.waveface.favoriteplayer.ui.widget.TwoWayView

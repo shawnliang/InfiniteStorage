@@ -89,8 +89,6 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 				new DownloadLabelsTask(this).execute(new Void[]{});
 			}
 		}
-		
-        getWindow().setBackgroundDrawable(null);
         sendBroadcast(new Intent(Constant.ACTION_FAVORITE_PLAYER_ALARM));
 	}
 	
