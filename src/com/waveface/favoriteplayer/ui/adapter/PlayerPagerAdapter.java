@@ -18,7 +18,7 @@ import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.SyncApplication;
 import com.waveface.favoriteplayer.entity.PlaybackData;
 
-public class PlayerPagerAdapter extends PagerAdapter implements OnClickListener {
+public class PlayerPagerAdapter extends PagerAdapter {
 	private LayoutInflater mInflater;
 	private ImageManager mImageManager;
 
@@ -59,15 +59,6 @@ public class PlayerPagerAdapter extends PagerAdapter implements OnClickListener 
 		attr.setApplyWithAnimation(true);
 		mImageManager.getImage(mDatas.get(position).url, attr);
 		container.addView(root);
-		
-		iv.setOnClickListener(this);
 		return root;
 	}
-
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

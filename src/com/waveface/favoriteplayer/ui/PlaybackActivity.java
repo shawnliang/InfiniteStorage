@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.event.PhotoItemClickEvent;
+import com.waveface.favoriteplayer.event.PlaybackCancelEvent;
 import com.waveface.favoriteplayer.ui.fragment.FullScreenSlideshowFragment;
 import com.waveface.favoriteplayer.ui.fragment.PlaybackFragment;
 
@@ -57,6 +58,7 @@ public class PlaybackActivity extends FragmentActivity {
 	}
 	
 	public void onEvent(PhotoItemClickEvent event) {
+		Log.d(TAG, "PhotoItemClickEvent");
 		Bundle data = new Bundle();
 		data.putParcelableArrayList(Constant.ARGUMENT1, event.datas);
 		data.putInt(Constant.ARGUMENT2, event.position);
@@ -66,9 +68,17 @@ public class PlaybackActivity extends FragmentActivity {
 		
 		fragment.setArguments(data);
 		mCurrentFragment = FullScreenSlideshowFragment.class.getSimpleName();
-		transaction.addToBackStack(mCurrentFragment);
-		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-		transaction.add(R.id.content, fragment, mCurrentFragment).commit();
+		transaction.addToBackStack(null);
+//		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
+		transaction.replace(R.id.content, fragment, mCurrentFragment).commit();
+	}
+	
+	public void onEvent(PlaybackCancelEvent event) {
+		getSupportFragmentManager().popBackStack();
+		mCurrentFragment = PlaybackFragment.class.getSimpleName();
+
+		PlaybackFragment fragment = (PlaybackFragment) getSupportFragmentManager().findFragmentByTag(mCurrentFragment);
+		fragment.pause(event.position);
 	}
 	
 	@Override
@@ -76,10 +86,7 @@ public class PlaybackActivity extends FragmentActivity {
 		Log.d(TAG, "onBackPressed:" + mCurrentFragment);
 		if(PlaybackFragment.class.getSimpleName().equals(mCurrentFragment)) {
 			finish();
-		} else {
-			getSupportFragmentManager().popBackStack();
-			mCurrentFragment = PlaybackFragment.class.getSimpleName();
-		}
+		} 
 	}
 	
 	@Override
@@ -89,8 +96,13 @@ public class PlaybackActivity extends FragmentActivity {
 			PlaybackFragment fragment = (PlaybackFragment) getSupportFragmentManager().findFragmentByTag(mCurrentFragment);
 			fragment.onKeyEvent(keyCode, event);
 			return true;
+		} else if(FullScreenSlideshowFragment.class.getSimpleName().equals(mCurrentFragment)){
+			FullScreenSlideshowFragment fragment = (FullScreenSlideshowFragment) getSupportFragmentManager().findFragmentByTag(mCurrentFragment);
+			fragment.onKeyEvent(keyCode, event);
+			return true;
 		} else {
-			return super.onKeyDown(keyCode, event);
+			Log.d(TAG, "mCurrentFragment=" + mCurrentFragment);
 		}
+		return super.onKeyDown(keyCode, event);
 	}
 }

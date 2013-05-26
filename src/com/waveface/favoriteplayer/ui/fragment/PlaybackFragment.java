@@ -15,6 +15,10 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
@@ -32,6 +36,7 @@ import de.greenrobot.event.EventBus;
 public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	public static final String TAG = PlaybackFragment.class.getSimpleName(); 
 	private ViewPager mPager;
+	private boolean mResume = false;
 	
 	private ArrayList<PlaybackData> mDatas = new ArrayList<PlaybackData>();
 	
@@ -98,13 +103,16 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	@Override
 	public void onPause() {
 		super.onPause();
-		Log.d(TAG, "stop slide show");
+		mResume = false;
+		Log.d(TAG, "pause");
 		mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
+		mResume = true;
+		Log.d(TAG, "resume");
 		delaySlideShow(AUTO_SLIDE_SHOW_FIRST_DELAY_MILLIS);
 	}
 	
@@ -141,24 +149,26 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 		}
 	}
 	
-	private void startSlideShow() {
-		Log.d(TAG, "startSlideShow");
-		
-		PhotoItemClickEvent event = new PhotoItemClickEvent();
-		event.datas = mDatas;
-		event.position = mPager.getCurrentItem();
-		
-		EventBus.getDefault().post(event);
-	}
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		int position = data.getIntExtra(Constant.ARGUMENT1, -1);
+	public void pause(int position) {
 		if(position != -1) {
-			mPager.setCurrentItem(position);
+			mPager.setCurrentItem(position, false);
 		}
 	}
-		
+	
+	private void startSlideShow() {
+		Log.d(TAG, "startSlideShow");
+
+		if(mResume == false) {
+			Log.d(TAG, "ignore slide show because on pause");
+		} else {
+			PhotoItemClickEvent event = new PhotoItemClickEvent();
+			event.datas = mDatas;
+			event.position = mPager.getCurrentItem();
+			
+			EventBus.getDefault().post(event);
+		}
+	}
+	
 	private void delaySlideShow(int delayMillis) {
 		Log.d(TAG, "delaySlideShow:" + delayMillis);
 		mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
@@ -177,4 +187,5 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	@Override
 	public void onPageSelected(int arg0) {
 	}
+
 }
