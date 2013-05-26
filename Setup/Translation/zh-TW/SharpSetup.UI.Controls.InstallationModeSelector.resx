@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,7 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="APPNAME" xml:space="preserve">
-    <value>Bunny</value>
+  <data name="rbReinstall.Text" xml:space="preserve">
+    <value>Reinstall</value>
+  </data>
+  <data name="rbCustom.Text" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="rbUpgrade.Text" xml:space="preserve">
+    <value>Upgrade</value>
+  </data>
+  <data name="rbUninstall.Text" xml:space="preserve">
+    <value>Uninstall</value>
+  </data>
+  <data name="rbInstall.Text" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="rbModify.Text" xml:space="preserve">
+    <value>Modify</value>
   </data>
 </root>
