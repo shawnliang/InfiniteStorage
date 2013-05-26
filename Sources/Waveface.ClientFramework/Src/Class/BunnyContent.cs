@@ -17,19 +17,10 @@ namespace Waveface.ClientFramework
 		private bool _likedInited;
 		private BitmapSource _imageSource;
 		private BitmapSource _thumbnailSource;
-		private string file_id;
 		#endregion
 
 
 		#region Property
-		public override string ID
-		{
-			get
-			{
-				return file_id;
-			}
-		}
-
 		public BitmapSource ImageSource 
 		{
 			get
@@ -142,9 +133,8 @@ namespace Waveface.ClientFramework
 		}
 
 		public BunnyContent(Uri uri, string file_id)
-			: base(uri.GetHashCode().ToString(), uri)
+			: base(file_id, uri)
 		{
-			this.file_id = file_id;
 		} 
 		#endregion
 
