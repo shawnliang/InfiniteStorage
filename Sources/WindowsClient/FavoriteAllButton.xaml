@@ -26,7 +26,7 @@
 
 	<Grid x:Name="LayoutRoot">
 				
-		<Button Content="Favorite All" BorderBrush="{x:Null}" FontFamily="Segoe UI Light"  Foreground="White">
+		<Button Content="Favorite All" BorderBrush="{x:Null}" FontFamily="Segoe UI Light"  Foreground="White" Click="Button_Click">
 			<Button.Background>
 				<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
 					<GradientStop Color="#FF363535" Offset="0"/>

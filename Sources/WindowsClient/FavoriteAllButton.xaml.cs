@@ -18,9 +18,19 @@ namespace Waveface.Client
 	/// </summary>
 	public partial class FavoriteAllButton : UserControl
 	{
+		public event RoutedEventHandler Click;
 		public FavoriteAllButton()
 		{
 			this.InitializeComponent();
 		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			var handler = Click;
+			if (handler != null)
+				handler(sender, e);
+		}
+
+
 	}
 }
