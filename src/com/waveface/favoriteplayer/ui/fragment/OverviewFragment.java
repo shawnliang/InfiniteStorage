@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ProgressBar;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 	public static final String TAG = OverviewFragment.class.getSimpleName();
 	private TwoWayView mList;
 	private TextView mNoContent;
+	private ProgressBar mProgress;
 	private int mType = OVERVIEW_VIEW_TYPE_FAVORITE;
 	
 	public static final int OVERVIEW_VIEW_TYPE_FAVORITE = 1;
@@ -61,6 +63,8 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View root = inflater.inflate(R.layout.fragment_overview, container, false);
+		
+		mProgress = (ProgressBar) root.findViewById(R.id.progress);
 		
 		mList = (TwoWayView) root.findViewById(R.id.list);
 		mList.setLongClickable(true);
@@ -143,6 +147,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		@Override
 		protected void onPostExecute(ArrayList<OverviewData> datas) {
 			if(datas != null) {
+				mProgress.setVisibility(View.GONE);
 				OverviewAdapter adapter = new OverviewAdapter(getActivity(), datas);
 				mList.setAdapter(adapter);
 				

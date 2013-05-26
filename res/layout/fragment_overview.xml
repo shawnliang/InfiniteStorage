@@ -30,4 +30,13 @@
         android:textColor="#E0E0E0"
         android:visibility="invisible"  
         />
+    
+    
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        style="@android:style/Widget.ProgressBar.Large" 
+        />
 </RelativeLayout>
