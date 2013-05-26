@@ -75,6 +75,12 @@ public class OverviewAdapter extends BaseAdapter{
 		int height = context.getResources().getDimensionPixelSize(R.dimen.overview_image_height);
 
 		ImageAttribute attr = new ImageAttribute(holder.image);
+		attr = new ImageAttribute(holder.image);
+		attr.setResizeSize(width, height);
+		attr.setApplyWithAnimation(true);
+		attr.setDoneScaleType(ScaleType.CENTER_CROP);
+		mImageManager.getImage(mDatas.get(position).url, attr);
+		
 		attr = new ImageAttribute(holder.reflection);
 		attr.setResizeSize(width, height);
 		attr.setReflection(true);

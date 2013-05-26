@@ -197,7 +197,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 							Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(fileName, 
 							        Thumbnails.MINI_KIND);
 
-							//mImageManager.setBitmapToFile(bmThumbnail, fileName, null, false);
+							mImageManager.setBitmapToFile(bmThumbnail, fileName, null, false);
 							data.url = fileName;
 						}
 						lfc.close();

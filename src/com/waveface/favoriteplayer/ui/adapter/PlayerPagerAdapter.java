@@ -54,7 +54,7 @@ public class PlayerPagerAdapter extends PagerAdapter implements OnClickListener 
 				false);
 		ImageView iv = (ImageView) root.findViewById(R.id.image);
 		ImageAttribute attr = new ImageAttribute(iv);
-//		attr.setMaxSizeEqualsScreenSize(mInflater.getContext());
+		attr.setMaxSizeEqualsScreenSize(mInflater.getContext());
 		attr.setDoneScaleType(ScaleType.FIT_CENTER);
 		attr.setApplyWithAnimation(true);
 		mImageManager.getImage(mDatas.get(position).url, attr);

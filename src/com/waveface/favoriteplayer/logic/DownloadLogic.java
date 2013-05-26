@@ -112,7 +112,7 @@ public class DownloadLogic {
 					} else {
 						String url = restfulAPIURL + Constant.URL_IMAGE + "/"
 								+ fileId + Constant.URL_IMAGE_LARGE;
-//						imageManager.getImageWithoutThread(url, null);
+					imageManager.getImageWithoutThread(url, null);
 					}
                 }else{
 					context.sendBroadcast(new Intent(
