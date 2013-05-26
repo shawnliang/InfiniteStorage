@@ -61,7 +61,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 關於{0}.
+        ///   Looks up a localized string similar to About {0}.
         /// </summary>
         internal static string AboutTab {
             get {
@@ -70,7 +70,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 允許 {0} 備份檔案到這台電腦?.
+        ///   Looks up a localized string similar to {0} will sync all photos and home videos to this PC. Are you sure?.
         /// </summary>
         internal static string AllowPairingRequest {
             get {
@@ -79,7 +79,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 您的 Bunny 已經是最新的版本.
+        ///   Looks up a localized string similar to You have the latest version installed..
         /// </summary>
         internal static string AlreadyLastestVersion {
             get {
@@ -108,43 +108,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 檔案：準備中.
-        /// </summary>
-        internal static string BackupProgressFile_Preparing {
-            get {
-                return ResourceManager.GetString("BackupProgressFile_Preparing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 裝置中所有 {0} 個檔案都已備份到此電腦中.
-        /// </summary>
-        internal static string BackupProgressTitle_BackupComplete {
-            get {
-                return ResourceManager.GetString("BackupProgressTitle_BackupComplete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} 已結束備份.
-        /// </summary>
-        internal static string BackupProgressTitle_Finished {
-            get {
-                return ResourceManager.GetString("BackupProgressTitle_Finished", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} 正在備份到這台電腦.
-        /// </summary>
-        internal static string BackupProgressTitle_InProgress {
-            get {
-                return ResourceManager.GetString("BackupProgressTitle_InProgress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} 在此為您服務.
+        ///   Looks up a localized string similar to {0} is servicing.
         /// </summary>
         internal static string BallonText_AtService {
             get {
@@ -153,7 +117,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} 正在備份中....
+        ///   Looks up a localized string similar to Sync in progress.
         /// </summary>
         internal static string BallonText_Transferring {
             get {
@@ -172,8 +136,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 刪除您的裝置以後，已存入的檔案不會被刪除。
-        ///往後這台裝置中的照片、影片、錄音檔案將不會再送回此電腦中。.
+        ///   Looks up a localized string similar to Unlinking this device does not remove any file from this PC. Photo and home video on the device will not sync to this PC any more..
         /// </summary>
         internal static string DeleteDevice_Description {
             get {
@@ -182,92 +145,11 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 刪除裝置.
+        ///   Looks up a localized string similar to Unlink.
         /// </summary>
         internal static string DeleteDevice_Title {
             get {
                 return ResourceManager.GetString("DeleteDevice_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 檔案：{0}   {1} bytes.
-        /// </summary>
-        internal static string FirstUse_FileLabel {
-            get {
-                return ResourceManager.GetString("FirstUse_FileLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 請在手機上按下開始, 就立即傳輸檔案.
-        /// </summary>
-        internal static string FirstUse_GoBackToPhoneToStart {
-            get {
-                return ResourceManager.GetString("FirstUse_GoBackToPhoneToStart", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 請回到手機，指定備份到這台電腦 - {0}.
-        /// </summary>
-        internal static string FirstUse_Instruction1 {
-            get {
-                return ResourceManager.GetString("FirstUse_Instruction1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 下一步.
-        /// </summary>
-        internal static string FirstUse_Next {
-            get {
-                return ResourceManager.GetString("FirstUse_Next", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 您尚未完成設定程序，請按下一步.
-        /// </summary>
-        internal static string FirstUse_NoExitBeforeAcceptComplete {
-            get {
-                return ResourceManager.GetString("FirstUse_NoExitBeforeAcceptComplete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 進度：{0}/{1}.
-        /// </summary>
-        internal static string FirstUse_ProgressLabel {
-            get {
-                return ResourceManager.GetString("FirstUse_ProgressLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 縮到狀態列.
-        /// </summary>
-        internal static string FirstUse_ShrinkToSystemTray {
-            get {
-                return ResourceManager.GetString("FirstUse_ShrinkToSystemTray", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 配對完成.
-        /// </summary>
-        internal static string FirstUse_Start {
-            get {
-                return ResourceManager.GetString("FirstUse_Start", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} 備份了 {1} 個檔案.
-        /// </summary>
-        internal static string FirstUse_TransferStopped {
-            get {
-                return ResourceManager.GetString("FirstUse_TransferStopped", resourceCulture);
             }
         }
         
@@ -282,7 +164,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to - 備份完成.
+        ///   Looks up a localized string similar to - Backup complete.
         /// </summary>
         internal static string MenuItem_BackupComplete {
             get {
@@ -291,7 +173,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to - 準備傳送中....
+        ///   Looks up a localized string similar to - Preparing to sync.
         /// </summary>
         internal static string MenuItem_Preparing {
             get {
@@ -319,7 +201,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 從 {0} 收到檔案.
+        ///   Looks up a localized string similar to File synced from {0}.
         /// </summary>
         internal static string ProgressTooltip {
             get {
@@ -348,7 +230,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 新增手機或平板....
+        ///   Looks up a localized string similar to Add a new device....
         /// </summary>
         internal static string TrayMenuItem_AddNewSources {
             get {
@@ -357,16 +239,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Getting started....
-        /// </summary>
-        internal static string TrayMenuItem_GettingStarted {
-            get {
-                return ResourceManager.GetString("TrayMenuItem_GettingStarted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 開啟.
+        ///   Looks up a localized string similar to Open.
         /// </summary>
         internal static string TrayMenuItem_Open {
             get {
@@ -375,7 +248,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 開啟備份資料夾.
+        ///   Looks up a localized string similar to Open backup folder.
         /// </summary>
         internal static string TrayMenuItem_OpenBackupFolder {
             get {
@@ -384,7 +257,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 設定....
+        ///   Looks up a localized string similar to Prefereces....
         /// </summary>
         internal static string TrayMenuItem_Preferences {
             get {
@@ -393,7 +266,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 關閉.
+        ///   Looks up a localized string similar to Quit.
         /// </summary>
         internal static string TrayMenuItem_Quit {
             get {
@@ -402,16 +275,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} 備份中：({1}/{2}).
-        /// </summary>
-        internal static string TrayMenuItem_Transfering {
-            get {
-                return ResourceManager.GetString("TrayMenuItem_Transfering", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 版本：{0}.
+        ///   Looks up a localized string similar to Version：{0}.
         /// </summary>
         internal static string VersionLable {
             get {
