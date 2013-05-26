@@ -112,6 +112,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		protected ArrayList<OverviewData> doInBackground(Void... params) {
 			if(getActivity() == null)
 				return null;
+			Log.d(TAG, "PrepareViewTask: type=" + mType);
 			ArrayList<OverviewData> datas = new ArrayList<OverviewData>();
 			ArrayList<ServerEntity> servers = ServersLogic.getPairedServer(getActivity());
 			ServerEntity pairedServer = servers.get(0);
@@ -119,7 +120,6 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 				pairedServer.restPort ="14005";
 			}
 			mServerUrl ="http://"+pairedServer.ip+":"+pairedServer.restPort;
-			Log.d(TAG, "mServerUrl:" +mServerUrl);
 			switch(mType) {
 			case OVERVIEW_VIEW_TYPE_FAVORITE:
 				fillData(datas, Constant.TYPE_FAVORITE);
@@ -154,10 +154,13 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		
 		private void fillData(ArrayList<OverviewData> datas, int type) {
 			Cursor c = LabelDB.getCategoryLabelByLabelId(getActivity(), type);
+			Log.d(TAG, "There are " + c.getCount() + " labels");
 			for(int i=0; i<c.getCount(); ++i) {
 				c.moveToPosition(i);
 				Cursor fc = LabelDB.getLabelFilesByLabelId(getActivity(), c.getString(0));
+				Log.d(TAG, "There are " + fc.getCount() + " files");
 				if(fc.getCount() > 0) {
+					
 					OverviewData data = new OverviewData();
 					data.labelId = c.getString(0);
 					data.url = mServerUrl + c.getString(1);
