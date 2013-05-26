@@ -37,6 +37,7 @@ public class VideoActivity extends FragmentActivity{
 		video.setArguments(data);
 		transaction.add(R.id.content, video, mCurrentFragment);
 		transaction.addToBackStack(mCurrentFragment);
+		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 		transaction.commit();
 		
 	}
@@ -62,6 +63,7 @@ public class VideoActivity extends FragmentActivity{
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.add(R.id.content, fragment, VideoFragment.class.getSimpleName());
 		mCurrentFragment = VideoFragment.class.getSimpleName();
+		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 		transaction.addToBackStack(mCurrentFragment);
 		transaction.commit();
 	}

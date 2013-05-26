@@ -58,6 +58,7 @@ public class VideoPagerAdapter extends PagerAdapter implements OnClickListener{
 		ImageAttribute attr = new ImageAttribute(iv);
 		attr.setMaxSizeEqualsScreenSize(mInflater.getContext());
 		attr.setDoneScaleType(ScaleType.FIT_CENTER);
+		attr.setApplyWithAnimation(true);
 		mImageManager.getImage(mDatas.get(position).url, attr);
 		container.addView(root);
 		iv.setTag(position);

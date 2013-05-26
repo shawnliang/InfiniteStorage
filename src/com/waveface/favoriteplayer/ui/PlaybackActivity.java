@@ -38,6 +38,7 @@ public class PlaybackActivity extends FragmentActivity {
 		mCurrentFragment = PlaybackFragment.class.getSimpleName();
 		PlaybackFragment playback = new PlaybackFragment();
 		playback.setArguments(data);
+		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 		
 		transaction.add(R.id.content, playback, mCurrentFragment);
 		transaction.commit();
@@ -66,6 +67,7 @@ public class PlaybackActivity extends FragmentActivity {
 		fragment.setArguments(data);
 		mCurrentFragment = FullScreenSlideshowFragment.class.getSimpleName();
 		transaction.addToBackStack(mCurrentFragment);
+		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 		transaction.add(R.id.content, fragment, mCurrentFragment).commit();
 	}
 	
