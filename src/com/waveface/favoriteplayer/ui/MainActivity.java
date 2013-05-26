@@ -8,18 +8,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
-import com.waveface.favoriteplayer.event.DispatchKeyEvent;
 import com.waveface.favoriteplayer.event.LabelImportedEvent;
 import com.waveface.favoriteplayer.event.WebSocketEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
-import com.waveface.favoriteplayer.service.PlayerService;
 import com.waveface.favoriteplayer.task.DownloadLabelsTask;
 import com.waveface.favoriteplayer.ui.fragment.FragmentBase;
-import com.waveface.favoriteplayer.ui.fragment.PlaybackFragment;
 import com.waveface.favoriteplayer.ui.fragment.SyncFragment;
 import com.waveface.favoriteplayer.ui.fragment.SyncFragmentBase.onSyncFragmentChangedListener;
 import com.waveface.favoriteplayer.ui.fragment.SyncInProgressFragment;
@@ -93,8 +89,6 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 				new DownloadLabelsTask(this).execute(new Void[]{});
 			}
 		}
-		
-        getWindow().setBackgroundDrawable(null);
         sendBroadcast(new Intent(Constant.ACTION_FAVORITE_PLAYER_ALARM));
 	}
 	
@@ -152,13 +146,6 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
         super.onPause();
         Log.v(TAG, "pause activity");
     }
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		Log.d(TAG, "onKeyDown:"  + keyCode);
-		EventBus.getDefault().post(new DispatchKeyEvent(keyCode));
-		return true;
-	}
 
 	@Override
 	public void done(String id) {

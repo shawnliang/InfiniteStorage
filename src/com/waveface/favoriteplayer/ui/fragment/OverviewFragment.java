@@ -4,6 +4,7 @@ import idv.jason.lib.imagemanager.ImageManager;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ProgressBar;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.TextView;
@@ -30,17 +32,17 @@ import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelFileView;
 import com.waveface.favoriteplayer.entity.OverviewData;
 import com.waveface.favoriteplayer.entity.ServerEntity;
-import com.waveface.favoriteplayer.event.OverviewItemClickEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
+import com.waveface.favoriteplayer.ui.PlaybackActivity;
+import com.waveface.favoriteplayer.ui.VideoActivity;
 import com.waveface.favoriteplayer.ui.adapter.OverviewAdapter;
 import com.waveface.favoriteplayer.ui.widget.TwoWayView;
-
-import de.greenrobot.event.EventBus;
 
 public class OverviewFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener{
 	public static final String TAG = OverviewFragment.class.getSimpleName();
 	private TwoWayView mList;
 	private TextView mNoContent;
+	private ProgressBar mProgress;
 	private int mType = OVERVIEW_VIEW_TYPE_FAVORITE;
 	
 	public static final int OVERVIEW_VIEW_TYPE_FAVORITE = 1;
@@ -61,6 +63,8 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View root = inflater.inflate(R.layout.fragment_overview, container, false);
+		
+		mProgress = (ProgressBar) root.findViewById(R.id.progress);
 		
 		mList = (TwoWayView) root.findViewById(R.id.list);
 		mList.setLongClickable(true);
@@ -112,6 +116,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		protected ArrayList<OverviewData> doInBackground(Void... params) {
 			if(getActivity() == null)
 				return null;
+			Log.d(TAG, "PrepareViewTask: type=" + mType);
 			ArrayList<OverviewData> datas = new ArrayList<OverviewData>();
 			ArrayList<ServerEntity> servers = ServersLogic.getPairedServer(getActivity());
 			ServerEntity pairedServer = servers.get(0);
@@ -119,7 +124,6 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 				pairedServer.restPort ="14005";
 			}
 			mServerUrl ="http://"+pairedServer.ip+":"+pairedServer.restPort;
-			Log.d(TAG, "mServerUrl:" +mServerUrl);
 			switch(mType) {
 			case OVERVIEW_VIEW_TYPE_FAVORITE:
 				fillData(datas, Constant.TYPE_FAVORITE);
@@ -143,6 +147,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		@Override
 		protected void onPostExecute(ArrayList<OverviewData> datas) {
 			if(datas != null) {
+				mProgress.setVisibility(View.GONE);
 				OverviewAdapter adapter = new OverviewAdapter(getActivity(), datas);
 				mList.setAdapter(adapter);
 				
@@ -154,10 +159,13 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		
 		private void fillData(ArrayList<OverviewData> datas, int type) {
 			Cursor c = LabelDB.getCategoryLabelByLabelId(getActivity(), type);
+			Log.d(TAG, "There are " + c.getCount() + " labels");
 			for(int i=0; i<c.getCount(); ++i) {
 				c.moveToPosition(i);
 				Cursor fc = LabelDB.getLabelFilesByLabelId(getActivity(), c.getString(0));
+				Log.d(TAG, "There are " + fc.getCount() + " files");
 				if(fc.getCount() > 0) {
+					
 					OverviewData data = new OverviewData();
 					data.labelId = c.getString(0);
 					data.url = mServerUrl + c.getString(1);
@@ -218,10 +226,23 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 
 	@Override
 	public void onItemClick(AdapterView<?> listview, View view, int position, long id) {
-		OverviewItemClickEvent event = new OverviewItemClickEvent();
-		event.labelId = ((OverviewAdapter)listview.getAdapter()).getDatas().get(position).labelId;
-		event.type = mType;
-		EventBus.getDefault().post(event);
+		Intent intent = null;
+		Bundle data = new Bundle();
+		switch(mType) {
+		case OverviewFragment.OVERVIEW_VIEW_TYPE_FAVORITE:
+		case OverviewFragment.OVERVIEW_VIEW_TYPE_RECENT_PHOTO:
+			intent = new Intent(getActivity(), PlaybackActivity.class);
+			data.putString(Constant.ARGUMENT1, ((OverviewAdapter)listview.getAdapter()).getDatas().get(position).labelId);
+			intent.putExtras(data);
+			startActivity(intent);
+			break;
+		case OverviewFragment.OVERVIEW_VIEW_TYPE_RECENT_VIDEO:
+			intent = new Intent(getActivity(), VideoActivity.class);
+			data.putString(Constant.ARGUMENT1, ((OverviewAdapter)listview.getAdapter()).getDatas().get(position).labelId);
+			intent.putExtras(data);
+			startActivity(intent);
+			break;
+		}
 	}
 
 	@Override
