@@ -27,11 +27,12 @@ namespace Gui
 		private void FinishStep_Finish(object sender, ChangeStepEventArgs e)
 		{
 			if (cbRunNow.Checked && cbRunNow.Visible)
-			{
-				Microsoft.Win32.Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", Wizard.GetVariable<string>("resourceFolder"));
+			{				
 				var program = string.Format(Gui.Properties.Resources.FinishStepCommand, MsiConnection.Instance.GetPath("INSTALLLOCATION"));
 				UACHelper.CreateProcessAsStandardUser(program, "");
 			}
+
+			Microsoft.Win32.Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", Wizard.GetVariable<string>("resourceFolder"));
 		}
 
 		private void FinishStep_Entering(object sender, ChangeStepEventArgs e)

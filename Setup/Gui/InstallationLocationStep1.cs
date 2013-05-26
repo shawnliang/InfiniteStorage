@@ -20,7 +20,7 @@ namespace Gui
 			//    Wizard.ContinueMove();
 
 
-			location.Text = Path.Combine(Environment.GetEnvironmentVariable("UserProfile"), "FavoriteHome");
+			location.Text = Path.Combine(Environment.GetEnvironmentVariable("UserProfile"), "Favorite Home");
 		}
 
 		private void changeButton_Click(object sender, EventArgs e)
