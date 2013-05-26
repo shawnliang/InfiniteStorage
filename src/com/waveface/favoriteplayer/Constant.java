@@ -27,7 +27,7 @@ public class Constant {
 	public final static String ACTION_WEB_SOCKET_SERVER_DISCONNECTED = "com.waveface.favoriteplayer.action.WEB_SOCKET_SERVER_DISCONNECTED";	
 	public final static String ACTION_RELEASE_PAIRED_SERVER_BY_CLIENT = "com.waveface.favoriteplayer.action.RELEASE_PAIRED_SERVER_BY_CLIENT";	
     public final static String ACTION_LABEL_CHANGE="com.waveface.favoriteplayer.action.LABEL_CHANGE";	
-	
+    public final static String ACTION_NOT_ENOUGH_SPACE="com.waveface.favoriteplayer.action.NOT_ENOUGH_SPACE";	
 
 	//BUNDLE DATA
 	public static final String BUNDLE_FILE_TYPE = "FILE_TYPE";	
@@ -254,4 +254,6 @@ public class Constant {
 	public final static String PREF_SERVER_LABEL_SEQ = "server_label_seq";
 	public final static String PREF_SERVER_CHANGE_LABEL_ID = "server_change_label_id";
 	public final static String PREF_DOWNLOAD_LABEL_INIT_STATUS = "download_label_init_status";
+	
+	public final static int AVAIABLE_SPACE =30;
 }

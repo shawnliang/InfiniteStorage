@@ -2,6 +2,7 @@ package com.waveface.favoriteplayer.logic;
 
 import idv.jason.lib.imagemanager.ImageManager;
 
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import com.waveface.favoriteplayer.task.DownloadLabelsTask;
 import com.waveface.favoriteplayer.util.DeviceUtil;
 import com.waveface.favoriteplayer.util.FileUtil;
 import com.waveface.favoriteplayer.util.Log;
+import com.waveface.favoriteplayer.util.StringUtil;
 import com.waveface.favoriteplayer.websocket.RuntimeWebClient;
 import com.waveface.service.HttpInvoker;
 
@@ -97,7 +99,8 @@ public class DownloadLogic {
 							.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
 					Log.d(TAG, "filename:" + fileName);
 					Log.d(TAG, "fileId:" + fileId);
-
+                if(StringUtil.isAvaiableSpace(Constant.AVAIABLE_SPACE)){
+					
 					if (type.equals(Constant.FILE_TYPE_VIDEO)) {
 						String url = restfulAPIURL + Constant.URL_IMAGE + "/"
 								+ fileId + "/" + Constant.URL_IMAGE_ORIGIN;
@@ -111,6 +114,11 @@ public class DownloadLogic {
 								+ fileId + Constant.URL_IMAGE_LARGE;
 //						imageManager.getImageWithoutThread(url, null);
 					}
+                }else{
+					context.sendBroadcast(new Intent(
+							Constant.ACTION_NOT_ENOUGH_SPACE));
+                	
+                }
 					long time = System.currentTimeMillis();
 					time = System.currentTimeMillis() - time;
 					syncingEvent.singleTime = time;
@@ -197,7 +205,7 @@ public class DownloadLogic {
 			// send broadcast label change
 			context.sendBroadcast(new Intent(Constant.ACTION_LABEL_CHANGE));
 		}
-
+		maxLabelcursor.close();
 		ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
 		ConnectForGTVEntity.Connect connect = new ConnectForGTVEntity.Connect();
 		connect.deviceId = DeviceUtil.id(context);

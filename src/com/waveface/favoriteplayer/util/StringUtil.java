@@ -25,6 +25,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import android.net.Uri;
+import android.os.Environment;
+import android.os.StatFs;
 import android.text.TextUtils;
 
 import com.google.gson.stream.JsonReader;
@@ -1198,5 +1200,23 @@ public class StringUtil {
 		}
 		return  domain = url.getHost();
 	}
+	
+	public static boolean isAvaiableSpace(int sizeMb){
+		 if(android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
+		 {
+		      String sdcard = Environment.getExternalStorageDirectory().getPath();
+		     StatFs statFs = new StatFs(sdcard);
+		     long blockSize = statFs.getBlockSize();
+		     long blocks = statFs.getAvailableBlocks();
+		     long availableSpare = (blocks*blockSize)/(1024*1024);
+		      if(sizeMb>availableSpare){
+		      return false;
+		     }else{
+		      return true;
+		     }
+		 }
+
+		  return false;
+		 }
 
 }
