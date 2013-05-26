@@ -1,18 +1,18 @@
 package com.waveface.favoriteplayer.ui.adapter;
 
+import java.util.ArrayList;
+
 import idv.jason.lib.imagemanager.ImageAttribute;
 import idv.jason.lib.imagemanager.ImageManager;
 
-import java.util.ArrayList;
+import com.waveface.favoriteplayer.R;
+import com.waveface.favoriteplayer.SyncApplication;
+import com.waveface.favoriteplayer.entity.VideoData;
+import com.waveface.favoriteplayer.event.VideoItemClickEvent;
+
+import de.greenrobot.event.EventBus;
 
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore.Video.Thumbnails;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,48 +21,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
-import com.waveface.favoriteplayer.Constant;
-import com.waveface.favoriteplayer.R;
-import com.waveface.favoriteplayer.SyncApplication;
-import com.waveface.favoriteplayer.db.LabelDB;
-import com.waveface.favoriteplayer.db.LabelFileView;
-import com.waveface.favoriteplayer.ui.VideoActivity;
-
 public class VideoPagerAdapter extends PagerAdapter implements OnClickListener{
 	private ImageManager mImageManager;
-	private ArrayList<VideoData> mThumbnails = new ArrayList<VideoData>();
+	private ArrayList<VideoData> mDatas = new ArrayList<VideoData>();
 	private LayoutInflater mInflater;
-	
-	class VideoData {
-		public String thumbnail;
-		public String video;
-	}
-	
-	public VideoPagerAdapter(Context context, String labelId) {
-		mImageManager = SyncApplication.getWavefacePlayerApplication(context).getImageManager();
-		Cursor lfc = LabelDB.getLabelFileViewByLabelId(context, labelId);
-		for(int i=0; i<lfc.getCount(); ++i) {
-			lfc.moveToPosition(i);
-			VideoData data = new VideoData();
-			String fileName =  Environment.getExternalStorageDirectory().getAbsolutePath()
-					+ Constant.VIDEO_FOLDER+ "/"  +lfc
-					.getString(lfc
-							.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
-			Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(fileName, 
-			        Thumbnails.MINI_KIND);
 
-//			mImageManager.setBitmapToFile(bmThumbnail, fileName, null, false);
-			data.thumbnail = fileName;
-			mThumbnails.add(data);
-		}
-		lfc.close();
-		
+
+	public VideoPagerAdapter(Context context, ArrayList<VideoData> datas) {
+		mImageManager = SyncApplication.getWavefacePlayerApplication(context).getImageManager();		
 		mInflater = LayoutInflater.from(context);
+		mDatas = datas;
 	}
 
 	@Override
 	public int getCount() {
-		return mThumbnails.size();
+		return mDatas.size();
 	}
 
 	@Override
@@ -83,9 +56,10 @@ public class VideoPagerAdapter extends PagerAdapter implements OnClickListener{
 		ImageView iv = (ImageView) root.findViewById(R.id.image);
 		iv.setOnClickListener(this);
 		ImageAttribute attr = new ImageAttribute(iv);
-//		attr.setMaxSizeEqualsScreenSize(mInflater.getContext());
+		attr.setMaxSizeEqualsScreenSize(mInflater.getContext());
 		attr.setDoneScaleType(ScaleType.FIT_CENTER);
-		mImageManager.getImage(mThumbnails.get(position).thumbnail, attr);
+		attr.setApplyWithAnimation(true);
+		mImageManager.getImage(mDatas.get(position).url, attr);
 		container.addView(root);
 		iv.setTag(position);
 		return root;
@@ -95,13 +69,10 @@ public class VideoPagerAdapter extends PagerAdapter implements OnClickListener{
 	public void onClick(View v) {
 		int position = (Integer) v.getTag();
 
-		Context context = mInflater.getContext();
-		Intent intent = new Intent(mInflater.getContext(), VideoActivity.class);
-		Bundle data = new Bundle();
-		data.putString(Constant.ARGUMENT1, mThumbnails.get(position).thumbnail);
-		intent.putExtras(data);
-		context.startActivity(intent);
-		
-		
+		VideoItemClickEvent event = new VideoItemClickEvent();
+		event.urls =  mDatas;
+		event.position = position;
+
+		EventBus.getDefault().post(event);
 	}
 }

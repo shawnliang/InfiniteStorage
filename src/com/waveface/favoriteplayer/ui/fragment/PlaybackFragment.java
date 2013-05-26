@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 
 import com.waveface.favoriteplayer.Constant;
@@ -23,9 +22,9 @@ import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelFileTable;
 import com.waveface.favoriteplayer.entity.PlaybackData;
 import com.waveface.favoriteplayer.entity.ServerEntity;
-import com.waveface.favoriteplayer.event.DispatchKeyEvent;
+//import com.waveface.favoriteplayer.event.DispatchKeyEvent;
+import com.waveface.favoriteplayer.event.PhotoItemClickEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
-import com.waveface.favoriteplayer.ui.FullScreenSlideShowActivity;
 import com.waveface.favoriteplayer.ui.adapter.PlayerPagerAdapter;
 
 import de.greenrobot.event.EventBus;
@@ -83,14 +82,6 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 		
 		mPager = (ViewPager) root.findViewById(R.id.pager);
 		mPager.setAdapter(new PlayerPagerAdapter(getActivity(), mDatas));
-		mPager.setOnKeyListener(new OnKeyListener() {
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if(event.getAction() == KeyEvent.ACTION_UP)
-					EventBus.getDefault().post(new DispatchKeyEvent(keyCode));
-				return true;
-			}
-		});
 		mPager.setOnPageChangeListener(this);
 		
 		return root;
@@ -107,7 +98,6 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	@Override
 	public void onPause() {
 		super.onPause();
-		EventBus.getDefault().unregister(this);
 		Log.d(TAG, "stop slide show");
 		mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
 	}
@@ -115,19 +105,18 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	@Override
 	public void onResume() {
 		super.onResume();
-		EventBus.getDefault().register(this);
 		delaySlideShow(AUTO_SLIDE_SHOW_FIRST_DELAY_MILLIS);
 	}
 	
 
-	public void onEvent(DispatchKeyEvent e) {
-		Log.d(TAG, "e.keycode:" + e.keycode);
+	public void onKeyEvent(int keyCode, KeyEvent event) {
+		Log.d(TAG, "keycode:" + keyCode);
 		Log.d(TAG, "stop slide show");
 		mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
 		
 		int currentPosition = mPager.getCurrentItem();
 
-		switch(e.keycode) {
+		switch(keyCode) {
 		case KeyEvent.KEYCODE_DPAD_LEFT:
 		case KeyEvent.KEYCODE_MEDIA_REWIND:
 			Log.d(TAG, "onEvent left");
@@ -154,12 +143,12 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	
 	private void startSlideShow() {
 		Log.d(TAG, "startSlideShow");
-		Intent intent = new Intent(getActivity(), FullScreenSlideShowActivity.class);
-		Bundle data = new Bundle();
-		data.putParcelableArrayList(Constant.ARGUMENT1, mDatas);
-		data.putInt(Constant.ARGUMENT2, mPager.getCurrentItem());
-		intent.putExtras(data);
-		startActivityForResult(intent, 0);
+		
+		PhotoItemClickEvent event = new PhotoItemClickEvent();
+		event.datas = mDatas;
+		event.position = mPager.getCurrentItem();
+		
+		EventBus.getDefault().post(event);
 	}
 	
 	@Override
