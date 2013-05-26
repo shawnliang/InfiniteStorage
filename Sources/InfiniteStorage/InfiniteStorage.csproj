@@ -197,12 +197,6 @@
     <Compile Include="Src\Dialog\PairingRequestDialog.Designer.cs">
       <DependentUpon>PairingRequestDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Src\UIControl\BackupLocationControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Src\UIControl\BackupLocationControl.Designer.cs">
-      <DependentUpon>BackupLocationControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Src\Class\OrganizeMethod.cs" />
     <Compile Include="Src\UIControl\GeneralPreferenceControl.cs">
       <SubType>UserControl</SubType>
@@ -291,9 +285,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Src\UIControl\BackupLocationControl.resx">
-      <DependentUpon>BackupLocationControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\DeviceListControl.resx">
       <DependentUpon>DeviceListControl.cs</DependentUpon>
     </EmbeddedResource>

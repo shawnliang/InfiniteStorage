@@ -310,7 +310,7 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bunny.
+        ///   Looks up a localized string similar to Favorite Home.
         /// </summary>
         internal static string ProductName {
             get {

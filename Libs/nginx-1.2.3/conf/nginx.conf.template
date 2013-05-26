@@ -29,7 +29,7 @@ http {
     server {
         listen       ${listen} default_server;
 
-        root         ${root};
+        root         '${root}';
 
         # redirect server error pages to the static page /50x.html
         #
