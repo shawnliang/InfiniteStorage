@@ -229,7 +229,7 @@
 				</ScrollViewer>
 				<Grid Grid.Row="1" Background="#FF3E3E3E" Margin="0">
 					<local:ZoomSlider x:Name="zoomSlider" Margin="10,0,0,0" Minimum="150" Maximum="400" Value="200" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand"/>
-					<local:FavoriteAllButton Margin="0,0,10,0" Width="100" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Loaded="FavoriteAllButton_Loaded" Cursor="Hand"/>
+					<local:FavoriteAllButton Margin="0,0,10,0" Width="100" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Click="FavoriteAllButton_Click" Cursor="Hand"/>
 				</Grid>
 			</Grid>
 		</Grid>

@@ -162,7 +162,7 @@ namespace Waveface.Client
 			Process.Start("sharedFavorite", "\"" + arguments + "\"");
 		}
 
-		private void FavoriteAllButton_Loaded(object sender, RoutedEventArgs e)
+		private void FavoriteAllButton_Click(object sender, RoutedEventArgs e)
 		{
 			foreach (IContent content in lbxContentContainer.Items)
 			{
