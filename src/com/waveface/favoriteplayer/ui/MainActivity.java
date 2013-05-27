@@ -16,6 +16,7 @@ import com.waveface.favoriteplayer.event.WebSocketEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.task.DownloadLabelsTask;
 import com.waveface.favoriteplayer.ui.fragment.FragmentBase;
+import com.waveface.favoriteplayer.ui.fragment.PickserverDialogFragment;
 import com.waveface.favoriteplayer.ui.fragment.SyncFragment;
 import com.waveface.favoriteplayer.ui.fragment.SyncFragmentBase.onSyncFragmentChangedListener;
 import com.waveface.favoriteplayer.ui.fragment.SyncInProgressFragment;
@@ -81,9 +82,12 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 			transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 			
 			if(ServersLogic.hasBackupedServers(this) == false) {
-				SyncFragment photoJournal = new SyncFragment();
-				transaction.add(R.id.container_content, photoJournal, SyncFragment.class.getSimpleName()).commit();
-				mCurrentFragmentName = SyncFragment.class.getSimpleName();
+//				SyncFragment photoJournal = new SyncFragment();
+//				transaction.add(R.id.container_content, photoJournal, SyncFragment.class.getSimpleName()).commit();
+//				mCurrentFragmentName = SyncFragment.class.getSimpleName();
+				
+				PickserverDialogFragment df = new PickserverDialogFragment();
+				df.show(getSupportFragmentManager(), PickserverDialogFragment.class.getSimpleName());
 			} else {				
 				showSyncInProgressFragment(false);
 			//	new DownloadLabelsTask(this).execute(new Void[]{});
@@ -122,13 +126,7 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 	
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
-    	if(TextUtils.isEmpty(mCurrentFragmentName) == false) {
-    		Fragment fragment = getSupportFragmentManager().findFragmentByTag(mCurrentFragmentName);
-    		if(fragment != null && fragment instanceof FragmentBase) {
-    			((FragmentBase)fragment).onBackPressed();
-    		}
-    	}
+    	finish();
 	}
 	
 	@Override

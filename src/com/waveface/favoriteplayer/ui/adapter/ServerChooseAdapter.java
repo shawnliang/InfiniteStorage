@@ -63,9 +63,9 @@ public class ServerChooseAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		convertView.setBackgroundColor(isFocused[position]? 
-				R.color.bonjour_serve_click:
-				R.color.bonjour_server_default);
+//		convertView.setBackgroundColor(isFocused[position]? 
+//				R.color.bonjour_serve_click:
+//				R.color.bonjour_server_default);
 
 		ServerEntity entity = values.get(position);
 		if (!TextUtils.isEmpty(entity.serverOS)) {

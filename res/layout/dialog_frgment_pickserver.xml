@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/choose_server"
+        android:textSize="24sp"
+        style="@style/HighlightText"/>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dip"
+        android:layout_below="@+id/textView1"
+        android:id="@+id/seperate_line"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:layout_marginTop="10dip"
+        android:background="#33CCFF" 
+        />
+    
+    <ListView
+        android:id="@+id/listview"
+        android:layout_below="@+id/seperate_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:cacheColorHint="@android:color/transparent"
+        android:clickable="true"
+        android:drawSelectorOnTop="false"
+        android:listSelector="@drawable/server_chosed" />
+
+    <LinearLayout
+        android:id="@+id/container_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dip">
+
+        <ProgressBar
+            android:id="@+id/pbSearch"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:id="@+id/tvSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/server_searching"
+            android:textColor="#33CCFF"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+</RelativeLayout>
