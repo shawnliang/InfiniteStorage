@@ -43,7 +43,7 @@ public class DownloadLogic {
 
 	private static final String TAG = DownloadLogic.class.getSimpleName();
 
-	public static synchronized void downloadLabel(Context context, LabelEntity.Label label) {
+	public static synchronized void downloadLabel(Context context, LabelEntity.Label label,boolean autoDownload) {
 		HashMap<String, String> param = new HashMap<String, String>();
 		String files = "";
 		String jsonOutput = "";
@@ -127,7 +127,9 @@ public class DownloadLogic {
 
 					filecursor.moveToNext();
 				}
-				EventBus.getDefault().post(doneEvent);
+				if(autoDownload==false){
+					EventBus.getDefault().post(doneEvent);
+				}
 				filecursor.close();
 			}
 		} else {
@@ -138,7 +140,7 @@ public class DownloadLogic {
 
 	public static void updateAllLabels(Context context, LabelEntity entity) {
 		for (LabelEntity.Label label : entity.labels) {
-			downloadLabel(context, label);
+			downloadLabel(context, label,true);
 		}
 		LabelImportedEvent doneEvent = new LabelImportedEvent(
 				LabelImportedEvent.STATUS_DONE);
@@ -148,7 +150,7 @@ public class DownloadLogic {
 
 	public static void updateLabel(Context context,
 			LabelEntity.Label labelEntity) {
-		downloadLabel(context, labelEntity);
+		downloadLabel(context, labelEntity,false);
 		// while(!wasSynced(context)){
 		// //
 		// downloadLabel(context,labelEntity);

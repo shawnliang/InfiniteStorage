@@ -7,8 +7,11 @@ import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.db.BonjourServersTable;
 import com.waveface.favoriteplayer.entity.ServerEntity;
+import com.waveface.favoriteplayer.event.ServerChooseEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.ui.adapter.ServerChooseAdapter;
+
+import de.greenrobot.event.EventBus;
 
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -66,6 +69,8 @@ public class PickserverDialogFragment extends DialogFragment {
 			public void onItemClick(AdapterView<?> parent, final View view,
 					int position, long id) {
 				clickToLinkServer(mAdapter.getItem(position));
+				EventBus.getDefault().post(new ServerChooseEvent());
+				dismiss();
 			}
 		});
 

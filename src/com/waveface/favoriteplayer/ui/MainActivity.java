@@ -12,6 +12,7 @@ import android.util.Log;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.event.LabelImportedEvent;
+import com.waveface.favoriteplayer.event.ServerChooseEvent;
 import com.waveface.favoriteplayer.event.WebSocketEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.task.DownloadLabelsTask;
@@ -64,7 +65,7 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 	private Runnable mReplaceContentToSyncRunnable = new Runnable() {
 		@Override
 		public void run() {
-			showSyncInProgressFragment(true);
+			showSyncInProgressFragment(false);
 			//new DownloadLabelsTask(MainActivity.this).execute(new Void[]{});
 		}
 		
@@ -122,6 +123,10 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 				//new DownloadLabelsTask(this).execute(new Void[]{});
 			}
 		}
+	}
+	
+	public void onEvent(ServerChooseEvent event) {
+		mHander.post(mReplaceContentToSyncRunnable);
 	}
 	
 	@Override

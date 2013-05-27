@@ -26,7 +26,7 @@ public class LabelDB {
 			LabelEntity.Label label, FileEntity fileEntity ,boolean isChangeLabel) {
 
 		if(isChangeLabel){
-			deleteLabel(context,label.label_id);
+//			deleteLabel(context,label.label_id);
 		}
 		//StringUtil.localtimeToIso8601(new Date())
 		updateLabel(context, label);
