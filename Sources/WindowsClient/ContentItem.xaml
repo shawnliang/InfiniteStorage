@@ -54,7 +54,7 @@
 
         <Grid x:Name="photoInfo" Visibility="Collapsed">
             <Rectangle x:Name="rectangle" Grid.Row="0" Fill="#E5000000" Height="37.5" Margin="-1,0,-1,-1" VerticalAlignment="Bottom" StrokeThickness="0" Opacity="0.65"/>
-            <TextBlock x:Name="DateTaken" Margin="8,0,32,5" TextWrapping="Wrap" Text="{Binding Name, IsAsync=True}" VerticalAlignment="Bottom" FontSize="13" Opacity="0.6" FontFamily="Segoe UI Light"/>
+            <TextBlock x:Name="DateTaken" Margin="8,0,32,5" TextWrapping="Wrap" Text="{Binding Name, IsAsync=True}" VerticalAlignment="Bottom" FontSize="13" Opacity="0.6" FontFamily="Segoe UI Light" SnapsToDevicePixels="True"/>
         </Grid>
         <l:LabelTag x:Name="ltTag" Tagged="{Binding Liked, Mode=TwoWay}" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30" Visibility="{Binding Tagged, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=ltTag}"/>
 

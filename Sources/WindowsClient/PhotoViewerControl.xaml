@@ -54,7 +54,7 @@
 			</Canvas>
 		</Viewbox>
 		<Rectangle x:Name="ContentName" Fill="#E5000000" Height="37.5" VerticalAlignment="Top" Opacity="0.7" RadiusX="20" RadiusY="20" Stroke="#FFF0E9E9" Margin="0,13,0,0" Width="250"/>
-		<Label x:Name="DateTaken" Content="{Binding SelectedItem.Name, ElementName=lbImages, IsAsync=True}" VerticalAlignment="Top" FontSize="16" Opacity="0.6" Height="37.5" FontFamily="Segoe UI Light"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Margin="0,13,0,0" Width="250"/>
+		<Label x:Name="DateTaken" Content="{Binding SelectedItem.Name, ElementName=lbImages, IsAsync=True}" VerticalAlignment="Top" FontSize="16" Opacity="0.6" Height="37.5" FontFamily="Segoe UI Light"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Margin="0,13,0,0" Width="250" SnapsToDevicePixels="True"/>
         <l:ViewerControl x:Name="vcViewerControl" Stared="{Binding SelectedItem.Liked, ElementName=lbImages, Mode=TwoWay, IsAsync=True}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,13" Next="ViewerControl_Next" Previous="ViewerControl_Previous" Close="ViewerControl_Close"/>
 
 		<Label x:Name="label" VerticalAlignment="Bottom" Height="20" Opacity="0" Visibility="Collapsed"/>
