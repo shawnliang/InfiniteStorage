@@ -89,9 +89,9 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 				
 				PickserverDialogFragment df = new PickserverDialogFragment();
 				df.show(getSupportFragmentManager(), PickserverDialogFragment.class.getSimpleName());
-			} else {				
+			} else {			
 				showSyncInProgressFragment(false);
-			//	new DownloadLabelsTask(this).execute(new Void[]{});
+				new DownloadLabelsTask(this).execute(new Void[]{});
 			}
 		}
         sendBroadcast(new Intent(Constant.ACTION_FAVORITE_PLAYER_ALARM));
