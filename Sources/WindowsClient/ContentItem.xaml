@@ -36,7 +36,7 @@
             <Canvas x:Name="ImgCanvas" ClipToBounds="True"  Height="371" Width="602">
                 <ContentControl x:Name="ImgContentCtrl" Canvas.Left="0" Canvas.Top="1"  Height="371" Width="602">-->
                     <!--<Grid x:Name="ImgGrid">-->
-        <Image x:Name="image" Source ="{Binding ThumbnailSource, IsAsync=True}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" OpacityMask="Black">
+        <Image x:Name="image" Source ="{Binding ThumbnailSource, IsAsync=True}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" OpacityMask="Black" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="NearestNeighbor">
                             <Image.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -54,7 +54,7 @@
 
         <Grid x:Name="photoInfo" Visibility="Collapsed">
             <Rectangle x:Name="rectangle" Grid.Row="0" Fill="#E5000000" Height="37.5" Margin="-1,0,-1,-1" VerticalAlignment="Bottom" StrokeThickness="0" Opacity="0.65"/>
-            <TextBlock x:Name="DateTaken" Margin="8,0,32,5" TextWrapping="Wrap" Text="{Binding Name, IsAsync=True}" VerticalAlignment="Bottom" FontSize="13" Opacity="0.6" FontFamily="Segoe UI Light"/>
+            <TextBlock x:Name="DateTaken" Margin="8,0,32,5" TextWrapping="Wrap" Text="{Binding Name, IsAsync=True}" VerticalAlignment="Bottom" FontSize="13" Opacity="0.6" FontFamily="Segoe UI Light" SnapsToDevicePixels="True"/>
         </Grid>
         <l:LabelTag x:Name="ltTag" Tagged="{Binding Liked, Mode=TwoWay}" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30" Visibility="{Binding Tagged, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=ltTag}"/>
 

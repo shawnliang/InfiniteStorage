@@ -165,16 +165,7 @@
 					<ControlTemplate TargetType="{x:Type Thumb}">
 						<Grid SnapsToDevicePixels="true">
 
-							<Path x:Name="Background" Data="{StaticResource SliderThumbOuterBorderGeometry}" Stretch="Fill" >
-								<Path.Effect>
-									<DropShadowEffect Opacity="0.6" Direction="270" ShadowDepth="2"/>
-								</Path.Effect>
-								<Path.Stroke>
-									<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-										<GradientStop Color="#FF3E3C3C" Offset="0"/>
-										<GradientStop Color="#FF292828" Offset="1"/>
-									</LinearGradientBrush>
-								</Path.Stroke>
+							<Path x:Name="Background" Data="{StaticResource SliderThumbOuterBorderGeometry}" Stretch="Fill" Stroke="#FF131313" StrokeThickness="0.5" Margin="0" >
 								<Path.Fill>
 									<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
 										<GradientStop Color="#FF302F2F" Offset="0"/>
@@ -283,8 +274,8 @@
 											<ColumnDefinition Width="*"/>
 											<ColumnDefinition Width="20"/>
 										</Grid.ColumnDefinitions>
-										<Image Grid.Column="0" Source="sliderbarsmallphotoicon.png" VerticalAlignment="Center"/>
-                            <Image Grid.Column="2" Source="sliderbarbigphotoicon.png" VerticalAlignment="Center"/>
+										<Image Grid.Column="0" Source="sliderbarsmallphotoicon.png" VerticalAlignment="Center" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                            <Image Grid.Column="2" Source="sliderbarbigphotoicon.png" VerticalAlignment="Center" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
 										<Grid Grid.Column="1">
 											<Grid.RowDefinitions>
 												<RowDefinition Height="Auto"/>
@@ -293,7 +284,7 @@
 											</Grid.RowDefinitions>
 											<TickBar x:Name="TopTick" Fill="{TemplateBinding Foreground}" Height="4" Placement="Top" Grid.Row="0" Visibility="Collapsed"/>
 											<TickBar x:Name="BottomTick" Fill="{TemplateBinding Foreground}" Height="4" Placement="Bottom" Grid.Row="2" Visibility="Collapsed"/>
-											<Border x:Name="TrackBackground" BorderThickness="1" CornerRadius="1" Height="7" Margin="5,0" Grid.Row="1" VerticalAlignment="center" BorderBrush="{x:Null}">
+											<Border x:Name="TrackBackground" BorderThickness="1" CornerRadius="1" Height="7" Margin="5,0" Grid.Row="1" VerticalAlignment="center" BorderBrush="{x:Null}" SnapsToDevicePixels="True">
 												<Border.Background>
 													<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
 														<GradientStop Color="#FF111111" Offset="0"/>
@@ -312,7 +303,7 @@
 													<RepeatButton Command="{x:Static Slider.IncreaseLarge}" Style="{StaticResource SliderRepeatButtonStyle}"/>
 												</Track.IncreaseRepeatButton>
 												<Track.Thumb>
-													<Thumb x:Name="Thumb" Style="{StaticResource HorizontalSliderThumbStyle}"/>
+													<Thumb x:Name="Thumb" Style="{StaticResource HorizontalSliderThumbStyle}" SnapsToDevicePixels="True"/>
 												</Track.Thumb>
 											</Track>
 										</Grid>
