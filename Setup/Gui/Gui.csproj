@@ -113,22 +113,43 @@
     <EmbeddedResource Include="BonjourInstallationStep.resx">
       <DependentUpon>BonjourInstallationStep.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="BonjourInstallationStep.zh-TW.resx">
+      <DependentUpon>BonjourInstallationStep.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FatalErrorStep.resx">
+      <DependentUpon>FatalErrorStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FatalErrorStep.zh-TW.resx">
       <DependentUpon>FatalErrorStep.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FinishStep.resx">
       <DependentUpon>FinishStep.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FinishStep.zh-TW.resx">
+      <DependentUpon>FinishStep.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InitializationStep.resx">
+      <DependentUpon>InitializationStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InitializationStep.zh-TW.resx">
       <DependentUpon>InitializationStep.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InstallationLocationStep1.resx">
       <DependentUpon>InstallationLocationStep1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="InstallationLocationStep1.zh-TW.resx">
+      <DependentUpon>InstallationLocationStep1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InstallationModeStep.resx">
       <DependentUpon>InstallationModeStep.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="InstallationModeStep.zh-TW.resx">
+      <DependentUpon>InstallationModeStep.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InstallationStep.resx">
+      <DependentUpon>InstallationStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstallationStep.zh-TW.resx">
       <DependentUpon>InstallationStep.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

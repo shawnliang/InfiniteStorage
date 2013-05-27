@@ -3,8 +3,8 @@
   <!-- This is translation to Chinese (Traditional, Taiwan) -->
   <String Id="LANGUAGE">1028</String>
   <String Id="CULTURE">zh-TW</String>
-  <String Id="APPNAME">Bunny</String>
-  <String Id="SHORTCUT.UNINSTALLER.NAME">移除程式</String>
+  <String Id="APPNAME">Favorite Home</String>
+  <String Id="SHORTCUT.UNINSTALLER.NAME">移除 Favorite Home</String>
   <String Id="SetUrlAcl">設定網路</String>
   
   <!-- Copied from Wix 3.6 src\ext\FirewallExtension\wixlib\en-us.wxl -->

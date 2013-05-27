@@ -112,27 +112,27 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="rbReinstall.Text" xml:space="preserve">
-    <value>Reinstall</value>
+    <value>重新安裝</value>
   </data>
   <data name="rbCustom.Text" xml:space="preserve">
-    <value>Custom</value>
+    <value>自訂</value>
   </data>
   <data name="rbUpgrade.Text" xml:space="preserve">
-    <value>Upgrade</value>
+    <value>更新</value>
   </data>
   <data name="rbUninstall.Text" xml:space="preserve">
-    <value>Uninstall</value>
+    <value>解除安裝</value>
   </data>
   <data name="rbInstall.Text" xml:space="preserve">
-    <value>Install</value>
+    <value>安裝</value>
   </data>
   <data name="rbModify.Text" xml:space="preserve">
-    <value>Modify</value>
+    <value>修改</value>
   </data>
 </root>

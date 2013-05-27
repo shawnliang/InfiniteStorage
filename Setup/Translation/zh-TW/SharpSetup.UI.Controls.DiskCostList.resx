@@ -112,24 +112,24 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ColumnTotal.Text" xml:space="preserve">
-    <value>Total size</value>
+    <value>總空間</value>
   </data>
   <data name="ColumnFree.Text" xml:space="preserve">
-    <value>Free space</value>
+    <value>可用空間</value>
   </data>
   <data name="ColumnDiskName.Text" xml:space="preserve">
-    <value>Disk</value>
+    <value>硬碟</value>
   </data>
   <data name="ColumnRequired.Text" xml:space="preserve">
-    <value>Required space</value>
+    <value>需要空間</value>
   </data>
   <data name="ColumnRemaining.Text" xml:space="preserve">
-    <value>Remaining space</value>
+    <value>剩餘空間</value>
   </data>
 </root>

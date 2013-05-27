@@ -41,9 +41,49 @@
     <Content Include="Product.Uninstaller.wxi" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sources\InfiniteStorage.DB\InfiniteStorage.DB.csproj">
+      <Name>InfiniteStorage.DB</Name>
+      <Project>{793d45b0-147c-4304-8578-7ff2792102c8}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\..\Sources\InfiniteStorage\InfiniteStorage.csproj">
       <Name>InfiniteStorage</Name>
       <Project>{0ce50f48-3081-423a-8ccb-7515811392c5}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources\PendingUI\PendingUI.csproj">
+      <Name>PendingUI</Name>
+      <Project>{9cfd2413-3b47-41ba-be57-4fc7a8812cbb}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources\Waveface.ClientFramework\Waveface.ClientFramework.csproj">
+      <Name>Waveface.ClientFramework</Name>
+      <Project>{535c6e29-0e0d-43a5-8740-b869f2ee900e}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources\Waveface.Model\Waveface.Model.csproj">
+      <Name>Waveface.Model</Name>
+      <Project>{5fdf66ea-3a88-45ac-a032-a2771e3afcc7}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources\WindowsClient\Waveface.Client.csproj">
+      <Name>Waveface.Client</Name>
+      <Project>{39efb0a3-3e10-4e80-b518-97526f76508d}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

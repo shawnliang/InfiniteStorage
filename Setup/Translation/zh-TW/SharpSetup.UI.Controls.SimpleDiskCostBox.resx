@@ -112,28 +112,28 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblSpaceRemainsAmount.Text" xml:space="preserve">
     <value>0 kB</value>
   </data>
   <data name="lblSpaceRequired.Text" xml:space="preserve">
-    <value>Required space:</value>
+    <value>需要空間:</value>
   </data>
   <data name="lblSpaceRemains.Text" xml:space="preserve">
-    <value>Remaining space:</value>
+    <value>剩餘空間:</value>
   </data>
   <data name="lblDiskName.Text" xml:space="preserve">
-    <value>Disk name:</value>
+    <value>磁碟名稱:</value>
   </data>
   <data name="lblSpaceFree.Text" xml:space="preserve">
-    <value>Free space:</value>
+    <value>可用空間:</value>
   </data>
   <data name="lblSpaceTotal.Text" xml:space="preserve">
-    <value>Total space:</value>
+    <value>總空間:</value>
   </data>
   <data name="lblSpaceRequiredAmount.Text" xml:space="preserve">
     <value>0 kB</value>
@@ -145,7 +145,7 @@
     <value>0 kB</value>
   </data>
   <data name="gbDiskSpace.Text" xml:space="preserve">
-    <value>Disk space</value>
+    <value>磁碟空間:</value>
   </data>
   <data name="lblSpaceFreeAmount.Text" xml:space="preserve">
     <value>0 kB</value>

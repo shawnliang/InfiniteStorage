@@ -32,7 +32,10 @@ namespace Gui
 				UACHelper.CreateProcessAsStandardUser(program, "");
 			}
 
-			Microsoft.Win32.Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", Wizard.GetVariable<string>("resourceFolder"));
+			if (mode == InstallationMode.Install)
+			{
+				Microsoft.Win32.Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", Wizard.GetVariable<string>("resourceFolder"));
+			}
 		}
 
 		private void FinishStep_Entering(object sender, ChangeStepEventArgs e)
