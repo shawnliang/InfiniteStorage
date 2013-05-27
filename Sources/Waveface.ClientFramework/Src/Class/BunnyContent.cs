@@ -21,14 +21,6 @@ namespace Waveface.ClientFramework
 
 
 		#region Property
-		public override string ID
-		{
-			get
-			{
-				return GetContentID();
-			}
-		}
-
 		public BitmapSource ImageSource 
 		{
 			get
@@ -140,39 +132,14 @@ namespace Waveface.ClientFramework
 
 		}
 
-		public BunnyContent(Uri uri)
-			: base(uri.GetHashCode().ToString(), uri)
+		public BunnyContent(Uri uri, string file_id)
+			: base(file_id, uri)
 		{
 		} 
 		#endregion
 
 
 		#region Private Method
-		/// <summary>
-		/// Gets the content ID.
-		/// </summary>
-		/// <returns></returns>
-		private string GetContentID()
-		{
-			var savedPath = this.ContentPath;
-
-			var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
-
-			var dbFilePath = Path.Combine(appDir, "database.s3db");
-
-			var conn = new SQLiteConnection(string.Format("Data source={0}", dbFilePath));
-
-			conn.Open();
-
-			var cmd = new SQLiteCommand(string.Format("SELECT file_id FROM Files where saved_path = '{0}'", savedPath), conn);
-
-			var contentID = cmd.ExecuteScalar().ToString();
-
-			conn.Close();
-
-			return contentID;
-		}
-
 		/// <summary>
 		/// Gets the content thumbnail.
 		/// </summary>
@@ -203,7 +170,7 @@ namespace Waveface.ClientFramework
 
 			conn.Open();
 
-			var cmd = new SQLiteCommand("SELECT label_id FROM LabelFiles where file_id = @fid", conn);
+			var cmd = new SQLiteCommand("SELECT 1 FROM LabelFiles f, Labels lb where file_id = @fid and f.label_id = lb.label_id and lb.name = 'TAG'", conn);
 			cmd.Parameters.Add(new SQLiteParameter("@fid", new Guid(ID)));
 
 			var liked =  cmd.ExecuteScalar() != null;

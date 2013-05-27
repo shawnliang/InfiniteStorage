@@ -159,7 +159,7 @@ namespace Waveface.Client
 		private void Button_Click_1(object sender, RoutedEventArgs e)
 		{
 			var arguments = string.Join("~" , ClientFramework.Client.Default.TaggedContents.Select(content => content.Uri.LocalPath).ToArray());
-			Process.Start("sharedFavorite", arguments);
+			Process.Start("sharedFavorite", "\"" + arguments + "\"");
 		}
 
 		private void FavoriteAllButton_Loaded(object sender, RoutedEventArgs e)
