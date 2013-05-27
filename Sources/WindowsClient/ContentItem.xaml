@@ -36,7 +36,7 @@
             <Canvas x:Name="ImgCanvas" ClipToBounds="True"  Height="371" Width="602">
                 <ContentControl x:Name="ImgContentCtrl" Canvas.Left="0" Canvas.Top="1"  Height="371" Width="602">-->
                     <!--<Grid x:Name="ImgGrid">-->
-        <Image x:Name="image" Source ="{Binding ThumbnailSource, IsAsync=True}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" OpacityMask="Black">
+        <Image x:Name="image" Source ="{Binding ThumbnailSource, IsAsync=True}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" OpacityMask="Black" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="NearestNeighbor">
                             <Image.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>

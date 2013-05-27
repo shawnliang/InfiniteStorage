@@ -47,7 +47,7 @@
 			<Canvas x:Name="ImgCanvas" ClipToBounds="True" Height="371" Width="602">
 				<ContentControl x:Name="ImgContentCtrl" Height="371" Width="602" Canvas.Left="0" Canvas.Top="1" MouseDoubleClick="ImgContentCtrl_MouseDoubleClick" Cursor="Arrow">
 					<Grid x:Name="ImgGrid">
-						<Image x:Name="ImgObject" Source="{Binding SelectedItem.ImageSource, ElementName=lbImages, IsAsync=True}"/>
+						<Image x:Name="ImgObject" Source="{Binding SelectedItem.ImageSource, ElementName=lbImages, IsAsync=True}" SnapsToDevicePixels="True" RenderOptions.BitmapScalingMode="NearestNeighbor" />
 						<Thumb x:Name="ImgThumb" Opacity="0" DragDelta="ImgThumb_DragDelta" MouseWheel="ImgThumb_MouseWheel"/>
 					</Grid>
 				</ContentControl>
