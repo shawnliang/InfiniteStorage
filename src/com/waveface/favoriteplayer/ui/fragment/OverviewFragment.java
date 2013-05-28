@@ -32,6 +32,7 @@ import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelFileView;
 import com.waveface.favoriteplayer.entity.OverviewData;
 import com.waveface.favoriteplayer.entity.ServerEntity;
+import com.waveface.favoriteplayer.event.LabelChangeEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.ui.PlaybackActivity;
 import com.waveface.favoriteplayer.ui.VideoActivity;
@@ -109,6 +110,9 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		return root;
 	}
 	
+	public void onEvent(LabelChangeEvent event) {
+		
+	}
 	private class PrepareViewTask extends AsyncTask<Void, Void, ArrayList<OverviewData>> {
 		private String mServerUrl = null; 
 

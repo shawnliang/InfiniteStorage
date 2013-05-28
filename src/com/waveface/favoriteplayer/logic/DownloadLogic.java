@@ -29,7 +29,6 @@ import com.waveface.favoriteplayer.entity.FileEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.LabelImportedEvent;
-import com.waveface.favoriteplayer.task.DownloadLabelsTask;
 import com.waveface.favoriteplayer.util.DeviceUtil;
 import com.waveface.favoriteplayer.util.FileUtil;
 import com.waveface.favoriteplayer.util.Log;
@@ -205,7 +204,6 @@ public class DownloadLogic {
 			labSeq = maxLabelcursor.getString(maxLabelcursor
 					.getColumnIndex(LabelTable.COLUMN_SEQ));
 			// send broadcast label change
-			context.sendBroadcast(new Intent(Constant.ACTION_LABEL_CHANGE));
 		}
 		maxLabelcursor.close();
 		ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();

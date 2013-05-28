@@ -55,6 +55,7 @@ import com.waveface.favoriteplayer.db.LabelTable;
 import com.waveface.favoriteplayer.entity.FileEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
+import com.waveface.favoriteplayer.event.LabelChangeEvent;
 import com.waveface.favoriteplayer.event.LabelImportedEvent;
 import com.waveface.favoriteplayer.logic.DownloadLogic;
 import com.waveface.favoriteplayer.logic.ServersLogic;
@@ -185,32 +186,8 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 						Integer.parseInt(entity.label_change.seq));
 				mEditor.commit();
 
-				// mEditor.putString(Constant.PREF_SERVER_LABEL_SEQ, "");
-				// mEditor.putString(Constant.PREF_SERVER_CHANGE_LABEL_ID, "");
-				// Cursor cursor = LabelDB.getMAXSEQLabel(mContext);
-				// String labSeq=null;
-				boolean isSyncComplete = false;
 				int downloadLableInitStatus = mPrefs.getInt(
 						Constant.PREF_DOWNLOAD_LABEL_INIT_STATUS, 0);
-				// if(cursor!=null && cursor.getCount()>0){
-				// cursor.moveToFirst();
-				// labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
-				// isSyncComplete= Integer.valueOf(labSeq) ==
-				// Integer.valueOf(entity.label_change.seq);
-				// Log.d(TAG, "labSeq="+labSeq);
-				// LabelImportedEvent doneEvent = new LabelImportedEvent(
-				// LabelImportedEvent.STATUS_DONE);
-				// if(isSyncComplete){
-				// EventBus.getDefault().post(doneEvent);
-				// }else{
-				// mEditor.putString(Constant.PREF_SERVER_LABEL_SEQ,
-				// entity.label_change.seq);
-				// // mEditor.putString(Constant.PREF_SERVER_CHANGE_LABEL_ID,
-				// entity.label_change.label_id);
-				// mEditor.commit();
-				// }
-				// cursor.close();
-				// }
 
 				if (downloadLableInitStatus == 1) {
 
@@ -226,9 +203,6 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 									+ ":" + pairedServer.restPort;
 							String getLabelURL = restfulAPIURL
 									+ Constant.URL_GET_LABEL;
-							String files = "";
-							String getFileURL = restfulAPIURL
-									+ Constant.URL_GET_FILE;
 							HashMap<String, String> param = new HashMap<String, String>();
 							param.clear();
 							param.put(Constant.PARAM_LABEL_ID,
@@ -242,8 +216,8 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 											LabelEntity.Label.class);
 							DownloadLogic.updateLabel(mContext, labelEntity);
 
-							mContext.sendBroadcast(new Intent(
-									Constant.ACTION_LABEL_CHANGE));
+							
+							EventBus.getDefault().post(new LabelChangeEvent(entity.label_change.label_id));
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
