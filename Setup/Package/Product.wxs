@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:fire='http://schemas.microsoft.com/wix/FirewallExtension'
-     xmlns:util='http://schemas.microsoft.com/wix/UtilExtension'>
+     xmlns:util='http://schemas.microsoft.com/wix/UtilExtension'
+     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
   <?define AppCode = "FavoriteHome" ?>
   <?define AppProductCode = "{BD5E16BF-C2F1-4FAC-AD89-98CF3E8845D4}" ?>
   <?define AppVersionMajor = "1" ?>
@@ -96,7 +97,9 @@
 
 
           <Component Id="Waveface.Client.exe" Guid="*">
-            <File Id="Waveface.Client.exe" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Waveface.Client.exe" />
+            <File Id="Waveface.Client.exe" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Waveface.Client.exe">
+              <netfx:NativeImage Id="ngen_Waveface.Client.exe" Platform="32bit" Priority="0"/>
+            </File>
           </Component>
 
           <Component Id="Microsoft.Expression.Controls.dll" Guid="*">
@@ -108,11 +111,15 @@
           </Component>
 
           <Component Id="Waveface.ClientFramework.dll" Guid="*">
-            <File Id="Waveface.ClientFramework.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Waveface.ClientFramework.dll" />
+            <File Id="Waveface.ClientFramework.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Waveface.ClientFramework.dll">
+              <netfx:NativeImage Id="ngen_Waveface.ClientFramework.dll" Platform="32bit" Priority="0"/>
+            </File>
           </Component>
 
           <Component Id="Waveface.Model.dll" Guid="*">
-            <File Id="Waveface.Model.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Waveface.Model.dll" />
+            <File Id="Waveface.Model.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Waveface.Model.dll">
+              <netfx:NativeImage Id="ngen_Waveface.Model.dl" Platform="32bit" Priority="0"/>
+            </File>
           </Component>
 
           <Component Id="album.png" Guid="*">
