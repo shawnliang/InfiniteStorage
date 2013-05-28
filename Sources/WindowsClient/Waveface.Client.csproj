@@ -240,6 +240,7 @@
     <Content Include="favoriteicon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="uppressed.png" />
     <Resource Include="FAV_512.ico" />
     <Content Include="notfavoriteicon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
