@@ -94,19 +94,20 @@ namespace Waveface.Client
 			return;
 		}
 
-		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, EventArgs e)
 		{
 			var ti = sender as TreeViewItem;
-			if (ti != null)
-			{
-				var group = ti.DataContext as IContentGroup;
 
-				if (group == null)
-					return;
+			if (ti == null)
+				return;
 
-				lblContentLocation.DataContext = group;
-				lbxContentContainer.DataContext = group.Contents;
-			}
+			var group = ti.DataContext as IContentGroup;
+
+			if (group == null)
+				return;
+
+			lblContentLocation.DataContext = group;
+			lbxContentContainer.DataContext = group.Contents;
 		}
 
 		#region Event Process
