@@ -1,0 +1,18 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="Waveface.Client.LabeledContentInfo"
+	x:Name="UserControl"
+	d:DesignWidth="150" d:DesignHeight="150">
+
+	<Grid x:Name="LayoutRoot">
+		<Image Source="star_noitem.png" VerticalAlignment="Top" HorizontalAlignment="Center" Height="150" Width="150" Visibility="Collapsed"/>
+		<Label x:Name="lblLabeledCount_Copy1" HorizontalAlignment="Center" Content="Click the start to Favorite" VerticalAlignment="Center" Foreground="Gray" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light" Visibility="Collapsed"/>
+		<Image Source="star_selected.png" VerticalAlignment="Top" HorizontalAlignment="Center" Height="150" Width="150"/>
+		<Label x:Name="lblLabeledCount" HorizontalAlignment="Left" Height="32" Margin="8.666,56.35,0,0" Content="{Binding PhotoCount, ElementName=UserControl}" ContentStringFormat=" {0} photos" VerticalAlignment="Top" Width="130" Foreground="White" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light"/>
+		<Label x:Name="lblLabeledCount_Copy" HorizontalAlignment="Left" Height="32" Margin="8.666,76.36,0,0" Content="{Binding VideoCount, ElementName=UserControl}" ContentStringFormat=" {0} videos" VerticalAlignment="Top" Width="130" Foreground="White" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light"/>
+	</Grid>
+</UserControl>

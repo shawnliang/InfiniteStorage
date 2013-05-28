@@ -36,7 +36,7 @@ namespace Waveface.Client
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			this.lbxDeviceContainer.DataContext = Waveface.ClientFramework.Client.Default.Services;
-			this.lblLabeledCount.DataContext = LabeledContents;
+			this.LabeledCount.DataContext = LabeledContents;
 		}
 
 		private void OnPhotoClick(object sender, MouseButtonEventArgs e)
