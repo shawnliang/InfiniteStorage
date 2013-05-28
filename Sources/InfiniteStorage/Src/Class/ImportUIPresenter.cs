@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace InfiniteStorage
@@ -38,7 +37,7 @@ namespace InfiniteStorage
 				}
 				else
 				{
-					if (!devices.Any(x=>x == device_id))
+					if (!devices.Any(x => x == device_id))
 						devices.AddLast(device_id);
 				}
 			}

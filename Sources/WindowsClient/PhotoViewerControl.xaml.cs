@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using Waveface.Model;
-using System.Linq;
-using System.Windows.Input;
 
 namespace Waveface.Client
 {
@@ -17,7 +17,7 @@ namespace Waveface.Client
 		ScaleTransform myScale = new ScaleTransform();
 
 
-		public event EventHandler Close;	
+		public event EventHandler Close;
 
 
 		public PhotoViewerControl()
@@ -159,7 +159,7 @@ namespace Waveface.Client
 		}
 
 		private void ImgContentCtrl_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-		{	
+		{
 			if (e.ChangedButton != MouseButton.Left)
 				return;
 

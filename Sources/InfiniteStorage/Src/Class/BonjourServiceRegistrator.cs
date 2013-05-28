@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using InfiniteStorage.Properties;
+using System;
 using System.Threading;
-using InfiniteStorage.Properties;
 
 namespace InfiniteStorage
 {
@@ -21,7 +18,7 @@ namespace InfiniteStorage
 		private BonjourServiceRegistrator()
 		{
 		}
-		
+
 		public static BonjourServiceRegistrator Instance
 		{
 			get { return instance; }

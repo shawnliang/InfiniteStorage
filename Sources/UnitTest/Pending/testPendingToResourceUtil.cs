@@ -1,12 +1,11 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using InfiniteStorage;
+using InfiniteStorage.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
-using InfiniteStorage.Model;
-using InfiniteStorage;
+using System.Linq;
 namespace UnitTest.Pending
 {
 	[Ignore]
@@ -43,13 +42,13 @@ namespace UnitTest.Pending
 				cmd.Connection = db;
 
 				int i = 0;
-				foreach(var fid in file_ids)
+				foreach (var fid in file_ids)
 				{
 					cmd.Parameters.Add(new SQLiteParameter("@id", fid));
 					cmd.Parameters.Add(new SQLiteParameter("@name", "name_" + i));
-					cmd.Parameters.Add(new SQLiteParameter("@path", "path_" +i));
-					cmd.Parameters.Add(new SQLiteParameter("@size", i+1000));
-					cmd.Parameters.Add(new SQLiteParameter("@saved_path", "saved_" +i));
+					cmd.Parameters.Add(new SQLiteParameter("@path", "path_" + i));
+					cmd.Parameters.Add(new SQLiteParameter("@size", i + 1000));
+					cmd.Parameters.Add(new SQLiteParameter("@saved_path", "saved_" + i));
 					cmd.Parameters.Add(new SQLiteParameter("@dev_id", dev_id));
 					cmd.Parameters.Add(new SQLiteParameter("@time", DateTime.Now));
 					cmd.Parameters.Add(new SQLiteParameter("@seq", i));
@@ -102,7 +101,7 @@ namespace UnitTest.Pending
 			{
 				conn.Open();
 
-				int i= 0;
+				int i = 0;
 				foreach (var fid in new Guid[] { file_ids[0], file_ids[1] })
 				{
 					var cmd = conn.CreateCommand();

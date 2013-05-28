@@ -49,7 +49,7 @@ namespace Waveface.Model
 
 
 		#region Event
-		public event EventHandler<ContentPropertyChangeEventArgs> ContentPropertyChanged; 
+		public event EventHandler<ContentPropertyChangeEventArgs> ContentPropertyChanged;
 		#endregion
 
 
