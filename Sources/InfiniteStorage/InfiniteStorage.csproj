@@ -140,12 +140,6 @@
     <Compile Include="Src\Class\REST\PendingSortApiHandler.cs" />
     <Compile Include="Src\Class\SeqNum.cs" />
     <Compile Include="Src\Class\ThumbnailCreator.cs" />
-    <Compile Include="Src\Dialog\BackupProgressDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Src\Dialog\BackupProgressDialog.Designer.cs">
-      <DependentUpon>BackupProgressDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Src\Class\IFileStorageLocationProvider.cs" />
     <Compile Include="Src\DB\DBInitializer.cs" />
     <Compile Include="Src\UIControl\AboutControl.cs">
@@ -197,12 +191,6 @@
     <Compile Include="Src\Dialog\PairingRequestDialog.Designer.cs">
       <DependentUpon>PairingRequestDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Src\UIControl\BackupLocationControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Src\UIControl\BackupLocationControl.Designer.cs">
-      <DependentUpon>BackupLocationControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Src\Class\OrganizeMethod.cs" />
     <Compile Include="Src\UIControl\GeneralPreferenceControl.cs">
       <SubType>UserControl</SubType>
@@ -242,12 +230,6 @@
     <Compile Include="Src\UIControl\StorageLocationControl.Designer.cs">
       <DependentUpon>StorageLocationControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Src\UIControl\TransferringControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Src\UIControl\TransferringControl.Designer.cs">
-      <DependentUpon>TransferringControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Src\UIControl\StartPairingUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -260,17 +242,33 @@
     <Compile Include="Src\Dialog\WaitForPairingDialog.Designer.cs">
       <DependentUpon>WaitForPairingDialog.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Properties\Resources.zh-TW.resx" />
     <EmbeddedResource Include="Src\Dialog\BackToPhoneDialog.resx">
       <DependentUpon>BackToPhoneDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Src\Dialog\BackToPhoneDialog.zh-TW.resx">
+      <DependentUpon>BackToPhoneDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Src\Dialog\PairingRequestDialog.zh-TW.resx">
+      <DependentUpon>PairingRequestDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Src\Dialog\PreferenceDialog.zh-TW.resx">
+      <DependentUpon>PreferenceDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\ProgressTooltip.resx">
       <DependentUpon>ProgressTooltip.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Src\Dialog\BackupProgressDialog.resx">
-      <DependentUpon>BackupProgressDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Src\Dialog\ProgressTooltip.zh-TW.resx">
+      <DependentUpon>ProgressTooltip.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\AboutControl.resx">
       <DependentUpon>AboutControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Src\UIControl\AboutControl.zh-TW.resx">
+      <DependentUpon>AboutControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Src\UIControl\DeviceListControl.zh-TW.resx">
+      <DependentUpon>DeviceListControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\OrganizeSelectionControl.resx">
       <DependentUpon>OrganizeSelectionControl.cs</DependentUpon>
@@ -291,20 +289,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Src\UIControl\BackupLocationControl.resx">
-      <DependentUpon>BackupLocationControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\DeviceListControl.resx">
       <DependentUpon>DeviceListControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\GeneralPreferenceControl.resx">
       <DependentUpon>GeneralPreferenceControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Src\UIControl\StartPairingUserControl.zh-TW.resx">
+      <DependentUpon>StartPairingUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\StorageLocationControl.resx">
       <DependentUpon>StorageLocationControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Src\UIControl\TransferringControl.resx">
-      <DependentUpon>TransferringControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\StartPairingUserControl.resx">
       <DependentUpon>StartPairingUserControl.cs</DependentUpon>

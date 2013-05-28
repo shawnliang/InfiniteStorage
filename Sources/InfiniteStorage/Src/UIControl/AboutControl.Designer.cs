@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutControl));
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.checkForUpdateButton = new System.Windows.Forms.Button();
 			this.versionLabel = new System.Windows.Forms.Label();
@@ -41,94 +42,65 @@
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			resources.ApplyResources(this.groupBox1, "groupBox1");
 			this.groupBox1.Controls.Add(this.checkForUpdateButton);
 			this.groupBox1.Controls.Add(this.versionLabel);
-			this.groupBox1.Location = new System.Drawing.Point(3, 3);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(569, 58);
-			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "程式資訊";
 			// 
 			// checkForUpdateButton
 			// 
-			this.checkForUpdateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.checkForUpdateButton.Location = new System.Drawing.Point(446, 18);
+			resources.ApplyResources(this.checkForUpdateButton, "checkForUpdateButton");
 			this.checkForUpdateButton.Name = "checkForUpdateButton";
-			this.checkForUpdateButton.Size = new System.Drawing.Size(117, 23);
-			this.checkForUpdateButton.TabIndex = 1;
-			this.checkForUpdateButton.Text = "檢查更新";
 			this.checkForUpdateButton.UseVisualStyleBackColor = true;
 			this.checkForUpdateButton.Click += new System.EventHandler(this.checkForUpdateButton_Click);
 			// 
 			// versionLabel
 			// 
-			this.versionLabel.AutoSize = true;
-			this.versionLabel.Location = new System.Drawing.Point(10, 23);
+			resources.ApplyResources(this.versionLabel, "versionLabel");
 			this.versionLabel.Name = "versionLabel";
-			this.versionLabel.Size = new System.Drawing.Size(75, 13);
-			this.versionLabel.TabIndex = 0;
-			this.versionLabel.Text = "版本號碼: {0}";
 			// 
 			// groupBox2
 			// 
-			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			resources.ApplyResources(this.groupBox2, "groupBox2");
 			this.groupBox2.Controls.Add(this.openLogButton);
 			this.groupBox2.Controls.Add(this.label1);
 			this.groupBox2.Controls.Add(this.comboBox1);
-			this.groupBox2.Location = new System.Drawing.Point(3, 71);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(569, 62);
-			this.groupBox2.TabIndex = 1;
 			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "偵錯";
 			// 
 			// openLogButton
 			// 
-			this.openLogButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.openLogButton.Location = new System.Drawing.Point(446, 19);
+			resources.ApplyResources(this.openLogButton, "openLogButton");
 			this.openLogButton.Name = "openLogButton";
-			this.openLogButton.Size = new System.Drawing.Size(117, 23);
-			this.openLogButton.TabIndex = 2;
-			this.openLogButton.Text = "開啟記錄檔";
 			this.openLogButton.UseVisualStyleBackColor = true;
 			this.openLogButton.Click += new System.EventHandler(this.openLogButton_Click);
 			// 
 			// label1
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(10, 24);
+			resources.ApplyResources(this.label1, "label1");
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(43, 13);
-			this.label1.TabIndex = 1;
-			this.label1.Text = "紀錄：";
 			// 
 			// comboBox1
 			// 
+			resources.ApplyResources(this.comboBox1, "comboBox1");
 			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboBox1.FormattingEnabled = true;
 			this.comboBox1.Items.AddRange(new object[] {
-            "DEBUG",
-            "INFO",
-            "WARN",
-            "ERROR"});
-			this.comboBox1.Location = new System.Drawing.Point(59, 21);
+            resources.GetString("comboBox1.Items"),
+            resources.GetString("comboBox1.Items1"),
+            resources.GetString("comboBox1.Items2"),
+            resources.GetString("comboBox1.Items3")});
 			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(96, 21);
-			this.comboBox1.TabIndex = 0;
 			this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
 			// 
 			// AboutControl
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.groupBox1);
 			this.Name = "AboutControl";
-			this.Size = new System.Drawing.Size(575, 179);
 			this.Load += new System.EventHandler(this.AboutControl_Load);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();

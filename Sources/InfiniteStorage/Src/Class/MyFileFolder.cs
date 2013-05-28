@@ -4,6 +4,13 @@ using System.IO;
 
 namespace InfiniteStorage
 {
+	public enum LocationType
+	{
+		SingleFolder = 0,
+		MediaLibrary,
+		Custom,
+	}
+
 	static class MyFileFolder
 	{
 		public static string Temp

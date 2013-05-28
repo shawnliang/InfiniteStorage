@@ -14,8 +14,6 @@ namespace InfiniteStorage
 		private PreferenceDialog preferenceForm = new PreferenceDialog();
 		private NotifyIcon notifyIcon;
 		private Dictionary<ProtocolContext, ToolStripItem> deviceStipItems = new Dictionary<ProtocolContext, ToolStripItem>();
-		private List<BackupProgressDialog> progressDialogs = new List<BackupProgressDialog>();
-		private object cs = new object();
 		
 
 		public NotifyIconController(NotifyIcon notifyIcon)
@@ -75,8 +73,6 @@ namespace InfiniteStorage
 			SynchronizationContextHelper.SendMainSyncContext(() =>
 			{
 				showNotifyIconMenu(evt.ctx);
-				showProgressDialog(evt.ctx);
-				//ProgressTooltip.Instance.ShowWaitingDevice(evt.ctx.device_name);
 			});
 		}
 
@@ -85,7 +81,6 @@ namespace InfiniteStorage
 			SynchronizationContextHelper.SendMainSyncContext(() =>
 			{
 				updateNotifyIconMenu(evt.ctx);
-				updateProgressDialog(evt.ctx);
 			});
 		}
 
@@ -100,21 +95,6 @@ namespace InfiniteStorage
 				var nextIdx = notifyIcon.ContextMenuStrip.Items.IndexOf(itemFound) + 1;
 
 				notifyIcon.ContextMenuStrip.Items[nextIdx].Text = getSingleFileText(ctx);
-			}
-		}
-
-		private void updateProgressDialog(ProtocolContext ctx)
-		{
-			if (!Settings.Default.ShowBackupProgressDialog)
-				return;
-
-			lock (cs)
-			{
-				var dupConnDialog = progressDialogs.Find(x => x.WSCtx.device_id == ctx.device_id);
-				if (dupConnDialog != null)
-				{
-					dupConnDialog.WSCtx = ctx;
-				}
 			}
 		}
 
@@ -151,37 +131,6 @@ namespace InfiniteStorage
 				//notifyIcon.ShowBalloonTip(3000, Resources.ProductName, string.Format(Resources.BallonText_Transferring, ctx.device_name, ctx.total_count), ToolTipIcon.Info);
 			}
 
-		}
-
-		private void showProgressDialog(ProtocolContext ctx)
-		{
-			if (!Settings.Default.ShowBackupProgressDialog)
-				return;
-
-			lock (cs)
-			{
-				var dupConnDialog = progressDialogs.Find(x => x.WSCtx.device_id == ctx.device_id);
-				if (dupConnDialog == null)
-				{
-					var dialog = new BackupProgressDialog(ctx);
-					dialog.FormClosed += onProgressDialogClosed;
-					dialog.StartPosition = FormStartPosition.CenterScreen;
-					dialog.Show();
-
-					progressDialogs.Add(dialog);
-				}
-			}
-		}
-
-		private void onProgressDialogClosed(object sender, FormClosedEventArgs args)
-		{
-			lock (cs)
-			{
-				var dialog = sender as BackupProgressDialog;
-				if (dialog == null)
-					return;
-				progressDialogs.Remove(dialog);
-			}
 		}
 
 		private static string getSingleFileText(ProtocolContext ctx)
