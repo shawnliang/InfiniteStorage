@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Waveface.ClientFramework;
 using Waveface.Model;
-using System.Diagnostics;
 
 namespace Waveface.Client
 {
@@ -155,11 +154,11 @@ namespace Waveface.Client
 			//contentControl.Tagged = !contentControl.Tagged;
 		}
 
-	
+
 
 		private void Button_Click_1(object sender, RoutedEventArgs e)
 		{
-			var arguments = string.Join("~" , ClientFramework.Client.Default.TaggedContents.Select(content => content.Uri.LocalPath).ToArray());
+			var arguments = string.Join("~", ClientFramework.Client.Default.TaggedContents.Select(content => content.Uri.LocalPath).ToArray());
 			Process.Start("sharedFavorite", "\"" + arguments + "\"");
 		}
 

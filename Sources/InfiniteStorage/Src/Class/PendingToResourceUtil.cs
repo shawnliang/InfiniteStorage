@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Data.SQLite;
-using InfiniteStorage.Model;
 using System.Data;
+using System.Data.SQLite;
+using System.IO;
 
 namespace InfiniteStorage
 {
@@ -47,7 +44,7 @@ namespace InfiniteStorage
 
 					var i = 0;
 					var pars = new List<string>();
-					foreach(var fid in file_ids)
+					foreach (var fid in file_ids)
 					{
 						cmd.Parameters.Add(new SQLiteParameter("@fid" + i, fid));
 						pars.Add("@fid" + i);

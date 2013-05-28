@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Waveface.Client
 {
@@ -50,7 +42,7 @@ namespace Waveface.Client
 				lblPageCount.Content = value;
 			}
 		}
-		
+
 		public bool Stared
 		{
 			get
@@ -66,11 +58,11 @@ namespace Waveface.Client
 		#endregion
 
 		#region Event
-		public event EventHandler Previous;	
+		public event EventHandler Previous;
 		public event EventHandler Next;
-		public event EventHandler Close;	
+		public event EventHandler Close;
 		#endregion
-		
+
 		public ViewerControl()
 		{
 			this.InitializeComponent();
@@ -142,7 +134,7 @@ namespace Waveface.Client
 
 		private void staredControl_MouseDown_1(object sender, MouseButtonEventArgs e)
 		{
-			this.Stared = !this.Stared; 
+			this.Stared = !this.Stared;
 		}
 	}
 }

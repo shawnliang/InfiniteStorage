@@ -3,6 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Waveface.Client"
              xmlns:fw="clr-namespace:Waveface.ClientFramework;assembly=Waveface.ClientFramework"
-               xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
+             xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
              Startup="OnApplicationStartup">
 </Application>

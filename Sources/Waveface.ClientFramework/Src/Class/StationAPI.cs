@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -66,7 +64,7 @@ namespace Waveface.ClientFramework
 		{
 			var uri = LABEL_API_BASE_URL + "/list_all";
 
-			return Post(uri, new NameValueCollection(){});
+			return Post(uri, new NameValueCollection() { });
 		}
 
 		public static string AddLabel(string labelID, string name)

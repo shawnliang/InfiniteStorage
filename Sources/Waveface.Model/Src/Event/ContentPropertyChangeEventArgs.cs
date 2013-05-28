@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 
 namespace Waveface.Model
 {
-	public class ContentPropertyChangeEventArgs:EventArgs
+	public class ContentPropertyChangeEventArgs : EventArgs
 	{
 		#region Property
 		public IContentEntity Content { get; private set; }

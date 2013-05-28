@@ -147,7 +147,7 @@ namespace InfiniteStorage
 				height = fullImage.Height;
 
 				var longSide = Math.Max(fullImage.Width, fullImage.Height);
-				
+
 				if (longSide < 256)
 					return;
 

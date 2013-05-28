@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using InfiniteStorage.Properties;
 using System.IO;
 
 namespace InfiniteStorage
@@ -50,7 +47,7 @@ namespace InfiniteStorage
 			var pendingDir = util.GetPendingFolder();
 			var fileData = new List<FileData>();
 
-			foreach(var pending_file in pending_files)
+			foreach (var pending_file in pending_files)
 			{
 				var full_path = util.Move(
 					Path.Combine(pendingDir, pending_file.saved_path),
