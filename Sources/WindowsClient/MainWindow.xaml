@@ -149,13 +149,14 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Label Content="Sources" Grid.Row="0" Foreground="#FFA5A5A5" Margin="0,0,0,4" FontFamily="Segoe UI Light" SnapsToDevicePixels="True"/>
-                <local:SourceTree x:Name="lbxDeviceContainer"  Grid.Row="1" SnapsToDevicePixels="True">
-                    <local:SourceTree.Resources>
-                        <Style TargetType="{x:Type TreeViewItem}">
-                            <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="TreeViewItem_PreviewMouseLeftButtonDown"/>
-                        </Style>
-                    </local:SourceTree.Resources>
-                </local:SourceTree>
+                <local:SourceTree 
+				x:Name="lbxDeviceContainer"  
+				Grid.Row="1" 
+				SnapsToDevicePixels="True" 
+				BorderBrush="{x:Null}"
+				VirtualizingStackPanel.IsVirtualizing="True" 
+				VirtualizingStackPanel.VirtualizationMode="Recycling"
+                TreeViewItemClick="TreeViewItem_PreviewMouseLeftButtonDown" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
             </Grid>
 		</Grid>
 
