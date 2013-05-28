@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using InfiniteStorage.WebsocketProtocol;
-using InfiniteStorage.Model;
-using System.Data.SQLite;
+﻿using InfiniteStorage.Model;
 using InfiniteStorage.Properties;
+using InfiniteStorage.WebsocketProtocol;
+using System;
+using System.Data.SQLite;
 
 namespace InfiniteStorage
 {
@@ -16,7 +13,7 @@ namespace InfiniteStorage
 			try
 			{
 				var file = args.ctx.fileCtx;
-				
+
 
 				if (file.type == FileAssetType.image)
 				{

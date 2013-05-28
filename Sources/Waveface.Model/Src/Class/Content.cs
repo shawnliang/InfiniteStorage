@@ -23,7 +23,7 @@ namespace Waveface.Model
 				_liked = value;
 				OnPropertyChanged("Liked");
 			}
-		} 
+		}
 		#endregion
 
 

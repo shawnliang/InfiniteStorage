@@ -1,10 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using InfiniteStorage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using InfiniteStorage;
 using Moq;
+using System;
+using System.Collections.Generic;
 
 namespace UnitTest.Pending
 {
@@ -38,7 +36,7 @@ namespace UnitTest.Pending
 		[TestMethod]
 		public void use_year_month_title_as_folder()
 		{
-			util.Setup(x=>x.CreateFolder(@"title")).Verifiable();
+			util.Setup(x => x.CreateFolder(@"title")).Verifiable();
 			action.Do(evt);
 
 			util.VerifyAll();

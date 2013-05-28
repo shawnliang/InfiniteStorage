@@ -77,7 +77,7 @@ namespace InfiniteStorage.REST
 			}
 
 			Response.StatusCode = (int)HttpStatusCode.Found;
-		
+
 			string file_relative_path;
 			if (size == IMG_SIZE.origin)
 			{

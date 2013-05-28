@@ -48,7 +48,7 @@ namespace InfiniteStorage.Notify
 					{
 						ctx.Send(JsonConvert.SerializeObject(new
 							{
-								label_change = new 
+								label_change = new
 								{
 									label_id = label.label_id,
 									label_name = label.name,

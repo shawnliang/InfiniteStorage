@@ -132,7 +132,7 @@ namespace InfiniteStorage.WebsocketProtocol
 				handler(this, new WebsocketEventArgs(this));
 			}
 		}
-		
+
 		internal void raiseOnFileEnding()
 		{
 			var handler = OnFileEnding;

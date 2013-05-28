@@ -1,10 +1,9 @@
-﻿using System;
+﻿using InfiniteStorage.Model;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Wammer.Station;
-using InfiniteStorage.Model;
 using System.IO;
+using System.Linq;
+using Wammer.Station;
 
 namespace InfiniteStorage.REST
 {
@@ -26,8 +25,8 @@ namespace InfiniteStorage.REST
 			using (var db = new MyDbContext())
 			{
 				dev = (from d in db.Object.Devices
-						   where d.device_id.Equals(dev_id, StringComparison.InvariantCultureIgnoreCase)
-						   select d).FirstOrDefault();
+					   where d.device_id.Equals(dev_id, StringComparison.InvariantCultureIgnoreCase)
+					   select d).FirstOrDefault();
 
 
 				if (dev == null)

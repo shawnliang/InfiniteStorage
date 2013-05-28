@@ -1,12 +1,9 @@
-﻿using Microsoft.Win32;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
 using System.IO;
-using System.Linq;
-using System.Text;
 using Waveface.Model;
 
 namespace Waveface.ClientFramework
@@ -14,7 +11,7 @@ namespace Waveface.ClientFramework
 	public class Client
 	{
 		#region Static Var
-        private static Client _default;
+		private static Client _default;
 		#endregion
 
 
@@ -27,17 +24,17 @@ namespace Waveface.ClientFramework
 
 		#region Public Static Property
 		public static Client Default
-        { 
-            get
-            {
-                return _default ?? (_default = new Client());
-            }
-        }
-        #endregion
+		{
+			get
+			{
+				return _default ?? (_default = new Client());
+			}
+		}
+		#endregion
 
 
 		#region Private Property
-		private string m_LabelID 
+		private string m_LabelID
 		{
 			get
 			{
@@ -45,9 +42,9 @@ namespace Waveface.ClientFramework
 			}
 		}
 
-		private ObservableCollection<IContentEntity> m_TaggedContents 
+		private ObservableCollection<IContentEntity> m_TaggedContents
 		{
-			get 
+			get
 			{
 				if (_taggedContents == null)
 				{
@@ -69,7 +66,7 @@ namespace Waveface.ClientFramework
 			}
 		}
 
-		public ReadOnlyObservableCollection<IContentEntity> TaggedContents 
+		public ReadOnlyObservableCollection<IContentEntity> TaggedContents
 		{
 			get
 			{
@@ -109,7 +106,7 @@ namespace Waveface.ClientFramework
 			var cmd = new SQLiteCommand("SELECT * FROM Files t1, LabelFiles t2, Labels t3 where t3.name = 'TAG' and t3.label_id = t2.label_id and t1.file_id = t2.file_id", conn);
 
 			var dr = cmd.ExecuteReader();
-	
+
 			while (dr.Read())
 			{
 				var deviceID = dr["device_id"].ToString();

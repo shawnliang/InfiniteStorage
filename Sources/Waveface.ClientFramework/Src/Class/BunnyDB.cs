@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
+﻿using Microsoft.Win32;
+using System;
 using System.Data.SQLite;
-using Microsoft.Win32;
+using System.IO;
 
 namespace Waveface.ClientFramework
 {
-	
+
 	static class BunnyDB
 	{
 		private static string connString;

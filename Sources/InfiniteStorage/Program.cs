@@ -3,17 +3,17 @@ using InfiniteStorage.Notify;
 using InfiniteStorage.Properties;
 using InfiniteStorage.REST;
 using InfiniteStorage.Win32;
+using Microsoft.Win32;
 using System;
 using System.Drawing;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Management;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 using Wammer.Station;
 using WebSocketSharp.Server;
-using Microsoft.Win32;
 
 namespace InfiniteStorage
 {

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using InfiniteStorage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using InfiniteStorage;
+using System;
 
 namespace UnitTest.Pending
 {
@@ -32,7 +29,7 @@ namespace UnitTest.Pending
 			var folder = org.GetEventFolder(new PendingEvent
 			{
 				time_start = new DateTime(2012, 3, 4, 10, 2, 3, DateTimeKind.Local),
-				time_end = new DateTime(2012, 3, 5, 0,0,0, DateTimeKind.Local),
+				time_end = new DateTime(2012, 3, 5, 0, 0, 0, DateTimeKind.Local),
 				title = null
 			});
 
