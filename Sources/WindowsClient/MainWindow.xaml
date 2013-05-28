@@ -70,7 +70,7 @@
                             <Path
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Fill="{StaticResource GlyphBrush}"
+            Fill="#444"
             Data="{Binding Path=Content,
                 RelativeSource={RelativeSource TemplatedParent}}" />
                         </Border>
@@ -134,7 +134,7 @@
                 <Border
       Grid.RowSpan="3"
       CornerRadius="2"
-      Background="#F0F0F0" />
+      Background="Transparent" />
                 <RepeatButton
       Grid.Row="0"
       Style="{StaticResource ScrollBarLineButton}"
