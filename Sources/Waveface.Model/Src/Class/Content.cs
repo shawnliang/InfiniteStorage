@@ -4,11 +4,24 @@ namespace Waveface.Model
 	public class Content : ContentEntity, IContent
 	{
 		#region Protected Var
+		protected ContentType? _type;
 		protected bool _liked;
 		#endregion
 
 
 		#region Public Property
+		public ContentType Type
+		{
+			get
+			{
+				if (!_type.HasValue)
+				{
+					_type = (this.Uri.LocalPath.EndsWith(".jpg", StringComparison.CurrentCultureIgnoreCase) || this.Uri.LocalPath.EndsWith(".gif", StringComparison.CurrentCultureIgnoreCase)) ? ContentType.Photo : ContentType.Video;
+				}
+				return _type.Value;
+			}
+		}
+
 		public virtual bool Liked
 		{
 			get
@@ -49,5 +62,6 @@ namespace Waveface.Model
 		{
 		}
 		#endregion
+
 	}
 }

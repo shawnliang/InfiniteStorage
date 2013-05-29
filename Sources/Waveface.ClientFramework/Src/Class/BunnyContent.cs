@@ -89,7 +89,13 @@ namespace Waveface.ClientFramework
 				{
 					var file = GetThumbnailFile();
 					if (!File.Exists(file))
-						return null;
+					{
+						var imageFrame = (this.ImageSource as BitmapFrame);
+						if(imageFrame == null)
+							return null;
+
+						return imageFrame.Thumbnail ?? imageFrame;
+					}
 					_thumbnailSource = BitmapFrame.Create(new Uri(file));
 				}
 				return _thumbnailSource;

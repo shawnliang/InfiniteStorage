@@ -22,6 +22,7 @@
                                         Value="{x:Static Visibility.Visible}" />
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
+
     </UserControl.Resources>
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="Mouse.MouseEnter">
@@ -37,10 +38,6 @@
         <Grid.Effect>
             <DropShadowEffect Direction="270" />
         </Grid.Effect>
-        <!--<Viewbox Stretch="Fill" DockPanel.Dock="Top">
-            <Canvas x:Name="ImgCanvas" ClipToBounds="True"  Height="371" Width="602">
-                <ContentControl x:Name="ImgContentCtrl" Canvas.Left="0" Canvas.Top="1"  Height="371" Width="602">-->
-        <!--<Grid x:Name="ImgGrid">-->
         <Image x:Name="image"
                Source="{Binding ThumbnailSource, IsAsync=True}"
                Stretch="UniformToFill"
@@ -59,11 +56,7 @@
                 </TransformGroup>
             </Image.RenderTransform>
         </Image>
-        <!--<Thumb x:Name="ImgThumb" Opacity="0"/>-->
-        <!--</Grid>-->
-        <!--</ContentControl>
-            </Canvas>
-        </Viewbox>-->
+
 
         <Grid x:Name="photoInfo"
               Visibility="Collapsed">

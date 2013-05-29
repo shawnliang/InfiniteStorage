@@ -54,6 +54,7 @@
     <Compile Include="Src\Class\Service.cs" />
     <Compile Include="Src\Class\ServiceSupplier.cs" />
     <Compile Include="Src\Class\ServiceSupplierInfo.cs" />
+    <Compile Include="Src\Enum\ContentType.cs" />
     <Compile Include="Src\Event\ContentPropertyChangeEventArgs.cs" />
     <Compile Include="Src\Extension\CollectionExtension.cs" />
     <Compile Include="Src\Interface\IContent.cs" />
@@ -62,9 +63,7 @@
     <Compile Include="Src\Interface\IService.cs" />
     <Compile Include="Src\Interface\IServiceSupplier.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Src\Enum\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
