@@ -248,6 +248,7 @@ public class Constant {
 	// passing to bundle
 	public static final String ARGUMENT1 = "argument1";
 	public static final String ARGUMENT2 = "argument2";
+	public static final String ARGUMENT3 = "argument3";
 	
 	//Label SharedPreferences
 	public final static String PREF_SERVER_LABEL_SEQ = "server_label_seq";

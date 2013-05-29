@@ -237,6 +237,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		case OverviewFragment.OVERVIEW_VIEW_TYPE_RECENT_PHOTO:
 			intent = new Intent(getActivity(), PlaybackActivity.class);
 			data.putString(Constant.ARGUMENT1, ((OverviewAdapter)listview.getAdapter()).getDatas().get(position).labelId);
+			data.putString(Constant.ARGUMENT3, ((OverviewAdapter)listview.getAdapter()).getDatas().get(position).title);
 			intent.putExtras(data);
 			startActivity(intent);
 			break;

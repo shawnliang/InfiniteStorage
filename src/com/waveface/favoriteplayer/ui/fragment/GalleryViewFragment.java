@@ -20,6 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.TextView;
 
 public class GalleryViewFragment extends Fragment implements OnItemClickListener{
 	private GridView mGridView;
@@ -46,6 +47,9 @@ public class GalleryViewFragment extends Fragment implements OnItemClickListener
 		
 		mGridView.requestFocus();
 		mGridView.setOnItemClickListener(this);
+		
+		TextView tv = (TextView) mRootView.findViewById(R.id.textview_title);
+		tv.setText(data.getString(Constant.ARGUMENT3));
 		
 		return mRootView;
 	}

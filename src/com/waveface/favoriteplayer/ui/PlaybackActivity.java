@@ -32,6 +32,7 @@ public class PlaybackActivity extends FragmentActivity {
 	public static final String TAG = PlaybackActivity.class.getSimpleName();
 	private String mCurrentFragment;
 	private ArrayList<PlaybackData> mDatas;
+	private String mLabelTitle;
 	private ProgressBar mProgress;
 	
 	@Override
@@ -52,6 +53,7 @@ public class PlaybackActivity extends FragmentActivity {
 		}
 		
 		String labelId = data.getString(Constant.ARGUMENT1);
+		mLabelTitle = data.getString(Constant.ARGUMENT3);
 		
 		new LoadPlaybackData(labelId).execute(null, null, null);
 		
@@ -89,6 +91,7 @@ public class PlaybackActivity extends FragmentActivity {
 			Bundle data = new Bundle();
 			data.putParcelableArrayList(Constant.ARGUMENT1, mDatas);
 			data.putInt(Constant.ARGUMENT2, event.position);
+			data.putString(Constant.ARGUMENT3, mLabelTitle);
 	
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 			PlaybackFragment fragment = new PlaybackFragment();
@@ -160,7 +163,6 @@ public class PlaybackActivity extends FragmentActivity {
 			String serverUrl ="http://"+pairedServer.ip+":"+pairedServer.restPort;
 			Log.d(TAG, "mServerUrl:" +serverUrl);
 			
-
 			ArrayList<PlaybackData> datas = new ArrayList<PlaybackData>();
 			Cursor c = LabelDB.getLabelFilesByLabelId(getApplicationContext(), mLabelId);
 			for(int i=0; i<c.getCount(); ++i) {
@@ -180,6 +182,7 @@ public class PlaybackActivity extends FragmentActivity {
 			mDatas = result;
 			Bundle data = new Bundle();
 			data.putParcelableArrayList(Constant.ARGUMENT1, result);
+			data.putString(Constant.ARGUMENT3, mLabelTitle);
 
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 			mCurrentFragment = GalleryViewFragment.class.getSimpleName();
