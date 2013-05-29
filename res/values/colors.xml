@@ -5,5 +5,6 @@
     <color name="linked">#6600FF00</color>
     <!-- Server Chooser -->
     <color name="bonjour_serve_click">#1BBFE0</color>
-    <color name="bonjour_server_default">#000000</color>        	
+    <color name="bonjour_server_default">#000000</color>        
+    <color name="white">#F1F1F1</color>	
 </resources>

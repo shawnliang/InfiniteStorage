@@ -27,7 +27,8 @@
         android:layout_centerInParent="true"
         android:id="@+id/text_no_content"
         android:textSize="22sp"
-        android:textColor="#E0E0E0"
+        android:textColor="@color/white"
+        android:paddingBottom="40dip"
         android:visibility="invisible"  
         />
     

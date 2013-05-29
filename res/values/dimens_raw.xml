@@ -1,0 +1,48 @@
+<resources>
+    
+    <!-- OVERVIEW -->
+    <dimen name="overview_item_padding">5dip</dimen>
+    
+    <dimen name="phone_overview_image_width">150dip</dimen>
+    <dimen name="phone_overview_image_height">180dip</dimen>
+    
+    <dimen name="television_overview_image_width">200dip</dimen>
+    <dimen name="television_overview_image_height">250dip</dimen>
+    
+    <dimen name="phone_overview_item_first_left_padding">25dip</dimen>
+    <dimen name="television_overview_item_first_left_padding">65dip</dimen>
+    
+    
+    <!-- TAB  -->
+    
+    <dimen name="phone_overview_tab_text_size">20sp</dimen>
+    <dimen name="television_overview_tab_text_size">30sp</dimen>
+    
+    <dimen name="phone_overview_tab_top_margin">10dip</dimen>
+    <dimen name="phone_overview_tab_bottom_margin">5dip</dimen>
+    
+    <dimen name="television_overview_tab_top_margin">40dip</dimen>
+    <dimen name="television_overview_tab_bottom_margin">10dip</dimen>
+    
+    <dimen name="phone_overview_tab_background_left_right_padding">10dip</dimen>
+    <dimen name="phone_overview_tab_background_top_padding">50dip</dimen>
+    
+    <dimen name="television_overview_tab_background_left_right_padding">45dip</dimen>
+    <dimen name="television_overview_tab_background_top_padding">85dip</dimen>
+    
+    <dimen name="galleryview_item_size">200dip</dimen>
+    
+    <!-- GALLERY -->
+    
+    <dimen name="phone_galleryview_title_text_size">22sp</dimen>
+    <dimen name="television_galleryview_title_text_size">28sp</dimen>
+    
+    <dimen name="phone_galleryview_back_text_size">20sp</dimen>
+    <dimen name="television_galleryview_back_text_size">26sp</dimen>
+    
+    <dimen name="phone_galleryview_title_margin">10dip</dimen>
+    <dimen name="television_galleryview_title_margin">20dip</dimen>
+    
+    <dimen name="phone_galleryview_horizontal_margin">20dip</dimen>
+    <dimen name="television_galleryview_horizontal_margin">100dip</dimen>
+</resources>

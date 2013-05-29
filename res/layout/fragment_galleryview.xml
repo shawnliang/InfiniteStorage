@@ -5,15 +5,15 @@
 
     <TextView
         android:id="@+id/textview_title"
-        android:layout_alignBottom="@+id/textview_back"
-        android:layout_marginLeft="@dimen/galleryview_horizontal_margin"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="20dip"
-        android:gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#E0E0E0"
-        android:textSize="28sp" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/galleryview_horizontal_margin"
+        android:layout_marginTop="@dimen/galleryview_title_margin"
+        android:padding="0dip"
+        android:gravity="center_vertical"
+        android:textColor="@color/white"
+        android:textSize="@dimen/galleryview_title_text_size" />
 
     <TextView
         android:id="@+id/textview_back"
@@ -21,8 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="20dip"
-        android:layout_marginTop="20dip"
+        android:layout_marginRight="@dimen/galleryview_horizontal_margin"
+        android:layout_marginTop="@dimen/galleryview_title_margin"
         android:clickable="true"
         android:drawableLeft="@drawable/ic_back"
         android:drawablePadding="5dip"
@@ -30,20 +30,20 @@
         android:gravity="center"
         android:text="@string/previous_page"
         android:textColor="@drawable/indicator_textcolor"
-        android:textSize="20sp" />
+        android:textSize="@dimen/galleryview_back_text_size" />
 
     <GridView
         android:id="@+id/grid_view"
+        style="@style/GalleryView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/textview_back"
         android:layout_marginLeft="@dimen/galleryview_horizontal_margin"
         android:layout_marginRight="@dimen/galleryview_horizontal_margin"
-        android:layout_marginTop="20dip"
+        android:layout_marginTop="@dimen/galleryview_title_margin"
         android:drawSelectorOnTop="true"
         android:horizontalSpacing="5dp"
         android:listSelector="@drawable/list_selector"
-        android:numColumns="5"
         android:stretchMode="columnWidth"
         android:verticalSpacing="5dp" />
 

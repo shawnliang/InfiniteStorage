@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/container_imagearea"
         android:gravity="center"
-        android:textColor="#E0E0E0"
+        android:textColor="@color/white"
         android:textSize="22sp"
         android:id="@+id/text_label"
          
