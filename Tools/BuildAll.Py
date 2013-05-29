@@ -39,6 +39,7 @@ def build_target(solution_dir, target, version, build_num) :
 
 
 if __name__ == "__main__":
+    print "==== Fetch Version ===="
 	# get version string : major.minor.patch
 	version = wfVersion.get_product_version_from_wix_config_file(solution_dir)
 	version_full = version + "." + build_num

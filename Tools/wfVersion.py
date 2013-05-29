@@ -9,6 +9,8 @@ import os.path
 
 def get_product_version_from_wix_config_file(solution_dir) :
 	file_path = os.path.join(solution_dir, r"Setup\Package\Product.wxs")
+
+    print "Product.wxs location:", file_path
 	config_file = open(file_path, 'r')
 	
 	major_pattern = re.compile(r'<?define\s+AppVersionMajor')
