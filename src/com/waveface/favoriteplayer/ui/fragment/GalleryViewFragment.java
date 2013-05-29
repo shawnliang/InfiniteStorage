@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -22,7 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
 
-public class GalleryViewFragment extends Fragment implements OnItemClickListener{
+public class GalleryViewFragment extends Fragment implements OnItemClickListener, OnClickListener{
 	private GridView mGridView;
 	private View mRootView = null;
 	
@@ -51,6 +52,8 @@ public class GalleryViewFragment extends Fragment implements OnItemClickListener
 		TextView tv = (TextView) mRootView.findViewById(R.id.textview_title);
 		tv.setText(data.getString(Constant.ARGUMENT3));
 		
+		mRootView.findViewById(R.id.textview_back).setOnClickListener(this);
+		
 		return mRootView;
 	}
 	
@@ -67,6 +70,12 @@ public class GalleryViewFragment extends Fragment implements OnItemClickListener
 		PhotoItemClickEvent event = new PhotoItemClickEvent();
 		event.position = position;
 		EventBus.getDefault().post(event);
+	}
+
+	@Override
+	public void onClick(View arg0) {
+		getActivity().finish();
+		getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 	}
 	
 	
