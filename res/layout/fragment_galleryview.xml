@@ -5,10 +5,10 @@
 
     <TextView
         android:id="@+id/textview_title"
-        android:layout_alignTop="@+id/textview_back"
         android:layout_alignBottom="@+id/textview_back"
-        android:layout_alignParentLeft="true"
         android:layout_marginLeft="@dimen/galleryview_horizontal_margin"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="20dip"
         android:gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
