@@ -10,4 +10,8 @@
     <dimen name="overview_item_padding">5dip</dimen>
     <dimen name="overview_item_first_left_padding">65dip</dimen>
 
+    <dimen name="galleryview_item_size">200dip</dimen>
+    
+    <dimen name="galleryview_horizontal_margin">50dip</dimen>
+    <dimen name="galleryview_horizontal_margin_land">100dip</dimen>
 </resources>

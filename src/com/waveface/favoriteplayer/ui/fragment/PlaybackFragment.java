@@ -2,33 +2,21 @@ package com.waveface.favoriteplayer.ui.fragment;
 
 import java.util.ArrayList;
 
-import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
-import com.waveface.favoriteplayer.db.LabelDB;
-import com.waveface.favoriteplayer.db.LabelFileTable;
 import com.waveface.favoriteplayer.entity.PlaybackData;
-import com.waveface.favoriteplayer.entity.ServerEntity;
-//import com.waveface.favoriteplayer.event.DispatchKeyEvent;
 import com.waveface.favoriteplayer.event.PhotoItemClickEvent;
-import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.ui.adapter.PlayerPagerAdapter;
 
 import de.greenrobot.event.EventBus;
@@ -61,33 +49,17 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 		} else {
 			data = savedInstanceState;
 		}
-		
-		ArrayList<ServerEntity> servers = ServersLogic.getPairedServer(getActivity());
-		ServerEntity pairedServer = servers.get(0);
-		if(TextUtils.isEmpty(pairedServer.restPort)){
-			pairedServer.restPort ="14005";
-		}
-		String serverUrl ="http://"+pairedServer.ip+":"+pairedServer.restPort;
-		Log.d(TAG, "mServerUrl:" +serverUrl);
-		
 
-		String labelId = data.getString(Constant.ARGUMENT1);
-		Cursor c = LabelDB.getLabelFilesByLabelId(getActivity(), labelId);
-		for(int i=0; i<c.getCount(); ++i) {
-			c.moveToPosition(i);
-			PlaybackData pd = new PlaybackData();
-			pd.url = serverUrl + Constant.URL_IMAGE + "/" +
-					c.getString(c.getColumnIndex(LabelFileTable.COLUMN_FILE_ID)) +
-					Constant.URL_IMAGE_LARGE;
-			mDatas.add(pd);
-		}
-		c.close();
+		mDatas = data.getParcelableArrayList(Constant.ARGUMENT1);
+		int position = data.getInt(Constant.ARGUMENT2);
 		
 		View root = inflater.inflate(R.layout.fragment_playback, container, false);
 		
 		mPager = (ViewPager) root.findViewById(R.id.pager);
 		mPager.setAdapter(new PlayerPagerAdapter(getActivity(), mDatas));
 		mPager.setOnPageChangeListener(this);
+		
+		mPager.setCurrentItem(position);
 		
 		return root;
 	}

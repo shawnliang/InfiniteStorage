@@ -150,4 +150,7 @@
     <string name="yesterday">Yesterday</string>
     <string name="thisweek">This week</string>
     
+    <!-- GALLERY FRAGMENT  -->
+    <string name="previous_page">Previous Page</string>
+    
 </resources>
