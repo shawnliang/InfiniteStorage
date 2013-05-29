@@ -24,7 +24,6 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
                         <Border  x:Name="Bd"
-                                 SnapsToDevicePixels="true"
                                  Background="#EEFFFFFF"
                                  BorderBrush="#FFCCCCCC"
                                  RenderTransformOrigin="1,1"
@@ -75,9 +74,7 @@
                                 Cursor="Arrow">
                     <Grid x:Name="ImgGrid">
                         <Image x:Name="ImgObject"
-                               Source="{Binding SelectedItem.ImageSource, ElementName=lbImages, IsAsync=True}"
-                               SnapsToDevicePixels="True"
-                               RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                               Source="{Binding SelectedItem.ImageSource, ElementName=lbImages, IsAsync=True}"/>
                         <Thumb x:Name="ImgThumb"
                                Opacity="0"
                                DragDelta="ImgThumb_DragDelta"
@@ -107,8 +104,7 @@
                VerticalContentAlignment="Center"
                Foreground="White"
                Margin="0,13,0,0"
-               Width="250"
-               SnapsToDevicePixels="True" />
+               Width="250"/>
         <l:ViewerControl x:Name="vcViewerControl"
                          Stared="{Binding SelectedItem.Liked, ElementName=lbImages, Mode=TwoWay, IsAsync=True}"
                          VerticalAlignment="Bottom"

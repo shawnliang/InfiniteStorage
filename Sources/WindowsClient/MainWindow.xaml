@@ -278,12 +278,6 @@
             </Setter>
         </Style>
 
-		 <Style TargetType="{x:Type Image}">
-    <Setter
-        Property="RenderOptions.BitmapScalingMode"
-        Value="NearestNeighbor" />
- </Style>
-
         <!--<DataTemplate DataType="{x:Type wvmodel:Service}">
             <Label Content="{Binding Name}" Foreground="White" Height="40" VerticalContentAlignment="Center"/>
         </DataTemplate>-->
@@ -347,7 +341,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}" >
-                        <Border SnapsToDevicePixels="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{TemplateBinding Background}">
+                        <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{TemplateBinding Background}">
                             <ContentPresenter />
                         </Border>
                         <ControlTemplate.Triggers>
@@ -386,7 +380,7 @@
 			<Grid.Effect>
 				<DropShadowEffect ShadowDepth="1" BlurRadius="1" Direction="270"/>
 			</Grid.Effect>
-			<Image Source="favorite.png" VerticalAlignment="Center" HorizontalAlignment="Left" Stretch="None" SnapsToDevicePixels="True"/>
+			<Image Source="favorite.png" VerticalAlignment="Center" HorizontalAlignment="Left" Stretch="None" />
 		</Grid>
 		<Grid Background="#FF5D5D5D" Grid.Column="1" Grid.Row="0" Margin="0,0,0,1">
 			<Grid.Effect>
@@ -417,12 +411,11 @@
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Label Content="Sources" Grid.Row="0" Foreground="#FFA5A5A5" Margin="0,0,0,4" FontFamily="Segoe UI Light" SnapsToDevicePixels="True"/>
+                <Label Content="Sources" Grid.Row="0" Foreground="#FFA5A5A5" Margin="0,0,0,4" FontFamily="Segoe UI Light"/>
 
                 <local:SourceTree 
 				x:Name="lbxDeviceContainer"  
 				Grid.Row="1" 
-				SnapsToDevicePixels="True" 
 				BorderBrush="{x:Null}"
 				VirtualizingStackPanel.IsVirtualizing="True" 
 				VirtualizingStackPanel.VirtualizationMode="Recycling"
@@ -436,7 +429,7 @@
 			<Grid.Effect>
 				<DropShadowEffect BlurRadius="1" ShadowDepth="1" Direction="180"/>
 			</Grid.Effect>
-			<Button Content="Add to Favorites" HorizontalAlignment="Center" Height="31" Margin="0,0,0,40" VerticalAlignment="Bottom" Width="130" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" FontSize="16" Foreground="White" Cursor="Hand" SnapsToDevicePixels="True">
+			<Button Content="Add to Favorites" HorizontalAlignment="Center" Height="31" Margin="0,0,0,40" VerticalAlignment="Bottom" Width="130" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" FontSize="16" Foreground="White" Cursor="Hand">
 				<Button.Background>
 					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
 						<GradientStop Color="#FF616060" Offset="0"/>
@@ -447,7 +440,7 @@
 					<DropShadowEffect BlurRadius="3" ShadowDepth="2" Direction="270" Opacity="0.3"/>
 				</Button.Effect>
 			</Button>
-			<Button Content="Share" HorizontalAlignment="Center" Height="31" Margin="0,0,0,5" VerticalAlignment="Bottom" Width="130" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" FontSize="16" Foreground="White" Click="Button_Click_1" Cursor="Hand" SnapsToDevicePixels="True">
+			<Button Content="Share" HorizontalAlignment="Center" Height="31" Margin="0,0,0,5" VerticalAlignment="Bottom" Width="130" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" FontSize="16" Foreground="White" Click="Button_Click_1" Cursor="Hand">
 				<Button.Background>
 					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
 						<GradientStop Color="#FF616060" Offset="0"/>
@@ -458,7 +451,7 @@
 					<DropShadowEffect BlurRadius="3" ShadowDepth="2" Direction="270" Opacity="0.3"/>
 				</Button.Effect>
 			</Button>
-			<Button Content="Clear All" HorizontalAlignment="Center" Height="31" Margin="0,165,0,0" VerticalAlignment="Top" Width="130" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" FontSize="16" Foreground="White" Cursor="Hand" SnapsToDevicePixels="True">
+			<Button Content="Clear All" HorizontalAlignment="Center" Height="31" Margin="0,165,0,0" VerticalAlignment="Top" Width="130" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" FontSize="16" Foreground="White" Cursor="Hand">
 
 				<Button.Background>
 					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -494,7 +487,7 @@
 						SelectedIndex="0"
 						MouseDoubleClick="OnPhotoClick"
 						VirtualizingStackPanel.IsVirtualizing="True" 
-						VirtualizingStackPanel.VirtualizationMode="Recycling" BorderBrush="{DynamicResource ContentAreaBackground}" SnapsToDevicePixels="True">
+						VirtualizingStackPanel.VirtualizationMode="Recycling" BorderBrush="{DynamicResource ContentAreaBackground}">
 						<ListBox.Resources>
 							<Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
 								<Style.Triggers>
@@ -511,8 +504,8 @@
 					</ListBox>
 				</ScrollViewer>
 				<Grid Grid.Row="1" Background="#FF3E3E3E" Margin="0">
-					<local:ZoomSlider x:Name="zoomSlider" Margin="10,0,0,0" Minimum="150" Maximum="400" Value="200" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand" SnapsToDevicePixels="True"/>
-					<local:FavoriteAllButton Margin="0,0,10,0" Width="100" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Click="FavoriteAllButton_Click" Cursor="Hand" SnapsToDevicePixels="True"/>
+					<local:ZoomSlider x:Name="zoomSlider" Margin="10,0,0,0" Minimum="150" Maximum="400" Value="200" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand"/>
+					<local:FavoriteAllButton Margin="0,0,10,0" Width="100" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Click="FavoriteAllButton_Click" Cursor="Hand"/>
 				</Grid>
 			</Grid>
 		</Grid>

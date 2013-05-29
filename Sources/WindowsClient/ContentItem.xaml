@@ -47,9 +47,7 @@
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
                RenderTransformOrigin="0.5,0.5"
-               OpacityMask="Black"
-               SnapsToDevicePixels="True"
-               RenderOptions.BitmapScalingMode="NearestNeighbor">
+               OpacityMask="Black">
             <Image.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />
@@ -82,8 +80,7 @@
                        VerticalAlignment="Bottom"
                        FontSize="13"
                        Opacity="0.6"
-                       FontFamily="Segoe UI Light"
-                       SnapsToDevicePixels="True" />
+                       FontFamily="Segoe UI Light"/>
         </Grid>
         <l:LabelTag x:Name="ltTag"
                     Tagged="{Binding Liked, Mode=TwoWay}"

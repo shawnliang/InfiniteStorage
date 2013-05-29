@@ -5,4 +5,19 @@
              xmlns:fw="clr-namespace:Waveface.ClientFramework;assembly=Waveface.ClientFramework"
              xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
              Startup="OnApplicationStartup">
+    <Application.Resources>
+
+        <Style TargetType="{x:Type Image}">
+            <!--<Setter Property="RenderOptions.BitmapScalingMode"
+                    Value="NearestNeighbor" />-->
+            <Setter Property="SnapsToDevicePixels"
+                    Value="True" />
+        </Style>
+
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="SnapsToDevicePixels"
+                    Value="True" />
+        </Style>
+
+    </Application.Resources>
 </Application>
