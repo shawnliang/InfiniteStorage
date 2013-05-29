@@ -1,6 +1,9 @@
 package com.waveface.favoriteplayer.service;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -170,6 +173,12 @@ public class PlayerService extends Service{
 		Log.d(TAG, "onStart");
 	}
 
+	private Inet4Address getWifiIpAddressV4(WifiManager wifi) throws UnknownHostException {
+    	int ip = wifi.getConnectionInfo().getIpAddress();
+    	byte[] ipByte = BigInteger.valueOf(ip).toByteArray();
+    	return (Inet4Address) Inet4Address.getByAddress(ipByte); 
+	}
+	
     private void setupMDNS() {
     	mMDNSSetupTime = System.currentTimeMillis();
         WifiManager wifi = (WifiManager) getSystemService(android.content.Context.WIFI_SERVICE);
@@ -177,7 +186,8 @@ public class PlayerService extends Service{
 //        lock.setReferenceCounted(true);
         mLock.acquire();
         try {
-            mJMDNS = JMDNS.create();
+        	Inet4Address ipAddrv4 = getWifiIpAddressV4(wifi);
+        	mJMDNS = JMDNS.create(ipAddrv4);
             mJMDNS.addServiceListener(Constant.INFINTE_STORAGE,	mListener = new ServiceListener() {
                 @SuppressWarnings("deprecation")
 				@Override
