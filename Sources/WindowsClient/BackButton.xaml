@@ -5,7 +5,6 @@
         mc:Ignorable="d"
         x:Class="Waveface.Client.BackButton"
         Style="{DynamicResource arrowBack}"
-        SnapsToDevicePixels="True"
         Background="{x:Null}"
         BorderBrush="{x:Null}"
         Foreground="{x:Null}">

@@ -61,7 +61,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Thumb}">
-                        <Canvas SnapsToDevicePixels="true">
+                        <Canvas>
                             <Canvas.RenderTransform>
                                 <TransformGroup>
                                     <TransformGroup.Children>
@@ -181,7 +181,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Thumb}">
-                        <Canvas SnapsToDevicePixels="true">
+                        <Canvas>
                             <Canvas.RenderTransform>
                                 <TranslateTransform X="5"
                                                     Y="9" />
@@ -292,7 +292,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Thumb}">
-                        <Grid SnapsToDevicePixels="true">
+                        <Grid>
 
                             <Path x:Name="Background"
                                   Data="{StaticResource SliderThumbOuterBorderGeometry}"
@@ -399,7 +399,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Thumb}">
-                        <Canvas SnapsToDevicePixels="true">
+                        <Canvas>
                             <Canvas.RenderTransform>
                                 <TransformGroup>
                                     <TransformGroup.Children>
@@ -493,13 +493,9 @@
                         <DockPanel>
                             <Image Source="{DynamicResource SmallPhotoIcon}"
                                    VerticalAlignment="Center"
-                                   SnapsToDevicePixels="True"
-                                   RenderOptions.BitmapScalingMode="NearestNeighbor"
                                    Width="20" />
                             <Image Source="{DynamicResource BigPhotoIcon}"
                                    VerticalAlignment="Center"
-                                   SnapsToDevicePixels="True"
-                                   RenderOptions.BitmapScalingMode="NearestNeighbor"
                                    Width="20"
                                    DockPanel.Dock="Right" />
                             <Grid Width="60">
@@ -528,8 +524,7 @@
                                         Margin="5,0"
                                         Grid.Row="1"
                                         VerticalAlignment="center"
-                                        BorderBrush="{x:Null}"
-                                        SnapsToDevicePixels="True">
+                                        BorderBrush="{x:Null}">
                                     <Border.Background>
                                         <LinearGradientBrush EndPoint="0.5,1"
                                                              StartPoint="0.5,0">
@@ -560,8 +555,7 @@
                                     </Track.IncreaseRepeatButton>
                                     <Track.Thumb>
                                         <Thumb x:Name="Thumb"
-                                               Style="{StaticResource HorizontalSliderThumbStyle}"
-                                               SnapsToDevicePixels="True" />
+                                               Style="{StaticResource HorizontalSliderThumbStyle}"/>
                                     </Track.Thumb>
                                 </Track>
                             </Grid>
@@ -624,8 +618,7 @@
                             <ControlTemplate TargetType="{x:Type Slider}">
                                 <Border BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="{TemplateBinding BorderThickness}"
-                                        Background="{TemplateBinding Background}"
-                                        SnapsToDevicePixels="true">
+                                        Background="{TemplateBinding Background}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
