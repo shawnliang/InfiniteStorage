@@ -474,11 +474,11 @@
         <BitmapImage x:Key="SmallPhotoIcon"
                      CreateOptions="IgnoreImageCache"
                      CacheOption="OnLoad"
-                     UriSource="C:\Users\larry\Documents\GitHub\InfiniteStorage\Sources\WindowsClient\sliderbarsmallphotoicon.png" />
+                     UriSource="sliderbarsmallphotoicon.png" />
         <BitmapImage x:Key="BigPhotoIcon"
                      CreateOptions="IgnoreImageCache"
                      CacheOption="OnLoad"
-                     UriSource="C:\Users\larry\Documents\GitHub\InfiniteStorage\Sources\WindowsClient\sliderbarbigphotoicon.png" />
+                     UriSource="sliderbarbigphotoicon.png" />
         <Style x:Key="ZoomSliderStyle"
                TargetType="{x:Type Slider}">
             <Setter Property="Stylus.IsPressAndHoldEnabled"
