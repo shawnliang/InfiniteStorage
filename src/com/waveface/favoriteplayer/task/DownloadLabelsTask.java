@@ -44,14 +44,14 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 			return null;
 		Cursor cursor = LabelDB.getMAXSEQLabel(mContext);
 		if (cursor != null && cursor.getCount() > 0) {
-			cursor.close();
+			
 			DownloadLogic.subscribe(mContext);
 			LabelImportedEvent doneEvent = new LabelImportedEvent(
 					LabelImportedEvent.STATUS_DONE);
 			EventBus.getDefault().post(doneEvent);
 			return null;
 		}
-
+		cursor.close();
 		SharedPreferences mPrefs = mContext.getSharedPreferences(
 				Constant.PREFS_NAME, Context.MODE_PRIVATE);
 		Editor mEditor = mPrefs.edit();

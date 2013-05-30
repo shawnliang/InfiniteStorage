@@ -33,6 +33,7 @@ public class LabelDB {
 			updateLabelFiles(context, label);
 			updateFiles(context, fileEntity);
 		}else{
+			updateLabelSeq(context,label.label_id,label.seq);
 			removeAllFileInLabel(context, label.label_id);
 			updateLabelFiles(context, label);
 			updateFiles(context, fileEntity);			
@@ -302,5 +303,14 @@ public class LabelDB {
 		cr.delete(LabelFileTable.CONTENT_URI, 
 				LabelFileTable.COLUMN_FILE_ID+"=?", 
 				new String[]{fileId});
+	}
+	
+	public static int updateLabelSeq(Context context, String labelId,String seq) {
+		ContentResolver cr = context.getContentResolver();
+		ContentValues cv = new ContentValues();
+		cv.put(LabelTable.COLUMN_SEQ, Integer.parseInt(seq));
+
+		return cr.update(LabelTable.CONTENT_URI, cv, LabelTable.COLUMN_LABEL_ID + "=?",
+				new String[] { labelId });
 	}
 }

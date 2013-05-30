@@ -10,8 +10,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+
 import android.database.Cursor;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,14 +23,10 @@ import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelFileTable;
 import com.waveface.favoriteplayer.db.LabelTable;
 import com.waveface.favoriteplayer.db.PairedServersTable;
-import com.waveface.favoriteplayer.entity.ConnectForGTVEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
-import com.waveface.favoriteplayer.event.WebSocketEvent;
 import com.waveface.favoriteplayer.mdns.DataPacket;
-import com.waveface.favoriteplayer.util.DeviceUtil;
 import com.waveface.favoriteplayer.websocket.RuntimeWebClient;
 
-import de.greenrobot.event.EventBus;
 
 
 public class ServersLogic {

@@ -142,9 +142,12 @@ public class DownloadLogic {
 	}
 
 	public static void updateAllLabels(Context context, LabelEntity entity) {
+		String serverLabelSeq=null;
 		for (LabelEntity.Label label : entity.labels) {
 			downloadLabel(context, label,true,false);
+			serverLabelSeq=label.seq;
 		}
+		
 		LabelImportedEvent doneEvent = new LabelImportedEvent(
 				LabelImportedEvent.STATUS_DONE);
 		EventBus.getDefault().post(doneEvent);
@@ -169,8 +172,19 @@ public class DownloadLogic {
 
 		LabelImportedEvent doneEvent = new LabelImportedEvent(
 				LabelImportedEvent.STATUS_DONE);
-		EventBus.getDefault().post(doneEvent);
-		subscribe(context);
+		
+		Cursor maxLabelcursor = LabelDB.getMAXSEQLabel(context);
+		String labSeq = "0";
+		if (maxLabelcursor != null && maxLabelcursor.getCount() > 0) {
+			maxLabelcursor.moveToFirst();
+			labSeq = maxLabelcursor.getString(maxLabelcursor
+					.getColumnIndex(LabelTable.COLUMN_SEQ));
+			// send broadcast label change
+		}
+		maxLabelcursor.close();
+		if(Integer.parseInt(labSeq) >= Integer.parseInt(labelEntity.seq)){
+		  subscribe(context);
+		}
 	}
 
 	public static boolean wasSynced(Context context) {
@@ -229,6 +243,7 @@ public class DownloadLogic {
 		subscribe.labels_from_seq = labSeq;
 		connectForGTV.setSubscribe(subscribe);
 		Log.d(TAG, "send message=" + RuntimeState.GSON.toJson(connectForGTV));
+		
 		try {
 			RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));
 		} catch (WebSocketException e) {
