@@ -34,7 +34,7 @@
             </Style.Triggers>
         </Style>
 
-		<Style TargetType="Image">
+		<Style x:Key="PhotoStyle" TargetType="Image">
             <Setter Property="Visibility" Value="Collapsed"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="Photo">
@@ -63,7 +63,8 @@
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
                RenderTransformOrigin="0.5,0.5"
-               OpacityMask="Black">
+               OpacityMask="Black"
+			   Style="{StaticResource PhotoStyle}">
             <Image.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />
