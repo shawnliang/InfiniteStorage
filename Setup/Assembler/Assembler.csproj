@@ -52,6 +52,12 @@
       <Link>SharpSetup.translations.cab</Link>
     </IncludeInCabExtracted>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gui\Gui.csproj">
+      <Project>{1862710D-9C9F-4894-B6F2-EBFFF4717DD1}</Project>
+      <Name>Gui</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
