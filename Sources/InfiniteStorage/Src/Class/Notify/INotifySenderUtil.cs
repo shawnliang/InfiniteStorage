@@ -46,5 +46,7 @@ namespace InfiniteStorage.Notify
 
 		public bool? deleted { get; set; }
 		public long seq { get; set; }
+
+		public DateTime event_time { get; set; }
 	}
 }

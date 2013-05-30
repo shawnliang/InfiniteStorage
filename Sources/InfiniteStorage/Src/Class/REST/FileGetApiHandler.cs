@@ -45,7 +45,7 @@ namespace InfiniteStorage.REST
 									 dev_type = 0,//TODO
 									 deleted = f.deleted,
 									 seq = f.seq,
-
+									 event_time = f.event_time,
 									 saved_path = f.saved_path,
 									 device_folder = d.folder_name
 								 }).Union(
@@ -66,7 +66,7 @@ namespace InfiniteStorage.REST
 									 dev_type = 0,//TODO
 									 deleted = f.deleted,
 									 seq = f.seq,
-
+									 event_time = f.event_time,
 									 saved_path = f.saved_path,
 									 device_folder = d.folder_name
 								 });
