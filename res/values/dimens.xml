@@ -2,6 +2,9 @@
     <dimen name="overview_image_width">@dimen/phone_overview_image_width</dimen>
     <dimen name="overview_image_height">@dimen/phone_overview_image_height</dimen>
     
+    
+    <dimen name="overview_reflection_image_height">@dimen/phone_overview_reflection_image_height</dimen>
+    
     <dimen name="overview_tab_top_margin">@dimen/phone_overview_tab_top_margin</dimen>
     <dimen name="overview_tab_bottom_margin">@dimen/phone_overview_tab_bottom_margin</dimen>
     
