@@ -71,8 +71,8 @@ public class OverviewAdapter extends BaseAdapter{
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
-		int width = context.getResources().getDimensionPixelSize(R.dimen.overview_image_width);
-		int height = context.getResources().getDimensionPixelSize(R.dimen.overview_image_height);
+		int width = context.getResources().getDimensionPixelSize(R.dimen.overview_image_width) + 200;
+		int height = context.getResources().getDimensionPixelSize(R.dimen.overview_image_height) + 200;
 
 		ImageAttribute attr = new ImageAttribute(holder.image);
 		attr = new ImageAttribute(holder.image);

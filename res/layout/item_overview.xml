@@ -10,10 +10,7 @@
         android:layout_height="@dimen/overview_image_height"
         android:layout_centerVertical="true"
         android:background="@drawable/list_selector"
-        android:paddingLeft="5dip"
-        android:paddingRight="5dip"
-        android:paddingTop="5dip"
-        android:paddingBottom="5dip" >
+        android:padding="5dip" >
 
         <ImageView
             android:id="@+id/image"
@@ -23,28 +20,24 @@
 
     <RelativeLayout
         android:layout_width="@dimen/overview_image_width"
-        android:layout_height="@dimen/overview_image_height"
+        android:layout_height="@dimen/overview_reflection_image_height"
         android:layout_below="@+id/container_imagearea"
         android:paddingLeft="5dip"
-        android:paddingRight="5dip"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip" >
+        android:paddingRight="5dip" >
 
         <ImageView
             android:id="@+id/reflection_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </RelativeLayout>
-    
+
     <TextView
+        android:id="@+id/text_label"
         android:layout_width="@dimen/overview_image_width"
         android:layout_height="wrap_content"
         android:layout_below="@+id/container_imagearea"
         android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="22sp"
-        android:id="@+id/text_label"
-         
-        />
+        android:textSize="22sp" />
 
 </RelativeLayout>
