@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:Waveface.Client"
              xmlns:fw="clr-namespace:Waveface.ClientFramework;assembly=Waveface.ClientFramework"
              xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
-             Startup="OnApplicationStartup">
+             StartupUri="MainWindow.xaml">
     <Application.Resources>
 
         <Style TargetType="{x:Type Image}">
