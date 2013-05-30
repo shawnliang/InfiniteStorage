@@ -36,6 +36,10 @@
   <PropertyGroup>
     <ApplicationIcon>Resources\Bunnydesktop.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AppLimit.NetSparkle">
       <HintPath>..\..\Libs\NetSparkle-1.0.83\AppLimit.NetSparkle.dll</HintPath>

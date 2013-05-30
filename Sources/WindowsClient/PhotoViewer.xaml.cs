@@ -9,17 +9,33 @@ namespace Waveface.Client
 	/// </summary>
 	public partial class PhotoViewer : Window
 	{
+		public int SelectedIndex
+		{
+			get
+			{
+				return pvcViewer.SelectedIndex;
+			}
+			set
+			{
+				pvcViewer.SelectedIndex = value;
+			}
+		}
+
+		public Object Source
+		{
+			get
+			{
+				return pvcViewer.Source;
+			}
+			set
+			{
+				pvcViewer.Source = value;
+			}
+		}
+
 		public PhotoViewer()
 		{
 			InitializeComponent();
-		}
-
-		private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-		{
-			//if (e.ChangedButton != MouseButton.Left)
-			//	return;
-
-			//this.Close();
 		}
 
 

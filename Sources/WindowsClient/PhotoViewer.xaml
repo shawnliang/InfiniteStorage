@@ -5,7 +5,6 @@
         Title="PhotoViewer"
         Height="300"
         Width="300"
-        MouseDoubleClick="Window_MouseDoubleClick"
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
