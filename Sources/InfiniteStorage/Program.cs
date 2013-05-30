@@ -14,6 +14,7 @@ using System.Text;
 using System.Windows.Forms;
 using Wammer.Station;
 using WebSocketSharp.Server;
+using Waveface.Common;
 
 namespace InfiniteStorage
 {
@@ -25,6 +26,7 @@ namespace InfiniteStorage
 		static Timer m_NotifyTimer;
 		static System.Timers.Timer m_BackupStatusTimer;
 		static System.Timers.Timer m_ReRegBonjourTimer;
+		static NoReentrantTimer m_recentLabelTimer;
 		static WebSocketServer<InfiniteStorageWebSocketService> backup_server;
 		static WebSocketServer<NotifyWebSocketService> notify_server;
 		static HttpServer rest_server;
@@ -149,6 +151,9 @@ namespace InfiniteStorage
 
 			var updator = new Waveface.Common.AutoUpdate(false);
 			updator.StartLoop();
+
+			m_recentLabelTimer = new NoReentrantTimer((x) => { autoLabel.RemoveOutOfDateAutoLabels(); }, null, 5000, 10 * 60 * 1000);
+			m_recentLabelTimer.Start();
 
 
 			PendingFileMonitor.Instance.Start();

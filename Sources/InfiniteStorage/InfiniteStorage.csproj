@@ -83,6 +83,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\Class\Common\NoReentrantTimer.cs" />
     <Compile Include="Src\Dialog\BackToPhoneDialog.cs">
       <SubType>Form</SubType>
     </Compile>

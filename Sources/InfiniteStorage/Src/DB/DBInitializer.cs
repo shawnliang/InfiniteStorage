@@ -136,7 +136,7 @@ CREATE INDEX [idx_PendingFiles_file_path_1] ON [PendingFiles](
 					{
 						var cmd = new SQLiteCommand(
 @"
-ALTER TABLE [Labels] Add Column [auto_type] BOOLEAN NULL;
+ALTER TABLE [Labels] Add Column [auto_type] INTEGER NULL;
 update [Labels] set auto_type = 0;
 ", conn);
 						cmd.ExecuteNonQuery();
