@@ -31,7 +31,7 @@ namespace InfiniteStorage
 		static WebSocketServer<NotifyWebSocketService> notify_server;
 		static HttpServer rest_server;
 		static Notifier notifier;
-		static AutoLabelController autoLabel = new AutoLabelController();
+		static AutoLabelController autoLabel;
 
 		private static System.Threading.Mutex m_InstanceMutex { get; set; }
 
@@ -53,7 +53,7 @@ namespace InfiniteStorage
 			}
 
 			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
+			//Application.SetCompatibleTextRenderingDefault(false);
 			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
 
 			AppDomain.CurrentDomain.UnhandledException += NBug.Handler.UnhandledException;
@@ -92,6 +92,7 @@ namespace InfiniteStorage
 			SeqNum.InitFromDB();
 
 			initNotifyIcon();
+			autoLabel = new AutoLabelController();
 			InfiniteStorageWebSocketService.FileReceived += ProgressTooltip.Instance.OnFileEnding;
 			InfiniteStorageWebSocketService.FileReceived += autoLabel.FileReceived;
 
