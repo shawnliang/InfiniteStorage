@@ -1,12 +1,15 @@
 package com.waveface.favoriteplayer;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import android.content.Context;
 
 import com.google.gson.Gson;
 import com.waveface.favoriteplayer.util.NetworkUtil;
 
 public class RuntimeState{
-	private static final String TAG = RuntimeState.class.getSimpleName();
+
 	
 	public static Gson GSON = new Gson();
 	public static boolean OnWebSocketOpened = false;
@@ -103,6 +106,8 @@ public class RuntimeState{
 		else{
 			return false;
 		}
-	}	
+	}
+	
+	public static Set<String> labelsHashSet = new HashSet<String>();
 	
 }

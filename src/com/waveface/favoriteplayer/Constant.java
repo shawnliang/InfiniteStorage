@@ -253,6 +253,7 @@ public class Constant {
 	//Label SharedPreferences
 	public final static String PREF_SERVER_LABEL_SEQ = "server_label_seq";
 	public final static String PREF_SERVER_CHANGE_LABEL_ID = "server_change_label_id";
+	public final static String PREF_SERVER_CHANGE_LABELS = "server_change_labels";
 	public final static String PREF_DOWNLOAD_LABEL_INIT_STATUS = "download_label_init_status";
 	
 	public final static int AVAIABLE_SPACE =30;

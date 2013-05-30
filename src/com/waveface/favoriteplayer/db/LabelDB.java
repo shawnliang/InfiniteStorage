@@ -3,6 +3,7 @@ package com.waveface.favoriteplayer.db;
 import java.util.ArrayList;
 
 
+
 import java.util.Date;
 
 import android.content.ContentResolver;
@@ -10,6 +11,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
+
 
 import com.waveface.favoriteplayer.entity.FileEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
@@ -25,14 +27,16 @@ public class LabelDB {
 	public static void updateLabelInfo(Context context,
 			LabelEntity.Label label, FileEntity fileEntity ,boolean isChangeLabel) {
 
-		if(isChangeLabel){
-//			deleteLabel(context,label.label_id);
+		if(!isChangeLabel){
+			updateLabel(context, label);
+			//removeAllFileInLabel(context, label.label_id);
+			updateLabelFiles(context, label);
+			updateFiles(context, fileEntity);
+		}else{
+			removeAllFileInLabel(context, label.label_id);
+			updateLabelFiles(context, label);
+			updateFiles(context, fileEntity);			
 		}
-		//StringUtil.localtimeToIso8601(new Date())
-		updateLabel(context, label);
-		removeAllFileInLabel(context, label.label_id);
-		updateLabelFiles(context, label);
-		updateFiles(context, fileEntity);
 	}
 
 	public static int updateLabel(Context context, LabelEntity.Label label) {
@@ -136,28 +140,10 @@ public class LabelDB {
 		cursor.close();
 	}
 
-//	private static int removeAllFileLabel(Context context, String labelId) {
-//		return context.getContentResolver().delete(LabelFileTable.CONTENT_URI, LabelFileTable.COLUMN_LABEL_ID
-//				+ "=?", new String[] { labelId });
-//	}
-//	
-//	
+
 	
 	private static void removeAllFileInLabel(Context context, String labelId) {
 		ContentResolver cr = context.getContentResolver();
-//		Cursor cursor = cr.query(
-//				LabelFileTable.CONTENT_URI, 
-//				new String[] {LabelFileTable.COLUMN_FILE_ID},
-//				LabelFileTable.COLUMN_LABEL_ID+" = ?", 
-//				new String[] {labelId}, null);
-//		while (cursor!=null && cursor.moveToNext()) {
-//			cr.delete(FileTable.CONTENT_URI, 
-//					FileTable.COLUMN_FILE_ID+"=?", 
-//					new String[]{cursor.getString(0)});
-//			Log.v(TAG, "delete file "+cursor.getString(0));
-//		}
-//		if (cursor!=null)
-//			cursor.close();
 		cr.delete(LabelFileTable.CONTENT_URI, 
 				LabelFileTable.COLUMN_LABEL_ID+"=?", 
 				new String[]{labelId});
@@ -298,5 +284,23 @@ public class LabelDB {
 		}
 		cursor.close();
 		return labelId;
+	}
+	
+	public static Cursor getLabeFilelCountByLabelId(Context context, String labelId) {
+
+		Cursor cursor = context.getContentResolver().query(
+				LabelFileTable.CONTENT_URI,
+				new String[] { LabelFileTable.COLUMN_LABEL_ID,
+						LabelFileTable.COLUMN_FILE_ID },
+						LabelFileTable.COLUMN_LABEL_ID + " = ?", new String[] { labelId },
+				null);
+				return cursor;
+	}
+	
+	private static void removeLabelFileByFileId(Context context, String fileId) {
+		ContentResolver cr = context.getContentResolver();
+		cr.delete(LabelFileTable.CONTENT_URI, 
+				LabelFileTable.COLUMN_FILE_ID+"=?", 
+				new String[]{fileId});
 	}
 }

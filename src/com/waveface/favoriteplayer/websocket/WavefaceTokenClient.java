@@ -1,11 +1,6 @@
 package com.waveface.favoriteplayer.websocket;
 
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,13 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import javolution.util.FastMap;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+
 import org.jwebsocket.api.WebSocketClientEvent;
 import org.jwebsocket.api.WebSocketClientListener;
 import org.jwebsocket.api.WebSocketClientTokenListener;
@@ -37,26 +26,19 @@ import org.jwebsocket.token.TokenFactory;
 import org.jwebsocket.token.WebSocketResponseTokenListener;
 import org.jwebsocket.util.Tools;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
-import android.os.Environment;
 import android.text.TextUtils;
 
-import com.waveface.exception.WammerServerException;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
-import com.waveface.favoriteplayer.SyncApplication;
-import com.waveface.favoriteplayer.db.LabelDB;
-import com.waveface.favoriteplayer.db.LabelFileView;
-import com.waveface.favoriteplayer.db.LabelTable;
-import com.waveface.favoriteplayer.entity.FileEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.LabelChangeEvent;
-import com.waveface.favoriteplayer.event.LabelImportedEvent;
+
 import com.waveface.favoriteplayer.logic.DownloadLogic;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.util.Log;
@@ -167,6 +149,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 			RuntimeState.setServerStatus(Constant.WS_ACTION_SOCKET_OPENED);
 		}
 
+		@SuppressLint("NewApi")
 		@Override
 		public void processPacket(WebSocketClientEvent aEvent,
 				WebSocketPacket aPacket) {
@@ -182,9 +165,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 				LabelChangeEntity entity = null;
 				entity = RuntimeState.GSON.fromJson(jsonOutput,
 						LabelChangeEntity.class);
-				mEditor.putInt(Constant.PREF_SERVER_LABEL_SEQ,
-						Integer.parseInt(entity.label_change.seq));
-				mEditor.commit();
+				
 
 				int downloadLableInitStatus = mPrefs.getInt(
 						Constant.PREF_DOWNLOAD_LABEL_INIT_STATUS, 0);
@@ -214,9 +195,12 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 							LabelEntity.Label labelEntity = RuntimeState.GSON
 									.fromJson(jsonOutput,
 											LabelEntity.Label.class);
+	
+							RuntimeState.labelsHashSet.add(entity.label_change.label_id);
+							mEditor.putStringSet(Constant.PREF_SERVER_CHANGE_LABELS, RuntimeState.labelsHashSet);
+							mEditor.commit();
+						
 							DownloadLogic.updateLabel(mContext, labelEntity);
-
-							
 							EventBus.getDefault().post(new LabelChangeEvent(entity.label_change.label_id));
 						}
 					} catch (Exception e) {

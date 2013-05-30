@@ -10,9 +10,11 @@ import java.util.HashMap;
 
 import org.jwebsocket.kit.WebSocketException;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.os.Environment;
 
@@ -42,7 +44,7 @@ public class DownloadLogic {
 
 	private static final String TAG = DownloadLogic.class.getSimpleName();
 
-	public static synchronized void downloadLabel(Context context, LabelEntity.Label label,boolean autoDownload) {
+	public static synchronized void downloadLabel(Context context, LabelEntity.Label label,boolean autoDownload,boolean isChangeLabel) {
 		HashMap<String, String> param = new HashMap<String, String>();
 		String files = "";
 		String jsonOutput = "";
@@ -77,7 +79,9 @@ public class DownloadLogic {
 					LabelImportedEvent.STATUS_SYNCING);
 			LabelImportedEvent doneEvent = new LabelImportedEvent(
 					LabelImportedEvent.STATUS_DONE);
-			LabelDB.updateLabelInfo(context, label, fileEntity, true);
+			
+			LabelDB.updateLabelInfo(context, label, fileEntity, isChangeLabel);
+			
 			File root = Environment.getExternalStorageDirectory();
 			ImageManager imageManager = SyncApplication
 					.getWavefacePlayerApplication(context).getImageManager();
@@ -139,7 +143,7 @@ public class DownloadLogic {
 
 	public static void updateAllLabels(Context context, LabelEntity entity) {
 		for (LabelEntity.Label label : entity.labels) {
-			downloadLabel(context, label,true);
+			downloadLabel(context, label,true,false);
 		}
 		LabelImportedEvent doneEvent = new LabelImportedEvent(
 				LabelImportedEvent.STATUS_DONE);
@@ -147,13 +151,22 @@ public class DownloadLogic {
 		subscribe(context);
 	}
 
+	
+	@SuppressLint("NewApi")
 	public static void updateLabel(Context context,
 			LabelEntity.Label labelEntity) {
-		downloadLabel(context, labelEntity,false);
+		downloadLabel(context, labelEntity,false,true);
 		// while(!wasSynced(context)){
 		// //
 		// downloadLabel(context,labelEntity);
 		// }
+		SharedPreferences mPrefs = context.getSharedPreferences(
+				Constant.PREFS_NAME, Context.MODE_PRIVATE);
+		Editor mEditor = mPrefs.edit();
+		RuntimeState.labelsHashSet.remove(labelEntity.label_id);
+		mEditor.putStringSet(Constant.PREF_SERVER_CHANGE_LABELS, RuntimeState.labelsHashSet);
+		mEditor.commit();
+
 		LabelImportedEvent doneEvent = new LabelImportedEvent(
 				LabelImportedEvent.STATUS_DONE);
 		EventBus.getDefault().post(doneEvent);
@@ -222,6 +235,10 @@ public class DownloadLogic {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static boolean isLableChang(String lableId){
+		return RuntimeState.labelsHashSet.contains(lableId);
 	}
 
 }
