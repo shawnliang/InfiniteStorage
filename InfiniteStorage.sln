@@ -37,6 +37,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembler", "Setup\Assemble
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignFinalProduct", "Setup\SignFinalProduct\SignFinalProduct.csproj", "{0EAAA03A-EBCA-475A-AB35-ADC12F218141}"
+	ProjectSection(ProjectDependencies) = postProject
+		{38A37A25-0F69-41E6-B9BC-3139C59489B8} = {38A37A25-0F69-41E6-B9BC-3139C59489B8}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{ED269983-ABC8-42F4-BDEA-9B1754ADBBAC}"
 EndProject
