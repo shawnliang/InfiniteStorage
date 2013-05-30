@@ -256,6 +256,7 @@ namespace InfiniteStorage
 			rest_server.AddHandler("/label/add", new LabelAddApiHandler());
 			rest_server.AddHandler("/label/delete", new LabelDeleteApiHandler());
 			rest_server.AddHandler("/label/get", new LabelGetApiHandler());
+			rest_server.AddHandler("/label/on_air", new LabelOnAirApiHandler());
 			rest_server.AddHandler("/file/get", new FileGetApiHandler());
 			rest_server.AddHandler("/pending/get", new PendingGetApiHandler());
 			rest_server.AddHandler("/pending/sort", new PendingSortApiHandler());
