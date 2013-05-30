@@ -82,6 +82,8 @@ namespace InfiniteStorage.Model
 		public bool deleted { get; set; }
 
 		public int auto_type { get; set; }
+
+		public bool on_air { get; set; }
 	}
 
 	[Table("LabelFiles")]

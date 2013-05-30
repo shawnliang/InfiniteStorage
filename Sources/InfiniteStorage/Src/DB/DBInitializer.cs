@@ -244,6 +244,19 @@ values (@videoThisWeek, 'This Weeks''s video', 3, 0, 6);
 						schemaVersion = 7;
 					}
 
+					if (schemaVersion == 7L)
+					{
+						var cmd = new SQLiteCommand(
+@"
+ALTER TABLE [Labels] Add Column [on_air] BOOLEAN NULL;
+update [Labels] set on_air = 1;
+", conn);
+						cmd.ExecuteNonQuery();
+
+						updateDbSchemaVersion(conn, 8);
+						schemaVersion = 8;
+					}
+
 					transaction.Commit();
 				}
 
