@@ -16,10 +16,7 @@
           VirtualizingStackPanel.VirtualizationMode="Recycling" ItemContainerStyle="{DynamicResource TreeViewItemStyle1}">
 
     <TreeView.Resources>
-        <SolidColorBrush Color="Transparent"
-                         x:Key="{x:Static SystemColors.HighlightBrushKey}" />
-        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
-                         Color="Transparent" />
+
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Style TargetType="{x:Type TreeViewItem}">
             <EventSetter Event="UIElement.PreviewMouseLeftButtonDown"
@@ -123,19 +120,19 @@
         <HierarchicalDataTemplate ItemsSource="{Binding Contents}">
             <Label FontWeight="Bold"
                    Content="{Binding Name}"
-                   Foreground="White" />
+                   Foreground="White"/>
 
             <HierarchicalDataTemplate.ItemTemplate>
 
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Width="1024">
                         <Image x:Name="icon"
                                Source="album.png" />
                         <Label x:Name="sourceName"
                                Content="{Binding Name}"
                                Foreground="White"
                                Height="32"
-                               VerticalContentAlignment="Center" />
+                               VerticalContentAlignment="Center"/>
                     </StackPanel>
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}"
