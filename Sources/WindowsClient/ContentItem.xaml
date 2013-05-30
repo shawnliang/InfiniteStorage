@@ -23,6 +23,26 @@
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
 
+			 <Style TargetType="MediaElement">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="Video">
+                    <Setter Property="Visibility" Value="Visible"/>
+					<Setter Property="Visibility" Value="Visible"/>
+					<Setter Property="Source" Value="{Binding Uri, IsAsync=True}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+		<Style TargetType="Image">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="Photo">
+                    <Setter Property="Visibility" Value="Visible"/>
+					<Setter Property="Source" Value="{Binding ThumbnailSource, IsAsync=True}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="Mouse.MouseEnter">
@@ -38,9 +58,8 @@
         <Grid.Effect>
             <DropShadowEffect Direction="270" />
         </Grid.Effect>
-        <Image x:Name="image"
-               Source="{Binding ThumbnailSource, IsAsync=True}"
-               Stretch="UniformToFill"
+		<MediaElement Stretch="UniformToFill" ScrubbingEnabled="True" LoadedBehavior="Pause"/>
+        <Image Stretch="UniformToFill"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
                RenderTransformOrigin="0.5,0.5"
@@ -54,7 +73,6 @@
                 </TransformGroup>
             </Image.RenderTransform>
         </Image>
-
 
         <Grid x:Name="photoInfo"
               Visibility="Collapsed">

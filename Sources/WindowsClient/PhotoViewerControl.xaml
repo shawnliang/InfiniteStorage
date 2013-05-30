@@ -11,6 +11,26 @@
              d:DesignWidth="760"
              d:DesignHeight="504">
     <UserControl.Resources>
+		 <Style TargetType="MediaElement">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="Video">
+                    <Setter Property="Visibility" Value="Visible"/>
+					<Setter Property="Source" Value="{Binding Uri, IsAsync=True}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+		<Style TargetType="Image">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="Photo">
+                    <Setter Property="Visibility" Value="Visible"/>
+					<Setter Property="Source" Value="{Binding ImageSource, IsAsync=True}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
         <ItemsPanelTemplate x:Key="ItemsPanelTemplate1">
             <VirtualizingStackPanel IsItemsHost="True"
                                     Orientation="Horizontal" />
@@ -18,8 +38,6 @@
 
         <Style x:Key="ListBoxItemStyle"
                TargetType="{x:Type ListBoxItem}">
-            <!--<Setter Property="Background" Value="Transparent"/>-->
-            <!--<Setter Property="Padding" Value="2,0,0,0"/>-->
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -58,7 +76,6 @@
 
     <Grid x:Name="LayoutRoot"
           Margin="2.001,0,-2.001,0">
-        <!-- Photo -->
         <Viewbox Stretch="Fill"
                  DockPanel.Dock="Top">
             <Canvas x:Name="ImgCanvas"
@@ -73,12 +90,13 @@
                                 MouseDoubleClick="ImgContentCtrl_MouseDoubleClick"
                                 Cursor="Arrow">
                     <Grid x:Name="ImgGrid">
+						<MediaElement DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"/>
                         <Image x:Name="ImgObject"
-                               Source="{Binding SelectedItem.ImageSource, ElementName=lbImages, IsAsync=True}"/>
+                               DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"/>
                         <Thumb x:Name="ImgThumb"
                                Opacity="0"
                                DragDelta="ImgThumb_DragDelta"
-                               MouseWheel="ImgThumb_MouseWheel" />
+                               MouseWheel="ImgThumb_MouseWheel"/>
                     </Grid>
                 </ContentControl>
             </Canvas>
@@ -123,7 +141,6 @@
                  Background="{x:Null}"
                  BorderBrush="{x:Null}"
                  Opacity="70"
-                 IsSynchronizedWithCurrentItem="True"
                  ItemsPanel="{DynamicResource ItemsPanelTemplate1}"
                  ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
                  SelectionMode="Extended"

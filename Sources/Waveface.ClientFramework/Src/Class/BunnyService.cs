@@ -26,7 +26,7 @@ namespace Waveface.ClientFramework
 				var cmd = conn.CreateCommand();
 				cmd.CommandText = "select distinct f.parent_folder " +
 								  "from files f, devices d " +
-								  "where d.device_id = f.device_id and d.folder_name = @dev and type = 0 " +
+								  "where d.device_id = f.device_id and d.folder_name = @dev and type != 2 " +
 								  "order by f.parent_folder desc";
 
 				cmd.Parameters.Add(new SQLiteParameter("@dev", this.Name));

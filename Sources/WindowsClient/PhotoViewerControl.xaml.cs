@@ -35,6 +35,7 @@ namespace Waveface.Client
 			set
 			{
 				lbImages.SelectedIndex = value;
+				vcViewerControl.PageNo = value + 1;
 			}
 		}
 
