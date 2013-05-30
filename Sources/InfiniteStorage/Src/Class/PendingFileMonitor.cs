@@ -1,10 +1,8 @@
-﻿using System;
+﻿using InfiniteStorage.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using InfiniteStorage.Model;
-using System.Diagnostics;
 
 namespace InfiniteStorage
 {
@@ -78,9 +76,9 @@ namespace InfiniteStorage
 			using (var db = new MyDbContext())
 			{
 				var file = (from f in db.Object.PendingFiles
-						 where f.seq > prevSeq && (f.thumb_ready && f.type == (int)FileAssetType.image || f.type == (int)FileAssetType.video)
-						 orderby f.seq descending
-						 select f).Take(1).FirstOrDefault();
+							where f.seq > prevSeq && (f.thumb_ready && f.type == (int)FileAssetType.image || f.type == (int)FileAssetType.video)
+							orderby f.seq descending
+							select f).Take(1).FirstOrDefault();
 
 				if (file != null)
 				{

@@ -44,19 +44,19 @@ namespace UnitTest.Notify
 		[TestMethod]
 		public void happyCase_labels()
 		{
-		    var msg = JsonConvert.SerializeObject(new
-		    {
-		        connect = new { device_id = "dev", device_name = "name" },
-		        subscribe = new { labels = true, labels_from_seq = 1023 }
-		    });
+			var msg = JsonConvert.SerializeObject(new
+			{
+				connect = new { device_id = "dev", device_name = "name" },
+				subscribe = new { labels = true, labels_from_seq = 1023 }
+			});
 
 
-		    SubscriptionContext ctx = null;
-		    handler.Subscribing += (s, e) => { ctx = e.Ctx; };
-		    handler.HandleMessage(svc.Object, new WebSocketSharp.MessageEventArgs(msg));
+			SubscriptionContext ctx = null;
+			handler.Subscribing += (s, e) => { ctx = e.Ctx; };
+			handler.HandleMessage(svc.Object, new WebSocketSharp.MessageEventArgs(msg));
 
-		    Assert.AreEqual("name", ctx.device_name);
-		    Assert.AreEqual("dev", ctx.device_id);
+			Assert.AreEqual("name", ctx.device_name);
+			Assert.AreEqual("dev", ctx.device_id);
 			Assert.AreEqual(false, ctx.subscribe_files);
 			Assert.AreEqual(true, ctx.subscribe_labels);
 			Assert.AreEqual(1023, ctx.labels_from_seq);

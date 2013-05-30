@@ -18,7 +18,7 @@ namespace InfiniteStorage
 		public static event EventHandler<WebsocketEventArgs> TotalCountUpdated;
 		public static event EventHandler<WebsocketEventArgs> FileEnding;
 		public static event EventHandler<WebsocketEventArgs> FileReceived;
-		
+
 		public InfiniteStorageWebSocketService()
 		{
 			if (!Directory.Exists(MyFileFolder.Temp))

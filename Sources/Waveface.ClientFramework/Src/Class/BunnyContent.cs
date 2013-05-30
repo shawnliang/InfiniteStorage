@@ -1,10 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Waveface.Model;
@@ -21,7 +18,7 @@ namespace Waveface.ClientFramework
 
 
 		#region Property
-		public BitmapSource ImageSource 
+		public BitmapSource ImageSource
 		{
 			get
 			{
@@ -135,7 +132,7 @@ namespace Waveface.ClientFramework
 		public BunnyContent(Uri uri, string file_id)
 			: base(file_id, uri)
 		{
-		} 
+		}
 		#endregion
 
 
@@ -173,7 +170,7 @@ namespace Waveface.ClientFramework
 			var cmd = new SQLiteCommand("SELECT 1 FROM LabelFiles f, Labels lb where file_id = @fid and f.label_id = lb.label_id and lb.name = 'TAG'", conn);
 			cmd.Parameters.Add(new SQLiteParameter("@fid", new Guid(ID)));
 
-			var liked =  cmd.ExecuteScalar() != null;
+			var liked = cmd.ExecuteScalar() != null;
 
 			conn.Close();
 

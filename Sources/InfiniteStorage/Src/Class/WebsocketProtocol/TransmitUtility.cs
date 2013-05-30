@@ -38,14 +38,14 @@ namespace InfiniteStorage.WebsocketProtocol
 			using (var db = new MyDbContext())
 			{
 				var saved_file = from f in db.Object.Files
-							 where f.file_path.Equals(full_path, StringComparison.InvariantCultureIgnoreCase) && f.device_id == device_id
-							 select f;
+								 where f.file_path.Equals(full_path, StringComparison.InvariantCultureIgnoreCase) && f.device_id == device_id
+								 select f;
 
 
 				var pending_files = from f in db.Object.PendingFiles
 									where f.file_path.Equals(full_path, StringComparison.InvariantCultureIgnoreCase) && f.device_id == device_id
 									select f;
-				
+
 				return saved_file.Any() || pending_files.Any();
 			}
 		}

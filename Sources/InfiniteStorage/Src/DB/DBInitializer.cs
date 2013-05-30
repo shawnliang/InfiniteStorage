@@ -1,10 +1,8 @@
-﻿using System;
+﻿using InfiniteStorage.Properties;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data.SQLite;
 using System.IO;
-using InfiniteStorage.Properties;
 
 namespace InfiniteStorage.Model
 {
@@ -188,7 +186,7 @@ values (@videoThisWeek, 'This Weeks''s video', 3, 0, 6);
 						Settings.Default.LabelPhotoToday = photoToday;
 						Settings.Default.LabelPhotoYesterday = photoYesterday;
 						Settings.Default.LabelPhotoThisWeek = photoThisWeek;
-						
+
 						Settings.Default.LabelVideoToday = videoToday;
 						Settings.Default.LabelVideoYesterday = videoYesterday;
 						Settings.Default.LabelVideoThisWeek = videoThisWeek;

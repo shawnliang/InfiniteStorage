@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Common;
 using System.Data.Entity;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace InfiniteStorage.Model
@@ -60,7 +60,7 @@ namespace InfiniteStorage.Model
 	public enum AutoLabelType
 	{
 		NotAuto = 0,
-		
+
 		PhotoToday = 1,
 		PhotoYesterday = 2,
 		PhotoThisWeek = 3,

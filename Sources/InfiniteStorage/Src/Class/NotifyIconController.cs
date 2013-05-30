@@ -14,7 +14,7 @@ namespace InfiniteStorage
 		private PreferenceDialog preferenceForm = new PreferenceDialog();
 		private NotifyIcon notifyIcon;
 		private Dictionary<ProtocolContext, ToolStripItem> deviceStipItems = new Dictionary<ProtocolContext, ToolStripItem>();
-		
+
 
 		public NotifyIconController(NotifyIcon notifyIcon)
 		{
