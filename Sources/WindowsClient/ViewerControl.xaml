@@ -31,14 +31,17 @@
         </Rectangle>
         <local:PreviousButton Margin="18.731,25.362,205.725,22.719"
                               MouseDown="PreviousButton_MouseDown"
-                              Cursor="Hand" />
+                              Cursor="Hand"
+                              Background="Transparent" />
         <local:NextButton Margin="112.901,25.362,111.555,22.719"
                           MouseDown="NextButton_MouseDown"
-                          Cursor="Hand" />
+                          Cursor="Hand"
+                          Background="Transparent" />
         <local:Star x:Name="staredControl"
                     Margin="158.094,27.541,57.349,24.634"
                     MouseDown="staredControl_MouseDown_1"
-                    Cursor="Hand" />
+                    Cursor="Hand"
+                    Background="Transparent" />
         <Path Data="M310.499,473 L310.499,494.0238"
               HorizontalAlignment="Left"
               Height="41.925"
@@ -50,7 +53,8 @@
               Width="0.872" />
         <local:CloseButton Margin="193.811,28.332,21.63,23.843"
                            MouseDown="CloseButton_MouseDown"
-                           Cursor="Hand" />
+                           Cursor="Hand"
+                           Background="Transparent" />
         <Label Content="/"
                HorizontalAlignment="Left"
                Height="26.419"
