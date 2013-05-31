@@ -482,6 +482,10 @@
                                Foreground="White"
                                FontSize="18.667"
                                FontFamily="Segoe UI Light" />
+						<Label Content="30 photos 2 videos"
+                               Foreground="#FF5A5A5A"
+                               FontSize="15"
+                               FontFamily="Segoe UI Light" VerticalContentAlignment="Bottom" />
                     </WrapPanel>
 
                 </DockPanel>
