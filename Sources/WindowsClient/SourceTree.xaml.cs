@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Waveface.Client
@@ -24,6 +25,12 @@ namespace Waveface.Client
 				return;
 
 			TreeViewItemClick(sender, EventArgs.Empty);
+		}
+
+		private void unsortedItem_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			// TODO: Add event handler implementation here.
+			MessageBox.Show("unsortedItem_PreviewMouseDown");
 		}
 	}
 }

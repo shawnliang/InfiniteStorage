@@ -411,7 +411,7 @@
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Label Content="Sources" Grid.Row="0" Foreground="#FFA5A5A5" Margin="0,0,0,4" FontFamily="Segoe UI Light"/>
+                <Label Content="SOURCES" Grid.Row="0" Foreground="#FFA5A5A5" Background="Black" Margin="0,0,0,4" FontFamily="Segoe UI Light"/>
 
                 <local:SourceTree 
 				x:Name="lbxDeviceContainer"  
