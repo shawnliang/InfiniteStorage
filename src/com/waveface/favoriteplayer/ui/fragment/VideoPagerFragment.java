@@ -9,8 +9,8 @@ import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.SyncApplication;
 import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelFileView;
-import com.waveface.favoriteplayer.entity.VideoData;
-import com.waveface.favoriteplayer.event.VideoItemClickEvent;
+import com.waveface.favoriteplayer.entity.PlaybackData;
+import com.waveface.favoriteplayer.event.PlaybackItemClickEvent;
 import com.waveface.favoriteplayer.ui.adapter.VideoPagerAdapter;
 
 import de.greenrobot.event.EventBus;
@@ -30,7 +30,7 @@ import android.view.ViewGroup;
 
 public class VideoPagerFragment extends Fragment{
 	private ViewPager mPager;
-	private ArrayList<VideoData> mDatas = new ArrayList<VideoData>();
+	private ArrayList<PlaybackData> mDatas = new ArrayList<PlaybackData>();
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +49,7 @@ public class VideoPagerFragment extends Fragment{
 		ImageManager imageManager = SyncApplication.getWavefacePlayerApplication(getActivity()).getImageManager();
 		for(int i=0; i<lfc.getCount(); ++i) {
 			lfc.moveToPosition(i);
-			VideoData vdata = new VideoData();
+			PlaybackData vdata = new PlaybackData();
 			String fileName =  Environment.getExternalStorageDirectory().getAbsolutePath()
 					+ Constant.VIDEO_FOLDER+ "/"  +lfc
 					.getString(lfc
@@ -76,8 +76,7 @@ public class VideoPagerFragment extends Fragment{
 		switch(keyCode) {
 		case KeyEvent.KEYCODE_ENTER:
 		case KeyEvent.KEYCODE_MEDIA_PLAY:
-			VideoItemClickEvent vevent = new VideoItemClickEvent();
-			vevent.urls =  mDatas;
+			PlaybackItemClickEvent vevent = new PlaybackItemClickEvent();
 			vevent.position = mPager.getCurrentItem();
 
 			EventBus.getDefault().post(vevent);

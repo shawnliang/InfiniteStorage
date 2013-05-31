@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.entity.PlaybackData;
-import com.waveface.favoriteplayer.event.PhotoItemClickEvent;
+import com.waveface.favoriteplayer.event.PlaybackItemClickEvent;
 import com.waveface.favoriteplayer.ui.adapter.GalleryViewAdapter;
 
 import de.greenrobot.event.EventBus;
@@ -67,7 +67,7 @@ public class GalleryViewFragment extends Fragment implements OnItemClickListener
 
 	@Override
 	public void onItemClick(AdapterView<?> gridView, View view, int position, long id) {
-		PhotoItemClickEvent event = new PhotoItemClickEvent();
+		PlaybackItemClickEvent event = new PlaybackItemClickEvent();
 		event.position = position;
 		EventBus.getDefault().post(event);
 	}

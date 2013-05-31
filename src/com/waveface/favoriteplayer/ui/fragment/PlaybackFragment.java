@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.entity.PlaybackData;
-import com.waveface.favoriteplayer.event.PhotoItemClickEvent;
+import com.waveface.favoriteplayer.event.PlaybackItemClickEvent;
 import com.waveface.favoriteplayer.ui.adapter.PlayerPagerAdapter;
 
 import de.greenrobot.event.EventBus;
@@ -133,8 +133,7 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 		if(mResume == false) {
 			Log.d(TAG, "ignore slide show because on pause");
 		} else {
-			PhotoItemClickEvent event = new PhotoItemClickEvent();
-			event.datas = mDatas;
+			PlaybackItemClickEvent event = new PlaybackItemClickEvent();
 			event.position = mPager.getCurrentItem();
 			
 			EventBus.getDefault().post(event);

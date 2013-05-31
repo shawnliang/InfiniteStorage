@@ -16,7 +16,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.os.Environment;
+import android.provider.MediaStore.Video.Thumbnails;
 
 import com.waveface.exception.WammerServerException;
 import com.waveface.favoriteplayer.Constant;
@@ -111,6 +114,10 @@ public class DownloadLogic {
 								+ Constant.VIDEO_FOLDER + "/" + fileName;
 						if (!FileUtil.isFileExisted(fullFilename)) {
 							downloadVideo(fileId, fullFilename, url);
+							Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(fileName, 
+							        Thumbnails.MINI_KIND);
+
+							imageManager.setBitmapToFile(bmThumbnail, fullFilename, null, false);
 						}
 					} else {
 						String url = restfulAPIURL + Constant.URL_IMAGE + "/"

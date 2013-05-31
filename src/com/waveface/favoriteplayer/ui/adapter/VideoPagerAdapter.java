@@ -7,8 +7,8 @@ import idv.jason.lib.imagemanager.ImageManager;
 
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.SyncApplication;
-import com.waveface.favoriteplayer.entity.VideoData;
-import com.waveface.favoriteplayer.event.VideoItemClickEvent;
+import com.waveface.favoriteplayer.entity.PlaybackData;
+import com.waveface.favoriteplayer.event.PlaybackItemClickEvent;
 
 import de.greenrobot.event.EventBus;
 
@@ -23,11 +23,11 @@ import android.widget.ImageView.ScaleType;
 
 public class VideoPagerAdapter extends PagerAdapter implements OnClickListener{
 	private ImageManager mImageManager;
-	private ArrayList<VideoData> mDatas = new ArrayList<VideoData>();
+	private ArrayList<PlaybackData> mDatas = null;
 	private LayoutInflater mInflater;
 
 
-	public VideoPagerAdapter(Context context, ArrayList<VideoData> datas) {
+	public VideoPagerAdapter(Context context, ArrayList<PlaybackData> datas) {
 		mImageManager = SyncApplication.getWavefacePlayerApplication(context).getImageManager();		
 		mInflater = LayoutInflater.from(context);
 		mDatas = datas;
@@ -69,8 +69,7 @@ public class VideoPagerAdapter extends PagerAdapter implements OnClickListener{
 	public void onClick(View v) {
 		int position = (Integer) v.getTag();
 
-		VideoItemClickEvent event = new VideoItemClickEvent();
-		event.urls =  mDatas;
+		PlaybackItemClickEvent event = new PlaybackItemClickEvent();
 		event.position = position;
 
 		EventBus.getDefault().post(event);

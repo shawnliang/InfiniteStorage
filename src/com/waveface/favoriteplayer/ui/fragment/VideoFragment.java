@@ -17,7 +17,7 @@ import android.widget.VideoView;
 
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
-import com.waveface.favoriteplayer.entity.VideoData;
+import com.waveface.favoriteplayer.entity.PlaybackData;
 
 public class VideoFragment extends Fragment implements OnCompletionListener{
 	public static final String TAG = VideoFragment.class.getSimpleName(); 
@@ -25,7 +25,7 @@ public class VideoFragment extends Fragment implements OnCompletionListener{
 	private VideoView mVV;
 	
 	private int mCurrentPosition;
-	private ArrayList<VideoData> mVideos;
+	private ArrayList<PlaybackData> mVideos;
 	
 	private Handler mHandler = new Handler();
 	private Runnable mPlayRunnable = new Runnable() {

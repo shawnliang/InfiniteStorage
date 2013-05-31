@@ -19,7 +19,7 @@ import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelFileTable;
 import com.waveface.favoriteplayer.entity.PlaybackData;
 import com.waveface.favoriteplayer.entity.ServerEntity;
-import com.waveface.favoriteplayer.event.PhotoItemClickEvent;
+import com.waveface.favoriteplayer.event.PlaybackItemClickEvent;
 import com.waveface.favoriteplayer.event.PlaybackCancelEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.ui.fragment.FullScreenSlideshowFragment;
@@ -72,12 +72,12 @@ public class PlaybackActivity extends FragmentActivity {
 		EventBus.getDefault().unregister(this);
 	}
 	
-	public void onEvent(PhotoItemClickEvent event) {
+	public void onEvent(PlaybackItemClickEvent event) {
 		Log.d(TAG, "PhotoItemClickEvent currentFragment=" + mCurrentFragment);
 		
 		if(PlaybackFragment.class.getSimpleName().equals(mCurrentFragment)) {
 			Bundle data = new Bundle();
-			data.putParcelableArrayList(Constant.ARGUMENT1, event.datas);
+			data.putParcelableArrayList(Constant.ARGUMENT1, mDatas);
 			data.putInt(Constant.ARGUMENT2, event.position);
 	
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
