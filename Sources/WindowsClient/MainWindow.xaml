@@ -125,11 +125,11 @@
 
         <ControlTemplate x:Key="VerticalScrollBar"
             TargetType="{x:Type ScrollBar}">
-            <Grid >
+            <Grid Width="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition MaxHeight="18"/>
+                    <!--<RowDefinition MaxHeight="18"/>-->
                     <RowDefinition Height="0.00001*"/>
-                    <RowDefinition MaxHeight="18"/>
+                    <!--<RowDefinition MaxHeight="18"/>-->
                 </Grid.RowDefinitions>
                 <Border
       Grid.RowSpan="3"
@@ -140,7 +140,7 @@
       Style="{StaticResource ScrollBarLineButton}"
       Height="18"
       Command="ScrollBar.LineUpCommand"
-      Content="M 0 4 L 8 4 L 4 0 Z" />
+      Content="M 0 4 L 8 4 L 4 0 Z" Visibility="Collapsed" />
                 <Track
       Name="PART_Track"
       Grid.Row="1"
@@ -168,7 +168,7 @@
       Style="{StaticResource ScrollBarLineButton}"
       Height="18"
       Command="ScrollBar.LineDownCommand"
-      Content="M 0 0 L 4 4 L 8 0 Z"/>
+      Content="M 0 0 L 4 4 L 8 0 Z" Visibility="Collapsed"/>
             </Grid>
         </ControlTemplate>
         <!-- HorizontalScrollBar Template using the previously created Templates -->
