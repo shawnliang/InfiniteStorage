@@ -8,12 +8,9 @@ namespace Waveface.ClientFramework
 {
 	class BunnyService : Service
 	{
-		public string DeviceId { get; private set; }
-
 		public BunnyService(IServiceSupplier supplier, string deviceName, string deviceId)
-			: base(supplier, deviceName)
+			: base(deviceId, supplier, deviceName)
 		{
-			this.DeviceId = deviceId;
 			SetContents(PopulateContent);
 		}
 
@@ -36,7 +33,7 @@ namespace Waveface.ClientFramework
 					while (reader.Read())
 					{
 						var dir = reader.GetString(0);
-						content.Add(new BunnyContentGroup(new Uri(Path.Combine(BunnyDB.ResourceFolder, Name, dir)), DeviceId));
+						content.Add(new BunnyContentGroup(new Uri(Path.Combine(BunnyDB.ResourceFolder, Name, dir)), this.ID));
 					}
 				}
 			}

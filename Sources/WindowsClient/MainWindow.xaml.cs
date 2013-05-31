@@ -172,5 +172,10 @@ namespace Waveface.Client
 				}
 			}
 		}
+
+		private void lbxDeviceContainer_UnSortedItemClick(object sender, UnSortedItemEventArgs e)
+		{
+			MessageBox.Show(e.DeviceID);
+		}
 	}
 }

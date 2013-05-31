@@ -154,7 +154,8 @@
 
     <TreeView.ItemTemplate>
         <HierarchicalDataTemplate ItemsSource="{Binding Contents}">
-            <Label FontWeight="Bold"
+            <Label x:Name="item"
+				   FontWeight="Bold"
                    Content="{Binding Name}"
                    Foreground="White"/>
 

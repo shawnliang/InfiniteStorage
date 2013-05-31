@@ -9,6 +9,8 @@ namespace Waveface.Model
 	public interface IService
 	{
 		#region Property
+		String ID { get; }
+
 		string Name { get; }
 
 		/// <summary>

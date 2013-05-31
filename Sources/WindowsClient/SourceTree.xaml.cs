@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using Waveface.Model;
 
 namespace Waveface.Client
 {
@@ -11,6 +12,7 @@ namespace Waveface.Client
 	{
 		#region Event
 		public event EventHandler TreeViewItemClick;
+		public event EventHandler<UnSortedItemEventArgs> UnSortedItemClick;
 		#endregion
 
 		public SourceTree()
@@ -18,6 +20,13 @@ namespace Waveface.Client
 			this.InitializeComponent();
 		}
 
+
+		protected void OnUnSortedItemClick(UnSortedItemEventArgs e)
+		{
+			if (UnSortedItemClick == null)
+				return;
+			UnSortedItemClick(this, e);
+		}
 
 		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
@@ -29,8 +38,7 @@ namespace Waveface.Client
 
 		private void unsortedItem_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
-			// TODO: Add event handler implementation here.
-			MessageBox.Show("unsortedItem_PreviewMouseDown");
+			OnUnSortedItemClick(new UnSortedItemEventArgs((this.SelectedItem as IService).ID));
 		}
 	}
 }

@@ -11,6 +11,7 @@ namespace Waveface.Model
 	public class Service : IService
 	{
 		#region Var
+		private string _id;
 		private string _name;
 		private IServiceSupplier _supplier;
 		private ObservableCollection<IContentEntity> _observableContents;
@@ -45,6 +46,18 @@ namespace Waveface.Model
 
 
 		#region Public Property
+		public virtual string ID
+		{
+			get
+			{
+				return _id ?? string.Empty;
+			}
+			protected set
+			{
+				_id = value;
+			}
+		}
+
 		public virtual string Name
 		{
 			get
@@ -108,21 +121,24 @@ namespace Waveface.Model
 
 		}
 
-		public Service(IServiceSupplier supplier, string name)
+		public Service(string id, IServiceSupplier supplier, string name)
 		{
+			this.ID = id;
 			this.Supplier = supplier;
 			this.Name = name;
 		}
 
-		public Service(IServiceSupplier supplier, string name, IEnumerable<IContentEntity> value)
+		public Service(string id, IServiceSupplier supplier, string name, IEnumerable<IContentEntity> value)
 		{
+			this.ID = id;
 			this.Supplier = supplier;
 			this.Name = name;
 			SetContents(value);
 		}
 
-		public Service(IServiceSupplier supplier, string name, Action<ObservableCollection<IContentEntity>> func)
+		public Service(string id, IServiceSupplier supplier, string name, Action<ObservableCollection<IContentEntity>> func)
 		{
+			this.ID = id;
 			this.Supplier = supplier;
 			this.Name = name;
 			SetContents(func);
@@ -181,5 +197,7 @@ namespace Waveface.Model
 		{
 			OnContentPropertyChanged(e);
 		}
+
+
 	}
 }
