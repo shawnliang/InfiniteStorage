@@ -133,8 +133,8 @@ public class DownloadLogic {
 				if(autoDownload==false){
 					EventBus.getDefault().post(doneEvent);
 				}
-				filecursor.close();
 			}
+			filecursor.close();
 		} else {
 			LabelDB.updateLabel(context, label);
 		}

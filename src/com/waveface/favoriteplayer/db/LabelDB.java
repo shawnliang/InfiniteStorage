@@ -199,7 +199,7 @@ public class LabelDB {
 				new String[] { LabelTable.COLUMN_LABEL_ID,
 						LabelTable.COLUMN_COVER_URL,
 						LabelTable.COLUMN_LABEL_NAME },
-				LabelTable.COLUMN_AUTO_TYPE +"= ?" , new String[] { Integer.toString(type) },
+				LabelTable.COLUMN_AUTO_TYPE +"= ? AND "+LabelTable.COLUMN_ON_AIR +" =?" , new String[] { Integer.toString(type),"true" },
 				null);
 
 		return cursor;

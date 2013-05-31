@@ -21,6 +21,8 @@ public class LabelFileTable implements BaseColumns {
 	public static final String COLUMN_LABEL_ID = "labelId";	
 	public static final String COLUMN_FILE_ID = "fileId";
 	public static final String COLUMN_ORDER = "orders";
+	public static final String COLUMN_EVENT_TIME = "event_time";
+	
 	private LabelFileTable() {
 
 	}

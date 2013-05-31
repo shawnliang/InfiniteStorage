@@ -77,7 +77,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		sqlBuilder.append("Create Table {0} (")
 		  .append(LabelFileTable.COLUMN_LABEL_ID + " TEXT NOT NULL ,")
 		  .append(LabelFileTable.COLUMN_FILE_ID+ " TEXT NOT NULL ,")
-		  .append(LabelFileTable.COLUMN_ORDER + " TEXT NOT NULL ,")		
+		  .append(LabelFileTable.COLUMN_ORDER + " TEXT NOT NULL ,")	
+		  .append(LabelFileTable.COLUMN_EVENT_TIME+ " TEXT NOT NULL ,")
 		  .append(" PRIMARY KEY ( "+LabelFileTable.COLUMN_LABEL_ID+","+LabelFileTable.COLUMN_FILE_ID+"));");
 		createTable(db, sqlBuilder.toString(), LabelFileTable.TABLE_NAME);
 		
@@ -93,7 +94,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		  .append(FileTable.COLUMN_DEV_NAME+ " TEXT NOT NULL ,")
 		  .append(FileTable.COLUMN_WIDTH+ " TEXT NOT NULL ,")
 		  .append(FileTable.COLUMN_HEIGHT+ " TEXT NOT NULL ,")
-		  .append(FileTable.COLUMN_EVENT_TIME+ " TEXT NOT NULL ,")
 		  .append(FileTable.COLUMN_DEV_TYPE + " TEXT NOT NULL );");		
 		createTable(db, sqlBuilder.toString(), FileTable.TABLE_NAME);
 		
@@ -120,6 +120,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	      .append(" A."+LabelFileTable.COLUMN_LABEL_ID+" AS "+LabelFileView.COLUMN_LABEL_ID+",")
 	      .append(" A."+LabelFileTable.COLUMN_FILE_ID+" AS "+LabelFileView.COLUMN_FILE_ID+",")
 	      .append(" A."+LabelFileTable.COLUMN_ORDER+" AS "+LabelFileView.COLUMN_ORDER+",")
+	      .append(" A."+LabelFileTable.COLUMN_EVENT_TIME+" AS "+LabelFileView.COLUMN_EVENT_TIME+",")
 	      .append(" B."+FileTable.COLUMN_FILE_NAME+" AS "+LabelFileView.COLUMN_FILE_NAME+",")
 	      .append(" B."+FileTable.COLUMN_FOLDER+" AS "+LabelFileView.COLUMN_FOLDER+",")
 	      .append(" B."+FileTable.COLUMN_THUMB_READY+" AS "+LabelFileView.COLUMN_THUMB_READY+",")
@@ -128,9 +129,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	      .append(" B."+FileTable.COLUMN_DEV_NAME+" AS "+LabelFileView.COLUMN_DEV_NAME+",")
 	      .append(" B."+FileTable.COLUMN_HEIGHT+" AS "+LabelFileView.COLUMN_HEIGHT+",")
 	      .append(" B."+FileTable.COLUMN_WIDTH+" AS "+LabelFileView.COLUMN_WIDTH+",")
-		  .append(" B."+FileTable.COLUMN_DEV_TYPE+" AS "+LabelFileView.COLUMN_DEV_TYPE)
+	      .append(" B."+FileTable.COLUMN_DEV_TYPE+" AS "+LabelFileView.COLUMN_DEV_TYPE)
 	      .append(" FROM "+LabelFileTable.TABLE_NAME+" A,"+FileTable.TABLE_NAME+" B")
-	      .append(" WHERE A."+LabelFileTable.COLUMN_FILE_ID+"= B."+FileTable.COLUMN_FILE_ID);
+	      .append(" WHERE A."+LabelFileTable.COLUMN_FILE_ID+"= B."+FileTable.COLUMN_FILE_ID)
+		  .append(" ORDER BY "+LabelFileView.COLUMN_EVENT_TIME);
 
 		sql = sqlBuilder.toString();
 		db.execSQL(sql);

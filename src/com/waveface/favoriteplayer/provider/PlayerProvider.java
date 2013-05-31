@@ -537,8 +537,9 @@ public class PlayerProvider extends ContentProvider {
 						+ LabelTable.COLUMN_SEQ + ","
 						+ LabelTable.COLUMN_UPDATE_TIME + ","
 						+ LabelTable.COLUMN_COVER_URL + ","
-						+ LabelTable.COLUMN_AUTO_TYPE + ")"
-						+ " values (?,?,?,?,?,?)");
+						+ LabelTable.COLUMN_AUTO_TYPE + ","
+						+ LabelTable.COLUMN_ON_AIR + ")"
+						+ " values (?,?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
 					// bind the 1-indexed ?'s to the values specified
@@ -548,6 +549,7 @@ public class PlayerProvider extends ContentProvider {
 					insert.bindString(4, value.getAsString(LabelTable.COLUMN_UPDATE_TIME));
 					insert.bindString(5, value.getAsString(LabelTable.COLUMN_COVER_URL));
 					insert.bindString(6, value.getAsString(LabelTable.COLUMN_AUTO_TYPE));
+					insert.bindString(7, value.getAsString(LabelTable.COLUMN_ON_AIR));
 					insert.execute();
 				}
 				db.setTransactionSuccessful();
@@ -601,8 +603,9 @@ public class PlayerProvider extends ContentProvider {
 						+ FileTable.COLUMN_DEV_NAME + ","
 						+ FileTable.COLUMN_WIDTH + ","
 						+ FileTable.COLUMN_HEIGHT + ","
-						+FileTable.COLUMN_DEV_TYPE+ ")"
-						+ " values (?,?,?,?,?,?,?,?,?,?)");
+						+ FileTable.COLUMN_DEV_TYPE + ","
+						+FileTable.COLUMN_EVENT_TIME+ ")"
+						+ " values (?,?,?,?,?,?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
 					// bind the 1-indexed ?'s to the values specified
@@ -616,6 +619,7 @@ public class PlayerProvider extends ContentProvider {
 					insert.bindString(8, value.getAsString(FileTable.COLUMN_WIDTH));
 					insert.bindString(9, value.getAsString(FileTable.COLUMN_HEIGHT));
 					insert.bindString(10, value.getAsString(FileTable.COLUMN_DEV_TYPE));
+					insert.bindString(11,value.getAsString(FileTable.COLUMN_EVENT_TIME));
 					insert.execute();
 				}
 				db.setTransactionSuccessful();
