@@ -151,82 +151,66 @@ namespace InfiniteStorage
 
 		private void recomputeYesterday()
 		{
-			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
+			recomputeYesterday(FileAssetType.image);
+			recomputeYesterday(FileAssetType.audio);
+		}
+
+		private static void recomputeYesterday(FileAssetType file_type)
+		{
+			var label_id = (file_type == FileAssetType.image) ? Settings.Default.LabelPhotoYesterday : Settings.Default.LabelVideoYesterday;
+
+			var yes_start = DateTime.Now.AddDays(-1.0).TrimToDay();
+			var yes_end = DateTime.Now.TrimToDay();
+
+
+			using (var db = new MyDbContext())
 			{
-				conn.Open();
+				var actual = (from f in db.Object.Files
+							  where f.event_time >= yes_start && f.event_time < yes_end && f.type == (int)file_type
+							  select f.file_id).ToList();
 
-				// DateTime for sqlite has to be UTC
-				var yesterdayStart = DateTime.Now.AddDays(-1.0).TrimToDay().ToUniversalTime();
-				var yesterdayEnd = yesterdayStart.AddDays(1.0);
+				var current = (from f in db.Object.LabelFiles
+							   where f.label_id == label_id
+							   select f).ToList();
 
-				using (var transaction = conn.BeginTransaction())
+				var areCurrentAndActualIdentical = actual.Count == current.Count && actual.TrueForAll(x => current.Where(y => y.file_id == x).Any());
+
+				if (!areCurrentAndActualIdentical)
 				{
-					var cmd = conn.CreateCommand();
-					cmd.CommandText = 
-						"select sum(subt) from " +
-						"(select count(*) as subt from Files        where event_time >= @yes_start and event_time < @today and type = @type union " + 
-						" select count(*) as subt from PendingFiles where event_time >= @yes_start and event_time < @today and type = @type)";
-					cmd.Prepare();
-					cmd.Parameters.Clear();
-					cmd.Parameters.Add(new SQLiteParameter("@yes_start", yesterdayStart));
-					cmd.Parameters.Add(new SQLiteParameter("@today", yesterdayEnd));
-					cmd.Parameters.Add(new SQLiteParameter("@type", (int)FileAssetType.image));
-					var yesterdayPhotoCount = cmd.ExecuteScalar();
-
-					cmd.Parameters.Clear();
-					cmd.Parameters.Add(new SQLiteParameter("@yes_start", yesterdayStart));
-					cmd.Parameters.Add(new SQLiteParameter("@today", yesterdayEnd));
-					cmd.Parameters.Add(new SQLiteParameter("@type", (int)FileAssetType.video));
-					var yesterdayVideoCount = cmd.ExecuteScalar();
-
-					cmd = conn.CreateCommand();
-					cmd.CommandText = "select count(*) from LabelFiles f where f.label_id = @label";
-					cmd.Prepare();
-					cmd.Parameters.Clear();
-					cmd.Parameters.Add(new SQLiteParameter("@label", Settings.Default.LabelPhotoYesterday));
-					var curPhotoCount = cmd.ExecuteScalar();
-
-					cmd.Parameters.Clear();
-					cmd.Parameters.Add(new SQLiteParameter("@label", Settings.Default.LabelVideoYesterday));
-					var curVideoCount = cmd.ExecuteScalar();
-
-
-					if (curPhotoCount != yesterdayPhotoCount)
+					foreach (var cur in current)
 					{
-						rebuildYesterday(conn, FileAssetType.image);
+						db.Object.LabelFiles.Remove(cur);
 					}
 
-					if (curVideoCount != yesterdayVideoCount)
+					foreach (var act in actual)
 					{
-						rebuildYesterday(conn, FileAssetType.video);
+						db.Object.LabelFiles.Add(new LabeledFile { file_id = act, label_id = label_id });
 					}
 
-					transaction.Commit();
+					db.Object.SaveChanges();
 				}
 			}
 		}
 
-		private static void rebuildYesterday(SQLiteConnection conn, FileAssetType type)
+		private static List<Guid> computeLabeledFiles(SQLiteConnection conn, DateTime yesterdayStart, DateTime yesterdayEnd, FileAssetType type)
 		{
-			// DateTime for sqlite has to be UTC
-			var yesterdayStart = DateTime.Now.AddDays(-1.0).TrimToDay().ToUniversalTime();
-			var yesterdayEnd = yesterdayStart.AddDays(1.0);
+			var fileIds = new List<Guid>();
 
-			var label_id = (type == FileAssetType.image) ? Settings.Default.LabelPhotoYesterday : Settings.Default.LabelVideoYesterday;
-
-			var cmd2 = conn.CreateCommand();
-			cmd2.CommandText = "delete from labelFiles where label_id = @label; " +
-
-							   "insert into labelFiles (label_id, file_id) " +
-							   "select @label, file_id from Files        where event_time >= @yes_start and event_time < @today and type = @type union " +
-							   "select @label, file_id from PendingFiles where event_time >= @yes_start and event_time < @today and type = @type";
-			cmd2.Parameters.Add(new SQLiteParameter("@label", label_id));
-			cmd2.Parameters.Add(new SQLiteParameter("@yes_start", yesterdayStart));
-			cmd2.Parameters.Add(new SQLiteParameter("@today", yesterdayEnd));
-			cmd2.Parameters.Add(new SQLiteParameter("@type", (int)type));
-			cmd2.ExecuteNonQuery();
-
-			updateLabelSeq(conn, new Guid[] { label_id });
+			var cmd = conn.CreateCommand();
+			cmd.CommandText =
+				"select file_id from Files        where event_time >= @yes_start and event_time < @today and [type] = @type union " +
+				"select file_id from PendingFiles where event_time >= @yes_start and event_time < @today and [type] = @type";
+			cmd.Parameters.Add(new SQLiteParameter("@yes_start", yesterdayStart));
+			cmd.Parameters.Add(new SQLiteParameter("@today", yesterdayEnd));
+			cmd.Parameters.Add(new SQLiteParameter("@type", (object)(int)type));
+			using (var reader = cmd.ExecuteReader())
+			{
+				while (reader.Read())
+				{
+					fileIds.Add(reader.GetGuid(0));
+				}
+			}
+			return fileIds;
 		}
 
 		private static void unlinkLabeledFiles(List<LabeledFile> toRemove)
