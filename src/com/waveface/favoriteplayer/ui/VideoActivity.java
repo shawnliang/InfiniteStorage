@@ -11,9 +11,7 @@ import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.PlaybackItemClickEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.ui.fragment.GalleryViewFragment;
-import com.waveface.favoriteplayer.ui.fragment.PlaybackFragment;
 import com.waveface.favoriteplayer.ui.fragment.VideoFragment;
-import com.waveface.favoriteplayer.ui.fragment.VideoPagerFragment;
 
 import de.greenrobot.event.EventBus;
 
@@ -55,15 +53,6 @@ public class VideoActivity extends FragmentActivity{
 		mLabelTitle = data.getString(Constant.ARGUMENT3);
 		
 		new LoadPlaybackData(labelId).execute(null, null, null);
-
-//		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//		mCurrentFragment = VideoPagerFragment.class.getSimpleName();
-//		VideoPagerFragment video = new VideoPagerFragment();
-//		video.setArguments(data);
-//		transaction.add(R.id.content, video, mCurrentFragment);
-//		transaction.addToBackStack(mCurrentFragment);
-//		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-//		transaction.commit();
 		
 	}
 	
