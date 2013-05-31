@@ -1,8 +1,8 @@
 #user  nobody;
 worker_processes  1;
 
-error_log  ${error_log};
-pid        ${pid};
+error_log  '${error_log}';
+pid        '${pid}';
 
 
 events {
