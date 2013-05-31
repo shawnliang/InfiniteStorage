@@ -526,7 +526,7 @@
                                   VirtualizingStackPanel.VirtualizationMode="Recycling"
                                   TreeViewItemClick="TreeViewItem_PreviewMouseLeftButtonDown"
                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                  UnSortedItemClick="lbxDeviceContainer_UnSortedItemClick" />
+                                  UnSortedItemClick="lbxDeviceContainer_UnSortedItemClick" Padding="0" />
 
                 <Label Content="FAVORITES"
                        Grid.Row="2"
