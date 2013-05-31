@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace UnitTest
 {
@@ -61,7 +62,8 @@ namespace UnitTest
 			var state = new TransmitStartedState() { Util = util.Object };
 
 			ctx.SetState(state);
-
+			string sentData = "";
+			ctx.SendFunc = (x) => { sentData = x; };
 			bool called = false;
 			ctx.OnFileReceived += (s, e) => { called = true; };
 			ctx.handleFileEndCmd(new TextCommand { action = "file-end", file_name = "f.jpg" });
@@ -73,6 +75,10 @@ namespace UnitTest
 			temp.VerifyAll();
 			storage.VerifyAll();
 			Assert.IsTrue(called);
+
+			var o = JsonConvert.DeserializeObject<TextCommand>(sentData);
+			Assert.AreEqual("file-exist", o.action);
+			Assert.AreEqual(ctx.fileCtx.file_name, o.file_name);
 		}
 
 		[TestMethod]
@@ -84,6 +90,8 @@ namespace UnitTest
 
 			var state = new TransmitStartedState() { Util = util.Object };
 
+			string sentData = "";
+			ctx.SendFunc = (x) => { sentData = x; };
 			ctx.SetState(state);
 			ctx.handleFileEndCmd(new TextCommand { action = "file-end", file_name = "f.jpg" });
 
@@ -91,6 +99,11 @@ namespace UnitTest
 			Assert.IsTrue(ctx.GetState() is TransmitInitState);
 
 			temp.VerifyAll();
+
+
+			var o = JsonConvert.DeserializeObject<TextCommand>(sentData);
+			Assert.AreEqual("file-exist", o.action);
+			Assert.AreEqual(ctx.fileCtx.file_name, o.file_name);
 		}
 	}
 }

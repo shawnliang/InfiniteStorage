@@ -23,7 +23,7 @@ namespace UnitTest
 		public void testUnknownTxtCmd()
 		{
 			var tempFactory = new Mock<ITempFileFactory>();
-			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object, new TransmitInitState());
+			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object, new Mock<AbstractProtocolState>().Object);
 
 			//
 			// Unknown command XXXXX
@@ -33,32 +33,13 @@ namespace UnitTest
 
 		}
 
-		[TestMethod]
-		[ExpectedException(typeof(ProtocolErrorException))]
-		public void testRecvFileStartTwice()
-		{
-			var tempFile = new Mock<ITempFile>();
-
-			var tempFactory = new Mock<ITempFileFactory>();
-			tempFactory.Setup(x => x.CreateTempFile()).Returns(tempFile.Object);
-
-			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object, new TransmitInitState());
-
-
-			//
-			// file-start
-			// 
-			var fileStart = new { action = "file-start", file_name = "file1.jpg", file_size = 20, type = "image" };
-			protoHdler.HandleMessage(new MessageEventArgs(JsonConvert.SerializeObject(fileStart)));
-			protoHdler.HandleMessage(new MessageEventArgs(JsonConvert.SerializeObject(fileStart)));
-		}
 
 		[TestMethod]
 		[ExpectedException(typeof(ProtocolErrorException))]
 		public void testInvalidTextCommand()
 		{
 			var tempFactory = new Mock<ITempFileFactory>();
-			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object, new TransmitInitState());
+			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object, new Mock<AbstractProtocolState>().Object);
 
 			//
 			// Unknown command XXXXX
@@ -72,19 +53,14 @@ namespace UnitTest
 		public void tempFileIsDeletedIfErrorHappens()
 		{
 			var tempFile = new Mock<ITempFile>();
-			tempFile.Setup(x => x.Delete()).Verifiable();
-
 			var tempFactory = new Mock<ITempFileFactory>();
-			tempFactory.Setup(x => x.CreateTempFile()).Returns(tempFile.Object).Verifiable();
-
-			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object, new TransmitInitState());
+			var protoHdler = new ProtocolHanlder(tempFactory.Object, storage.Object, new TransmitStartedState());
 
 
 			//
 			// file-start
 			// 
 			var fileStart = new { action = "file-start", file_name = "file1.jpg", file_size = 20, type = "image", folder = "ff" };
-			protoHdler.HandleMessage(new MessageEventArgs(JsonConvert.SerializeObject(fileStart)));
 
 			// file-start again !!! Error
 			try
@@ -113,7 +89,6 @@ namespace UnitTest
 			protoHdr.HandleMessage(new MessageEventArgs(JsonConvert.SerializeObject(connectMSg)));
 
 			ctx.VerifyAll();
-
 		}
 
 		[TestMethod]

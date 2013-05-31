@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using WebSocketSharp;
 using WebSocketSharp.Server;
+using System.Diagnostics;
 
 namespace InfiniteStorage
 {
@@ -56,7 +57,14 @@ namespace InfiniteStorage
 		{
 			try
 			{
+				var sw = new Stopwatch();
+				sw.Start();
 				handler.HandleMessage(e);
+				sw.Stop();
+
+				if (e.Type == WebSocketSharp.Frame.Opcode.TEXT)
+					logger.Debug("proc cmd : " + sw.ElapsedMilliseconds + " ms");
+
 				base.onMessage(sender, e);
 			}
 			catch (WebsocketProtocol.ProtocolErrorException err)

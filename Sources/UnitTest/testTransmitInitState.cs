@@ -4,6 +4,7 @@ using InfiniteStorage.WebsocketProtocol;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using Newtonsoft.Json;
 
 namespace UnitTest
 {
@@ -23,12 +24,16 @@ namespace UnitTest
 		}
 
 		[TestMethod]
-		public void testFileStart()
+		public void testFileStart_no_dup()
 		{
 			fac.Setup(x => x.CreateTempFile()).Returns(tempFile.Object).Verifiable();
 
-			var state = new TransmitInitState();
+			var fileUtil = new Mock<IFileUtility>();
+			var state = new TransmitInitState(fileUtil.Object);
 			var ctx = new ProtocolContext(fac.Object, storage.Object, state);
+			string sentData = "";
+			ctx.SendFunc = (x) => { sentData = x; };
+
 			var cmd = new TextCommand
 			{
 				action = "file-start",
@@ -52,6 +57,71 @@ namespace UnitTest
 			Assert.AreEqual(cmd.backuped_count, ctx.backup_count);
 
 			Assert.IsTrue(ctx.GetState() is TransmitStartedState);
+		}
+
+		[TestMethod]
+		public void testFileStart_no_dup2()
+		{
+			fac.Setup(x => x.CreateTempFile()).Returns(tempFile.Object).Verifiable();
+
+			var fileUtil = new Mock<IFileUtility>();
+			var state = new TransmitInitState(fileUtil.Object);
+			var ctx = new ProtocolContext(fac.Object, storage.Object, state);
+			string sentData = "";
+			ctx.SendFunc = (x) => { sentData = x; };
+
+			var cmd = new TextCommand
+			{
+				action = "file-start",
+				file_name = "name",
+				file_size = 1234,
+				type = "audio",
+				folder = "/sto/pp",
+				datetime = DateTime.Now,
+				total_count = 1000,
+				backuped_count = 333,
+			};
+
+			ctx.handleFileStartCmd(cmd);
+
+			var o = JsonConvert.DeserializeObject<TextCommand>(sentData);
+			Assert.AreEqual("file-go", o.action);
+			Assert.AreEqual("name", o.file_name);
+
+		}
+
+		[TestMethod]
+		public void testFileStart_has_dup()
+		{
+			fac.Setup(x => x.CreateTempFile()).Returns(tempFile.Object).Verifiable();
+
+			var fileUtil = new Mock<IFileUtility>();
+			fileUtil.Setup(x => x.HasDuplicateFile(It.IsAny<FileContext>(), It.IsAny<string>())).Returns(true);
+			var state = new TransmitInitState(fileUtil.Object);
+			var ctx = new ProtocolContext(fac.Object, storage.Object, state);
+			string sentData = "";
+			ctx.SendFunc = (x) => { sentData = x; };
+
+			var cmd = new TextCommand
+			{
+				action = "file-start",
+				file_name = "name",
+				file_size = 1234,
+				type = "audio",
+				folder = "/sto/pp",
+				datetime = DateTime.Now,
+				total_count = 1000,
+				backuped_count = 333,
+			};
+
+			ctx.handleFileStartCmd(cmd);
+
+			Assert.IsTrue(ctx.GetState() is TransmitInitState);
+			Assert.IsNull(ctx.fileCtx);
+
+			var o = JsonConvert.DeserializeObject<TextCommand>(sentData);
+			Assert.AreEqual("file-exist", o.action);
+			Assert.AreEqual("name", o.file_name);
 		}
 
 		[TestMethod]

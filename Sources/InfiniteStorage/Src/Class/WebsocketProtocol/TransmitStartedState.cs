@@ -58,15 +58,13 @@ namespace InfiniteStorage.WebsocketProtocol
 
 				ctx.fileCtx.file_id = fileAsset.file_id;
 				ctx.raiseOnFileReceived();
-
-				log4net.LogManager.GetLogger("wsproto").Debug("file-end: " + ctx.fileCtx.file_name);
 			}
 			else
 			{
 				ctx.temp_file.Delete();
 			}
 
-
+			ctx.Send(new TextCommand { action = "file-exist", file_name = ctx.fileCtx.file_name });
 
 			ctx.recved_files++;
 			ctx.SetState(new TransmitInitState());

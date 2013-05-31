@@ -1,10 +1,29 @@
 ﻿using InfiniteStorage.Model;
 using System;
+using System.Diagnostics;
 
 namespace InfiniteStorage.WebsocketProtocol
 {
+	public interface IFileUtility
+	{
+		bool HasDuplicateFile(FileContext file, string device_id);
+	}
+
+
 	public class TransmitInitState : AbstractProtocolState
 	{
+		private IFileUtility util;
+
+		public TransmitInitState()
+		{
+			this.util = new TransmitUtility();
+		}
+
+		public TransmitInitState(IFileUtility util)
+		{
+			this.util = util;
+		}
+
 		public override void handleFileStartCmd(ProtocolContext ctx, TextCommand cmd)
 		{
 			if (string.IsNullOrEmpty(cmd.type))
@@ -18,7 +37,10 @@ namespace InfiniteStorage.WebsocketProtocol
 			if (!Enum.TryParse<FileAssetType>(cmd.type, true, out type))
 				throw new ProtocolErrorException("unknown type: " + cmd.type);
 
-			ctx.fileCtx = new FileContext
+			ctx.backup_count = cmd.backuped_count;
+			ctx.total_count = cmd.total_count;
+
+			var fileCtx = new FileContext
 			{
 				file_name = cmd.file_name,
 				file_size = cmd.file_size,
@@ -28,15 +50,22 @@ namespace InfiniteStorage.WebsocketProtocol
 				type = type
 			};
 
-			ctx.backup_count = cmd.backuped_count;
-			ctx.total_count = cmd.total_count;
 
-			ctx.temp_file = ctx.factory.CreateTempFile();
+			var hasDup = util.HasDuplicateFile(fileCtx, ctx.device_id);
 
-			log4net.LogManager.GetLogger("wsproto").DebugFormat("name: {0}, size: {1}, folder: {2}, datetime: {3}, type: {4}",
-				cmd.file_name, cmd.file_size, cmd.folder, cmd.datetime, cmd.type);
+			if (hasDup)
+			{
+				ctx.fileCtx = null;
+				ctx.Send(new TextCommand { action = "file-exist", file_name = cmd.file_name });
+			}
+			else
+			{
+				ctx.fileCtx = fileCtx;
 
-			ctx.SetState(new TransmitStartedState());
+				ctx.temp_file = ctx.factory.CreateTempFile();
+				ctx.Send(new TextCommand { action = "file-go", file_name = cmd.file_name });
+				ctx.SetState(new TransmitStartedState());
+			}
 		}
 
 		public override void handleUpdateCountCmd(ProtocolContext ctx, TextCommand cmd)

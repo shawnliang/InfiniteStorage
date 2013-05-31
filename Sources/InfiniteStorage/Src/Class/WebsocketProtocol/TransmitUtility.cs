@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace InfiniteStorage.WebsocketProtocol
 {
-	class TransmitUtility : ITransmitStateUtility
+	class TransmitUtility : ITransmitStateUtility, IFileUtility
 	{
 		public void SaveFileRecord(Model.FileAsset file)
 		{

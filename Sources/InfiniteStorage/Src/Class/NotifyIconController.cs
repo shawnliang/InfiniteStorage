@@ -152,19 +152,26 @@ namespace InfiniteStorage
 
 		public void refreshNotifyIconContextMenu()
 		{
-			for (int i = 0; i < notifyIcon.ContextMenuStrip.Items.Count; i++)
+			try
 			{
-				var item = notifyIcon.ContextMenuStrip.Items[i];
-				if (item.Tag != null)
+				for (int i = 0; i < notifyIcon.ContextMenuStrip.Items.Count; i++)
 				{
-					var ctx = item.Tag as WebsocketProtocol.ProtocolContext;
+					var item = notifyIcon.ContextMenuStrip.Items[i];
+					if (item.Tag != null)
+					{
+						var ctx = item.Tag as WebsocketProtocol.ProtocolContext;
 
-					var overallProgress = getOverallProgressText(ctx);
-					if (overallProgress != item.Text)
-						item.Text = overallProgress;
+						var overallProgress = getOverallProgressText(ctx);
+						if (overallProgress != item.Text)
+							item.Text = overallProgress;
 
-					notifyIcon.ContextMenuStrip.Items[i + 1].Text = getSingleFileText(ctx);
+						notifyIcon.ContextMenuStrip.Items[i + 1].Text = getSingleFileText(ctx);
+					}
 				}
+			}
+			catch(Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("Unable to update tray icon status", err);
 			}
 		}
 
