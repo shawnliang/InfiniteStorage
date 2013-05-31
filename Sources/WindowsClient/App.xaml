@@ -7,6 +7,15 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
 
+    	<BitmapImage x:Key="SmallPhotoIcon"
+    		CreateOptions="IgnoreImageCache"
+    		CacheOption="OnLoad"
+    		UriSource="sliderbarsmallphotoicon.png" />
+    	<BitmapImage x:Key="BigPhotoIcon"
+    		CreateOptions="IgnoreImageCache"
+    		CacheOption="OnLoad"
+    		UriSource="sliderbarbigphotoicon.png" />
+
         <Style TargetType="{x:Type Image}">
             <!--<Setter Property="RenderOptions.BitmapScalingMode"
                     Value="NearestNeighbor" />-->

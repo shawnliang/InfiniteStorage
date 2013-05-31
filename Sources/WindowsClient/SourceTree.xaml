@@ -16,7 +16,10 @@
           VirtualizingStackPanel.VirtualizationMode="Recycling" ItemContainerStyle="{DynamicResource TreeViewItemStyle1}">
 
     <TreeView.Resources>
-
+	        <SolidColorBrush Color="Transparent"
+                        x:Key="{x:Static SystemColors.HighlightBrushKey}" />
+       <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
+                        Color="Transparent" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Style TargetType="{x:Type TreeViewItem}">
             <EventSetter Event="UIElement.PreviewMouseLeftButtonDown"
@@ -52,17 +55,13 @@
         						<Setter.Value>
         							<ControlTemplate TargetType="{x:Type ToggleButton}">
         								<Border Background="Transparent" Height="16"  Width="16" BorderBrush="White" BorderThickness="1">
-        									<Path x:Name="ExpandPath" Data="M0,0 L0,6 L6,0 z" Fill="White" Stroke="#FF818181" HorizontalAlignment="Center" VerticalAlignment="Center">
-        										<Path.RenderTransform>
-        											<RotateTransform Angle="135" CenterY="3" CenterX="3"/>
-        										</Path.RenderTransform>
-        									</Path>
+        									<Path x:Name="ExpandPath" Data="M0.56189528,0.50000001 L0.50000001,10.123809 12.1875,5.625 z" Fill="White" Stroke="#FF818181" HorizontalAlignment="Center" VerticalAlignment="Center" Height="10.624" Width="12.688"/>
         								</Border>
         								<ControlTemplate.Triggers>
         									<Trigger Property="IsChecked" Value="True">
         										<Setter Property="RenderTransform" TargetName="ExpandPath">
         											<Setter.Value>
-        												<RotateTransform Angle="180" CenterY="3" CenterX="3"/>
+        												<RotateTransform Angle="90" CenterX="6" CenterY="5"/>
         											</Setter.Value>
         										</Setter>
         										<Setter Property="Fill" TargetName="ExpandPath" Value="White"/>
@@ -90,14 +89,19 @@
         		<Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.Column="1" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
         			<ContentPresenter x:Name="PART_Header" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentSource="Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
         		</Border>
-        		<ItemsPresenter x:Name="ItemsHost" Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="1"/>
+				<StackPanel Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="2">
+				<TreeViewItem x:Name="unsortedItem" Header="Unsorted" Template="{DynamicResource TreeViewItemControlTemplate2}" PreviewMouseDown="unsortedItem_PreviewMouseDown"/>
+        		<ItemsPresenter x:Name="ItemsHost"/>
+				</StackPanel>
         	</Grid>
         	<ControlTemplate.Triggers>
         		<Trigger Property="IsExpanded" Value="False">
         			<Setter Property="Visibility" TargetName="ItemsHost" Value="Collapsed"/>
+					<Setter Property="Visibility" TargetName="unsortedItem" Value="Collapsed"/>
         		</Trigger>
         		<Trigger Property="HasItems" Value="False">
-        			<Setter Property="Visibility" TargetName="Expander" Value="Hidden"/>
+        			<Setter Property="Visibility" TargetName="Expander" Value="Collapsed"/>
+					<Setter Property="Visibility" TargetName="unsortedItem" Value="Collapsed"/>
         		</Trigger>
         		<Trigger Property="IsSelected" Value="True">
         			<Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
@@ -114,18 +118,51 @@
         		</Trigger>
         	</ControlTemplate.Triggers>
         </ControlTemplate>
+        <ControlTemplate x:Key="TreeViewItemControlTemplate2" TargetType="{x:Type TreeViewItem}">
+        	<Grid>
+        		<Grid.ColumnDefinitions>
+        			<ColumnDefinition MinWidth="19" Width="Auto"/>
+        			<ColumnDefinition Width="Auto"/>
+        			<ColumnDefinition Width="*"/>
+        		</Grid.ColumnDefinitions>
+        			        <StackPanel x:Name="item" Orientation="Horizontal" Width="2048" Grid.Column="1">
+                        <Image x:Name="icon"
+                               Source="album.png"/>
+                        <Label x:Name="sourceName"
+                               Content="Unsorted"
+                               Foreground="White"
+                               Height="32"
+                               VerticalContentAlignment="Center"/>
+                    </StackPanel>
+        	</Grid>
+        	<ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}"
+                                     Value="True">
+                            <Setter TargetName="icon"
+                                    Property="Source"
+                                    Value="{StaticResource SelectedIcon}" />
+                            <Setter TargetName="sourceName"
+                                    Property="Foreground"
+                                    Value="Black"/>
+							<Setter TargetName="item"
+                                    Property="Background"
+                                    Value="#FFD4D4D3" />
+                        </DataTrigger>
+        	</ControlTemplate.Triggers>
+        </ControlTemplate>
     </TreeView.Resources>
 
     <TreeView.ItemTemplate>
         <HierarchicalDataTemplate ItemsSource="{Binding Contents}">
-            <Label FontWeight="Bold"
+            <Label x:Name="item"
+				   FontWeight="Bold"
                    Content="{Binding Name}"
                    Foreground="White"/>
 
             <HierarchicalDataTemplate.ItemTemplate>
 
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Width="1024">
+                    <StackPanel x:Name="item" Orientation="Horizontal" Width="2048">
                         <Image x:Name="icon"
                                Source="album.png" />
                         <Label x:Name="sourceName"
@@ -141,8 +178,11 @@
                                     Property="Source"
                                     Value="{StaticResource SelectedIcon}" />
                             <Setter TargetName="sourceName"
-                                    Property="FontWeight"
-                                    Value="Bold" />
+                                    Property="Foreground"
+                                    Value="Black"/>
+							<Setter TargetName="item"
+                                    Property="Background"
+                                    Value="#FFD4D4D3" />
                         </DataTrigger>
                     </DataTemplate.Triggers>
                 </DataTemplate>

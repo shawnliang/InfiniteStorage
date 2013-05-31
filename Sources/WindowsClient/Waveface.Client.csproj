@@ -107,6 +107,7 @@
       <DependentUpon>SourceTree.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Class\Converter\ImageToBitmapSourceConverter.cs" />
+    <Compile Include="Src\Event\UnSortedItemEventArgs.cs" />
     <Compile Include="Src\Extension\CollectionExtension.cs" />
     <Compile Include="Star.xaml.cs">
       <DependentUpon>Star.xaml</DependentUpon>
