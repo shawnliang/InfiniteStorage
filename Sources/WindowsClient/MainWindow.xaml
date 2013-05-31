@@ -410,6 +410,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="*"/>
+					<RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Label Content="SOURCES" Grid.Row="0" Foreground="#FFA5A5A5" Background="Black" Margin="0,0,0,4" FontFamily="Segoe UI Light"/>
 
@@ -420,6 +422,8 @@
 				VirtualizingStackPanel.IsVirtualizing="True" 
 				VirtualizingStackPanel.VirtualizationMode="Recycling"
                 TreeViewItemClick="TreeViewItem_PreviewMouseLeftButtonDown" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+
+				<Label Content="FAVORITES" Grid.Row="2" Foreground="#FFA5A5A5" Background="Black" Margin="0,0,0,4" FontFamily="Segoe UI Light"/>
 
             </Grid>
 		</Grid>
