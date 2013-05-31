@@ -34,6 +34,8 @@ namespace InfiniteStorage.REST
 					label_id = label_id,
 					label_name = label.name,
 					seq = label.seq,
+					auto_type = label.auto_type,
+					on_air = label.on_air,
 					files = files.ToList()
 				};
 			}
