@@ -511,33 +511,49 @@
             </Grid.Effect>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30" />
+                    <RowDefinition Height="2*" />
                     <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <Grid.RowDefinitions>
                     <RowDefinition Height="30" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Label Content="SOURCES"
-                       Grid.Row="0"
                        Foreground="#FFA5A5A5"
                        Background="Black"
-                       Margin="0,0,0,4"
-                       FontFamily="Segoe UI Light" />
+                           FontFamily="Segoe UI Light"
+                           Grid.Row="0" />
 
                 <local:SourceTree x:Name="lbxDeviceContainer"
-                                  Grid.Row="1"
                                   BorderBrush="{x:Null}"
                                   VirtualizingStackPanel.IsVirtualizing="True"
                                   VirtualizingStackPanel.VirtualizationMode="Recycling"
                                   TreeViewItemClick="TreeViewItem_PreviewMouseLeftButtonDown"
                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                  UnSortedItemClick="lbxDeviceContainer_UnSortedItemClick" Padding="0" />
+                                  UnSortedItemClick="lbxDeviceContainer_UnSortedItemClick"
+                                  Grid.Row="1"
+                                  Padding="0"/>
+
+                </Grid>
+
+                <GridSplitter Height="5"
+                              Background="Transparent"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Bottom"
+                              Grid.Row="0" />
+
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="1">
 
                 <Label Content="FAVORITES"
-                       Grid.Row="2"
                        Foreground="#FFA5A5A5"
                        Background="Black"
-                       Margin="0,0,0,4"
-                       FontFamily="Segoe UI Light" />
+                           FontFamily="Segoe UI Light"
+                           Height="30" />
+
+                </StackPanel>
 
             </Grid>
         </Grid>
