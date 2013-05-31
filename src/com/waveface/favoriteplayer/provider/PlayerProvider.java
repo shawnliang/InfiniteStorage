@@ -538,8 +538,9 @@ public class PlayerProvider extends ContentProvider {
 						+ LabelTable.COLUMN_UPDATE_TIME + ","
 						+ LabelTable.COLUMN_COVER_URL + ","
 						+ LabelTable.COLUMN_AUTO_TYPE + ","
-						+ LabelTable.COLUMN_ON_AIR + ")"
-						+ " values (?,?,?,?,?,?,?)");
+						+ LabelTable.COLUMN_ON_AIR + ","
+						+ LabelTable.COLUMN_DISPLAY_STATUS + ")"
+						+ " values (?,?,?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
 					// bind the 1-indexed ?'s to the values specified
@@ -550,6 +551,7 @@ public class PlayerProvider extends ContentProvider {
 					insert.bindString(5, value.getAsString(LabelTable.COLUMN_COVER_URL));
 					insert.bindString(6, value.getAsString(LabelTable.COLUMN_AUTO_TYPE));
 					insert.bindString(7, value.getAsString(LabelTable.COLUMN_ON_AIR));
+					insert.bindString(8, value.getAsString(LabelTable.COLUMN_DISPLAY_STATUS));
 					insert.execute();
 				}
 				db.setTransactionSuccessful();

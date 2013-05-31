@@ -25,9 +25,13 @@ public class LabelChangeEntity {
 	@SerializedName("deleted")
 	public String deleted;
 	
+	@SerializedName("cover_url")
+	public String cover_url;
+	
+	@SerializedName("auto_type")
+	public String auto_type;
+	
 	@SerializedName("on_air")
 	public String on_air;
-	}
-	
-
+  }
 }

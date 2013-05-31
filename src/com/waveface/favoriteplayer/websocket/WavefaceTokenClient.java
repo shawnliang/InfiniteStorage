@@ -196,6 +196,10 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 									.fromJson(jsonOutput,
 											LabelEntity.Label.class);
 	
+							labelEntity.cover_url=entity.label_change.cover_url;
+							labelEntity.auto_type=entity.label_change.auto_type;
+							labelEntity.on_air=entity.label_change.on_air;
+							
 							RuntimeState.labelsHashSet.add(entity.label_change.label_id);
 							mEditor.putStringSet(Constant.PREF_SERVER_CHANGE_LABELS, RuntimeState.labelsHashSet);
 							mEditor.commit();

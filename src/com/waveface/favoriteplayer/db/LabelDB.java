@@ -28,12 +28,16 @@ public class LabelDB {
 			LabelEntity.Label label, FileEntity fileEntity ,boolean isChangeLabel) {
 
 		if(!isChangeLabel){
-			updateLabel(context, label);
-			//removeAllFileInLabel(context, label.label_id);
-			updateLabelFiles(context, label);
-			updateFiles(context, fileEntity);
+			if(label.on_air.equals("false")){
+               //delete labelfile , file
+			}else{
+				updateLabel(context, label);
+				updateLabelFiles(context, label);
+				updateFiles(context, fileEntity);
+			}
 		}else{
-			updateLabelSeq(context,label.label_id,label.seq);
+			//updateLabelSeq(context,label.label_id,label.seq);
+			updateLabel(context, label);
 			removeAllFileInLabel(context, label.label_id);
 			updateLabelFiles(context, label);
 			updateFiles(context, fileEntity);			
@@ -64,7 +68,7 @@ public class LabelDB {
 				label.on_air = "";
 			}
 			cv.put(LabelTable.COLUMN_ON_AIR, label.on_air);
-			
+			cv.put(LabelTable.COLUMN_DISPLAY_STATUS, label.on_air.equals("true")?"true":"false");			
 			// insert label
 			result = cr.bulkInsert(LabelTable.CONTENT_URI,
 					new ContentValues[] { cv });
