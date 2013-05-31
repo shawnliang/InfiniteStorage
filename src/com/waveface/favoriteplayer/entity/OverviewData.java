@@ -9,6 +9,7 @@ public class OverviewData implements Parcelable{
 	public boolean landscape;
 	public String title;
 	public String labelId;
+	public int count;
 	
 	public static final Parcelable.Creator<OverviewData> CREATOR = new Creator<OverviewData>() {
 
@@ -28,6 +29,7 @@ public class OverviewData implements Parcelable{
 		landscape = false;
 		title = null;
 		labelId = null;
+		count = 0;
 	}
 	
 	public OverviewData(Parcel in) {
@@ -35,6 +37,7 @@ public class OverviewData implements Parcelable{
 		landscape = in.readInt() == 1 ? true:false;
 		title = in.readString();
 		labelId = in.readString();
+		count = in.readInt();
 	}
 	
 	@Override
@@ -47,6 +50,7 @@ public class OverviewData implements Parcelable{
 		out.writeInt(landscape?1:0);
 		out.writeString(title);
 		out.writeString(labelId);
+		out.writeInt(count);
 	}
 }
 

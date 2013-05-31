@@ -114,7 +114,7 @@ public class DownloadLogic {
 								+ Constant.VIDEO_FOLDER + "/" + fileName;
 						if (!FileUtil.isFileExisted(fullFilename)) {
 							downloadVideo(fileId, fullFilename, url);
-							Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(fileName, 
+							Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(fullFilename, 
 							        Thumbnails.MINI_KIND);
 
 							imageManager.setBitmapToFile(bmThumbnail, fullFilename, null, false);

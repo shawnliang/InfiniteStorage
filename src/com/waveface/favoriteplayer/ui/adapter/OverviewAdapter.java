@@ -23,18 +23,24 @@ public class OverviewAdapter extends BaseAdapter{
 	private ImageManager mImageManager;
 	private LayoutInflater mInflater;
 	
+	private boolean mVideo;
+	
 	private class ViewHolder {
 		public ImageView image;
 		public ImageView reflection;
 		public TextView labelText;
+		public ImageView placeholder;
+		public TextView countText;
 	}
 	
-	public OverviewAdapter(Context context, ArrayList<OverviewData> datas) {
+	public OverviewAdapter(Context context, ArrayList<OverviewData> datas, boolean isVideo) {
 		if(context == null)
 			return;
 		mDatas = datas;
 		mImageManager = SyncApplication.getWavefacePlayerApplication(context).getImageManager();
 		mInflater = LayoutInflater.from(context);
+		
+		mVideo = isVideo;
 	}
 	
 	public ArrayList<OverviewData> getDatas() {
@@ -66,6 +72,8 @@ public class OverviewAdapter extends BaseAdapter{
 			holder.image = (ImageView) convertView.findViewById(R.id.image);
 			holder.reflection = (ImageView) convertView.findViewById(R.id.reflection_image);
 			holder.labelText = (TextView) convertView.findViewById(R.id.text_label);
+			holder.placeholder = (ImageView) convertView.findViewById(R.id.image_play);
+			holder.countText = (TextView) convertView.findViewById(R.id.text_count);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -99,6 +107,14 @@ public class OverviewAdapter extends BaseAdapter{
 		} else {
 			convertView.setPadding(paddingNormal, paddingNormal, paddingNormal, paddingNormal);
 		}
+		
+		if(mVideo) {
+			holder.placeholder.setVisibility(View.VISIBLE);
+		} else {
+			holder.placeholder.setVisibility(View.INVISIBLE);
+		}
+		
+		holder.countText.setText(Integer.toString(mDatas.get(position).count));
 		
 		return convertView;
 	}

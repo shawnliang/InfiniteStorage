@@ -152,7 +152,11 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		protected void onPostExecute(ArrayList<OverviewData> datas) {
 			if(datas != null) {
 				mProgress.setVisibility(View.GONE);
-				OverviewAdapter adapter = new OverviewAdapter(getActivity(), datas);
+				OverviewAdapter adapter = null;
+				if(mType == OVERVIEW_VIEW_TYPE_RECENT_VIDEO)
+					adapter = new OverviewAdapter(getActivity(), datas, true);
+				else
+					adapter = new OverviewAdapter(getActivity(), datas, false);
 				mList.setAdapter(adapter);
 				
 				if(datas.size() == 0) {
@@ -173,6 +177,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 					OverviewData data = new OverviewData();
 					data.labelId = c.getString(0);
 					data.url = mServerUrl + c.getString(1);
+					data.count = fc.getCount();
 
 					switch(mType) {
 					case OVERVIEW_VIEW_TYPE_FAVORITE:
