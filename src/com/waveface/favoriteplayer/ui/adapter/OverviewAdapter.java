@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.waveface.favoriteplayer.R;
@@ -25,12 +26,14 @@ public class OverviewAdapter extends BaseAdapter{
 	
 	private boolean mVideo;
 	
-	private class ViewHolder {
+	public class ViewHolder {
 		public ImageView image;
 		public ImageView reflection;
 		public TextView labelText;
 		public ImageView placeholder;
 		public TextView countText;
+		public ProgressBar progress;
+		public String labelId;
 	}
 	
 	public OverviewAdapter(Context context, ArrayList<OverviewData> datas, boolean isVideo) {
@@ -74,10 +77,13 @@ public class OverviewAdapter extends BaseAdapter{
 			holder.labelText = (TextView) convertView.findViewById(R.id.text_label);
 			holder.placeholder = (ImageView) convertView.findViewById(R.id.image_play);
 			holder.countText = (TextView) convertView.findViewById(R.id.text_count);
+			holder.progress = (ProgressBar)convertView.findViewById(R.id.progress);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
+		
+		holder.labelId = mDatas.get(position).labelId;
 		
 		int width = context.getResources().getDimensionPixelSize(R.dimen.overview_image_width) + 200;
 		int height = context.getResources().getDimensionPixelSize(R.dimen.overview_image_height) + 200;

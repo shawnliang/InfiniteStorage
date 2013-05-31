@@ -195,7 +195,9 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 							LabelEntity.Label labelEntity = RuntimeState.GSON
 									.fromJson(jsonOutput,
 											LabelEntity.Label.class);
-	
+							labelEntity.cover_url = entity.label_change.cover_url;
+							labelEntity.auto_type = entity.label_change.auto_type;							
+							
 							RuntimeState.labelsHashSet.add(entity.label_change.label_id);
 							mEditor.putStringSet(Constant.PREF_SERVER_CHANGE_LABELS, RuntimeState.labelsHashSet);
 							mEditor.commit();
