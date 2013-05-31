@@ -49,6 +49,9 @@ public class File{
 	
 	@SerializedName("seq")
 	public String seq;
+	
+	@SerializedName("event_time")
+	public String event_time;
 }
 
 }

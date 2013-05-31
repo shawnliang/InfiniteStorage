@@ -26,7 +26,8 @@ public class LabelTable implements BaseColumns {
 	public static final String COLUMN_AUTO_TYPE = "auto_type";
 	// auto_type ; 0:favorite ; 1:Recent photo today  ; 2: Recent photo yesterday ; 3: Recent photo this week  
 	// 4:Recent video today  ; 5: Recent video yesterday ; 6: Recent video this week
-
+	public static final String COLUMN_ON_AIR = "on_air";
+	
 	private LabelTable() {
 
 	}

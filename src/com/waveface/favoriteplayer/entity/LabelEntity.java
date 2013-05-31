@@ -26,6 +26,9 @@ public class LabelEntity {
 	
 	@SerializedName("auto_type")
 	public String auto_type;
+	
+	@SerializedName("on_air")
+	public String on_air;
 
 	public String[] files;
 	}

@@ -24,6 +24,10 @@ public class LabelChangeEntity {
 	
 	@SerializedName("deleted")
 	public String deleted;
+	
+	@SerializedName("on_air")
+	public String on_air;
 	}
+	
 
 }

@@ -142,12 +142,10 @@ public class DownloadLogic {
 	}
 
 	public static void updateAllLabels(Context context, LabelEntity entity) {
-		String serverLabelSeq=null;
+		
 		for (LabelEntity.Label label : entity.labels) {
 			downloadLabel(context, label,true,false);
-			serverLabelSeq=label.seq;
 		}
-		
 		LabelImportedEvent doneEvent = new LabelImportedEvent(
 				LabelImportedEvent.STATUS_DONE);
 		EventBus.getDefault().post(doneEvent);

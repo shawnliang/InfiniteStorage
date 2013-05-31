@@ -59,6 +59,12 @@ public class LabelDB {
 				label.auto_type = "";
 			}			
 			cv.put(LabelTable.COLUMN_AUTO_TYPE, label.auto_type);
+			
+			if(TextUtils.isEmpty(label.on_air)){
+				label.on_air = "";
+			}
+			cv.put(LabelTable.COLUMN_ON_AIR, label.on_air);
+			
 			// insert label
 			result = cr.bulkInsert(LabelTable.CONTENT_URI,
 					new ContentValues[] { cv });
@@ -113,6 +119,7 @@ public class LabelDB {
 					cv.put(FileTable.COLUMN_DEV_TYPE, file.dev_type);
 					cv.put(FileTable.COLUMN_WIDTH, file.width);
 					cv.put(FileTable.COLUMN_HEIGHT, file.height);
+					cv.put(FileTable.COLUMN_EVENT_TIME, file.event_time);
 					datas.add(cv);
 				}
 				ContentValues[] cvs = new ContentValues[datas.size()];
