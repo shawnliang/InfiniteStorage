@@ -507,33 +507,48 @@
             </Grid.Effect>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="30" />
+                    <RowDefinition Height="2*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Label Content="SOURCES"
-                       Grid.Row="0"
-                       Foreground="#FFA5A5A5"
-                       Background="Black"
-                       Margin="0,0,0,4"
-                       FontFamily="Segoe UI Light" />
 
-                <local:SourceTree x:Name="lbxDeviceContainer"
-                                  Grid.Row="1"
-                                  BorderBrush="{x:Null}"
-                                  VirtualizingStackPanel.IsVirtualizing="True"
-                                  VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                  TreeViewItemClick="TreeViewItem_PreviewMouseLeftButtonDown"
-                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                  UnSortedItemClick="lbxDeviceContainer_UnSortedItemClick" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Label Content="SOURCES"
+                           Foreground="#FFA5A5A5"
+                           Background="Black"
+                           FontFamily="Segoe UI Light"
+                           Grid.Row="0" />
 
-                <Label Content="FAVORITES"
-                       Grid.Row="2"
-                       Foreground="#FFA5A5A5"
-                       Background="Black"
-                       Margin="0,0,0,4"
-                       FontFamily="Segoe UI Light" />
+                    <local:SourceTree x:Name="lbxDeviceContainer"
+                                      BorderBrush="{x:Null}"
+                                      VirtualizingStackPanel.IsVirtualizing="True"
+                                      VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                      TreeViewItemClick="TreeViewItem_PreviewMouseLeftButtonDown"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                      UnSortedItemClick="lbxDeviceContainer_UnSortedItemClick"
+                                      Grid.Row="1" />
+
+                </Grid>
+
+                <GridSplitter Height="5"
+                              Background="Transparent"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Bottom"
+                              Grid.Row="0" />
+
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="1">
+
+                    <Label Content="FAVORITES"
+                           Foreground="#FFA5A5A5"
+                           Background="Black"
+                           FontFamily="Segoe UI Light"
+                           Height="30" />
+
+                </StackPanel>
 
             </Grid>
         </Grid>
