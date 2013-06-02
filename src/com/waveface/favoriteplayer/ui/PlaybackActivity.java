@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -16,7 +18,7 @@ import android.widget.ProgressBar;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.db.LabelDB;
-import com.waveface.favoriteplayer.db.LabelFileTable;
+import com.waveface.favoriteplayer.db.LabelFileView;
 import com.waveface.favoriteplayer.entity.PlaybackData;
 import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.PlaybackItemClickEvent;
@@ -25,6 +27,7 @@ import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.ui.fragment.FullScreenSlideshowFragment;
 import com.waveface.favoriteplayer.ui.fragment.GalleryViewFragment;
 import com.waveface.favoriteplayer.ui.fragment.PlaybackFragment;
+import com.waveface.favoriteplayer.ui.fragment.VideoFragment;
 
 import de.greenrobot.event.EventBus;
 
@@ -81,13 +84,19 @@ public class PlaybackActivity extends FragmentActivity {
 			data.putInt(Constant.ARGUMENT2, event.position);
 	
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-			FullScreenSlideshowFragment fragment = new FullScreenSlideshowFragment();
+			Fragment fragment = null;
+			if(Constant.FILE_TYPE_IMAGE.equals(mDatas.get(event.position).type)) {
+				fragment = new FullScreenSlideshowFragment();
+				mCurrentFragment = FullScreenSlideshowFragment.class.getSimpleName();
+			} else {
+				fragment = new VideoFragment();
+				mCurrentFragment = VideoFragment.class.getSimpleName();
+			}
 			
 			fragment.setArguments(data);
-			mCurrentFragment = FullScreenSlideshowFragment.class.getSimpleName();
 			transaction.addToBackStack(null);
 			transaction.replace(R.id.content, fragment, mCurrentFragment).commit();
-		} else {
+		} else if(GalleryViewFragment.class.getSimpleName().equals(mCurrentFragment)){
 			Bundle data = new Bundle();
 			data.putParcelableArrayList(Constant.ARGUMENT1, mDatas);
 			data.putInt(Constant.ARGUMENT2, event.position);
@@ -122,6 +131,8 @@ public class PlaybackActivity extends FragmentActivity {
 		} else {
 			getSupportFragmentManager().popBackStack();
 			if(FullScreenSlideshowFragment.class.getSimpleName().equals(mCurrentFragment)) {
+				mCurrentFragment = PlaybackFragment.class.getSimpleName();
+			} else if(VideoFragment.class.getSimpleName().equals(mCurrentFragment)) {
 				mCurrentFragment = PlaybackFragment.class.getSimpleName();
 			} else {
 				mCurrentFragment = GalleryViewFragment.class.getSimpleName();
@@ -164,13 +175,21 @@ public class PlaybackActivity extends FragmentActivity {
 			Log.d(TAG, "mServerUrl:" +serverUrl);
 			
 			ArrayList<PlaybackData> datas = new ArrayList<PlaybackData>();
-			Cursor c = LabelDB.getLabelFilesByLabelId(getApplicationContext(), mLabelId);
+			String localPath = Environment.getExternalStorageDirectory().getAbsolutePath()
+					+ Constant.VIDEO_FOLDER+ "/";
+			Cursor c = LabelDB.getLabelFileViewByLabelId(getApplicationContext(), mLabelId);
 			for(int i=0; i<c.getCount(); ++i) {
 				c.moveToPosition(i);
+				String type = c.getString(c.getColumnIndex(LabelFileView.COLUMN_TYPE));
 				PlaybackData pd = new PlaybackData();
-				pd.url = serverUrl + Constant.URL_IMAGE + "/" +
-						c.getString(c.getColumnIndex(LabelFileTable.COLUMN_FILE_ID)) +
-						Constant.URL_IMAGE_LARGE;
+				if(Constant.FILE_TYPE_IMAGE.equals(type)) {
+					pd.url = serverUrl + Constant.URL_IMAGE + "/" +
+							c.getString(c.getColumnIndex(LabelFileView.COLUMN_FILE_ID)) +
+							Constant.URL_IMAGE_LARGE;
+				} else {
+					pd.url = localPath + c.getString(c.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
+				}
+				pd.type = type;
 				datas.add(pd);
 			}
 			c.close();

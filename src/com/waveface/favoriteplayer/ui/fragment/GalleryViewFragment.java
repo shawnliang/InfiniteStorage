@@ -43,7 +43,7 @@ public class GalleryViewFragment extends Fragment implements OnItemClickListener
 		
 		mGridView = (GridView) mRootView.findViewById(R.id.grid_view);
 		ArrayList<PlaybackData> datas = data.getParcelableArrayList(Constant.ARGUMENT1);
-		GalleryViewAdapter adapter = new GalleryViewAdapter(getActivity(), datas, data.getBoolean(Constant.ARGUMENT2));
+		GalleryViewAdapter adapter = new GalleryViewAdapter(getActivity(), datas);
 		mGridView.setAdapter(adapter);
 		
 		mGridView.requestFocus();

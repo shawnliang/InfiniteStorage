@@ -142,7 +142,6 @@ public class VideoActivity extends FragmentActivity{
 			mDatas = result;
 			Bundle data = new Bundle();
 			data.putParcelableArrayList(Constant.ARGUMENT1, result);
-			data.putBoolean(Constant.ARGUMENT2, true);
 			data.putString(Constant.ARGUMENT3, mLabelTitle);
 
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

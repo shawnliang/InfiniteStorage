@@ -18,6 +18,9 @@ import android.widget.VideoView;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.entity.PlaybackData;
+import com.waveface.favoriteplayer.event.PlaybackCancelEvent;
+
+import de.greenrobot.event.EventBus;
 
 public class VideoFragment extends Fragment implements OnCompletionListener{
 	public static final String TAG = VideoFragment.class.getSimpleName(); 
@@ -88,14 +91,26 @@ public class VideoFragment extends Fragment implements OnCompletionListener{
 	public void onDestroy() {
 		super.onDestroy();
 	}
+	
+	private boolean moveNext() {
+		do {
+			mCurrentPosition++;
+			if(mCurrentPosition >= mVideos.size()) {
+				return false;
+			}
+		} while(Constant.FILE_TYPE_VIDEO.equals(mVideos.get(mCurrentPosition).type) == false);
+		return true;
+	}
 
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
-		if(mCurrentPosition < mVideos.size()-1) {
-			mCurrentPosition++;
+		if(moveNext()) {
 			playVideo();
 		} else {
 			Toast.makeText(getActivity(), R.string.everything_played, Toast.LENGTH_SHORT).show();
+			PlaybackCancelEvent event = new PlaybackCancelEvent();
+			event.position = 0;
+			EventBus.getDefault().post(event);
 		}
 	}
 }

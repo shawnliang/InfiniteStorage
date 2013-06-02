@@ -5,10 +5,10 @@ import idv.jason.lib.imagemanager.ImageManager;
 
 import java.util.ArrayList;
 
+import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.SyncApplication;
 import com.waveface.favoriteplayer.entity.PlaybackData;
-import com.waveface.favoriteplayer.ui.fragment.OverviewFragment;
 import com.waveface.favoriteplayer.ui.widget.SquareImageView;
 
 import android.content.Context;
@@ -23,14 +23,12 @@ public class GalleryViewAdapter extends BaseAdapter{
 	private ArrayList<PlaybackData> mDatas;
 	private ImageManager mImageManager;
 	private int mImageSize;
-	private boolean mVideo;
 	
-	public GalleryViewAdapter(Context context, ArrayList<PlaybackData> datas, boolean showVideoPlaceholder) {
+	public GalleryViewAdapter(Context context, ArrayList<PlaybackData> datas) {
 		mInflater = LayoutInflater.from(context);
 		mDatas = datas;
 		mImageManager = SyncApplication.getWavefacePlayerApplication(context).getImageManager();
 		mImageSize = context.getResources().getDimensionPixelSize(R.dimen.galleryview_item_size);
-		mVideo = showVideoPlaceholder;
 	}
 
 	@Override
@@ -61,7 +59,7 @@ public class GalleryViewAdapter extends BaseAdapter{
 		attr.setDoneScaleType(ScaleType.CENTER_CROP);
 		mImageManager.getImage(mDatas.get(position).url, attr);
 		
-		if(mVideo) {
+		if(Constant.FILE_TYPE_VIDEO.equals(mDatas.get(position).type)) {
 			root.findViewById(R.id.image_play).setVisibility(View.VISIBLE);
 		}
 		

@@ -28,15 +28,16 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	
 	private ArrayList<PlaybackData> mDatas = new ArrayList<PlaybackData>();
 	
-	private static final int AUTO_SLIDE_SHOW_FIRST_DELAY_MILLIS = 5000;
-	private static final int AUTO_SLIDE_SHOW_AFTER_CONTROL_DELAY_MILLIS = 15000;
+	private static final int AUTO_FIRST_DELAY_MILLIS = 5000;
+	private static final int AUTO_AFTER_CONTROL_DELAY_MILLIS = 15000;
 	
-	private Handler mSlideShowHandler = new Handler();
-	private Runnable mSlideShowRunnable = new Runnable() {
+	private Handler mPlaybackHandler = new Handler();
+	private Runnable mPlaybackRunnable = new Runnable() {
 		@Override
 		public void run() {
-			Log.d(TAG, "start slide show");
-			startSlideShow();
+			Log.d(TAG, "start Playback");
+			if(Constant.FILE_TYPE_IMAGE.equals(mDatas.get(mPager.getCurrentItem()).type))
+				startPlayback();
 		}
 	};
 		
@@ -77,7 +78,7 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 		super.onPause();
 		mResume = false;
 		Log.d(TAG, "pause");
-		mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
+		mPlaybackHandler.removeCallbacks(mPlaybackRunnable);
 	}
 	
 	@Override
@@ -85,14 +86,14 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 		super.onResume();
 		mResume = true;
 		Log.d(TAG, "resume");
-		delaySlideShow(AUTO_SLIDE_SHOW_FIRST_DELAY_MILLIS);
+		delaySlideShow(AUTO_FIRST_DELAY_MILLIS);
 	}
 	
 
 	public void onKeyEvent(int keyCode, KeyEvent event) {
 		Log.d(TAG, "keycode:" + keyCode);
 		Log.d(TAG, "stop slide show");
-		mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
+		mPlaybackHandler.removeCallbacks(mPlaybackRunnable);
 		
 		int currentPosition = mPager.getCurrentItem();
 
@@ -113,7 +114,7 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 			break;
 		case KeyEvent.KEYCODE_ENTER:
 		case KeyEvent.KEYCODE_MEDIA_PLAY:
-			startSlideShow();
+			startPlayback();
 			break;
 		case KeyEvent.KEYCODE_BACK:
 //			getActivity().finish();
@@ -127,7 +128,7 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 		}
 	}
 	
-	private void startSlideShow() {
+	private void startPlayback() {
 		Log.d(TAG, "startSlideShow");
 
 		if(mResume == false) {
@@ -142,13 +143,13 @@ public class PlaybackFragment extends Fragment implements OnPageChangeListener {
 	
 	private void delaySlideShow(int delayMillis) {
 		Log.d(TAG, "delaySlideShow:" + delayMillis);
-		mSlideShowHandler.removeCallbacks(mSlideShowRunnable);
-		mSlideShowHandler.postDelayed(mSlideShowRunnable, delayMillis);
+		mPlaybackHandler.removeCallbacks(mPlaybackRunnable);
+		mPlaybackHandler.postDelayed(mPlaybackRunnable, delayMillis);
 	}
 
 	@Override
 	public void onPageScrollStateChanged(int state) {
-		delaySlideShow(AUTO_SLIDE_SHOW_AFTER_CONTROL_DELAY_MILLIS);
+		delaySlideShow(AUTO_AFTER_CONTROL_DELAY_MILLIS);
 	}
 
 	@Override

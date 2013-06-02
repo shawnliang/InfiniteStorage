@@ -31,7 +31,6 @@ import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.LabelChangeEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.ui.PlaybackActivity;
-import com.waveface.favoriteplayer.ui.VideoActivity;
 import com.waveface.favoriteplayer.ui.adapter.OverviewAdapter;
 import com.waveface.favoriteplayer.ui.adapter.OverviewAdapter.ViewHolder;
 import com.waveface.favoriteplayer.ui.widget.TwoWayView;
@@ -311,14 +310,8 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		switch(mType) {
 		case OverviewFragment.OVERVIEW_VIEW_TYPE_FAVORITE:
 		case OverviewFragment.OVERVIEW_VIEW_TYPE_RECENT_PHOTO:
-			intent = new Intent(getActivity(), PlaybackActivity.class);
-			data.putString(Constant.ARGUMENT1, ((OverviewAdapter)listview.getAdapter()).getDatas().get(position).labelId);
-			data.putString(Constant.ARGUMENT3, ((OverviewAdapter)listview.getAdapter()).getDatas().get(position).title);
-			intent.putExtras(data);
-			startActivity(intent);
-			break;
 		case OverviewFragment.OVERVIEW_VIEW_TYPE_RECENT_VIDEO:
-			intent = new Intent(getActivity(), VideoActivity.class);
+			intent = new Intent(getActivity(), PlaybackActivity.class);
 			data.putString(Constant.ARGUMENT1, ((OverviewAdapter)listview.getAdapter()).getDatas().get(position).labelId);
 			data.putString(Constant.ARGUMENT3, ((OverviewAdapter)listview.getAdapter()).getDatas().get(position).title);
 			intent.putExtras(data);
