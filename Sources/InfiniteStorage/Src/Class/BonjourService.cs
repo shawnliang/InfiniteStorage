@@ -1,5 +1,6 @@
 ﻿using Mono.Zeroconf;
 using System;
+using InfiniteStorage.Properties;
 
 
 namespace InfiniteStorage
@@ -31,7 +32,7 @@ namespace InfiniteStorage
 
 		public void Register(ushort backup_port, ushort notify_port, ushort rest_port, string server_id, bool is_accepting = true)
 		{
-			m_svc.Name = ServiceName;
+			m_svc.Name = Environment.MachineName;
 			m_svc.Port = (short)backup_port;
 			m_svc.RegType = SVC_TYPE;
 			m_svc.ReplyDomain = "local.";
@@ -53,7 +54,7 @@ namespace InfiniteStorage
 		{
 			get
 			{
-				return Environment.UserName + "-" + Environment.MachineName;
+				return Settings.Default.LibraryName;
 			}
 		}
 

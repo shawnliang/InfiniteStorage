@@ -196,4 +196,7 @@
   <data name="TrayMenuItem_Open" xml:space="preserve">
     <value>Open</value>
   </data>
+  <data name="DefLibraryName" xml:space="preserve">
+    <value>{0}'s Favorite Home</value>
+  </data>
 </root>

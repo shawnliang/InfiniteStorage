@@ -28,49 +28,48 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.organizeSelectionControl1 = new InfiniteStorage.OrganizeSelectionControl();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GeneralPreferenceControl));
+			this.label6 = new System.Windows.Forms.Label();
+			this.libraryName = new System.Windows.Forms.TextBox();
 			this.storageLocationControl1 = new InfiniteStorage.StorageLocationControl();
 			this.SuspendLayout();
 			// 
-			// organizeSelectionControl1
+			// label6
 			// 
-			this.organizeSelectionControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.organizeSelectionControl1.BackColor = System.Drawing.Color.Transparent;
-			this.organizeSelectionControl1.Enabled = false;
-			this.organizeSelectionControl1.Location = new System.Drawing.Point(14, 126);
-			this.organizeSelectionControl1.Name = "organizeSelectionControl1";
-			this.organizeSelectionControl1.OrganizeBy = InfiniteStorage.OrganizeMethod.YearMonth;
-			this.organizeSelectionControl1.Size = new System.Drawing.Size(535, 141);
-			this.organizeSelectionControl1.TabIndex = 6;
+			resources.ApplyResources(this.label6, "label6");
+			this.label6.Name = "label6";
+			// 
+			// libraryName
+			// 
+			resources.ApplyResources(this.libraryName, "libraryName");
+			this.libraryName.Name = "libraryName";
+			this.libraryName.TextChanged += new System.EventHandler(this.libraryName_TextChanged);
 			// 
 			// storageLocationControl1
 			// 
-			this.storageLocationControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.storageLocationControl1.Enabled = false;
-			this.storageLocationControl1.Location = new System.Drawing.Point(14, 13);
+			resources.ApplyResources(this.storageLocationControl1, "storageLocationControl1");
 			this.storageLocationControl1.Name = "storageLocationControl1";
-			this.storageLocationControl1.Size = new System.Drawing.Size(535, 95);
 			this.storageLocationControl1.StoragePath = "C:\\Users\\shawnliang\\Infinite Storage";
-			this.storageLocationControl1.TabIndex = 5;
 			// 
 			// GeneralPreferenceControl
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-			this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-			this.Controls.Add(this.organizeSelectionControl1);
+			this.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.Controls.Add(this.libraryName);
+			this.Controls.Add(this.label6);
 			this.Controls.Add(this.storageLocationControl1);
 			this.Name = "GeneralPreferenceControl";
-			this.Size = new System.Drawing.Size(568, 288);
+			this.Load += new System.EventHandler(this.GeneralPreferenceControl_Load);
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
 		#endregion
 
 		private StorageLocationControl storageLocationControl1;
-		private OrganizeSelectionControl organizeSelectionControl1;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.TextBox libraryName;
 	}
 }

@@ -17,9 +17,13 @@ namespace InfiniteStorage
 			Text = Resources.ProductName;
 			Icon = Resources.ProductIcon;
 
-			deviceListControl.SettingChanged += new EventHandler(handleAnySettingChanged);
-			aboutControl1.SettingsChanged += new EventHandler(handleAnySettingChanged);
+			deviceListControl.SettingChanged += handleAnySettingChanged;
+			aboutControl1.SettingsChanged += handleAnySettingChanged;
+			generalPreferenceControl1.SettingsChanged += handleAnySettingChanged;
 			tabAbout.Text = string.Format(Resources.AboutTab, Resources.ProductName);
+
+			generalPreferenceControl1.Enabled = true;
+
 		}
 
 		void handleAnySettingChanged(object sender, EventArgs e)
@@ -57,6 +61,9 @@ namespace InfiniteStorage
 		{
 			try
 			{
+				Settings.Default.LibraryName = generalPreferenceControl1.LibraryName;
+				Settings.Default.Save();
+
 				saveDeviceListChanges();
 				setAutoStartValue();
 				saveLogLevel();

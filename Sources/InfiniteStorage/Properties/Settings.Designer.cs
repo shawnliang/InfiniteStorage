@@ -238,5 +238,17 @@ namespace InfiniteStorage.Properties {
                 this["LabelVideoYesterday"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LibraryName {
+            get {
+                return ((string)(this["LibraryName"]));
+            }
+            set {
+                this["LibraryName"] = value;
+            }
+        }
     }
 }

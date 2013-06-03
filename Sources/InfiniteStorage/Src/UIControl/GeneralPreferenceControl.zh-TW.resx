@@ -117,42 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>一般</value>
-  </data>
-  <data name="tabDevices.Text" xml:space="preserve">
-    <value>連結的裝置</value>
-  </data>
-  <data name="tabAbout.Text" xml:space="preserve">
-    <value>關於</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="buttonOK.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonOK.Text" xml:space="preserve">
-    <value>確認</value>
-  </data>
-  <data name="buttonCancel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonCancel.Text" xml:space="preserve">
-    <value>取消</value>
-  </data>
-  <data name="buttonApply.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="buttonApply.Text" xml:space="preserve">
-    <value>套用</value>
-  </data>
-  <data name="checkboxAutoRun.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="checkboxAutoRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>110, 17</value>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 16</value>
   </data>
-  <data name="checkboxAutoRun.Text" xml:space="preserve">
-    <value>開機時自動啟動</value>
+  <data name="label6.Text" xml:space="preserve">
+    <value>本機名稱：</value>
   </data>
 </root>

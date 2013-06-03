@@ -136,6 +136,15 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}&apos;s Favorite Home.
+        /// </summary>
+        internal static string DefLibraryName {
+            get {
+                return ResourceManager.GetString("DefLibraryName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unlinking this device does not remove any file from this PC. Photo and home video on the device will not sync to this PC any more..
         /// </summary>
         internal static string DeleteDevice_Description {

@@ -276,6 +276,9 @@
     <EmbeddedResource Include="Src\UIControl\DeviceListControl.zh-TW.resx">
       <DependentUpon>DeviceListControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Src\UIControl\GeneralPreferenceControl.zh-TW.resx">
+      <DependentUpon>GeneralPreferenceControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\OrganizeSelectionControl.resx">
       <DependentUpon>OrganizeSelectionControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -312,6 +315,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\WaitForPairingDialog.resx">
       <DependentUpon>WaitForPairingDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Src\UIControl\StorageLocationControl.zh-TW.resx">
+      <DependentUpon>StorageLocationControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="..\..\Libs\nginx-1.2.3\conf\mime.types">
       <Link>nginx\conf\mime.types</Link>

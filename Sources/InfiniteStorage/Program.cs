@@ -84,6 +84,13 @@ namespace InfiniteStorage
 				NginxUtility.Instance.PrepareNginxConfig(12888, Settings.Default.SingleFolderLocation);
 			}
 
+			if (string.IsNullOrEmpty(Settings.Default.LibraryName))
+			{
+				Settings.Default.LibraryName = string.Format(Resources.DefLibraryName, Environment.UserName);
+				Settings.Default.Save();
+			}
+
+
 			NginxUtility.Instance.Start();
 			ThumbnailCreator.Instance.Start();
 
