@@ -85,8 +85,8 @@ namespace UnitTest.Pending
 			action.Do(evt);
 
 			Assert.AreEqual(evt.files[0], records[0].file_id);
-			Assert.AreEqual(@"title", records[0].parent_folder);
-			Assert.AreEqual(@"title\name.1.jpg", records[0].saved_path);
+			Assert.AreEqual(@"dev_folder\title", records[0].parent_folder);
+			Assert.AreEqual(@"dev_folder\title\name.1.jpg", records[0].saved_path);
 
 			util.VerifyAll();
 		}
