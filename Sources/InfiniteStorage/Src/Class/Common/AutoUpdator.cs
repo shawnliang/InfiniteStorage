@@ -23,6 +23,11 @@ namespace Waveface.Common
 			m_autoUpdator.StartLoop(true, TimeSpan.FromHours(5.0));
 		}
 
+		public void Stop()
+		{
+			m_autoUpdator.StopLoop();
+		}
+
 		public bool IsUpdateRequired()
 		{
 			var honorSkippedVersion = !forceUpgrade;

@@ -17,14 +17,9 @@ namespace InfiniteStorage
 		private string thumbnailLocation;
 		private bool started;
 		private object cs = new object();
-		private static ThumbnailCreator instance = new ThumbnailCreator();
 
-		public static ThumbnailCreator Instance
-		{
-			get { return instance; }
-		}
 
-		private ThumbnailCreator()
+		public ThumbnailCreator()
 		{
 			timer.Elapsed += timer_Elapsed;
 			thumbnailLocation = Path.Combine(MyFileFolder.Photo, ".thumbs");

@@ -248,6 +248,7 @@
     <Compile Include="Src\Dialog\WaitForPairingDialog.Designer.cs">
       <DependentUpon>WaitForPairingDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="StationServer.cs" />
     <EmbeddedResource Include="Properties\Resources.zh-TW.resx" />
     <EmbeddedResource Include="Src\Dialog\BackToPhoneDialog.resx">
       <DependentUpon>BackToPhoneDialog.cs</DependentUpon>

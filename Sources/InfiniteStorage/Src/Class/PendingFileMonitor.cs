@@ -8,15 +8,12 @@ namespace InfiniteStorage
 {
 	class PendingFileMonitor
 	{
-		private static PendingFileMonitor instance = new PendingFileMonitor();
-
-		public Timer timer = new Timer();
-
+		private Timer timer = new Timer();
 		private long showUIAtSeq = 0;
 		private long prevSeq = 0;
 		private DateTime prevTimeOfNewFileComing = DateTime.Now;
 
-		private PendingFileMonitor()
+		public PendingFileMonitor()
 		{
 			timer.Interval = 5000;
 			timer.Tick += new EventHandler(timer_Tick);
@@ -88,11 +85,6 @@ namespace InfiniteStorage
 				else
 					return false;
 			}
-		}
-
-		public static PendingFileMonitor Instance
-		{
-			get { return instance; }
 		}
 
 		public void Start()
