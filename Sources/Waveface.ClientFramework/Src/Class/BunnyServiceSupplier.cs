@@ -66,10 +66,9 @@ namespace Waveface.ClientFramework
 
 			while (dr.Read())
 			{
-				var deviceName = dr["device_name"].ToString();
 				var folderName = dr["folder_name"].ToString();
 				var deviceId = dr["device_id"].ToString();
-				services.Add(new BunnyService(this, deviceName, deviceId));
+				services.Add(new BunnyService(this, folderName, deviceId));
 			}
 
 			conn.Close();

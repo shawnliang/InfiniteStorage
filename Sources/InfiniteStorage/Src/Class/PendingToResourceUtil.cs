@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
+using InfiniteStorage.Model;
+using System.Linq;
 
 namespace InfiniteStorage
 {
@@ -13,11 +15,14 @@ namespace InfiniteStorage
 		private string dev_path;
 		private FileMover mover = new FileMover();
 
+		public string DevFolder { get; private set; }
+
 		public PendingToResourceUtil(string connString, string dev_folder, string res_folder = null)
 		{
 			this.connString = connString;
 			this.resource_dir = res_folder ?? MyFileFolder.Photo;
 			this.dev_path = Path.Combine(resource_dir, dev_folder);
+			this.DevFolder = dev_folder;
 		}
 
 		public string CreateFolder(string folderUnderDevFolder)
@@ -146,6 +151,34 @@ namespace InfiniteStorage
 		public string GetPendingFolder()
 		{
 			return MyFileFolder.Pending;
+		}
+
+
+		public void CreateFolderRecord(string dev_folder, string sub_folder)
+		{
+			var path = Path.Combine(dev_folder, sub_folder);
+
+			using (var db = new MyDbContext())
+			{
+
+				var q = from f in db.Object.Folders
+						where f.path == path
+						select f;
+
+				if (q.Any())
+					return;
+
+
+				db.Object.Folders.Add(
+					new Folder
+					{
+						name = sub_folder,
+						path = Path.Combine(dev_folder, sub_folder),
+						parent_folder = dev_folder
+					});
+
+				db.Object.SaveChanges();
+			}
 		}
 	}
 }
