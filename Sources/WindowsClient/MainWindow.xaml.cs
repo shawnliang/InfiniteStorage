@@ -35,7 +35,10 @@ namespace Waveface.Client
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			this.lbxDeviceContainer.DataContext = Waveface.ClientFramework.Client.Default.Services;
+			var fav = Waveface.ClientFramework.Client.Default.Favorites;
 			this.LabeledCount.DataContext = LabeledContents;
+			
+			this.lbxFavorites.DataContext = Waveface.ClientFramework.Client.Default.Favorites;
 		}
 
 		private void OnPhotoClick(object sender, MouseButtonEventArgs e)
