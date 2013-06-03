@@ -90,7 +90,9 @@
                                 MouseDoubleClick="ImgContentCtrl_MouseDoubleClick"
                                 Cursor="Arrow">
                     <Grid x:Name="ImgGrid">
-						<MediaElement DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"/>
+						<MediaElement x:Name="meVideo" DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}" MediaOpened="meVideo_MediaOpened"
+                                      MediaEnded="meVideo_MediaEnded"
+                                      MediaFailed="meVideo_MediaFailed" />
                         <Image x:Name="ImgObject"
                                DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"/>
                         <Thumb x:Name="ImgThumb"
@@ -130,7 +132,8 @@
                          Margin="0,0,0,13"
                          Next="ViewerControl_Next"
                          Previous="ViewerControl_Previous"
-                         Close="ViewerControl_Close" />
+                         Close="ViewerControl_Close"
+                         PositionChanged="vcViewerControl_PositionChanged_1" />
 
         <Label x:Name="label"
                VerticalAlignment="Bottom"
