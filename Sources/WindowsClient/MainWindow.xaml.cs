@@ -63,6 +63,28 @@ namespace Waveface.Client
 
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = group.Contents;
+			SetContentTypeCount(group);
+		}
+
+		private void SetContentTypeCount(IContentGroup group)
+		{
+			lblContentTypeCount.Content = string.Format("{0} photos {1} videos",
+						group.Contents.Count(item =>
+						{
+							var content = item as IContent;
+							if (content == null)
+								return false;
+
+							return content.Type == ContentType.Photo;
+						}),
+						group.Contents.Count(item =>
+						{
+							var content = item as IContent;
+							if (content == null)
+								return false;
+
+							return content.Type == ContentType.Video;
+						}));
 		}
 
 		private void BackButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -85,11 +107,13 @@ namespace Waveface.Client
 					return;
 				lblContentLocation.DataContext = null;
 				lbxContentContainer.DataContext = service.Contents;
+				lblContentTypeCount.Content = string.Format("0 photos 0 videos");
 				return;
 			}
 
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = (group as IContentGroup).Contents;
+			SetContentTypeCount(group as IContentGroup);
 			return;
 		}
 
@@ -107,6 +131,7 @@ namespace Waveface.Client
 
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = group.Contents;
+			SetContentTypeCount(group);
 		}
 
 		#region Event Process
