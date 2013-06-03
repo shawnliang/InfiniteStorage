@@ -9,16 +9,18 @@ namespace Waveface.ClientFramework
 	{
 		public string DeviceId { get; private set; }
 
+		private string parentFolder;
+
 		#region Constructor
 		public BunnyContentGroup()
 		{
 
 		}
 
-		public BunnyContentGroup(Uri uri, string deviceId)
-			: base(uri.LocalPath.GetHashCode().ToString(), Path.GetFileName(uri.LocalPath), uri)
+		public BunnyContentGroup(string parentFolder, string name, string deviceId)
+			: base(Path.Combine(BunnyDB.ResourceFolder, parentFolder, name).GetHashCode().ToString(), name, new Uri(Path.Combine(BunnyDB.ResourceFolder, parentFolder, name)))
 		{
-
+			this.parentFolder = parentFolder;
 			this.DeviceId = deviceId;
 
 			SetContents((contents) =>
@@ -26,27 +28,52 @@ namespace Waveface.ClientFramework
 				using (var conn = BunnyDB.CreateConnection())
 				{
 					conn.Open();
-
-					var cmd = conn.CreateCommand();
-					cmd.CommandText =
-						"select file_id, file_name from Files " +
-						"where parent_folder = @parent and device_id = @dev " +
-						"order by event_time";
-
-					cmd.Parameters.Add(new SQLiteParameter("@parent", this.Name));
-					cmd.Parameters.Add(new SQLiteParameter("@dev", DeviceId));
-
-					using (var reader = cmd.ExecuteReader())
-					{
-						while (reader.Read())
-						{
-							var file_path = Path.Combine(Uri.LocalPath, reader["file_name"].ToString());
-							contents.Add(new BunnyContent(new Uri(file_path), reader["file_id"].ToString()));
-						}
-					}
-
+					AddSubfolders(contents, conn);
+					AddFiles(contents, conn);
 				}
 			});
+		}
+
+		private void AddSubfolders(System.Collections.ObjectModel.ObservableCollection<IContentEntity> contents, SQLiteConnection conn)
+		{
+			var cmd = conn.CreateCommand();
+			cmd.CommandText =
+				"select [name] from [Folders] " +
+				"where [parent_folder] = @parent " +
+				"order by [name]";
+
+			cmd.Parameters.Add(new SQLiteParameter("@parent", Path.Combine(this.parentFolder, this.Name)));
+			cmd.Parameters.Add(new SQLiteParameter("@dev", DeviceId));
+
+			using (var reader = cmd.ExecuteReader())
+			{
+				while (reader.Read())
+				{
+					var subfolder = reader.GetString(0);
+					contents.Add(new BunnyContentGroup(Path.Combine(parentFolder, Name), subfolder, DeviceId));
+				}
+			}
+		}
+
+		private void AddFiles(System.Collections.ObjectModel.ObservableCollection<IContentEntity> contents, SQLiteConnection conn)
+		{
+			var cmd = conn.CreateCommand();
+			cmd.CommandText =
+				"select file_id, file_name from Files " +
+				"where parent_folder = @parent and device_id = @dev " +
+				"order by event_time";
+
+			cmd.Parameters.Add(new SQLiteParameter("@parent", Path.Combine(this.parentFolder, this.Name)));
+			cmd.Parameters.Add(new SQLiteParameter("@dev", DeviceId));
+
+			using (var reader = cmd.ExecuteReader())
+			{
+				while (reader.Read())
+				{
+					var file_path = Path.Combine(Uri.LocalPath, reader["file_name"].ToString());
+					contents.Add(new BunnyContent(new Uri(file_path), reader["file_id"].ToString()));
+				}
+			}
 		}
 		#endregion
 	}

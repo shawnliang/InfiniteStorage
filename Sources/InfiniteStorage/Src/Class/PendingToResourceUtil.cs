@@ -156,10 +156,13 @@ namespace InfiniteStorage
 
 		public void CreateFolderRecord(string dev_folder, string sub_folder)
 		{
+			var path = Path.Combine(dev_folder, sub_folder);
+
 			using (var db = new MyDbContext())
 			{
+
 				var q = from f in db.Object.Folders
-						where f.path == Path.Combine(dev_folder, sub_folder)
+						where f.path == path
 						select f;
 
 				if (q.Any())

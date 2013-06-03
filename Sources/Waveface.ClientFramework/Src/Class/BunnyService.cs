@@ -8,8 +8,8 @@ namespace Waveface.ClientFramework
 {
 	class BunnyService : Service
 	{
-		public BunnyService(IServiceSupplier supplier, string deviceName, string deviceId)
-			: base(deviceId, supplier, deviceName)
+		public BunnyService(IServiceSupplier supplier, string devFolderName, string deviceId)
+			: base(deviceId, supplier, devFolderName)
 		{
 			SetContents(PopulateContent);
 		}
@@ -21,19 +21,19 @@ namespace Waveface.ClientFramework
 				conn.Open();
 
 				var cmd = conn.CreateCommand();
-				cmd.CommandText = "select distinct f.parent_folder " +
-								  "from files f, devices d " +
-								  "where d.device_id = f.device_id and d.folder_name = @dev and type != 2 " +
-								  "order by f.parent_folder desc";
+				cmd.CommandText = "select [name] from [Folders] " +
+								  "where parent_folder = @parent " +
+								  "order by name desc";
 
-				cmd.Parameters.Add(new SQLiteParameter("@dev", this.Name));
+
+				cmd.Parameters.Add(new SQLiteParameter("@parent", this.Name));
 
 				using (var reader = cmd.ExecuteReader())
 				{
 					while (reader.Read())
 					{
 						var dir = reader.GetString(0);
-						content.Add(new BunnyContentGroup(new Uri(Path.Combine(BunnyDB.ResourceFolder, Name, dir)), this.ID));
+						content.Add(new BunnyContentGroup(Name, dir, this.ID));
 					}
 				}
 			}

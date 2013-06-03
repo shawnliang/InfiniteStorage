@@ -57,7 +57,7 @@ namespace InfiniteStorage
 					Path.Combine(pendingDir, pending_file.saved_path),
 					Path.Combine(resDir, pending_file.dev_folder, folder, pending_file.file_name));
 
-				var relative_path = PathUtil.MakeRelative(full_path, Path.Combine(resDir, pending_file.dev_folder));
+				var relative_path = PathUtil.MakeRelative(full_path, resDir);
 
 				fileData.Add(
 					new FileData
