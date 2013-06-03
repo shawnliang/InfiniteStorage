@@ -11,14 +11,15 @@ namespace InfiniteStorage
 {
 	class NotifyIconController
 	{
-		private PreferenceDialog preferenceForm = new PreferenceDialog();
+		private PreferenceDialog preferenceForm;
 		private NotifyIcon notifyIcon;
 		private Dictionary<ProtocolContext, ToolStripItem> deviceStipItems = new Dictionary<ProtocolContext, ToolStripItem>();
+		private StationServer stationServer;
 
-
-		public NotifyIconController(NotifyIcon notifyIcon)
+		public NotifyIconController(NotifyIcon notifyIcon, StationServer station)
 		{
 			this.notifyIcon = notifyIcon;
+			this.stationServer = station;
 		}
 
 		public void OnOpenPhotoBackupFolderMenuItemClicked(object sender, EventArgs arg)
@@ -51,8 +52,8 @@ namespace InfiniteStorage
 
 		public void OnPreferencesMenuItemClicked(object sender, EventArgs arg)
 		{
-			if (preferenceForm.IsDisposed)
-				preferenceForm = new PreferenceDialog();
+			if (preferenceForm == null || preferenceForm.IsDisposed)
+				preferenceForm = new PreferenceDialog(stationServer);
 
 			preferenceForm.Show();
 			preferenceForm.Activate();

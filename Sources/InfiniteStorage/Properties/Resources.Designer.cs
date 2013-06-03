@@ -88,6 +88,15 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure?.
+        /// </summary>
+        internal static string AreYouSure {
+            get {
+                return ResourceManager.GetString("AreYouSure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap back_arrow {
@@ -187,6 +196,33 @@ namespace InfiniteStorage.Properties {
         internal static string MenuItem_Preparing {
             get {
                 return ResourceManager.GetString("MenuItem_Preparing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Directory {0} is not empty..
+        /// </summary>
+        internal static string MoveFolder_TargetAlreadyExist {
+            get {
+                return ResourceManager.GetString("MoveFolder_TargetAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This will move the Favorite Home folder and all the files inside from its current location to {0}..
+        /// </summary>
+        internal static string MoveFolderConfirmMsg {
+            get {
+                return ResourceManager.GetString("MoveFolderConfirmMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move folder unsuccessful.
+        /// </summary>
+        internal static string MoveFolderFailTitle {
+            get {
+                return ResourceManager.GetString("MoveFolderFailTitle", resourceCulture);
             }
         }
         

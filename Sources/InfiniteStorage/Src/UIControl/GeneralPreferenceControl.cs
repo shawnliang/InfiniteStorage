@@ -30,5 +30,11 @@ namespace InfiniteStorage
 			libraryName.Text = Settings.Default.LibraryName;
 			storageLocationControl1.Enabled = true;
 		}
+
+		public StationServer Station
+		{
+			get { return storageLocationControl1.Station; }
+			set { storageLocationControl1.Station = value; }
+		}
 	}
 }

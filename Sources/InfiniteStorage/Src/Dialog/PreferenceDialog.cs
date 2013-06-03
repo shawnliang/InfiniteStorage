@@ -23,7 +23,12 @@ namespace InfiniteStorage
 			tabAbout.Text = string.Format(Resources.AboutTab, Resources.ProductName);
 
 			generalPreferenceControl1.Enabled = true;
+		}
 
+		public PreferenceDialog(StationServer station)
+			:this()
+		{
+			generalPreferenceControl1.Station = station;
 		}
 
 		void handleAnySettingChanged(object sender, EventArgs e)

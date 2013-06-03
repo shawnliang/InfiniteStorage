@@ -10,10 +10,11 @@ using InfiniteStorage.Notify;
 using InfiniteStorage.Properties;
 using System.Drawing;
 using InfiniteStorage.REST;
+using System.IO;
 
 namespace InfiniteStorage
 {
-	class StationServer
+	public class StationServer
 	{
 		private NotifyIcon m_notifyIcon;
 		private NotifyIconController m_notifyIconController;
@@ -34,7 +35,7 @@ namespace InfiniteStorage
 		{
 			// ----- notify icon and controller -----
 			m_notifyIcon = new NotifyIcon();
-			m_notifyIconController = new NotifyIconController(m_notifyIcon);
+			m_notifyIconController = new NotifyIconController(m_notifyIcon, this);
 			initNotifyIconAndController();
 
 			// ----- notify icon menu refresh ----
@@ -228,6 +229,84 @@ namespace InfiniteStorage
 
 
 			throw new Exception("should not reach here");
+		}
+
+		public void MoveFolder(string target)
+		{
+			if (string.IsNullOrEmpty(target))
+				throw new ArgumentNullException("target");
+
+			var source = MyFileFolder.Photo;
+
+			if (Directory.Exists(target))
+			{
+				var dir = new DirectoryInfo(target);
+				var isEmpty = dir.GetFileSystemInfos().Any();
+
+				if (isEmpty)
+					dir.Delete();
+				else
+					throw new Exception(string.Format(Resources.MoveFolder_TargetAlreadyExist, target));
+			}
+
+			if (Path.GetPathRoot(source) == Path.GetPathRoot(target))
+			{
+				Directory.Move(source, target);
+			}
+			else
+			{
+				try
+				{
+					DirectoryCopy(source, target, true);
+
+					Directory.Delete(source, true);
+				}
+				catch
+				{
+					if (Directory.Exists(target))
+						Directory.Delete(target, true);
+					throw;
+				}
+			}
+		}
+
+
+		private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+		{
+			// Get the subdirectories for the specified directory.
+			DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+			DirectoryInfo[] dirs = dir.GetDirectories();
+
+			if (!dir.Exists)
+			{
+				throw new DirectoryNotFoundException(
+					"Source directory does not exist or could not be found: "
+					+ sourceDirName);
+			}
+
+			// If the destination directory doesn't exist, create it. 
+			if (!Directory.Exists(destDirName))
+			{
+				Directory.CreateDirectory(destDirName);
+			}
+
+			// Get the files in the directory and copy them to the new location.
+			FileInfo[] files = dir.GetFiles();
+			foreach (FileInfo file in files)
+			{
+				string temppath = Path.Combine(destDirName, file.Name);
+				file.CopyTo(temppath, false);
+			}
+
+			// If copying subdirectories, copy them and their contents to new location. 
+			if (copySubDirs)
+			{
+				foreach (DirectoryInfo subdir in dirs)
+				{
+					string temppath = Path.Combine(destDirName, subdir.Name);
+					DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+				}
+			}
 		}
 	}
 }
