@@ -30,7 +30,8 @@ public class LabelDB {
 		if(!isChangeLabel){
 
 			if(label.on_air.equals("false")){
-               //todo: delete labelfile , file
+               //todo: delete labelfile , file and file'ssource
+				removeAllFileInLabel(context, label.label_id);
 
 			}else{
 				updateLabel(context, label);
