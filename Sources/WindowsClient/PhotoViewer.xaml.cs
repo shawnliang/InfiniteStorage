@@ -33,6 +33,7 @@ namespace Waveface.Client
 			}
 		}
 
+
 		public PhotoViewer()
 		{
 			InitializeComponent();
@@ -71,5 +72,6 @@ namespace Waveface.Client
 		{
 			this.Close();
 		}
+
 	}
 }

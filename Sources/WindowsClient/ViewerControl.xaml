@@ -29,14 +29,6 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <local:PreviousButton Margin="18.731,25.362,205.725,22.719"
-                              MouseDown="PreviousButton_MouseDown"
-                              Cursor="Hand"
-                              Background="Transparent" />
-        <local:NextButton Margin="112.901,25.362,111.555,22.719"
-                          MouseDown="NextButton_MouseDown"
-                          Cursor="Hand"
-                          Background="Transparent" />
         <local:Star x:Name="staredControl"
                     Margin="158.094,27.541,57.349,24.634"
                     MouseDown="staredControl_MouseDown_1"
@@ -51,10 +43,12 @@
               StrokeThickness="0.5"
               VerticalAlignment="Top"
               Width="0.872" />
-        <local:CloseButton Margin="193.811,28.332,21.63,23.843"
-                           MouseDown="CloseButton_MouseDown"
-                           Cursor="Hand"
-                           Background="Transparent" />
+        <Label Margin="193.811,28.332,10,23.843"
+               Content="EXIT"
+               MouseDown="CloseButton_MouseDown"
+               Cursor="Hand"
+               Background="Transparent"
+               Foreground="#FFF3F3F7" />
         <Label Content="/"
                HorizontalAlignment="Left"
                Height="26.419"
@@ -92,5 +86,81 @@
                VerticalContentAlignment="Center"
                FontSize="14.667"
                Padding="0" />
+        <ed:BlockArrow Fill="#FFF3F3F7"
+                       HorizontalAlignment="Left"
+                       Height="26.419"
+                       Margin="112.901,25.362,0,0"
+                       Orientation="Right"
+                       StrokeThickness="0"
+                       VerticalAlignment="Top"
+                       MouseDown="NextButton_MouseDown"
+                       Cursor="Hand"
+                       Width="21.289" />
+        <ed:BlockArrow Fill="#FFF3F3F7"
+                       HorizontalAlignment="Left"
+                       Height="26.419"
+                       Margin="11.378,25.362,0,0"
+                       Orientation="Right"
+                       StrokeThickness="0"
+                       VerticalAlignment="Top"
+                       MouseDown="PreviousButton_MouseDown"
+                       Cursor="Hand"
+                       Width="21.289"
+                       RenderTransformOrigin="0.5,0.5">
+            <ed:BlockArrow.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="1"
+                                    ScaleX="-1" />
+                    <SkewTransform AngleY="0"
+                                   AngleX="0" />
+                    <RotateTransform Angle="0" />
+                    <TranslateTransform />
+                </TransformGroup>
+            </ed:BlockArrow.RenderTransform>
+        </ed:BlockArrow>
+        <Slider x:Name="PlayProgress"
+                HorizontalAlignment="Left"
+                Height="4.334"
+                Margin="10,5.333,0,0"
+                VerticalAlignment="Top"
+                Width="178.099"
+                Maximum="0"
+                ValueChanged="PlayProgress_ValueChanged" />
+        <Label Content="{Binding Maximum, ElementName=PlayProgress}"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Margin="214.525,1.998,0,0"
+               Height="10.999"
+               Width="16.426"
+               FontSize="8"
+               FontFamily="Segoe UI Light"
+               Padding="0"
+               Foreground="#FFF3F3F7"
+               HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center" />
+        <Label Content="{Binding Value, ElementName=PlayProgress}"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Margin="193.099,1.998,0,0"
+               Height="10.999"
+               Width="16.426"
+               FontSize="8"
+               FontFamily="Segoe UI Light"
+               Padding="0"
+               Foreground="#FFF3F3F7"
+               HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center" />
+        <Label Content="/"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Margin="209.525,1.998,0,0"
+               Height="10.999"
+               Width="5"
+               FontSize="8"
+               FontFamily="Segoe UI Light"
+               Padding="0"
+               Foreground="#FFF3F3F7"
+               HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center" />
     </Grid>
 </UserControl>
