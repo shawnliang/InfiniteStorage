@@ -132,6 +132,25 @@ namespace InfiniteStorage.Model
 		public virtual Device device { get; set; }
 	}
 
+	public class Folder
+	{
+		[Key]
+		/// <summary>
+		/// full path from device folder, like "GTI-9300\2013-05\2013-05-03"
+		/// </summary>
+		public string path { get; set; }
+
+		/// <summary>
+		/// parent folder path, like "GTI-9300\2013-05"
+		/// </summary>
+		public string parent_folder { get; set; }
+
+		/// <summary>
+		///  name of this folder, like "2013-05-13"
+		/// </summary>
+		public string name { get; set; }
+	}
+
 	public enum FileAssetType
 	{
 		image = 0,
@@ -142,6 +161,8 @@ namespace InfiniteStorage.Model
 	public class InfiniteStorageContext : DbContext
 	{
 		public DbSet<Device> Devices { get; set; }
+
+		public DbSet<Folder> Folders { get; set; }
 
 		public DbSet<FileAsset> Files { get; set; }
 
