@@ -34,4 +34,5 @@ public class LabelChangeEntity {
 	@SerializedName("on_air")
 	public String on_air;
   }
+
 }

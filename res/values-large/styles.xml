@@ -1,0 +1,7 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="GalleryView">
+        <item name="android:numColumns">5</item>
+    </style>
+
+</resources>

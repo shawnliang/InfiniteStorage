@@ -1,0 +1,22 @@
+<resources>
+
+    <dimen name="overview_image_width">@dimen/television_overview_image_width</dimen>
+    <dimen name="overview_image_height">@dimen/television_overview_image_height</dimen>
+    
+    <dimen name="overview_reflection_image_height">@dimen/television_overview_reflection_image_height</dimen>
+    
+    <dimen name="overview_tab_top_margin">@dimen/television_overview_tab_top_margin</dimen>
+    <dimen name="overview_tab_bottom_margin">@dimen/television_overview_tab_bottom_margin</dimen>
+    
+    <dimen name="overview_tab_background_left_right_padding">@dimen/television_overview_tab_background_left_right_padding</dimen>
+    <dimen name="overview_tab_background_top_padding">@dimen/television_overview_tab_background_top_padding</dimen>
+    
+    <dimen name="overview_tab_text_size">@dimen/television_overview_tab_text_size</dimen>
+    
+    <dimen name="overview_item_first_left_padding">@dimen/television_overview_item_first_left_padding</dimen>
+    
+    <dimen name="galleryview_title_text_size">@dimen/television_galleryview_title_text_size</dimen>
+    <dimen name="galleryview_back_text_size">@dimen/television_galleryview_back_text_size</dimen>
+    <dimen name="galleryview_horizontal_margin">@dimen/television_galleryview_horizontal_margin</dimen>
+    <dimen name="galleryview_title_margin">@dimen/television_galleryview_title_margin</dimen>
+</resources>

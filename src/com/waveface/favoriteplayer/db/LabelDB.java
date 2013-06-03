@@ -26,18 +26,19 @@ public class LabelDB {
 
 	public static void updateLabelInfo(Context context,
 			LabelEntity.Label label, FileEntity fileEntity ,boolean isChangeLabel) {
-
+		updateLabel(context, label);
 		if(!isChangeLabel){
+
 			if(label.on_air.equals("false")){
-               //delete labelfile , file
+               //todo: delete labelfile , file
+
 			}else{
 				updateLabel(context, label);
 				updateLabelFiles(context, label);
 				updateFiles(context, fileEntity);
 			}
 		}else{
-			//updateLabelSeq(context,label.label_id,label.seq);
-			updateLabel(context, label);
+
 			removeAllFileInLabel(context, label.label_id);
 			updateLabelFiles(context, label);
 			updateFiles(context, fileEntity);			
@@ -188,7 +189,8 @@ public class LabelDB {
 		Cursor cursor = context.getContentResolver().query(
 				LabelTable.CONTENT_URI,
 				new String[] { LabelTable.COLUMN_LABEL_ID,
-						LabelTable.COLUMN_LABEL_NAME },
+						LabelTable.COLUMN_LABEL_NAME,
+						LabelTable.COLUMN_COVER_URL},
 				LabelTable.COLUMN_LABEL_ID + " = ?", new String[] { labelId },
 				null);
 

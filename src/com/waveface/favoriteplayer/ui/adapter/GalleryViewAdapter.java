@@ -5,6 +5,7 @@ import idv.jason.lib.imagemanager.ImageManager;
 
 import java.util.ArrayList;
 
+import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.SyncApplication;
 import com.waveface.favoriteplayer.entity.PlaybackData;
@@ -57,6 +58,10 @@ public class GalleryViewAdapter extends BaseAdapter{
 		attr.setLoadFromThread(true);
 		attr.setDoneScaleType(ScaleType.CENTER_CROP);
 		mImageManager.getImage(mDatas.get(position).url, attr);
+		
+		if(Constant.FILE_TYPE_VIDEO.equals(mDatas.get(position).type)) {
+			root.findViewById(R.id.image_play).setVisibility(View.VISIBLE);
+		}
 		
 		return root;
 	}

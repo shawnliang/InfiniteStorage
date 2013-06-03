@@ -5,8 +5,6 @@ import idv.jason.lib.imagemanager.ImageManager;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -47,7 +45,6 @@ public class FullScreenSlideshowFragment extends Fragment implements AnimationLi
 	private ImageView mPauseIcon;
 
 	private Animation mShowIconAnimation;
-	private Animation mShowIconAnimation2;
 	
 	private boolean mPlaying = false;
 
@@ -149,7 +146,7 @@ public class FullScreenSlideshowFragment extends Fragment implements AnimationLi
 
 	private void resetToFirst() {
 		setAnimatorImage(mCurrentPosition, 0);
-		setAnimatorImage(mCurrentPosition+1, 1);
+		setAnimatorImage(getNextItem(), 1);
 		mViewAnimator.setDisplayedChild(0);
 	}
 	
@@ -173,17 +170,40 @@ public class FullScreenSlideshowFragment extends Fragment implements AnimationLi
 		return next;
 	}
 	
-	private void autoSlideNext() {
-		if(mCurrentPosition+1 < mDatas.size()) {
+	private boolean moveNext() {
+		do {
 			mCurrentPosition++;
+			if(mCurrentPosition >= mDatas.size()) {
+				return false;
+			}
+		} while(Constant.FILE_TYPE_IMAGE.equals(mDatas.get(mCurrentPosition).type) == false);
+		return true;
+	}
+	
+	private int getNextItem() {
+		int position = mCurrentPosition;
+		do {
+			position++;
+			if(position >= mDatas.size()) {
+				return -1;
+			}
+		} while(Constant.FILE_TYPE_IMAGE.equals(mDatas.get(position).type) == false);
+		return position;
+	}
+	
+	private void autoSlideNext() {
+		if(moveNext()) {
 			mViewAnimator.setInAnimation(mFadeIn);
 			mViewAnimator.setOutAnimation(mFadeOut);
 			mViewAnimator.showNext();
-			setAnimatorImage(mCurrentPosition+1, getNextView());
+			setAnimatorImage(getNextItem(), getNextView());
 			mSlideShowHandler.postDelayed(mSlideNextRunnable, AUTO_SLIDE_SHOW_DELAY_MILLIS);
 		}  else {
 			// hit end
 			Toast.makeText(getActivity(), R.string.everything_played, Toast.LENGTH_SHORT).show();
+			PlaybackCancelEvent event = new PlaybackCancelEvent();
+			event.position = 0;
+			EventBus.getDefault().post(event);
 		}
 	}
 	
