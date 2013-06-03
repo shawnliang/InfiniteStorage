@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Waveface.Model;
 
 namespace Waveface.Client
@@ -14,8 +15,23 @@ namespace Waveface.Client
 	/// </summary>
 	public partial class PhotoViewerControl : UserControl
 	{
+		DispatcherTimer _timer;
 		ScaleTransform myScale = new ScaleTransform();
 
+
+		private DispatcherTimer m_Timer 
+		{
+			get
+			{
+				if (_timer == null)
+				{
+					_timer = new DispatcherTimer();
+					_timer.Interval = TimeSpan.FromMilliseconds(500);
+					_timer.Tick += _timer_Tick;
+				}
+				return _timer;
+			}
+		}
 
 		public event EventHandler Close;
 
@@ -77,6 +93,7 @@ namespace Waveface.Client
 			lbImages.SelectedIndex = (lbImages.SelectedIndex + 1) % lbImages.Items.Count;
 			vcViewerControl.PageNo = lbImages.SelectedIndex + 1;
 		}
+
 
 
 		private void WindowLoaded(object sender, RoutedEventArgs e)
@@ -165,6 +182,27 @@ namespace Waveface.Client
 				return;
 
 			OnClose(EventArgs.Empty);
+		}
+
+		private void meVideo_MediaOpened(object sender, System.Windows.RoutedEventArgs e)
+		{
+			vcViewerControl.Duration = meVideo.NaturalDuration.TimeSpan.TotalMilliseconds;
+			m_Timer.Start();
+		}
+
+		void _timer_Tick(object sender, EventArgs e)
+		{
+			vcViewerControl.Position = meVideo.Position.TotalMilliseconds; 
+		}
+
+		private void meVideo_MediaEnded(object sender, RoutedEventArgs e)
+		{
+			m_Timer.Stop();
+		}
+
+		private void meVideo_MediaFailed(object sender, ExceptionRoutedEventArgs e)
+		{
+			m_Timer.Stop();
 		}
 
 	}

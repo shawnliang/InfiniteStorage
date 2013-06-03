@@ -14,6 +14,8 @@ namespace Waveface.Client
 		public static readonly DependencyProperty _pageNo = DependencyProperty.Register("PageNo", typeof(int), typeof(ViewerControl), new UIPropertyMetadata(0, new PropertyChangedCallback(OnPageNoChanged)));
 		public static readonly DependencyProperty _pageCount = DependencyProperty.Register("PageCount", typeof(int), typeof(ViewerControl), new UIPropertyMetadata(0, new PropertyChangedCallback(OnPageCountChanged)));
 		public static readonly DependencyProperty _stared = DependencyProperty.Register("Stared", typeof(bool), typeof(ViewerControl), new UIPropertyMetadata(false, new PropertyChangedCallback(OnStaredChanged)));
+		public static readonly DependencyProperty _position = DependencyProperty.Register("Position", typeof(double), typeof(ViewerControl), new UIPropertyMetadata(0.0, new PropertyChangedCallback(OnPositionChanged)));
+		public static readonly DependencyProperty _duration = DependencyProperty.Register("Duration", typeof(double), typeof(ViewerControl), new UIPropertyMetadata(0.0, new PropertyChangedCallback(OnDurationChanged)));
 		#endregion
 
 		#region Property
@@ -55,12 +57,39 @@ namespace Waveface.Client
 				staredControl.Stared = value;
 			}
 		}
+
+		public double Position
+		{
+			get
+			{
+				return (double)GetValue(_position);
+			}
+			set
+			{
+				SetValue(_position, value);
+				PlayProgress.Value = value;
+			}
+		}
+
+		public double Duration
+		{
+			get
+			{
+				return (double)GetValue(_duration);
+			}
+			set
+			{
+				SetValue(_duration, value);
+				PlayProgress.Maximum = value;
+			}
+		}
 		#endregion
 
 		#region Event
 		public event EventHandler Previous;
 		public event EventHandler Next;
 		public event EventHandler Close;
+		public event EventHandler PositionChanged;
 		#endregion
 
 		public ViewerControl()
@@ -89,6 +118,13 @@ namespace Waveface.Client
 				return;
 			Close(this, e);
 		}
+
+		protected void OnPositionChanged(EventArgs e)
+		{
+			if (PositionChanged == null)
+				return;
+			PositionChanged(this, e);
+		}
 		#endregion
 
 
@@ -116,6 +152,24 @@ namespace Waveface.Client
 			obj.Stared = (bool)e.NewValue;
 		}
 
+		private static void OnPositionChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+		{
+			if (o == null)
+				return;
+			var obj = o as ViewerControl;
+			obj.Position = (double)e.NewValue;
+		}
+
+
+		private static void OnDurationChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+		{
+			if (o == null)
+				return;
+			var obj = o as ViewerControl;
+			obj.Duration = (double)e.NewValue;
+		}
+		
+
 		private void NextButton_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			OnNext(EventArgs.Empty);
@@ -135,6 +189,11 @@ namespace Waveface.Client
 		private void staredControl_MouseDown_1(object sender, MouseButtonEventArgs e)
 		{
 			this.Stared = !this.Stared;
+		}
+
+		private void PlayProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			OnPositionChanged(EventArgs.Empty);
 		}
 	}
 }
