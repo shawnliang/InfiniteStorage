@@ -175,7 +175,13 @@ namespace Waveface.Client
 
 		private void lbxDeviceContainer_UnSortedItemClick(object sender, UnSortedItemEventArgs e)
 		{
-			MessageBox.Show(e.DeviceID);
+			//MessageBox.Show(e.DeviceID);
+
+            PendingUC _pendingUC = new PendingUC(e.DeviceID);
+            _pendingUC.HorizontalAlignment = HorizontalAlignment.Stretch;
+            _pendingUC.VerticalAlignment = VerticalAlignment.Stretch;
+
+		    gridMain.Children.Add(_pendingUC);
 		}
 	}
 }

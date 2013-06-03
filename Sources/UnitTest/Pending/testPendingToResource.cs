@@ -34,7 +34,7 @@ namespace UnitTest.Pending
 		}
 
 		[TestMethod]
-		public void use_year_month_title_as_folder()
+		public void use_title_as_folder()
 		{
 			util.Setup(x => x.CreateFolder(@"title")).Verifiable();
 			action.Do(evt);
@@ -70,6 +70,7 @@ namespace UnitTest.Pending
 		[TestMethod]
 		public void move_record_from_pending_file_tables_to_files_table()
 		{
+			util.Setup(x => x.DevFolder).Returns("dev_folder");
 			util.Setup(x => x.CreateFolder(@"title")).Returns(@"title");
 			util.Setup(x => x.GetPendingFolder()).Returns(@"c:\bunny\.pending");
 			util.Setup(x => x.GetResourceFolder()).Returns(@"c:\bunny");
@@ -80,12 +81,14 @@ namespace UnitTest.Pending
 
 			List<FileData> records = null;
 			util.Setup(x => x.MoveDbRecord(It.IsAny<List<FileData>>())).Callback<List<FileData>>((x) => { records = x; });
-
+			util.Setup(x => x.CreateFolderRecord("dev_folder", "title")).Verifiable();
 			action.Do(evt);
 
 			Assert.AreEqual(evt.files[0], records[0].file_id);
-			Assert.AreEqual(@"title", records[0].parent_folder);
-			Assert.AreEqual(@"title\name.1.jpg", records[0].saved_path);
+			Assert.AreEqual(@"dev_folder\title", records[0].parent_folder);
+			Assert.AreEqual(@"dev_folder\title\name.1.jpg", records[0].saved_path);
+
+			util.VerifyAll();
 		}
 	}
 }

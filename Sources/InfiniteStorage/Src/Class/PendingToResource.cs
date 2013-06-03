@@ -12,6 +12,10 @@ namespace InfiniteStorage
 		void MoveDbRecord(List<FileData> data);
 		string GetResourceFolder();
 		string GetPendingFolder();
+
+		string DevFolder { get; }
+
+		void CreateFolderRecord(string dev_folder, string sub_folder);
 	}
 
 	public interface IEventDirOrganizer
@@ -53,7 +57,7 @@ namespace InfiniteStorage
 					Path.Combine(pendingDir, pending_file.saved_path),
 					Path.Combine(resDir, pending_file.dev_folder, folder, pending_file.file_name));
 
-				var relative_path = PathUtil.MakeRelative(full_path, Path.Combine(resDir, pending_file.dev_folder));
+				var relative_path = PathUtil.MakeRelative(full_path, resDir);
 
 				fileData.Add(
 					new FileData
@@ -64,7 +68,7 @@ namespace InfiniteStorage
 					});
 			}
 
-
+			util.CreateFolderRecord(util.DevFolder, folder);
 			util.MoveDbRecord(fileData);
 		}
 	}

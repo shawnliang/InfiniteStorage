@@ -257,6 +257,27 @@ update [Labels] set on_air = 1;
 						schemaVersion = 8;
 					}
 
+					if (schemaVersion == 8L)
+					{
+						var cmd = new SQLiteCommand(
+@"
+CREATE TABLE [Folders] (
+[path] NVARCHAR  UNIQUE NULL PRIMARY KEY,
+[parent_folder] NVARCHAR  NULL,
+[name] NVARCHAR      NULL
+);
+
+CREATE INDEX [idx_PendingFiles_parent_folder_1] ON [Folders](
+[parent_folder]  ASC);
+
+
+", conn);
+						cmd.ExecuteNonQuery();
+
+						updateDbSchemaVersion(conn, 9);
+						schemaVersion = 9;
+					}
+
 					transaction.Commit();
 				}
 

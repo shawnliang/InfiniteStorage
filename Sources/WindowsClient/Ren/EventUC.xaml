@@ -1,0 +1,103 @@
+﻿<UserControl x:Class="Waveface.Client.EventUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:PendingUI="clr-namespace:Waveface.Client" mc:Ignorable="d" SizeChanged="UserControl_SizeChanged" 
+             d:DesignWidth="480">
+    <UserControl.Resources>
+        <Style x:Key="SimpleListBoxItem" TargetType="ListBoxItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <ContentPresenter x:Name="contentPresenter"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <PendingUI:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
+    </UserControl.Resources>
+
+    <Grid x:Name="gridMain" Background="#101011" MouseEnter="gridMain_MouseEnter" MouseLeave="gridMain_MouseLeave">
+        <i:Interaction.Behaviors>
+            <PendingUI:IgnoreMouseWheelBehavior />
+        </i:Interaction.Behaviors>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Margin="12,12,4,0" Width="20" Height="20" VerticalAlignment="Top" Source="pack://application:,,,/Ren/Images/add_folder.png" />
+
+                <Grid Grid.Column="1" x:Name="gridTextBox" Cursor="Pen">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="36" />
+                        <RowDefinition Height="20" />
+                    </Grid.RowDefinitions>
+
+                    <TextBox x:Name="tbDescribe" Margin="0,8,8,0" Grid.Row="0" BorderThickness="0" Background="#101011" Foreground="White"  VerticalContentAlignment="Center" FontSize="16" HorizontalAlignment="Stretch"  MouseEnter="tbDescribe_MouseEnter" MouseLeave="tbDescribe_MouseLeave" TextChanged="tbDescribe_TextChanged">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                <Style.Triggers>
+                                    <Trigger Property="PendingUI:WatermarkTextBehavior.IsWatermarked" Value="True">
+                                        <Setter Property="Foreground" Value="White" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                        <i:Interaction.Behaviors>
+                            <PendingUI:WatermarkTextBehavior Text="Describe the event..." />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+
+                    <StackPanel Margin="2,0,0,0" Grid.Row="1" Orientation="Horizontal">
+                        <TextBlock x:Name="tbTitle" Foreground="#999999" Text="2013.5.20, 11:59" FontSize="12" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="tbTimeAgo" Foreground="#999999" Margin="4,0,0,0" Text="Yesterday" FontSize="11" />
+                        <TextBlock x:Name="tbTotalCount" Foreground="#999999" Margin="12,0,0,0" Text="99 Photos" FontSize="11" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+
+            <ListBox BorderThickness="0" Margin="12, 0, 0, 8" Background="#101011" SelectionMode="Multiple" Grid.Row="1" x:Name="lbEvent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemContainerStyle="{StaticResource SimpleListBoxItem}" Loaded="lbEvent_Loaded">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <Border BorderThickness="1" Background="Transparent">
+                                <Grid>
+                                    <Rectangle Fill="#888888" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}"/>
+
+                                    <Image Source="{Binding BitmapImage}" Stretch="Fill"  Width="64"
+                                    Height="64" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" />
+
+                                    <Image Source="{Binding BitmapImage}" Stretch="UniformToFill"  Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=Width}"
+                                    Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=Height}" 
+                                    Visibility="{Binding Path=IsPhoto, Converter={StaticResource BoolToHiddenConverter}}"       />
+
+                                    <!--Image Source="/PendingUI;component/Images/checkmark.png" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=IsSelected}"
+                                        Stretch="Uniform" Width="20" Height="20" Margin="-8"  HorizontalAlignment="Right" VerticalAlignment="Top"/>
+
+                                    <Rectangle Fill="#44000000" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/-->
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </Grid>
+    </Grid>
+</UserControl>

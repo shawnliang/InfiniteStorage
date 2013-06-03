@@ -694,13 +694,15 @@
                       Grid.Row="1"
                       Background="Transparent"
                       HorizontalAlignment="Left" />
-        <Grid Grid.Column="1"
+        <Grid Grid.Column="1" x:Name="gridMain"
               Grid.Row="1">
+            
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="45" />
                 </Grid.RowDefinitions>
+
                 <ScrollViewer x:Name="svContentContainer"
                               Grid.Row="0"
                               VerticalScrollBarVisibility="Auto"
