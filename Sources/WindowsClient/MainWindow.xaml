@@ -545,16 +545,19 @@
                               VerticalAlignment="Bottom"
                               Grid.Row="0" />
 
-                <StackPanel Orientation="Vertical"
-                            Grid.Row="1">
-
+                <Grid Grid.Row="1">
+				     <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
                 <Label Content="FAVORITES"
+				Grid.Row="0"
                        Foreground="#FFA5A5A5"
                        Background="Black"
                            FontFamily="Segoe UI Light"
                            Height="30" />
-
-                </StackPanel>
+                <local:FavoriteListBox x:Name="lbxFavorites" Grid.Row="1"/>
+                </Grid>
 
             </Grid>
         </Grid>

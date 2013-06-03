@@ -19,6 +19,8 @@ namespace Waveface.ClientFramework
 		private string _labelID;
 		private ObservableCollection<IContentEntity> _taggedContents;
 		private ReadOnlyObservableCollection<IContentEntity> _readonlyTaggedContents;
+		private ObservableCollection<IContentEntity> _favorites;
+		private ReadOnlyObservableCollection<IContentEntity> _readonlyFavorites;
 		#endregion
 
 
@@ -48,10 +50,21 @@ namespace Waveface.ClientFramework
 			{
 				if (_taggedContents == null)
 				{
-					_taggedContents = new ObservableCollection<IContentEntity>();
-					_taggedContents.AddRange(GetTaggedContents());
+					_taggedContents = new ObservableCollection<IContentEntity>(GetTaggedContents());
 				}
 				return _taggedContents;
+			}
+		}
+
+		private ObservableCollection<IContentEntity> m_Favorites
+		{
+			get
+			{
+				if (_favorites == null)
+				{
+					_favorites = new ObservableCollection<IContentEntity>(GetFavorites());
+				}
+				return _favorites;
 			}
 		}
 		#endregion
@@ -66,6 +79,14 @@ namespace Waveface.ClientFramework
 			}
 		}
 
+		public ReadOnlyObservableCollection<IContentEntity> Favorites
+		{
+			get
+			{
+				return _readonlyFavorites ?? (_readonlyFavorites = new ReadOnlyObservableCollection<IContentEntity>(m_Favorites));
+			}
+		}
+
 		public ReadOnlyObservableCollection<IContentEntity> TaggedContents
 		{
 			get
@@ -74,6 +95,8 @@ namespace Waveface.ClientFramework
 			}
 		}
 		#endregion
+
+
 
 		public Client()
 		{
@@ -120,6 +143,36 @@ namespace Waveface.ClientFramework
 				var file = Path.Combine(BunnyDB.ResourceFolder, deviceFolder, savedPath);
 
 				yield return new BunnyContent(new Uri(file), dr["file_id"].ToString());
+			}
+
+
+			conn.Close();
+		}
+
+
+		private IEnumerable<IContentEntity> GetFavorites()
+		{
+			var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
+
+			var dbFilePath = Path.Combine(appDir, "database.s3db");
+
+			var conn = new SQLiteConnection(string.Format("Data source={0}", dbFilePath));
+
+			conn.Open();
+
+			var cmd = new SQLiteCommand("SELECT * FROM Labels where name != 'TAG'", conn);
+
+			var dr = cmd.ExecuteReader();
+
+			while (dr.Read())
+			{
+				var labelID = dr["label_id"].ToString();
+				var labelName = dr["name"].ToString();
+
+				yield return new ContentGroup(labelID, labelName, new Uri(string.Format("c:\\{0}",labelName)), (group, contents) => 
+				{
+			
+				});
 			}
 
 

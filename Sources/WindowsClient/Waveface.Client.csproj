@@ -91,6 +91,9 @@
     <Compile Include="FavoriteAllButton.xaml.cs">
       <DependentUpon>FavoriteAllButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FavoriteListBox.xaml.cs">
+      <DependentUpon>FavoriteListBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GroupContentItem.xaml.cs">
       <DependentUpon>GroupContentItem.xaml</DependentUpon>
     </Compile>
@@ -149,6 +152,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="FavoriteAllButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="FavoriteListBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
