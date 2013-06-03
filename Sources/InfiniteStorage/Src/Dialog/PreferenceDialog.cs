@@ -133,7 +133,7 @@ namespace InfiniteStorage
 
 		private void loadAutoStartValue()
 		{
-			var value = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run", "com.waveface.infiniteStorage", null);
+			var value = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run", "com.waveface.FavoriteHome", null);
 
 			checkboxAutoRun.Checked = !string.IsNullOrEmpty(value as string);
 		}
@@ -143,12 +143,12 @@ namespace InfiniteStorage
 			if (checkboxAutoRun.Checked)
 			{
 				var value = "\"" + Assembly.GetExecutingAssembly().Location + "\"";
-				Registry.SetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run", "com.waveface.infiniteStorage", value);
+				Registry.SetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run", "com.waveface.FavoriteHome", value);
 			}
 			else
 			{
 				var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
-				key.DeleteValue("com.waveface.infiniteStorage", false);
+				key.DeleteValue("com.waveface.FavoriteHome", false);
 			}
 		}
 

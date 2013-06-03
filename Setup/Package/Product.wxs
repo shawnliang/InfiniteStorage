@@ -25,6 +25,8 @@
         <Directory Id="ProgramMenuDir" Name="!(loc.APPNAME)">
           <Component Id="pmd" Guid="{971d558a-99d6-40cc-89ed-f24620bfcf4b}">
             <RegistryValue Root="HKCU" Key="SOFTWARE\$(var.AppCode)\ProgramMenuDir" Type="string" Value="ProgramMenuDir" KeyPath="yes" />
+            <RegistryValue Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Run" Type="string" Name="com.waveface.FavoriteHome"  Value="&quot;[INSTALLLOCATION]InfiniteStorage.exe&quot;" />
+            
             <RemoveFolder Id="ProgramMenuDirRF" On="uninstall" />
 
             <Shortcut Id="ProgMenu.Shortcut.MainEntry" Name="!(loc.APPNAME)"
