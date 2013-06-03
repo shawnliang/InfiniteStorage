@@ -5,6 +5,8 @@ import idv.jason.lib.imagemanager.ImageManager;
 
 import java.util.ArrayList;
 
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -18,9 +20,12 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.MediaController;
 import android.widget.Toast;
+import android.widget.VideoView;
 import android.widget.ViewAnimator;
 
 import com.waveface.favoriteplayer.Constant;
@@ -31,10 +36,15 @@ import com.waveface.favoriteplayer.event.PlaybackCancelEvent;
 
 import de.greenrobot.event.EventBus;
 
-public class FullScreenSlideshowFragment extends Fragment implements AnimationListener {
+public class FullScreenSlideshowFragment extends Fragment implements AnimationListener,OnCompletionListener {
 	public static final String TAG = FullScreenSlideshowFragment.class.getSimpleName();
 	private ViewAnimator mViewAnimator;
 	private Animation mFadeIn, mFadeOut;
+	
+	private FrameLayout mSlideFrame;
+	private ImageView mSlideFrameImage;	
+	private VideoView mVV;
+	
 	
 	private ImageManager mImageManager;
 
@@ -51,12 +61,23 @@ public class FullScreenSlideshowFragment extends Fragment implements AnimationLi
 	private int mCurrentPosition = 0;
 	
 	private static final int AUTO_SLIDE_SHOW_DELAY_MILLIS = 3000;
+	private static final int AUTO_SLIDE_VIDEO_SHOW_DELAY_MILLIS = 1500;
+
 	
 	private Handler mSlideShowHandler = new Handler();
 	private Runnable mSlideNextRunnable = new Runnable() {
 		@Override
 		public void run() {
 			autoSlideNext();
+		}
+	};
+	
+	private Handler mHandler = new Handler();
+	private Runnable mPlayVideoRunnable = new Runnable() {
+		
+		@Override
+		public void run() {
+			playVideo();
 		}
 	};
 	
@@ -103,6 +124,12 @@ public class FullScreenSlideshowFragment extends Fragment implements AnimationLi
 				return true;
 			}
 		});
+
+		mSlideFrame = (FrameLayout) root.findViewById(R.id.slideVideoFrame);
+		mSlideFrameImage = (ImageView)root.findViewById(R.id.slideVideoImage);
+		
+		mVV = (VideoView) root.findViewById(R.id.fullVideoView);
+		mVV.setOnCompletionListener(this);
 		
 		resetToFirst();
 		
@@ -171,13 +198,20 @@ public class FullScreenSlideshowFragment extends Fragment implements AnimationLi
 	}
 	
 	private boolean moveNext() {
-		do {
-			mCurrentPosition++;
-			if(mCurrentPosition >= mDatas.size()) {
-				return false;
-			}
-		} while(Constant.FILE_TYPE_IMAGE.equals(mDatas.get(mCurrentPosition).type) == false);
-		return true;
+//		do {
+//			mCurrentPosition++;
+//			if(mCurrentPosition >= mDatas.size()) {
+//				return false;
+//			}
+//		} while(mCurrentPosition < mDatas.size());
+//		return true;
+		mCurrentPosition++;
+		if(mCurrentPosition >= mDatas.size()) {
+			return false;
+		}
+		else{
+			return true;
+		}
 	}
 	
 	private int getNextItem() {
@@ -192,12 +226,29 @@ public class FullScreenSlideshowFragment extends Fragment implements AnimationLi
 	}
 	
 	private void autoSlideNext() {
-		if(moveNext()) {
-			mViewAnimator.setInAnimation(mFadeIn);
-			mViewAnimator.setOutAnimation(mFadeOut);
-			mViewAnimator.showNext();
-			setAnimatorImage(getNextItem(), getNextView());
-			mSlideShowHandler.postDelayed(mSlideNextRunnable, AUTO_SLIDE_SHOW_DELAY_MILLIS);
+		if(moveNext()) {			
+			if(mDatas.get(mCurrentPosition).type.equals(Constant.FILE_TYPE_IMAGE)){
+				mVV.setVisibility(View.INVISIBLE);
+				mSlideFrame.setVisibility(View.INVISIBLE);
+				mViewAnimator.setVisibility(View.VISIBLE);
+				mViewAnimator.setInAnimation(mFadeIn);
+				mViewAnimator.setOutAnimation(mFadeOut);
+				mViewAnimator.showNext();
+				setAnimatorImage(getNextItem(), getNextView());
+				mSlideShowHandler.postDelayed(mSlideNextRunnable, AUTO_SLIDE_SHOW_DELAY_MILLIS);
+			}
+			else{
+				mViewAnimator.setVisibility(View.INVISIBLE);
+				mVV.setVisibility(View.VISIBLE);
+				mSlideFrame.setVisibility(View.VISIBLE);
+				ImageAttribute attr = new ImageAttribute(mSlideFrameImage);
+				attr.setMaxSizeEqualsScreenSize(getActivity());
+				attr.setDoneScaleType(ScaleType.FIT_CENTER);
+				attr.setApplyWithAnimation(true);
+				mImageManager.getImage(mDatas.get(mCurrentPosition).url, attr);
+				mHandler.postDelayed(mPlayVideoRunnable, AUTO_SLIDE_VIDEO_SHOW_DELAY_MILLIS);
+			}
+			
 		}  else {
 			// hit end
 			Toast.makeText(getActivity(), R.string.everything_played, Toast.LENGTH_SHORT).show();
@@ -239,5 +290,24 @@ public class FullScreenSlideshowFragment extends Fragment implements AnimationLi
 		} else {
 			mPauseIcon.setVisibility(View.VISIBLE);
 		}
+	}
+
+	@Override
+	public void onCompletion(MediaPlayer arg0) {
+		if(moveNext()) {
+			mSlideShowHandler.postDelayed(mSlideNextRunnable, AUTO_SLIDE_SHOW_DELAY_MILLIS);
+		} else {
+			Toast.makeText(getActivity(), R.string.everything_played, Toast.LENGTH_SHORT).show();
+			PlaybackCancelEvent event = new PlaybackCancelEvent();
+			event.position = 0;
+			EventBus.getDefault().post(event);
+		}
+	}
+	
+	private void playVideo(){
+		mVV.setVideoPath(mDatas.get(mCurrentPosition).url);
+        mVV.setMediaController(new MediaController(getActivity()));
+        mVV.requestFocus();
+        mVV.start();			
 	}
 }
