@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.ComponentModel;
 using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace InfiniteStorage
 {
@@ -58,8 +59,21 @@ namespace InfiniteStorage
 			}
 		}
 
+		private void closeClientProgram()
+		{
+			var clients = Process.GetProcessesByName("Waveface.Client");
+			foreach (var client in clients)
+			{
+				client.CloseMainWindow();
+				client.WaitForExit(500);
+			}
+		}
+
 		void bgworker_DoWork(object sender, DoWorkEventArgs e)
 		{
+
+			closeClientProgram();
+
 			Station.MoveFolder(e.Argument as string);
 
 			e.Result = e.Argument;
