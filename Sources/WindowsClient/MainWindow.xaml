@@ -5,7 +5,7 @@
         xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
+        xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" x:Name="window"
         mc:Ignorable="d"
         x:Class="Waveface.Client.MainWindow"
         Title="Favorite"
@@ -18,6 +18,29 @@
         UseLayoutRounding="True">
 
     <Window.Resources>
+
+        <!--<DataTemplate DataType="{x:Type wvmodel:Service}">
+            <Label Content="{Binding Name}" Foreground="White" Height="40" VerticalContentAlignment="Center"/>
+        </DataTemplate>-->
+
+
+
+        <!-- Labeled photo catalog view -->
+        <!--<Style TargetType="{x:Type ListBox}" x:Key="LabledPhotoListBoxStyle">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBox}" >
+                        <WrapPanel Margin="5" IsItemsHost="True" Orientation="Horizontal" 
+                        ItemHeight="120" 
+                       ItemWidth="120"
+                       VerticalAlignment="Top" HorizontalAlignment="Stretch" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>-->
+
+    	<local:ContentTypeCountConverter x:Key="ContentTypeCountConverter"/>
         <!-- Brushes used in Styling of ScrollViewer -->
         <SolidColorBrush x:Key="StandardBorderBrush"
                          Color="#888" />
@@ -42,7 +65,7 @@
         <LinearGradientBrush x:Key="ListBoxBackgroundBrush"
                              StartPoint="0,0"
                              EndPoint="1,0.001">
-            <GradientBrush.GradientStops>
+            <LinearGradientBrush.GradientStops>
                 <GradientStopCollection>
                     <GradientStop Color="White"
                                   Offset="0.0" />
@@ -51,26 +74,26 @@
                     <GradientStop Color="#DDDDDD"
                                   Offset="1.2" />
                 </GradientStopCollection>
-            </GradientBrush.GradientStops>
+      </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
         <LinearGradientBrush x:Key="StandardBrush"
                              StartPoint="0,0"
                              EndPoint="0,1">
-            <GradientBrush.GradientStops>
+            <LinearGradientBrush.GradientStops>
                 <GradientStopCollection>
                     <GradientStop Color="#FFF"
                                   Offset="0.0" />
                     <GradientStop Color="#CCC"
                                   Offset="1.0" />
                 </GradientStopCollection>
-            </GradientBrush.GradientStops>
+      </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
         <SolidColorBrush x:Key="GlyphBrush"
                          Color="#444" />
         <LinearGradientBrush x:Key="PressedBrush"
                              StartPoint="0,0"
                              EndPoint="0,1">
-            <GradientBrush.GradientStops>
+            <LinearGradientBrush.GradientStops>
                 <GradientStopCollection>
                     <GradientStop Color="#BBB"
                                   Offset="0.0" />
@@ -81,7 +104,7 @@
                     <GradientStop Color="#FFF"
                                   Offset="1.0" />
                 </GradientStopCollection>
-            </GradientBrush.GradientStops>
+      </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
 
         <!-- SrollViewer ScrollBar Repeat Buttons (at each end) -->
@@ -96,7 +119,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type RepeatButton}">
-                        <Border Name="Border"
+                        <Border x:Name="Border"
                                 Margin="1"
                                 CornerRadius="2"
                                 Background="{StaticResource NormalBrush}"
@@ -105,8 +128,7 @@
                             <Path HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
                                   Fill="#444"
-                                  Data="{Binding Path=Content,
-                RelativeSource={RelativeSource TemplatedParent}}" />
+                                  Data="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsPressed"
@@ -186,7 +208,7 @@
                               Command="ScrollBar.LineUpCommand"
                               Content="M 0 4 L 8 4 L 4 0 Z"
                               Visibility="Collapsed" />
-                <Track Name="PART_Track"
+                <Track x:Name="PART_Track"
                        Grid.Row="1"
                        IsDirectionReversed="true">
                     <Track.DecreaseRepeatButton>
@@ -229,7 +251,7 @@
                               Width="18"
                               Command="ScrollBar.LineLeftCommand"
                               Content="M 4 0 L 4 8 L 0 4 Z" />
-                <Track Name="PART_Track"
+                <Track x:Name="PART_Track"
                        Grid.Column="1"
                        IsDirectionReversed="False">
                     <Track.DecreaseRepeatButton>
@@ -303,12 +325,12 @@
 
                             <ScrollContentPresenter Grid.Column="1" />
 
-                            <ScrollBar Name="PART_VerticalScrollBar"
+                            <ScrollBar x:Name="PART_VerticalScrollBar"
                                        Value="{TemplateBinding VerticalOffset}"
                                        Maximum="{TemplateBinding ScrollableHeight}"
                                        ViewportSize="{TemplateBinding ViewportHeight}"
                                        Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
-                            <ScrollBar Name="PART_HorizontalScrollBar"
+                            <ScrollBar x:Name="PART_HorizontalScrollBar"
                                        Orientation="Horizontal"
                                        Grid.Row="1"
                                        Grid.Column="1"
@@ -323,10 +345,6 @@
             </Setter>
         </Style>
 
-        <!--<DataTemplate DataType="{x:Type wvmodel:Service}">
-            <Label Content="{Binding Name}" Foreground="White" Height="40" VerticalContentAlignment="Center"/>
-        </DataTemplate>-->
-
 
         <!-- Photo Template -->
         <DataTemplate DataType="{x:Type wvmodel:ContentGroup}">
@@ -337,9 +355,7 @@
         <DataTemplate DataType="{x:Type wvmodel:Content}">
             <local:ContentItem x:Name="content"
                                RenderTransformOrigin="0.5,0.5"
-                               Padding="10"
-                               TagStatusChanged="content_TagStatusChanged"
-                               PreviewMouseRightButtonDown="content_PreviewMouseRightButtonDown">
+                               Padding="10">
                 <local:ContentItem.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform />
@@ -352,21 +368,6 @@
         </DataTemplate>
 
 
-
-        <!-- Labeled photo catalog view -->
-        <!--<Style TargetType="{x:Type ListBox}" x:Key="LabledPhotoListBoxStyle">
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ListBox}" >
-                        <WrapPanel Margin="5" IsItemsHost="True" Orientation="Horizontal" 
-                        ItemHeight="120" 
-                       ItemWidth="120"
-                       VerticalAlignment="Top" HorizontalAlignment="Stretch" />
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>-->
 
         <!-- Main photo catalog view -->
         <Style TargetType="{x:Type ListBox}"
@@ -574,121 +575,10 @@
                                   ShadowDepth="1"
                                   Direction="180" />
             </Grid.Effect>
-            <Button Content="Add to Favorites"
-                    HorizontalAlignment="Center"
-                    Height="31"
-                    Margin="0,0,0,40"
-                    VerticalAlignment="Bottom"
-                    Width="130"
-                    BorderBrush="{x:Null}"
-                    FontFamily="Segoe UI Light"
-                    FontSize="16"
-                    Foreground="White"
-                    Cursor="Hand" Click="Button_Click">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0.5,1"
-                                         StartPoint="0.5,0">
-                        <GradientStop Color="#FF616060"
-                                      Offset="0" />
-                        <GradientStop Color="#FF474646"
-                                      Offset="1" />
-                    </LinearGradientBrush>
-                </Button.Background>
-                <Button.Effect>
-                    <DropShadowEffect BlurRadius="3"
-                                      ShadowDepth="2"
-                                      Direction="270"
-                                      Opacity="0.3" />
-                </Button.Effect>
-            </Button>
-            <Button Content="Export"
-                    HorizontalAlignment="Center"
-                    Height="31"
-                    Margin="0,0,0,5"
-                    VerticalAlignment="Bottom"
-                    Width="130"
-                    BorderBrush="{x:Null}"
-                    FontFamily="Segoe UI Light"
-                    FontSize="16"
-                    Foreground="White"
-                    Cursor="Hand">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0.5,1"
-                                         StartPoint="0.5,0">
-                        <GradientStop Color="#FF616060"
-                                      Offset="0" />
-                        <GradientStop Color="#FF474646"
-                                      Offset="1" />
-                    </LinearGradientBrush>
-                </Button.Background>
-                <Button.Effect>
-                    <DropShadowEffect BlurRadius="3"
-                                      ShadowDepth="2"
-                                      Direction="270"
-                                      Opacity="0.3" />
-                </Button.Effect>
-            </Button>
-            <Button Content="Clear All"
-                    HorizontalAlignment="Center"
-                    Height="31"
-                    Margin="0,165,0,0"
-                    VerticalAlignment="Top"
-                    Width="130"
-                    BorderBrush="{x:Null}"
-                    FontFamily="Segoe UI Light"
-                    FontSize="16"
-                    Foreground="White"
-                    Cursor="Hand">
-
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0.5,1"
-                                         StartPoint="0.5,0">
-                        <GradientStop Color="#FF616060"
-                                      Offset="0" />
-                        <GradientStop Color="#FF474646"
-                                      Offset="1" />
-                    </LinearGradientBrush>
-                </Button.Background>
-                <Button.Effect>
-                    <DropShadowEffect BlurRadius="3"
-                                      ShadowDepth="2"
-                                      Direction="270"
-                                      Opacity="0.3" />
-                </Button.Effect>
-            </Button>
-            <local:LabeledContentInfo x:Name="LabeledCount"
-                                      HorizontalAlignment="Center"
-                                      Margin="0,10,0,0"
-                                      PhotoCount="{Binding Count}"
-                                      VerticalAlignment="Top" />
-            <Button Content="Share"
-            	HorizontalAlignment="Center"
-            	Height="31"
-            	Margin="15,0,15,76"
-            	VerticalAlignment="Bottom"
-            	Width="130"
-            	BorderBrush="{x:Null}"
-            	FontFamily="Segoe UI Light"
-            	FontSize="16"
-            	Foreground="White"
-            	Click="Button_Click_1"
-            	Cursor="Hand">
-            	<Button.Background>
-            		<LinearGradientBrush EndPoint="0.5,1"
-            			StartPoint="0.5,0">
-            			<GradientStop Color="#FF616060"
-            				Offset="0" />
-            			<GradientStop Color="#FF474646"
-            				Offset="1" />
-            		</LinearGradientBrush>
-            	</Button.Background>
-            	<Button.Effect>
-            		<DropShadowEffect BlurRadius="3"
-            			ShadowDepth="2"
-            			Direction="270"
-            			Opacity="0.3" />
-            	</Button.Effect>
-            </Button>
+            <local:RightSidePanel1 x:Name="rspRightSidePanel"
+                                   Margin="10,10,10,5"
+                                   PhotoCount="{Binding LabeledContents, ConverterParameter={x:Static wvmodel:ContentType.Photo}, Converter={StaticResource ContentTypeCountConverter}, ElementName=window}" 
+								   VideoCount="{Binding LabeledContents, ConverterParameter={x:Static wvmodel:ContentType.Video}, Converter={StaticResource ContentTypeCountConverter}, ElementName=window}" SaveToFavorite="rspRightSidePanel_SaveToFavorite" />
 
 
         </Grid>

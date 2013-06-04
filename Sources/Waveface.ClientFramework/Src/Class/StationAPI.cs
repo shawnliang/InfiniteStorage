@@ -125,6 +125,17 @@ namespace Waveface.ClientFramework
 				{"label_id", labelID}
 			});
 		}
+
+		public static string OnAirLabel(string labelID, bool isOnAir)
+		{
+			var uri = LABEL_API_BASE_URL + "/on_air";
+
+			return Post(uri, new NameValueCollection() 
+			{
+				{"label_id", labelID},
+				{"on_air", isOnAir? "true": "false"}
+			});
+		}
 		#endregion
 	}
 }

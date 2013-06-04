@@ -1,33 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using Waveface.Model;
+using System.Linq;
 
 namespace Waveface.Client
 {
-	public class ImageToBitmapSourceConverter : IValueConverter
+	public class ContentTypeCountConverter : IValueConverter
 	{
 		public object Convert(object value, Type targetType,
 	object parameter, CultureInfo culture)
 		{
+			var contentEntities = value as IEnumerable<IContentEntity>;
+
 			if (value == null)
 				return null;
 
-			var bitmapImage = default(BitmapImage);
-			var img = value as System.Drawing.Image;
-			using (var memory = new MemoryStream())
+			var count = contentEntities.Count(item =>
 			{
-				img.Save(memory, ImageFormat.Png);
-				memory.Position = 0;
-				bitmapImage = new BitmapImage();
-				bitmapImage.BeginInit();
-				bitmapImage.StreamSource = memory;
-				bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-				bitmapImage.EndInit();
-			}
-			return bitmapImage;
+				var content = item as IContent;
+				if (content == null)
+					return false;
+
+				return content.Type == (ContentType)parameter;
+			});
+
+			return count;
 		}
 
 		public object ConvertBack(object value, Type targetType,

@@ -132,8 +132,7 @@
                          Margin="0,0,0,13"
                          Next="ViewerControl_Next"
                          Previous="ViewerControl_Previous"
-                         Close="ViewerControl_Close"
-                         PositionChanged="vcViewerControl_PositionChanged_1" />
+                         Close="ViewerControl_Close"/>
 
         <Label x:Name="label"
                VerticalAlignment="Bottom"

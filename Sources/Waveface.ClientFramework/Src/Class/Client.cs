@@ -212,7 +212,6 @@ namespace Waveface.ClientFramework
 			var labelID = Guid.NewGuid().ToString();
 			StationAPI.AddLabel(labelID, "UnNamed Favorite");
 
-
 			StationAPI.Tag(string.Join(",", m_TaggedContents.Select(taggedContent => taggedContent.ID).ToArray()), labelID);
 
 			//StationAPI.ClearLabel(m_LabelID);
@@ -221,6 +220,8 @@ namespace Waveface.ClientFramework
 			{
 				StationAPI.UnTag(taggedContent.ID, m_LabelID);
 			}
+
+			StationAPI.OnAirLabel(labelID, true);
 
 			m_TaggedContents.Clear();
 			m_Favorites.Clear();

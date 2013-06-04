@@ -9,8 +9,8 @@ namespace Waveface.Client
 	public partial class LabeledContentInfo : UserControl
 	{
 		#region Var
-		public static readonly DependencyProperty _photoCount = DependencyProperty.Register("PhotoCount", typeof(int), typeof(LabeledContentInfo), new UIPropertyMetadata(0, null));
-		public static readonly DependencyProperty _videoCount = DependencyProperty.Register("VideoCount", typeof(int), typeof(LabeledContentInfo), new UIPropertyMetadata(0, null));
+		public static readonly DependencyProperty _photoCount = DependencyProperty.Register("PhotoCount", typeof(int), typeof(LabeledContentInfo), new UIPropertyMetadata(0, new PropertyChangedCallback(OnPhotoCountChanged)));
+		public static readonly DependencyProperty _videoCount = DependencyProperty.Register("VideoCount", typeof(int), typeof(LabeledContentInfo), new UIPropertyMetadata(0, new PropertyChangedCallback(OnVideoCountChanged)));
 		#endregion
 
 		#region Property
@@ -42,6 +42,22 @@ namespace Waveface.Client
 		public LabeledContentInfo()
 		{
 			this.InitializeComponent();
+		}
+
+		private static void OnPhotoCountChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+		{
+			if (o == null)
+				return;
+			var control = o as LabeledContentInfo;
+			control.PhotoCount = (int)e.NewValue;
+		}
+
+		private static void OnVideoCountChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+		{
+			if (o == null)
+				return;
+			var control = o as LabeledContentInfo;
+			control.VideoCount = (int)e.NewValue;
 		}
 	}
 }

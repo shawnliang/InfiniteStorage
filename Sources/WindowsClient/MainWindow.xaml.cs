@@ -36,7 +36,6 @@ namespace Waveface.Client
 		{
 			this.lbxDeviceContainer.DataContext = Waveface.ClientFramework.Client.Default.Services;
 			var fav = Waveface.ClientFramework.Client.Default.Favorites;
-			this.LabeledCount.DataContext = LabeledContents;
 			
 			this.lbxFavorites.DataContext = Waveface.ClientFramework.Client.Default.Favorites;
 		}
@@ -137,31 +136,6 @@ namespace Waveface.Client
 			SetContentTypeCount(group);
 		}
 
-		#region Event Process
-		private void content_TagStatusChanged(object sender, System.EventArgs e)
-		{
-			//var content = lbxContentContainer.SelectedItem as IContentEntity;
-			//ToggleContentTagStatus(content as IContent);
-		}
-
-		//private void ToggleContentTagStatus(IContent content)
-		//{
-		//	if (content == null)
-		//		return;
-
-		//	if (content.Liked)
-		//	{
-		//		ClientFramework.Client.Default.UnTag(content);
-		//		return;
-		//	}
-
-		//	if (LabeledContents.Contains(content))
-		//		return;
-
-		//	ClientFramework.Client.Default.Tag(content);
-		//}
-		#endregion
-
 
 		private void Window_KeyDown(object sender, KeyEventArgs e)
 		{
@@ -175,13 +149,6 @@ namespace Waveface.Client
 					break;
 			}
 		}
-
-		private void content_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
-		{
-			//var contentControl = sender as ContentItem;
-			//contentControl.Tagged = !contentControl.Tagged;
-		}
-
 
 
 		private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -203,8 +170,6 @@ namespace Waveface.Client
 
 		private void lbxDeviceContainer_UnSortedItemClick(object sender, UnSortedItemEventArgs e)
 		{
-			//MessageBox.Show(e.DeviceID);
-
             PendingUC _pendingUC = new PendingUC(e.DeviceID);
             _pendingUC.HorizontalAlignment = HorizontalAlignment.Stretch;
             _pendingUC.VerticalAlignment = VerticalAlignment.Stretch;
@@ -228,8 +193,8 @@ namespace Waveface.Client
 			lbxContentContainer.DataContext = group.Contents;
 			SetContentTypeCount(group);
 		}
-
-		private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+		
+		private void rspRightSidePanel_SaveToFavorite(object sender, System.EventArgs e)
 		{
 			ClientFramework.Client.Default.SaveToFavorite();
 		}
