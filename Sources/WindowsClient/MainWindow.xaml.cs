@@ -135,6 +135,9 @@ namespace Waveface.Client
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = group.Contents;
 			SetContentTypeCount(group);
+
+			rspRightSidePanel.Visibility = System.Windows.Visibility.Visible;
+			rspRightSidePane2.Visibility = System.Windows.Visibility.Collapsed;
 		}
 
 
@@ -193,11 +196,19 @@ namespace Waveface.Client
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = group.Contents;
 			SetContentTypeCount(group);
+
+			rspRightSidePane2.Visibility = System.Windows.Visibility.Visible;
+			rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
 		}
 		
 		private void rspRightSidePanel_SaveToFavorite(object sender, System.EventArgs e)
 		{
 			ClientFramework.Client.Default.SaveToFavorite();
+		}
+
+		private void rspRightSidePane2_OnAirClick(object sender, EventArgs e)
+		{
+			ClientFramework.Client.Default.OnAir((lblContentLocation.DataContext as IContentEntity).ID, true);
 		}
 	}
 }

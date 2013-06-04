@@ -220,6 +220,11 @@ namespace Waveface.ClientFramework
 			m_Favorites.AddRange(GetFavorites());
 		}
 
+		public void OnAir(string labelID, Boolean isOnAir)
+		{
+			StationAPI.OnAirLabel(labelID, isOnAir);
+		}
+
 		void service_ContentPropertyChanged(object sender, ContentPropertyChangeEventArgs e)
 		{
 			var content = e.Content as IContent;
