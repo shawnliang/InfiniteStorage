@@ -27,22 +27,21 @@ public class LabelDB {
 	public static void updateLabelInfo(Context context,
 			LabelEntity.Label label, FileEntity fileEntity ,boolean isChangeLabel) {
 		updateLabel(context, label);
-		if(!isChangeLabel){
-
+		if(isChangeLabel){
+			//Changed Label
+			//delete labelfile in database
+			removeAllFileInLabel(context, label.label_id);
 			if(label.on_air.equals("false")){
-               //todo: delete labelfile , file and file'ssource
-				removeAllFileInLabel(context, label.label_id);
-
-			}else{
-				updateLabel(context, label);
+               //TODO: delete file in db and file's real source(image or video file)
+			}
+			else{
 				updateLabelFiles(context, label);
 				updateFiles(context, fileEntity);
 			}
-		}else{
-
-			removeAllFileInLabel(context, label.label_id);
+		}
+		else{
 			updateLabelFiles(context, label);
-			updateFiles(context, fileEntity);			
+			updateFiles(context, fileEntity);
 		}
 	}
 
@@ -206,7 +205,7 @@ public class LabelDB {
 				new String[] { LabelTable.COLUMN_LABEL_ID,
 						LabelTable.COLUMN_COVER_URL,
 						LabelTable.COLUMN_LABEL_NAME },
-				LabelTable.COLUMN_AUTO_TYPE +"= ? AND "+LabelTable.COLUMN_ON_AIR +" =?" , new String[] { Integer.toString(type),"true" },
+						LabelTable.COLUMN_AUTO_TYPE +"= ? AND "+LabelTable.COLUMN_ON_AIR +" =?" , new String[] { Integer.toString(type),"true" },
 				null);
 
 		return cursor;
