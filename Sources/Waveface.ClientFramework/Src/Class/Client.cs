@@ -135,13 +135,9 @@ namespace Waveface.ClientFramework
 			{
 				var deviceID = dr["device_id"].ToString();
 
-				cmd = new SQLiteCommand(string.Format("SELECT folder_name FROM Devices where device_id = '{0}'", deviceID), conn);
-
-				var deviceFolder = cmd.ExecuteScalar().ToString();
-
 				var savedPath = dr["saved_path"].ToString();
 
-				var file = Path.Combine(BunnyDB.ResourceFolder, deviceFolder, savedPath);
+				var file = Path.Combine(BunnyDB.ResourceFolder, savedPath);
 
 				yield return new BunnyContent(new Uri(file), dr["file_id"].ToString());
 			}
@@ -186,13 +182,9 @@ namespace Waveface.ClientFramework
 					{
 						var deviceID = dr2["device_id"].ToString();
 
-						cmd2 = new SQLiteCommand(string.Format("SELECT folder_name FROM Devices where device_id = '{0}'", deviceID), conn2);
-
-						var deviceFolder = cmd2.ExecuteScalar().ToString();
-
 						var savedPath = dr2["saved_path"].ToString();
 
-						var file = Path.Combine(BunnyDB.ResourceFolder, deviceFolder, savedPath);
+						var file = Path.Combine(BunnyDB.ResourceFolder, savedPath);
 
 						contents.Add(new BunnyContent(new Uri(file), dr2["file_id"].ToString()));
 					}

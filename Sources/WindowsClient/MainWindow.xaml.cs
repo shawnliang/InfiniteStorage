@@ -36,7 +36,8 @@ namespace Waveface.Client
 		{
 			this.lbxDeviceContainer.DataContext = Waveface.ClientFramework.Client.Default.Services;
 			var fav = Waveface.ClientFramework.Client.Default.Favorites;
-			
+
+			this.rspRightSidePanel.DataContext = LabeledContents;
 			this.lbxFavorites.DataContext = Waveface.ClientFramework.Client.Default.Favorites;
 		}
 
