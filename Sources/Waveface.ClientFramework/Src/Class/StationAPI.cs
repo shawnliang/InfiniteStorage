@@ -67,9 +67,25 @@ namespace Waveface.ClientFramework
 			return Post(uri, new NameValueCollection() { });
 		}
 
+		public static string AddLabel(string name)
+		{
+			return AddLabel(Guid.NewGuid().ToString(), name);
+		}
+
 		public static string AddLabel(string labelID, string name)
 		{
 			var uri = LABEL_API_BASE_URL + "/add";
+
+			return Post(uri, new NameValueCollection() 
+			{
+				{"label_id", labelID},
+				{"name", name}
+			});
+		}
+
+		public static string RenameLabel(string labelID, string name)
+		{
+			var uri = LABEL_API_BASE_URL + "/rename";
 
 			return Post(uri, new NameValueCollection() 
 			{
@@ -96,6 +112,16 @@ namespace Waveface.ClientFramework
 			return Post(uri, new NameValueCollection() 
 			{
 				{"file_id", fileID},
+				{"label_id", labelID}
+			});
+		}
+
+		public static string ClearLabel(string labelID)
+		{
+			var uri = LABEL_API_BASE_URL + "/clear";
+
+			return Post(uri, new NameValueCollection() 
+			{
 				{"label_id", labelID}
 			});
 		}

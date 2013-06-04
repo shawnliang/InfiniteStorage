@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
 using System.IO;
+using System.Linq;
 using Waveface.Model;
 
 namespace Waveface.ClientFramework
@@ -160,7 +161,7 @@ namespace Waveface.ClientFramework
 
 			conn.Open();
 
-			var cmd = new SQLiteCommand("SELECT * FROM Labels where name != 'TAG'", conn);
+			var cmd = new SQLiteCommand("SELECT * FROM Labels where auto_type == 0 and name != 'TAG' ", conn);
 
 			var dr = cmd.ExecuteReader();
 
@@ -171,7 +172,32 @@ namespace Waveface.ClientFramework
 
 				yield return new ContentGroup(labelID, labelName, new Uri(string.Format("c:\\{0}",labelName)), (group, contents) => 
 				{
-			
+					var conn2 = new SQLiteConnection(string.Format("Data source={0}", dbFilePath));
+
+					conn2.Open();
+
+					var cmd2 = new SQLiteCommand("SELECT * FROM Files t1, LabelFiles t2, Labels t3 where t3.label_id = @labelID and t3.label_id = t2.label_id and t1.file_id = t2.file_id", conn2);
+
+					cmd2.Parameters.Add(new SQLiteParameter("@labelID", new Guid(labelID)));
+
+					var dr2 = cmd2.ExecuteReader();
+
+					while (dr2.Read())
+					{
+						var deviceID = dr2["device_id"].ToString();
+
+						cmd2 = new SQLiteCommand(string.Format("SELECT folder_name FROM Devices where device_id = '{0}'", deviceID), conn2);
+
+						var deviceFolder = cmd2.ExecuteScalar().ToString();
+
+						var savedPath = dr2["saved_path"].ToString();
+
+						var file = Path.Combine(BunnyDB.ResourceFolder, deviceFolder, savedPath);
+
+						contents.Add(new BunnyContent(new Uri(file), dr2["file_id"].ToString()));
+					}
+
+					conn2.Close();
 				});
 			}
 
@@ -179,6 +205,27 @@ namespace Waveface.ClientFramework
 			conn.Close();
 		}
 		#endregion
+
+
+		public void SaveToFavorite()
+		{
+			var labelID = Guid.NewGuid().ToString();
+			StationAPI.AddLabel(labelID, "UnNamed Favorite");
+
+
+			StationAPI.Tag(string.Join(",", m_TaggedContents.Select(taggedContent => taggedContent.ID).ToArray()), labelID);
+
+			//StationAPI.ClearLabel(m_LabelID);
+
+			foreach(var taggedContent in  m_TaggedContents)
+			{
+				StationAPI.UnTag(taggedContent.ID, m_LabelID);
+			}
+
+			m_TaggedContents.Clear();
+			m_Favorites.Clear();
+			m_Favorites.AddRange(GetFavorites());
+		}
 
 		void service_ContentPropertyChanged(object sender, ContentPropertyChangeEventArgs e)
 		{

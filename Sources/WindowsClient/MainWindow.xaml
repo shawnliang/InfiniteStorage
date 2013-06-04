@@ -556,7 +556,7 @@
                        Background="Black"
                            FontFamily="Segoe UI Light"
                            Height="30" />
-                <local:FavoriteListBox x:Name="lbxFavorites" Grid.Row="1"/>
+                <local:FavoriteListBox x:Name="lbxFavorites" Grid.Row="1" SelectionChanged="lbxFavorites_SelectionChanged"/>
                 </Grid>
 
             </Grid>
@@ -584,7 +584,7 @@
                     FontFamily="Segoe UI Light"
                     FontSize="16"
                     Foreground="White"
-                    Cursor="Hand">
+                    Cursor="Hand" Click="Button_Click">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1"
                                          StartPoint="0.5,0">

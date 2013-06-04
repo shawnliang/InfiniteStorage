@@ -211,5 +211,27 @@ namespace Waveface.Client
 
 		    gridMain.Children.Add(_pendingUC);
 		}
+
+		private void lbxFavorites_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			var listBox = sender as ListBox;
+
+			if (listBox == null)
+				return;
+
+			var group = listBox.SelectedItem as IContentGroup;
+
+			if (group == null)
+				return;
+
+			lblContentLocation.DataContext = group;
+			lbxContentContainer.DataContext = group.Contents;
+			SetContentTypeCount(group);
+		}
+
+		private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+		{
+			ClientFramework.Client.Default.SaveToFavorite();
+		}
 	}
 }
