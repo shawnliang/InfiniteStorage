@@ -27,23 +27,15 @@ public class LabelDB {
 	public static void updateLabelInfo(Context context,
 			LabelEntity.Label label, FileEntity fileEntity ,boolean isChangeLabel) {
 		updateLabel(context, label);
-		if(!isChangeLabel){
-
+		if(isChangeLabel){
 			if(label.on_air.equals("false")){
-               //todo: delete labelfile , file and file'ssource
-				removeAllFileInLabel(context, label.label_id);
-
-			}else{
-				updateLabel(context, label);
-				updateLabelFiles(context, label);
-				updateFiles(context, fileEntity);
-			}
-		}else{
-
+                //TODO: delete  database file , delete storge file
+				
+            }
 			removeAllFileInLabel(context, label.label_id);
-			updateLabelFiles(context, label);
-			updateFiles(context, fileEntity);			
 		}
+		updateLabelFiles(context, label);
+		updateFiles(context, fileEntity);	
 	}
 
 	public static int updateLabel(Context context, LabelEntity.Label label) {
