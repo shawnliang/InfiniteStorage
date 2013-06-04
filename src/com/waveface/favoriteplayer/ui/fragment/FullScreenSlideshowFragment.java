@@ -60,9 +60,7 @@ public class FullScreenSlideshowFragment extends Fragment implements AnimationLi
 
 	private int mCurrentPosition = 0;
 	
-	private static final int AUTO_SLIDE_SHOW_DELAY_MILLIS = 3000;
-	private static final int AUTO_SLIDE_VIDEO_SHOW_DELAY_MILLIS = 1500;
-
+	private static final int AUTO_SLIDE_SHOW_DELAY_MILLIS = 5000;
 	
 	private Handler mSlideShowHandler = new Handler();
 	private Runnable mSlideNextRunnable = new Runnable() {
@@ -125,11 +123,11 @@ public class FullScreenSlideshowFragment extends Fragment implements AnimationLi
 			}
 		});
 
-		mSlideFrame = (FrameLayout) root.findViewById(R.id.slideVideoFrame);
-		mSlideFrameImage = (ImageView)root.findViewById(R.id.slideVideoImage);
+//		mSlideFrame = (FrameLayout) root.findViewById(R.id.slideVideoFrame);
+		mSlideFrameImage = (ImageView)root.findViewById(R.id.slideVideoImage_play);
 		
-		mVV = (VideoView) root.findViewById(R.id.fullVideoView);
-		mVV.setOnCompletionListener(this);
+//		mVV = (VideoView) root.findViewById(R.id.fullVideoView);
+//		mVV.setOnCompletionListener(this);
 		
 		resetToFirst();
 		
@@ -179,13 +177,27 @@ public class FullScreenSlideshowFragment extends Fragment implements AnimationLi
 	
 	private void setAnimatorImage(int imagePosition, int viewPosition) {
 		if(imagePosition >= 0 && imagePosition < mDatas.size()) {
+			PlaybackData platData =  mDatas.get(imagePosition);
+			Log.d(TAG, "mCurrentPosition:"+mCurrentPosition+",imagePosition:"+imagePosition);
+			Log.d(TAG, "viewPosition:"+viewPosition+",type:"+platData.type);
 			ImageView iv = (ImageView) mViewAnimator.getChildAt(viewPosition);
-			
 			ImageAttribute attr = new ImageAttribute(iv);
-			attr.setDoneScaleType(ScaleType.CENTER_CROP);
-			attr.setLoadFromThread(true);
 			attr.setMaxSizeEqualsScreenSize(getActivity());
-			mImageManager.getImage( mDatas.get(imagePosition).url , attr);
+			attr.setLoadFromThread(true);			
+			if(platData.type.equals(Constant.FILE_TYPE_IMAGE)){
+				attr.setDoneScaleType(ScaleType.CENTER_CROP);
+				mImageManager.getImage(platData.url , attr);
+			}
+			else if(platData.type.equals(Constant.FILE_TYPE_VIDEO)){
+				attr.setDoneScaleType(ScaleType.FIT_CENTER);
+				mImageManager.getImage(platData.url, attr);				
+			}			
+			if(mDatas.get(mCurrentPosition).type.equals(Constant.FILE_TYPE_VIDEO)){
+				mSlideFrameImage.setVisibility(View.VISIBLE);
+			}
+			else{
+				mSlideFrameImage.setVisibility(View.INVISIBLE);
+			}
 		}
 	}
 	
@@ -215,40 +227,61 @@ public class FullScreenSlideshowFragment extends Fragment implements AnimationLi
 	}
 	
 	private int getNextItem() {
+//		int position = mCurrentPosition;
+//		do {
+//			position++;
+//			if(position >= mDatas.size()) {
+//				return -1;
+//			}
+//		} while(Constant.FILE_TYPE_IMAGE.equals(mDatas.get(position).type) == false);
 		int position = mCurrentPosition;
-		do {
-			position++;
-			if(position >= mDatas.size()) {
-				return -1;
-			}
-		} while(Constant.FILE_TYPE_IMAGE.equals(mDatas.get(position).type) == false);
+		position++;
+		if(mCurrentPosition >= mDatas.size()) {
+			position =-1;
+		}		
 		return position;
 	}
 	
 	private void autoSlideNext() {
 		if(moveNext()) {			
-			if(mDatas.get(mCurrentPosition).type.equals(Constant.FILE_TYPE_IMAGE)){
-				mVV.setVisibility(View.INVISIBLE);
-				mSlideFrame.setVisibility(View.INVISIBLE);
-				mViewAnimator.setVisibility(View.VISIBLE);
-				mViewAnimator.setInAnimation(mFadeIn);
-				mViewAnimator.setOutAnimation(mFadeOut);
-				mViewAnimator.showNext();
-				setAnimatorImage(getNextItem(), getNextView());
-				mSlideShowHandler.postDelayed(mSlideNextRunnable, AUTO_SLIDE_SHOW_DELAY_MILLIS);
+			Log.d(TAG, "autoSlideNext,mCurrentPosition:"+mCurrentPosition);
+			mViewAnimator.setVisibility(View.VISIBLE);
+			mViewAnimator.setInAnimation(mFadeIn);
+			mViewAnimator.setOutAnimation(mFadeOut);
+			mViewAnimator.showNext();
+			setAnimatorImage(getNextItem(), getNextView());
+			mSlideShowHandler.postDelayed(mSlideNextRunnable, AUTO_SLIDE_SHOW_DELAY_MILLIS);			
+			if(mCurrentPosition == mDatas.size()-1){
+				if(mDatas.get(mCurrentPosition).type.equals(Constant.FILE_TYPE_VIDEO)){
+					mSlideFrameImage.setVisibility(View.VISIBLE);
+				}
+				else{
+					mSlideFrameImage.setVisibility(View.INVISIBLE);
+				}
 			}
-			else{
-				mViewAnimator.setVisibility(View.INVISIBLE);
-				mVV.setVisibility(View.VISIBLE);
-				mSlideFrame.setVisibility(View.VISIBLE);
-				ImageAttribute attr = new ImageAttribute(mSlideFrameImage);
-				attr.setMaxSizeEqualsScreenSize(getActivity());
-				attr.setDoneScaleType(ScaleType.FIT_CENTER);
-				attr.setApplyWithAnimation(true);
-				mImageManager.getImage(mDatas.get(mCurrentPosition).url, attr);
-				mHandler.postDelayed(mPlayVideoRunnable, AUTO_SLIDE_VIDEO_SHOW_DELAY_MILLIS);
-			}
-			
+
+			//PLAY WITH VIDEO
+//			if(mDatas.get(mCurrentPosition).type.equals(Constant.FILE_TYPE_IMAGE)){
+//				mVV.setVisibility(View.INVISIBLE);
+//				mSlideFrame.setVisibility(View.INVISIBLE);
+//				mViewAnimator.setVisibility(View.VISIBLE);
+//				mViewAnimator.setInAnimation(mFadeIn);
+//				mViewAnimator.setOutAnimation(mFadeOut);
+//				mViewAnimator.showNext();
+//			}
+//			else{
+//				mViewAnimator.setVisibility(View.INVISIBLE);
+//				mSlideFrame.setVisibility(View.VISIBLE);
+//				ImageAttribute attr = new ImageAttribute(mSlideFrameImage);
+//				attr.setMaxSizeEqualsScreenSize(getActivity());
+//				attr.setDoneScaleType(ScaleType.FIT_CENTER);
+//				attr.setApplyWithAnimation(true);
+//				mImageManager.getImage(mDatas.get(mCurrentPosition).url, attr);
+//				mVV.setVisibility(View.VISIBLE);				
+//				playVideo();
+//			}
+//			setAnimatorImage(getNextItem(), getNextView());
+//			mSlideShowHandler.postDelayed(mSlideNextRunnable, AUTO_SLIDE_SHOW_DELAY_MILLIS);			
 		}  else {
 			// hit end
 			Toast.makeText(getActivity(), R.string.everything_played, Toast.LENGTH_SHORT).show();
@@ -294,14 +327,21 @@ public class FullScreenSlideshowFragment extends Fragment implements AnimationLi
 
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
-		if(moveNext()) {
-			mSlideShowHandler.postDelayed(mSlideNextRunnable, AUTO_SLIDE_SHOW_DELAY_MILLIS);
-		} else {
-			Toast.makeText(getActivity(), R.string.everything_played, Toast.LENGTH_SHORT).show();
-			PlaybackCancelEvent event = new PlaybackCancelEvent();
-			event.position = 0;
-			EventBus.getDefault().post(event);
-		}
+//		mSlideFrame.setVisibility(View.VISIBLE);
+//		ImageAttribute attr = new ImageAttribute(mSlideFrameImage);
+//		attr.setMaxSizeEqualsScreenSize(getActivity());
+//		attr.setDoneScaleType(ScaleType.FIT_CENTER);
+//		attr.setApplyWithAnimation(true);
+//		mImageManager.getImage(mDatas.get(mCurrentPosition).url, attr);
+//		mVV.setVisibility(View.INVISIBLE);				
+//
+//		mSlideShowHandler.postDelayed(mSlideNextRunnable, AUTO_SLIDE_SHOW_DELAY_MILLIS);
+//		if(moveNext()==false){
+//			Toast.makeText(getActivity(), R.string.everything_played, Toast.LENGTH_SHORT).show();
+//			PlaybackCancelEvent event = new PlaybackCancelEvent();
+//			event.position = 0;
+//			EventBus.getDefault().post(event);
+//		}
 	}
 	
 	private void playVideo(){
