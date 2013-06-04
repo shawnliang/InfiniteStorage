@@ -5,20 +5,27 @@ import idv.jason.lib.imagemanager.ImageManager;
 
 import java.util.ArrayList;
 
-import com.waveface.favoriteplayer.Constant;
-import com.waveface.favoriteplayer.R;
-import com.waveface.favoriteplayer.SyncApplication;
-import com.waveface.favoriteplayer.entity.PlaybackData;
-import com.waveface.favoriteplayer.ui.widget.SquareImageView;
-
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
+import android.provider.MediaStore.Video.Thumbnails;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView.ScaleType;
 
+import com.waveface.favoriteplayer.Constant;
+import com.waveface.favoriteplayer.R;
+import com.waveface.favoriteplayer.SyncApplication;
+import com.waveface.favoriteplayer.entity.PlaybackData;
+import com.waveface.favoriteplayer.ui.widget.SquareImageView;
+import com.waveface.favoriteplayer.util.FileUtil;
+import com.waveface.favoriteplayer.util.ImageUtil;
+import com.waveface.favoriteplayer.util.Log;
+
 public class GalleryViewAdapter extends BaseAdapter{
+	private static final String TAG = GalleryViewAdapter.class.getSimpleName();
 	private LayoutInflater mInflater;
 	private ArrayList<PlaybackData> mDatas;
 	private ImageManager mImageManager;
@@ -55,14 +62,25 @@ public class GalleryViewAdapter extends BaseAdapter{
 		ImageAttribute attr = new ImageAttribute(iv);
 		attr.setMaxSize(mImageSize, mImageSize);
 		attr.setApplyWithAnimation(true);
-		attr.setLoadFromThread(true);
+//		attr.setLoadFromThread(true);
 		attr.setDoneScaleType(ScaleType.CENTER_CROP);
-		mImageManager.getImage(mDatas.get(position).url, attr);
 		
+		//Display Image
 		if(Constant.FILE_TYPE_VIDEO.equals(mDatas.get(position).type)) {
+			String fullFilename = mDatas.get(position).url;
+			Bitmap bmThumbnail = mImageManager.getImage(fullFilename, attr);
+			if(bmThumbnail==null){
+				if(FileUtil.isFileExisted(fullFilename)){
+					bmThumbnail = ThumbnailUtils.createVideoThumbnail(fullFilename, 
+					        Thumbnails.MINI_KIND);
+					String dbId = mImageManager.setBitmapToFile(bmThumbnail, 
+							fullFilename, null, false);
+					Log.d(TAG, "ThumbNail DB ID:"+dbId);
+				}
+			}
 			root.findViewById(R.id.image_play).setVisibility(View.VISIBLE);
 		}
-		
+		mImageManager.getImage(mDatas.get(position).url, attr);
 		return root;
 	}
 

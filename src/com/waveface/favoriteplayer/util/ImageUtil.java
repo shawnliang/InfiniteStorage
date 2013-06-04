@@ -1,6 +1,8 @@
 package com.waveface.favoriteplayer.util;
 
 
+import idv.jason.lib.imagemanager.ImageManager;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -24,7 +26,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.media.ExifInterface;
+import android.media.ThumbnailUtils;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Video.Thumbnails;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
@@ -447,5 +451,12 @@ public class ImageUtil {
 			image.setImageDrawable(drawable);
 			drawable.startTransition(300);
 		}
+	}
+	
+	public static void generateVideoThumb(String fullFilename,ImageManager imageManager){
+		Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(fullFilename, 
+		        Thumbnails.MINI_KIND);
+		String dbId = imageManager.setBitmapToFile(bmThumbnail, fullFilename, null, false);
+		Log.d(TAG, "ThumbNail DB ID:"+dbId);
 	}
 }

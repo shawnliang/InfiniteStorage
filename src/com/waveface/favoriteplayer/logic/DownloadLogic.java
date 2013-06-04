@@ -116,7 +116,6 @@ public class DownloadLogic {
 							downloadVideo(fileId, fullFilename, url);
 							Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(fullFilename, 
 							        Thumbnails.MINI_KIND);
-
 							imageManager.setBitmapToFile(bmThumbnail, fullFilename, null, false);
 						}
 					} else {
