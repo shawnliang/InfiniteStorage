@@ -117,7 +117,7 @@
     </Compile>
     <Compile Include="Ren\Data.cs" />
     <Compile Include="Ren\EventUC.xaml.cs" />
-    <Compile Include="Ren\PendingUC.xaml.cs" />
+    <Compile Include="Ren\UnSortedFilesUC.xaml.cs" />
     <Compile Include="Ren\RT.cs" />
     <Compile Include="Ren\Utility\BoolToVisibilityConverter.cs" />
     <Compile Include="Ren\Utility\IgnoreMouseWheelBehavior .cs" />
@@ -209,7 +209,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Ren\PendingUC.xaml">
+    <Page Include="Ren\UnSortedFilesUC.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

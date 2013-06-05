@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Waveface.Client
@@ -28,12 +29,15 @@ namespace Waveface.Client
 		public event EventHandler TagStatusChanged;
 		#endregion
 
+
+		#region Constructor
 		public ContentItem()
 		{
 			this.InitializeComponent();
 			this.ltTag.TagStatusChanging += ltTag_TagStatusChanging;
 			this.ltTag.TagStatusChanged += ltTag_TagStatusChanged;
-		}
+		} 
+		#endregion
 
 
 		#region Protected Method

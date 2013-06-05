@@ -432,7 +432,7 @@
                          Color="White" />
     </Window.Resources>
 
-    <Grid Background="{DynamicResource ContentAreaBackground}">
+    <Grid x:Name="gdMain" Background="{DynamicResource ContentAreaBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="302*" />
@@ -590,64 +590,61 @@
                       Grid.Row="1"
                       Background="Transparent"
                       HorizontalAlignment="Left" />
-        <Grid Grid.Column="1" x:Name="gridMain"
-              Grid.Row="1">
-            
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="45" />
-                </Grid.RowDefinitions>
+        <Grid  Grid.RowSpan="2" Grid.Column="1" Grid.Row="1">
+        	<Grid.RowDefinitions>
+        		<RowDefinition Height="*" />
+        		<RowDefinition Height="45" />
+        	</Grid.RowDefinitions>
 
-                <ScrollViewer x:Name="svContentContainer"
-                              Grid.Row="0"
-                              VerticalScrollBarVisibility="Auto"
-                              HorizontalScrollBarVisibility="Disabled">
-                    <ListBox x:Name="lbxContentContainer"
-                             ItemsSource="{Binding IsAsync=True}"
-                             IsSynchronizedWithCurrentItem="True"
-                             SelectedIndex="0"
-                             MouseDoubleClick="OnPhotoClick"
-                             VirtualizingStackPanel.IsVirtualizing="True"
-                             VirtualizingStackPanel.VirtualizationMode="Recycling"
-                             BorderBrush="{DynamicResource ContentAreaBackground}">
-                        <ListBox.Resources>
-                            <Style TargetType="{x:Type ListBoxItem}"
-                                   BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
-                                                 Value="True">
-                                        <Setter Property="IsSelected"
-                                                Value="True" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ListBox.Resources>
-                        <ListBox.Style>
-                            <StaticResource ResourceKey="PhotoListBoxStyle" />
-                        </ListBox.Style>
-                    </ListBox>
-                </ScrollViewer>
-                <Grid Grid.Row="1"
-                      Background="#FF3E3E3E"
-                      Margin="0">
-                    <local:ZoomSlider x:Name="zoomSlider"
-                                      Margin="10,0,0,0"
-                                      Minimum="150"
-                                      Maximum="400"
-                                      Value="200"
-                                      HorizontalAlignment="Left"
-                                      VerticalAlignment="Center"
-                                      Cursor="Hand" />
-                    <local:FavoriteAllButton Margin="0,0,10,0"
-                                             Width="100"
-                                             Height="30"
-                                             VerticalAlignment="Center"
-                                             HorizontalAlignment="Right"
-                                             Click="FavoriteAllButton_Click"
-                                             Cursor="Hand" />
-                </Grid>
-            </Grid>
+        	<ScrollViewer x:Name="svContentContainer"
+        		Grid.Row="0"
+        		VerticalScrollBarVisibility="Auto"
+        		HorizontalScrollBarVisibility="Disabled">
+        		<ListBox x:Name="lbxContentContainer"
+        			ItemsSource="{Binding IsAsync=True}"
+        			IsSynchronizedWithCurrentItem="True"
+        			SelectedIndex="0"
+        			MouseDoubleClick="OnPhotoClick"
+        			VirtualizingStackPanel.IsVirtualizing="True"
+        			VirtualizingStackPanel.VirtualizationMode="Recycling"
+        			BorderBrush="{DynamicResource ContentAreaBackground}">
+        			<ListBox.Resources>
+        				<Style TargetType="{x:Type ListBoxItem}"
+        					BasedOn="{StaticResource {x:Type ListBoxItem}}">
+        					<Style.Triggers>
+        						<DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}"
+        							Value="True">
+        							<Setter Property="IsSelected"
+        								Value="True" />
+        						</DataTrigger>
+        					</Style.Triggers>
+        				</Style>
+        			</ListBox.Resources>
+        			<ListBox.Style>
+        				<StaticResource ResourceKey="PhotoListBoxStyle" />
+        			</ListBox.Style>
+        		</ListBox>
+        	</ScrollViewer>
+        	<Grid Grid.Row="1"
+        		Background="#FF3E3E3E"
+        		Margin="0">
+        		<local:ZoomSlider x:Name="zoomSlider"
+        			Margin="10,0,0,0"
+        			Minimum="150"
+        			Maximum="400"
+        			Value="200"
+        			HorizontalAlignment="Left"
+        			VerticalAlignment="Center"
+        			Cursor="Hand" />
+        		<local:FavoriteAllButton Margin="0,0,10,0"
+        			Width="100"
+        			Height="30"
+        			VerticalAlignment="Center"
+        			HorizontalAlignment="Right"
+        			Click="FavoriteAllButton_Click"
+        			Cursor="Hand" />
+        	</Grid>
         </Grid>
+        <local:UnSortedFilesUC x:Name="unSortedFilesUC" Grid.RowSpan="3" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="0" Visibility="Collapsed" Width="Auto" Height="Auto"/>
     </Grid>
 </Window>

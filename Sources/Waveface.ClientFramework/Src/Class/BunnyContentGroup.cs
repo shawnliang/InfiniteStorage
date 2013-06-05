@@ -71,7 +71,10 @@ namespace Waveface.ClientFramework
 				while (reader.Read())
 				{
 					var file_path = Path.Combine(Uri.LocalPath, reader["file_name"].ToString());
-					contents.Add(new BunnyContent(new Uri(file_path), reader["file_id"].ToString()));
+					contents.Add(new BunnyContent(new Uri(file_path), reader["file_id"].ToString()) 
+					{
+						EnableTag = true
+					});
 				}
 			}
 		}

@@ -94,13 +94,15 @@
                        Opacity="0.6"
                        FontFamily="Segoe UI Light"/>
         </Grid>
-        <l:LabelTag x:Name="ltTag"
-                    Tagged="{Binding Liked, Mode=TwoWay}"
-                    HorizontalAlignment="Left"
-                    Height="30"
-                    VerticalAlignment="Top"
-                    Width="30"
-                    Visibility="{Binding Tagged, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=ltTag}" />
+        <Grid Visibility="{Binding EnableTag, Converter={StaticResource BooleanToVisibilityConverter}}">
+        	<l:LabelTag x:Name="ltTag"
+        		Tagged="{Binding Liked, Mode=TwoWay}"
+        		HorizontalAlignment="Left"
+        		Height="30"
+        		VerticalAlignment="Top"
+        		Width="30"
+        		Visibility="{Binding Liked, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
+        </Grid>
     </Grid>
 </UserControl>
