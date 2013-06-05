@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Wammer.Utility;
 
 namespace InfiniteStorage.Notify
 {
@@ -13,6 +14,10 @@ namespace InfiniteStorage.Notify
 		List<FileChangeData> QueryLabeledFiles(Guid label_id);
 	}
 
+	public enum Orientation {
+		portrait,
+		landscape,
+	}
 
 	public class FileChangeData
 	{
@@ -48,5 +53,32 @@ namespace InfiniteStorage.Notify
 		public long seq { get; set; }
 
 		public DateTime event_time { get; set; }
+
+		[JsonIgnore]
+		public int? _orientation { get; set; }
+
+		public Orientation? orientation
+		{
+			get
+			{
+				if (!_orientation.HasValue)
+					return null;
+
+				var needRotate90or270 =
+					(_orientation == (int)ExifOrientations.LeftTop ||
+					 _orientation == (int)ExifOrientations.RightTop ||
+					 _orientation == (int)ExifOrientations.RightBottom ||
+					 _orientation == (int)ExifOrientations.LeftBottom);
+
+				if (needRotate90or270)
+				{
+					return (height > width) ? Orientation.landscape : Orientation.portrait;
+				}
+				else
+				{
+					return (width > height) ? Orientation.landscape : Orientation.portrait;
+				}
+			}
+		}
 	}
 }

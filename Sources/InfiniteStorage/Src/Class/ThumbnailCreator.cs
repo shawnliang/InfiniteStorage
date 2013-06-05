@@ -7,12 +7,13 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using Wammer.Utility;
+using Waveface.Common;
 
 namespace InfiniteStorage
 {
 	class ThumbnailCreator
 	{
-		private System.Timers.Timer timer = new System.Timers.Timer(1000.0);
+		private NoReentrantTimer timer;
 		private long from = 0;
 		private string thumbnailLocation;
 		private bool started;
@@ -21,8 +22,7 @@ namespace InfiniteStorage
 
 		public ThumbnailCreator()
 		{
-			timer.Elapsed += timer_Elapsed;
-			thumbnailLocation = Path.Combine(MyFileFolder.Photo, ".thumbs");
+			thumbnailLocation = MyFileFolder.Thumbs;
 
 			if (!Directory.Exists(thumbnailLocation))
 			{
@@ -31,39 +31,30 @@ namespace InfiniteStorage
 				var dirinfo = new DirectoryInfo(thumbnailLocation);
 				dirinfo.Attributes |= FileAttributes.Hidden;
 			}
+
+
+			timer = new NoReentrantTimer(timer_Elapsed, null, 5000, 1000);
 		}
 
 		public void Start()
 		{
 			timer.Start();
-			started = true;
 		}
 
 		public void Stop()
 		{
 			timer.Stop();
-			started = false;
 		}
 
-		void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+		void timer_Elapsed(object nil)
 		{
-			lock (cs)
+			try
 			{
-				timer.Stop();
-
-				try
-				{
-					generateThumbnails();
-				}
-				catch (Exception err)
-				{
-					log4net.LogManager.GetLogger(GetType()).Warn("Failed to generate thumbnails", err);
-				}
-				finally
-				{
-					if (started)
-						timer.Start();
-				}
+				generateThumbnails();
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("Failed to generate thumbnails", err);
 			}
 		}
 
@@ -106,23 +97,27 @@ namespace InfiniteStorage
 				{
 					var cmd = conn.CreateCommand();
 					cmd.Connection = conn;
-					cmd.CommandText = "update [PendingFiles] set thumb_ready = 1, width = @width, height = @height where file_id = @fid";
+					cmd.CommandText = "update [PendingFiles] set thumb_ready = 1, width = @width, height = @height, orientation = @ori where file_id = @fid";
 					cmd.CommandType = System.Data.CommandType.Text;
 
 					var fid = new SQLiteParameter("@fid");
 					var width = new SQLiteParameter("@width");
 					var height = new SQLiteParameter("@height");
+					var ori = new SQLiteParameter("@ori");
 
 					cmd.Parameters.Add(fid);
 					cmd.Parameters.Add(width);
 					cmd.Parameters.Add(height);
+					cmd.Parameters.Add(ori);
+
+					cmd.Prepare();
 
 					foreach (var file in successFiles)
 					{
 						fid.Value = file.file_id;
 						width.Value = file.width;
 						height.Value = file.height;
-
+						ori.Value = file.orientation;
 						cmd.ExecuteNonQuery();
 					}
 
@@ -133,7 +128,7 @@ namespace InfiniteStorage
 
 		private void generateThumbnail(PendingFile file, out int width, out int height)
 		{
-			var file_path = Path.Combine(MyFileFolder.Photo, ".pending", file.saved_path);
+			var file_path = Path.Combine(MyFileFolder.Pending, file.saved_path);
 
 			using (var m = readFilesToMemory(file_path))
 			using (var fullImage = new Bitmap(m))
@@ -147,6 +142,7 @@ namespace InfiniteStorage
 					return;
 
 				var orientation = ImageHelper.ImageOrientation(fullImage);
+				file.orientation = (int)orientation;
 
 				if (longSide > 2048)
 				{

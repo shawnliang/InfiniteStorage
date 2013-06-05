@@ -127,8 +127,8 @@ namespace InfiniteStorage
 		{
 			var cmd = db.CreateCommand();
 			cmd.CommandText =
-				"insert into Files (file_id, file_name, file_path, file_size, saved_path, parent_folder, device_id, type, event_time, seq, deleted, thumb_ready, width, height) " +
-				"select file_id, file_name, file_path, file_size, @saved, @parent, device_id, type, event_time, @seq, deleted, thumb_ready, width, height from [PendingFiles] " +
+				"insert into Files (file_id, file_name, file_path, file_size, saved_path, parent_folder, device_id, type, event_time, seq, deleted, thumb_ready, width, height, orientation) " +
+				"select file_id, file_name, file_path, file_size, @saved, @parent, device_id, type, event_time, @seq, deleted, thumb_ready, width, height, orientation from [PendingFiles] " +
 				"where file_id = @fid";
 			cmd.Prepare();
 

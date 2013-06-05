@@ -53,6 +53,8 @@ namespace InfiniteStorage.Model
 
 		public int height { get; set; }
 
+		public int? orientation { get; set; }
+
 		public virtual Device device { get; set; }
 	}
 
@@ -134,6 +136,8 @@ namespace InfiniteStorage.Model
 		public int width { get; set; }
 
 		public int height { get; set; }
+
+		public int? orientation { get; set; }
 
 		public virtual Device device { get; set; }
 	}

@@ -47,7 +47,8 @@ namespace InfiniteStorage.REST
 									 seq = f.seq,
 									 event_time = f.event_time,
 									 saved_path = f.saved_path,
-									 device_folder = d.folder_name
+									 device_folder = d.folder_name,
+									 _orientation = f.orientation
 								 }).Union(
 								 from f in db.Object.PendingFiles
 								 join d in db.Object.Devices on f.device_id equals d.device_id
@@ -68,7 +69,8 @@ namespace InfiniteStorage.REST
 									 seq = f.seq,
 									 event_time = f.event_time,
 									 saved_path = f.saved_path,
-									 device_folder = d.folder_name
+									 device_folder = d.folder_name,
+									 _orientation = f.orientation
 								 });
 
 					var file = query.FirstOrDefault();

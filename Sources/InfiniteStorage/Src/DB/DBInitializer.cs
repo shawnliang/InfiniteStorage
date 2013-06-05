@@ -278,6 +278,19 @@ CREATE INDEX [idx_PendingFiles_parent_folder_1] ON [Folders](
 						schemaVersion = 9;
 					}
 
+					if (schemaVersion == 9L)
+					{
+						var cmd = new SQLiteCommand(
+@"
+ALTER TABLE [Files] Add Column [orientation] INTEGER NULL;
+ALTER TABLE [PendingFiles] Add Column [orientation] INTEGER NULL;
+", conn);
+						cmd.ExecuteNonQuery();
+
+						updateDbSchemaVersion(conn, 10);
+						schemaVersion = 10;
+					}
+
 					transaction.Commit();
 				}
 

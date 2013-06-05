@@ -31,7 +31,8 @@ namespace InfiniteStorage.Notify
 								 seq = f.seq,
 								 event_time = f.event_time,
 								 saved_path = f.saved_path,
-								 device_folder = d.folder_name
+								 device_folder = d.folder_name,
+								 _orientation = f.orientation
 							 };
 
 				return result.ToList();
@@ -76,7 +77,8 @@ namespace InfiniteStorage.Notify
 									 seq = f.seq,
 									 event_time = f.event_time,
 									 saved_path = f.saved_path,
-									 device_folder = dev.folder_name
+									 device_folder = dev.folder_name,
+									 _orientation = f.orientation
 								 }
 							 }).Union(
 							 from lb in db.Object.LabelFiles
@@ -103,7 +105,8 @@ namespace InfiniteStorage.Notify
 									 seq = f.seq,
 									 event_time = f.event_time,
 									 saved_path = f.saved_path,
-									 device_folder = dev.folder_name
+									 device_folder = dev.folder_name,
+									 _orientation = f.orientation
 								 }
 							 }
 							 );
