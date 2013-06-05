@@ -11,6 +11,8 @@
         Title="Favorite"
         Height="498.5"
         Width="807"
+        MinWidth="1000"
+        MinHeight="600"
         Loaded="Window_Loaded"
         KeyDown="Window_KeyDown"
         WindowState="Maximized"
@@ -645,6 +647,6 @@
         			Cursor="Hand" />
         	</Grid>
         </Grid>
-        <local:UnSortedFilesUC x:Name="unSortedFilesUC" Grid.RowSpan="3" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="0" Visibility="Collapsed" Width="Auto" Height="Auto"/>
+        <local:UnSortedFilesUC x:Name="unSortedFilesUC" Grid.RowSpan="3" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="0" Margin="1" Visibility="Collapsed" Width="Auto" Height="Auto"/>
     </Grid>
 </Window>

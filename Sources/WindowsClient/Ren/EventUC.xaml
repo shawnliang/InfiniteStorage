@@ -16,11 +16,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <PendingUI:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
     </UserControl.Resources>
 
-    <Grid x:Name="gridMain" Background="#101011" MouseEnter="gridMain_MouseEnter" MouseLeave="gridMain_MouseLeave">
+    <Grid x:Name="gridMain" Background="#FF1F1F1F" MouseEnter="gridMain_MouseEnter" MouseLeave="gridMain_MouseLeave">
         <i:Interaction.Behaviors>
             <PendingUI:IgnoreMouseWheelBehavior />
         </i:Interaction.Behaviors>
@@ -45,20 +45,35 @@
                         <RowDefinition Height="20" />
                     </Grid.RowDefinitions>
 
-                    <TextBox x:Name="tbDescribe" Margin="0,8,8,0" Grid.Row="0" BorderThickness="0" Background="#101011" Foreground="White"  VerticalContentAlignment="Center" FontSize="16" HorizontalAlignment="Stretch"  MouseEnter="tbDescribe_MouseEnter" MouseLeave="tbDescribe_MouseLeave" TextChanged="tbDescribe_TextChanged">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-                                <Style.Triggers>
-                                    <Trigger Property="PendingUI:WatermarkTextBehavior.IsWatermarked" Value="True">
-                                        <Setter Property="Foreground" Value="White" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                        <i:Interaction.Behaviors>
-                            <PendingUI:WatermarkTextBehavior Text="Describe the event..." />
-                        </i:Interaction.Behaviors>
-                    </TextBox>
+                    <StackPanel Margin="0,8,8,0" Grid.Row="0" Cursor="Pen" Orientation="Horizontal" >
+                        <TextBox x:Name="tbDescribe" BorderThickness="0" Background="#FF1F1F1F" Foreground="White"  VerticalContentAlignment="Center" FontSize="16" Width="320" HorizontalAlignment="Left" TextChanged="tbDescribe_TextChanged">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                    <Style.Triggers>
+                                        <Trigger Property="PendingUI:WatermarkTextBehavior.IsWatermarked" Value="True">
+                                            <Setter Property="Foreground" Value="White" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                            <i:Interaction.Behaviors>
+                                <PendingUI:WatermarkTextBehavior Text="Describe the event..." />
+                            </i:Interaction.Behaviors>
+                        </TextBox>
+
+                        <Button x:Name="btnImport" Foreground="White" FontSize="14" Visibility="Collapsed" Margin="16, 2, 4, 2" Content="Move to Folder" Padding="8, 0" >
+                            <Button.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#2f76b3" Offset="0"/>
+                                    <GradientStop Color="#225683" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Button.Background>
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="0.5"/>
+                            </Button.Effect>
+                        </Button>
+                    </StackPanel>
+
 
                     <StackPanel Margin="2,0,0,0" Grid.Row="1" Orientation="Horizontal">
                         <TextBlock x:Name="tbTitle" Foreground="#999999" Text="2013.5.20, 11:59" FontSize="12" FontWeight="SemiBold"/>
@@ -68,7 +83,7 @@
                 </Grid>
             </Grid>
 
-            <ListBox BorderThickness="0" Margin="12, 0, 0, 8" Background="#101011" SelectionMode="Multiple" Grid.Row="1" x:Name="lbEvent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemContainerStyle="{StaticResource SimpleListBoxItem}" Loaded="lbEvent_Loaded">
+            <ListBox BorderThickness="0" Margin="12, 0, 0, 8" Background="#FF1F1F1F" SelectionMode="Multiple" Grid.Row="1" x:Name="lbEvent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemContainerStyle="{StaticResource SimpleListBoxItem}" Loaded="lbEvent_Loaded">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>

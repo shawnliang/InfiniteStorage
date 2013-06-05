@@ -370,30 +370,20 @@ namespace Waveface.Client
             _textbox.CaretIndex = _textbox.Text.Length;
         }
 
-        private void tbDescribe_MouseEnter(object sender, MouseEventArgs e)
-        {
-            tbDescribe.BorderThickness = new Thickness(2);
-            //tbDescribe.Background = new SolidColorBrush(Color.FromRgb(37, 37, 37));
-        }
-
-        private void tbDescribe_MouseLeave(object sender, MouseEventArgs e)
-        {
-            tbDescribe.BorderThickness = new Thickness(0);
-            //tbDescribe.Background = new SolidColorBrush(Color.FromRgb(16, 16, 17));
-        }
-
         private void gridMain_MouseEnter(object sender, MouseEventArgs e)
         {
-            //gridMain.Background = new SolidColorBrush(Color.FromRgb(37, 37, 37));
-            //lbEvent.Background = new SolidColorBrush(Color.FromRgb(37, 37, 37));
-            tbDescribe.Background = new SolidColorBrush(Color.FromRgb(37, 37, 37));
+            tbDescribe.BorderThickness = new Thickness(2);
+            gridMain.Background = new SolidColorBrush(Color.FromRgb(37, 37, 37));
+            lbEvent.Background = new SolidColorBrush(Color.FromRgb(37, 37, 37));
+            btnImport.Visibility = Visibility.Visible;
         }
 
         private void gridMain_MouseLeave(object sender, MouseEventArgs e)
         {
-            //gridMain.Background = new SolidColorBrush(Color.FromRgb(16, 16, 17));
-            //lbEvent.Background = new SolidColorBrush(Color.FromRgb(16, 16, 17));
-            tbDescribe.Background = new SolidColorBrush(Color.FromRgb(16, 16, 17));
+            tbDescribe.BorderThickness = new Thickness(0);
+            gridMain.Background = new SolidColorBrush(Color.FromRgb(16, 16, 17));
+            lbEvent.Background = new SolidColorBrush(Color.FromRgb(16, 16, 17));
+            btnImport.Visibility = Visibility.Collapsed;
         }
     }
 }
