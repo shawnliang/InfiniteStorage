@@ -56,7 +56,7 @@ namespace InfiniteStorage.REST
 				{
 					id = x.file_id,
 					file_name = x.file_name,
-					tiny_path = Path.Combine(MyFileFolder.Photo, ".thumbs", x.file_id + ".tiny.thumb"),
+					tiny_path = (x.type == (int)FileAssetType.image) ? Path.Combine(MyFileFolder.Thumbs, x.file_id + ".tiny.thumb") : Path.Combine(MyFileFolder.Pending, x.saved_path),
 					taken_time = x.event_time.ToString("yyyy-MM-dd HH:mm:ss"),
 					width = x.width,
 					height = x.height,
