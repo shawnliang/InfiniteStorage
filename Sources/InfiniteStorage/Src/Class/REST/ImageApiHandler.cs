@@ -81,7 +81,7 @@ namespace InfiniteStorage.REST
 			string file_relative_path;
 			if (size == IMG_SIZE.origin)
 			{
-				file_relative_path = Path.Combine(file.folder, file.saved_path);
+				file_relative_path = file.saved_path;
 			}
 			else
 			{
@@ -89,7 +89,7 @@ namespace InfiniteStorage.REST
 
 				var full_path = Path.Combine(MyFileFolder.Photo, file_relative_path);
 				if (!File.Exists(full_path))
-					file_relative_path = Path.Combine(file.folder, file.saved_path);
+					file_relative_path = file.saved_path;
 			}
 
 			var url = new UriBuilder("http", Request.Url.Host, 12888, file_relative_path).ToString();
