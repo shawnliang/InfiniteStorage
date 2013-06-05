@@ -22,9 +22,9 @@ public class DeviceUtil {
 	private static final String INSTALLATION = "DEVICE_INFO";
 
 	public synchronized static String id(Context context) {
+		String rootFolder = FileUtil.getDownloadFolder(context);
 		if (sID == null) {
-			File appDirectory = new File(
-					Environment.getExternalStorageDirectory() + "/"
+			File appDirectory = new File(rootFolder + "/"
 							+ Constant.APP_FOLDER);
 			if (!appDirectory.exists())
 				appDirectory.mkdir();

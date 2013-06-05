@@ -24,6 +24,7 @@ import java.util.UUID;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.StatFs;
@@ -89,10 +90,11 @@ public class StringUtil {
 			return formatDate(date);
 		}
 	}
-	public static String changeToLocalString(long time ,String format) {
+
+	public static String changeToLocalString(long time, String format) {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		String timeString = sdf.format(new Date(time));
-//		String timeString = sdf.format(new Date(time * 1000));
+		// String timeString = sdf.format(new Date(time * 1000));
 		return changeToLocalString(timeString);
 	}
 
@@ -354,7 +356,7 @@ public class StringUtil {
 	public static String getLocalDate() {
 		return getLocalDate(System.currentTimeMillis());
 	}
-	
+
 	public static String localtimeToIso8601(Date date) {
 		if (date == null) {
 			return null;
@@ -366,22 +368,24 @@ public class StringUtil {
 			return toIso8601(date);
 		}
 	}
-	
+
 	public static String toIso8601(Date date) {
 		if (date == null) {
 			return "";
 		}
-		return new SimpleDateFormat(ISO_8601_DATE_FORMAT, Locale.getDefault()).format(date);
+		return new SimpleDateFormat(ISO_8601_DATE_FORMAT, Locale.getDefault())
+				.format(date);
 	}
-	
+
 	public static String getLocalDate(long millsecond) {
-		SimpleDateFormat dateFormatGmt = new SimpleDateFormat(ISO_8601_DATE_FORMAT);
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat(
+				ISO_8601_DATE_FORMAT);
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
-		return dateFormatGmt.format(new Date(millsecond))+"";
+		return dateFormatGmt.format(new Date(millsecond)) + "";
 	}
 
-
-	public static boolean day1BeforeDay2(String ISO8601_DATE1, String ISO8601_DATE2) {
+	public static boolean day1BeforeDay2(String ISO8601_DATE1,
+			String ISO8601_DATE2) {
 		if (ISO8601_DATE1 == null)
 			return true;
 		return before(parseDate(ISO8601_DATE1), parseDate(ISO8601_DATE2));
@@ -907,7 +911,7 @@ public class StringUtil {
 
 	public static String getFilename(String fullFilename) {
 		String rtnString = "";
-		if(!TextUtils.isEmpty(fullFilename)){
+		if (!TextUtils.isEmpty(fullFilename)) {
 			fullFilename = fullFilename.replaceAll("\\\\", "/");
 			int pos = fullFilename.lastIndexOf(File.separator);
 			if (pos != -1) {
@@ -916,10 +920,11 @@ public class StringUtil {
 		}
 		return rtnString;
 	}
-	public static String getFilepath(String fullFilename,String filename) {
-		return fullFilename.substring(0, fullFilename.length()-filename.length());
+
+	public static String getFilepath(String fullFilename, String filename) {
+		return fullFilename.substring(0,
+				fullFilename.length() - filename.length());
 	}
-	
 
 	public static String getEndDate(String strQueryDate) {
 		String[] result = { "" };
@@ -933,8 +938,8 @@ public class StringUtil {
 					Integer.parseInt(startDateTime.substring(4, 6)) - 1);
 			calendar.set(java.util.Calendar.DATE,
 					Integer.parseInt(startDateTime.substring(6, 8)));
-			calendar.set(java.util.Calendar.HOUR_OF_DAY, Integer.parseInt(
-					startDateTime.substring(8, 10)));
+			calendar.set(java.util.Calendar.HOUR_OF_DAY,
+					Integer.parseInt(startDateTime.substring(8, 10)));
 			calendar.set(java.util.Calendar.MINUTE,
 					Integer.parseInt(startDateTime.substring(10, 12)));
 			calendar.set(java.util.Calendar.SECOND,
@@ -994,9 +999,11 @@ public class StringUtil {
 		reader.endArray();
 		reader.close();
 	}
+
 	public static int getTimezoneHour() {
-		return getTimezoneMinute()/60;
+		return getTimezoneMinute() / 60;
 	}
+
 	public static int getTimezoneMinute() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(System.currentTimeMillis());
@@ -1028,18 +1035,18 @@ public class StringUtil {
 		return dateForward(day, (0 - delDays));
 	}
 
-	public static String[] getDateStringReverse(String startDay, int days){
+	public static String[] getDateStringReverse(String startDay, int days) {
 		String[] dayDatas = new String[days];
 		dayDatas[0] = startDay;
-		for(int i = 0 ; i < days; i++){
-			if(i>0){
-				dayDatas[i] = dateForward(dayDatas[i-1], -1);
+		for (int i = 0; i < days; i++) {
+			if (i > 0) {
+				dayDatas[i] = dateForward(dayDatas[i - 1], -1);
 			}
 		}
 		return dayDatas;
 	}
 
-	//FORMAT YYYY/MM/DD
+	// FORMAT YYYY/MM/DD
 	private static Calendar getCalendar(String day) {
 		GregorianCalendar calendar = (GregorianCalendar) Calendar.getInstance();
 		int Year = Integer.parseInt(day.substring(0, 4));
@@ -1063,6 +1070,7 @@ public class StringUtil {
 		}
 		return displaySize;
 	}
+
 	public static String[] byteCountToSizeAndUnit(long size) {
 		String displaySize = null;
 		String unit = null;
@@ -1079,35 +1087,34 @@ public class StringUtil {
 			displaySize = String.valueOf(size);
 			unit = "bytes";
 		}
-		return new String[]{displaySize,unit};
+		return new String[] { displaySize, unit };
 	}
 
-
-	public static List<Date> getBetweenDayList(String sDate,String eDate) throws ParseException{
+	public static List<Date> getBetweenDayList(String sDate, String eDate)
+			throws ParseException {
 
 		List<Date> dates = new ArrayList<Date>();
-		DateFormat formatter ;
+		DateFormat formatter;
 		formatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date  startDate = formatter.parse(sDate);
-		Date  endDate = formatter.parse(eDate);
-		long interval = 24*1000 * 60 * 60; // 1 hour in millis
-		long endTime = endDate.getTime() ; // create your endtime here, possibly using Calendar or Date
+		Date startDate = formatter.parse(sDate);
+		Date endDate = formatter.parse(eDate);
+		long interval = 24 * 1000 * 60 * 60; // 1 hour in millis
+		long endTime = endDate.getTime(); // create your endtime here, possibly
+											// using Calendar or Date
 		long curTime = startDate.getTime();
 		while (curTime <= endTime) {
-		    dates.add(new Date(curTime));
-		    curTime += interval;
+			dates.add(new Date(curTime));
+			curTime += interval;
 		}
-		// sort by date  desc
-		Collections.sort(dates,
-        	        new Comparator<Date>() {
-        	            @Override
-						public int compare(Date o2, Date o1) {
-        	                return o1.compareTo(o2);
-        	            }
-        	        });
+		// sort by date desc
+		Collections.sort(dates, new Comparator<Date>() {
+			@Override
+			public int compare(Date o2, Date o1) {
+				return o1.compareTo(o2);
+			}
+		});
 		return dates;
 	}
-
 
 	public static ArrayList<Date> getDayList(int addMon) {
 
@@ -1134,18 +1141,19 @@ public class StringUtil {
 		return dayList;
 
 	}
+
 	public static Date getDay(Calendar startDate, int diffDay) {
 		Calendar dayTarget = Calendar.getInstance();
-		dayTarget.set(
-				startDate.get(Calendar.YEAR),
+		dayTarget.set(startDate.get(Calendar.YEAR),
 				startDate.get(Calendar.MONTH),
-				startDate.get(Calendar.DAY_OF_MONTH)-diffDay);
+				startDate.get(Calendar.DAY_OF_MONTH) - diffDay);
 		String day = dayTarget.get(Calendar.YEAR) + "/"
-				+ (dayTarget.get(Calendar.MONTH)+1) + "/"
+				+ (dayTarget.get(Calendar.MONTH) + 1) + "/"
 				+ dayTarget.get(Calendar.DAY_OF_MONTH);
 		Date target = null;
 		try {
-			target = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).parse(day);
+			target = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+					.parse(day);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -1157,10 +1165,12 @@ public class StringUtil {
 		ArrayList<Date> list = new ArrayList<Date>();
 		while (endDate.compareTo(startDate) <= 0) {
 			String curDate = endDate.get(Calendar.YEAR) + "/"
-					+ (endDate.get(Calendar.MONTH)+1) + "/"
+					+ (endDate.get(Calendar.MONTH) + 1) + "/"
 					+ endDate.get(Calendar.DAY_OF_MONTH);
 			try {
-				list.add(0, new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).parse(curDate));
+				list.add(0,
+						new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+								.parse(curDate));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -1170,15 +1180,16 @@ public class StringUtil {
 		return list;
 	}
 
-	public static ArrayList<Date> getDayStringsBackwardReverseOrder(Calendar startDate,
-			Calendar endDate) {
+	public static ArrayList<Date> getDayStringsBackwardReverseOrder(
+			Calendar startDate, Calendar endDate) {
 		ArrayList<Date> list = new ArrayList<Date>();
 		while (endDate.compareTo(startDate) <= 0) {
 			String curDate = endDate.get(Calendar.YEAR) + "/"
-					+ (endDate.get(Calendar.MONTH)+1) + "/"
+					+ (endDate.get(Calendar.MONTH) + 1) + "/"
 					+ endDate.get(Calendar.DAY_OF_MONTH);
 			try {
-				list.add(new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).parse(curDate));
+				list.add(new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+						.parse(curDate));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -1188,35 +1199,41 @@ public class StringUtil {
 		return list;
 	}
 
-	public static String getDomainName(String urlAddress){
+	public static String getDomainName(String urlAddress) {
 
-		 URL url=null;
-		 String domain;
+		URL url = null;
+		String domain;
 		try {
 			url = new URL(urlAddress);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return  domain = url.getHost();
+		return domain = url.getHost();
 	}
-	
-	public static boolean isAvaiableSpace(int sizeMb){
-		 if(android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
-		 {
-		      String sdcard = Environment.getExternalStorageDirectory().getPath();
-		     StatFs statFs = new StatFs(sdcard);
-		     long blockSize = statFs.getBlockSize();
-		     long blocks = statFs.getAvailableBlocks();
-		     long availableSpare = (blocks*blockSize)/(1024*1024);
-		      if(sizeMb>availableSpare){
-		      return false;
-		     }else{
-		      return true;
-		     }
-		 }
 
-		  return false;
-		 }
+	public static boolean isAvaiableSpace(Context context, int sizeMb) {
+		String rootFolder = FileUtil.getDownloadFolder(context);
+		boolean check = true;
+		if (rootFolder.startsWith(Environment.getExternalStorageDirectory()
+				.getPath())) {
+			if (!android.os.Environment.getExternalStorageState().equals(
+					android.os.Environment.MEDIA_MOUNTED)) {
+				check = false;
+			}
+		}
+		if (check) {
+			StatFs statFs = new StatFs(rootFolder);
+			long blockSize = statFs.getBlockSize();
+			long blocks = statFs.getAvailableBlocks();
+			long availableSpare = (blocks * blockSize) / (1024 * 1024);
+			if (sizeMb > availableSpare) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

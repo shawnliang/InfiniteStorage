@@ -2,6 +2,18 @@ package com.waveface.favoriteplayer.ui;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.ProgressBar;
+
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.db.LabelDB;
@@ -12,20 +24,9 @@ import com.waveface.favoriteplayer.event.PlaybackItemClickEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.ui.fragment.GalleryViewFragment;
 import com.waveface.favoriteplayer.ui.fragment.VideoFragment;
+import com.waveface.favoriteplayer.util.FileUtil;
 
 import de.greenrobot.event.EventBus;
-
-import android.database.Cursor;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Environment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.ProgressBar;
 
 public class VideoActivity extends FragmentActivity{
 	public static final String TAG = VideoActivity.class.getSimpleName();
@@ -52,7 +53,7 @@ public class VideoActivity extends FragmentActivity{
 		String labelId = data.getString(Constant.ARGUMENT1);
 		mLabelTitle = data.getString(Constant.ARGUMENT3);
 		
-		new LoadPlaybackData(labelId).execute(null, null, null);
+		new LoadPlaybackData(this,labelId).execute(null, null, null);
 		
 	}
 	
@@ -103,9 +104,11 @@ public class VideoActivity extends FragmentActivity{
 	}
 
 	class LoadPlaybackData extends AsyncTask<Void, Void, ArrayList<PlaybackData>> {
+		private Context mContext; 
 		public String mLabelId;
 		
-		public LoadPlaybackData(String labelId) {
+		public LoadPlaybackData(Context context,String labelId) {
+			mContext = context;
 			mLabelId = labelId;
 		}
 
@@ -125,7 +128,7 @@ public class VideoActivity extends FragmentActivity{
 			for(int i=0; i<lfc.getCount(); ++i) {
 				lfc.moveToPosition(i);
 				PlaybackData pd = new PlaybackData();
-				String fileName =  Environment.getExternalStorageDirectory().getAbsolutePath()
+				String fileName =  FileUtil.getDownloadFolder(mContext)
 						+ Constant.VIDEO_FOLDER+ "/"  +lfc
 						.getString(lfc
 								.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));

@@ -7,7 +7,7 @@ public class Constant {
 
 	public final static String APP_FOLDER = "/FavoritePlayer";
 	public final static String VIDEO_FOLDER = APP_FOLDER+"/Video";
-	
+	public final static String IMAGE_FOLDER = APP_FOLDER+"/Images";	
 	
 	public final static String ACTION_NETWORK_STATE_CHANGE = "com.waveface.favoriteplayer.action.NETWORK_STATE_CHANGE";	
 	public final static String ACTION_WS_SERVER_NOTIFY = "com.waveface.favoriteplayer.action.WS_SERVER_NOTIFY";	
@@ -255,6 +255,9 @@ public class Constant {
 	public final static String PREF_SERVER_CHANGE_LABEL_ID = "server_change_label_id";
 	public final static String PREF_SERVER_CHANGE_LABELS = "server_change_labels";
 	public final static String PREF_DOWNLOAD_LABEL_INIT_STATUS = "download_label_init_status";
+	
+	//
+	public final static String PREF_DOWNLOAD_FOLDER = "download_folder";
 	
 	public final static int AVAIABLE_SPACE =30;
 }

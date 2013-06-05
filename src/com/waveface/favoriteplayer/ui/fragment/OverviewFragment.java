@@ -34,6 +34,7 @@ import com.waveface.favoriteplayer.ui.PlaybackActivity;
 import com.waveface.favoriteplayer.ui.adapter.OverviewAdapter;
 import com.waveface.favoriteplayer.ui.adapter.OverviewAdapter.ViewHolder;
 import com.waveface.favoriteplayer.ui.widget.TwoWayView;
+import com.waveface.favoriteplayer.util.FileUtil;
 
 import de.greenrobot.event.EventBus;
 
@@ -165,7 +166,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 
 		@Override
 		protected OverviewData doInBackground(Void... params) {
-			return loadLabelData(mLabelId);
+			return loadLabelData(mLabelId,FileUtil.getDownloadFolder(getActivity()));
 		}
 		
 		@Override
@@ -240,7 +241,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			for(int i=0; i<c.getCount(); ++i) {
 				c.moveToPosition(i);
 				String labelId = c.getString(0);
-				OverviewData data = loadLabelData(labelId); 
+				OverviewData data = loadLabelData(labelId,FileUtil.getDownloadFolder(getActivity())); 
 				
 				if(data != null) {
 					if(mType == OVERVIEW_VIEW_TYPE_RECENT_PHOTO) {
@@ -276,7 +277,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		}
 	}
 
-	private OverviewData loadLabelData(String labelId) {
+	private OverviewData loadLabelData(String labelId,String realDownloadFolder) {
 		Cursor labelCursor = LabelDB.getLabelByLabelId(getActivity(), labelId);
 		Cursor fileCursor = LabelDB.getLabelFileViewByLabelId(getActivity(), labelId);
 		Log.d(TAG, "There are " + fileCursor.getCount() + " files");
@@ -293,8 +294,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 				data.title = labelCursor.getString(1);
 			} else if(mType == OVERVIEW_VIEW_TYPE_RECENT_VIDEO) {
 //				if(fileCursor.moveToFirst()) {
-					String fileName =  Environment.getExternalStorageDirectory().getAbsolutePath()
-							+ Constant.VIDEO_FOLDER+ "/"  +fileCursor
+					String fileName =  realDownloadFolder + Constant.VIDEO_FOLDER+ "/"  +fileCursor
 							.getString(fileCursor.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
 					data.url = fileName;
 //				}

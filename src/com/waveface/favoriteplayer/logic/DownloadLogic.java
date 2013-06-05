@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.os.Environment;
 import android.provider.MediaStore.Video.Thumbnails;
+import android.text.TextUtils;
 
 import com.waveface.exception.WammerServerException;
 import com.waveface.favoriteplayer.Constant;
@@ -85,7 +86,15 @@ public class DownloadLogic {
 			
 			LabelDB.updateLabelInfo(context, label, fileEntity, isChangeLabel);
 			
-			File root = Environment.getExternalStorageDirectory();
+			String downloadFolder = FileUtil.getDownloadFolder(context);
+			File root = null;
+			if(TextUtils.isEmpty(downloadFolder)){
+				root = Environment.getExternalStorageDirectory();
+			}
+			else{
+				root = new File(FileUtil.getDownloadFolder(context));
+			}
+			
 			ImageManager imageManager = SyncApplication
 					.getWavefacePlayerApplication(context).getImageManager();
 
@@ -105,7 +114,7 @@ public class DownloadLogic {
 							.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
 					Log.d(TAG, "filename:" + fileName);
 					Log.d(TAG, "fileId:" + fileId);
-                if(StringUtil.isAvaiableSpace(Constant.AVAIABLE_SPACE)){
+                if(StringUtil.isAvaiableSpace(context,Constant.AVAIABLE_SPACE)){
 					
 					if (type.equals(Constant.FILE_TYPE_VIDEO)) {
 						String url = restfulAPIURL + Constant.URL_IMAGE + "/"
