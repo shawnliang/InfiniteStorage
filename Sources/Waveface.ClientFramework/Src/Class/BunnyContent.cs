@@ -18,6 +18,8 @@ namespace Waveface.ClientFramework
 
 
 		#region Property
+		public Boolean EnableTag { get; set; }
+
 		public BitmapSource ImageSource
 		{
 			get
