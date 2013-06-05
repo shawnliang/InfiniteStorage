@@ -121,4 +121,10 @@
     <value>正在安裝相關的程式，請稍待
 </value>
   </data>
+  <data name="$this.Subtitle" xml:space="preserve">
+    <value>安裝相依的元件</value>
+  </data>
+  <data name="$this.Title" xml:space="preserve">
+    <value>正在設定 Bonjour 服務</value>
+  </data>
 </root>

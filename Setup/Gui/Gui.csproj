@@ -166,7 +166,13 @@
     <EmbeddedResource Include="SetupWizard.resx">
       <DependentUpon>SetupWizard.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SetupWizard.zh-TW.resx">
+      <DependentUpon>SetupWizard.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WelcomeStep.resx">
+      <DependentUpon>WelcomeStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WelcomeStep.zh-TW.resx">
       <DependentUpon>WelcomeStep.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.manifest" />

@@ -17,4 +17,4 @@ ipch
 *.cache
 *.orig
 TestResults/
-
+*.tmp

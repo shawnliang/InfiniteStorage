@@ -119,12 +119,18 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="lblDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 13</value>
+    <value>202, 13</value>
   </data>
   <data name="lblDescription.Text" xml:space="preserve">
-    <value>請選擇 Favorite Home 的儲存位置</value>
+    <value>請選擇 Favorite Home 儲存檔案的位置</value>
   </data>
   <data name="changeButton.Text" xml:space="preserve">
     <value>變更...</value>
+  </data>
+  <data name="$this.Subtitle" xml:space="preserve">
+    <value>請選擇 Favorite Home 存放檔案的位置</value>
+  </data>
+  <data name="$this.Title" xml:space="preserve">
+    <value>Favorite Home 存放位置</value>
   </data>
 </root>

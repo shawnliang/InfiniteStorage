@@ -112,12 +112,18 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="APPNAME" xml:space="preserve">
-    <value>Bunny</value>
+  <data name="lblWelcome.Text" xml:space="preserve">
+    <value>歡迎使用 Favorite Home</value>
+  </data>
+  <data name="lblCopyright.Text" xml:space="preserve">
+    <value>警告：這個程式受著作權法與國際條約保護。</value>
+  </data>
+  <data name="lblInstruction.Text" xml:space="preserve">
+    <value>請按 "下一步" 繼續安裝。</value>
   </data>
 </root>

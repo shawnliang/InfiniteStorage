@@ -117,77 +117,35 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="$this.Subtitle" xml:space="preserve">
-    <value>Choosen application components are being configured</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="progressBar1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>476, 18</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="progressLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
-  </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
-  </data>
-  <data name="&gt;&gt;progressLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="lblInstallation.Size" type="System.Drawing.Size, System.Drawing">
-    <value>418, 48</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lblInstallation.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 10, 10, 10</value>
-  </data>
-  <data name="&gt;&gt;pbInstallation.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>SharpSetup.UI.Forms.Modern.ModernActionStep, SharpSetup, Version=1.4.1.158, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>BonjourInstallationStep</value>
-  </data>
-  <data name="&gt;&gt;progressBar1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
   <data name="pbInstallation.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 90</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="pbInstallation.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>10, 10, 5, 10</value>
   </data>
   <data name="pbInstallation.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 48</value>
   </data>
-  <data name="progressLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 13</value>
-  </data>
-  <data name="progressLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;lblInstallation.Name" xml:space="preserve">
-    <value>lblInstallation</value>
-  </data>
-  <data name="&gt;&gt;progressLabel.Name" xml:space="preserve">
-    <value>progressLabel</value>
-  </data>
-  <data name="progressLabel.Text" xml:space="preserve">
-    <value>[progress text]</value>
-  </data>
   <data name="pbInstallation.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>StretchImage</value>
   </data>
-  <data name="lblInstallation.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="pbInstallation.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
   </data>
-  <data name="progressLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 190</value>
+  <data name="&gt;&gt;pbInstallation.Name" xml:space="preserve">
+    <value>pbInstallation</value>
   </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>10, 3, 10, 3</value>
+  <data name="&gt;&gt;pbInstallation.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;progressLabel.Parent" xml:space="preserve">
+  <data name="&gt;&gt;pbInstallation.Parent" xml:space="preserve">
     <value>$this</value>
+  </data>
+  <data name="&gt;&gt;pbInstallation.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="lblInstallation.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -195,8 +153,20 @@
   <data name="lblInstallation.Location" type="System.Drawing.Point, System.Drawing">
     <value>68, 90</value>
   </data>
-  <data name="&gt;&gt;lblInstallation.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="lblInstallation.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 10, 10, 10</value>
+  </data>
+  <data name="lblInstallation.Size" type="System.Drawing.Size, System.Drawing">
+    <value>418, 48</value>
+  </data>
+  <data name="lblInstallation.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="lblInstallation.Text" xml:space="preserve">
+    <value>Please wait while setup configures dependent programs. This may take a few minutes.</value>
+  </data>
+  <data name="&gt;&gt;lblInstallation.Name" xml:space="preserve">
+    <value>lblInstallation</value>
   </data>
   <data name="&gt;&gt;lblInstallation.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -204,49 +174,76 @@
   <data name="&gt;&gt;lblInstallation.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;progressBar1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="lblInstallation.Text" xml:space="preserve">
-    <value>Please wait while setup configures dependent programs. This may take a few minutes.</value>
-  </data>
-  <data name="&gt;&gt;pbInstallation.Name" xml:space="preserve">
-    <value>pbInstallation</value>
-  </data>
-  <data name="&gt;&gt;progressBar1.Name" xml:space="preserve">
-    <value>progressBar1</value>
-  </data>
-  <data name="&gt;&gt;pbInstallation.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="$this.Title" xml:space="preserve">
-    <value>Configuring product</value>
-  </data>
-  <data name="pbInstallation.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
-  </data>
-  <data name="&gt;&gt;pbInstallation.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;lblInstallation.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="progressBar1.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 216</value>
   </data>
+  <data name="progressBar1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>476, 18</value>
+  </data>
   <data name="progressBar1.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
   </data>
-  <data name="&gt;&gt;progressLabel.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;progressBar1.Name" xml:space="preserve">
+    <value>progressBar1</value>
   </data>
   <data name="&gt;&gt;progressBar1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="pbInstallation.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>10, 10, 5, 10</value>
+  <data name="&gt;&gt;progressBar1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;progressBar1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="progressLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="progressLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 190</value>
+  </data>
+  <data name="progressLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 13</value>
+  </data>
+  <data name="progressLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="progressLabel.Text" xml:space="preserve">
+    <value>[progress text]</value>
+  </data>
+  <data name="&gt;&gt;progressLabel.Name" xml:space="preserve">
+    <value>progressLabel</value>
+  </data>
+  <data name="&gt;&gt;progressLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;progressLabel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;progressLabel.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>zh-TW</value>
-  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>10, 3, 10, 3</value>
+  </data>
+  <data name="$this.Subtitle" xml:space="preserve">
+    <value>Dependent components are being configured</value>
+  </data>
+  <data name="$this.Title" xml:space="preserve">
+    <value>Configuring bonjour service</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>BonjourInstallationStep</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>SharpSetup.UI.Forms.Modern.ModernActionStep, SharpSetup, Version=1.4.1.158, Culture=neutral, PublicKeyToken=null</value>
+  </data>
 </root>

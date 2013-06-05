@@ -38,8 +38,8 @@ namespace Gui
 			// 
 			// pbInstallation
 			// 
-			resources.ApplyResources(this.pbInstallation, "pbInstallation");
 			this.pbInstallation.Image = global::Gui.Properties.Resources.BonjourInstallationStepImg;
+			resources.ApplyResources(this.pbInstallation, "pbInstallation");
 			this.pbInstallation.Name = "pbInstallation";
 			this.pbInstallation.TabStop = false;
 			// 

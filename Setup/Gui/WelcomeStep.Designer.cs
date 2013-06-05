@@ -36,6 +36,10 @@ namespace Gui
 			((System.ComponentModel.ISupportInitialize)(this.pbLeft)).BeginInit();
 			this.SuspendLayout();
 			// 
+			// pbLeft
+			// 
+			resources.ApplyResources(this.pbLeft, "pbLeft");
+			// 
 			// lblWelcome
 			// 
 			resources.ApplyResources(this.lblWelcome, "lblWelcome");

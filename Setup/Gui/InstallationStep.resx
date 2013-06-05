@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="$this.Subtitle" xml:space="preserve">
-    <value>Choosen application components are being configured</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
@@ -152,11 +149,14 @@
   <data name="ipProgress.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>10, 10, 10, 10</value>
   </data>
-  <data name="pbInstallation.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 90</value>
+  <data name="pbInstallation.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>StretchImage</value>
   </data>
   <data name="pbInstallation.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 48</value>
+  </data>
+  <data name="pbInstallation.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 90</value>
   </data>
   <data name="&gt;&gt;ipProgress.Parent" xml:space="preserve">
     <value>$this</value>
@@ -167,8 +167,8 @@
   <data name="ipProgress.Size" type="System.Drawing.Size, System.Drawing">
     <value>476, 55</value>
   </data>
-  <data name="pbInstallation.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>StretchImage</value>
+  <data name="&gt;&gt;lblInstallation.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lblInstallation.TabIndex" type="System.Int32, mscorlib">
@@ -183,20 +183,17 @@
   <data name="lblInstallation.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="lblInstallation.Location" type="System.Drawing.Point, System.Drawing">
-    <value>68, 90</value>
+  <data name="&gt;&gt;lblInstallation.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblInstallation.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;lblInstallation.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="lblInstallation.Location" type="System.Drawing.Point, System.Drawing">
+    <value>68, 90</value>
   </data>
-  <data name="&gt;&gt;lblInstallation.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>10, 3, 10, 3</value>
+  <data name="$this.Subtitle" xml:space="preserve">
+    <value>Choosen application components are being configured</value>
   </data>
   <data name="lblInstallation.Text" xml:space="preserve">
     <value>Please wait while setup configures required application components. This may take a few minutes.</value>
@@ -204,8 +201,8 @@
   <data name="&gt;&gt;pbInstallation.Name" xml:space="preserve">
     <value>pbInstallation</value>
   </data>
-  <data name="&gt;&gt;pbInstallation.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>10, 3, 10, 3</value>
   </data>
   <data name="$this.Title" xml:space="preserve">
     <value>Configuring product</value>
@@ -219,13 +216,13 @@
   <data name="ipProgress.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
   </data>
+  <data name="&gt;&gt;pbInstallation.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
   <data name="pbInstallation.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>10, 10, 5, 10</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>zh-TW</value>
   </metadata>
 </root>
