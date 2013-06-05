@@ -1,0 +1,66 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:local="clr-namespace:Waveface.Client"
+	mc:Ignorable="d"
+	x:Class="Waveface.Client.VideoControl"
+	x:Name="UserControl"
+	Opacity="0.87" Width="200">
+	<UserControl.Background>
+        	                <LinearGradientBrush EndPoint="0.5,1"
+                                     StartPoint="0.5,0">
+                    <GradientStop Color="#FF403E3E"
+                                  Offset="0" />
+                    <GradientStop Color="#FF191818"
+                                  Offset="1" />
+                </LinearGradientBrush>
+	</UserControl.Background>
+
+	<Grid x:Name="LayoutRoot">
+		<Slider x:Name="PlayProgress"
+			Margin="20,0,43.136,0"
+			VerticalAlignment="Center"
+			Maximum="0"
+			ValueChanged="PlayProgress_ValueChanged" />
+		<Label Content="{Binding Maximum, ElementName=PlayProgress}"
+			HorizontalAlignment="Right"
+			VerticalAlignment="Center"
+			Margin="0,0,2,0"
+			Height="10.999"
+			Width="16.426"
+			FontSize="8"
+			FontFamily="Segoe UI Light"
+			Padding="0"
+			Foreground="#FFF3F3F7"
+			HorizontalContentAlignment="Center"
+			VerticalContentAlignment="Center" />
+		<Label Content="{Binding Value, ElementName=PlayProgress}"
+			HorizontalAlignment="Right"
+			VerticalAlignment="Center"
+			Margin="0,0,24,0"
+			Height="10.999"
+			Width="16.426"
+			FontSize="8"
+			FontFamily="Segoe UI Light"
+			Padding="0"
+			Foreground="#FFF3F3F7"
+			HorizontalContentAlignment="Center"
+			VerticalContentAlignment="Center" />
+		<Label Content="/"
+			HorizontalAlignment="Right"
+			VerticalAlignment="Center"
+			Margin="0,0,19,0"
+			Height="10.999"
+			Width="5"
+			FontSize="8"
+			FontFamily="Segoe UI Light"
+			Padding="0"
+			Foreground="#FFF3F3F7"
+			HorizontalContentAlignment="Center"
+			VerticalContentAlignment="Center"/>
+		<local:PlayButton x:Name="pbPlay" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Padding="5,0,0,0" Background="Transparent" MouseDown="PlayButton_MouseDown" />
+		<local:PauseButton x:Name="pbPause" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Padding="5,0,0,0" Visibility="Collapsed" Background="Transparent" MouseDown="PauseButton_MouseDown" />
+	</Grid>
+</UserControl>

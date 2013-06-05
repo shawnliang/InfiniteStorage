@@ -26,7 +26,7 @@ namespace Waveface.Client
 				if (_timer == null)
 				{
 					_timer = new DispatcherTimer();
-					_timer.Interval = TimeSpan.FromMilliseconds(500);
+					_timer.Interval = TimeSpan.FromMilliseconds(100);
 					_timer.Tick += _timer_Tick;
 				}
 				return _timer;
@@ -186,23 +186,37 @@ namespace Waveface.Client
 
 		private void meVideo_MediaOpened(object sender, System.Windows.RoutedEventArgs e)
 		{
-			vcViewerControl.Duration = meVideo.NaturalDuration.TimeSpan.TotalMilliseconds;
+			vcVideoControl.Duration = meVideo.NaturalDuration.TimeSpan.TotalMilliseconds;
 			m_Timer.Start();
 		}
 
 		void _timer_Tick(object sender, EventArgs e)
 		{
-			vcViewerControl.Position = meVideo.Position.TotalMilliseconds; 
+			vcVideoControl.Position = meVideo.Position.TotalMilliseconds; 
 		}
 
 		private void meVideo_MediaEnded(object sender, RoutedEventArgs e)
 		{
 			m_Timer.Stop();
+			vcVideoControl.IsPlaying = false;
 		}
 
 		private void meVideo_MediaFailed(object sender, ExceptionRoutedEventArgs e)
 		{
 			m_Timer.Stop();
+			vcVideoControl.IsPlaying = false;
+		}
+
+		private void vcVideoControl_PlayButtonClick(object sender, System.EventArgs e)
+		{
+			meVideo.Play();
+			vcVideoControl.IsPlaying = true;
+		}
+
+		private void vcVideoControl_PauseButtonClick(object sender, System.EventArgs e)
+		{
+			meVideo.Pause();
+			vcVideoControl.IsPlaying = false;
 		}
 
 	}
