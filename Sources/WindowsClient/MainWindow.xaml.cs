@@ -138,6 +138,8 @@ namespace Waveface.Client
 
 			rspRightSidePanel.Visibility = System.Windows.Visibility.Visible;
 			rspRightSidePane2.Visibility = System.Windows.Visibility.Collapsed;
+
+			PendingUI.Visibility = System.Windows.Visibility.Collapsed;
 		}
 
 
@@ -174,11 +176,9 @@ namespace Waveface.Client
 
 		private void lbxDeviceContainer_UnSortedItemClick(object sender, UnSortedItemEventArgs e)
 		{
-            PendingUC _pendingUC = new PendingUC(e.DeviceID);
-            _pendingUC.HorizontalAlignment = HorizontalAlignment.Stretch;
-            _pendingUC.VerticalAlignment = VerticalAlignment.Stretch;
+			PendingUI.Init(e.DeviceID);
 
-		    gridMain.Children.Add(_pendingUC);
+			PendingUI.Visibility = System.Windows.Visibility.Visible;
 		}
 
 		private void lbxFavorites_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
