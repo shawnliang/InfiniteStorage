@@ -645,6 +645,6 @@
         			Cursor="Hand" />
         	</Grid>
         </Grid>
-        <local:PendingUC x:Name="PendingUI" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1" Visibility="Collapsed" Width="Auto" Height="Auto"/>
+        <local:UnSortedFilesUC x:Name="unSortedFilesUC" Grid.RowSpan="3" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="0" Visibility="Collapsed" Width="Auto" Height="Auto"/>
     </Grid>
 </Window>

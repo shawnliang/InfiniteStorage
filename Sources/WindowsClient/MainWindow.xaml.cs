@@ -139,7 +139,7 @@ namespace Waveface.Client
 			rspRightSidePanel.Visibility = System.Windows.Visibility.Visible;
 			rspRightSidePane2.Visibility = System.Windows.Visibility.Collapsed;
 
-			PendingUI.Visibility = System.Windows.Visibility.Collapsed;
+			unSortedFilesUC.Visibility = System.Windows.Visibility.Collapsed;
 		}
 
 
@@ -176,9 +176,9 @@ namespace Waveface.Client
 
 		private void lbxDeviceContainer_UnSortedItemClick(object sender, UnSortedItemEventArgs e)
 		{
-			PendingUI.Init(e.DeviceID);
+			unSortedFilesUC.Init(e.DeviceID);
 
-			PendingUI.Visibility = System.Windows.Visibility.Visible;
+			unSortedFilesUC.Visibility = Visibility.Visible;
 		}
 
 		private void lbxFavorites_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

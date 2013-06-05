@@ -17,7 +17,7 @@ using Newtonsoft.Json;
 
 namespace Waveface.Client
 {
-    public partial class PendingUC : UserControl
+    public partial class UnSortedFilesUC : UserControl
     {
         internal class MySliderTick
         {
@@ -29,7 +29,7 @@ namespace Waveface.Client
         public static int BY_WEEK = 7 * 24 * 60;
         public static int BY_MONTH = 30 * 24 * 60;
 
-        public static PendingUC Current { get; set; }
+        public static UnSortedFilesUC Current { get; set; }
 
         private bool m_init;
         private List<MySliderTick> m_sliderTicks = new List<MySliderTick>();
@@ -40,7 +40,7 @@ namespace Waveface.Client
         public RT Rt { get; set; }
         public int GroupingEventInterval { get; set; }
 
-		public PendingUC()
+		public UnSortedFilesUC()
         {
 			Current = this;
 
@@ -51,7 +51,7 @@ namespace Waveface.Client
 			 InitSliderTicks();
         }
 		
-        public PendingUC(string device)
+        public UnSortedFilesUC(string device)
 			:this()
         {
             Init(device);

@@ -74,19 +74,19 @@ namespace Waveface.Client
                 ByMinutes(minutes);
             }
 
-            if (minutes == (PendingUC.BY_DAY))
+            if (minutes == (UnSortedFilesUC.BY_DAY))
             {
-                By_Day(PendingUC.BY_DAY);
+                By_Day(UnSortedFilesUC.BY_DAY);
             }
 
-            if (minutes == (PendingUC.BY_WEEK))
+            if (minutes == (UnSortedFilesUC.BY_WEEK))
             {
-                By_Day(PendingUC.BY_WEEK);
+                By_Day(UnSortedFilesUC.BY_WEEK);
             }
 
-            if (minutes == (PendingUC.BY_MONTH))
+            if (minutes == (UnSortedFilesUC.BY_MONTH))
             {
-                By_Day(PendingUC.BY_MONTH);
+                By_Day(UnSortedFilesUC.BY_MONTH);
             }
         }
 
@@ -125,17 +125,17 @@ namespace Waveface.Client
 
                 string _by = string.Empty;
 
-                if (dayType == PendingUC.BY_DAY)
+                if (dayType == UnSortedFilesUC.BY_DAY)
                 {
                     _by = _dt.ToString("yyyy-MM-dd");
                 }
 
-                if (dayType == PendingUC.BY_WEEK)
+                if (dayType == UnSortedFilesUC.BY_WEEK)
                 {
-                    _by = PendingUC.StartOfWeek(_dt).ToString("yyyy-MM-dd");
+                    _by = UnSortedFilesUC.StartOfWeek(_dt).ToString("yyyy-MM-dd");
                 }
 
-                if (dayType == PendingUC.BY_MONTH)
+                if (dayType == UnSortedFilesUC.BY_MONTH)
                 {
                     _by = _dt.ToString("yyyy-MM");
                 }

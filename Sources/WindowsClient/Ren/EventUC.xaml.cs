@@ -122,16 +122,16 @@ namespace Waveface.Client
             tbTimeAgo.Visibility = Visibility.Collapsed;
             // tbTimeAgo.Text = "(" + GetPrettyDate(_startDateTime) + ")";
 
-            tbTotalCount.Text = PendingUC.GetCountsString(PhotosCount, VideosCount);
+            tbTotalCount.Text = UnSortedFilesUC.GetCountsString(PhotosCount, VideosCount);
         }
 
         private string GetTimeDisplayString()
         {
             string _timeInterval = string.Empty;
-            DateTime _startDateTime = PendingUC.Current.Rt.DateTimeCache[Event[0].taken_time];
-            DateTime _endDateTime = PendingUC.Current.Rt.DateTimeCache[Event[Event.Count - 1].taken_time];
+            DateTime _startDateTime = UnSortedFilesUC.Current.Rt.DateTimeCache[Event[0].taken_time];
+            DateTime _endDateTime = UnSortedFilesUC.Current.Rt.DateTimeCache[Event[Event.Count - 1].taken_time];
 
-            if (PendingUC.Current.GroupingEventInterval < 24 * 60)
+            if (UnSortedFilesUC.Current.GroupingEventInterval < 24 * 60)
             {
                 if (Event.Count == 1) //只有一筆事件
                 {
@@ -150,21 +150,21 @@ namespace Waveface.Client
                 }
             }
 
-            if (PendingUC.Current.GroupingEventInterval == PendingUC.BY_DAY)
+            if (UnSortedFilesUC.Current.GroupingEventInterval == UnSortedFilesUC.BY_DAY)
             {
                 _timeInterval = _startDateTime.ToString("yyyy/MM/dd dddd");
             }
 
-            if (PendingUC.Current.GroupingEventInterval == PendingUC.BY_WEEK)
+            if (UnSortedFilesUC.Current.GroupingEventInterval == UnSortedFilesUC.BY_WEEK)
             {
-                DateTime _startOfWeek = PendingUC.StartOfWeek(_startDateTime);
+                DateTime _startOfWeek = UnSortedFilesUC.StartOfWeek(_startDateTime);
                 DateTime _endOfWeek = _startOfWeek.AddDays(6);
 
                 _timeInterval = _startOfWeek.ToString("yyyy/MM/dd") + " - " +
                                 ((_startOfWeek.Year != _endOfWeek.Year) ? _endOfWeek.ToString("yyyy/MM/dd") : _endOfWeek.ToString("MM/dd"));
             }
 
-            if (PendingUC.Current.GroupingEventInterval == PendingUC.BY_MONTH)
+            if (UnSortedFilesUC.Current.GroupingEventInterval == UnSortedFilesUC.BY_MONTH)
             {
                 _timeInterval = _startDateTime.ToString("yyyy/MM");
             }
