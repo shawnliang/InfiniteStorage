@@ -32,7 +32,7 @@ namespace InfiniteStorage.REST
 
 				if (nDeleted > 0)
 				{
-					cmd.CommandText = "update [LabelFiles] set seq = @seq where label_id = @id";
+					cmd.CommandText = "update [Labels] set seq = @seq where label_id = @id";
 					var parSeq = cmd.CreateParameter();
 					parSeq.Value = SeqNum.GetNextSeq();
 					parSeq.ParameterName = "@seq";
