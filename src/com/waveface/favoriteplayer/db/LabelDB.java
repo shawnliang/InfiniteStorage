@@ -120,7 +120,8 @@ public class LabelDB {
 					cv.put(FileTable.COLUMN_HEIGHT, file.height);
 					cv.put(FileTable.COLUMN_EVENT_TIME, file.event_time);
 					cv.put(FileTable.COLUMN_STATUS, Constant.FILE_STATUS_NON_DELETE);
-					cv.put(FileTable.COLUMN_ORIENTATION, file.orientation);
+					cv.put(FileTable.COLUMN_ORIENTATION, file.orientation==null?"":file.orientation);
+					cv.put(FileTable.COLUMN_ORIGINAL_PATH, file.original_path==null?"":file.original_path);
 					datas.add(cv);
 				}
 				ContentValues[] cvs = new ContentValues[datas.size()];

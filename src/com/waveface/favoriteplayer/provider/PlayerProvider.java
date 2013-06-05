@@ -615,8 +615,9 @@ public class PlayerProvider extends ContentProvider {
 						+ FileTable.COLUMN_DEV_TYPE + ","
 						+FileTable.COLUMN_EVENT_TIME+ ","
 						+FileTable.COLUMN_STATUS+ ","
-						+FileTable.COLUMN_ORIENTATION+ ")"
-						+ " values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+						+FileTable.COLUMN_ORIENTATION+ ","
+						+FileTable.COLUMN_ORIGINAL_PATH+ ")"
+						+ " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
 					// bind the 1-indexed ?'s to the values specified
@@ -633,6 +634,7 @@ public class PlayerProvider extends ContentProvider {
 					insert.bindString(11,value.getAsString(FileTable.COLUMN_EVENT_TIME));
 					insert.bindString(12,value.getAsString(FileTable.COLUMN_STATUS));
 					insert.bindString(13,value.getAsString(FileTable.COLUMN_ORIENTATION));
+					insert.bindString(14,value.getAsString(FileTable.COLUMN_ORIGINAL_PATH));
 					insert.execute();
 				}
 				db.setTransactionSuccessful();

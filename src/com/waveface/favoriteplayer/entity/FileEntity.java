@@ -55,6 +55,9 @@ public class File{
 	
 	@SerializedName("orientation")
 	public String orientation;
+	
+	@SerializedName("original_path")
+	public String original_path;
 }
 
 }

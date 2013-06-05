@@ -97,7 +97,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		  .append(FileTable.COLUMN_EVENT_TIME+ " TEXT NOT NULL ,")
 		  .append(FileTable.COLUMN_DEV_TYPE + " TEXT NOT NULL ,")
 		  .append(FileTable.COLUMN_STATUS + " TEXT NOT NULL ,")
-		  .append(FileTable.COLUMN_ORIENTATION + " TEXT NOT NULL );");
+		  .append(FileTable.COLUMN_ORIENTATION +" TEXT NOT NULL ,")
+		  .append(FileTable.COLUMN_ORIGINAL_PATH +" TEXT NOT NULL  );");
 		createTable(db, sqlBuilder.toString(), FileTable.TABLE_NAME);
 		
 		//CREATE VIEW FOR LABEL AND FILE RELETIVE
@@ -135,7 +136,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	      .append(" B."+FileTable.COLUMN_DEV_TYPE+" AS "+LabelFileView.COLUMN_DEV_TYPE+",")
 	      .append(" B."+FileTable.COLUMN_EVENT_TIME+" AS "+LabelFileView.COLUMN_EVENT_TIME+",")
 	      .append(" B."+FileTable.COLUMN_STATUS+" AS "+LabelFileView.COLUMN_STATUS+",")
-	      .append(" B."+FileTable.COLUMN_DEV_TYPE+" AS "+LabelFileView.COLUMN_DEV_TYPE)
+	      .append(" B."+FileTable.COLUMN_ORIENTATION+" AS "+LabelFileView.COLUMN_ORIENTATION)
 	      .append(" FROM "+LabelFileTable.TABLE_NAME+" A,"+FileTable.TABLE_NAME+" B")
 	      .append(" WHERE A."+LabelFileTable.COLUMN_FILE_ID+"= B."+FileTable.COLUMN_FILE_ID)
 		  .append(" ORDER BY "+LabelFileView.COLUMN_EVENT_TIME);
