@@ -27,6 +27,8 @@ namespace InfiniteStorage.REST
 					throw new Exception("No such label: " + label_id.ToString());
 
 				q.on_air = on_air;
+				q.seq = SeqNum.GetNextSeq();
+
 				db.Object.SaveChanges();
 			}
 
