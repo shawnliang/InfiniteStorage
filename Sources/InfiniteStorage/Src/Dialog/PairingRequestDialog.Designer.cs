@@ -75,7 +75,6 @@
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PairingRequestDialog_FormClosing);
 			this.Load += new System.EventHandler(this.PairingRequestDialog_Load);
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 

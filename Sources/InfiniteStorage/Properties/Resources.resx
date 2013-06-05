@@ -199,4 +199,16 @@
   <data name="DefLibraryName" xml:space="preserve">
     <value>{0}'s Favorite Home</value>
   </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="MoveFolderConfirmMsg" xml:space="preserve">
+    <value>This will move the Favorite Home folder and all the files inside from its current location to {0}.</value>
+  </data>
+  <data name="MoveFolderFailTitle" xml:space="preserve">
+    <value>Move folder unsuccessful</value>
+  </data>
+  <data name="MoveFolder_TargetAlreadyExist" xml:space="preserve">
+    <value>Directory {0} is not empty.</value>
+  </data>
 </root>
