@@ -40,16 +40,20 @@ namespace Waveface.Client
         public RT Rt { get; set; }
         public int GroupingEventInterval { get; set; }
 
-        public PendingUC(string device)
+		public PendingUC()
         {
-            Current = this;
+			Current = this;
 
             InitializeComponent();
+			
+			 Cursor = Cursors.Wait;
 
-            Cursor = Cursors.Wait;
-
-            InitSliderTicks();
-
+			 InitSliderTicks();
+        }
+		
+        public PendingUC(string device)
+			:this()
+        {
             Init(device);
         }
 
@@ -64,7 +68,7 @@ namespace Waveface.Client
             m_sliderTicks.Add(new MySliderTick { Name = "Month", Value = BY_MONTH });
         }
 
-        private void Init(string device)
+        public void Init(string device)
         {
             string _deviceID = device;
 
