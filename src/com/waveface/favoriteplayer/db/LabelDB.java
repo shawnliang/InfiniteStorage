@@ -29,14 +29,25 @@ public class LabelDB {
 			LabelEntity.Label label, FileEntity fileEntity ,boolean isChangeLabel) {
 		updateLabel(context, label);
 		if(isChangeLabel){
-			if(label.on_air.equals("false")){
-                //TODO: delete  database file , delete storge file
-				removeFile(context,label);
-            }
+			//Changed Label
+			//delete labelfile in database
 			removeAllFileInLabel(context, label.label_id);
+			if(label.on_air.equals("false")){
+
+               //TODO: delete file in db and file's real source(image or video file)
+				removeFile(context,label);
+			}
+			else{
+				updateLabelFiles(context, label);
+				updateFiles(context, fileEntity);
+			}
+		}else{
+			//delete labelfile in database
+
+			removeAllFileInLabel(context, label.label_id);
+			updateLabelFiles(context, label);
+			updateFiles(context, fileEntity);	
 		}
-		updateLabelFiles(context, label);
-		updateFiles(context, fileEntity);	
 	}
 
 	public static int updateLabel(Context context, LabelEntity.Label label) {
@@ -240,7 +251,11 @@ public class LabelDB {
 						LabelFileView.COLUMN_DEV_NAME,
 						LabelFileView.COLUMN_HEIGHT,
 						LabelFileView.COLUMN_WIDTH,
-						LabelFileView.COLUMN_DEV_TYPE },
+						LabelFileView.COLUMN_DEV_TYPE,
+						LabelFileView.COLUMN_STATUS,
+						LabelFileView.COLUMN_ORIENTATION,
+						LabelFileView.COLUMN_ORIGINAL_PATH
+				},
 						LabelFileView.COLUMN_LABEL_ID + "=?",
 						new String[] { labelId},
 						null);
@@ -308,11 +323,19 @@ public class LabelDB {
 				return cursor;
 	}
 	
-	private static void removeLabelFileByFileId(Context context, String fileId) {
+	public static void removeLabelFileByFileId(Context context, String fileId) {
 		ContentResolver cr = context.getContentResolver();
 		cr.delete(LabelFileTable.CONTENT_URI, 
 				LabelFileTable.COLUMN_FILE_ID+"=?", 
 				new String[]{fileId});
+	}
+	
+	
+	public static void removeLabelFileByLabelId(Context context, String labelId) {
+		ContentResolver cr = context.getContentResolver();
+		cr.delete(LabelFileTable.CONTENT_URI, 
+				LabelFileTable.COLUMN_LABEL_ID+"=?", 
+				new String[]{labelId});
 	}
 	
 	public static int updateLabelSeq(Context context, String labelId,String seq) {
