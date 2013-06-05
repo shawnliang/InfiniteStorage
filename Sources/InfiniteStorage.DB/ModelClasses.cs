@@ -72,6 +72,12 @@ namespace InfiniteStorage.Model
 
 	public class Label
 	{
+		public Label()
+		{
+			on_air = true;
+			auto_type = (int)AutoLabelType.NotAuto;
+		}
+
 		[Key]
 		public Guid label_id { get; set; }
 
