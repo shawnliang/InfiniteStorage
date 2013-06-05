@@ -206,14 +206,7 @@ namespace Waveface.ClientFramework
 
 			StationAPI.Tag(string.Join(",", m_TaggedContents.Select(taggedContent => taggedContent.ID).ToArray()), labelID);
 
-			//StationAPI.ClearLabel(m_LabelID);
-
-			foreach(var taggedContent in  m_TaggedContents)
-			{
-				StationAPI.UnTag(taggedContent.ID, m_LabelID);
-			}
-
-			StationAPI.OnAirLabel(labelID, true);
+			StationAPI.ClearLabel(m_LabelID);
 
 			m_TaggedContents.Clear();
 			m_Favorites.Clear();

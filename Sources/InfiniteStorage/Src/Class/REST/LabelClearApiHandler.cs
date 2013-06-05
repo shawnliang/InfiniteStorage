@@ -1,5 +1,6 @@
 ﻿using InfiniteStorage.Model;
 using System;
+using System.Data.SQLite;
 using Wammer.Station;
 
 namespace InfiniteStorage.REST
@@ -32,11 +33,16 @@ namespace InfiniteStorage.REST
 
 				if (nDeleted > 0)
 				{
-					cmd.CommandText = "update [Labels] set seq = @seq where label_id = @id";
-					var parSeq = cmd.CreateParameter();
+					var delCmd = conn.CreateCommand();
+
+					delCmd.CommandText = "update [Labels] set seq = @seq where label_id = @id";
+					
+					var parSeq = delCmd.CreateParameter();
 					parSeq.Value = SeqNum.GetNextSeq();
 					parSeq.ParameterName = "@seq";
-					cmd.ExecuteNonQuery();
+					delCmd.Parameters.Add(parSeq);
+					delCmd.Parameters.Add(new SQLiteParameter("@id", label_id));
+					delCmd.ExecuteNonQuery();
 				}
 
 
