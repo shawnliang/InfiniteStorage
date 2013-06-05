@@ -15,6 +15,8 @@ using System.Windows.Forms;
 using Wammer.Station;
 using WebSocketSharp.Server;
 using Waveface.Common;
+using System.Globalization;
+using System.Threading;
 
 namespace InfiniteStorage
 {
@@ -32,6 +34,16 @@ namespace InfiniteStorage
 		static void Main()
 		{
 			Boolean bCreatedNew;
+
+			var cultureName = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "Culture", "");
+			if (!string.IsNullOrEmpty(cultureName))
+			{
+				var cultureInfo = new CultureInfo(cultureName);
+				var currentThread = Thread.CurrentThread;
+
+				currentThread.CurrentCulture = cultureInfo;
+				currentThread.CurrentUICulture = cultureInfo;
+			}
 
 			m_InstanceMutex = new System.Threading.Mutex(false, Application.ProductName + Environment.UserName, out bCreatedNew);
 
