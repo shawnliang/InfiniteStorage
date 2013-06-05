@@ -339,6 +339,24 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No available Favorite Uploader device is found. Search again?.
+        /// </summary>
+        internal static string WaitForPair_SearchAgainMsg {
+            get {
+                return ResourceManager.GetString("WaitForPair_SearchAgainMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No device found.
+        /// </summary>
+        internal static string WaitForPair_SearchAgainTitle {
+            get {
+                return ResourceManager.GetString("WaitForPair_SearchAgainTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Waiting {

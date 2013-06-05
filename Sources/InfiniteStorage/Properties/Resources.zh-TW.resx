@@ -197,4 +197,10 @@
   <data name="TrayMenuItem_Open" xml:space="preserve">
     <value>開啟</value>
   </data>
+  <data name="WaitForPair_SearchAgainMsg" xml:space="preserve">
+    <value>找不到可連結的裝置。再搜尋一次？</value>
+  </data>
+  <data name="WaitForPair_SearchAgainTitle" xml:space="preserve">
+    <value>找不到裝置</value>
+  </data>
 </root>

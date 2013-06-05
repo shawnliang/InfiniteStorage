@@ -274,7 +274,19 @@ namespace InfiniteStorage
 					var pairingDialog = new PairingRequestDialog(args.ctx);
 					if (pairingDialog.ShowDialog() == DialogResult.No)
 					{
-						args.ctx.handleDisapprove();
+						var t = new System.Threading.Tasks.Task(() =>
+						{
+							try
+							{
+								args.ctx.handleDisapprove();
+							}
+							catch (Exception err)
+							{
+								log4net.LogManager.GetLogger(GetType()).Warn("disapprove error", err);
+							}
+						});
+						t.Start();
+
 						return;
 					}
 

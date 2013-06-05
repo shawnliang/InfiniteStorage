@@ -211,4 +211,10 @@
   <data name="MoveFolder_TargetAlreadyExist" xml:space="preserve">
     <value>Directory {0} is not empty.</value>
   </data>
+  <data name="WaitForPair_SearchAgainMsg" xml:space="preserve">
+    <value>No available Favorite Uploader device is found. Search again?</value>
+  </data>
+  <data name="WaitForPair_SearchAgainTitle" xml:space="preserve">
+    <value>No device found</value>
+  </data>
 </root>

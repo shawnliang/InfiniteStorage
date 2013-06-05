@@ -50,6 +50,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "WaitForPairingDialog";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "WaitForPairingDialog";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.WaitForPairingDialog_FormClosed);
 			this.Load += new System.EventHandler(this.WaitForPairingDialog_Load);
