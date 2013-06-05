@@ -78,7 +78,13 @@ public class GalleryViewAdapter extends BaseAdapter{
 					Log.d(TAG, "ThumbNail DB ID:"+dbId);
 				}
 			}
+			else{
+				attr.setLoadFromThread(true);
+			}
 			root.findViewById(R.id.image_play).setVisibility(View.VISIBLE);
+		}
+		else{
+			attr.setLoadFromThread(true);
 		}
 		mImageManager.getImage(mDatas.get(position).url, attr);
 		return root;

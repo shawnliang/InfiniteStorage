@@ -185,7 +185,7 @@ public class FullScreenSlideshowFragment extends Fragment implements AnimationLi
 			attr.setMaxSizeEqualsScreenSize(getActivity());
 			attr.setLoadFromThread(true);			
 			if(platData.type.equals(Constant.FILE_TYPE_IMAGE)){
-				attr.setDoneScaleType(ScaleType.CENTER_CROP);
+				attr.setDoneScaleType(ScaleType.FIT_CENTER);
 				mImageManager.getImage(platData.url , attr);
 			}
 			else if(platData.type.equals(Constant.FILE_TYPE_VIDEO)){
