@@ -3,14 +3,12 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
 	mc:Ignorable="d"
-	x:Class="Waveface.Client.NextButton"
+	x:Class="Waveface.Client.PlayButton"
 	x:Name="UserControl"
-	d:DesignWidth="21.289" d:DesignHeight="26.419">
+	d:DesignWidth="9.75" d:DesignHeight="9.5">
 
-		<ed:BlockArrow Fill="#FFF3F3F7"
-			Orientation="Right"
-			StrokeThickness="0"
-			Cursor="Hand" />
+	<Grid x:Name="LayoutRoot">
+		<Path Data="M9.5,5 L5,0.5 5,9.5 z" Fill="White" HorizontalAlignment="Left" Height="9.5" Stretch="Fill" Stroke="#FF818181" VerticalAlignment="Top" Width="9.75"/>
+	</Grid>
 </UserControl>

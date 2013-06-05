@@ -27,7 +27,6 @@
             <Setter Property="Visibility" Value="Collapsed"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="Video">
-                    <Setter Property="Visibility" Value="Visible"/>
 					<Setter Property="Visibility" Value="Visible"/>
 					<Setter Property="Source" Value="{Binding Uri, IsAsync=True}"/>
                 </DataTrigger>

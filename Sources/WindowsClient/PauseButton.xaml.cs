@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace Waveface.Client
 {
 	/// <summary>
-	/// Interaction logic for NextButton.xaml
+	/// Interaction logic for PauseButton.xaml
 	/// </summary>
-	public partial class NextButton : UserControl
+	public partial class PauseButton : UserControl
 	{
-		public NextButton()
+		public PauseButton()
 		{
 			this.InitializeComponent();
 		}

@@ -106,11 +106,17 @@
     <Compile Include="NextButton.xaml.cs">
       <DependentUpon>NextButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PauseButton.xaml.cs">
+      <DependentUpon>PauseButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PhotoViewer.xaml.cs">
       <DependentUpon>PhotoViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="PhotoViewerControl.xaml.cs">
       <DependentUpon>PhotoViewerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PlayButton.xaml.cs">
+      <DependentUpon>PlayButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="PreviousButton.xaml.cs">
       <DependentUpon>PreviousButton.xaml</DependentUpon>
@@ -138,6 +144,9 @@
     <Compile Include="Src\Extension\CollectionExtension.cs" />
     <Compile Include="Star.xaml.cs">
       <DependentUpon>Star.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VideoControl.xaml.cs">
+      <DependentUpon>VideoControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewerControl.xaml.cs">
       <DependentUpon>ViewerControl.xaml</DependentUpon>
@@ -193,11 +202,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="PauseButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="PhotoViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PhotoViewerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PlayButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -226,6 +243,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Star.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VideoControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

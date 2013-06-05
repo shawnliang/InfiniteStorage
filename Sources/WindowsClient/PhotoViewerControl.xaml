@@ -21,6 +21,16 @@
             </Style.Triggers>
         </Style>
 
+		<Style TargetType="l:VideoControl">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="Video">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+		
+
 		<Style TargetType="Image">
             <Setter Property="Visibility" Value="Collapsed"/>
             <Style.Triggers>
@@ -92,7 +102,7 @@
                     <Grid x:Name="ImgGrid">
 						<MediaElement x:Name="meVideo" DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}" MediaOpened="meVideo_MediaOpened"
                                       MediaEnded="meVideo_MediaEnded"
-                                      MediaFailed="meVideo_MediaFailed" />
+                                      MediaFailed="meVideo_MediaFailed" LoadedBehavior="Manual" />
                         <Image x:Name="ImgObject"
                                DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"/>
                         <Thumb x:Name="ImgThumb"
@@ -125,6 +135,7 @@
                Foreground="White"
                Margin="0,13,0,0"
                Width="250"/>
+        <l:VideoControl x:Name="vcVideoControl"  DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"  Margin="0,0,0,73" VerticalAlignment="Bottom" Height="19" HorizontalAlignment="Center" Width="300" PlayButtonClick="vcVideoControl_PlayButtonClick" PauseButtonClick="vcVideoControl_PauseButtonClick"/>
         <l:ViewerControl x:Name="vcViewerControl"
                          Stared="{Binding SelectedItem.Liked, ElementName=lbImages, Mode=TwoWay, IsAsync=True}"
                          VerticalAlignment="Bottom"
@@ -132,7 +143,7 @@
                          Margin="0,0,0,13"
                          Next="ViewerControl_Next"
                          Previous="ViewerControl_Previous"
-                         Close="ViewerControl_Close"/>
+                         Close="ViewerControl_Close" Height="60" Width="300"/>
 
         <Label x:Name="label"
                VerticalAlignment="Bottom"
