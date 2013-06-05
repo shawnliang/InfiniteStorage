@@ -27,10 +27,7 @@ namespace InfiniteStorage.Notify
 		{
 			get
 			{
-				var folder = Path.GetDirectoryName(saved_path);
-				var folderElems = folder.Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
-
-				return "/" + device_folder + "/" + string.Join("/", folderElems);
+				return Path.GetDirectoryName(saved_path);
 			}
 		}
 
@@ -56,6 +53,8 @@ namespace InfiniteStorage.Notify
 
 		[JsonIgnore]
 		public int? _orientation { get; set; }
+
+		public string original_path { get; set; }
 
 		public Orientation? orientation
 		{

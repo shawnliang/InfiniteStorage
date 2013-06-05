@@ -43,7 +43,7 @@ namespace UnitTest.Notify
 					dev_type = 0,
 					device_folder = "iphone",
 					size = 12345,
-					saved_path = @"2012\2012-10\file1.jpg",
+					saved_path = @"iphone\2012\2012-10\file1.jpg",
 					seq = 1000,
 					thumb_ready = true,
 					type = 0,
@@ -73,7 +73,7 @@ namespace UnitTest.Notify
 
 			Assert.AreEqual(retFiles[0].id.ToString(), file0["id"]);
 			Assert.AreEqual(retFiles[0].file_name, file0["file_name"]);
-			Assert.AreEqual("/iphone/2012/2012-10", file0["folder"]);
+			Assert.AreEqual(@"iphone\2012\2012-10", file0["folder"]);
 
 			Assert.IsTrue(file0["thumb_ready"].Value<bool>());
 			Assert.AreEqual(retFiles[0].width, file0["width"].Value<long>());
