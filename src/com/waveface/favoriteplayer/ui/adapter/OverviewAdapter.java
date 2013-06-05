@@ -6,6 +6,9 @@ import idv.jason.lib.imagemanager.ImageManager;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
+import android.provider.MediaStore.Video.Thumbnails;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +18,15 @@ import android.widget.ImageView.ScaleType;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.SyncApplication;
 import com.waveface.favoriteplayer.entity.OverviewData;
+import com.waveface.favoriteplayer.util.FileUtil;
+import com.waveface.favoriteplayer.util.Log;
 
 public class OverviewAdapter extends BaseAdapter{
+	private static final String TAG = OverviewAdapter.class.getSimpleName();
 	private ArrayList<OverviewData> mDatas;
 	private ImageManager mImageManager;
 	private LayoutInflater mInflater;
@@ -93,7 +100,21 @@ public class OverviewAdapter extends BaseAdapter{
 		attr.setResizeSize(width, height);
 		attr.setApplyWithAnimation(true);
 		attr.setDoneScaleType(ScaleType.CENTER_CROP);
-		mImageManager.getImage(mDatas.get(position).url, attr);
+		
+		if(Constant.FILE_TYPE_VIDEO.equals(mDatas.get(position).type)) {
+			String fullFilename = mDatas.get(position).url;
+			Bitmap bmThumbnail = mImageManager.getImage(fullFilename, attr);
+			if(bmThumbnail==null){
+				if(FileUtil.isFileExisted(fullFilename)){
+					bmThumbnail = ThumbnailUtils.createVideoThumbnail(fullFilename, 
+					        Thumbnails.MINI_KIND);
+					String dbId = mImageManager.setBitmapToFile(bmThumbnail, 
+							fullFilename, null, false);
+					Log.d(TAG, "ThumbNail DB ID:"+dbId);
+				}
+			}
+		}
+		mImageManager.getImage(mDatas.get(position).url, attr);			
 		
 		attr = new ImageAttribute(holder.reflection);
 		attr.setResizeSize(width, height);

@@ -28,14 +28,23 @@ public class LabelDB {
 			LabelEntity.Label label, FileEntity fileEntity ,boolean isChangeLabel) {
 		updateLabel(context, label);
 		if(isChangeLabel){
-			if(label.on_air.equals("false")){
-                //TODO: delete  database file , delete storge file
-				
-            }
+			//Changed Label
+			//delete labelfile in database
 			removeAllFileInLabel(context, label.label_id);
+			if(label.on_air.equals("false")){
+               //TODO: delete file in db and file's real source(image or video file)
+			}
+			else{
+				updateLabelFiles(context, label);
+				updateFiles(context, fileEntity);
+			}
 		}
-		updateLabelFiles(context, label);
-		updateFiles(context, fileEntity);	
+		else{
+			//delete labelfile in database
+			removeAllFileInLabel(context, label.label_id);
+			updateLabelFiles(context, label);
+			updateFiles(context, fileEntity);	
+		}
 	}
 
 	public static int updateLabel(Context context, LabelEntity.Label label) {
@@ -236,7 +245,7 @@ public class LabelDB {
 						LabelFileView.COLUMN_DEV_NAME,
 						LabelFileView.COLUMN_HEIGHT,
 						LabelFileView.COLUMN_WIDTH,
-						LabelFileView.COLUMN_DEV_TYPE },
+						LabelFileView.COLUMN_DEV_TYPE},
 						LabelFileView.COLUMN_LABEL_ID + "=?",
 						new String[] { labelId},
 						null);

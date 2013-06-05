@@ -286,16 +286,18 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			data.labelId = labelId;
 			data.url = mServerUrl + labelCursor.getString(2);
 			data.count = fileCursor.getCount();
-
+			fileCursor.moveToFirst();
+			data.type = fileCursor.getString(fileCursor.getColumnIndex(LabelFileView.COLUMN_TYPE));
+			
 			if(mType == OVERVIEW_VIEW_TYPE_FAVORITE) {
 				data.title = labelCursor.getString(1);
 			} else if(mType == OVERVIEW_VIEW_TYPE_RECENT_VIDEO) {
-				if(fileCursor.moveToFirst()) {
+//				if(fileCursor.moveToFirst()) {
 					String fileName =  Environment.getExternalStorageDirectory().getAbsolutePath()
 							+ Constant.VIDEO_FOLDER+ "/"  +fileCursor
 							.getString(fileCursor.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
 					data.url = fileName;
-				}
+//				}
 			}
 		}
 		fileCursor.close();
