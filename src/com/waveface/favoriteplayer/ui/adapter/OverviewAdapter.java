@@ -103,7 +103,8 @@ public class OverviewAdapter extends BaseAdapter{
 		attr.setDoneScaleType(ScaleType.CENTER_CROP);
 		
 		if(Constant.FILE_TYPE_VIDEO.equals(mDatas.get(position).type)) {
-			String fullFilename = Environment.getExternalStorageDirectory().getAbsolutePath()
+			
+			String fullFilename = FileUtil.getDownloadFolder(context)
 					+ Constant.VIDEO_FOLDER + "/" + mDatas.get(position).filename;
 			Bitmap bmThumbnail = mImageManager.getImage(fullFilename, attr);
 			if(bmThumbnail==null){

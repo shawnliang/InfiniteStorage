@@ -199,7 +199,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 					attr.setDoneScaleType(ScaleType.CENTER_CROP);
 					
 					if(Constant.FILE_TYPE_VIDEO.equals(result.type)) {
-						String fullFilename = Environment.getExternalStorageDirectory().getAbsolutePath()
+						String fullFilename = FileUtil.getDownloadFolder(getActivity())
 								+ Constant.VIDEO_FOLDER + "/" + result.filename;
 
 						Bitmap bmThumbnail = mImageManager.getImage(fullFilename, attr);
