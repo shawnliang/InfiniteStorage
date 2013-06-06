@@ -15,7 +15,7 @@ public class LabelTable implements BaseColumns {
 	public static final Uri CONTENT_URI =  LABELS_URI;
 	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.favoritplayer.labels";
 	public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.favoritplayer.labels";
-	public static final String DEFAULT_SORT_ORDER = LabelTable.COLUMN_LABEL_NAME+" DESC";
+	public static final String DEFAULT_SORT_ORDER = LabelTable.COLUMN_SEQ+" DESC";
 
 	public static final String TABLE_NAME = "Labels";
 	public static final String COLUMN_LABEL_ID = "id";	

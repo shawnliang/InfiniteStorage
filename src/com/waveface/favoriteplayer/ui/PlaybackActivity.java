@@ -2,10 +2,10 @@ package com.waveface.favoriteplayer.ui;
 
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -21,13 +21,14 @@ import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelFileView;
 import com.waveface.favoriteplayer.entity.PlaybackData;
 import com.waveface.favoriteplayer.entity.ServerEntity;
-import com.waveface.favoriteplayer.event.PlaybackItemClickEvent;
 import com.waveface.favoriteplayer.event.PlaybackCancelEvent;
+import com.waveface.favoriteplayer.event.PlaybackItemClickEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.ui.fragment.FullScreenSlideshowFragment;
 import com.waveface.favoriteplayer.ui.fragment.GalleryViewFragment;
 import com.waveface.favoriteplayer.ui.fragment.PlaybackFragment;
 import com.waveface.favoriteplayer.ui.fragment.VideoFragment;
+import com.waveface.favoriteplayer.util.FileUtil;
 
 import de.greenrobot.event.EventBus;
 
@@ -58,7 +59,7 @@ public class PlaybackActivity extends FragmentActivity {
 		String labelId = data.getString(Constant.ARGUMENT1);
 		mLabelTitle = data.getString(Constant.ARGUMENT3);
 		
-		new LoadPlaybackData(labelId).execute(null, null, null);
+		new LoadPlaybackData(this,labelId).execute(null, null, null);
 		
 
 	}
@@ -158,9 +159,12 @@ public class PlaybackActivity extends FragmentActivity {
 	}
 	
 	class LoadPlaybackData extends AsyncTask<Void, Void, ArrayList<PlaybackData>> {
+		private Context mContext;
 		public String mLabelId;
 		
-		public LoadPlaybackData(String labelId) {
+		
+		public LoadPlaybackData(Context context ,String labelId) {
+			mContext = context;
 			mLabelId = labelId;
 		}
 
@@ -175,7 +179,7 @@ public class PlaybackActivity extends FragmentActivity {
 			Log.d(TAG, "mServerUrl:" +serverUrl);
 			
 			ArrayList<PlaybackData> datas = new ArrayList<PlaybackData>();
-			String localPath = Environment.getExternalStorageDirectory().getAbsolutePath()
+			String localPath = FileUtil.getDownloadFolder(mContext)
 					+ Constant.VIDEO_FOLDER+ "/";
 			Cursor c = LabelDB.getLabelFileViewByLabelId(getApplicationContext(), mLabelId);
 			for(int i=0; i<c.getCount(); ++i) {
@@ -186,6 +190,7 @@ public class PlaybackActivity extends FragmentActivity {
 					pd.url = serverUrl + Constant.URL_IMAGE + "/" +
 							c.getString(c.getColumnIndex(LabelFileView.COLUMN_FILE_ID)) +
 							Constant.URL_IMAGE_LARGE;
+					pd.orientation = c.getString(c.getColumnIndex(LabelFileView.COLUMN_ORIENTATION));
 				} else {
 					pd.url = localPath + c.getString(c.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
 				}

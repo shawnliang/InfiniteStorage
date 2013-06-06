@@ -11,7 +11,11 @@ import java.nio.channels.FileChannel;
 import java.util.Date;
 import java.util.Stack;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
+
+import com.waveface.favoriteplayer.Constant;
 
 public class FileUtil {
 	private static final String TAG = FileUtil.class.getSimpleName();
@@ -119,5 +123,8 @@ public class FileUtil {
 		}
 		return downloaded;
 	}
-
+	public static String getDownloadFolder(Context context){
+		return context.getSharedPreferences(Constant.PREFS_NAME, Context.MODE_PRIVATE)
+				.getString(Constant.PREF_DOWNLOAD_FOLDER, "");
+	}
 }

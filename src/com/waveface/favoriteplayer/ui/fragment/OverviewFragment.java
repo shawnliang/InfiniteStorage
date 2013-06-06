@@ -12,7 +12,6 @@ import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore.Video.Thumbnails;
 import android.support.v4.app.Fragment;
@@ -176,7 +175,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 
 		@Override
 		protected OverviewData doInBackground(Void... params) {
-			return loadLabelData(mLabelId);
+			return loadLabelData(mLabelId,FileUtil.getDownloadFolder(getActivity()));
 		}
 		
 		@Override
@@ -189,6 +188,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 						(result.count));
 				
 				if(result!=null){
+					String coverUrl = null;
 					int width = getActivity().getResources().getDimensionPixelSize(R.dimen.overview_image_width) + 200;
 					int height = getActivity().getResources().getDimensionPixelSize(R.dimen.overview_image_height) + 200;
 	
@@ -199,9 +199,8 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 					attr.setDoneScaleType(ScaleType.CENTER_CROP);
 					
 					if(Constant.FILE_TYPE_VIDEO.equals(result.type)) {
-						String fullFilename = Environment.getExternalStorageDirectory().getAbsolutePath()
+						String fullFilename = FileUtil.getDownloadFolder(getActivity())
 								+ Constant.VIDEO_FOLDER + "/" + result.filename;
-
 						Bitmap bmThumbnail = mImageManager.getImage(fullFilename, attr);
 						if(bmThumbnail==null){
 							if(FileUtil.isFileExisted(fullFilename)){
@@ -211,14 +210,18 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 										fullFilename, null, false);
 								Log.d(TAG, "ThumbNail DB ID:"+dbId);
 							}
+							else{
+								
+							}
 						}
 						holder.placeholder.setVisibility(View.VISIBLE);
-						mImageManager.getImage(fullFilename, attr);		
+						coverUrl = fullFilename;
 					}
 					else{
 						holder.placeholder.setVisibility(View.INVISIBLE);
-						mImageManager.getImage(result.url, attr);			
+						coverUrl = result.url;
 					}
+					mImageManager.getImage(coverUrl, attr);		
 					
 					attr = new ImageAttribute(holder.reflection);
 					attr.setResizeSize(width, height);
@@ -226,7 +229,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 					attr.setHighQuality(true);
 					attr.setApplyWithAnimation(true);
 					attr.setDoneScaleType(ScaleType.CENTER_CROP);
-					mImageManager.getImage(result.url, attr);	
+					mImageManager.getImage(coverUrl, attr);		
 				}
 			}
 		}
@@ -292,7 +295,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			for(int i=0; i<c.getCount(); ++i) {
 				c.moveToPosition(i);
 				String labelId = c.getString(0);
-				OverviewData data = loadLabelData(labelId); 
+				OverviewData data = loadLabelData(labelId,FileUtil.getDownloadFolder(getActivity())); 
 				
 				if(data != null) {
 					if(mType == OVERVIEW_VIEW_TYPE_RECENT_PHOTO) {
@@ -328,7 +331,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		}
 	}
 
-	private OverviewData loadLabelData(String labelId) {
+	private OverviewData loadLabelData(String labelId,String realDownloadFolder) {
 		Cursor labelCursor = LabelDB.getLabelByLabelId(getActivity(), labelId);
 		Cursor fileCursor = LabelDB.getLabelFileViewByLabelId(getActivity(), labelId);
 		Log.d(TAG, "There are " + fileCursor.getCount() + " files");
@@ -345,8 +348,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 				data.title = labelCursor.getString(1);
 			} else if(mType == OVERVIEW_VIEW_TYPE_RECENT_VIDEO) {
 //				if(fileCursor.moveToFirst()) {
-					String fileName =  Environment.getExternalStorageDirectory().getAbsolutePath()
-							+ Constant.VIDEO_FOLDER+ "/"  +fileCursor
+					String fileName =  realDownloadFolder + Constant.VIDEO_FOLDER+ "/"  +fileCursor
 							.getString(fileCursor.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
 					data.url = fileName;
 //				}

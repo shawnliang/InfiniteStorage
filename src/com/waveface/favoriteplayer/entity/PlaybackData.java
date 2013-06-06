@@ -6,6 +6,7 @@ import android.os.Parcelable;
 public class PlaybackData implements Parcelable{
 	public String url;
 	public String type;
+	public String orientation;
 	
 	public static final Parcelable.Creator<PlaybackData> CREATOR = new Creator<PlaybackData>() {
 
@@ -23,11 +24,13 @@ public class PlaybackData implements Parcelable{
 	public PlaybackData() {
 		url = null;
 		type = "";
+		orientation = "";
 	}
 	
 	public PlaybackData(Parcel in) {
 		url = in.readString();
 		type = in.readString();
+		orientation = in.readString();
 	}
 
 	@Override
@@ -39,6 +42,6 @@ public class PlaybackData implements Parcelable{
 	public void writeToParcel(Parcel out, int flags) {
 		out.writeString(url);
 		out.writeString(type);
+		out.writeString(orientation);		
 	}
-
 }
