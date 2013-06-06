@@ -63,7 +63,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <!-- #################################################################### -->
         <LinearGradientBrush x:Key="HorizontalSliderThumbHoverBackgroundInverted" EndPoint="0,0" StartPoint="0,1">
             <GradientStop Color="white" Offset="0"/>
@@ -458,55 +458,45 @@
 
         <Grid Grid.Column="1" x:Name="gridContent" Margin="0,0,0,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="49" />
-                <RowDefinition Height="28" />
-                <RowDefinition Height="44" />
+                <RowDefinition Height="48" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="45" />
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Background="{DynamicResource TitleBarBackground}"  Orientation="Horizontal">
-                <TextBlock  Text="Unsorted Files from " Margin="14,12,0,0" Foreground="White" FontSize="18.667" FontFamily="Segoe UI Light" FontWeight="Bold"/>
-                <TextBlock x:Name="tbTitle" Text="Import Source" Margin="2,12,0,0" Foreground="White" FontSize="18.667" FontFamily="Segoe UI Light" FontWeight="Bold"/>
-                <TextBlock x:Name="tbTotalInterval" Foreground="#FF5A5A5A" Margin="10,18,0,0" Text="2013.1.1 - 2013.5.25" FontSize="15" FontWeight="Bold"/>
+                <TextBlock  Text="Unsorted Media from " Margin="14,14,0,0" Foreground="White" FontSize="18.667" FontFamily="Segoe UI Light" FontWeight="Bold"/>
+                <TextBlock x:Name="tbTitle" Text="Import Source" Margin="2,14,0,0" Foreground="White" FontSize="18.667" FontFamily="Segoe UI Light" FontWeight="Bold"/>
+                <TextBlock x:Name="tbTotalCount" Foreground="#FF5A5A5A" Margin="10,20,0,0" Text="99 Photos, 12 Videos" FontSize="14" FontWeight="Bold"/>
             </StackPanel>
 
-            <StackPanel Grid.Row="1"  Margin="14,8,0,0" Orientation="Horizontal">
-                <StackPanel.Effect>
-                    <DropShadowEffect ShadowDepth="2"/>
-                </StackPanel.Effect>
-                <TextBlock x:Name="tbTotalCount" Foreground="#999999" Text="99 Photos, 12 Videos" FontSize="14" />
-            </StackPanel>
+            <Grid Grid.Row="1">
+                <ListBox x:Name="listBoxEvent" BorderThickness="0" Background="#5F5F5F" ScrollViewer.CanContentScroll = "false" LayoutUpdated="listBoxEvent_LayoutUpdated" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  ItemContainerStyle="{StaticResource SimpleListBoxItem}"/>
+            </Grid>
 
-            <StackPanel Grid.Row="2" Margin="16, 4, 0, 0" Orientation="Horizontal" >
-                <TextBlock Text="Try the magic slider for different event sizes:" Margin="0, 6" Foreground="White" FontSize="16" />
+            <Grid Grid.Row="2" Margin="1" Background="#333333">
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Waveface:SliderWithDraggingEvents x:Name="sliderEvent" Margin="8, 0" Value="4" BorderThickness="0" Height="18" Width="256" IsSnapToTickEnabled="True"
+                        TickFrequency="1"  Minimum="0" Maximum="6" ThumbDragCompleted="sliderEvent_ThumbDragCompleted">
+                        <Waveface:SliderWithDraggingEvents.Effect>
+                            <DropShadowEffect ShadowDepth="1" />
+                        </Waveface:SliderWithDraggingEvents.Effect>
+                    </Waveface:SliderWithDraggingEvents>
 
-                <Waveface:SliderWithDraggingEvents x:Name="sliderEvent" Margin="8, -2, 0, 0" Value="4" BorderThickness="0" Height="18" Width="256" IsSnapToTickEnabled="True"
-                    TickFrequency="1"  Minimum="0" Maximum="6" ThumbDragStarted="sliderEvent_ThumbDragStarted" ThumbDragCompleted="sliderEvent_ThumbDragCompleted" ValueChanged="sliderEvent_ValueChanged"  MouseEnter="sliderEvent_MouseEnter" MouseLeave="sliderEvent_MouseLeave">
-                    <Waveface:SliderWithDraggingEvents.Effect>
-                        <DropShadowEffect ShadowDepth="1" />
-                    </Waveface:SliderWithDraggingEvents.Effect>
-                </Waveface:SliderWithDraggingEvents>
-                <TextBlock x:Name="tbSliderHint" Visibility="Collapsed" Text="By Day" Margin="8, 6" FontSize="14" Foreground="White" FontWeight="SemiBold" />
-            
-            
-            </StackPanel>
-
-            <StackPanel Grid.Row="2" Margin="0, 4, 18, 8" HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button x:Name="btnImport" Foreground="White" FontSize="14" Content="Move All Files" Padding="8, 0" Margin="10,0,0,0" Click="btnImportAll_Click">
-                    <Button.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#2f76b3" Offset="0"/>
-                            <GradientStop Color="#225683" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Button.Background>
-                    <Button.Effect>
-                        <DropShadowEffect ShadowDepth="1"/>
-                    </Button.Effect>
-                </Button>
-            </StackPanel>
-
-            <Grid Grid.Row="3">
-                <ListBox x:Name="listBoxEvent" BorderThickness="0" Background="#FF1F1F1F" ScrollViewer.CanContentScroll = "false" LayoutUpdated="listBoxEvent_LayoutUpdated" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  ItemContainerStyle="{StaticResource SimpleListBoxItem}"/>
+                    <Button x:Name="btnImport" Foreground="White" FontSize="14" Content="Move All Files" Padding="8, 0" Margin="10,8,20,8" Click="btnImportAll_Click">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1"
+                                     StartPoint="0.5,0">
+                                <GradientStop Color="#FF616060"
+                                  Offset="0" />
+                                <GradientStop Color="#FF474646"
+                                  Offset="1" />
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Button.Effect>
+                            <DropShadowEffect ShadowDepth="1"/>
+                        </Button.Effect>
+                    </Button>
+                </StackPanel>
             </Grid>
         </Grid>
     </Grid>

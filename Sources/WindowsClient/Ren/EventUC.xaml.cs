@@ -375,23 +375,36 @@ namespace Waveface.Client
 
         private void gridMain_MouseEnter(object sender, MouseEventArgs e)
         {
-            tbDescribe.BorderThickness = new Thickness(2);
-            gridMain.Background = new SolidColorBrush(Color.FromRgb(37, 37, 37));
-            lbEvent.Background = new SolidColorBrush(Color.FromRgb(37, 37, 37));
-            btnImport.Visibility = Visibility.Visible;
+            tbDescribe.BorderThickness = new Thickness(1);
+            tbDescribe.BorderBrush = new SolidColorBrush(Color.FromRgb(63, 63, 63));
+            tbDescribe.Background = new SolidColorBrush(Color.FromRgb(74, 74, 74));
+
+            gridMain.Background = new SolidColorBrush(Color.FromRgb(90, 91, 91)); //5A5B5B
+            lbEvent.Background = new SolidColorBrush(Color.FromRgb(90, 91, 91));
         }
 
         private void gridMain_MouseLeave(object sender, MouseEventArgs e)
         {
             tbDescribe.BorderThickness = new Thickness(0);
-            gridMain.Background = new SolidColorBrush(Color.FromRgb(16, 16, 17));
-            lbEvent.Background = new SolidColorBrush(Color.FromRgb(16, 16, 17));
-            btnImport.Visibility = Visibility.Collapsed;
+            tbDescribe.Background = new SolidColorBrush(Color.FromRgb(95, 95, 95));
+
+            gridMain.Background = new SolidColorBrush(Color.FromRgb(95, 95, 95));
+            lbEvent.Background = new SolidColorBrush(Color.FromRgb(95, 95, 95));
         }
 
         private void btnImport_Click(object sender, RoutedEventArgs e)
         {
-            UnSortedFilesUC.Current.AddEvent(this);
+            UnSortedFilesUC.Current.AddEventToFolder(this);
+        }
+
+        private void tbDescribe_MouseEnter(object sender, MouseEventArgs e)
+        {
+            tbDescribe.Background = new SolidColorBrush(Color.FromRgb(90, 91, 91));
+        }
+
+        private void tbDescribe_MouseLeave(object sender, MouseEventArgs e)
+        {
+            tbDescribe.Background = new SolidColorBrush(Color.FromRgb(74, 74, 74));
         }
     }
 }

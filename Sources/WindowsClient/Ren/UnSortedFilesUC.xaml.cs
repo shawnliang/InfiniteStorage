@@ -6,11 +6,14 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Security.Permissions;
+using System.Threading;
 using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Newtonsoft.Json;
 
 #endregion
@@ -188,15 +191,6 @@ namespace Waveface.Client
         private void ShowTitle()
         {
             tbTitle.Text = Rt.RtData.file_changes[0].dev_name;
-
-            if (Rt.StartDate != Rt.EndDate)
-            {
-                tbTotalInterval.Text = Rt.StartDate.ToShortDateString() + " - " + Rt.EndDate.ToShortDateString();
-            }
-            else
-            {
-                tbTotalInterval.Text = Rt.StartDate.ToShortDateString();
-            }
         }
 
         private void ShowInfor()
@@ -261,23 +255,6 @@ namespace Waveface.Client
             }
 
             return _c;
-        }
-
-        private void sliderEvent_MouseEnter(object sender, MouseEventArgs e)
-        {
-            ShowSliderHint();
-        }
-
-        private void sliderEvent_MouseLeave(object sender, MouseEventArgs e)
-        {
-            tbSliderHint.Visibility = Visibility.Collapsed;
-        }
-
-        private void ShowSliderHint()
-        {
-            // tbSliderHint.Visibility = Visibility.Visible;
-
-            tbSliderHint.Text = "By " + m_sliderTicks.ToArray()[(int)sliderEvent.Value].Name;
         }
 
         #region Default Event Name
@@ -388,23 +365,9 @@ namespace Waveface.Client
 
         #endregion
 
-        private void sliderEvent_ThumbDragStarted(object sender, DragStartedEventArgs e)
-        {
-            ShowSliderHint();
-        }
-
         private void sliderEvent_ThumbDragCompleted(object sender, DragCompletedEventArgs e)
         {
             ShowEvents();
-            ShowSliderHint();
-        }
-
-        private void sliderEvent_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (m_init)
-            {
-                ShowSliderHint();
-            }
         }
 
         private void listBoxEvent_LayoutUpdated(object sender, EventArgs e)
@@ -441,12 +404,44 @@ namespace Waveface.Client
             return _weekNum;
         }
 
-        public void AddEvent(EventUC eventUC)
+        public void AddEventToFolder(EventUC eventUC)
         {
             DoImport(eventUC, false);
 
+            double _h = eventUC.ActualHeight / 10;
+
+            for (int i = 10; i > 0; i--)
+            {
+                eventUC.Height = i * _h;
+                DoEvents();
+                Thread.Sleep(50);
+
+                eventUC.Opacity -= (1 / 20) * i;
+            }
+
             m_eventUCs.Remove(eventUC);
         }
+
+        #region DoEvents
+
+        [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        public void DoEvents()
+        {
+            var _frame = new DispatcherFrame();
+
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(ExitFrame), _frame);
+
+            Dispatcher.PushFrame(_frame);
+        }
+
+        public object ExitFrame(object f)
+        {
+            ((DispatcherFrame)f).Continue = false;
+
+            return null;
+        }
+
+        #endregion
 
         private void btnImportAll_Click(object sender, RoutedEventArgs e)
         {
