@@ -82,7 +82,8 @@ public class PlayerService extends Service{
             		connectPCWithPairedServer();
             		autoPairingConnect();
             	}
-            	if(NetworkUtil.isWifiNetworkAvailable(mContext)){
+            	if(NetworkUtil.isWifiNetworkAvailable(mContext) &&
+            			!ServersLogic.hasBackupedServers(mContext)){
                 	long fromTime = System.currentTimeMillis()-mMDNSSetupTime;
                 	if(NetworkUtil.isWifiNetworkAvailable(mContext)
                 			&& RuntimeState.isMDNSSetUped  
@@ -118,8 +119,9 @@ public class PlayerService extends Service{
 		connectPCWithPairedServer();
 		Log.d(TAG,"Wi-Fi-Network:"+NetworkUtil.isWifiNetworkAvailable(mContext));		
 		RuntimeState.mAutoConnectMode = ServersLogic.hasBackupedServers(this);		
-		new SetupMDNS().execute(new Void[]{});
-//		setupMDNS();
+		if(!ServersLogic.hasBackupedServers(mContext)){
+			new SetupMDNS().execute(new Void[]{});
+		}
 		Log.d(TAG, "onCreate");		
 	}
 
@@ -132,14 +134,18 @@ public class PlayerService extends Service{
 				String actionContent = intent.getStringExtra(Constant.EXTRA_NETWROK_STATE);
 				if(actionContent!=null){
 					if(actionContent.equals(Constant.NETWORK_ACTION_WIFI_BROKEN)){
-						Log.d(TAG, "release MDNS");
-						ServersLogic.purgeAllBonjourServer(mContext);
-						releaseMDNS();
+						if(!ServersLogic.hasBackupedServers(mContext)){
+							Log.d(TAG, "release MDNS");
+							ServersLogic.purgeAllBonjourServer(mContext);
+							releaseMDNS();
+						}
 					}
 					else if(actionContent.equals(Constant.NETWORK_ACTION_WIFI_CONNECTED)){
 						if(NetworkUtil.isWifiNetworkAvailable(mContext) && RuntimeState.isMDNSSetUped== false){
-							Log.d(TAG, "reset MDNS");
-							setupMDNS();
+							if(!ServersLogic.hasBackupedServers(mContext)){
+								Log.d(TAG, "reset MDNS");
+								setupMDNS();
+							}
 						}
 					}
 				}
@@ -160,7 +166,9 @@ public class PlayerService extends Service{
  		if(SyncTimer!=null){
 			SyncTimer.cancel();
 		}
-		releaseMDNS();  
+		if(!ServersLogic.hasBackupedServers(mContext)){
+			releaseMDNS();  
+		}
 		ServersLogic.purgeAllBonjourServer(this);
     	ServersLogic.updateAllBackedServerStatus(this,Constant.SERVER_OFFLINE);
 		Log.d(TAG, "onDestroy");

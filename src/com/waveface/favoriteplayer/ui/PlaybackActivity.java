@@ -190,6 +190,7 @@ public class PlaybackActivity extends FragmentActivity {
 					pd.url = serverUrl + Constant.URL_IMAGE + "/" +
 							c.getString(c.getColumnIndex(LabelFileView.COLUMN_FILE_ID)) +
 							Constant.URL_IMAGE_LARGE;
+					pd.orientation = c.getString(c.getColumnIndex(LabelFileView.COLUMN_ORIENTATION));
 				} else {
 					pd.url = localPath + c.getString(c.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
 				}

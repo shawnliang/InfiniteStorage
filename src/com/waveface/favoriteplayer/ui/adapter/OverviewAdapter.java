@@ -95,6 +95,8 @@ public class OverviewAdapter extends BaseAdapter{
 		int width = context.getResources().getDimensionPixelSize(R.dimen.overview_image_width) + 200;
 		int height = context.getResources().getDimensionPixelSize(R.dimen.overview_image_height) + 200;
 
+		String coverUrl = null;
+		
 		ImageAttribute attr = new ImageAttribute(holder.image);
 		attr = new ImageAttribute(holder.image);
 		attr.setResizeSize(width, height);
@@ -114,21 +116,26 @@ public class OverviewAdapter extends BaseAdapter{
 							fullFilename, null, false);
 					Log.d(TAG, "ThumbNail DB ID:"+dbId);
 				}
+				else{
+					
+				}
 			}
 			holder.placeholder.setVisibility(View.VISIBLE);
-			mImageManager.getImage(fullFilename, attr);						
+			coverUrl = fullFilename;
 		}
 		else{
 			holder.placeholder.setVisibility(View.INVISIBLE);
-			mImageManager.getImage(mDatas.get(position).url, attr);			
+			coverUrl = mDatas.get(position).url;
 		}
+		mImageManager.getImage(coverUrl, attr);			
+
 		attr = new ImageAttribute(holder.reflection);
 		attr.setResizeSize(width, height);
 		attr.setReflection(true);
 		attr.setHighQuality(true);
 		attr.setApplyWithAnimation(true);
 		attr.setDoneScaleType(ScaleType.CENTER_CROP);
-		mImageManager.getImage(mDatas.get(position).url, attr);
+		mImageManager.getImage(coverUrl, attr);
 
 		
 		holder.labelText.setText(mDatas.get(position).title);

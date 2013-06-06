@@ -188,6 +188,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 						(result.count));
 				
 				if(result!=null){
+					String coverUrl = null;
 					int width = getActivity().getResources().getDimensionPixelSize(R.dimen.overview_image_width) + 200;
 					int height = getActivity().getResources().getDimensionPixelSize(R.dimen.overview_image_height) + 200;
 	
@@ -200,7 +201,6 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 					if(Constant.FILE_TYPE_VIDEO.equals(result.type)) {
 						String fullFilename = FileUtil.getDownloadFolder(getActivity())
 								+ Constant.VIDEO_FOLDER + "/" + result.filename;
-
 						Bitmap bmThumbnail = mImageManager.getImage(fullFilename, attr);
 						if(bmThumbnail==null){
 							if(FileUtil.isFileExisted(fullFilename)){
@@ -210,14 +210,18 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 										fullFilename, null, false);
 								Log.d(TAG, "ThumbNail DB ID:"+dbId);
 							}
+							else{
+								
+							}
 						}
 						holder.placeholder.setVisibility(View.VISIBLE);
-						mImageManager.getImage(fullFilename, attr);		
+						coverUrl = fullFilename;
 					}
 					else{
 						holder.placeholder.setVisibility(View.INVISIBLE);
-						mImageManager.getImage(result.url, attr);			
+						coverUrl = result.url;
 					}
+					mImageManager.getImage(coverUrl, attr);		
 					
 					attr = new ImageAttribute(holder.reflection);
 					attr.setResizeSize(width, height);
@@ -225,7 +229,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 					attr.setHighQuality(true);
 					attr.setApplyWithAnimation(true);
 					attr.setDoneScaleType(ScaleType.CENTER_CROP);
-					mImageManager.getImage(result.url, attr);	
+					mImageManager.getImage(coverUrl, attr);		
 				}
 			}
 		}

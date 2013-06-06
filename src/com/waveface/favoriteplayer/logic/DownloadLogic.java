@@ -2,7 +2,6 @@ package com.waveface.favoriteplayer.logic;
 
 import idv.jason.lib.imagemanager.ImageManager;
 
-
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -48,7 +47,8 @@ public class DownloadLogic {
 
 	private static final String TAG = DownloadLogic.class.getSimpleName();
 
-	public static synchronized void downloadLabel(Context context, LabelEntity.Label label,boolean autoDownload,boolean isChangeLabel) {
+	public static synchronized void downloadLabel(Context context,
+			LabelEntity.Label label, boolean autoDownload, boolean isChangeLabel) {
 		HashMap<String, String> param = new HashMap<String, String>();
 		String files = "";
 		String jsonOutput = "";
@@ -57,10 +57,6 @@ public class DownloadLogic {
 		String restfulAPIURL = "http://" + pairedServer.ip + ":"
 				+ pairedServer.restPort;
 		String getFileURL = restfulAPIURL + Constant.URL_GET_FILE;
-		
-		
-		
-		
 
 		if (label.files.length > 0) {
 
@@ -87,18 +83,17 @@ public class DownloadLogic {
 					LabelImportedEvent.STATUS_SYNCING);
 			LabelImportedEvent doneEvent = new LabelImportedEvent(
 					LabelImportedEvent.STATUS_DONE);
-			
+
 			LabelDB.updateLabelInfo(context, label, fileEntity, isChangeLabel);
-			
+
 			String downloadFolder = FileUtil.getDownloadFolder(context);
 			File root = null;
-			if(TextUtils.isEmpty(downloadFolder)){
+			if (TextUtils.isEmpty(downloadFolder)) {
 				root = Environment.getExternalStorageDirectory();
-			}
-			else{
+			} else {
 				root = new File(FileUtil.getDownloadFolder(context));
 			}
-			
+
 			ImageManager imageManager = SyncApplication
 					.getWavefacePlayerApplication(context).getImageManager();
 
@@ -118,29 +113,32 @@ public class DownloadLogic {
 							.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
 					Log.d(TAG, "filename:" + fileName);
 					Log.d(TAG, "fileId:" + fileId);
-                if(StringUtil.isAvaiableSpace(context,Constant.AVAIABLE_SPACE)){
-					
-					if (type.equals(Constant.FILE_TYPE_VIDEO)) {
-						String url = restfulAPIURL + Constant.URL_IMAGE + "/"
-								+ fileId + "/" + Constant.URL_IMAGE_ORIGIN;
-						String fullFilename = root.getAbsolutePath()
-								+ Constant.VIDEO_FOLDER + "/" + fileName;
-						if (!FileUtil.isFileExisted(fullFilename)) {
-							downloadVideo(fileId, fullFilename, url);
-							Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(fullFilename, 
-							        Thumbnails.MINI_KIND);
-							imageManager.setBitmapToFile(bmThumbnail, fullFilename, null, false);
+					if (StringUtil.isAvaiableSpace(context,
+							Constant.AVAIABLE_SPACE)) {
+						if (type.equals(Constant.FILE_TYPE_VIDEO)) {
+							String url = restfulAPIURL + Constant.URL_IMAGE
+									+ "/" + fileId + "/"
+									+ Constant.URL_IMAGE_ORIGIN;
+							String fullFilename = root.getAbsolutePath()
+									+ Constant.VIDEO_FOLDER + "/" + fileName;
+							if (!FileUtil.isFileExisted(fullFilename)) {
+								downloadVideo(fileId, fullFilename, url);
+								Bitmap bmThumbnail = ThumbnailUtils
+										.createVideoThumbnail(fullFilename,
+												Thumbnails.MINI_KIND);
+								imageManager.setBitmapToFile(bmThumbnail,
+										fullFilename, null, false);
+							}
+						} else {
+							String url = restfulAPIURL + Constant.URL_IMAGE
+									+ "/" + fileId + Constant.URL_IMAGE_LARGE;
+							imageManager.getImageWithoutThread(url, null);
 						}
 					} else {
-						String url = restfulAPIURL + Constant.URL_IMAGE + "/"
-								+ fileId + Constant.URL_IMAGE_LARGE;
-					imageManager.getImageWithoutThread(url, null);
+						context.sendBroadcast(new Intent(
+								Constant.ACTION_NOT_ENOUGH_SPACE));
+
 					}
-                }else{
-					context.sendBroadcast(new Intent(
-							Constant.ACTION_NOT_ENOUGH_SPACE));
-                	
-                }
 					long time = System.currentTimeMillis();
 					time = System.currentTimeMillis() - time;
 					syncingEvent.singleTime = time;
@@ -149,27 +147,27 @@ public class DownloadLogic {
 
 					filecursor.moveToNext();
 				}
-				if(autoDownload==false){
+				if (autoDownload == false) {
 					EventBus.getDefault().post(doneEvent);
 				}
 			}
 			filecursor.close();
 		} else {
-			if(label.label_name.equals("TAG")){
-				if(label.files.length==0){
+			if (label.label_name.equals("TAG")) {
+				if (label.files.length == 0) {
 					LabelDB.removeLabelFileByLabelId(context, label.label_id);
-				}			
+				}
 			}
 			LabelDB.updateLabel(context, label);
-			
+
 		}
 
 	}
 
 	public static void updateAllLabels(Context context, LabelEntity entity) {
-		
+
 		for (LabelEntity.Label label : entity.labels) {
-			downloadLabel(context, label,true,false);
+			downloadLabel(context, label, true, false);
 		}
 		LabelImportedEvent doneEvent = new LabelImportedEvent(
 				LabelImportedEvent.STATUS_DONE);
@@ -177,11 +175,10 @@ public class DownloadLogic {
 		subscribe(context);
 	}
 
-	
 	@SuppressLint("NewApi")
 	public static void updateLabel(Context context,
 			LabelEntity.Label labelEntity) {
-		downloadLabel(context, labelEntity,false,true);
+		downloadLabel(context, labelEntity, false, true);
 		// while(!wasSynced(context)){
 		// //
 		// downloadLabel(context,labelEntity);
@@ -190,12 +187,13 @@ public class DownloadLogic {
 				Constant.PREFS_NAME, Context.MODE_PRIVATE);
 		Editor mEditor = mPrefs.edit();
 		RuntimeState.labelsHashSet.remove(labelEntity.label_id);
-		mEditor.putStringSet(Constant.PREF_SERVER_CHANGE_LABELS, RuntimeState.labelsHashSet);
+		mEditor.putStringSet(Constant.PREF_SERVER_CHANGE_LABELS,
+				RuntimeState.labelsHashSet);
 		mEditor.commit();
 
 		LabelImportedEvent doneEvent = new LabelImportedEvent(
 				LabelImportedEvent.STATUS_DONE);
-		
+
 		Cursor maxLabelcursor = LabelDB.getMAXSEQLabel(context);
 		String labSeq = "0";
 		if (maxLabelcursor != null && maxLabelcursor.getCount() > 0) {
@@ -205,8 +203,8 @@ public class DownloadLogic {
 			// send broadcast label change
 		}
 		maxLabelcursor.close();
-		if(Integer.parseInt(labSeq) >= Integer.parseInt(labelEntity.seq)){
-		  subscribe(context);
+		if (Integer.parseInt(labSeq) >= Integer.parseInt(labelEntity.seq)) {
+			subscribe(context);
 		}
 	}
 
@@ -244,7 +242,7 @@ public class DownloadLogic {
 	}
 
 	public static void subscribe(Context context) {
-		if(RuntimeState.OnWebSocketOpened==false)
+		if (RuntimeState.OnWebSocketOpened == false)
 			return;
 		// sendSubcribe
 		Cursor maxLabelcursor = LabelDB.getMAXSEQLabel(context);
@@ -266,7 +264,7 @@ public class DownloadLogic {
 		subscribe.labels_from_seq = labSeq;
 		connectForGTV.setSubscribe(subscribe);
 		Log.d(TAG, "send message=" + RuntimeState.GSON.toJson(connectForGTV));
-		
+
 		try {
 			RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));
 		} catch (WebSocketException e) {
@@ -274,8 +272,8 @@ public class DownloadLogic {
 			e.printStackTrace();
 		}
 	}
-	
-	public static boolean isLableChang(String lableId){
+
+	public static boolean isLableChang(String lableId) {
 		return RuntimeState.labelsHashSet.contains(lableId);
 	}
 

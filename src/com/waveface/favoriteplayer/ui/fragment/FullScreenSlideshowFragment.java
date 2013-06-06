@@ -10,6 +10,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -185,7 +186,17 @@ public class FullScreenSlideshowFragment extends Fragment implements AnimationLi
 			attr.setMaxSizeEqualsScreenSize(getActivity());
 			attr.setLoadFromThread(true);			
 			if(platData.type.equals(Constant.FILE_TYPE_IMAGE)){
-				attr.setDoneScaleType(ScaleType.FIT_CENTER);
+				if(!TextUtils.isEmpty(platData.orientation)){
+					if(platData.orientation.equals("0")){
+						attr.setDoneScaleType(ScaleType.FIT_CENTER);						
+					}
+					else{
+						attr.setDoneScaleType(ScaleType.CENTER_CROP);
+					}
+				}
+				else{
+					attr.setDoneScaleType(ScaleType.FIT_CENTER);
+				}
 				mImageManager.getImage(platData.url , attr);
 			}
 			else if(platData.type.equals(Constant.FILE_TYPE_VIDEO)){
