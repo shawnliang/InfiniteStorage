@@ -61,6 +61,7 @@ namespace InfiniteStorage
 
 		private void WaitForPairingDialog_FormClosed(object sender, FormClosedEventArgs e)
 		{
+			timer.Stop();
 			BonjourServiceRegistrator.Instance.Register(false);
 		}
 	}
