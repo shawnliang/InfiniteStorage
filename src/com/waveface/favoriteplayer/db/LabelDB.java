@@ -256,8 +256,8 @@ public class LabelDB {
 						LabelFileView.COLUMN_ORIENTATION,
 						LabelFileView.COLUMN_ORIGINAL_PATH
 				},
-						LabelFileView.COLUMN_LABEL_ID + "=?",
-						new String[] { labelId},
+						LabelFileView.COLUMN_LABEL_ID + "=? AND "+LabelFileView.COLUMN_STATUS+"=?",
+						new String[] { labelId,"0"},
 						null);
 
 		return cursor;

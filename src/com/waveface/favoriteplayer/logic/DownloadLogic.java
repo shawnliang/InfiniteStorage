@@ -121,6 +121,9 @@ public class DownloadLogic {
 							Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(fullFilename, 
 							        Thumbnails.MINI_KIND);
 							imageManager.setBitmapToFile(bmThumbnail, fullFilename, null, false);
+							//check file in storage
+							if(!FileUtil.isFileExisted(fullFilename))
+								LabelDB.updateFileStatus(context, fileId, Constant.FILE_STATUS_DELETE);
 						}
 					} else {
 						String url = restfulAPIURL + Constant.URL_IMAGE + "/"
