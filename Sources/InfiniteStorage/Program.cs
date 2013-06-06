@@ -94,7 +94,8 @@ namespace InfiniteStorage
 			DBInitializer.InitialzeDatabaseSchema();
 			SeqNum.InitFromDB();
 
-			NginxUtility.Instance.Start();
+			if (HomeSharing.Enabled)
+				NginxUtility.Instance.Start();
 
 			server = new StationServer();
 			server.Start();
