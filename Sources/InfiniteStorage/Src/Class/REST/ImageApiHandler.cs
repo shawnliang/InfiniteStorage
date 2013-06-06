@@ -51,7 +51,6 @@ namespace InfiniteStorage.REST
 							saved_path = f.saved_path,
 							thumb_ready = f.thumb_ready,
 							deleted = f.deleted,
-							folder = d.folder_name
 						}).FirstOrDefault();
 
 				if (file == null)
@@ -62,10 +61,9 @@ namespace InfiniteStorage.REST
 							select new FileResult
 							{
 								file_id = f.file_id,
-								saved_path = f.saved_path,
+								saved_path = @".pending\" + f.saved_path,
 								thumb_ready = f.thumb_ready,
 								deleted = f.deleted,
-								folder = ".pending"
 							}).FirstOrDefault();
 			}
 
@@ -102,7 +100,6 @@ namespace InfiniteStorage.REST
 	{
 		public Guid file_id { get; set; }
 		public string saved_path { get; set; }
-		public string folder { get; set; }
 		public bool deleted { get; set; }
 		public bool thumb_ready { get; set; }
 	}
