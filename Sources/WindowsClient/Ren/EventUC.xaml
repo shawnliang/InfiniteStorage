@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:PendingUI="clr-namespace:Waveface.Client" mc:Ignorable="d" SizeChanged="UserControl_SizeChanged" 
-             d:DesignWidth="480">
+             d:DesignWidth="800">
     <UserControl.Resources>
         <Style x:Key="SimpleListBoxItem" TargetType="ListBoxItem">
             <Setter Property="Template">
@@ -61,7 +61,7 @@
                             </i:Interaction.Behaviors>
                         </TextBox>
 
-                        <Button x:Name="btnImport" Foreground="White" FontSize="14" Visibility="Collapsed" Margin="16, 2, 4, 2" Content="Move to Folder" Padding="8, 0" >
+                        <Button x:Name="btnImport" Foreground="White" FontSize="14" Visibility="Collapsed" Margin="16, 2, 4, 2" Content="Move to Folder" Padding="8, 0" Click="btnImport_Click" >
                             <Button.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#2f76b3" Offset="0"/>
@@ -73,7 +73,6 @@
                             </Button.Effect>
                         </Button>
                     </StackPanel>
-
 
                     <StackPanel Margin="2,0,0,0" Grid.Row="1" Orientation="Horizontal">
                         <TextBlock x:Name="tbTitle" Foreground="#999999" Text="2013.5.20, 11:59" FontSize="12" FontWeight="SemiBold"/>
@@ -91,13 +90,16 @@
                                 <Grid>
                                     <Rectangle Fill="#888888" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}"/>
 
-                                    <Image Source="{Binding BitmapImage}" Stretch="Fill"  Width="64"
+                                    <MediaElement Source="{Binding MediaSource, IsAsync=True}" Stretch="UniformToFill" ScrubbingEnabled="True" LoadedBehavior="Pause"
+                                    Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}"/> 
+                                    
+                                    <Image Source="{Binding Path=BitmapImage}" Stretch="Fill"  Width="64"
                                     Height="64" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" />
-
-                                    <Image Source="{Binding BitmapImage}" Stretch="UniformToFill"  Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=Width}"
+                               
+                                    <Image Source="{Binding Path=BitmapImage}" Stretch="UniformToFill"  Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=Width}"
                                     Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=Height}" 
-                                    Visibility="{Binding Path=IsPhoto, Converter={StaticResource BoolToHiddenConverter}}"       />
-
+                                    Visibility="{Binding Path=IsPhoto, Converter={StaticResource BoolToHiddenConverter}}"/>
+                                                                     
                                     <!--Image Source="/PendingUI;component/Images/checkmark.png" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=IsSelected}"
                                         Stretch="Uniform" Width="20" Height="20" Margin="-8"  HorizontalAlignment="Right" VerticalAlignment="Top"/>
 

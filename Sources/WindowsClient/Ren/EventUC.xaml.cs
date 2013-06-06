@@ -21,6 +21,7 @@ namespace Waveface.Client
         public double MyHeight { get; set; }
         public bool IsVideo { get; set; }
         public bool IsPhoto { get; set; }
+        public string MediaSource { get; set; }
     }
 
     public partial class EventUC : UserControl
@@ -105,6 +106,8 @@ namespace Waveface.Client
                     _bi.EndInit();
 
                     _eventPhoto.BitmapImage = _bi;
+
+                    _eventPhoto.MediaSource = _file.tiny_path; //"c:\\test.mp4"
 
                     _controls.Add(_eventPhoto);
                 }
@@ -384,6 +387,11 @@ namespace Waveface.Client
             gridMain.Background = new SolidColorBrush(Color.FromRgb(16, 16, 17));
             lbEvent.Background = new SolidColorBrush(Color.FromRgb(16, 16, 17));
             btnImport.Visibility = Visibility.Collapsed;
+        }
+
+        private void btnImport_Click(object sender, RoutedEventArgs e)
+        {
+            UnSortedFilesUC.Current.AddEvent(this);
         }
     }
 }

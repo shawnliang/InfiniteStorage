@@ -34,25 +34,26 @@ namespace Waveface.Client
         private bool m_init;
         private List<MySliderTick> m_sliderTicks = new List<MySliderTick>();
         private List<string> m_defaultEventNameCache;
+        private ObservableCollection<EventUC> m_eventUCs;
 
         public int VideosCount { get; set; }
         public int PhotosCount { get; set; }
         public RT Rt { get; set; }
         public int GroupingEventInterval { get; set; }
 
-		public UnSortedFilesUC()
+        public UnSortedFilesUC()
         {
-			Current = this;
+            Current = this;
 
             InitializeComponent();
-			
-			 Cursor = Cursors.Wait;
 
-			 InitSliderTicks();
+            Cursor = Cursors.Wait;
+
+            InitSliderTicks();
         }
-		
+
         public UnSortedFilesUC(string device)
-			:this()
+            : this()
         {
             Init(device);
         }
@@ -68,7 +69,7 @@ namespace Waveface.Client
             m_sliderTicks.Add(new MySliderTick { Name = "Month", Value = BY_MONTH });
         }
 
-        public void Init(string device)
+        public bool Init(string device)
         {
             string _deviceID = device;
 
@@ -78,8 +79,8 @@ namespace Waveface.Client
 
             if (!Rt.Init(_allPendingFiles))
             {
-                Application.Current.Shutdown();
-                return;
+                // Application.Current.Shutdown();
+                return false;
             }
 
             ShowEvents();
@@ -87,6 +88,8 @@ namespace Waveface.Client
             m_init = true;
 
             ShowTitle();
+
+            return true;
         }
 
         #region REST
@@ -210,7 +213,8 @@ namespace Waveface.Client
             PhotosCount = 0;
             VideosCount = 0;
 
-            ObservableCollection<EventUC> _controls = new ObservableCollection<EventUC>();
+            m_eventUCs = new ObservableCollection<EventUC>();
+            listBoxEvent.ItemsSource = m_eventUCs;
 
             GroupingEventInterval = m_sliderTicks.ToArray()[(int)sliderEvent.Value].Value;
             Rt.GroupingByEvent(GroupingEventInterval);
@@ -231,10 +235,8 @@ namespace Waveface.Client
 
                 _ctl.DescribeText = GetDefaultEventName(Rt.DateTimeCache[_event[0].taken_time]);
 
-                _controls.Add(_ctl);
+                m_eventUCs.Add(_ctl);
             }
-
-            listBoxEvent.ItemsSource = _controls;
 
             ShowInfor();
         }
@@ -386,72 +388,6 @@ namespace Waveface.Client
 
         #endregion
 
-        private void btnFinishLater_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-        private void btnImport_Click(object sender, RoutedEventArgs e)
-        {
-            Mouse.OverrideCursor = Cursors.Wait;
-
-            PendingSort _pendingSort = new PendingSort
-                                           {
-                                               device_id = Rt.RtData.file_changes[0].dev_id
-                                           };
-
-            foreach (EventUC _item in listBoxEvent.Items)
-            {
-                Event _event = new Event
-                                   {
-                                       type = 1,
-                                       title = _item.DescribeText,
-                                       time_start = Rt.DateTimeCache[_item.Event[0].taken_time].ToString("yyyy-MM-dd HH:mm:ss"),
-                                       time_end = Rt.DateTimeCache[_item.Event[_item.Event.Count - 1].taken_time].ToString("yyyy-MM-dd HH:mm:ss")
-                                   };
-
-                foreach (FileChange _fileChange in _item.Event)
-                {
-                    _event.files.Add(_fileChange.id);
-                }
-
-                _pendingSort.events.Add(_event);
-            }
-
-            string _how = string.Empty;
-
-            try
-            {
-                _how = JsonConvert.SerializeObject(_pendingSort);
-            }
-            catch
-            {
-                return;
-            }
-
-            try
-            {
-                string _url = "http://127.0.0.1:14005" + "/pending/sort";
-
-                string _parms = "how" + "=" + HttpUtility.UrlEncode(_how);
-
-                WebPostHelper _webPos = new WebPostHelper();
-                bool _isOK = _webPos.doPost(_url, _parms, null);
-
-                if (!_isOK)
-                    return;
-
-                string _r = _webPos.getContent(); //
-
-                Application.Current.Shutdown();
-            }
-            catch
-            {
-            }
-
-            Mouse.OverrideCursor = Cursors.Arrow;
-        }
-
         private void sliderEvent_ThumbDragStarted(object sender, DragStartedEventArgs e)
         {
             ShowSliderHint();
@@ -503,6 +439,99 @@ namespace Waveface.Client
                 DayOfWeek.Monday);
 
             return _weekNum;
+        }
+
+        public void AddEvent(EventUC eventUC)
+        {
+            DoImport(eventUC, false);
+
+            m_eventUCs.Remove(eventUC);
+        }
+
+        private void btnImportAll_Click(object sender, RoutedEventArgs e)
+        {
+            DoImport(null, true);
+
+            m_eventUCs.Clear();
+        }
+
+        private void DoImport(EventUC eventUC, bool all)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+
+            PendingSort _pendingSort = new PendingSort
+            {
+                device_id = Rt.RtData.file_changes[0].dev_id
+            };
+
+            if (all)
+            {
+                foreach (EventUC _item in listBoxEvent.Items)
+                {
+                    Event _event = new Event
+                                       {
+                                           type = 1,
+                                           title = _item.DescribeText,
+                                           time_start = Rt.DateTimeCache[_item.Event[0].taken_time].ToString("yyyy-MM-dd HH:mm:ss"),
+                                           time_end = Rt.DateTimeCache[_item.Event[_item.Event.Count - 1].taken_time].ToString("yyyy-MM-dd HH:mm:ss")
+                                       };
+
+                    foreach (FileChange _fileChange in _item.Event)
+                    {
+                        _event.files.Add(_fileChange.id);
+                    }
+
+                    _pendingSort.events.Add(_event);
+                }
+            }
+            else
+            {
+                Event _event = new Event
+                                   {
+                                       type = 1,
+                                       title = eventUC.DescribeText,
+                                       time_start = Rt.DateTimeCache[eventUC.Event[0].taken_time].ToString("yyyy-MM-dd HH:mm:ss"),
+                                       time_end = Rt.DateTimeCache[eventUC.Event[eventUC.Event.Count - 1].taken_time].ToString("yyyy-MM-dd HH:mm:ss")
+                                   };
+
+                foreach (FileChange _fileChange in eventUC.Event)
+                {
+                    _event.files.Add(_fileChange.id);
+                }
+
+                _pendingSort.events.Add(_event);
+            }
+
+            string _how = string.Empty;
+
+            try
+            {
+                _how = JsonConvert.SerializeObject(_pendingSort);
+            }
+            catch
+            {
+                return;
+            }
+
+            try
+            {
+                string _url = "http://127.0.0.1:14005" + "/pending/sort";
+
+                string _parms = "how" + "=" + HttpUtility.UrlEncode(_how);
+
+                WebPostHelper _webPos = new WebPostHelper();
+                bool _isOK = _webPos.doPost(_url, _parms, null);
+
+                if (!_isOK)
+                    return;
+
+                _webPos.getContent();
+            }
+            catch
+            {
+            }
+
+            Mouse.OverrideCursor = Cursors.Arrow;
         }
     }
 }
