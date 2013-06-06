@@ -129,6 +129,10 @@ public class DownloadLogic {
 								imageManager.setBitmapToFile(bmThumbnail,
 										fullFilename, null, false);
 							}
+							//check file in storage
+							if(!FileUtil.isFileExisted(fullFilename)){
+								LabelDB.updateFileStatus(context, fileId, Constant.FILE_STATUS_DELETE);
+							}
 						} else {
 							String url = restfulAPIURL + Constant.URL_IMAGE
 									+ "/" + fileId + Constant.URL_IMAGE_LARGE;
