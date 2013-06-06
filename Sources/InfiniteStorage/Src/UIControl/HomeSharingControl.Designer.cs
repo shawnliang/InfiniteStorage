@@ -60,6 +60,7 @@
 			this.pwdProtection.TabIndex = 1;
 			this.pwdProtection.Text = "Password protection";
 			this.pwdProtection.UseVisualStyleBackColor = true;
+			this.pwdProtection.Visible = false;
 			this.pwdProtection.CheckedChanged += new System.EventHandler(this.pwdProtection_CheckedChanged);
 			// 
 			// lblHomeSharingExplain
@@ -80,6 +81,7 @@
 			this.password.PasswordChar = '*';
 			this.password.Size = new System.Drawing.Size(202, 20);
 			this.password.TabIndex = 3;
+			this.password.Visible = false;
 			this.password.TextChanged += new System.EventHandler(this.password_TextChanged);
 			this.password.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.password_KeyPress);
 			// 
@@ -92,6 +94,7 @@
 			this.showPassword.TabIndex = 4;
 			this.showPassword.Text = "Show password";
 			this.showPassword.UseVisualStyleBackColor = true;
+			this.showPassword.Visible = false;
 			this.showPassword.CheckedChanged += new System.EventHandler(this.showPassword_CheckedChanged);
 			// 
 			// label1
@@ -103,6 +106,7 @@
 			this.label1.Size = new System.Drawing.Size(94, 13);
 			this.label1.TabIndex = 5;
 			this.label1.Text = "4 digits, e.g., 4628";
+			this.label1.Visible = false;
 			// 
 			// invalidPwd
 			// 
@@ -113,6 +117,7 @@
 			this.invalidPwd.Size = new System.Drawing.Size(86, 13);
 			this.invalidPwd.TabIndex = 6;
 			this.invalidPwd.Text = "Invalid password";
+			this.invalidPwd.Visible = false;
 			// 
 			// HomeSharingControl
 			// 

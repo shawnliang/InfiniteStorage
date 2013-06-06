@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using InfiniteStorage.Properties;
 
 namespace InfiniteStorage
 {
@@ -38,7 +39,15 @@ namespace InfiniteStorage
 			var log_dir = Path.Combine(MyFileFolder.AppData, "logs");
 			var temp_dir = Path.Combine(MyFileFolder.AppData, "kemp");
 
-			File.Copy(Path.Combine(nginx_dir, @"conf\mime.types"), Path.Combine(MyFileFolder.AppData, "mime.types"));
+			File.Copy(Path.Combine(nginx_dir, @"conf\mime.types"), Path.Combine(MyFileFolder.AppData, "mime.types"), true);
+
+			if (Settings.Default.HomeSharingPasswordRequired)
+			{
+				using (var pwdFile = new StreamWriter(Path.Combine(MyFileFolder.AppData, "nginx.pwd")))
+				{
+					pwdFile.WriteLine("user:" + Settings.Default.HomeSharingPassword);
+				}
+			}
 
 			using (var template = new StreamReader(Path.Combine(nginx_dir, @"conf\nginx.conf.template")))
 			using (var target_cfg = new StreamWriter(Path.Combine(MyFileFolder.AppData, "nginx.cfg")))
@@ -58,6 +67,12 @@ namespace InfiniteStorage
 					line = line.Replace("${fastcgi_temp_path}", temp_dir);
 					line = line.Replace("${uwsgi_temp_path}", temp_dir);
 					line = line.Replace("${scgi_temp_path}", temp_dir);
+
+					if (Settings.Default.HomeSharingPasswordRequired)
+					{
+						line = line.Replace("#auth_basic123",            "auth_basic                \"Restricted\";");
+						line = line.Replace("#auth_basic_user_file", "auth_basic_user_file      nginx.pwd;");
+					}
 
 
 					target_cfg.WriteLine(line);
@@ -90,7 +105,7 @@ namespace InfiniteStorage
 			{
 				var file_name = Path.GetFileName(file);
 
-				File.Copy(file, Path.Combine(to, file_name));
+				File.Copy(file, Path.Combine(to, file_name), true);
 			}
 		}
 

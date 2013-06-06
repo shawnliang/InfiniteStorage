@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using InfiniteStorage.Properties;
+using Microsoft.Win32;
 
 namespace InfiniteStorage.Src.UIControl
 {
@@ -24,7 +25,9 @@ namespace InfiniteStorage.Src.UIControl
 		{
 			if (!DesignMode)
 			{
-				enableHomeSharing.Checked = Settings.Default.EnableHomeSharing;
+				var enabled = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", "true");
+
+				enableHomeSharing.Checked = enabled.Equals("true", StringComparison.InvariantCultureIgnoreCase);
 				pwdProtection.Checked = Settings.Default.HomeSharingPasswordRequired;
 				password.Text = Settings.Default.HomeSharingPassword;
 			}
@@ -84,12 +87,12 @@ namespace InfiniteStorage.Src.UIControl
 			get { return enableHomeSharing.Checked; }
 		}
 
-		public string HomeSharingPassword
+		public string Password
 		{
 			get { return password.Text; }
 		}
 
-		public bool HomeSharingPasswordRequired
+		public bool PasswordRequired
 		{
 			get { return pwdProtection.Checked; }
 		}

@@ -27,6 +27,10 @@ http {
     #gzip  on;
 
     server {
+
+        #auth_basic123
+        #auth_basic_user_file
+
         listen       ${listen} default_server;
 
         root         '${root}';

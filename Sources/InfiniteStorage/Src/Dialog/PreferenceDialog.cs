@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using System.IO;
 
 
 namespace InfiniteStorage
@@ -21,6 +22,7 @@ namespace InfiniteStorage
 			aboutControl1.SettingsChanged += handleAnySettingChanged;
 			generalPreferenceControl1.SettingsChanged += handleAnySettingChanged;
 			tabAbout.Text = string.Format(Resources.AboutTab, Resources.ProductName);
+			homeSharingControl1.SettingsChanged += handleAnySettingChanged;
 
 			generalPreferenceControl1.Enabled = true;
 		}
@@ -72,6 +74,7 @@ namespace InfiniteStorage
 				saveDeviceListChanges();
 				setAutoStartValue();
 				saveLogLevel();
+				saveHomeSharing();
 				return true;
 			}
 			catch (Exception err)
@@ -81,6 +84,47 @@ namespace InfiniteStorage
 
 				return false;
 			}
+		}
+
+		private void saveHomeSharing()
+		{
+			bool somethingChanged = false;
+
+			var enabled = Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", "true").Equals("true");
+
+			if (homeSharingControl1.HomeSharingEnabled != enabled)
+			{
+				Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", homeSharingControl1.HomeSharingEnabled ? "true" : "false");
+				somethingChanged = true;
+			}
+
+			if (homeSharingControl1.PasswordRequired != Settings.Default.HomeSharingPasswordRequired)
+			{
+				Settings.Default.HomeSharingPasswordRequired = homeSharingControl1.PasswordRequired;
+				somethingChanged = true;
+			}
+
+			if (homeSharingControl1.Password != Settings.Default.HomeSharingPassword)
+			{
+				Settings.Default.HomeSharingPassword = homeSharingControl1.Password;
+				somethingChanged = true;
+			}
+
+			if (somethingChanged)
+			{
+				Settings.Default.Save();
+
+				if (homeSharingControl1.HomeSharingEnabled)
+				{
+					NginxUtility.Instance.PrepareNginxConfig(12888, Settings.Default.SingleFolderLocation);
+					NginxUtility.Instance.Start();
+				}
+				else
+				{
+					NginxUtility.Instance.Stop();
+				}
+			}
+
 		}
 
 		private void saveLogLevel()
