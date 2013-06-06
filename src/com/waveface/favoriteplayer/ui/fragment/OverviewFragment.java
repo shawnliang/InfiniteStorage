@@ -1,14 +1,20 @@
 package com.waveface.favoriteplayer.ui.fragment;
 
+import idv.jason.lib.imagemanager.ImageAttribute;
+import idv.jason.lib.imagemanager.ImageManager;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore.Video.Thumbnails;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,10 +26,12 @@ import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
+import com.waveface.favoriteplayer.SyncApplication;
 import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelFileView;
 import com.waveface.favoriteplayer.entity.OverviewData;
@@ -34,6 +42,7 @@ import com.waveface.favoriteplayer.ui.PlaybackActivity;
 import com.waveface.favoriteplayer.ui.adapter.OverviewAdapter;
 import com.waveface.favoriteplayer.ui.adapter.OverviewAdapter.ViewHolder;
 import com.waveface.favoriteplayer.ui.widget.TwoWayView;
+import com.waveface.favoriteplayer.util.FileUtil;
 
 import de.greenrobot.event.EventBus;
 
@@ -42,6 +51,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 	private TwoWayView mList;
 	private TextView mNoContent;
 	private ProgressBar mProgress;
+	private ImageManager mImageManager;
 	private int mType = OVERVIEW_VIEW_TYPE_FAVORITE;
 	
 	public static final int OVERVIEW_VIEW_TYPE_FAVORITE = 1;
@@ -84,6 +94,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			pairedServer.restPort ="14005";
 		}
 		mServerUrl ="http://"+pairedServer.ip+":"+pairedServer.restPort;
+		mImageManager = SyncApplication.getWavefacePlayerApplication(getActivity()).getImageManager();
 	}
 	
 	@Override
@@ -174,8 +185,49 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			if(view != null) {
 				ViewHolder holder = (ViewHolder) view.getTag();
 				holder.progress.setVisibility(View.GONE);
-				holder.countText.setText(Integer.toString
+				holder.countText.setText(result==null?"":Integer.toString
 						(result.count));
+				
+				if(result!=null){
+					int width = getActivity().getResources().getDimensionPixelSize(R.dimen.overview_image_width) + 200;
+					int height = getActivity().getResources().getDimensionPixelSize(R.dimen.overview_image_height) + 200;
+	
+					ImageAttribute attr = new ImageAttribute(holder.image);
+					attr = new ImageAttribute(holder.image);
+					attr.setResizeSize(width, height);
+					attr.setApplyWithAnimation(true);
+					attr.setDoneScaleType(ScaleType.CENTER_CROP);
+					
+					if(Constant.FILE_TYPE_VIDEO.equals(result.type)) {
+						String fullFilename = Environment.getExternalStorageDirectory().getAbsolutePath()
+								+ Constant.VIDEO_FOLDER + "/" + result.filename;
+
+						Bitmap bmThumbnail = mImageManager.getImage(fullFilename, attr);
+						if(bmThumbnail==null){
+							if(FileUtil.isFileExisted(fullFilename)){
+								bmThumbnail = ThumbnailUtils.createVideoThumbnail(fullFilename, 
+								        Thumbnails.MINI_KIND);
+								String dbId = mImageManager.setBitmapToFile(bmThumbnail, 
+										fullFilename, null, false);
+								Log.d(TAG, "ThumbNail DB ID:"+dbId);
+							}
+						}
+						holder.placeholder.setVisibility(View.VISIBLE);
+						mImageManager.getImage(fullFilename, attr);		
+					}
+					else{
+						holder.placeholder.setVisibility(View.INVISIBLE);
+						mImageManager.getImage(result.url, attr);			
+					}
+					
+					attr = new ImageAttribute(holder.reflection);
+					attr.setResizeSize(width, height);
+					attr.setReflection(true);
+					attr.setHighQuality(true);
+					attr.setApplyWithAnimation(true);
+					attr.setDoneScaleType(ScaleType.CENTER_CROP);
+					mImageManager.getImage(result.url, attr);	
+				}
 			}
 		}
 		
@@ -288,7 +340,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			data.count = fileCursor.getCount();
 			fileCursor.moveToFirst();
 			data.type = fileCursor.getString(fileCursor.getColumnIndex(LabelFileView.COLUMN_TYPE));
-			
+			data.filename = fileCursor.getString(fileCursor.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
 			if(mType == OVERVIEW_VIEW_TYPE_FAVORITE) {
 				data.title = labelCursor.getString(1);
 			} else if(mType == OVERVIEW_VIEW_TYPE_RECENT_VIDEO) {
