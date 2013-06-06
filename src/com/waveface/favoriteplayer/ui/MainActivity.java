@@ -16,6 +16,7 @@ import com.waveface.favoriteplayer.task.DownloadLabelsTask;
 import com.waveface.favoriteplayer.ui.fragment.PickserverDialogFragment;
 import com.waveface.favoriteplayer.ui.fragment.SyncFragmentBase.onSyncFragmentChangedListener;
 import com.waveface.favoriteplayer.ui.fragment.SyncInProgressFragment;
+import com.waveface.favoriteplayer.util.NetworkUtil;
 
 import de.greenrobot.event.EventBus;
 
@@ -60,8 +61,14 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 				PickserverDialogFragment df = new PickserverDialogFragment();
 				df.show(getSupportFragmentManager(), PickserverDialogFragment.class.getSimpleName());
 			} else {			
-				showSyncInProgressFragment();
-				new DownloadLabelsTask(this).execute(new Void[]{});
+				if(NetworkUtil.isWifiNetworkAvailable(this)){
+					showSyncInProgressFragment();
+					new DownloadLabelsTask(this).execute(new Void[]{});
+				}
+				else{
+					mActivityLaunch = true;
+					mHander.post(mShowPlaybackRunnable);
+				}
 			}
 		}
         sendBroadcast(new Intent(Constant.ACTION_FAVORITE_PLAYER_ALARM));
