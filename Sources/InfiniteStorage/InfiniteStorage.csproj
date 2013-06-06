@@ -290,6 +290,9 @@
     <EmbeddedResource Include="Src\UIControl\HomeSharingControl.resx">
       <DependentUpon>HomeSharingControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Src\UIControl\HomeSharingControl.zh-TW.resx">
+      <DependentUpon>HomeSharingControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\OrganizeSelectionControl.resx">
       <DependentUpon>OrganizeSelectionControl.cs</DependentUpon>
     </EmbeddedResource>
