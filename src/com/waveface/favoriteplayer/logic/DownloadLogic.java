@@ -57,6 +57,10 @@ public class DownloadLogic {
 		String restfulAPIURL = "http://" + pairedServer.ip + ":"
 				+ pairedServer.restPort;
 		String getFileURL = restfulAPIURL + Constant.URL_GET_FILE;
+		
+		
+		
+		
 
 		if (label.files.length > 0) {
 
@@ -151,7 +155,13 @@ public class DownloadLogic {
 			}
 			filecursor.close();
 		} else {
+			if(label.label_name.equals("TAG")){
+				if(label.files.length==0){
+					LabelDB.removeLabelFileByLabelId(context, label.label_id);
+				}			
+			}
 			LabelDB.updateLabel(context, label);
+			
 		}
 
 	}

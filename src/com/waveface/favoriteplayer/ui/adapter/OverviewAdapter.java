@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
+import android.os.Environment;
 import android.provider.MediaStore.Video.Thumbnails;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,7 +103,8 @@ public class OverviewAdapter extends BaseAdapter{
 		attr.setDoneScaleType(ScaleType.CENTER_CROP);
 		
 		if(Constant.FILE_TYPE_VIDEO.equals(mDatas.get(position).type)) {
-			String fullFilename = mDatas.get(position).url;
+			String fullFilename = Environment.getExternalStorageDirectory().getAbsolutePath()
+					+ Constant.VIDEO_FOLDER + "/" + mDatas.get(position).filename;
 			Bitmap bmThumbnail = mImageManager.getImage(fullFilename, attr);
 			if(bmThumbnail==null){
 				if(FileUtil.isFileExisted(fullFilename)){
@@ -113,9 +115,13 @@ public class OverviewAdapter extends BaseAdapter{
 					Log.d(TAG, "ThumbNail DB ID:"+dbId);
 				}
 			}
+			holder.placeholder.setVisibility(View.VISIBLE);
+			mImageManager.getImage(fullFilename, attr);						
 		}
-		mImageManager.getImage(mDatas.get(position).url, attr);			
-		
+		else{
+			holder.placeholder.setVisibility(View.INVISIBLE);
+			mImageManager.getImage(mDatas.get(position).url, attr);			
+		}
 		attr = new ImageAttribute(holder.reflection);
 		attr.setResizeSize(width, height);
 		attr.setReflection(true);
@@ -134,13 +140,7 @@ public class OverviewAdapter extends BaseAdapter{
 		} else {
 			convertView.setPadding(paddingNormal, paddingNormal, paddingNormal, paddingNormal);
 		}
-		
-		if(mVideo) {
-			holder.placeholder.setVisibility(View.VISIBLE);
-		} else {
-			holder.placeholder.setVisibility(View.INVISIBLE);
-		}
-		
+				
 		holder.countText.setText(Integer.toString(mDatas.get(position).count));
 		
 		return convertView;

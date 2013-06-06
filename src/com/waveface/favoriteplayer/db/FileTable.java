@@ -27,6 +27,9 @@ public class FileTable implements BaseColumns {
 	public static final String COLUMN_WIDTH="width";
 	public static final String COLUMN_HEIGHT="height";
 	public static final String COLUMN_EVENT_TIME="event_time";
+	public static final String COLUMN_STATUS="status";
+	public static final String COLUMN_ORIENTATION="orientation";
+	public static final String COLUMN_ORIGINAL_PATH="original_path";
 	
 //	public static int updateLabelFiles(Context context, String labelId,String[] files) {
 //		int result = 0;

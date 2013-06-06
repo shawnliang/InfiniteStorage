@@ -115,6 +115,9 @@ public class Constant {
 	public static final String TRANSFER_TYPE_AUDIO = "audio";
 	public static final String TRANSFER_TYPE_VIDEO = "video";	
 	
+	public static final String FILE_STATUS_NON_DELETE = "0";
+	public static final String FILE_STATUS_DELETE = "1";	
+	
 	public static final int K_BYTES = 1024;
 
 	public static final String STATE_OK = "OK";

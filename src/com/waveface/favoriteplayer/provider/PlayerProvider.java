@@ -435,9 +435,16 @@ public class PlayerProvider extends ContentProvider {
 							+ "'"
 							+ (!TextUtils.isEmpty(where) ? " AND (" + where
 									+ ")" : ""), whereArgs);
+		
 			//SEND CUMTOMIZED NOTIFY INFO
 			sendCustomizedNotifyChangedInfo(matchUri);
 			break;
+			
+		case FILES:
+			affected = db.update(FileTable.TABLE_NAME, values, where,
+					whereArgs);
+			sendCustomizedNotifyChangedInfo(matchUri);
+			break;			
 
 		default:
 			throw new IllegalArgumentException("Unknown URI " + uri);
@@ -606,8 +613,11 @@ public class PlayerProvider extends ContentProvider {
 						+ FileTable.COLUMN_WIDTH + ","
 						+ FileTable.COLUMN_HEIGHT + ","
 						+ FileTable.COLUMN_DEV_TYPE + ","
-						+FileTable.COLUMN_EVENT_TIME+ ")"
-						+ " values (?,?,?,?,?,?,?,?,?,?,?)");
+						+FileTable.COLUMN_EVENT_TIME+ ","
+						+FileTable.COLUMN_STATUS+ ","
+						+FileTable.COLUMN_ORIENTATION+ ","
+						+FileTable.COLUMN_ORIGINAL_PATH+ ")"
+						+ " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
 					// bind the 1-indexed ?'s to the values specified
@@ -622,6 +632,9 @@ public class PlayerProvider extends ContentProvider {
 					insert.bindString(9, value.getAsString(FileTable.COLUMN_HEIGHT));
 					insert.bindString(10, value.getAsString(FileTable.COLUMN_DEV_TYPE));
 					insert.bindString(11,value.getAsString(FileTable.COLUMN_EVENT_TIME));
+					insert.bindString(12,value.getAsString(FileTable.COLUMN_STATUS));
+					insert.bindString(13,value.getAsString(FileTable.COLUMN_ORIENTATION));
+					insert.bindString(14,value.getAsString(FileTable.COLUMN_ORIGINAL_PATH));
 					insert.execute();
 				}
 				db.setTransactionSuccessful();

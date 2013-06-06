@@ -52,6 +52,12 @@ public class File{
 	
 	@SerializedName("event_time")
 	public String event_time;
+	
+	@SerializedName("orientation")
+	public String orientation;
+	
+	@SerializedName("original_path")
+	public String original_path;
 }
 
 }
