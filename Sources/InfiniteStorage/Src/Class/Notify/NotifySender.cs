@@ -12,6 +12,7 @@ namespace InfiniteStorage.Notify
 		public ISubscriptionContext ctx { get; private set; }
 		public long file_seq { get; private set; }
 		public Dictionary<Guid, long> label_seq { get; private set; }
+		public bool home_sharing_enabled { get; set; }
 
 		public NotifySender(ISubscriptionContext ctx, INotifySenderUtil util)
 		{
@@ -19,6 +20,7 @@ namespace InfiniteStorage.Notify
 			this.util = util;
 			this.file_seq = ctx.files_from_seq;
 			this.label_seq = new Dictionary<Guid, long>();
+			this.home_sharing_enabled = util.HomeSharingEnabled;
 		}
 
 		public void Notify()
@@ -31,6 +33,21 @@ namespace InfiniteStorage.Notify
 			if (ctx.subscribe_labels)
 			{
 				sendChangedLabels();
+				sendHomeSharing();
+			}
+		}
+
+		private void sendHomeSharing()
+		{
+			var curHomeSharingEnabled = util.HomeSharingEnabled;
+
+			if (curHomeSharingEnabled != this.home_sharing_enabled)
+			{
+				ctx.Send(JsonConvert.SerializeObject(new {
+					home_sharing = curHomeSharingEnabled
+				}));
+
+				this.home_sharing_enabled = curHomeSharingEnabled;
 			}
 		}
 

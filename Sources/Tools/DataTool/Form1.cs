@@ -152,15 +152,10 @@ namespace DataTool
 					textBoxNotify.AppendText(file["file_name"].Value<string>() + " => " + file["id"].Value<string>() + "\r\n");
 				}
 			}
-
-			var label = o["label_change"];
-			if (label != null)
+			else
 			{
 				textBoxNotify.AppendText("\r\n" + e.Data + "\r\n");
 			}
-
-
-			//textBoxNotify.AppendText(e.Data);
 		}
 
 		private void disconnectButton_Click(object sender, EventArgs e)

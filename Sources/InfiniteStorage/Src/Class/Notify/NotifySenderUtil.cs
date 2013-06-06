@@ -120,5 +120,11 @@ namespace InfiniteStorage.Notify
 				return result.Select(x => x.data).ToList();
 			}
 		}
+
+
+		public bool HomeSharingEnabled
+		{
+			get { return HomeSharing.Enabled; }
+		}
 	}
 }

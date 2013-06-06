@@ -12,6 +12,7 @@ namespace InfiniteStorage.Notify
 		List<FileChangeData> QueryChangedFiles(long from_seq);
 		List<Label> QueryAllLabels();
 		List<FileChangeData> QueryLabeledFiles(Guid label_id);
+		bool HomeSharingEnabled { get; }
 	}
 
 	public enum Orientation {

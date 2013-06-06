@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace UnitTest.Notify
 {
@@ -163,6 +164,45 @@ namespace UnitTest.Notify
 
 
 			util.VerifyAll();
+
+			Assert.IsNull(sentData);
+		}
+
+		[TestMethod]
+		public void send_home_sharing_change()
+		{
+			string sentData = null;
+			notifyCtx.Setup(x => x.subscribe_labels).Returns(true);
+			notifyCtx.Setup(x => x.Send(It.IsAny<string>())).Callback<string>(x => { sentData = x; });
+
+			util.Setup(x => x.HomeSharingEnabled).Returns(true);
+			util.Setup(x => x.QueryAllLabels()).Returns(new List<Label>());
+
+			var sender = new NotifySender(notifyCtx.Object, util.Object);
+			sender.home_sharing_enabled = false;
+
+			sender.Notify();
+
+			Assert.IsNotNull(sentData);
+			var o = JsonConvert.DeserializeObject<dynamic>(sentData);
+			Assert.IsTrue(o.home_sharing.Value);
+		}
+
+
+		[TestMethod]
+		public void dont_send_home_sharing_if_no_change()
+		{
+			string sentData = null;
+			notifyCtx.Setup(x => x.subscribe_labels).Returns(true);
+			notifyCtx.Setup(x => x.Send(It.IsAny<string>())).Callback<string>(x => { sentData = x; });
+
+			util.Setup(x => x.HomeSharingEnabled).Returns(true);
+			util.Setup(x => x.QueryAllLabels()).Returns(new List<Label>());
+
+			var sender = new NotifySender(notifyCtx.Object, util.Object);
+			sender.home_sharing_enabled = true;
+
+			sender.Notify();
 
 			Assert.IsNull(sentData);
 		}
