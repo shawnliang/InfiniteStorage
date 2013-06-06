@@ -25,9 +25,7 @@ namespace InfiniteStorage.Src.UIControl
 		{
 			if (!DesignMode)
 			{
-				var enabled = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", "true");
-
-				enableHomeSharing.Checked = enabled.Equals("true", StringComparison.InvariantCultureIgnoreCase);
+				enableHomeSharing.Checked = HomeSharing.Enabled;
 				pwdProtection.Checked = Settings.Default.HomeSharingPasswordRequired;
 				password.Text = Settings.Default.HomeSharingPassword;
 			}

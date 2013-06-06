@@ -42,7 +42,7 @@ namespace InfiniteStorage.REST
 			}
 
 
-			respondSuccess(new { labels = result });
+			respondSuccess(new { labels = result, home_sharing = HomeSharing.Enabled });
 		}
 	}
 }

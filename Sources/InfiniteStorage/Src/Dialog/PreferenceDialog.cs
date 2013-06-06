@@ -90,11 +90,9 @@ namespace InfiniteStorage
 		{
 			bool somethingChanged = false;
 
-			var enabled = Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", "true").Equals("true");
-
-			if (homeSharingControl1.HomeSharingEnabled != enabled)
+			if (homeSharingControl1.HomeSharingEnabled != HomeSharing.Enabled)
 			{
-				Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", homeSharingControl1.HomeSharingEnabled ? "true" : "false");
+				HomeSharing.Enabled = homeSharingControl1.HomeSharingEnabled;
 				somethingChanged = true;
 			}
 
