@@ -16,7 +16,6 @@ namespace InfiniteStorage
 		private NoReentrantTimer timer;
 		private long from = 0;
 		private string thumbnailLocation;
-		private bool started;
 		private object cs = new object();
 
 

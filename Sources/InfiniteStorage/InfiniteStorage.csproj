@@ -160,6 +160,12 @@
     <Compile Include="Src\Class\Common\MessageReceiver.cs" />
     <Compile Include="Src\Class\Common\NativeMethod.cs" />
     <Compile Include="Src\Class\Common\WNDCLASS.cs" />
+    <Compile Include="Src\UIControl\HomeSharingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Src\UIControl\HomeSharingControl.Designer.cs">
+      <DependentUpon>HomeSharingControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Src\UIControl\OrganizeSelectionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -279,6 +285,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\GeneralPreferenceControl.zh-TW.resx">
       <DependentUpon>GeneralPreferenceControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Src\UIControl\HomeSharingControl.resx">
+      <DependentUpon>HomeSharingControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\OrganizeSelectionControl.resx">
       <DependentUpon>OrganizeSelectionControl.cs</DependentUpon>

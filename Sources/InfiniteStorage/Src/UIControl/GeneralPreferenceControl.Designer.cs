@@ -49,6 +49,7 @@
 			// 
 			resources.ApplyResources(this.storageLocationControl1, "storageLocationControl1");
 			this.storageLocationControl1.Name = "storageLocationControl1";
+			this.storageLocationControl1.Station = null;
 			this.storageLocationControl1.StoragePath = "C:\\Users\\shawnliang\\Infinite Storage";
 			// 
 			// GeneralPreferenceControl

@@ -250,5 +250,41 @@ namespace InfiniteStorage.Properties {
                 this["LibraryName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EnableHomeSharing {
+            get {
+                return ((bool)(this["EnableHomeSharing"]));
+            }
+            set {
+                this["EnableHomeSharing"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool HomeSharingPasswordRequired {
+            get {
+                return ((bool)(this["HomeSharingPasswordRequired"]));
+            }
+            set {
+                this["HomeSharingPasswordRequired"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string HomeSharingPassword {
+            get {
+                return ((string)(this["HomeSharingPassword"]));
+            }
+            set {
+                this["HomeSharingPassword"] = value;
+            }
+        }
     }
 }
