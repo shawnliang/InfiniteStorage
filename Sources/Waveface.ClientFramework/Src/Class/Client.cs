@@ -203,7 +203,7 @@ namespace Waveface.ClientFramework
 		public void SaveToFavorite()
 		{
 			var labelID = Guid.NewGuid().ToString();
-			StationAPI.AddLabel(labelID, "UnNamed Favorite");
+			StationAPI.AddLabel(labelID, "Untitled Favorite");
 
 			StationAPI.Tag(string.Join(",", m_TaggedContents.Select(taggedContent => taggedContent.ID).ToArray()), labelID);
 
