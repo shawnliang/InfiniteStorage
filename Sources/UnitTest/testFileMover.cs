@@ -10,10 +10,18 @@ namespace UnitTest
 		[TestInitialize]
 		public void setup()
 		{
-			if (!Directory.Exists("dev"))
-				Directory.CreateDirectory("dev");
+			if (Directory.Exists("dev"))
+				Directory.Delete("dev", true);
+
+			Directory.CreateDirectory("dev");
+			
 
 			using (var f = new StreamWriter(@"dev\a.jpg"))
+			{
+				f.Write("aaa");
+			}
+
+			using (var f = new StreamWriter(@"dev\a.1.jpg"))
 			{
 				f.Write("aaa");
 			}
@@ -30,7 +38,7 @@ namespace UnitTest
 			var mover = new FileMover();
 			var newName = mover.Move("temp.jpg", @"dev\a.jpg");
 
-			Assert.AreEqual(@"dev\a.1.jpg", newName);
+			Assert.AreEqual(@"dev\a.2.jpg", newName);
 
 			Assert.IsTrue(File.Exists(@"dev\a.1.jpg"));
 		}

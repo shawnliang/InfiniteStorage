@@ -13,6 +13,8 @@ namespace InfiniteStorage
 		{
 			int num = 1;
 
+			var oldDest = dest;
+
 			while (true)
 			{
 				try
@@ -24,7 +26,7 @@ namespace InfiniteStorage
 				{
 					if (File.Exists(dest))
 					{
-						dest = Path.Combine(Path.GetDirectoryName(dest), Path.GetFileNameWithoutExtension(dest) + "." + num + Path.GetExtension(dest));
+						dest = Path.Combine(Path.GetDirectoryName(oldDest), Path.GetFileNameWithoutExtension(oldDest) + "." + num + Path.GetExtension(oldDest));
 						num += 1;
 					}
 					else
