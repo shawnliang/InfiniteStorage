@@ -241,6 +241,7 @@ namespace Waveface.Client
 			gdRightSide.Visibility = System.Windows.Visibility.Visible;
 			Grid.SetColumnSpan(gdContentArea, 1);
 
+			unSortedFilesUC.Visibility = Visibility.Collapsed;
 			rspRightSidePane2.Visibility = (group.Name.Equals("Tag", StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
 			rspRightSidePanel.Visibility = (group.Name.Equals("Tag", StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
 		}
