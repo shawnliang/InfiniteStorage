@@ -38,7 +38,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -47,7 +47,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -136,24 +136,24 @@
       <HintPath>..\packages\DotNetOpenAuth.OpenIdOAuth.4.3.0.13117\lib\net40-full\DotNetOpenAuth.OpenIdOAuth.dll</HintPath>
     </Reference>
     <Reference Include="Google.Apis">
-      <HintPath>..\..\Users\Ruddy\Downloads\google-api-dotnet-client-1.3.0-beta.samples\Lib\Google.Apis.dll</HintPath>
+      <HintPath>..\..\..\Libs\google-dot-net\Google.Apis.dll</HintPath>
     </Reference>
     <Reference Include="Google.Apis.Tasks.v1">
-      <HintPath>..\..\Users\Ruddy\Downloads\google-api-dotnet-client-1.3.0-beta.samples\Services\Google.Apis.Tasks.v1.dll</HintPath>
+      <HintPath>..\..\..\Libs\google-dot-net\Google.Apis.Tasks.v1.dll</HintPath>
     </Reference>
     <Reference Include="Google.GData.Client, Version=2.1.0.0, Culture=neutral, PublicKeyToken=04a59ca9b0273830, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\00000Share\WpfApplication3\WpfApplication3\bin\Debug\Google.GData.Client.dll</HintPath>
+      <HintPath>..\..\..\Libs\google-dot-net\Google.GData.Client.dll</HintPath>
     </Reference>
     <Reference Include="Google.GData.Contacts, Version=2.1.0.0, Culture=neutral, PublicKeyToken=7e065189dd4b982f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\00000Share\WpfApplication3\WpfApplication3\bin\Debug\Google.GData.Contacts.dll</HintPath>
+      <HintPath>..\..\..\Libs\google-dot-net\Google.GData.Contacts.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+      <HintPath>..\..\..\Libs\log4net-1.2.11\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Mail">
-      <HintPath>..\..\00000Share\WpfApplication3\WpfApplication3\bin\Debug\Mail.dll</HintPath>
+      <HintPath>..\..\..\Libs\Mail.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.0.5.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
