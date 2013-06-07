@@ -1,19 +1,13 @@
 package com.waveface.favoriteplayer.ui.fragment;
 
-import idv.jason.lib.imagemanager.ImageAttribute;
-import idv.jason.lib.imagemanager.ImageManager;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore.Video.Thumbnails;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,12 +19,10 @@ import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
-import com.waveface.favoriteplayer.SyncApplication;
 import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelFileView;
 import com.waveface.favoriteplayer.entity.OverviewData;
@@ -48,9 +40,9 @@ import de.greenrobot.event.EventBus;
 public class OverviewFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener{
 	public static final String TAG = OverviewFragment.class.getSimpleName();
 	private TwoWayView mList;
+	private OverviewAdapter mAdapter;
 	private TextView mNoContent;
 	private ProgressBar mProgress;
-	private ImageManager mImageManager;
 	private int mType = OVERVIEW_VIEW_TYPE_FAVORITE;
 	
 	public static final int OVERVIEW_VIEW_TYPE_FAVORITE = 1;
@@ -69,16 +61,21 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		
 		@Override
 		public void run() {
+			if(labelId == null)
+				return;
+			View child = null;
 			for(int i=0; i<mList.getChildCount(); ++i) {
-				View child = mList.getChildAt(i);
-				if(labelId == null)
-					continue;
+				child = mList.getChildAt(i);
 				ViewHolder holder = (ViewHolder) child.getTag();
 				if(labelId.equals(holder.labelId)) {
 					holder.progress.setVisibility(View.VISIBLE);
-					new ReloadLabelTask(child, holder.labelId).execute(null, null, null);
+					break;
+				} else {
+					child = null;
 				}
 			}
+
+			new ReloadLabelTask(child, labelId).execute(null, null, null);
 		}
 		
 	}
@@ -93,7 +90,6 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			pairedServer.restPort ="14005";
 		}
 		mServerUrl ="http://"+pairedServer.ip+":"+pairedServer.restPort;
-		mImageManager = SyncApplication.getWavefacePlayerApplication(getActivity()).getImageManager();
 		
 	}
 	
@@ -168,8 +164,11 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 	private class ReloadLabelTask extends AsyncTask<Void, Void, OverviewData> {
 		private WeakReference<View> mView;
 		private String mLabelId;
+		private boolean mHasView = false;
 		
 		public ReloadLabelTask(View view, String labelId) {
+			if(view != null)
+				mHasView = true;
 			mView = new WeakReference<View>(view);
 			mLabelId = labelId;
 		}
@@ -182,56 +181,28 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		@Override
 		protected void onPostExecute(OverviewData result) {
 			View view = mView.get();
-			if(view != null) {
-				ViewHolder holder = (ViewHolder) view.getTag();
-				holder.progress.setVisibility(View.GONE);
-				holder.countText.setText(result==null?"":Integer.toString
-						(result.count));
-				
-				if(result!=null){
-					String coverUrl = null;
-					int width = getActivity().getResources().getDimensionPixelSize(R.dimen.overview_image_width) + 200;
-					int height = getActivity().getResources().getDimensionPixelSize(R.dimen.overview_image_height) + 200;
-	
-					ImageAttribute attr = new ImageAttribute(holder.image);
-					attr = new ImageAttribute(holder.image);
-					attr.setResizeSize(width, height);
-					attr.setApplyWithAnimation(true);
-					attr.setDoneScaleType(ScaleType.CENTER_CROP);
-					
-					if(Constant.FILE_TYPE_VIDEO.equals(result.type)) {
-						String fullFilename = FileUtil.getDownloadFolder(getActivity())
-								+ Constant.VIDEO_FOLDER + "/" + result.filename;
-						Bitmap bmThumbnail = mImageManager.getImage(fullFilename, attr);
-						if(bmThumbnail==null){
-							if(FileUtil.isFileExisted(fullFilename)){
-								bmThumbnail = ThumbnailUtils.createVideoThumbnail(fullFilename, 
-								        Thumbnails.MINI_KIND);
-								String dbId = mImageManager.setBitmapToFile(bmThumbnail, 
-										fullFilename, null, false);
-								Log.d(TAG, "ThumbNail DB ID:"+dbId);
-							}
-							else{
-								
-							}
-						}
-						holder.placeholder.setVisibility(View.VISIBLE);
-						coverUrl = fullFilename;
+			if (result != null) {
+				if (mHasView == false) {
+					// new
+					mAdapter.insertLabel(result);
+					mAdapter.notifyDataSetChanged();
+					mList.invalidate();
+				} else {
+					// update
+					if (view != null) {
+						mAdapter.setupView(view, result);
 					}
-					else{
-						holder.placeholder.setVisibility(View.INVISIBLE);
-						coverUrl = result.url;
-					}
-					mImageManager.getImage(coverUrl, attr);		
-					
-					attr = new ImageAttribute(holder.reflection);
-					attr.setResizeSize(width, height);
-					attr.setReflection(true);
-					attr.setHighQuality(true);
-					attr.setApplyWithAnimation(true);
-					attr.setDoneScaleType(ScaleType.CENTER_CROP);
-					mImageManager.getImage(coverUrl, attr);		
 				}
+			} else {
+				// remove
+				mAdapter.removeLable(mLabelId);
+				mAdapter.notifyDataSetChanged();
+			}
+			
+
+			if (view != null) {
+				ViewHolder holder = (ViewHolder) view.getTag();
+				holder.progress.setVisibility(View.INVISIBLE);
 			}
 		}
 		
@@ -272,9 +243,8 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		protected void onPostExecute(ArrayList<OverviewData> datas) {
 			if(datas != null) {
 				mProgress.setVisibility(View.GONE);
-				OverviewAdapter adapter = null;
-				adapter = new OverviewAdapter(getActivity(), datas);
-				mList.setAdapter(adapter);
+				mAdapter = new OverviewAdapter(getActivity(), datas);
+				mList.setAdapter(mAdapter);
 				
 				if(datas.size() == 0) {
 					mNoContent.setVisibility(View.VISIBLE);

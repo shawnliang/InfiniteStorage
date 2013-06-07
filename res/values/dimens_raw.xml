@@ -15,6 +15,8 @@
     <dimen name="phone_overview_item_first_left_padding">25dip</dimen>
     <dimen name="television_overview_item_first_left_padding">65dip</dimen>
     
+    <dimen name="phone_overview_item_title_size">16sp</dimen>
+    <dimen name="television_overview_item_title_size">22sp</dimen>
     
     <!-- TAB  -->
     

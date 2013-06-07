@@ -72,6 +72,6 @@
         android:layout_below="@+id/container_imagearea"
         android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="22sp" />
+        android:textSize="@dimen/overview_item_title_size" />
 
 </RelativeLayout>

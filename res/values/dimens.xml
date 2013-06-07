@@ -14,6 +14,7 @@
     <dimen name="overview_tab_text_size">@dimen/phone_overview_tab_text_size</dimen>
     
     <dimen name="overview_item_first_left_padding">@dimen/phone_overview_item_first_left_padding</dimen>
+    <dimen name="overview_item_title_size">@dimen/phone_overview_item_title_size</dimen>
     
     <dimen name="galleryview_title_text_size">@dimen/phone_galleryview_title_text_size</dimen>
     <dimen name="galleryview_back_text_size">@dimen/phone_galleryview_back_text_size</dimen>

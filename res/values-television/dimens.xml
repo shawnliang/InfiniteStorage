@@ -14,6 +14,7 @@
     <dimen name="overview_tab_text_size">@dimen/television_overview_tab_text_size</dimen>
     
     <dimen name="overview_item_first_left_padding">@dimen/television_overview_item_first_left_padding</dimen>
+    <dimen name="overview_item_title_size">@dimen/television_overview_item_title_size</dimen>
     
     <dimen name="galleryview_title_text_size">@dimen/television_galleryview_title_text_size</dimen>
     <dimen name="galleryview_back_text_size">@dimen/television_galleryview_back_text_size</dimen>

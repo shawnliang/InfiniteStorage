@@ -63,6 +63,20 @@ public class OverviewAdapter extends BaseAdapter{
 		mFirstPadding = context.getResources().getDimensionPixelSize(R.dimen.overview_item_first_left_padding);
 	}
 	
+	public boolean removeLable(String labelId) {
+		for(int i=0; i<mDatas.size(); ++i) {
+			if(mDatas.get(i).labelId.equals(labelId)) {
+				mDatas.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void insertLabel(OverviewData data) {
+		mDatas.add(0, data);
+	}
+	
 	public ArrayList<OverviewData> getDatas() {
 		return mDatas;
 	}
@@ -88,7 +102,13 @@ public class OverviewAdapter extends BaseAdapter{
 			convertView = getView(parent, false);
 		}
 		
-		setupView(position, convertView, mDatas.get(position));
+		setupView(convertView, mDatas.get(position));
+
+		if(position == 0) {
+			convertView.setPadding(mFirstPadding, mNormalPadding, mNormalPadding, mNormalPadding);
+		} else {
+			convertView.setPadding(mNormalPadding, mNormalPadding, mNormalPadding, mNormalPadding);
+		}
 		
 		return convertView;
 	}
@@ -96,7 +116,7 @@ public class OverviewAdapter extends BaseAdapter{
 	public View generateView(int position, ViewGroup parent) {
 		View view = getView(parent, true);
 		
-		setupView(position, view, mDatas.get(position));
+		setupView(view, mDatas.get(position));
 		
 		return view;
 	}
@@ -114,10 +134,11 @@ public class OverviewAdapter extends BaseAdapter{
 		return convertView;
 	}
 	
-	private void setupView(int position, View view, OverviewData data) {
+	public void setupView(View view, OverviewData data) {
+		if(data == null)
+			return;
 		ViewHolder holder = (ViewHolder) view.getTag();
 		holder.labelId = data.labelId;
-		
 
 		String coverUrl = null;
 		
@@ -162,11 +183,5 @@ public class OverviewAdapter extends BaseAdapter{
 
 		holder.labelText.setText(data.title);
 		holder.countText.setText(Integer.toString(data.count));
-
-		if(position == 0) {
-			view.setPadding(mFirstPadding, mNormalPadding, mNormalPadding, mNormalPadding);
-		} else {
-			view.setPadding(mNormalPadding, mNormalPadding, mNormalPadding, mNormalPadding);
-		}
 	}
 }
