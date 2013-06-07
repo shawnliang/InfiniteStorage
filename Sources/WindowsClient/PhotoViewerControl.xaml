@@ -144,6 +144,7 @@
                         Visibility="Collapsed"
                         VolumeChanged="vcVideoControl_VolumeChanged" SeekPosition="vcVideoControl_SeekPosition"/>
         <l:ViewerControl x:Name="vcViewerControl"
+                         DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"
                          Stared="{Binding SelectedItem.Liked, ElementName=lbImages, Mode=TwoWay, IsAsync=True}"
                          VerticalAlignment="Bottom"
                          HorizontalAlignment="Center"
@@ -152,7 +153,8 @@
                          Previous="ViewerControl_Previous"
                          Close="ViewerControl_Close"
                          Height="60"
-                         Width="300" />
+                         Width="300" 
+                         EnableStar="{Binding EnableTag}" />
         <ListBox x:Name="lbImages"
                  Background="{x:Null}"
                  BorderBrush="{x:Null}"

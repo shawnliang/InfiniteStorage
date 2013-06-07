@@ -13,6 +13,7 @@ namespace Waveface.Client
 		#region Var
 		public static readonly DependencyProperty _pageNo = DependencyProperty.Register("PageNo", typeof(int), typeof(ViewerControl), new UIPropertyMetadata(0, new PropertyChangedCallback(OnPageNoChanged)));
 		public static readonly DependencyProperty _pageCount = DependencyProperty.Register("PageCount", typeof(int), typeof(ViewerControl), new UIPropertyMetadata(0, new PropertyChangedCallback(OnPageCountChanged)));
+		public static readonly DependencyProperty _enableStar = DependencyProperty.Register("EnableStar", typeof(bool), typeof(ViewerControl), new UIPropertyMetadata(true, new PropertyChangedCallback(OnEnableStarChanged)));
 		public static readonly DependencyProperty _stared = DependencyProperty.Register("Stared", typeof(bool), typeof(ViewerControl), new UIPropertyMetadata(false, new PropertyChangedCallback(OnStaredChanged)));
 		#endregion
 
@@ -40,6 +41,19 @@ namespace Waveface.Client
 			{
 				SetValue(_pageCount, value);
 				lblPageCount.Content = value;
+			}
+		}
+
+		public bool EnableStar
+		{
+			get
+			{
+				return (bool)GetValue(_enableStar);
+			}
+			set
+			{
+				SetValue(_enableStar, value);
+				staredControl.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
 			}
 		}
 
@@ -109,6 +123,17 @@ namespace Waveface.Client
 			obj.PageCount = (int)e.NewValue;
 		}
 
+
+
+		private static void OnEnableStarChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+		{
+			if (o == null)
+				return;
+			var obj = o as ViewerControl;
+			obj.EnableStar = (bool)e.NewValue;
+		}
+
+
 		private static void OnStaredChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (o == null)
@@ -116,6 +141,8 @@ namespace Waveface.Client
 			var obj = o as ViewerControl;
 			obj.Stared = (bool)e.NewValue;
 		}
+
+
 		
 
 		private void NextButton_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
