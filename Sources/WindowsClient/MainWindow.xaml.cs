@@ -207,8 +207,8 @@ namespace Waveface.Client
 			gdRightSide.Visibility = System.Windows.Visibility.Visible;
 			Grid.SetColumnSpan(gdContentArea, 1);
 
-			rspRightSidePane2.Visibility = System.Windows.Visibility.Visible;
-			rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
+			rspRightSidePane2.Visibility = (group.Name.Equals("Tag", StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+			rspRightSidePanel.Visibility = (group.Name.Equals("Tag", StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
 		}
 		
 		private void rspRightSidePanel_SaveToFavorite(object sender, System.EventArgs e)

@@ -158,7 +158,7 @@ namespace Waveface.ClientFramework
 
 			conn.Open();
 
-			var cmd = new SQLiteCommand("SELECT * FROM Labels where auto_type == 0 and name != 'TAG' ", conn);
+			var cmd = new SQLiteCommand("SELECT * FROM Labels where auto_type == 0", conn);
 
 			var dr = cmd.ExecuteReader();
 
