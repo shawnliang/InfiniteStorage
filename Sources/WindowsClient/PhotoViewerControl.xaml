@@ -79,7 +79,7 @@
 
     <Grid x:Name="LayoutRoot"
           Margin="2.001,0,-2.001,0">
-        <Viewbox Stretch="Fill"
+        <Viewbox
                  DockPanel.Dock="Top">
             <Canvas x:Name="ImgCanvas"
                     ClipToBounds="True"
