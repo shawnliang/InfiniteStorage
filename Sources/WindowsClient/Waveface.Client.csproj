@@ -339,6 +339,9 @@
     <Content Include="favoriteicon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="video_ph.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="uppressed.png" />
     <Resource Include="FAV_512.ico" />
     <Content Include="notfavoriteicon.png">
