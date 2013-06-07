@@ -580,7 +580,7 @@
             <local:RightSidePanel1 x:Name="rspRightSidePanel"
                                    Margin="10,10,10,5"
                                    PhotoCount="{Binding LabeledContents, ConverterParameter={x:Static wvmodel:ContentType.Photo}, Converter={StaticResource ContentTypeCountConverter}, ElementName=window}" 
-								   VideoCount="{Binding LabeledContents, ConverterParameter={x:Static wvmodel:ContentType.Video}, Converter={StaticResource ContentTypeCountConverter}, ElementName=window}" SaveToFavorite="rspRightSidePanel_SaveToFavorite" />
+								   VideoCount="{Binding LabeledContents, ConverterParameter={x:Static wvmodel:ContentType.Video}, Converter={StaticResource ContentTypeCountConverter}, ElementName=window}" SaveToFavorite="rspRightSidePanel_SaveToFavorite" ShareButtonClick="rspRightSidePanel_ShareButtonClick" />
             <local:RightSidePanel2 x:Name="rspRightSidePane2" Margin="0,5,0,326" Visibility="Collapsed"
                                    OnAirClick="rspRightSidePane2_OnAirClick"/>
 

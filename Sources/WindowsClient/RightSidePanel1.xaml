@@ -109,7 +109,7 @@
                 FontFamily="Segoe UI Light"
                 FontSize="16"
                 Foreground="White"
-                Cursor="Hand">
+                Cursor="Hand" Click="Button_Click_1">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1"
                                      StartPoint="0.5,0">

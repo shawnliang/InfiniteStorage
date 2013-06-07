@@ -1,0 +1,99 @@
+﻿<Window x:Class="Wpf_testHTTP.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
+        Title="Sharing ..." Height="500" Width="700" WindowStartupLocation="CenterScreen" Icon="FAV_064.png" WindowStyle="None" Background="#5a5a5a" ResizeMode="NoResize">
+    <Window.Resources>
+
+        <Style x:Key="SimpleButton" TargetType="{x:Type Button}" BasedOn="{x:Null}">
+            <Setter Property="FocusVisualStyle" Value="{DynamicResource SimpleButtonFocusVisual}"/>
+            <Setter Property="Background" Value="{DynamicResource NormalBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+
+                        <!-- We use Grid as a root because it is easy to add more elements to customize the button -->
+                        <Grid x:Name="Grid">
+                            <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}"/>
+
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True"/>
+                        </Grid>
+
+                        <!--Each state sets a brush on the Border in the template -->
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter Property="BorderBrush" Value="{DynamicResource DefaultedBorderBrush}" TargetName="Border"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="BorderBrush" Value="{DynamicResource PressedBorderBrush}" TargetName="Border"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="true"/>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="BorderBrush" Value="{DynamicResource DisabledBorderBrush}" TargetName="Border"/>
+                                <Setter Property="Foreground" Value="{DynamicResource DisabledForegroundBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="0,0,10,0" Background="#5a5a5a">
+        <DockPanel   LastChildFill="False" Background="#5a5a5a" HorizontalAlignment="Left" Width="690">
+            <TabControl x:Name="myTabControl" Width="694" BorderThickness="0" Background="#5a5a5a">
+                <TabItem x:Name="tab1" Header="TabItem" Height="0" Margin="-2,0,-342,2" >
+                    <Grid Background="#5a5a5a" Margin="0,0,0,-12">
+                        <Label Content="Debug" x:Name="label_debug" HorizontalAlignment="Left" Margin="10,327,0,0" VerticalAlignment="Top" Width="31" FontSize="8" FontFamily="Monotype Corsiva" Background="#FFF9F9F9" MouseDown="Label_MouseDown" Height="19" Foreground="#FFF10707" Opacity="0.5" Visibility="Collapsed">
+                        </Label>
+
+                        <Button x:Name="button1" Content="Send"   HorizontalAlignment="Left" Margin="366,417,0,0"   VerticalAlignment="Top" Width="116" Click="Button_Click" Height="39" FontSize="24" />
+                        <Label x:Name="label_title"  Content="Share  Favorite with:" HorizontalAlignment="Left" Margin="91,23,-54,0" VerticalAlignment="Top" Width="653" FontSize="24" Foreground="#FFFDFDFD" Height="61">
+                        </Label>
+                        <TextBox x:Name="textBox_return" Height="279" Margin="10,351,5,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+                            <TextBox.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </TextBox.OpacityMask>
+                        </TextBox>
+                        <Button Content="Close"  HorizontalAlignment="Left" Margin="501,417,0,0" VerticalAlignment="Top" Width="103" Height="39" Click="Button_Click_1" FontSize="22" />
+                        <!--  <TextBox x:Name="AutoCompleteBox"  HorizontalAlignment="Left" Height="68" Margin="158,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="755" FontSize="18" Background="Black" Foreground="#FF64AEF9" BorderThickness="2,1"/> -->
+                        <Controls:AutoCompleteBox x:Name="AutoCompleteBox"  HorizontalAlignment="Left" Margin="90,219,0,0" VerticalAlignment="Top" Width="517"   Height="34"  KeyUp="AutoCompleteBox_KeyDown" RenderTransformOrigin="0.5,0.5" FontSize="18" Background="White" Foreground="Black" BorderThickness="2,1" MouseLeftButtonUp="AutoCompleteBox_MouseLeftButtonUp" MouseUp="AutoCompleteBox_MouseUp" >
+                            <Controls:AutoCompleteBox.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="0.161"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Controls:AutoCompleteBox.RenderTransform>
+                        </Controls:AutoCompleteBox>
+                        <ListBox x:Name="email_list"  FontSize="20" Margin="91,84,81,301" Opacity=".6" Foreground="Black" MouseRightButtonDown="email_list_MouseRightButtonDown" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                            <ListBox.ContextMenu>
+                                <ContextMenu Name="cm">
+                                    <MenuItem Header="Delete" Click="MenuItem_Click" Opacity="0.6" IsCheckable="False" >
+                                    </MenuItem>
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
+                        </ListBox>
+                        <Image x:Name="image_gmail" HorizontalAlignment="Left" Height="28" Margin="91,428,0,0" VerticalAlignment="Top" Width="30" Source="gmail_64.png"/>
+                        <Label x:Name="connected_gmail" Content="Connected" HorizontalAlignment="Left" Margin="125,428,0,0" VerticalAlignment="Top" Width="154" Foreground="White" FontSize="18"/>
+                        <Label x:Name="label_invalid" Content="Invalid Email Format" HorizontalAlignment="Left" Margin="91,250,0,0" VerticalAlignment="Top" Width="235" Foreground="White" FontSize="18" Visibility="Collapsed"   />
+                        <Label x:Name="label_favorite" Content="Favorite Shared!" HorizontalAlignment="Left" Height="54" Margin="261,312,0,0" VerticalAlignment="Top" Width="294" Foreground="#FFFBF8F8" FontSize="36"  Visibility="Collapsed"  />
+                        <Image x:Name="label_pass" HorizontalAlignment="Left" Height="48" Margin="204,318,0,0" VerticalAlignment="Top" Width="52" Source="OK_white (1).png"  Visibility="Collapsed"  />
+
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tab2" Header="TabItem"  VerticalAlignment="Top" Height="0" BorderThickness="1" BorderBrush="#FF060606">
+                    <Grid Background="#FFE5E5E5" Margin="0,-3,1,0">
+                        <WebBrowser x:Name="wb1" Width="696"  />
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+
+    </Grid>
+</Window>
