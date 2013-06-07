@@ -11,32 +11,30 @@
              d:DesignWidth="760"
              d:DesignHeight="504">
     <UserControl.Resources>
-		 <Style TargetType="MediaElement">
-            <Setter Property="Visibility" Value="Collapsed"/>
+        <Style TargetType="MediaElement">
+            <Setter Property="Visibility"
+                    Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="Video">
-                    <Setter Property="Visibility" Value="Visible"/>
-					<Setter Property="Source" Value="{Binding Uri, IsAsync=True}"/>
+                <DataTrigger Binding="{Binding Type, IsAsync=True}"
+                             Value="Video">
+                    <Setter Property="Visibility"
+                            Value="Visible" />
+                    <Setter Property="Source"
+                            Value="{Binding Uri, IsAsync=True}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-		<Style TargetType="l:VideoControl">
-            <Setter Property="Visibility" Value="Collapsed"/>
+        <Style TargetType="Image">
+            <Setter Property="Visibility"
+                    Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="Video">
-                    <Setter Property="Visibility" Value="Visible"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-		
-
-		<Style TargetType="Image">
-            <Setter Property="Visibility" Value="Collapsed"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="Photo">
-                    <Setter Property="Visibility" Value="Visible"/>
-					<Setter Property="Source" Value="{Binding ImageSource, IsAsync=True}"/>
+                <DataTrigger Binding="{Binding Type, IsAsync=True}"
+                             Value="Photo">
+                    <Setter Property="Visibility"
+                            Value="Visible" />
+                    <Setter Property="Source"
+                            Value="{Binding ImageSource, IsAsync=True}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -76,11 +74,6 @@
                 <DiscreteObjectKeyFrame KeyTime="0:0:0.4"
                                         Value="{x:Static Visibility.Visible}" />
             </ObjectAnimationUsingKeyFrames>
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
-                                           Storyboard.TargetName="label">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.4"
-                                        Value="{x:Static Visibility.Collapsed}" />
-            </ObjectAnimationUsingKeyFrames>
         </Storyboard>
     </UserControl.Resources>
 
@@ -100,15 +93,19 @@
                                 MouseDoubleClick="ImgContentCtrl_MouseDoubleClick"
                                 Cursor="Arrow">
                     <Grid x:Name="ImgGrid">
-						<MediaElement x:Name="meVideo" DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}" MediaOpened="meVideo_MediaOpened"
+                        <MediaElement x:Name="meVideo"
+                                      DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"
+                                      MediaOpened="meVideo_MediaOpened"
                                       MediaEnded="meVideo_MediaEnded"
-                                      MediaFailed="meVideo_MediaFailed" LoadedBehavior="Manual" />
+                                      MediaFailed="meVideo_MediaFailed"
+                                      ScrubbingEnabled="True"
+                                      LoadedBehavior="Manual" />
                         <Image x:Name="ImgObject"
-                               DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"/>
+                               DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}" />
                         <Thumb x:Name="ImgThumb"
                                Opacity="0"
                                DragDelta="ImgThumb_DragDelta"
-                               MouseWheel="ImgThumb_MouseWheel"/>
+                               MouseWheel="ImgThumb_MouseWheel" />
                     </Grid>
                 </ContentControl>
             </Canvas>
@@ -135,7 +132,17 @@
                Foreground="White"
                Margin="0,13,0,0"
                Width="250"/>
-        <l:VideoControl x:Name="vcVideoControl"  DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"  Margin="0,0,0,73" VerticalAlignment="Bottom" Height="19" HorizontalAlignment="Center" Width="300" PlayButtonClick="vcVideoControl_PlayButtonClick" PauseButtonClick="vcVideoControl_PauseButtonClick"/>
+        <l:VideoControl x:Name="vcVideoControl"
+                        DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"
+                        Margin="0,0,0,73"
+                        VerticalAlignment="Bottom"
+                        Height="22"
+                        HorizontalAlignment="Center"
+                        Width="300"
+                        PlayButtonClick="vcVideoControl_PlayButtonClick"
+                        PauseButtonClick="vcVideoControl_PauseButtonClick"
+                        Visibility="Collapsed"
+                        VolumeChanged="vcVideoControl_VolumeChanged" SeekPosition="vcVideoControl_SeekPosition"/>
         <l:ViewerControl x:Name="vcViewerControl"
                          Stared="{Binding SelectedItem.Liked, ElementName=lbImages, Mode=TwoWay, IsAsync=True}"
                          VerticalAlignment="Bottom"
@@ -143,13 +150,9 @@
                          Margin="0,0,0,13"
                          Next="ViewerControl_Next"
                          Previous="ViewerControl_Previous"
-                         Close="ViewerControl_Close" Height="60" Width="300"/>
-
-        <Label x:Name="label"
-               VerticalAlignment="Bottom"
-               Height="20"
-               Opacity="0"
-               Visibility="Collapsed" />
+                         Close="ViewerControl_Close"
+                         Height="60"
+                         Width="300" />
         <ListBox x:Name="lbImages"
                  Background="{x:Null}"
                  BorderBrush="{x:Null}"
@@ -163,7 +166,8 @@
                  VirtualizingStackPanel.IsVirtualizing="True"
                  VirtualizingStackPanel.VirtualizationMode="Recycling"
                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                 Visibility="Collapsed" />
+                 Visibility="Collapsed"
+                 SelectionChanged="lbImages_SelectionChanged"/>
 
     </Grid>
 </UserControl>

@@ -187,36 +187,81 @@ namespace Waveface.Client
 		private void meVideo_MediaOpened(object sender, System.Windows.RoutedEventArgs e)
 		{
 			vcVideoControl.Duration = meVideo.NaturalDuration.TimeSpan.TotalMilliseconds;
-			m_Timer.Start();
+			vcVideoControl.Volume = meVideo.Volume;
 		}
 
 		void _timer_Tick(object sender, EventArgs e)
 		{
-			vcVideoControl.Position = meVideo.Position.TotalMilliseconds; 
+			vcVideoControl.Position = meVideo.Position.TotalMilliseconds;
+			
 		}
 
 		private void meVideo_MediaEnded(object sender, RoutedEventArgs e)
 		{
+			StopVideo();
+			meVideo.Position = TimeSpan.FromMilliseconds(0);
+		}
+
+		private void StopVideo()
+		{
 			m_Timer.Stop();
+			meVideo.Stop();
 			vcVideoControl.IsPlaying = false;
 		}
 
 		private void meVideo_MediaFailed(object sender, ExceptionRoutedEventArgs e)
 		{
-			m_Timer.Stop();
-			vcVideoControl.IsPlaying = false;
+			StopVideo();
+			meVideo.Position = TimeSpan.FromMilliseconds(0);
 		}
 
 		private void vcVideoControl_PlayButtonClick(object sender, System.EventArgs e)
 		{
+			PlayVideo();
+		}
+
+		private void PlayVideo()
+		{
+			m_Timer.Start();
 			meVideo.Play();
 			vcVideoControl.IsPlaying = true;
 		}
 
 		private void vcVideoControl_PauseButtonClick(object sender, System.EventArgs e)
 		{
+			PauseVideo();
+		}
+
+		private void PauseVideo()
+		{
 			meVideo.Pause();
 			vcVideoControl.IsPlaying = false;
+		}
+
+		private void lbImages_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			if ((lbImages.SelectedItem as IContent).Type == ContentType.Video)
+			{
+				vcVideoControl.Visibility = Visibility.Visible;
+				PlayVideo();
+			}
+			else 
+			{
+				vcVideoControl.Visibility = Visibility.Collapsed;
+			}
+		}
+
+		private void vcVideoControl_VolumeChanged(object sender, System.EventArgs e)
+		{
+			meVideo.Volume = vcVideoControl.Volume;
+		}
+
+		private void vcVideoControl_SeekPosition(object sender, System.EventArgs e)
+		{
+			
+			PauseVideo();
+			meVideo.Position = TimeSpan.FromMilliseconds(vcVideoControl.Position);
+			PlayVideo();
 		}
 
 	}
