@@ -25,6 +25,7 @@ using Limilabs.Client.Authentication.Google;
 using Limilabs.Client.IMAP;
 using Limilabs.Mail;
 using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace Wpf_testHTTP
 {
@@ -33,7 +34,7 @@ namespace Wpf_testHTTP
         public static string HostIP = "https://api.waveface.com/v3/";
         public static string BaseURL { get { return HostIP; } }
         public static string APIKEY = "a23f9491-ba70-5075-b625-b8fb5d9ecd90";       // win8 viewer: station
-        public string iniPath = @"C:\ykk\sharefavorite.ini";
+        public string iniPath = @"";
         public string favoriteTitle = "Waveface Office";
 
         private static readonly ILog log = LogManager.GetLogger(typeof(MainWindow));
@@ -42,16 +43,35 @@ namespace Wpf_testHTTP
             favoriteTitle = title;
             if (favoriteTitle == "")
             {
-                label_title.DataContext = "Share  Favorite with:";
+                label_title.Content = "Share  Favorite with:";
             }
             else
             {
-                label_title.DataContext = "Share  Favorite &quot;" + favoriteTitle + "&quot; with:";
+                label_title.Content = "Share  Favorite \"" + favoriteTitle + "\" with:";
             }
         }
         public void setiniPath(string path)
         {
             iniPath = path;
+
+            //MessageBox.Show(path);
+        }
+        public void setRun()
+        {
+        // get ini for refreshkey
+            iniParser parser = new iniParser();
+            String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+            parser.IniParser(iniPath);  //appStartPath + @"\sharefavorite.ini");
+            RefreshKey_saved = parser.GetSetting("Setup", "refreshkey");
+            //
+            AutoCompleteBox.Focusable = true;
+            Keyboard.Focus(AutoCompleteBox);
+            //
+            if (RefreshKey_saved == "")
+            {
+                myTabControl.SelectedIndex = 1;
+            }
+            service_oauth();
         }
         public void setFilename(string filestring)
         {
@@ -81,29 +101,29 @@ namespace Wpf_testHTTP
 
             log.Info("start another Thread");
 
-            // get ini for refreshkey
-            iniParser parser = new iniParser();
-            String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
-            parser.IniParser(iniPath);  //appStartPath + @"\sharefavorite.ini");
-            RefreshKey_saved = parser.GetSetting("Setup", "refreshkey");
-            //
-            AutoCompleteBox.Focusable = true;
-            Keyboard.Focus(AutoCompleteBox);
-            //
-            if (RefreshKey_saved == "")
-            {
-                myTabControl.SelectedIndex = 1;
-            }
-            service_oauth();
+            //// get ini for refreshkey
+            //iniParser parser = new iniParser();
+            //String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+            //parser.IniParser(iniPath);  //appStartPath + @"\sharefavorite.ini");
+            //RefreshKey_saved = parser.GetSetting("Setup", "refreshkey");
+            ////
+            //AutoCompleteBox.Focusable = true;
+            //Keyboard.Focus(AutoCompleteBox);
+            ////
+            //if (RefreshKey_saved == "")
+            //{
+            //    myTabControl.SelectedIndex = 1;
+            //}
+            //service_oauth();
  
         }
 
-        string RefreshKey_saved;
+       static string RefreshKey_saved;
  // do background loading
  //  private readonly BackgroundWorker worker = new BackgroundWorker();
    private void worker_DoWork()
    {
-
+       
        log.Info("1. Login with: "+user +" / "+password);            //
        // 1. login 
        string data = callLogin(user, password);
@@ -539,6 +559,7 @@ namespace Wpf_testHTTP
         NativeApplicationClient consumer;
         private void service_oauth()
         {
+            MessageBox.Show(RefreshKey_saved);
             if (RefreshKey_saved != "")
             {
                bool result =getAccessToken("aa");
@@ -629,6 +650,17 @@ namespace Wpf_testHTTP
            
         }
 
+        //private static string LoadRefreshToken()
+        //{
+        //    return Encoding.Unicode.GetString(ProtectedData.Unprotect(Convert.FromBase64String(Properties.Settings.Default.RefreshToken), aditionalEntropy, DataProtectionScope.CurrentUser));
+        //}
+
+        //private static void StoreRefreshToken(IAuthorizationState state)
+        //{
+        //    Properties.Settings.Default.RefreshToken = Convert.ToBase64String(ProtectedData.Protect(Encoding.Unicode.GetBytes(state.RefreshToken), aditionalEntropy, DataProtectionScope.CurrentUser));
+        //    Properties.Settings.Default.Save();
+        //}
+
         int emailCount = 0;
         List<string> mail_arr = new List<string>();
         IAuthorizationState grantedAccess1;
@@ -642,7 +674,8 @@ namespace Wpf_testHTTP
                      ClientCredentialApplicator.PostParameter(clientSecret);
             
             IAuthorizationState grantedAccess1 = consumer.ProcessUserAuthorization(authCode);        
-            consumer.RefreshAuthorization(grantedAccess1, TimeSpan.FromDays(30));
+            bool result=consumer.RefreshAuthorization(grantedAccess1, TimeSpan.FromHours(10));
+                
             accessToken = grantedAccess1.AccessToken;
 
             // save key
