@@ -131,6 +131,8 @@
     <Compile Include="Ren\RT.cs" />
     <Compile Include="Ren\Utility\BoolToVisibilityConverter.cs" />
     <Compile Include="Ren\Utility\IgnoreMouseWheelBehavior .cs" />
+    <Compile Include="Ren\Utility\ScrollingPreviewData.cs" />
+    <Compile Include="Ren\Utility\ScrollingPreviewService.cs" />
     <Compile Include="Ren\Utility\SliderWithDraggingEvents.cs" />
     <Compile Include="Ren\Utility\WatermarkTextBehavior.cs" />
     <Compile Include="Ren\Utility\WebPostHelper.cs" />
@@ -355,6 +357,7 @@
     <Resource Include="Ren\Images\folder.png" />
     <Resource Include="Ren\Images\video.png" />
     <Resource Include="Ren\Images\video_130x110.png" />
+    <Resource Include="Ren\Images\video_ph.png" />
     <Content Include="sliderbarbigphotoicon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
