@@ -9,8 +9,8 @@
 	d:DesignWidth="170" d:DesignHeight="86" UseLayoutRounding="True">
 
 	<Grid x:Name="LayoutRoot">
-		<Label x:Name="lblName"
-               Content="[Favorite Name]" Margin="10,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White" Background="#FF3B3B3B" BorderBrush="Black" BorderThickness="1" FontFamily="Segoe UI Light" Height="28"/>
+		<TextBox x:Name="tbxName"
+               Text="[Favorite Name]" Margin="10,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White" Background="#FF3B3B3B" BorderBrush="Black" BorderThickness="1" FontFamily="Segoe UI Light" Height="28" TextChanged="tbxName_TextChanged"/>
 		<Label Content="Available on TV" Margin="10,65,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White" FontFamily="Segoe UI Light" FontSize="8" HorizontalAlignment="Left" Height="21" Width="62"/>
 		<ToggleButton x:Name="btnAction" Content="On Air" HorizontalAlignment="Left" Height="21" Margin="78,65,0,0" VerticalAlignment="Top" Width="82" Click="ToggleButton_Click" IsChecked="True" IsEnabledChanged="btnAction_IsEnabledChanged" Unchecked="btnAction_Unchecked" Checked="btnAction_Checked" />
 	</Grid>

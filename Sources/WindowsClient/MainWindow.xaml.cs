@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
+using Waveface.ClientFramework;
 using Waveface.Model;
 
 namespace Waveface.Client
@@ -40,7 +41,35 @@ namespace Waveface.Client
 
 			//this.rspRightSidePanel.DataContext = LabeledContents;
 			this.lbxFavorites.DataContext = Waveface.ClientFramework.Client.Default.Favorites;
+
+			rspRightSidePane2.tbxName.KeyDown += tbxName_KeyDown;
+			rspRightSidePane2.tbxName.LostFocus += tbxName_LostFocus;
 		}
+
+		void tbxName_LostFocus(object sender, RoutedEventArgs e)
+		{
+			RenameFavorite();
+		}
+
+		void tbxName_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key != Key.Enter)
+				return;
+			RenameFavorite();
+		}
+
+		private void RenameFavorite()
+		{
+
+			try
+			{
+				StationAPI.RenameLabel((lbxFavorites.SelectedItem as IContentGroup).ID, rspRightSidePane2.tbxName.Text);
+			}
+			catch (Exception)
+			{
+			}
+		}
+
 
 		private void OnPhotoClick(object sender, MouseButtonEventArgs e)
 		{
@@ -230,7 +259,7 @@ namespace Waveface.Client
 
 		private void updateRightSidePanel2(IContentGroup group)
 		{
-			rspRightSidePane2.FavoriteName = group.Name;
+			//rspRightSidePane2.FavoriteName = group.Name;
 
 			if (!ClientFramework.Client.Default.HomeSharingEnabled)
 			{

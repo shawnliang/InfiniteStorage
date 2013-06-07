@@ -32,7 +32,7 @@ namespace Waveface.Client
 			set
 			{
 				SetValue(_favoriteName, value);
-				lblName.Content = value;
+				tbxName.Text = value;
 			}
 		}
 		#endregion
@@ -83,6 +83,11 @@ namespace Waveface.Client
 		private void btnAction_Checked(object sender, RoutedEventArgs e)
 		{
 			btnAction.Content = "On Air";
+		}
+
+		private void tbxName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+		{
+			FavoriteName = tbxName.Text;
 		}
 	}
 }

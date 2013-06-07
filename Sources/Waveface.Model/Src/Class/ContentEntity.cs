@@ -36,7 +36,10 @@ namespace Waveface.Model
 			}
 			protected set
 			{
+				if (_id == value)
+					return;
 				_id = value;
+				OnPropertyChanged("ID");
 			}
 		}
 
@@ -54,7 +57,10 @@ namespace Waveface.Model
 			}
 			protected set
 			{
+				if (_name == value)
+					return;
 				_name = value;
+				OnPropertyChanged("Name");
 			}
 		}
 
@@ -134,7 +140,10 @@ namespace Waveface.Model
 			}
 			set
 			{
+				if (_description == null)
+					return;
 				_description = value;
+				OnPropertyChanged("Description");
 			}
 		}
 
