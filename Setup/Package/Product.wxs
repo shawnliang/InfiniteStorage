@@ -299,6 +299,8 @@
       </Directory>
     </DirectoryRef>
 
+    <?include PhotoShare.wxi ?>
+    
     <Feature Id='MainFeature' Level='1' Display='collapse'>
       <ComponentRef Id='pmd'/>
       <ComponentRef Id='InfiniteStorage.exe' />
@@ -354,7 +356,8 @@
       <ComponentRef Id="Empty.png"/>
       <ComponentRef Id="CultureSetting"/>
       <ComponentRef Id="InfiniteStorage.resources.zhtw" />
-      
+
+      <ComponentGroupRef Id="photoSharedFiles" />
     </Feature>
 
     <!--

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+    <DirectoryRef Id="INSTALLLOCATION">
+      <Component Id="DotNetOpenAuth.Core.dll" Guid="*">
+        <File Id="DotNetOpenAuth.Core.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.Core.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.Core.UI.dll" Guid="*">
+        <File Id="DotNetOpenAuth.Core.UI.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.Core.UI.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.InfoCard.dll" Guid="*">
+        <File Id="DotNetOpenAuth.InfoCard.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.InfoCard.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.InfoCard.UI.dll" Guid="*">
+        <File Id="DotNetOpenAuth.InfoCard.UI.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.InfoCard.UI.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OAuth.Common.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OAuth.Common.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OAuth.Common.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OAuth.Consumer.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OAuth.Consumer.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OAuth.Consumer.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OAuth.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OAuth.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OAuth.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OAuth.ServiceProvider.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OAuth.ServiceProvider.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OAuth.ServiceProvider.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OAuth2.AuthorizationServer.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OAuth2.AuthorizationServer.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OAuth2.AuthorizationServer.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OAuth2.Client.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OAuth2.Client.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OAuth2.Client.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OAuth2.Client.UI.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OAuth2.Client.UI.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OAuth2.Client.UI.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OAuth2.ClientAuthorization.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OAuth2.ClientAuthorization.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OAuth2.ClientAuthorization.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OAuth2.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OAuth2.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OAuth2.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OAuth2.ResourceServer.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OAuth2.ResourceServer.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OAuth2.ResourceServer.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OpenId.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OpenId.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OpenId.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OpenId.Provider.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OpenId.Provider.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OpenId.Provider.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OpenId.Provider.UI.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OpenId.Provider.UI.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OpenId.Provider.UI.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OpenId.RelyingParty.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OpenId.RelyingParty.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OpenId.RelyingParty.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OpenId.RelyingParty.UI.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OpenId.RelyingParty.UI.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OpenId.RelyingParty.UI.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OpenId.UI.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OpenId.UI.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OpenId.UI.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OpenIdInfoCard.UI.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OpenIdInfoCard.UI.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OpenIdInfoCard.UI.dll" />
+      </Component>
+      <Component Id="DotNetOpenAuth.OpenIdOAuth.dll" Guid="*">
+        <File Id="DotNetOpenAuth.OpenIdOAuth.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\DotNetOpenAuth.OpenIdOAuth.dll" />
+      </Component>
+      <Component Id="Google.Apis.dll" Guid="*">
+        <File Id="Google.Apis.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Google.Apis.dll" />
+      </Component>
+      <Component Id="Google.Apis.Tasks.v1.dll" Guid="*">
+        <File Id="Google.Apis.Tasks.v1.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Google.Apis.Tasks.v1.dll" />
+      </Component>
+      <Component Id="Google.GData.Client.dll" Guid="*">
+        <File Id="Google.GData.Client.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Google.GData.Client.dll" />
+      </Component>
+      <Component Id="Google.GData.Contacts.dll" Guid="*">
+        <File Id="Google.GData.Contacts.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Google.GData.Contacts.dll" />
+      </Component>
+      <Component Id="Google.GData.Extensions.dll" Guid="*">
+        <File Id="Google.GData.Extensions.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Google.GData.Extensions.dll" />
+      </Component>
+      <Component Id="Mail.dll" Guid="*">
+        <File Id="Mail.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Mail.dll" />
+      </Component>
+      <Component Id="Mono.Math.dll" Guid="*">
+        <File Id="Mono.Math.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Mono.Math.dll" />
+      </Component>
+      <Component Id="Org.Mentalis.Security.Cryptography.dll" Guid="*">
+        <File Id="Org.Mentalis.Security.Cryptography.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Org.Mentalis.Security.Cryptography.dll" />
+      </Component>
+      <Component Id="sharedFavorite.exe" Guid="*">
+        <File Id="sharedFavorite.exe" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\sharedFavorite.exe" />
+      </Component>
+      <Component Id="sharedFavorite.exe.config" Guid="*">
+        <File Id="sharedFavorite.exe.config" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\sharedFavorite.exe.config" />
+      </Component>
+      <Component Id="System.Net.Http.dll" Guid="*">
+        <File Id="System.Net.Http.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Net.Http.dll" />
+      </Component>
+      <Component Id="System.Net.Http.Extensions.dll" Guid="*">
+        <File Id="System.Net.Http.Extensions.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Net.Http.Extensions.dll" />
+      </Component>
+      <Component Id="System.Net.Http.Primitives.dll" Guid="*">
+        <File Id="System.Net.Http.Primitives.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Net.Http.Primitives.dll" />
+      </Component>
+      <Component Id="System.Net.Http.WebRequest.dll" Guid="*">
+        <File Id="System.Net.Http.WebRequest.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Net.Http.WebRequest.dll" />
+      </Component>
+      <Component Id="System.Runtime.dll" Guid="*">
+        <File Id="System.Runtime.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Runtime.dll" />
+      </Component>
+      <Component Id="System.Threading.Tasks.dll" Guid="*">
+        <File Id="System.Threading.Tasks.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Threading.Tasks.dll" />
+      </Component>
+      <Component Id="System.Windows.Controls.DataVisualization.Toolkit.dll" Guid="*">
+        <File Id="System.Windows.Controls.DataVisualization.Toolkit.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Windows.Controls.DataVisualization.Toolkit.dll" />
+      </Component>
+      <Component Id="System.Windows.Controls.Input.Toolkit.Design.dll" Guid="*">
+        <File Id="System.Windows.Controls.Input.Toolkit.Design.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Windows.Controls.Input.Toolkit.Design.dll" />
+      </Component>
+      <Component Id="System.Windows.Controls.Input.Toolkit.dll" Guid="*">
+        <File Id="System.Windows.Controls.Input.Toolkit.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Windows.Controls.Input.Toolkit.dll" />
+      </Component>
+      <Component Id="System.Windows.Controls.Input.Toolkit.VisualStudio.Design.dll" Guid="*">
+        <File Id="System.Windows.Controls.Input.Toolkit.VisualStudio.Design.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Windows.Controls.Input.Toolkit.VisualStudio.Design.dll" />
+      </Component>
+      <Component Id="WPFToolkit.Design.dll" Guid="*">
+        <File Id="WPFToolkit.Design.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\WPFToolkit.Design.dll" />
+      </Component>
+      <Component Id="WPFToolkit.dll" Guid="*">
+        <File Id="WPFToolkit.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\WPFToolkit.dll" />
+      </Component>
+      <Component Id="WPFToolkit.VisualStudio.Design.dll" Guid="*">
+        <File Id="WPFToolkit.VisualStudio.Design.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\WPFToolkit.VisualStudio.Design.dll" />
+      </Component>
+    </DirectoryRef>
+
+    <ComponentGroup Id="photoSharedFiles">
+      <ComponentRef Id="DotNetOpenAuth.Core.dll" />
+      <ComponentRef Id="DotNetOpenAuth.Core.UI.dll" />
+      <ComponentRef Id="DotNetOpenAuth.InfoCard.dll" />
+      <ComponentRef Id="DotNetOpenAuth.InfoCard.UI.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OAuth.Common.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OAuth.Consumer.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OAuth.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OAuth.ServiceProvider.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OAuth2.AuthorizationServer.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OAuth2.Client.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OAuth2.Client.UI.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OAuth2.ClientAuthorization.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OAuth2.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OAuth2.ResourceServer.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OpenId.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OpenId.Provider.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OpenId.Provider.UI.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OpenId.RelyingParty.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OpenId.RelyingParty.UI.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OpenId.UI.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OpenIdInfoCard.UI.dll" />
+      <ComponentRef Id="DotNetOpenAuth.OpenIdOAuth.dll" />
+      <ComponentRef Id="Google.Apis.dll" />
+      <ComponentRef Id="Google.Apis.Tasks.v1.dll" />
+      <ComponentRef Id="Google.GData.Client.dll" />
+      <ComponentRef Id="Google.GData.Contacts.dll" />
+      <ComponentRef Id="Google.GData.Extensions.dll" />
+      <ComponentRef Id="Mail.dll" />
+      <ComponentRef Id="Mono.Math.dll" />
+      <ComponentRef Id="Org.Mentalis.Security.Cryptography.dll" />
+      <ComponentRef Id="sharedFavorite.exe" />
+      <ComponentRef Id="sharedFavorite.exe.config" />
+      <ComponentRef Id="System.Net.Http.dll" />
+      <ComponentRef Id="System.Net.Http.Extensions.dll" />
+      <ComponentRef Id="System.Net.Http.Primitives.dll" />
+      <ComponentRef Id="System.Net.Http.WebRequest.dll" />
+      <ComponentRef Id="System.Runtime.dll" />
+      <ComponentRef Id="System.Threading.Tasks.dll" />
+      <ComponentRef Id="System.Windows.Controls.DataVisualization.Toolkit.dll" />
+      <ComponentRef Id="System.Windows.Controls.Input.Toolkit.Design.dll" />
+      <ComponentRef Id="System.Windows.Controls.Input.Toolkit.dll" />
+      <ComponentRef Id="System.Windows.Controls.Input.Toolkit.VisualStudio.Design.dll" />
+      <ComponentRef Id="WPFToolkit.Design.dll" />
+      <ComponentRef Id="WPFToolkit.dll" />
+      <ComponentRef Id="WPFToolkit.VisualStudio.Design.dll" />
+    </ComponentGroup>
+
+</Include>
