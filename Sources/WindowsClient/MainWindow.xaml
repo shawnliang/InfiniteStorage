@@ -569,9 +569,9 @@
                       Grid.Column="0"
                       Background="Transparent" />
 
-        <Grid Grid.Column="2"
+        <Grid x:Name="gdRightSide" Grid.Column="2"
               Grid.Row="1"
-              Background="{DynamicResource SidePanelBackground}">
+              Background="{DynamicResource SidePanelBackground}" Visibility="Collapsed">
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="1"
                                   ShadowDepth="1"
@@ -592,7 +592,7 @@
                       Grid.Row="1"
                       Background="Transparent"
                       HorizontalAlignment="Left" />
-        <Grid  Grid.RowSpan="2" Grid.Column="1" Grid.Row="1">
+        <Grid x:Name="gdContentArea"  Grid.RowSpan="2" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
         	<Grid.RowDefinitions>
         		<RowDefinition Height="*" />
         		<RowDefinition Height="45" />

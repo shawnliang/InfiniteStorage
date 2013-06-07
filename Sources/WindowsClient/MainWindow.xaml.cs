@@ -37,7 +37,7 @@ namespace Waveface.Client
 			this.lbxDeviceContainer.DataContext = Waveface.ClientFramework.Client.Default.Services;
 			var fav = Waveface.ClientFramework.Client.Default.Favorites;
 
-			this.rspRightSidePanel.DataContext = LabeledContents;
+			//this.rspRightSidePanel.DataContext = LabeledContents;
 			this.lbxFavorites.DataContext = Waveface.ClientFramework.Client.Default.Favorites;
 		}
 
@@ -136,7 +136,12 @@ namespace Waveface.Client
 			lbxContentContainer.DataContext = group.Contents;
 			SetContentTypeCount(group);
 
-			rspRightSidePanel.Visibility = System.Windows.Visibility.Visible;
+
+			Grid.SetColumnSpan(gdContentArea, 2);
+			
+			gdRightSide.Visibility = System.Windows.Visibility.Collapsed;
+
+			rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
 			rspRightSidePane2.Visibility = System.Windows.Visibility.Collapsed;
 
 			unSortedFilesUC.Visibility = System.Windows.Visibility.Collapsed;
@@ -198,6 +203,9 @@ namespace Waveface.Client
 			SetContentTypeCount(group);
 
 			updateRightSidePanel2(group);
+
+			gdRightSide.Visibility = System.Windows.Visibility.Visible;
+			Grid.SetColumnSpan(gdContentArea, 1);
 
 			rspRightSidePane2.Visibility = System.Windows.Visibility.Visible;
 			rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
