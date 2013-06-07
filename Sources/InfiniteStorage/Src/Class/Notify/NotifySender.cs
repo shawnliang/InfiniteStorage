@@ -32,7 +32,11 @@ namespace InfiniteStorage.Notify
 
 			if (ctx.subscribe_labels)
 			{
-				sendChangedLabels();
+				if (home_sharing_enabled)
+				{
+					sendChangedLabels();
+				}
+
 				sendHomeSharing();
 			}
 		}

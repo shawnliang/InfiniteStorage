@@ -99,7 +99,7 @@ namespace UnitTest.Notify
 
 			var allLabels = new List<Label> { new Label { label_id = Guid.NewGuid(), name = "name1", seq = 1000 } };
 			util.Setup(x => x.QueryAllLabels()).Returns(allLabels);
-
+			util.Setup(x => x.HomeSharingEnabled).Returns(true);
 
 			var sender = new NotifySender(notifyCtx.Object, util.Object);
 			sender.label_seq.Add(allLabels[0].label_id, 5);
@@ -133,7 +133,7 @@ namespace UnitTest.Notify
 			};
 
 			util.Setup(x => x.QueryAllLabels()).Returns(allLabels);
-
+			util.Setup(x => x.HomeSharingEnabled).Returns(true);
 			var sender = new NotifySender(notifyCtx.Object, util.Object);
 			sender.Notify();
 
@@ -157,6 +157,7 @@ namespace UnitTest.Notify
 			var labelFiles = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
 
 			util.Setup(x => x.QueryAllLabels()).Returns(allLabels);
+			util.Setup(x => x.HomeSharingEnabled).Returns(true);
 
 			var sender = new NotifySender(notifyCtx.Object, util.Object);
 			sender.label_seq.Add(allLabels[0].label_id, 1234L);
@@ -205,6 +206,29 @@ namespace UnitTest.Notify
 			sender.Notify();
 
 			Assert.IsNull(sentData);
+		}
+
+
+		[TestMethod]
+		public void do_not_send_labels_if_home_sharing_disabled()
+		{
+			string sentData = null;
+			notifyCtx.Setup(x => x.subscribe_labels).Returns(true);
+			notifyCtx.Setup(x => x.Send(It.IsAny<string>())).Callback<string>(x => { sentData = x; });
+
+			util.Setup(x => x.HomeSharingEnabled).Returns(false);
+
+			var allLabels = new List<Label> { new Label { label_id = Guid.NewGuid(), name = "name1", seq = 1000 } };
+
+			util.Setup(x => x.QueryAllLabels()).Returns(allLabels);
+
+			var sender = new NotifySender(notifyCtx.Object, util.Object);
+			sender.home_sharing_enabled = false;
+
+			sender.Notify();
+
+			Assert.IsNull(sentData);
+			Assert.IsFalse(sender.label_seq.ContainsKey(allLabels[0].label_id));
 		}
 	}
 }
