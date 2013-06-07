@@ -376,20 +376,20 @@ namespace Waveface.Client
         private void gridMain_MouseEnter(object sender, MouseEventArgs e)
         {
             tbDescribe.BorderThickness = new Thickness(1);
-            tbDescribe.BorderBrush = new SolidColorBrush(Color.FromRgb(63, 63, 63));
+            tbDescribe.BorderBrush = new SolidColorBrush(Color.FromRgb(64, 64, 64)); //404040
             tbDescribe.Background = new SolidColorBrush(Color.FromRgb(74, 74, 74));
 
-            gridMain.Background = new SolidColorBrush(Color.FromRgb(90, 91, 91)); //5A5B5B
-            lbEvent.Background = new SolidColorBrush(Color.FromRgb(90, 91, 91));
+            gridMain.Background = new SolidColorBrush(Color.FromRgb(79, 79, 79)); //4F4F4F
+            lbEvent.Background = new SolidColorBrush(Color.FromRgb(79, 79, 79)); //4F4F4F
         }
 
         private void gridMain_MouseLeave(object sender, MouseEventArgs e)
         {
             tbDescribe.BorderThickness = new Thickness(0);
-            tbDescribe.Background = new SolidColorBrush(Color.FromRgb(95, 95, 95));
+            tbDescribe.Background = new SolidColorBrush(Color.FromRgb(63, 63, 63)); //3F3F3F
 
-            gridMain.Background = new SolidColorBrush(Color.FromRgb(95, 95, 95));
-            lbEvent.Background = new SolidColorBrush(Color.FromRgb(95, 95, 95));
+            gridMain.Background = new SolidColorBrush(Color.FromRgb(63, 63, 63)); //3F3F3F
+            lbEvent.Background = new SolidColorBrush(Color.FromRgb(63, 63, 63)); //3F3F3F
         }
 
         private void btnImport_Click(object sender, RoutedEventArgs e)
@@ -399,7 +399,8 @@ namespace Waveface.Client
 
         private void tbDescribe_MouseEnter(object sender, MouseEventArgs e)
         {
-            tbDescribe.Background = new SolidColorBrush(Color.FromRgb(90, 91, 91));
+            tbDescribe.Background = new SolidColorBrush(Color.FromRgb(110, 109, 109)); //6E6D6D
+            tbDescribe.BorderBrush = new SolidColorBrush(Color.FromRgb(64, 64, 64));
         }
 
         private void tbDescribe_MouseLeave(object sender, MouseEventArgs e)

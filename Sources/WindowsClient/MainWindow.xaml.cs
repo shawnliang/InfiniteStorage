@@ -232,12 +232,15 @@ namespace Waveface.Client
 
 			var iniFile = System.IO.Path.Combine(path, @"sharefavorite.ini");
 
+		    System.IO.File.Create(iniFile).Close();
+
 			_w.setTitle(this.Title);
             _w.setiniPath (iniFile);
 
 			var files = string.Join("~", ClientFramework.Client.Default.TaggedContents.Select(content => content.Uri.LocalPath).ToArray());
 
 			_w.setFilename(files);
+            _w.setRun();
             _w.ShowDialog();
 		}
 	}

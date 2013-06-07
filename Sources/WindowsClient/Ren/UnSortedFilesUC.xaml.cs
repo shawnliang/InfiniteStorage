@@ -233,6 +233,8 @@ namespace Waveface.Client
             }
 
             ShowInfor();
+
+            GC.Collect();
         }
 
         public static string GetCountsString(int photosCount, int videosCount)
@@ -408,6 +410,8 @@ namespace Waveface.Client
         {
             DoImport(eventUC, false);
 
+            Mouse.OverrideCursor = Cursors.Wait;
+
             double _h = eventUC.ActualHeight / 10;
 
             for (int i = 10; i > 0; i--)
@@ -416,10 +420,12 @@ namespace Waveface.Client
                 DoEvents();
                 Thread.Sleep(50);
 
-                eventUC.Opacity -= (1 / 20) * i;
+                eventUC.Opacity -= (1 / 10) * i;
             }
 
             m_eventUCs.Remove(eventUC);
+
+            Mouse.OverrideCursor = Cursors.Arrow;
         }
 
         #region DoEvents

@@ -26,6 +26,7 @@ using Limilabs.Client.IMAP;
 using Limilabs.Mail;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using System.IO;
 
 namespace Wpf_testHTTP
 {
@@ -53,7 +54,15 @@ namespace Wpf_testHTTP
         public void setiniPath(string path)
         {
             iniPath = path;
-
+            if(File.Exists(iniPath)==false)
+            {
+                using (FileStream FS = File.Create(path))
+                {
+                    Byte[] info = new UTF8Encoding(true).GetBytes("[Setup]\r\n refreshKey=");
+                    FS.Write(info, 0, info.Length);
+                    FS.Close();
+                }
+            }
             //MessageBox.Show(path);
         }
         public void setRun()
@@ -559,7 +568,7 @@ namespace Wpf_testHTTP
         NativeApplicationClient consumer;
         private void service_oauth()
         {
-            MessageBox.Show(RefreshKey_saved);
+           // MessageBox.Show(RefreshKey_saved);
             if (RefreshKey_saved != "")
             {
                bool result =getAccessToken("aa");
