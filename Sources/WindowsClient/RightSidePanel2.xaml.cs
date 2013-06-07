@@ -68,5 +68,21 @@ namespace Waveface.Client
 		{
 			OnOnAirClick(EventArgs.Empty);
 		}
+
+		private void btnAction_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			if (!btnAction.IsEnabled)
+				btnAction.Content = "Disabled";
+		}
+
+		private void btnAction_Unchecked(object sender, RoutedEventArgs e)
+		{
+			btnAction.Content = "Offline";
+		}
+
+		private void btnAction_Checked(object sender, RoutedEventArgs e)
+		{
+			btnAction.Content = "On Air";
+		}
 	}
 }
