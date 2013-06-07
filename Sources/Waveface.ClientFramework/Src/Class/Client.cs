@@ -6,6 +6,7 @@ using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using Waveface.Model;
+using Microsoft.Win32;
 
 namespace Waveface.ClientFramework
 {
@@ -231,5 +232,25 @@ namespace Waveface.ClientFramework
 			else
 				StationAPI.UnTag(content.ID, m_LabelID);
 		}
+
+		public bool IsOnAir(IContentGroup group)
+		{
+			using (var conn = BunnyDB.CreateConnection())
+			{
+				conn.Open();
+				var cmd = conn.CreateCommand();
+				cmd.CommandText = "select on_air from [Labels] where label_id = @label";
+				cmd.Parameters.Add(new SQLiteParameter("@label", new Guid(group.ID)));
+				var on_air = cmd.ExecuteScalar();
+
+				return on_air != null && (bool)on_air;
+			}
+		}
+
+		public bool HomeSharingEnabled
+		{
+			get { return Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", "true").Equals("true"); }
+		}
+
 	}
 }

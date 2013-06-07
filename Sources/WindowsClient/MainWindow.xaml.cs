@@ -197,6 +197,8 @@ namespace Waveface.Client
 			lbxContentContainer.DataContext = group.Contents;
 			SetContentTypeCount(group);
 
+			updateRightSidePanel2(group);
+
 			rspRightSidePane2.Visibility = System.Windows.Visibility.Visible;
 			rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
 		}
@@ -208,7 +210,25 @@ namespace Waveface.Client
 
 		private void rspRightSidePane2_OnAirClick(object sender, EventArgs e)
 		{
-			ClientFramework.Client.Default.OnAir((lblContentLocation.DataContext as IContentEntity).ID, true);
+			var isOnAir = ClientFramework.Client.Default.IsOnAir((IContentGroup)lblContentLocation.DataContext);
+
+			ClientFramework.Client.Default.OnAir((lblContentLocation.DataContext as IContentEntity).ID, !isOnAir);
+		}
+
+		private void updateRightSidePanel2(IContentGroup group)
+		{
+			rspRightSidePane2.FavoriteName = group.Name;
+
+			if (!ClientFramework.Client.Default.HomeSharingEnabled)
+			{
+				rspRightSidePane2.btnAction.IsEnabled = false;
+			}
+			else
+			{
+				var isOnAir = ClientFramework.Client.Default.IsOnAir(group);
+				rspRightSidePane2.btnAction.IsEnabled = true;
+				rspRightSidePane2.btnAction.IsChecked = isOnAir;
+			}
 		}
 	}
 }
