@@ -15,7 +15,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Newtonsoft.Json;
-
+using Waveface.Model;
 #endregion
 
 namespace Waveface.Client
@@ -34,6 +34,8 @@ namespace Waveface.Client
 
         public static UnSortedFilesUC Current { get; set; }
 
+
+        private IService m_currentDevice;
         private bool m_init;
         private List<MySliderTick> m_sliderTicks = new List<MySliderTick>();
         private List<string> m_defaultEventNameCache;
@@ -55,11 +57,6 @@ namespace Waveface.Client
             InitSliderTicks();
         }
 
-        public UnSortedFilesUC(string device)
-            : this()
-        {
-            Init(device);
-        }
 
         private void InitSliderTicks()
         {
@@ -72,11 +69,11 @@ namespace Waveface.Client
             m_sliderTicks.Add(new MySliderTick { Name = "Month", Value = BY_MONTH });
         }
 
-        public bool Init(string device)
+        public bool Init(IService device)
         {
-            string _deviceID = device;
+            m_currentDevice = device;
 
-            string _allPendingFiles = processAllFile(_deviceID);
+            string _allPendingFiles = processAllFile(m_currentDevice.ID);
 
             Rt = new RT();
 
@@ -425,6 +422,8 @@ namespace Waveface.Client
 
             m_eventUCs.Remove(eventUC);
 
+            m_currentDevice.Refresh();
+            
             Mouse.OverrideCursor = Cursors.Arrow;
         }
 
@@ -454,6 +453,8 @@ namespace Waveface.Client
             DoImport(null, true);
 
             m_eventUCs.Clear();
+
+            m_currentDevice.Refresh();
         }
 
         private void DoImport(EventUC eventUC, bool all)
@@ -462,7 +463,7 @@ namespace Waveface.Client
 
             PendingSort _pendingSort = new PendingSort
             {
-                device_id = Rt.RtData.file_changes[0].dev_id
+                device_id = m_currentDevice.ID
             };
 
             if (all)
