@@ -94,6 +94,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		}
 		mServerUrl ="http://"+pairedServer.ip+":"+pairedServer.restPort;
 		mImageManager = SyncApplication.getWavefacePlayerApplication(getActivity()).getImageManager();
+		
 	}
 	
 	@Override
@@ -272,10 +273,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			if(datas != null) {
 				mProgress.setVisibility(View.GONE);
 				OverviewAdapter adapter = null;
-				if(mType == OVERVIEW_VIEW_TYPE_RECENT_VIDEO)
-					adapter = new OverviewAdapter(getActivity(), datas, true);
-				else
-					adapter = new OverviewAdapter(getActivity(), datas, false);
+				adapter = new OverviewAdapter(getActivity(), datas);
 				mList.setAdapter(adapter);
 				
 				if(datas.size() == 0) {

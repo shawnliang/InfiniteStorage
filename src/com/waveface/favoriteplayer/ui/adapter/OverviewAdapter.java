@@ -31,7 +31,10 @@ public class OverviewAdapter extends BaseAdapter{
 	private ImageManager mImageManager;
 	private LayoutInflater mInflater;
 	
-	private boolean mVideo;
+	private int mChildWidth, mChildHeight;
+	private String mFilePath;
+	
+	private int mNormalPadding, mFirstPadding;
 	
 	public class ViewHolder {
 		public ImageView image;
@@ -43,14 +46,21 @@ public class OverviewAdapter extends BaseAdapter{
 		public String labelId;
 	}
 	
-	public OverviewAdapter(Context context, ArrayList<OverviewData> datas, boolean isVideo) {
+	public OverviewAdapter(Context context, ArrayList<OverviewData> datas) {
 		if(context == null)
 			return;
 		mDatas = datas;
 		mImageManager = SyncApplication.getWavefacePlayerApplication(context).getImageManager();
 		mInflater = LayoutInflater.from(context);
 		
-		mVideo = isVideo;
+
+		mChildWidth = context.getResources().getDimensionPixelSize(R.dimen.overview_image_width) + 200;
+		mChildHeight = context.getResources().getDimensionPixelSize(R.dimen.overview_image_height) + 200;
+		
+		mFilePath = FileUtil.getDownloadFolder(context) + Constant.VIDEO_FOLDER + "/";
+
+		mNormalPadding = context.getResources().getDimensionPixelSize(R.dimen.overview_item_padding);
+		mFirstPadding = context.getResources().getDimensionPixelSize(R.dimen.overview_item_first_left_padding);
 	}
 	
 	public ArrayList<OverviewData> getDatas() {
@@ -74,39 +84,52 @@ public class OverviewAdapter extends BaseAdapter{
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder holder;
-		Context context = mInflater.getContext();
 		if(convertView == null) {
-			convertView = mInflater.inflate(R.layout.item_overview, parent, false);
-			holder = new ViewHolder();
-			holder.image = (ImageView) convertView.findViewById(R.id.image);
-			holder.reflection = (ImageView) convertView.findViewById(R.id.reflection_image);
-			holder.labelText = (TextView) convertView.findViewById(R.id.text_label);
-			holder.placeholder = (ImageView) convertView.findViewById(R.id.image_play);
-			holder.countText = (TextView) convertView.findViewById(R.id.text_count);
-			holder.progress = (ProgressBar)convertView.findViewById(R.id.progress);
-			convertView.setTag(holder);
-		} else {
-			holder = (ViewHolder) convertView.getTag();
+			convertView = getView(parent, false);
 		}
 		
-		holder.labelId = mDatas.get(position).labelId;
+		setupView(position, convertView, mDatas.get(position));
 		
-		int width = context.getResources().getDimensionPixelSize(R.dimen.overview_image_width) + 200;
-		int height = context.getResources().getDimensionPixelSize(R.dimen.overview_image_height) + 200;
+		return convertView;
+	}
+	
+	public View generateView(int position, ViewGroup parent) {
+		View view = getView(parent, true);
+		
+		setupView(position, view, mDatas.get(position));
+		
+		return view;
+	}
+
+	private View getView(ViewGroup parent, boolean isFake) {
+		View convertView = mInflater.inflate(R.layout.item_overview, parent, false);
+		ViewHolder holder = new ViewHolder();
+		holder.image = (ImageView) convertView.findViewById(R.id.image);
+		holder.reflection = (ImageView) convertView.findViewById(R.id.reflection_image);
+		holder.labelText = (TextView) convertView.findViewById(R.id.text_label);
+		holder.placeholder = (ImageView) convertView.findViewById(R.id.image_play);
+		holder.countText = (TextView) convertView.findViewById(R.id.text_count);
+		holder.progress = (ProgressBar)convertView.findViewById(R.id.progress);
+		convertView.setTag(holder);
+		return convertView;
+	}
+	
+	private void setupView(int position, View view, OverviewData data) {
+		ViewHolder holder = (ViewHolder) view.getTag();
+		holder.labelId = data.labelId;
+		
 
 		String coverUrl = null;
 		
 		ImageAttribute attr = new ImageAttribute(holder.image);
 		attr = new ImageAttribute(holder.image);
-		attr.setResizeSize(width, height);
+		attr.setResizeSize(mChildWidth, mChildHeight);
 		attr.setApplyWithAnimation(true);
 		attr.setDoneScaleType(ScaleType.CENTER_CROP);
 		
-		if(Constant.FILE_TYPE_VIDEO.equals(mDatas.get(position).type)) {
+		if(Constant.FILE_TYPE_VIDEO.equals(data.type)) {
 			
-			String fullFilename = FileUtil.getDownloadFolder(context)
-					+ Constant.VIDEO_FOLDER + "/" + mDatas.get(position).filename;
+			String fullFilename = mFilePath + data.filename;
 			Bitmap bmThumbnail = mImageManager.getImage(fullFilename, attr);
 			if(bmThumbnail==null){
 				if(FileUtil.isFileExisted(fullFilename)){
@@ -125,32 +148,25 @@ public class OverviewAdapter extends BaseAdapter{
 		}
 		else{
 			holder.placeholder.setVisibility(View.INVISIBLE);
-			coverUrl = mDatas.get(position).url;
+			coverUrl = data.url;
 		}
 		mImageManager.getImage(coverUrl, attr);			
 
 		attr = new ImageAttribute(holder.reflection);
-		attr.setResizeSize(width, height);
+		attr.setResizeSize(mChildWidth, mChildHeight);
 		attr.setReflection(true);
 		attr.setHighQuality(true);
 		attr.setApplyWithAnimation(true);
 		attr.setDoneScaleType(ScaleType.CENTER_CROP);
 		mImageManager.getImage(coverUrl, attr);
 
-		
-		holder.labelText.setText(mDatas.get(position).title);
+		holder.labelText.setText(data.title);
+		holder.countText.setText(Integer.toString(data.count));
 
-		int paddingNormal = context.getResources().getDimensionPixelSize(R.dimen.overview_item_padding);
 		if(position == 0) {
-			int paddingLeft = context.getResources().getDimensionPixelSize(R.dimen.overview_item_first_left_padding);
-			convertView.setPadding(paddingLeft, paddingNormal, paddingNormal, paddingNormal);
+			view.setPadding(mFirstPadding, mNormalPadding, mNormalPadding, mNormalPadding);
 		} else {
-			convertView.setPadding(paddingNormal, paddingNormal, paddingNormal, paddingNormal);
+			view.setPadding(mNormalPadding, mNormalPadding, mNormalPadding, mNormalPadding);
 		}
-				
-		holder.countText.setText(Integer.toString(mDatas.get(position).count));
-		
-		return convertView;
 	}
-
 }
