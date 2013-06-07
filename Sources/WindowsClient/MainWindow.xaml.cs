@@ -133,6 +133,26 @@ namespace Waveface.Client
 			if (group == null)
 				return;
 
+			if (group.Name.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
+			{
+				ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(ti) as TreeViewItem;
+
+				if (parent == null)
+					return;
+
+				var service = parent.DataContext as IService;
+
+				if (service == null)
+					return;
+
+				unSortedFilesUC.Visibility = Visibility.Visible;
+				unSortedFilesUC.Init(service.ID);
+			}
+			else
+			{
+				unSortedFilesUC.Visibility = Visibility.Collapsed;
+			}
+
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = group.Contents;
 			SetContentTypeCount(group);
@@ -144,8 +164,6 @@ namespace Waveface.Client
 
 			rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
 			rspRightSidePane2.Visibility = System.Windows.Visibility.Collapsed;
-
-			unSortedFilesUC.Visibility = System.Windows.Visibility.Collapsed;
 		}
 
 
@@ -171,13 +189,6 @@ namespace Waveface.Client
 					content.Liked = true;
 				}
 			}
-		}
-
-		private void lbxDeviceContainer_UnSortedItemClick(object sender, UnSortedItemEventArgs e)
-		{
-			unSortedFilesUC.Init(e.DeviceID);
-
-			unSortedFilesUC.Visibility = Visibility.Visible;
 		}
 
 		private void lbxFavorites_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

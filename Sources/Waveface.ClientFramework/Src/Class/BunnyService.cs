@@ -16,6 +16,8 @@ namespace Waveface.ClientFramework
 
 		private void PopulateContent(ObservableCollection<IContentEntity> content)
 		{
+			content.Add(new BunnyContentGroup("", "Unsorted", Guid.NewGuid().ToString()));
+
 			using (var conn = BunnyDB.CreateConnection())
 			{
 				conn.Open();
