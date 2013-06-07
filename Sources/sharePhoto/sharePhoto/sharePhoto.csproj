@@ -219,16 +219,13 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Program Files (x86)\WPF Toolkit\v3.5.50211.1\WPFToolkit.dll</HintPath>
+      <HintPath>..\..\..\Libs\WPFToolkit\WPFToolkit.dll</HintPath>
     </Reference>
     <Reference Include="WPFToolkit.Design, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Program Files (x86)\WPF Toolkit\v3.5.50211.1\WPFToolkit.Design.dll</HintPath>
+      <HintPath>..\..\..\Libs\WPFToolkit\WPFToolkit.Design.dll</HintPath>
     </Reference>
     <Reference Include="WPFToolkit.VisualStudio.Design, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Program Files (x86)\WPF Toolkit\v3.5.50211.1\WPFToolkit.VisualStudio.Design.dll</HintPath>
+      <HintPath>..\..\..\Libs\WPFToolkit\WPFToolkit.VisualStudio.Design.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
