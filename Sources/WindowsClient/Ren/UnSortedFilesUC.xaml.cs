@@ -77,9 +77,13 @@ namespace Waveface.Client
 
             Rt = new RT();
 
-            if (!Rt.Init(_allPendingFiles))
+            if (Rt.Init(_allPendingFiles))
             {
-                // Application.Current.Shutdown();
+                gridEmptyPanel.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                gridEmptyPanel.Visibility = Visibility.Visible;
                 return false;
             }
 
@@ -190,11 +194,6 @@ namespace Waveface.Client
             tbTitle.Text = Rt.RtData.file_changes[0].dev_name;
         }
 
-        private void ShowInfor()
-        {
-            tbTotalCount.Text = GetCountsString(PhotosCount, VideosCount) + " in " + Rt.Events.Count + " event" + ((Rt.Events.Count > 1) ? "s" : "");
-        }
-
         private void ShowEvents()
         {
             Mouse.OverrideCursor = Cursors.Wait;
@@ -229,9 +228,28 @@ namespace Waveface.Client
                 m_eventUCs.Add(_ctl);
             }
 
+            DataTemplate _dataTemplate = FindResource("SbPreviewTemplate") as DataTemplate;
+
+            listBoxEvent.SetValue(ScrollingPreviewService.VerticalScrollingPreviewTemplateProperty, _dataTemplate);
+
             ShowInfor();
 
             GC.Collect();
+        }
+
+        private void ShowInfor()
+        {
+            if (m_eventUCs.Count == 0)
+            {
+                gridEmptyPanel.Visibility = Visibility.Visible;
+                tbTotalCount.Text = "";
+
+            }
+            else
+            {
+                gridEmptyPanel.Visibility = Visibility.Collapsed;
+                tbTotalCount.Text = GetCountsString(PhotosCount, VideosCount) + " in " + m_eventUCs.Count + " event" + ((m_eventUCs.Count > 1) ? "s" : "");
+            }
         }
 
         public static string GetCountsString(int photosCount, int videosCount)
@@ -405,9 +423,9 @@ namespace Waveface.Client
 
         public void AddEventToFolder(EventUC eventUC)
         {
-            DoImport(eventUC, false);
-
             Mouse.OverrideCursor = Cursors.Wait;
+
+            DoImport(eventUC, false);
 
             double _h = eventUC.ActualHeight / 10;
 
@@ -416,14 +434,17 @@ namespace Waveface.Client
                 eventUC.Height = i * _h;
                 DoEvents();
                 Thread.Sleep(50);
-
-                eventUC.Opacity -= (1 / 10) * i;
             }
+
+            VideosCount -= eventUC.VideosCount;
+            PhotosCount -= eventUC.PhotosCount;
 
             m_eventUCs.Remove(eventUC);
 
+            ShowInfor();
+
             m_currentDevice.Refresh();
-            
+
             Mouse.OverrideCursor = Cursors.Arrow;
         }
 
@@ -454,6 +475,7 @@ namespace Waveface.Client
 
             m_eventUCs.Clear();
 
+            ShowInfor();
             m_currentDevice.Refresh();
         }
 

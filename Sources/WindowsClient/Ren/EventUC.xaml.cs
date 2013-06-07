@@ -102,7 +102,7 @@ namespace Waveface.Client
 
                     BitmapImage _bi = new BitmapImage();
                     _bi.BeginInit();
-                    _bi.UriSource = new Uri("pack://application:,,,/Ren/Images/video_130x110.png");
+                    _bi.UriSource = new Uri("pack://application:,,,/Ren/Images/video_ph.png");
                     _bi.EndInit();
 
                     _eventPhoto.BitmapImage = _bi;
