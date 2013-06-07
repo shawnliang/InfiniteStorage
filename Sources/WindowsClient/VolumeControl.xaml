@@ -9,10 +9,6 @@
 	x:Name="UserControl"
 	d:DesignWidth="11.752" d:DesignHeight="10.894">
 
-	<UserControl.Resources>
-		<local:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
-	</UserControl.Resources>
-
 	<Grid x:Name="LayoutRoot">
 		<Path Fill="#FFF4F4F5" HorizontalAlignment="Left" Margin="0,0,6,0" VerticalAlignment="Top" Data="M5,0 L9.2100246,3.5829997 10.937,3.5829997 10.937,6.4369998 9.1865251,6.4369998 5,10 z" RenderTransformOrigin="0.494778539729568,0.5" Stretch="Fill">
 			<Path.RenderTransform>
