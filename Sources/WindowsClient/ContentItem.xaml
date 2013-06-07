@@ -22,6 +22,16 @@
                                         Value="{x:Static Visibility.Visible}" />
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
+		
+
+		 <Style x:Key="VideoIconStyle" TargetType="Image">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="Video">
+					<Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
 
 			 <Style TargetType="MediaElement">
             <Setter Property="Visibility" Value="Collapsed"/>
@@ -101,6 +111,7 @@
         		VerticalAlignment="Top"
         		Width="30"
         		Visibility="{Binding Liked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        	<Image x:Name="imgVideoIcon" Source="video_ph.png" Stretch="Fill" Width="48" Height="35" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,2" Style="{StaticResource VideoIconStyle}"/>
 
         </Grid>
     </Grid>
