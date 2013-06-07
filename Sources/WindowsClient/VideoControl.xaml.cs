@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,11 +20,8 @@ namespace Waveface.Client
 	public partial class VideoControl : UserControl
 	{
 		public static readonly DependencyProperty _isPlaying = DependencyProperty.Register("IsPlaying", typeof(bool), typeof(VideoControl), new UIPropertyMetadata(false, new PropertyChangedCallback(OnIsPlayingChanged)));
-		public static readonly DependencyProperty _position = DependencyProperty.Register("Position", typeof(double), typeof(VideoControl), new UIPropertyMetadata(0.0, new PropertyChangedCallback(OnPositionChanged)));
 		public static readonly DependencyProperty _duration = DependencyProperty.Register("Duration", typeof(double), typeof(VideoControl), new UIPropertyMetadata(0.0, new PropertyChangedCallback(OnDurationChanged)));
-
-
-
+	
 		public bool IsPlaying
 		{
 			get
@@ -43,11 +41,10 @@ namespace Waveface.Client
 		{
 			get
 			{
-				return (double)GetValue(_position);
+				return PlayProgress.Value;
 			}
 			set
 			{
-				SetValue(_position, value);
 				PlayProgress.Value = value;
 			}
 		}
@@ -65,16 +62,43 @@ namespace Waveface.Client
 			}
 		}
 
+		public double Volume
+		{
+			get
+			{
+				return vcVolumeController.Volume;
+			}
+			set
+			{
+				vcVolumeController.Volume = value;
+			}
+		}
+
+
+
+		#region Event
 		public event EventHandler PlayButtonClick;
 		public event EventHandler PauseButtonClick;
 		public event EventHandler PositionChanged;
-		
+		public event EventHandler VolumeChanged;
+		public event EventHandler SeekPosition;
+		#endregion
+
+
 		public VideoControl()
 		{
 			this.InitializeComponent();
 		}
 
+		#region Protected Method
+		protected void OnVolumeChanged(EventArgs e)
+		{
+			if (VolumeChanged == null)
+				return;
+			VolumeChanged(this, e);
+		}
 
+		#endregion
 
 		protected void OnPositionChanged(EventArgs e)
 		{
@@ -96,19 +120,21 @@ namespace Waveface.Client
 				return;
 			PauseButtonClick(this, e);
 		}
+		
+		protected void OnSeekPosition(EventArgs e)
+		{
+			if (SeekPosition == null)
+				return;
+			SeekPosition(this, e);
+		}
+
 
 
 		private void PlayProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
+			if (Mouse.LeftButton == MouseButtonState.Pressed)
+				OnSeekPosition(EventArgs.Empty);
 			OnPositionChanged(EventArgs.Empty);
-		}
-
-		private static void OnPositionChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-		{
-			if (o == null)
-				return;
-			var obj = o as VideoControl;
-			obj.Position = (double)e.NewValue;
 		}
 
 
@@ -138,6 +164,11 @@ namespace Waveface.Client
 		private void PauseButton_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			OnPauseButtonClick(EventArgs.Empty);
+		}
+
+		private void vcVolumeController_VolumeChanged(object sender, EventArgs e)
+		{
+			OnVolumeChanged(EventArgs.Empty);
 		}
 	}
 }

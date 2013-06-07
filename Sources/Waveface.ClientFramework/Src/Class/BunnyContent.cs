@@ -31,6 +31,10 @@ namespace Waveface.ClientFramework
 						var file = this.Uri.LocalPath;
 						if (!File.Exists(file))
 							return null;
+
+						if (this.Type == ContentType.Video)
+							return null;
+
 						_imageSource = BitmapFrame.Create(this.Uri);
 
 						var metadata = _imageSource.Metadata as BitmapMetadata;
