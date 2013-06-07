@@ -723,11 +723,12 @@ namespace Wpf_testHTTP
                     XmlNode title = contact.SelectSingleNode("a:title", nsmgr);
                     XmlNode email = contact.SelectSingleNode("gd:email", nsmgr);
 
-                    Console.WriteLine("{0}: {1}",
-                        title.InnerText,
-                        email.Attributes["address"].Value);
-                    mail_arr.Add(email.Attributes["address"].Value);
-                    emailCount++;
+                   // Console.WriteLine("{0}: {1}",title.InnerText, email.Attributes["address"].Value);
+                    if (mail_arr != null)
+                    {
+                        mail_arr.Add(email.Attributes["address"].Value);
+                        emailCount++;
+                    }
                  //   listbox1.Items.Add(title.InnerText + " , " + email.Attributes["address"].Value);
                 }
                 getSuccess = true;
