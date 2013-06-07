@@ -140,6 +140,7 @@
       <DependentUpon>SourceTree.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Class\Converter\ContentTypeCountConverter.cs" />
+    <Compile Include="Src\Class\Converter\EnumToBooleanConverter.cs" />
     <Compile Include="Src\Event\UnSortedItemEventArgs.cs" />
     <Compile Include="Src\Extension\CollectionExtension.cs" />
     <Compile Include="Star.xaml.cs">
@@ -150,6 +151,12 @@
     </Compile>
     <Compile Include="ViewerControl.xaml.cs">
       <DependentUpon>ViewerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VolumeAdjustControl.xaml.cs">
+      <DependentUpon>VolumeAdjustControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VolumeControl.xaml.cs">
+      <DependentUpon>VolumeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ZoomSlider.xaml.cs">
       <DependentUpon>ZoomSlider.xaml</DependentUpon>
@@ -254,6 +261,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="VolumeAdjustControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="VolumeControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ZoomSlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -289,6 +304,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Fonts\" />
+    <Folder Include="Src\Enum\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

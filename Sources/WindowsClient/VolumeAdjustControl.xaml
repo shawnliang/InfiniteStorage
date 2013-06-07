@@ -4,11 +4,10 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:local="clr-namespace:Waveface.Client"
-	xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
 	mc:Ignorable="d"
-	x:Class="Waveface.Client.VideoControl"
+	x:Class="Waveface.Client.VolumeAdjustControl"
 	x:Name="UserControl"
-	Opacity="0.87" Width="200">
+	d:DesignWidth="42.698" d:DesignHeight="22">
 	<UserControl.Resources>
 		<LinearGradientBrush x:Key="HorizontalSliderThumbHoverBackgroundInverted" EndPoint="0,0" StartPoint="0,1">
 			<GradientStop Color="white" Offset="0"/>
@@ -142,7 +141,8 @@
 			<GradientStop Color="White" Offset=".9"/>
 		</LinearGradientBrush>
 		<SolidColorBrush x:Key="HorizontalSliderTrackNormalBackground" Color="#FFE7EAEA"/>
-		<Style x:Key="DecreaseSliderButtonStyle" TargetType="{x:Type RepeatButton}">
+
+			<Style x:Key="DecreaseSliderButtonStyle" TargetType="{x:Type RepeatButton}">
     <Setter Property="SnapsToDevicePixels" Value="true"/>
     <Setter Property="OverridesDefaultStyle" Value="true"/>
     <Setter Property="IsTabStop" Value="false"/>
@@ -155,6 +155,7 @@
         </Setter.Value>
     </Setter>
 </Style>
+
 		<Style x:Key="SliderRepeatButtonStyle" TargetType="{x:Type RepeatButton}">
 			<Setter Property="OverridesDefaultStyle" Value="true"/>
 			<Setter Property="IsTabStop" Value="false"/>
@@ -398,7 +399,9 @@
 						<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
 							<Grid>
 								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
 									<RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
+									<RowDefinition Height="Auto"/>
 								</Grid.RowDefinitions>
 								<Border x:Name="TrackBackground" BorderBrush="DimGray" BorderThickness="1" Background="DimGray" CornerRadius="1" Height="9" Margin="5,0" Grid.Row="1" VerticalAlignment="center">
 									<Canvas Margin="-6,-1">
@@ -499,60 +502,11 @@
 			</Style.Triggers>
 		</Style>
 	</UserControl.Resources>
-	<UserControl.Background>
-        	                <LinearGradientBrush EndPoint="0.5,1"
-                                     StartPoint="0.5,0">
-                    <GradientStop Color="#FF403E3E"
-                                  Offset="0" />
-                    <GradientStop Color="#FF191818"
-                                  Offset="1" />
-                </LinearGradientBrush>
-	</UserControl.Background>
 
 	<Grid x:Name="LayoutRoot">
-		<Slider x:Name="PlayProgress"
-			Margin="20,0,60,0"
-			VerticalAlignment="Center"
-			ValueChanged="PlayProgress_ValueChanged" Style="{DynamicResource SliderStyle1}" IsMoveToPointEnabled="True"/>
-		<Label Content="{Binding Maximum, ElementName=PlayProgress}"
-			HorizontalAlignment="Right"
-			VerticalAlignment="Center"
-			Margin="0,0,46,0"
-			Height="10.999"
-			Width="16.426"
-			FontSize="8"
-			FontFamily="Segoe UI Light"
-			Padding="0"
-			Foreground="#FFF3F3F7"
-			HorizontalContentAlignment="Center"
-			VerticalContentAlignment="Center" Visibility="Collapsed" />
-		<Label Content="{Binding Value, ElementName=PlayProgress}"
-			HorizontalAlignment="Right"
-			VerticalAlignment="Center"
-			Margin="0,0,67,0"
-			Height="10.999"
-			Width="16.426"
-			FontSize="8"
-			FontFamily="Segoe UI Light"
-			Padding="0"
-			Foreground="#FFF3F3F7"
-			HorizontalContentAlignment="Center"
-			VerticalContentAlignment="Center" Visibility="Collapsed" />
-		<Label Content="/"
-			HorizontalAlignment="Right"
-			VerticalAlignment="Center"
-			Margin="0,0,62,0"
-			Height="10.999"
-			Width="5"
-			FontSize="8"
-			FontFamily="Segoe UI Light"
-			Padding="0"
-			Foreground="#FFF3F3F7"
-			HorizontalContentAlignment="Center"
-			VerticalContentAlignment="Center" Visibility="Collapsed"/>
-		<local:PlayButton x:Name="pbPlay" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Padding="5,0,0,0" Background="Transparent" MouseDown="PlayButton_MouseDown" HorizontalAlignment="Left" Width="22" Height="22" />
-		<local:PauseButton x:Name="pbPause" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Padding="5,0,0,0" Background="Transparent" MouseDown="PauseButton_MouseDown" HorizontalAlignment="Left" Width="22" Height="22" Visibility="Collapsed" />
-		<local:VolumeAdjustControl x:Name="vcVolumeController" Margin="0,0,2,0" HorizontalAlignment="Right" VerticalAlignment="Center" Width="55"
-                                   VolumeChanged="vcVolumeController_VolumeChanged" />
+		<local:VolumeControl x:Name="vcVolume" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Center" Height="10.894" Width="11.698"/>
+		<Slider x:Name="VolumeProgress"
+			VerticalAlignment="Center" Margin="10,0,0,0" Style="{DynamicResource SliderStyle1}" Maximum="1" Value="0.5" LargeChange="0.1"
+                ValueChanged="VolumeProgress_ValueChanged" IsMoveToPointEnabled="True" />
 	</Grid>
 </UserControl>
