@@ -28,7 +28,6 @@ namespace InfiniteStorage
 		private Notifier m_notifier;
 		private AutoLabelController m_autoLabel;
 		private AutoUpdate m_autoUpdate;
-		private PendingFileMonitor m_pendingFileMonitor;
 		private ThumbnailCreator m_thumbnailCreator;
 
 		public StationServer()
@@ -101,8 +100,6 @@ namespace InfiniteStorage
 					showProgramIsAtServiceBallonTips();
 			};
 
-
-			m_pendingFileMonitor = new PendingFileMonitor();
 			m_thumbnailCreator = new ThumbnailCreator();
 		}
 
@@ -122,7 +119,6 @@ namespace InfiniteStorage
 			m_autoUpdate.StartLoop();
 			m_ReRegBonjourTimer.Start();
 
-			m_pendingFileMonitor.Start();
 			m_thumbnailCreator.Start();
 		}
 
@@ -130,7 +126,6 @@ namespace InfiniteStorage
 		public void Stop()
 		{
 			m_thumbnailCreator.Stop();
-			m_pendingFileMonitor.Stop();
 
 			m_NotifyTimer.Stop();
 			m_BackupStatusTimer.Stop();
