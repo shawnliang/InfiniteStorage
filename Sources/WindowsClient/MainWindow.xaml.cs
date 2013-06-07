@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Shapes;
 using Waveface.Model;
 
 namespace Waveface.Client
@@ -156,13 +157,6 @@ namespace Waveface.Client
 			}
 		}
 
-
-		private void Button_Click_1(object sender, RoutedEventArgs e)
-		{
-			var arguments = string.Join("~", ClientFramework.Client.Default.TaggedContents.Select(content => content.Uri.LocalPath).ToArray());
-			Process.Start("sharedFavorite", "\"" + arguments + "\"");
-		}
-
 		private void FavoriteAllButton_Click(object sender, RoutedEventArgs e)
 		{
 			foreach (IContent content in lbxContentContainer.Items)
@@ -229,6 +223,22 @@ namespace Waveface.Client
 				rspRightSidePane2.btnAction.IsEnabled = true;
 				rspRightSidePane2.btnAction.IsChecked = isOnAir;
 			}
+		}
+
+		private void rspRightSidePanel_ShareButtonClick(object sender, System.EventArgs e)
+		{
+			Wpf_testHTTP.MainWindow _w = new Wpf_testHTTP.MainWindow();
+			var path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
+
+			var iniFile = System.IO.Path.Combine(path, @"sharefavorite.ini");
+
+			_w.setTitle(this.Title);
+            _w.setiniPath (iniFile);
+
+			var files = string.Join("~", ClientFramework.Client.Default.TaggedContents.Select(content => content.Uri.LocalPath).ToArray());
+
+			_w.setFilename(files);
+            _w.ShowDialog();
 		}
 	}
 }

@@ -44,6 +44,10 @@
     <ApplicationIcon>FAV_512.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\log4net-1.2.11\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Controls" />
     <Reference Include="Microsoft.Expression.Drawing" />
     <Reference Include="NBug, Version=1.1.0.0, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
@@ -294,6 +298,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\sharePhoto\sharePhoto\sharePhoto.csproj">
+      <Project>{89aa1d98-c9bc-47f6-bd9d-ac4bfe5af411}</Project>
+      <Name>sharePhoto</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Waveface.ClientFramework\Waveface.ClientFramework.csproj">
       <Project>{535c6e29-0e0d-43a5-8740-b869f2ee900e}</Project>
       <Name>Waveface.ClientFramework</Name>
