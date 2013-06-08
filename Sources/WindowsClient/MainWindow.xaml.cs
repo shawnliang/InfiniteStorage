@@ -162,7 +162,7 @@ namespace Waveface.Client
 			if (group == null)
 				return;
 
-			if (group.Name.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
+			if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
 			{
 				ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(ti) as TreeViewItem;
 
