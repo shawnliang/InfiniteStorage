@@ -64,6 +64,7 @@ namespace InfiniteStorage.WebsocketProtocol
 				ctx.temp_file.Delete();
 			}
 
+			log4net.LogManager.GetLogger("wsproto").Debug("send back file-exist for file recv success");
 			ctx.Send(new TextCommand { action = "file-exist", file_name = ctx.fileCtx.file_name });
 
 			ctx.recved_files++;
