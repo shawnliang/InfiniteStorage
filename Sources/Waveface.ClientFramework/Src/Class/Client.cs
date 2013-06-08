@@ -251,6 +251,5 @@ namespace Waveface.ClientFramework
 		{
 			get { return Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", "true").Equals("true"); }
 		}
-
 	}
 }

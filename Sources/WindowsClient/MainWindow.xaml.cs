@@ -175,7 +175,7 @@ namespace Waveface.Client
 					return;
 
 				unSortedFilesUC.Visibility = Visibility.Visible;
-				unSortedFilesUC.Init(service.ID);
+				unSortedFilesUC.Init(service);
 			}
 			else
 			{

@@ -41,6 +41,8 @@ namespace Waveface.Model
 			get;
 			set;
 		}
+
+		private Action<ObservableCollection<IContentEntity>> m_populateFunc;
 		#endregion
 
 
@@ -145,16 +147,20 @@ namespace Waveface.Model
 		}
 		#endregion
 
+		
 
 		#region Private Method
 		protected void SetContents(Action<ObservableCollection<IContentEntity>> func)
 		{
+			m_populateFunc = func;
+
 			m_Contents = new Lazy<IEnumerable<IContentEntity>>(() =>
 			{
 				m_ObservableContents.Clear();
 				func(m_ObservableContents);
 				return m_ObservableContents;
 			});
+
 		}
 
 		public void SetContents(IEnumerable<IContentEntity> values)
@@ -198,6 +204,10 @@ namespace Waveface.Model
 			OnContentPropertyChanged(e);
 		}
 
-
+		public void Refresh()
+		{
+			m_ObservableContents.Clear();
+			m_populateFunc(m_ObservableContents);
+		}
 	}
 }
