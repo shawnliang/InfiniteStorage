@@ -126,5 +126,11 @@ namespace InfiniteStorage.Notify
 		{
 			get { return HomeSharing.Enabled; }
 		}
+
+
+		public IEnumerable<IConnectionStatus> GetAllBackupConnections()
+		{
+			return ConnectedClientCollection.Instance.GetAllConnections();
+		}
 	}
 }

@@ -11,6 +11,7 @@ namespace InfiniteStorage.Notify
 		public long labels_from_seq { get; set; }
 		public bool subscribe_files { get; set; }
 		public bool subscribe_labels { get; set; }
+		public bool subscribe_devices { get; set; }
 
 		public SubscriptionContext(string dev_id, string dev_name, WebSocketSharp.Server.WebSocketService svc = null)
 		{
@@ -24,5 +25,7 @@ namespace InfiniteStorage.Notify
 			wsSvc.Send(data);
 		}
 
+
+		
 	}
 }
