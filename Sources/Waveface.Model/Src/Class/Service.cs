@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace Waveface.Model
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	public class Service : IService
+	public class Service : IService, INotifyPropertyChanged
 	{
 		#region Var
 		private string _id;
 		private string _name;
 		private IServiceSupplier _supplier;
 		private ObservableCollection<IContentEntity> _observableContents;
+		private bool _isRecving;
 		#endregion
 
 
@@ -48,6 +50,23 @@ namespace Waveface.Model
 
 
 		#region Public Property
+		public bool IsRecving
+		{
+			get
+			{
+				return _isRecving;
+			}
+
+			set
+			{
+				if (_isRecving != value)
+				{
+					_isRecving = value;
+					OnPropertyChanged("IsRecving");
+				}
+			}
+		}
+
 		public virtual string ID
 		{
 			get
@@ -208,6 +227,17 @@ namespace Waveface.Model
 		{
 			m_ObservableContents.Clear();
 			m_populateFunc(m_ObservableContents);
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		protected void OnPropertyChanged(string name)
+		{
+			var handler = PropertyChanged;
+			if (handler != null)
+			{
+				handler(this, new PropertyChangedEventArgs(name));
+			}
 		}
 	}
 }

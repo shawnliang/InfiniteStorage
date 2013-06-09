@@ -154,11 +154,17 @@
 
     <TreeView.ItemTemplate>
         <HierarchicalDataTemplate ItemsSource="{Binding Contents}">
-            <Label x:Name="item"
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="item"
 				   FontWeight="Bold"
                    Content="{Binding Name}"
                    Foreground="White"/>
-
+                <Image Source="arrow_circle_double.png" x:Name="recvingIcon" Visibility="{Binding IsRecving, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Image.RenderTransform>
+                        <RotateTransform />
+                    </Image.RenderTransform>
+                </Image>
+            </StackPanel>
             <HierarchicalDataTemplate.ItemTemplate>
 
                 <DataTemplate>
