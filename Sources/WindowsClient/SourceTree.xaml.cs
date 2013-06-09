@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using Waveface.Model;
+using System.Windows.Media.Animation;
+using System.Windows.Media;
 
 namespace Waveface.Client
 {
@@ -27,6 +29,27 @@ namespace Waveface.Client
 
             TreeViewItemClick(sender, EventArgs.Empty);
         }
+
+		private void recvingIcon_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+		{
+			var recvIcon = (Image)sender;
+
+			if (recvIcon.Visibility == System.Windows.Visibility.Visible)
+			{
+				var da = new DoubleAnimation(0, 360, new Duration(TimeSpan.FromSeconds(1.0)));
+				var rotate = new RotateTransform();
+
+				recvIcon.RenderTransform = rotate;
+				recvIcon.RenderTransformOrigin = new Point(0.5, 0.5);
+				da.RepeatBehavior = RepeatBehavior.Forever;
+				rotate.BeginAnimation(RotateTransform.AngleProperty, da);
+			}
+			else
+			{
+				// QUESTION: need to stop animation????? CPU is a little bit high ....
+				recvIcon.RenderTransform = null;
+			}
+		}
 
     }
 }
