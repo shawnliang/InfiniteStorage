@@ -7,13 +7,48 @@
          Background="{x:Null}"
          BorderBrush="{x:Null}"
          ItemsSource="{Binding IsAsync=True}"
+         FontFamily="Segoe UI Light"
+         FontSize="16"
          UseLayoutRounding="True"
          d:DesignHeight="109"
          d:DesignWidth="225"
          mc:Ignorable="d">
+    <ListBox.Resources>
+        <BitmapImage x:Key="SelectedIcon"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="albumselected.png" />
+    </ListBox.Resources>
     <ListBox.ItemTemplate>
         <DataTemplate>
-            <Label Content="{Binding Name}" Foreground="White" />
+            <StackPanel x:Name="item"
+                                Width="2048"
+                                Background="Transparent"
+                                Orientation="Horizontal">
+                <Image x:Name="icon"
+                               Source="album.png" />
+                <Label x:Name="sourceName"
+                               Height="32"
+                               VerticalContentAlignment="Center"
+                               Content="{Binding Name}"
+                               Foreground="White" />
+                <Label x:Name="sourceCount"
+                               Height="32"
+                               VerticalContentAlignment="Center"
+                               Foreground="White" />
+            </StackPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem},
+                                                       Path=IsSelected}"
+                                     Value="True">
+                    <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedIcon}" />
+                    <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
+                    <Setter TargetName="item" Property="Background" Value="#FFD4D4D3" />
+                    <Setter TargetName="sourceCount" Property="Foreground" Value="Black" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+
+
         </DataTemplate>
     </ListBox.ItemTemplate>
 </ListBox>

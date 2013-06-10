@@ -495,7 +495,8 @@
                            Foreground="#FFA5A5A5" />
                     <local:FavoriteListBox x:Name="lbxFavorites"
                                            Grid.Row="1"
-                                           SelectionChanged="lbxFavorites_SelectionChanged" />
+                                           SelectionChanged="lbxFavorites_SelectionChanged"
+                                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
                 </Grid>
 
             </Grid>
