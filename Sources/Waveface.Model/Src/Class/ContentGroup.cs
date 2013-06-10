@@ -125,6 +125,14 @@ namespace Waveface.Model
 		#endregion
 
 
+		#region Public Method
+		public void Refresh()
+		{
+			m_Contents.ClearValue();
+			m_ObservableContents.Clear();
+		}
+		#endregion
+
 		#region Event Process
 		void _observableContents_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{

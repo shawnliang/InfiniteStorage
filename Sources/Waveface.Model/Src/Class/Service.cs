@@ -225,6 +225,7 @@ namespace Waveface.Model
 
 		public void Refresh()
 		{
+			m_Contents.ClearValue();
 			m_ObservableContents.Clear();
 			m_populateFunc(m_ObservableContents);
 		}

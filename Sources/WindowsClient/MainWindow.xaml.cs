@@ -233,6 +233,8 @@ namespace Waveface.Client
 			if (group == null)
 				return;
 
+			group.Refresh();
+
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = group.Contents;
 			SetContentTypeCount(group);
@@ -295,6 +297,7 @@ namespace Waveface.Client
 
 			var selectedFavorite = (dialog.SelectedFavorite as IContentGroup);
 			ClientFramework.Client.Default.AddToFavorite(selectedFavorite.ID);
+			selectedFavorite.Refresh();
 		}
 
 		private void rspRightSidePane2_CloudSharingClick(object sender, System.EventArgs e)
