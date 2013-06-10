@@ -316,7 +316,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\sharePhoto\sharePhoto\sharePhoto.csproj">
-      <Project>{89aa1d98-c9bc-47f6-bd9d-ac4bfe5af411}</Project>
+      <Project>{89AA1D98-C9BC-47F6-BD9D-AC4BFE5AF411}</Project>
       <Name>sharePhoto</Name>
     </ProjectReference>
     <ProjectReference Include="..\Waveface.ClientFramework\Waveface.ClientFramework.csproj">
