@@ -408,12 +408,12 @@
                 <DockPanel>
 
                     <WrapPanel VerticalAlignment="Center" DockPanel.Dock="Left">
-                        <local:BackButton Width="28.666"
+                        <local:BackButton x:Name="btnBack" Width="28.666"
                                           Height="28.666"
                                           Margin="2"
                                           VerticalAlignment="Center"
                                           Click="BackButton_Click"
-                                          Content="BackButton" />
+                                          Content="" />
                         <Label x:Name="lblContentLocation"
                                Content="{Binding Name}"
                                FontFamily="Segoe UI Light"
