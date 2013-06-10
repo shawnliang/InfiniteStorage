@@ -8,58 +8,23 @@
              UseLayoutRounding="True"
              d:DesignHeight="402"
              d:DesignWidth="150"
-             mc:Ignorable="d">
+             mc:Ignorable="d" Width="183">
 
     <Grid x:Name="LayoutRoot">
-        <Button Width="130"
-                Height="31"
-                Margin="0,0,0,5"
+        <Button Width="163"
+                Margin="0,237,0,0"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Bottom"
-                BorderBrush="{x:Null}"
+                VerticalAlignment="Top"
                 Click="Button_Click"
-                Content="Add to Favorite"
-                Cursor="Hand"
-                FontFamily="Segoe UI Light"
-                FontSize="16"
-                Foreground="White">
-            <Button.Background>
-                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                    <GradientStop Offset="0" Color="#FF616060" />
-                    <GradientStop Offset="1" Color="#FF474646" />
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="3"
-                                  Direction="270"
-                                  Opacity="0.3"
-                                  ShadowDepth="2" />
-            </Button.Effect>
+                Content="Add to existing Favorite"
+                Cursor="Hand">
         </Button>
-        <Button Width="130"
-                Height="31"
+        <Button Width="163"
                 Margin="10,155,10,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                BorderBrush="{x:Null}"
                 Content="Clear All"
-                Cursor="Hand"
-                FontFamily="Segoe UI Light"
-                FontSize="16"
-                Foreground="White">
-
-            <Button.Background>
-                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                    <GradientStop Offset="0" Color="#FF616060" />
-                    <GradientStop Offset="1" Color="#FF474646" />
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="3"
-                                  Direction="270"
-                                  Opacity="0.3"
-                                  ShadowDepth="2" />
-            </Button.Effect>
+                Cursor="Hand">
         </Button>
         <local:LabeledContentInfo x:Name="LabeledCount"
                                   Width="150"
@@ -68,30 +33,14 @@
                                   VerticalAlignment="Top"
                                   PhotoCount="{Binding PhotoCount, ElementName=UserControl}" 
 								  VideoCount="{Binding VideoCount, ElementName=UserControl}"/>
-        <Button Width="130"
-                Height="31"
-                Margin="0,0,0,42"
+        <Button Width="163"
+                Margin="0,196,0,0"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Bottom"
-                BorderBrush="{x:Null}"
+                VerticalAlignment="Top"
                 Click="Button_Click_1"
-                Content="Create Favorite"
-                Cursor="Hand"
-                FontFamily="Segoe UI Light"
-                FontSize="16"
-                Foreground="White">
-            <Button.Background>
-                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                    <GradientStop Offset="0" Color="#FF616060" />
-                    <GradientStop Offset="1" Color="#FF474646" />
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="3"
-                                  Direction="270"
-                                  Opacity="0.3"
-                                  ShadowDepth="2" />
-            </Button.Effect>
+                Content="Create a new Favorite"
+                Cursor="Hand">
+           
         </Button>
 
 

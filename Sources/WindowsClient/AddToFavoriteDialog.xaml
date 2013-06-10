@@ -8,8 +8,8 @@
 
 	<Grid x:Name="LayoutRoot">
 		<Label Content="Add starred items to:" HorizontalAlignment="Left" Height="25" Margin="10,16,0,0" VerticalAlignment="Top" Width="135" Foreground="White"/>
-		<ComboBox x:Name="cbxFavoriteName" HorizontalAlignment="Left" Height="22" Margin="10,53,0,0" VerticalAlignment="Top" Width="387" Padding="0"/>
-		<Button Content="OK" HorizontalAlignment="Right" Height="31" Margin="0,0,99,10" VerticalAlignment="Bottom" Width="82" Click="Button_Click_1"/>
-		<Button Content="Cancel" HorizontalAlignment="Right" Height="31" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="82" Click="Button_Click"/>
+		<ComboBox x:Name="cbxFavoriteName" HorizontalAlignment="Left" Height="22" Margin="10,53,0,0" VerticalAlignment="Top" Width="387" Padding="5,0,0,0" VerticalContentAlignment="Center"/>
+		<Button Content="OK" HorizontalAlignment="Right" Margin="0,0,99,10" VerticalAlignment="Bottom" Width="82" Click="Button_Click_1"/>
+		<Button Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="82" Click="Button_Click"/>
 	</Grid>
 </Window>

@@ -10,7 +10,7 @@
 
     <Grid x:Name="LayoutRoot">
         <TextBox x:Name="tbxName"
-                 Height="28"
+                 Height="34"
                  Margin="10,0"
                  VerticalAlignment="Top"
                  HorizontalContentAlignment="Center"
@@ -21,22 +21,12 @@
                  FontFamily="Segoe UI Light"
                  Foreground="White"
                  Text="[Favorite Name]"
-                 TextChanged="tbxName_TextChanged" />
-        <Label Width="72"
-               Height="21"
-               Margin="10,65,0,0"
-               HorizontalAlignment="Left"
-               VerticalAlignment="Top"
-               HorizontalContentAlignment="Center"
-               VerticalContentAlignment="Center"
-               Content="Home Sharing"
-               FontFamily="Segoe UI Light"
-               Foreground="White" Padding="0" />
+                 TextChanged="tbxName_TextChanged" FontSize="18.667" />
         <ToggleButton x:Name="btnAction"
-                      Width="70"
-                      Height="21"
-                      Margin="90,65,0,0"
-                      HorizontalAlignment="Left"
+                      Width="144"
+                      Height="34"
+                      Margin="0,65,0,0"
+                      HorizontalAlignment="Center"
                       VerticalAlignment="Top"
                       Checked="btnAction_Checked"
                       Click="ToggleButton_Click"
@@ -44,21 +34,10 @@
                       IsChecked="True"
                       IsEnabledChanged="btnAction_IsEnabledChanged"
                       Unchecked="btnAction_Unchecked" />
-        <Label Width="72"
-        	Height="21"
-        	Margin="10,93,0,0"
-        	HorizontalAlignment="Left"
-        	VerticalAlignment="Top"
-        	HorizontalContentAlignment="Center"
-        	VerticalContentAlignment="Center"
-        	Content="Cloud Sharing"
-        	FontFamily="Segoe UI Light"
-        	Foreground="White" Padding="0" />
         <Button x:Name="btnAction_Copy"
-        	Width="70"
-        	Height="21"
-        	Margin="90,93,0,0"
-        	HorizontalAlignment="Left"
+        	Width="144"
+        	Margin="0,105,0,0"
+        	HorizontalAlignment="Center"
         	VerticalAlignment="Top"
         	Content="Share" Click="btnAction_Copy_Click"/>
     </Grid>

@@ -11,23 +11,8 @@
 
     <Grid x:Name="LayoutRoot">
 
-        <Button BorderBrush="{x:Null}"
-                Click="Button_Click"
-                Content="Star All"
-                FontFamily="Segoe UI Light"
-                Foreground="White">
-            <Button.Background>
-                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                    <GradientStop Offset="0" Color="#FF363535" />
-                    <GradientStop Offset="1" Color="#FF272626" />
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="2"
-                                  Direction="270"
-                                  Opacity="0.6"
-                                  ShadowDepth="1" />
-            </Button.Effect>
+        <Button Click="Button_Click"
+                Content="Star All">
         </Button>
         <Image Margin="5,0,0,0" Source="ico_star_unselect.png" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Center" Width="22" Height="22"/>
     </Grid>
