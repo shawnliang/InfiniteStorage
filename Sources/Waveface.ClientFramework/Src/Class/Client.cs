@@ -209,9 +209,9 @@ namespace Waveface.ClientFramework
 
 			StationAPI.Tag(string.Join(",", m_TaggedContents.Select(taggedContent => taggedContent.ID).ToArray()), labelID);
 
-			StationAPI.ClearLabel(m_LabelID);
+			//StationAPI.ClearLabel(m_LabelID);
 
-			m_TaggedContents.Clear();
+			//m_TaggedContents.Clear();
 			m_Favorites.Clear();
 			m_Favorites.AddRange(GetFavorites());
 		}
@@ -226,9 +226,9 @@ namespace Waveface.ClientFramework
 		{
 			StationAPI.Tag(string.Join(",", m_TaggedContents.Select(taggedContent => taggedContent.ID).ToArray()), favoriteID);
 
-			StationAPI.ClearLabel(m_LabelID);
+			//StationAPI.ClearLabel(m_LabelID);
 
-			m_TaggedContents.Clear();
+			//m_TaggedContents.Clear();
 			m_Favorites.Clear();
 			m_Favorites.AddRange(GetFavorites());
 		}
