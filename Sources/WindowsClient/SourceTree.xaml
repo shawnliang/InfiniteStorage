@@ -29,7 +29,7 @@
         <BitmapImage x:Key="SelectedIcon"
                      CacheOption="OnLoad"
                      CreateOptions="IgnoreImageCache"
-                     UriSource="albumselected.png" />
+                     UriSource="ico_fav_select.png" />
         <Style x:Key="TreeViewItemStyle1"
                TargetType="{x:Type TreeViewItem}">
             <EventSetter Event="UIElement.PreviewMouseLeftButtonDown"
@@ -165,7 +165,7 @@
                             Width="2048"
                             Orientation="Horizontal">
                     <Image x:Name="icon"
-                           Source="album.png" />
+                           Source="ico_fav_unselect.png" />
                     <Label x:Name="sourceName"
                            Height="32"
                            VerticalContentAlignment="Center"
@@ -206,7 +206,7 @@
                                 Background="Transparent"
                                 Orientation="Horizontal">
                         <Image x:Name="icon"
-                               Source="album.png" />
+                               Source="ico_fav_unselect.png" />
                         <Label x:Name="sourceName"
                                Height="32"
                                VerticalContentAlignment="Center"

@@ -185,12 +185,12 @@
                                   Margin="0"
                                   Data="{StaticResource SliderThumbOuterBorderGeometry}"
                                   Stretch="Fill"
-                                  Stroke="#FF131313"
+                                  Stroke="#FF4D4D4D"
                                   StrokeThickness="0.5">
                                 <Path.Fill>
                                     <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Offset="0" Color="#FF302F2F" />
-                                        <GradientStop Offset="1" Color="#FF191818" />
+                                        <GradientStop Offset="0" Color="#FFB9B9B9" />
+                                        <GradientStop Offset="1" Color="#FF5F5D5D" />
                                     </LinearGradientBrush>
                                 </Path.Fill>
                             </Path>

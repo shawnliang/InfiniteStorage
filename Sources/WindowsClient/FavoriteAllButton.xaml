@@ -8,21 +8,6 @@
              d:DesignHeight="30"
              d:DesignWidth="100"
              mc:Ignorable="d">
-    <UserControl.Resources>
-        <Storyboard x:Key="MouseHover">
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="regularPolygon" Storyboard.TargetProperty="(UIElement.Visibility)">
-                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
-            </ObjectAnimationUsingKeyFrames>
-        </Storyboard>
-    </UserControl.Resources>
-    <UserControl.Triggers>
-        <EventTrigger RoutedEvent="Mouse.MouseEnter">
-            <BeginStoryboard x:Name="MouseHover_BeginStoryboard" Storyboard="{StaticResource MouseHover}" />
-        </EventTrigger>
-        <EventTrigger RoutedEvent="Mouse.MouseLeave">
-            <RemoveStoryboard BeginStoryboardName="MouseHover_BeginStoryboard" />
-        </EventTrigger>
-    </UserControl.Triggers>
 
     <Grid x:Name="LayoutRoot">
 
@@ -44,26 +29,6 @@
                                   ShadowDepth="1" />
             </Button.Effect>
         </Button>
-        <ed:RegularPolygon x:Name="regularPolygon"
-                           Width="11.583"
-                           Height="11.583"
-                           Margin="5.496,0,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Center"
-                           Fill="#FFF4F4F5"
-                           InnerRadius="0.47211"
-                           PointCount="5"
-                           Stretch="Fill"
-                           Visibility="Collapsed" />
-        <ed:RegularPolygon Width="11.583"
-                           Height="11.583"
-                           Margin="5.496,0,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Center"
-                           InnerRadius="0.47211"
-                           PointCount="5"
-                           Stretch="Fill"
-                           Stroke="#FFFDFDFD"
-                           StrokeThickness="0.5" />
+        <Image Margin="5,0,0,0" Source="ico_star_unselect.png" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Center" Width="22" Height="22"/>
     </Grid>
 </UserControl>

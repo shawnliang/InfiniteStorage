@@ -343,12 +343,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="album.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="albumselected.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="arrow_circle_double.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -358,10 +352,16 @@
     <Content Include="favoriteicon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="ico_fav_select.png" />
-    <Resource Include="ico_fav_unselect.png" />
+    <Content Include="ico_fav_select.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ico_fav_unselect.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="ico_star_select.png" />
-    <Resource Include="ico_star_unselect.png" />
+    <Content Include="ico_star_unselect.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="video_ph.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
