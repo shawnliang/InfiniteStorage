@@ -80,17 +80,17 @@ namespace Waveface.Client
 		private void btnAction_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			if (!btnAction.IsEnabled)
-				btnAction.Content = "Disabled";
+				btnAction.Content = "Home Sharing disabled";
 		}
 
 		private void btnAction_Unchecked(object sender, RoutedEventArgs e)
 		{
-			btnAction.Content = "Offline";
+			btnAction.Content = "Turn on Home Sharing";
 		}
 
 		private void btnAction_Checked(object sender, RoutedEventArgs e)
 		{
-			btnAction.Content = "On Air";
+			btnAction.Content = "Turn off Home Sharing";
 		}
 
 		private void tbxName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
