@@ -140,7 +140,8 @@ namespace Waveface.ClientFramework
 
 				var file = Path.Combine(BunnyDB.ResourceFolder, savedPath);
 
-				yield return new BunnyContent(new Uri(file), dr["file_id"].ToString());
+				var type = ((long)dr["type"] == 0) ? ContentType.Photo : ContentType.Video;
+				yield return new BunnyContent(new Uri(file), dr["file_id"].ToString(), type);
 			}
 
 
@@ -187,7 +188,8 @@ namespace Waveface.ClientFramework
 
 						var file = Path.Combine(BunnyDB.ResourceFolder, savedPath);
 
-						contents.Add(new BunnyContent(new Uri(file), dr2["file_id"].ToString()));
+						var type = ((long)dr2["type"] == 0) ? ContentType.Photo : ContentType.Video;
+						contents.Add(new BunnyContent(new Uri(file), dr2["file_id"].ToString(), type));
 					}
 
 					conn2.Close();
