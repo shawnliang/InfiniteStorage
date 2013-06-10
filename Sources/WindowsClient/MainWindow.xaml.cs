@@ -37,9 +37,7 @@ namespace Waveface.Client
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			this.lbxDeviceContainer.DataContext = Waveface.ClientFramework.Client.Default.Services;
-			var fav = Waveface.ClientFramework.Client.Default.Favorites;
-
-			//this.rspRightSidePanel.DataContext = LabeledContents;
+		
 			this.lbxFavorites.DataContext = Waveface.ClientFramework.Client.Default.Favorites;
 
 			rspRightSidePane2.tbxName.KeyDown += tbxName_KeyDown;
