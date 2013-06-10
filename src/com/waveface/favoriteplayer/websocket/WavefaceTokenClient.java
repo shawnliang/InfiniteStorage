@@ -206,7 +206,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 							mEditor.commit();
 						
 							DownloadLogic.updateLabel(mContext, labelEntity);
-							EventBus.getDefault().post(new LabelChangeEvent(entity.label_change.label_id));
+							EventBus.getDefault().post(new LabelChangeEvent(entity.label_change.label_id, entity.label_change.auto_type));
 						}
 					} catch (Exception e) {
 						e.printStackTrace();

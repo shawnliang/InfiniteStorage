@@ -77,6 +77,16 @@ public class OverviewAdapter extends BaseAdapter{
 		mDatas.add(0, data);
 	}
 	
+	public void updateLabel(OverviewData data) {
+		for(int i=0; i<mDatas.size(); ++i) {
+			if(mDatas.get(i).labelId.equals(data.labelId)) {
+				mDatas.remove(i);
+				break;
+			}
+		}
+		mDatas.add(0, data);
+	}
+	
 	public ArrayList<OverviewData> getDatas() {
 		return mDatas;
 	}

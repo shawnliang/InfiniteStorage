@@ -156,9 +156,39 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 	}
 	
 	public void onEvent(LabelChangeEvent event) {
-		ReloadRunnable runnable = new ReloadRunnable();
-		runnable.setupLabelId(event.labelId);
-		mHandler.post(runnable);
+		boolean needProcess = false;
+		
+		switch(mType) {
+		case OVERVIEW_VIEW_TYPE_FAVORITE:
+			if(event.autoType == Constant.TYPE_FAVORITE) {
+				needProcess = true;
+			}
+			break;
+		case OVERVIEW_VIEW_TYPE_RECENT_PHOTO:
+			switch(event.autoType) {
+			case Constant.TYPE_RECENT_PHOTO_TODAY:
+			case Constant.TYPE_RECENT_PHOTO_YESTERDAY:
+			case Constant.TYPE_RECENT_PHOTO_THISWEEK:
+				needProcess = true;
+				break;
+			}
+			break;
+		case OVERVIEW_VIEW_TYPE_RECENT_VIDEO:
+			switch(event.autoType) {
+			case Constant.TYPE_RECENT_VIDEO_TODAY:
+			case Constant.TYPE_RECENT_VIDEO_YESTERDAY:
+			case Constant.TYPE_RECENT_VIDEO_THISWEEK:
+				needProcess = true;
+				break;
+			}
+			break;
+		}
+		
+		if(needProcess) {
+			ReloadRunnable runnable = new ReloadRunnable();
+			runnable.setupLabelId(event.labelId);
+			mHandler.post(runnable);
+		}
 	}
 	
 	private class ReloadLabelTask extends AsyncTask<Void, Void, OverviewData> {
@@ -190,7 +220,8 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 				} else {
 					// update
 					if (view != null) {
-						mAdapter.setupView(view, result);
+						mAdapter.updateLabel(result);
+						mAdapter.notifyDataSetChanged();
 					}
 				}
 			} else {
