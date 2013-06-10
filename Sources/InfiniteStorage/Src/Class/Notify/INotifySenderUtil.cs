@@ -13,6 +13,7 @@ namespace InfiniteStorage.Notify
 		List<Label> QueryAllLabels();
 		List<FileChangeData> QueryLabeledFiles(Guid label_id);
 		bool HomeSharingEnabled { get; }
+		IEnumerable<IConnectionStatus> GetAllBackupConnections();
 	}
 
 	public enum Orientation {

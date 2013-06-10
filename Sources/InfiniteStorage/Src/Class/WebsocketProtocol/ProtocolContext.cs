@@ -160,5 +160,11 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			return total_count > 0 && total_count == backup_count;
 		}
+
+
+		public bool IsRecving
+		{
+			get { return total_count > 0 && total_count != backup_count; }
+		}
 	}
 }

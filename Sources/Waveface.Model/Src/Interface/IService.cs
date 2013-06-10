@@ -28,6 +28,8 @@ namespace Waveface.Model
 		string Description { get; }
 
 		void Refresh();
+
+		bool IsRecving { get; }
 		#endregion
 
 		#region Event

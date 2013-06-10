@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
 
 namespace Waveface.Model
 {
@@ -43,6 +44,14 @@ namespace Waveface.Model
 			get
 			{
 				return m_Contents.Value;
+			}
+		}
+
+		public virtual int ContentCount
+		{
+			get
+			{
+				return m_Contents.Value.Count();
 			}
 		}
 		#endregion

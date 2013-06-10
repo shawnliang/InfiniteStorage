@@ -7,6 +7,7 @@ namespace Waveface.Model
 	{
 		#region Property
 		IEnumerable<IContentEntity> Contents { get; }
+		int ContentCount { get; }
 		#endregion
 
 		#region Event

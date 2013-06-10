@@ -55,6 +55,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="websocket-sharp, Version=1.0.2.34197, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
+      <HintPath>..\..\Libs\websocket-sharp\websocket-sharp.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +67,7 @@
     <Compile Include="Src\Class\BunnyDB.cs" />
     <Compile Include="Src\Class\BunnyService.cs" />
     <Compile Include="Src\Class\BunnyServiceSupplier.cs" />
+    <Compile Include="Src\Class\BunnyUnsortedContentGroup.cs" />
     <Compile Include="Src\Class\Client.cs" />
     <Compile Include="Src\Class\StationAPI.cs" />
   </ItemGroup>
