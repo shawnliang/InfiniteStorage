@@ -35,7 +35,7 @@ namespace Wpf_testHTTP
         public static string HostIP = "https://api.waveface.com/v3/";
         public static string BaseURL { get { return HostIP; } }
         public static string APIKEY = "a23f9491-ba70-5075-b625-b8fb5d9ecd90";       // win8 viewer: station
-        public string iniPath = @"";
+        public string iniPath = @"C:\ykk\sharefavorite.ini";
         public string favoriteTitle = "Waveface Office";
 
         private static readonly ILog log = LogManager.GetLogger(typeof(MainWindow));
@@ -54,7 +54,7 @@ namespace Wpf_testHTTP
         public void setiniPath(string path)
         {
             iniPath = path;
-            if(File.Exists(iniPath)==false)
+            if (File.Exists(iniPath) == false)
             {
                 using (FileStream FS = File.Create(path))
                 {
@@ -67,7 +67,12 @@ namespace Wpf_testHTTP
         }
         public void setRun()
         {
-        // get ini for refreshkey
+        }
+
+        public void setRun_button()
+        {
+
+            // get ini for refreshkey
             iniParser parser = new iniParser();
             String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
             parser.IniParser(iniPath);  //appStartPath + @"\sharefavorite.ini");
@@ -87,13 +92,13 @@ namespace Wpf_testHTTP
             filename = filestring;              // inpuy filename list
         }
         public MainWindow()
-        {        
+        {
             string[] args = Environment.GetCommandLineArgs();
             // args = null;
             if (args.Length >= 2)
             {
                 filename = args[1];
-                log.Info("loading parmeters="+ args[1]);
+                log.Info("loading parmeters=" + args[1]);
             }
             InitializeComponent();
 
@@ -104,7 +109,7 @@ namespace Wpf_testHTTP
             no_of_attachments = arr.Length;
 
             // work at another thread
-            Thread thread = new Thread(worker_DoWork);         
+            Thread thread = new Thread(worker_DoWork);
             thread.IsBackground = true;
             thread.Start();
 
@@ -124,40 +129,40 @@ namespace Wpf_testHTTP
             //    myTabControl.SelectedIndex = 1;
             //}
             //service_oauth();
- 
+
         }
 
-       static string RefreshKey_saved;
- // do background loading
- //  private readonly BackgroundWorker worker = new BackgroundWorker();
-   private void worker_DoWork()
-   {
-       
-       log.Info("1. Login with: "+user +" / "+password);            //
-       // 1. login 
-       string data = callLogin(user, password);
+        static string RefreshKey_saved;
+        // do background loading
+        //  private readonly BackgroundWorker worker = new BackgroundWorker();
+        private void worker_DoWork()
+        {
 
-       // 2. upload attachments
-       char[] delimiterChars = { '~' };
-       arr = filename.Split(delimiterChars);
-       no_of_attachments = arr.Length;
+            log.Info("1. Login with: " + user + " / " + password);            //
+            // 1. login 
+            string data = callLogin(user, password);
 
-       log.Info("2. start Add attachments " );                      //
+            // 2. upload attachments
+            char[] delimiterChars = { '~' };
+            arr = filename.Split(delimiterChars);
+            no_of_attachments = arr.Length;
 
-       foreach (string _mail in arr)
-       {
-           log.Info("Add attachments: " +_mail);
-           string _data = callUploadAttachment(_mail);
-       }
-       worker_RunWorkerCompleted();
+            log.Info("2. start Add attachments ");                      //
 
-       log.Info("End of attachments!" );                            //
-   }
+            foreach (string _mail in arr)
+            {
+                log.Info("Add attachments: " + _mail);
+                string _data = callUploadAttachment(_mail);
+            }
+            worker_RunWorkerCompleted();
 
-   private void worker_RunWorkerCompleted()
-   { 
-       uploadFinished = true;
-   }
+            log.Info("End of attachments!");                            //
+        }
+
+        private void worker_RunWorkerCompleted()
+        {
+            uploadFinished = true;
+        }
 
         bool uploadFinished = false;
         string user = "ruddytest29@gmail.com";
@@ -184,7 +189,7 @@ namespace Wpf_testHTTP
                 bool result = checkAvailable(_emailStr);
                 if (result == false)
                 {
-                   // MessageBox.Show("email address ERROR!");
+                    // MessageBox.Show("email address ERROR!");
                     label_invalid.Visibility = Visibility.Visible;
                     return;
                 }
@@ -197,7 +202,7 @@ namespace Wpf_testHTTP
             }
             if (_emailStr == "")
             {
-               // MessageBox.Show("Plaese input shared email address!");
+                // MessageBox.Show("Plaese input shared email address!");
                 label_invalid.Visibility = Visibility.Visible;
                 return;
             }
@@ -215,9 +220,9 @@ namespace Wpf_testHTTP
                 i++;
             } while (uploadFinished == false && i <= 1000);
 
-            log.Info("3. create New Post " );                               //
+            log.Info("3. create New Post ");                               //
 
- #region step 1& 2 (do by background worker)
+            #region step 1& 2 (do by background worker)
             ////// 1. login 
             //if (already_login == false)
             //{
@@ -237,7 +242,7 @@ namespace Wpf_testHTTP
             //    string _data = callUploadAttachment(_mail);
             //    textBox_return.Text += "object id= " + _data + "\r\n";
             //}
- #endregion
+            #endregion
 
             //// 3. new POST
             _ws.group_id = group_id;
@@ -257,7 +262,7 @@ namespace Wpf_testHTTP
                 MR_posts_new ret_post = _ws.posts_new(session_token, group_id, content, attachment_id_array, preview, type, coverAttach, share_email_list, event_type, favorite);
                 textBox_return.Text = "Upload 完畢! \r\n Create post_id= " + ret_post.post.post_id + ", " + ret_post.api_ret_message + " !";
                 textBox_return.Text += "\r\n\r\n" + _ws._responseMessage;
-                email_list.Items.Clear();
+                //email_list.Items.Clear();
                 AutoCompleteBox.Text = "";
             }
             catch (Exception err)
@@ -276,15 +281,16 @@ namespace Wpf_testHTTP
         {
             string _t = AutoCompleteBox.Text;
             if (email_list.Items.Count <= 0) return _t;
-            string result="";
+            string result = "";
             for (int i = 0; i <= email_list.Items.Count - 1; i++)
             {
-                result += email_list.Items[i]+";";
+                result += email_list.Items[i] + ";";
             }
             result = result.Substring(0, result.Length - 1);
             return result;
-            
+
         }
+
         #region emailavailable
         private bool checkAvailable(string _emailStr)
         {
@@ -300,13 +306,20 @@ namespace Wpf_testHTTP
             }
             return result;
         }
+
         bool invalid = false;
         public bool IsValidEmail(string strIn)
         {
             bool invalid = false;
             if (String.IsNullOrEmpty(strIn))
                 return false;
+
+            // must had "@"
             int i = strIn.IndexOf('@');
+            if (i < 0) return false;
+
+            // must had "."
+            i = strIn.IndexOf('.');
             if (i < 0) return false;
 
             return true;
@@ -362,7 +375,7 @@ namespace Wpf_testHTTP
             att0 = att0.Substring(0, att0.Length - 1) + "]";
             result = att0.Replace(@"\\", "/");
             return result;
-        
+
         }
         private string count_attachments()
         {
@@ -442,13 +455,13 @@ namespace Wpf_testHTTP
             if (dispatcherTimer != null)
             {
                 SetBusyState(false);
-                dispatcherTimer.Stop();             
+                dispatcherTimer.Stop();
             }
         }
 
         private void busy_flag_MouseEnter(object sender, MouseEventArgs e)
         {
-           // busy_flag.Visibility = Visibility.Collapsed;
+            // busy_flag.Visibility = Visibility.Collapsed;
             label_favorite.Visibility = Visibility.Collapsed;
             label_pass.Visibility = Visibility.Collapsed;
             this.Close();
@@ -491,7 +504,7 @@ namespace Wpf_testHTTP
 
         private bool checkAvailable_repeat()
         {
-            
+
             string _cur = AutoCompleteBox.Text;
             bool result = false;
             if (AutoCompleteBox.Text == "")
@@ -509,13 +522,13 @@ namespace Wpf_testHTTP
                         return result;
                     }
                 }
-           }
+            }
 
             return result;
         }
         private void AutoCompleteBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if ( e.Key == Key.Return && AutoCompleteBox.Text == "")
+            if (e.Key == Key.Return && AutoCompleteBox.Text == "")
             {
                 if (email_list.Items.Count > 0)
                 {
@@ -524,7 +537,7 @@ namespace Wpf_testHTTP
                     Button_Click(this, _e);
                 }
             }
-            if (e.Key == Key.Return || e.Key==Key.Space || e.Key==Key.Tab)
+            if (e.Key == Key.Return || e.Key == Key.Space || e.Key == Key.Tab)
             {
                 if (IsValidEmail(AutoCompleteBox.Text) == false)
                     return;
@@ -541,8 +554,8 @@ namespace Wpf_testHTTP
             }
         }
         #region get Google API [ user: android@waveface.com  pw:xxxxxxxx53521916 ] prpoject name= Favorite Api Project
-        const string clientID = "598605053299.apps.googleusercontent.com";
-        const string clientSecret = "xJdRvYwEGED18wk-I5Ou2_SN";
+        const string clientID = "598605053299.apps.googleusercontent.com";      // company Google App ID
+        const string clientSecret = "xJdRvYwEGED18wk-I5Ou2_SN";                 // Secret key
 
         AuthorizationServerDescription server = new AuthorizationServerDescription
         {
@@ -563,36 +576,36 @@ namespace Wpf_testHTTP
         GoogleScope.EmailAddressScope.Name,
         GoogleScope.ContactsScope.Name
     };
-       // string[] _arr = new string[] { GoogleScope.ImapAndSmtp.Name };
+        // string[] _arr = new string[] { GoogleScope.ImapAndSmtp.Name };
         HashSet<string> _set1 = new HashSet<string>() { GoogleScope.ImapAndSmtp.Name };
         NativeApplicationClient consumer;
         private void service_oauth()
         {
-           // MessageBox.Show(RefreshKey_saved);
+            // MessageBox.Show(RefreshKey_saved);
             if (RefreshKey_saved != "")
             {
-               bool result =getAccessToken("aa");
-               if (result == true)
-               {
-                  myTabControl.SelectedIndex=0;
-                   // set focus to AutoCompleteBox
-                  AutoCompleteBox.Focusable = true;
-                  Keyboard.Focus(AutoCompleteBox);
-                   return;
-               }
-               else
-               {
-                   iniParser parser = new iniParser();
-                   String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
-                   parser.IniParser(iniPath);
-                   parser.AddSetting("Setup", "refreshkey", "");
-                   parser.SaveSettings();
-                   RefreshKey_saved = "";
-                   myTabControl.SelectedIndex = 1;              // access token expire
-               }
-               // set focus to AutoCompleteBox
-               AutoCompleteBox.Focusable = true;
-               Keyboard.Focus(AutoCompleteBox);
+                bool result = getAccessToken("aa");
+                if (result == true)
+                {
+                    myTabControl.SelectedIndex = 0;
+                    // set focus to AutoCompleteBox
+                    AutoCompleteBox.Focusable = true;
+                    Keyboard.Focus(AutoCompleteBox);
+                    return;
+                }
+                else
+                {
+                    iniParser parser = new iniParser();
+                    String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+                    parser.IniParser(iniPath);
+                    parser.AddSetting("Setup", "refreshkey", "");
+                    parser.SaveSettings();
+                    RefreshKey_saved = "";
+                    myTabControl.SelectedIndex = 1;              // access token expire
+                }
+                // set focus to AutoCompleteBox
+                AutoCompleteBox.Focusable = true;
+                Keyboard.Focus(AutoCompleteBox);
                 // change code immediately
                 //string _accesstoken= consumer.GetScopedAccessToken(RefreshKey_saved,_set1);
                 //consumer.RefreshAuthorization(grantedAccess, TimeSpan.FromMinutes(20));
@@ -629,8 +642,10 @@ namespace Wpf_testHTTP
                 i0 = _str.IndexOf("Denied error", i0 + 1);
                 if (i0 >= 0)
                 {
+                    myTabControl.SelectedIndex = 0;
+                    button_import.Visibility = Visibility.Visible;
                     // user say no, just return to input page
-                   // myTabControl.SelectedIndex = 0;
+                    // myTabControl.SelectedIndex = 0;
                 }
                 return;       // not the last pagr or error
             }
@@ -638,7 +653,8 @@ namespace Wpf_testHTTP
             string token = _str.Substring(i0 + 13, i1 - i0 - 13);
 
             myTabControl.SelectedIndex = 0;  // $$$
-            bool result=getAccessToken(token);
+
+            bool result = getAccessToken(token);
             if (result == false)
             {
                 connected_gmail.Visibility = Visibility.Collapsed;
@@ -656,7 +672,7 @@ namespace Wpf_testHTTP
                 connected_gmail.Visibility = Visibility.Visible;
                 image_gmail.Visibility = Visibility.Visible;
             }
-           
+
         }
 
         //private static string LoadRefreshToken()
@@ -676,38 +692,39 @@ namespace Wpf_testHTTP
         private bool getAccessToken(string authCode)
         {
             bool getSuccess = false;
-            string  accessToken="";
-            if(RefreshKey_saved == "")
+            string accessToken = "";
+            if (RefreshKey_saved == "")
             {
-            consumer.ClientCredentialApplicator =
-                     ClientCredentialApplicator.PostParameter(clientSecret);
-            
-            IAuthorizationState grantedAccess1 = consumer.ProcessUserAuthorization(authCode);        
-            bool result=consumer.RefreshAuthorization(grantedAccess1, TimeSpan.FromHours(10));
-                
-            accessToken = grantedAccess1.AccessToken;
+                consumer.ClientCredentialApplicator =
+                         ClientCredentialApplicator.PostParameter(clientSecret);
 
-            // save key
-            iniParser parser = new iniParser();
-            String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
-            parser.IniParser(iniPath);
-            string _r=grantedAccess1.AccessToken;   //.RefreshToken;
-            parser.AddSetting("Setup", "refreshkey", _r);
-            parser.SaveSettings();
-            myTabControl.SelectedIndex = 0;
+                IAuthorizationState grantedAccess1 = consumer.ProcessUserAuthorization(authCode);
+                bool result = consumer.RefreshAuthorization(grantedAccess1, TimeSpan.FromHours(10));
+
+                accessToken = grantedAccess1.AccessToken;
+
+                // save key
+                iniParser parser = new iniParser();
+                String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+                parser.IniParser(iniPath);
+                string _r = grantedAccess1.AccessToken;   //.RefreshToken;
+                parser.AddSetting("Setup", "refreshkey", _r);
+                parser.SaveSettings();
+                myTabControl.SelectedIndex = 0;
             }
-            else {
-            // change code immediately
-           //  consumer.RefreshAuthorization(grantedAccess1, TimeSpan.FromDays(30));
-            //accessToken = grantedAccess1.AccessToken;
-                 accessToken=RefreshKey_saved;
-                 myTabControl.SelectedIndex = 0;
-            }
-                try
+            else
             {
-                    
+                // change code immediately
+                //  consumer.RefreshAuthorization(grantedAccess1, TimeSpan.FromDays(30));
+                //accessToken = grantedAccess1.AccessToken;
+                accessToken = RefreshKey_saved;
+                myTabControl.SelectedIndex = 0;
+            }
+            try
+            {
+
                 GoogleApi api = new GoogleApi(accessToken);
-                
+
 
                 // string user = "ruddyl.lee@waveface.com"; // api.GetEmail();
                 // GoogleApi api = new GoogleApi(accessToken);
@@ -723,18 +740,21 @@ namespace Wpf_testHTTP
                     XmlNode title = contact.SelectSingleNode("a:title", nsmgr);
                     XmlNode email = contact.SelectSingleNode("gd:email", nsmgr);
 
-                    Console.WriteLine("{0}: {1}",
-                        title.InnerText,
-                        email.Attributes["address"].Value);
-                    mail_arr.Add(email.Attributes["address"].Value);
-                    emailCount++;
-                 //   listbox1.Items.Add(title.InnerText + " , " + email.Attributes["address"].Value);
+                    // Console.WriteLine("{0}: {1}",title.InnerText, email.Attributes["address"].Value);
+                    if (email != null)
+                    {
+                        mail_arr.Add(email.Attributes["address"].Value);
+                        emailCount++;
+                    }
+                    //   listbox1.Items.Add(title.InnerText + " , " + email.Attributes["address"].Value);
                 }
                 getSuccess = true;
+                button_import.Visibility = Visibility.Collapsed;
+                myTabControl.SelectedIndex = 0;
             }
             catch (Exception err)
             {
-               // MessageBox.Show("error: " + err.Message);
+                // MessageBox.Show("error: " + err.Message);
                 Console.WriteLine("Error: " + err.Message);
                 getSuccess = false;
                 return getSuccess;
@@ -750,39 +770,39 @@ namespace Wpf_testHTTP
             int where = contactData.States.Length;
             //
             AutoCompleteBox.ItemsSource = contactData.States;
-            email_list.Items.Clear();
+            //email_list.Items.Clear();
             label_invalid.Visibility = Visibility.Collapsed;
-           // myTabControl.SelectedIndex = 0;
+            // myTabControl.SelectedIndex = 0;
             return getSuccess;
 
-//------------------------
-            try
-            {
-                // get inbox mail content
-               // #region get InBox
-                string user = "ruddyl.lee@waveface.com"; // api.GetEmail();
-                using (Imap imap = new Imap())
-                {
-                    imap.ConnectSSL("imap.gmail.com");
-                    imap.LoginOAUTH2(user, accessToken);
+            //------------------------
+            //    try
+            //    {
+            //        // get inbox mail content
+            //       // #region get InBox
+            //        string user = "ruddyl.lee@waveface.com"; // api.GetEmail();
+            //        using (Imap imap = new Imap())
+            //        {
+            //            imap.ConnectSSL("imap.gmail.com");
+            //            imap.LoginOAUTH2(user, accessToken);
 
-                    imap.SelectInbox();
-                    List<long> uids = imap.Search(Flag.Unseen);
+            //            imap.SelectInbox();
+            //            List<long> uids = imap.Search(Flag.Unseen);
 
-                    foreach (long uid in uids)
-                    {
-                        string eml = imap.GetMessageByUID(uid);
-                        IMail email = new MailBuilder().CreateFromEml(eml);
+            //            foreach (long uid in uids)
+            //            {
+            //                string eml = imap.GetMessageByUID(uid);
+            //                IMail email = new MailBuilder().CreateFromEml(eml);
 
-                       // listbox1.Items.Add(email.From);
-                    }
-                    imap.Close();
-                }
-            }
-            catch (Exception err)
-            {
-                MessageBox.Show("error: " + err.Message);
-            }
+            //               // listbox1.Items.Add(email.From);
+            //            }
+            //            imap.Close();
+            //        }
+            //    }
+            //    catch (Exception err)
+            //    {
+            //        MessageBox.Show("error: " + err.Message);
+            //    }
 
         }
 
@@ -816,11 +836,14 @@ namespace Wpf_testHTTP
 
         private void AutoCompleteBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-
+            label_favorite.Visibility = Visibility.Collapsed;
+            label_pass.Visibility = Visibility.Collapsed;
         }
 
         private void AutoCompleteBox_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            label_favorite.Visibility = Visibility.Collapsed;
+            label_pass.Visibility = Visibility.Collapsed;
             if (IsValidEmail(AutoCompleteBox.Text) == false)
                 return;
             bool result = checkAvailable(AutoCompleteBox.Text);
@@ -836,8 +859,23 @@ namespace Wpf_testHTTP
             }
         }
 
-    
-     
+        private void Label_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            myTabControl.SelectedIndex = 0;
+        }
+
+        private void button_import_Click(object sender, RoutedEventArgs e)
+        {
+            setRun_button();
+        }
+
+        private void AutoCompleteBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            label_favorite.Visibility = Visibility.Collapsed;
+            label_pass.Visibility = Visibility.Collapsed;
+        }
+
+
 
 
     }
