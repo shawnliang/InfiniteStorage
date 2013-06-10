@@ -838,6 +838,7 @@ namespace Wpf_testHTTP
         {
             label_favorite.Visibility = Visibility.Collapsed;
             label_pass.Visibility = Visibility.Collapsed;
+            label_invalid.Visibility = Visibility.Collapsed;
         }
 
         private void AutoCompleteBox_MouseUp(object sender, MouseButtonEventArgs e)
@@ -873,6 +874,11 @@ namespace Wpf_testHTTP
         {
             label_favorite.Visibility = Visibility.Collapsed;
             label_pass.Visibility = Visibility.Collapsed;
+        }
+
+        private void Label_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
+        {
+            this.Close();
         }
 
 
