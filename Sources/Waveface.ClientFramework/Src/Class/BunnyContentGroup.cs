@@ -61,7 +61,7 @@ namespace Waveface.ClientFramework
 		{
 			var cmd = conn.CreateCommand();
 			cmd.CommandText =
-				"select file_id, file_name from Files " +
+				"select file_id, file_name, type from Files " +
 				"where parent_folder = @parent and device_id = @dev " +
 				"order by event_time";
 
@@ -73,7 +73,10 @@ namespace Waveface.ClientFramework
 				while (reader.Read())
 				{
 					var file_path = Path.Combine(Uri.LocalPath, reader["file_name"].ToString());
-					contents.Add(new BunnyContent(new Uri(file_path), reader["file_id"].ToString()) 
+
+					var type = ((long)reader["type"] == 0L) ? ContentType.Photo : ContentType.Video;
+
+					contents.Add(new BunnyContent(new Uri(file_path), reader["file_id"].ToString(), type) 
 					{
 						EnableTag = true
 					});

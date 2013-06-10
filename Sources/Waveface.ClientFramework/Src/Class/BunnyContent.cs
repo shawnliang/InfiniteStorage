@@ -141,9 +141,10 @@ namespace Waveface.ClientFramework
 
 		}
 
-		public BunnyContent(Uri uri, string file_id)
+		public BunnyContent(Uri uri, string file_id, ContentType type)
 			: base(file_id, uri)
 		{
+			_type = type;
 		}
 		#endregion
 
