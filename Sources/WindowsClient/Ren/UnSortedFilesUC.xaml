@@ -91,8 +91,8 @@
                 <RowDefinition Height="56" />
             </Grid.RowDefinitions>
 
-            <StackPanel x:Name="spTitle" Grid.Row="0" Background="{DynamicResource TitleBarBackground}"  Orientation="Horizontal">
-                <TextBlock Text="Unsorted Media from " Margin="14,14,0,0" Foreground="White" FontSize="18.667" FontFamily="Segoe UI Light" FontWeight="Bold"/>
+            <StackPanel Grid.Row="0" Background="{DynamicResource TitleBarBackground}"  Orientation="Horizontal">
+                <TextBlock x:Name="tbTitle0" Text="Unsorted Media from " Margin="14,14,0,0" Foreground="White" FontSize="18.667" FontFamily="Segoe UI Light" FontWeight="Bold"/>
                 <TextBlock x:Name="tbTitle" Text="Import Source" Margin="2,14,0,0" Foreground="White" FontSize="18.667" FontFamily="Segoe UI Light" FontWeight="Bold"/>
                 <TextBlock x:Name="tbTotalCount" Foreground="#FF5A5A5A" Margin="10,20,0,0" Text="99 Photos, 12 Videos" FontSize="14" FontWeight="Bold"/>
             </StackPanel>
