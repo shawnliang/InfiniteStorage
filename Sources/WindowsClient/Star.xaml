@@ -1,33 +1,33 @@
-﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<UserControl x:Class="Waveface.Client.Star"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
-             mc:Ignorable="d"
-             x:Class="Waveface.Client.Star"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Name="UserControl"
+             d:DesignHeight="22.325"
              d:DesignWidth="22.323"
-             d:DesignHeight="22.325">
+             mc:Ignorable="d">
 
     <Grid x:Name="LayoutRoot">
-        <ed:RegularPolygon HorizontalAlignment="Left"
+        <ed:RegularPolygon Width="22.323"
                            Height="22.325"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
                            InnerRadius="0.47211"
                            PointCount="5"
                            Stretch="Fill"
-                           VerticalAlignment="Center"
-                           Width="22.323"
                            Stroke="#FFFDFDFD" />
         <ed:RegularPolygon x:Name="SelectedStar"
-                           HorizontalAlignment="Left"
+                           Width="22.323"
                            Height="22.325"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Fill="White"
                            InnerRadius="0.47211"
                            PointCount="5"
                            Stretch="Fill"
-                           VerticalAlignment="Center"
-                           Width="22.323"
                            Stroke="#FFFDFDFD"
-                           Fill="White"
                            Visibility="Collapsed" />
     </Grid>
 </UserControl>

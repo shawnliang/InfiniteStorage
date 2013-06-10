@@ -1,26 +1,47 @@
-﻿<UserControl
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:local="clr-namespace:Waveface.Client"
-	mc:Ignorable="d"
-	x:Class="Waveface.Client.VolumeControl"
-	x:Name="UserControl"
-	d:DesignWidth="11.752" d:DesignHeight="10.894">
+﻿<UserControl x:Class="Waveface.Client.VolumeControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Waveface.Client"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="UserControl"
+             d:DesignHeight="10.894"
+             d:DesignWidth="11.752"
+             mc:Ignorable="d">
 
-	<Grid x:Name="LayoutRoot">
-		<Path Fill="#FFF4F4F5" HorizontalAlignment="Left" Margin="0,0,6,0" VerticalAlignment="Top" Data="M5,0 L9.2100246,3.5829997 10.937,3.5829997 10.937,6.4369998 9.1865251,6.4369998 5,10 z" RenderTransformOrigin="0.494778539729568,0.5" Stretch="Fill">
-			<Path.RenderTransform>
-				<TransformGroup>
-					<ScaleTransform ScaleY="1" ScaleX="-1"/>
-					<SkewTransform AngleY="0" AngleX="0"/>
-					<RotateTransform Angle="0"/>
-					<TranslateTransform/>
-				</TransformGroup>
-			</Path.RenderTransform>
-		</Path>
-		<Path x:Name="LargeVolumeLine" Data="M19.499666,-93.93716 C20.696123,-91.034212 20.692138,-88.21502 19.499666,-85.478749" HorizontalAlignment="Right" Margin="0" Stretch="Fill" Stroke="White" StrokeThickness="0.5" Width="1.698" VerticalAlignment="Center"/>
-		<Path x:Name="SmallVolumeLine" Data="M19.499666,-93.93716 C22.149427,-91.034405 22.092516,-88.215206 19.499666,-85.478749" HorizontalAlignment="Right" Margin="0,3,3,3" Stretch="Fill" Stroke="White" StrokeThickness="0.5" Width="1.18"/>
-	</Grid>
+    <Grid x:Name="LayoutRoot">
+        <Path Margin="0,0,6,0"
+              HorizontalAlignment="Left"
+              VerticalAlignment="Top"
+              Data="M5,0 L9.2100246,3.5829997 10.937,3.5829997 10.937,6.4369998 9.1865251,6.4369998 5,10 z"
+              Fill="#FFF4F4F5"
+              RenderTransformOrigin="0.494778539729568,0.5"
+              Stretch="Fill">
+            <Path.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="-1" ScaleY="1" />
+                    <SkewTransform AngleX="0" AngleY="0" />
+                    <RotateTransform Angle="0" />
+                    <TranslateTransform />
+                </TransformGroup>
+            </Path.RenderTransform>
+        </Path>
+        <Path x:Name="LargeVolumeLine"
+              Width="1.698"
+              Margin="0"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Center"
+              Data="M19.499666,-93.93716 C20.696123,-91.034212 20.692138,-88.21502 19.499666,-85.478749"
+              Stretch="Fill"
+              Stroke="White"
+              StrokeThickness="0.5" />
+        <Path x:Name="SmallVolumeLine"
+              Width="1.18"
+              Margin="0,3,3,3"
+              HorizontalAlignment="Right"
+              Data="M19.499666,-93.93716 C22.149427,-91.034405 22.092516,-88.215206 19.499666,-85.478749"
+              Stretch="Fill"
+              Stroke="White"
+              StrokeThickness="0.5" />
+    </Grid>
 </UserControl>

@@ -1,14 +1,21 @@
-﻿<UserControl
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d"
-	x:Class="Waveface.Client.PlayButton"
-	x:Name="UserControl"
-	d:DesignWidth="9.75" d:DesignHeight="9.5">
+﻿<UserControl x:Class="Waveface.Client.PlayButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="UserControl"
+             d:DesignHeight="9.5"
+             d:DesignWidth="9.75"
+             mc:Ignorable="d">
 
-	<Grid x:Name="LayoutRoot">
-		<Path Data="M9.5,5 L5,0.5 5,9.5 z" Fill="White" HorizontalAlignment="Left" Height="9.5" Stretch="Fill" Stroke="#FF818181" VerticalAlignment="Top" Width="9.75"/>
-	</Grid>
+    <Grid x:Name="LayoutRoot">
+        <Path Width="9.75"
+              Height="9.5"
+              HorizontalAlignment="Left"
+              VerticalAlignment="Top"
+              Data="M9.5,5 L5,0.5 5,9.5 z"
+              Fill="White"
+              Stretch="Fill"
+              Stroke="#FF818181" />
+    </Grid>
 </UserControl>
