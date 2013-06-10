@@ -388,9 +388,9 @@
             <GradientStop Color="#FF323232" />
         </LinearGradientBrush>
         <SolidColorBrush x:Key="ContentAreaBackground"
-                         Color="#FF1F1F1F" />
+                         Color="#FF4F4F4F" />
         <SolidColorBrush x:Key="SidePanelBackground"
-                         Color="#FF2A2A2B" />
+                         Color="#FF333333" />
         <SolidColorBrush x:Key="ButtonBackground"
                          Color="#FF7F7F7F" />
         <SolidColorBrush x:Key="ButtonForeground"
@@ -438,12 +438,13 @@
 
                     <WrapPanel VerticalAlignment="Center"
                                DockPanel.Dock="Left">
-                        <local:BackButton Width="28.666"
+                        <local:BackButton x:Name="btnBack"
+                                          Width="28.666"
                                           Height="28.666"
                                           Margin="2"
                                           VerticalAlignment="Center"
                                           Click="BackButton_Click"
-                                          Content="BackButton" />
+                                          Content="" />
                         <Label x:Name="lblContentLocation"
                                Content="{Binding Name}"
                                FontFamily="Segoe UI Light"
@@ -547,6 +548,7 @@
             </Grid.Effect>
             <local:RightSidePanel1 x:Name="rspRightSidePanel"
                                    Margin="10,10,10,5"
+                                   AddToFavorite="rspRightSidePanel_AddToFavorite"
                                    PhotoCount="{Binding LabeledContents,
                                                         ConverterParameter={x:Static wvmodel:ContentType.Photo},
                                                         Converter={StaticResource ContentTypeCountConverter},
@@ -555,20 +557,21 @@
                                    VideoCount="{Binding LabeledContents,
                                                         ConverterParameter={x:Static wvmodel:ContentType.Video},
                                                         Converter={StaticResource ContentTypeCountConverter},
-                                                        ElementName=window}" AddToFavorite="rspRightSidePanel_AddToFavorite" />
+                                                        ElementName=window}" />
             <local:RightSidePanel2 x:Name="rspRightSidePane2"
+                                   Height="Auto"
                                    Margin="0,5,0,0"
+                                   CloudSharingClick="rspRightSidePane2_CloudSharingClick"
                                    FavoriteName="{Binding SelectedItem.Name,
                                                           ElementName=lbxFavorites,
                                                           Mode=TwoWay}"
-                                   OnAirClick="rspRightSidePane2_OnAirClick" Height="Auto" CloudSharingClick="rspRightSidePane2_CloudSharingClick" />
+                                   OnAirClick="rspRightSidePane2_OnAirClick" />
 
 
         </Grid>
 
         <GridSplitter Grid.Row="1"
                       Grid.Column="2"
-                      Width="5"
                       HorizontalAlignment="Left"
                       Background="Transparent" />
         <Grid x:Name="gdContentArea"
@@ -621,7 +624,8 @@
                                   Maximum="400"
                                   Minimum="150"
                                   Value="200" />
-                <local:FavoriteAllButton Width="100"
+                <local:FavoriteAllButton x:Name="btnFavoriteAll"
+                                         Width="100"
                                          Height="30"
                                          Margin="0,0,10,0"
                                          HorizontalAlignment="Right"

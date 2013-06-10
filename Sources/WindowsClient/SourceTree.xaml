@@ -17,24 +17,31 @@
           mc:Ignorable="d">
 
     <TreeView.Resources>
-        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
-        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                         Color="Transparent" />
+        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
+                         Color="Transparent" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Style TargetType="{x:Type TreeViewItem}">
-            <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="TreeViewItem_PreviewMouseLeftButtonDown" />
+            <EventSetter Event="UIElement.PreviewMouseLeftButtonDown"
+                         Handler="TreeViewItem_PreviewMouseLeftButtonDown" />
         </Style>
         <BitmapImage x:Key="SelectedIcon"
                      CacheOption="OnLoad"
                      CreateOptions="IgnoreImageCache"
                      UriSource="albumselected.png" />
-        <Style x:Key="TreeViewItemStyle1" TargetType="{x:Type TreeViewItem}">
-            <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="TreeViewItem_PreviewMouseLeftButtonDown" />
+        <Style x:Key="TreeViewItemStyle1"
+               TargetType="{x:Type TreeViewItem}">
+            <EventSetter Event="UIElement.PreviewMouseLeftButtonDown"
+                         Handler="TreeViewItem_PreviewMouseLeftButtonDown" />
             <Setter Property="Template" Value="{DynamicResource TreeViewItemControlTemplate1}" />
         </Style>
-        <ControlTemplate x:Key="TreeViewItemControlTemplate1" TargetType="{x:Type TreeViewItem}">
+        <ControlTemplate x:Key="TreeViewItemControlTemplate1"
+                         TargetType="{x:Type TreeViewItem}">
             <Grid x:Name="Item">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" MinWidth="19" />
+                    <ColumnDefinition Width="Auto"
+                                      MinWidth="19" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
@@ -43,6 +50,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <ToggleButton x:Name="Expander"
+                              Background="Transparent"
                               ClickMode="Press"
                               IsChecked="{Binding IsExpanded,
                                                   RelativeSource={RelativeSource TemplatedParent}}">
@@ -143,10 +151,12 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
-        <ControlTemplate x:Key="TreeViewItemControlTemplate2" TargetType="{x:Type TreeViewItem}">
+        <ControlTemplate x:Key="TreeViewItemControlTemplate2"
+                         TargetType="{x:Type TreeViewItem}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" MinWidth="19" />
+                    <ColumnDefinition Width="Auto"
+                                      MinWidth="19" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
@@ -154,7 +164,8 @@
                             Grid.Column="1"
                             Width="2048"
                             Orientation="Horizontal">
-                    <Image x:Name="icon" Source="album.png" />
+                    <Image x:Name="icon"
+                           Source="album.png" />
                     <Label x:Name="sourceName"
                            Height="32"
                            VerticalContentAlignment="Center"
@@ -163,7 +174,9 @@
                 </StackPanel>
             </Grid>
             <ControlTemplate.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}" Value="True">
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem},
+                                               Path=IsSelected}"
+                             Value="True">
                     <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedIcon}" />
                     <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
                     <Setter TargetName="item" Property="Background" Value="#FFD4D4D3" />
@@ -174,7 +187,8 @@
 
     <TreeView.ItemTemplate>
         <HierarchicalDataTemplate ItemsSource="{Binding Contents}">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Background="Transparent"
+                        Orientation="Horizontal">
                 <Label x:Name="item"
                        Content="{Binding Name}"
                        FontWeight="Bold"
@@ -186,12 +200,13 @@
                                             Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
             <HierarchicalDataTemplate.ItemTemplate>
-
                 <DataTemplate>
                     <StackPanel x:Name="item"
                                 Width="2048"
+                                Background="Transparent"
                                 Orientation="Horizontal">
-                        <Image x:Name="icon" Source="album.png" />
+                        <Image x:Name="icon"
+                               Source="album.png" />
                         <Label x:Name="sourceName"
                                Height="32"
                                VerticalContentAlignment="Center"
@@ -200,17 +215,21 @@
                         <Label x:Name="sourceCount"
                                Height="32"
                                VerticalContentAlignment="Center"
-                               Content=""
                                Foreground="White" />
                     </StackPanel>
                     <DataTemplate.Triggers>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}" Value="True">
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem},
+                                                       Path=IsSelected}"
+                                     Value="True">
                             <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedIcon}" />
                             <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
                             <Setter TargetName="item" Property="Background" Value="#FFD4D4D3" />
+							<Setter TargetName="sourceCount" Property="Foreground" Value="Black" />
                         </DataTrigger>
 
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=DataContext.ID}" Value="Unsorted">
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem},
+                                                       Path=DataContext.ID}"
+                                     Value="Unsorted">
                             <Setter TargetName="sourceCount" Property="Content" Value="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=DataContext.ContentCount}" />
                         </DataTrigger>
 

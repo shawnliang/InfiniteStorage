@@ -38,9 +38,7 @@ namespace Waveface.Client
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			this.lbxDeviceContainer.DataContext = Waveface.ClientFramework.Client.Default.Services;
-			var fav = Waveface.ClientFramework.Client.Default.Favorites;
-
-			//this.rspRightSidePanel.DataContext = LabeledContents;
+		
 			this.lbxFavorites.DataContext = Waveface.ClientFramework.Client.Default.Favorites;
 
 			rspRightSidePane2.tbxName.KeyDown += tbxName_KeyDown;
@@ -189,7 +187,9 @@ namespace Waveface.Client
 
 
 			Grid.SetColumnSpan(gdContentArea, 2);
-			
+
+			btnFavoriteAll.Visibility = Visibility.Visible;
+			btnBack.Visibility = Visibility.Visible;
 			gdRightSide.Visibility = System.Windows.Visibility.Collapsed;
 
 			rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
@@ -244,6 +244,8 @@ namespace Waveface.Client
 			gdRightSide.Visibility = System.Windows.Visibility.Visible;
 			Grid.SetColumnSpan(gdContentArea, 1);
 
+			btnFavoriteAll.Visibility = Visibility.Collapsed;
+			btnBack.Visibility = Visibility.Collapsed;
 			unSortedFilesUC.Visibility = Visibility.Collapsed;
 			rspRightSidePane2.Visibility = (group.Name.Equals("Tag", StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
 			rspRightSidePanel.Visibility = (group.Name.Equals("Tag", StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
