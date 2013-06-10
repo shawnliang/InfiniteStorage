@@ -526,6 +526,7 @@
                            Foreground="#FFA5A5A5" />
                     <local:FavoriteListBox x:Name="lbxFavorites"
                                            Grid.Row="1"
+                                           PreviewMouseDown="lbxFavorites_PreviewMouseDown"
                                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                            SelectionChanged="lbxFavorites_SelectionChanged" />
                 </Grid>
@@ -550,15 +551,7 @@
             <local:RightSidePanel1 x:Name="rspRightSidePanel"
                                    Margin="10,10,10,5"
                                    AddToFavorite="rspRightSidePanel_AddToFavorite"
-                                   PhotoCount="{Binding LabeledContents,
-                                                        ConverterParameter={x:Static wvmodel:ContentType.Photo},
-                                                        Converter={StaticResource ContentTypeCountConverter},
-                                                        ElementName=window}"
-                                   SaveToFavorite="rspRightSidePanel_SaveToFavorite"
-                                   VideoCount="{Binding LabeledContents,
-                                                        ConverterParameter={x:Static wvmodel:ContentType.Video},
-                                                        Converter={StaticResource ContentTypeCountConverter},
-                                                        ElementName=window}" />
+                                   SaveToFavorite="rspRightSidePanel_SaveToFavorite" />
             <local:RightSidePanel2 x:Name="rspRightSidePane2"
                                    Height="Auto"
                                    Margin="0,5,0,0"

@@ -17,17 +17,6 @@ namespace Waveface.Client
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		#region Property
-		public ReadOnlyObservableCollection<IContentEntity> LabeledContents
-		{
-			get
-			{
-				return Waveface.ClientFramework.Client.Default.TaggedContents;
-			}
-		}
-		#endregion
-
-
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -223,6 +212,11 @@ namespace Waveface.Client
 
 		private void lbxFavorites_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
+			ShowSelectedFavoriteContents(sender);
+		}
+
+		private void ShowSelectedFavoriteContents(object sender)
+		{
 			var listBox = sender as ListBox;
 
 			if (listBox == null)
@@ -249,6 +243,32 @@ namespace Waveface.Client
 			unSortedFilesUC.Visibility = Visibility.Collapsed;
 			rspRightSidePane2.Visibility = (group.Name.Equals("STARRED", StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
 			rspRightSidePanel.Visibility = (group.Name.Equals("STARRED", StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+
+			if (rspRightSidePanel.Visibility == System.Windows.Visibility.Visible)
+			{
+				var contentEntities = lbxContentContainer.DataContext as IEnumerable<IContentEntity>;
+
+				if (contentEntities != null)
+				{
+					rspRightSidePanel.PhotoCount = contentEntities.Count(item =>
+					{
+						var content = item as IContent;
+						if (content == null)
+							return false;
+
+						return content.Type == ContentType.Photo;
+					});
+
+					rspRightSidePanel.VideoCount = contentEntities.Count(item =>
+					{
+						var content = item as IContent;
+						if (content == null)
+							return false;
+
+						return content.Type == ContentType.Video;
+					});
+				}
+			}
 		}
 		
 		private void rspRightSidePanel_SaveToFavorite(object sender, System.EventArgs e)
@@ -319,6 +339,11 @@ namespace Waveface.Client
 			_w.setFilename(files);
 			_w.setRun();
 			_w.ShowDialog();
+		}
+
+		private void lbxFavorites_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			ShowSelectedFavoriteContents(sender);
 		}
 	}
 }

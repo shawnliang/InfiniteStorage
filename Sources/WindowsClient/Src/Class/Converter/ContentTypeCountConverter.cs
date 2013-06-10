@@ -15,21 +15,28 @@ namespace Waveface.Client
 		public object Convert(object value, Type targetType,
 	object parameter, CultureInfo culture)
 		{
-			var contentEntities = value as IEnumerable<IContentEntity>;
-
-			if (value == null)
-				return null;
-
-			var count = contentEntities.Count(item =>
+			try
 			{
-				var content = item as IContent;
-				if (content == null)
-					return false;
+				var contentEntities = value as IEnumerable<IContentEntity>;
 
-				return content.Type == (ContentType)parameter;
-			});
+				if (value == null)
+					return null;
 
-			return count;
+				var count = contentEntities.Count(item =>
+				{
+					var content = item as IContent;
+					if (content == null)
+						return false;
+
+					return content.Type == (ContentType)parameter;
+				});
+
+				return count;
+			}
+			catch (Exception)
+			{
+				return null;
+			}
 		}
 
 		public object ConvertBack(object value, Type targetType,
