@@ -19,7 +19,8 @@
                 Content="Add to existing Favorite"
                 Cursor="Hand">
         </Button>
-        <Button Width="163"
+        <Button x:Name="btnClearAll"
+                Width="163"
                 Margin="10,155,10,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"

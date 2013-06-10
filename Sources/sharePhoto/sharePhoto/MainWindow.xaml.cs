@@ -643,6 +643,8 @@ namespace Wpf_testHTTP
                 if (i0 >= 0)
                 {
                     myTabControl.SelectedIndex = 0;
+					image_gmail.Visibility = System.Windows.Visibility.Collapsed;
+					connected_gmail.Visibility = image_gmail.Visibility;
                     button_import.Visibility = Visibility.Visible;
                     // user say no, just return to input page
                     // myTabControl.SelectedIndex = 0;
@@ -750,6 +752,8 @@ namespace Wpf_testHTTP
                 }
                 getSuccess = true;
                 button_import.Visibility = Visibility.Collapsed;
+				image_gmail.Visibility = System.Windows.Visibility.Visible;
+				connected_gmail.Visibility = image_gmail.Visibility;
                 myTabControl.SelectedIndex = 0;
             }
             catch (Exception err)

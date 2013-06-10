@@ -233,6 +233,13 @@ namespace Waveface.ClientFramework
 			m_Favorites.AddRange(GetFavorites());
 		}
 
+		public void ClearTaggedContents()
+		{
+			StationAPI.ClearLabel(m_LabelID);
+
+			m_TaggedContents.Clear();
+		}
+
 
 		public void OnAir(string labelID, Boolean isOnAir)
 		{

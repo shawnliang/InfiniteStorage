@@ -32,6 +32,14 @@ namespace Waveface.Client
 
 			rspRightSidePane2.tbxName.KeyDown += tbxName_KeyDown;
 			rspRightSidePane2.tbxName.LostFocus += tbxName_LostFocus;
+
+			rspRightSidePanel.btnClearAll.Click += new RoutedEventHandler(btnClearAll_Click);
+		}
+
+		void btnClearAll_Click(object sender, RoutedEventArgs e)
+		{
+			ClientFramework.Client.Default.ClearTaggedContents();
+			ShowSelectedFavoriteContents(lbxFavorites);
 		}
 
 		void tbxName_LostFocus(object sender, RoutedEventArgs e)
@@ -149,6 +157,8 @@ namespace Waveface.Client
 
 			if (group == null)
 				return;
+
+			group.Refresh();
 
 			if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
 			{
