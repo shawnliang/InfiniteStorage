@@ -80,10 +80,14 @@ namespace Waveface.Client
             if (Rt.Init(_allPendingFiles))
             {
                 gridEmptyPanel.Visibility = Visibility.Collapsed;
+
+                spTitle.Visibility = Visibility.Visible;
             }
             else
             {
                 gridEmptyPanel.Visibility = Visibility.Visible;
+
+                spTitle.Visibility = Visibility.Collapsed;
                 return false;
             }
 
@@ -243,7 +247,6 @@ namespace Waveface.Client
             {
                 gridEmptyPanel.Visibility = Visibility.Visible;
                 tbTotalCount.Text = "";
-
             }
             else
             {
