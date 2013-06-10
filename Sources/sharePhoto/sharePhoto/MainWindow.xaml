@@ -61,7 +61,7 @@
                         </TextBox>
                         <Button Content="Close"  HorizontalAlignment="Left" Margin="501,417,0,0" VerticalAlignment="Top" Width="103" Height="39" Click="Button_Click_1" FontSize="22" />
                         <!--  <TextBox x:Name="AutoCompleteBox"  HorizontalAlignment="Left" Height="68" Margin="158,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="755" FontSize="18" Background="Black" Foreground="#FF64AEF9" BorderThickness="2,1"/> -->
-                        <Controls:AutoCompleteBox x:Name="AutoCompleteBox"  HorizontalAlignment="Left" Margin="90,219,0,0" VerticalAlignment="Top" Width="517"   Height="34"  KeyUp="AutoCompleteBox_KeyDown" RenderTransformOrigin="0.5,0.5" FontSize="18" Background="White" Foreground="Black" BorderThickness="2,1" MouseLeftButtonUp="AutoCompleteBox_MouseLeftButtonUp" MouseUp="AutoCompleteBox_MouseUp" >
+                        <Controls:AutoCompleteBox x:Name="AutoCompleteBox"  HorizontalAlignment="Left" Margin="90,219,0,0" VerticalAlignment="Top" Width="517"   Height="34"  KeyUp="AutoCompleteBox_KeyDown" RenderTransformOrigin="0.5,0.5" FontSize="18" Background="White" Foreground="Black" BorderThickness="2,1" MouseLeftButtonUp="AutoCompleteBox_MouseLeftButtonUp" MouseUp="AutoCompleteBox_MouseUp" GotFocus="AutoCompleteBox_GotFocus" >
                             <Controls:AutoCompleteBox.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -84,12 +84,14 @@
                         <Label x:Name="label_invalid" Content="Invalid Email Format" HorizontalAlignment="Left" Margin="91,250,0,0" VerticalAlignment="Top" Width="235" Foreground="White" FontSize="18" Visibility="Collapsed"   />
                         <Label x:Name="label_favorite" Content="Favorite Shared!" HorizontalAlignment="Left" Height="54" Margin="261,312,0,0" VerticalAlignment="Top" Width="294" Foreground="#FFFBF8F8" FontSize="36"  Visibility="Collapsed"  />
                         <Image x:Name="label_pass" HorizontalAlignment="Left" Height="48" Margin="204,318,0,0" VerticalAlignment="Top" Width="52" Source="OK_white (1).png"  Visibility="Collapsed"  />
-
+                        <Button x:Name="button_import" Content="Import Google Contact" HorizontalAlignment="Left" Margin="91,417,0,0" VerticalAlignment="Top" Width="149" Height="39" Click="button_import_Click"
+/>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tab2" Header="TabItem"  VerticalAlignment="Top" Height="0" BorderThickness="1" BorderBrush="#FF060606">
-                    <Grid Background="#FFE5E5E5" Margin="0,-3,1,0">
-                        <WebBrowser x:Name="wb1" Width="696"  />
+                    <Grid Background="#FFE5E5E5" Margin="1,20,1,0">
+                        <Label Content="X" Width="30" Margin="672,-27,0,470" MouseLeftButtonUp="Label_MouseLeftButtonUp" Foreground="#fffdfdfd" FontSize="14"></Label>
+                        <WebBrowser x:Name="wb1" Width="692"  />
                     </Grid>
                 </TabItem>
             </TabControl>
