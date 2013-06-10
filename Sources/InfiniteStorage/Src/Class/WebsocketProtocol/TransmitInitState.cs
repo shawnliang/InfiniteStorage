@@ -57,6 +57,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			{
 				ctx.fileCtx = null;
 				ctx.Send(new TextCommand { action = "file-exist", file_name = cmd.file_name });
+				log4net.LogManager.GetLogger("wsproto").Debug("file duplicate! send back file-exist");
 			}
 			else
 			{

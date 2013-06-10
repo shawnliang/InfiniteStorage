@@ -39,6 +39,16 @@ namespace InfiniteStorage.Notify
 
 				sendHomeSharing();
 			}
+
+			if (ctx.subscribe_devices)
+			{
+				var active_devices = (from c in util.GetAllBackupConnections()
+									  where c.IsRecving
+									  select c.device_id).ToList();
+
+				ctx.Send(
+					JsonConvert.SerializeObject(new ActiveDeviceNotifyMsg { active_devices = active_devices }));
+			}
 		}
 
 		private void sendHomeSharing()

@@ -15,6 +15,8 @@ namespace InfiniteStorage.Notify
 
 		bool subscribe_labels { get; }
 
+		bool subscribe_devices { get; }
+
 		void Send(string data);
 	}
 }

@@ -125,6 +125,10 @@
             </File>
           </Component>
 
+          <Component Id="arrow_circle_double.png" Guid="*">
+            <File Id="arrow_circle_double.png" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\arrow_circle_double.png" />
+          </Component>
+          
           <Component Id="album.png" Guid="*">
             <File Id="album.png" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\album.png" />
           </Component>
@@ -311,7 +315,7 @@
       <ComponentRef Id='Waveface.ClientFramework.dll'/>
       <ComponentRef Id='Waveface.Model.dll'/>
 
-
+      <ComponentRef Id="arrow_circle_double.png"/>
       <ComponentRef Id="album.png"/>
       <ComponentRef Id="albumselected.png"/>
       <ComponentRef Id="favorite.png"/>
