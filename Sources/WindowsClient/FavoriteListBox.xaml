@@ -62,8 +62,8 @@
                     <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
                     <Setter TargetName="sourceCount" Property="Foreground" Value="Black" />
                 </DataTrigger>
-                
-                <Trigger SourceName="sourceName" Property="Content" Value="TAG">
+
+                <Trigger SourceName="sourceName" Property="Content" Value="STARRED">
                     <Setter TargetName="icon" Property="Source" Value="{StaticResource UnselectedStar}"/>
                 </Trigger>
             </DataTemplate.Triggers>

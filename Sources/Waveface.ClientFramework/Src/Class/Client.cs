@@ -128,7 +128,7 @@ namespace Waveface.ClientFramework
 
 			conn.Open();
 
-			var cmd = new SQLiteCommand("SELECT * FROM Files t1, LabelFiles t2, Labels t3 where t3.name = 'TAG' and t3.label_id = t2.label_id and t1.file_id = t2.file_id", conn);
+			var cmd = new SQLiteCommand("SELECT * FROM Files t1, LabelFiles t2, Labels t3 where t3.name = 'STARRED' and t3.label_id = t2.label_id and t1.file_id = t2.file_id", conn);
 
 			var dr = cmd.ExecuteReader();
 

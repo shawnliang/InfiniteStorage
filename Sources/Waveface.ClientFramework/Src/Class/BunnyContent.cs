@@ -180,7 +180,7 @@ namespace Waveface.ClientFramework
 
 			conn.Open();
 
-			var cmd = new SQLiteCommand("SELECT 1 FROM LabelFiles f, Labels lb where file_id = @fid and f.label_id = lb.label_id and lb.name = 'TAG'", conn);
+			var cmd = new SQLiteCommand("SELECT 1 FROM LabelFiles f, Labels lb where file_id = @fid and f.label_id = lb.label_id and lb.name = 'STARRED'", conn);
 			cmd.Parameters.Add(new SQLiteParameter("@fid", new Guid(ID)));
 
 			var liked = cmd.ExecuteScalar() != null;

@@ -247,8 +247,8 @@ namespace Waveface.Client
 			btnFavoriteAll.Visibility = Visibility.Collapsed;
 			btnBack.Visibility = Visibility.Collapsed;
 			unSortedFilesUC.Visibility = Visibility.Collapsed;
-			rspRightSidePane2.Visibility = (group.Name.Equals("Tag", StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
-			rspRightSidePanel.Visibility = (group.Name.Equals("Tag", StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+			rspRightSidePane2.Visibility = (group.Name.Equals("STARRED", StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+			rspRightSidePanel.Visibility = (group.Name.Equals("STARRED", StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
 		}
 		
 		private void rspRightSidePanel_SaveToFavorite(object sender, System.EventArgs e)

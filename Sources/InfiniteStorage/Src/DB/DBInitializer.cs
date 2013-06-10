@@ -90,7 +90,7 @@ CREATE TABLE [Labels] (
 );
 
 INSERT INTO [Labels] (label_id, name, seq, deleted)
-VALUES (@labelId, 'TAG', 1, 0);
+VALUES (@labelId, 'STARRED', 1, 0);
 
 ", conn);
 						cmd.Parameters.Add(new SQLiteParameter("@labelId", Guid.NewGuid()));
