@@ -39,6 +39,7 @@ namespace Waveface.Client
 
 		#region Event
 		public event EventHandler OnAirClick;
+		public event EventHandler CloudSharingClick;
 		#endregion
 		
 		
@@ -53,6 +54,13 @@ namespace Waveface.Client
 			if(OnAirClick == null)
 				return;
 			OnAirClick(this, e);
+		}
+		
+		protected void OnCloudSharingClick(EventArgs e)
+		{
+			if(CloudSharingClick == null)
+				return;
+			CloudSharingClick(this, e);
 		}
 		#endregion
 
@@ -88,6 +96,11 @@ namespace Waveface.Client
 		private void tbxName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
 		{
 			FavoriteName = tbxName.Text;
+		}
+
+		private void btnAction_Copy_Click(object sender, System.Windows.RoutedEventArgs e)
+		{
+			OnCloudSharingClick(EventArgs.Empty);
 		}
 	}
 }

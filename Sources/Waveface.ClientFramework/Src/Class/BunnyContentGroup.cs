@@ -35,6 +35,7 @@ namespace Waveface.ClientFramework
 		}
 
 		#endregion
+
 		#region private methods
 		private void AddSubfolders(System.Collections.ObjectModel.ObservableCollection<IContentEntity> contents, SQLiteConnection conn)
 		{

@@ -81,13 +81,18 @@ namespace Waveface.Client
             {
                 gridEmptyPanel.Visibility = Visibility.Collapsed;
 
-                spTitle.Visibility = Visibility.Visible;
+                tbTitle0.Visibility = Visibility.Visible;
+                tbTitle.Visibility = Visibility.Visible;
+                tbTotalCount.Visibility = Visibility.Visible;
             }
             else
             {
                 gridEmptyPanel.Visibility = Visibility.Visible;
 
-                spTitle.Visibility = Visibility.Collapsed;
+                tbTitle0.Visibility = Visibility.Collapsed;
+                tbTitle.Visibility = Visibility.Collapsed;
+                tbTotalCount.Visibility = Visibility.Collapsed;
+
                 return false;
             }
 

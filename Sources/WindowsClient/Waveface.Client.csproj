@@ -83,6 +83,9 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="AddToFavoriteDialog.xaml.cs">
+      <DependentUpon>AddToFavoriteDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BackButton.xaml.cs">
       <DependentUpon>BackButton.xaml</DependentUpon>
     </Compile>
@@ -91,6 +94,9 @@
     </Compile>
     <Compile Include="ContentItem.xaml.cs">
       <DependentUpon>ContentItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CreateFavoriteDialog.xaml.cs">
+      <DependentUpon>CreateFavoriteDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="FavoriteAllButton.xaml.cs">
       <DependentUpon>FavoriteAllButton.xaml</DependentUpon>
@@ -166,6 +172,10 @@
     <Compile Include="ZoomSlider.xaml.cs">
       <DependentUpon>ZoomSlider.xaml</DependentUpon>
     </Compile>
+    <Page Include="AddToFavoriteDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="BackButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -175,6 +185,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ContentItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CreateFavoriteDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
