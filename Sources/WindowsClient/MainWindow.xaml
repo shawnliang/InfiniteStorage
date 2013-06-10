@@ -637,7 +637,7 @@
         			HorizontalAlignment="Left"
         			VerticalAlignment="Center"
         			Cursor="Hand" />
-        		<local:FavoriteAllButton Margin="0,0,10,0"
+        		<local:FavoriteAllButton x:Name="btnFavoriteAll" Margin="0,0,10,0"
         			Width="100"
         			Height="30"
         			VerticalAlignment="Center"
