@@ -6,7 +6,7 @@
              xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <!--  Flat Button Style  -->
+ 
         <Color x:Key="DefaultColor"
                A="255"
                B="240"
