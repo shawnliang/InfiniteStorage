@@ -344,6 +344,10 @@
     <Content Include="favoriteicon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="ico_fav_select.png" />
+    <Resource Include="ico_fav_unselect.png" />
+    <Resource Include="ico_star_select.png" />
+    <Resource Include="ico_star_unselect.png" />
     <Content Include="video_ph.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

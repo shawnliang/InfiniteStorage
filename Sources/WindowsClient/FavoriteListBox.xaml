@@ -17,7 +17,7 @@
         <BitmapImage x:Key="SelectedIcon"
                      CacheOption="OnLoad"
                      CreateOptions="IgnoreImageCache"
-                     UriSource="albumselected.png" />
+                     UriSource="ico_fav_select.png" />
     </ListBox.Resources>
     <ListBox.ItemTemplate>
         <DataTemplate>
@@ -26,7 +26,7 @@
                                 Background="Transparent"
                                 Orientation="Horizontal">
                 <Image x:Name="icon"
-                               Source="album.png" />
+                               Source="ico_fav_unselect.png" Margin="20, 0, 0, 0"/>
                 <Label x:Name="sourceName"
                                Height="32"
                                VerticalContentAlignment="Center"
@@ -42,8 +42,8 @@
                                                        Path=IsSelected}"
                                      Value="True">
                     <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedIcon}" />
-                    <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
                     <Setter TargetName="item" Property="Background" Value="#FFD4D4D3" />
+                    <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
                     <Setter TargetName="sourceCount" Property="Foreground" Value="Black" />
                 </DataTrigger>
             </DataTemplate.Triggers>
