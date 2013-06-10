@@ -1,17 +1,50 @@
-﻿<UserControl
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	mc:Ignorable="d"
-	x:Class="Waveface.Client.RightSidePanel2"
-	x:Name="UserControl"
-	d:DesignWidth="170" d:DesignHeight="86" UseLayoutRounding="True">
+﻿<UserControl x:Class="Waveface.Client.RightSidePanel2"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="UserControl"
+             UseLayoutRounding="True"
+             d:DesignHeight="86"
+             d:DesignWidth="170"
+             mc:Ignorable="d">
 
-	<Grid x:Name="LayoutRoot">
-		<TextBox x:Name="tbxName"
-               Text="[Favorite Name]" Margin="10,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White" Background="#FF3B3B3B" BorderBrush="Black" BorderThickness="1" FontFamily="Segoe UI Light" Height="28" TextChanged="tbxName_TextChanged"/>
-		<Label Content="Available on TV" Margin="10,65,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White" FontFamily="Segoe UI Light" FontSize="8" HorizontalAlignment="Left" Height="21" Width="62"/>
-		<ToggleButton x:Name="btnAction" Content="On Air" HorizontalAlignment="Left" Height="21" Margin="78,65,0,0" VerticalAlignment="Top" Width="82" Click="ToggleButton_Click" IsChecked="True" IsEnabledChanged="btnAction_IsEnabledChanged" Unchecked="btnAction_Unchecked" Checked="btnAction_Checked" />
-	</Grid>
+    <Grid x:Name="LayoutRoot">
+        <TextBox x:Name="tbxName"
+                 Height="28"
+                 Margin="10,0"
+                 VerticalAlignment="Top"
+                 HorizontalContentAlignment="Center"
+                 VerticalContentAlignment="Center"
+                 Background="#FF3B3B3B"
+                 BorderBrush="Black"
+                 BorderThickness="1"
+                 FontFamily="Segoe UI Light"
+                 Foreground="White"
+                 Text="[Favorite Name]"
+                 TextChanged="tbxName_TextChanged" />
+        <Label Width="62"
+               Height="21"
+               Margin="10,65,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center"
+               Content="Available on TV"
+               FontFamily="Segoe UI Light"
+               FontSize="8"
+               Foreground="White" />
+        <ToggleButton x:Name="btnAction"
+                      Width="82"
+                      Height="21"
+                      Margin="78,65,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      Checked="btnAction_Checked"
+                      Click="ToggleButton_Click"
+                      Content="On Air"
+                      IsChecked="True"
+                      IsEnabledChanged="btnAction_IsEnabledChanged"
+                      Unchecked="btnAction_Unchecked" />
+    </Grid>
 </UserControl>
