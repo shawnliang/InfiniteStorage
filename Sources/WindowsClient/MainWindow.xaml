@@ -540,7 +540,6 @@
 
         <GridSplitter Grid.Row="1"
                       Grid.Column="2"
-                      Width="5"
                       HorizontalAlignment="Left"
                       Background="Transparent" />
         <Grid x:Name="gdContentArea"
@@ -590,7 +589,8 @@
                                   Maximum="400"
                                   Minimum="150"
                                   Value="200" />
-                <local:FavoriteAllButton Width="100"
+                <local:FavoriteAllButton x:Name="btnFavoriteAll"
+                                         Width="100"
                                          Height="30"
                                          Margin="0,0,10,0"
                                          HorizontalAlignment="Right"

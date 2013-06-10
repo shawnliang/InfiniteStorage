@@ -188,7 +188,8 @@ namespace Waveface.Client
 
 
 			Grid.SetColumnSpan(gdContentArea, 2);
-			
+
+			btnFavoriteAll.Visibility = Visibility.Visible;
 			gdRightSide.Visibility = System.Windows.Visibility.Collapsed;
 
 			rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
@@ -241,6 +242,7 @@ namespace Waveface.Client
 			gdRightSide.Visibility = System.Windows.Visibility.Visible;
 			Grid.SetColumnSpan(gdContentArea, 1);
 
+			btnFavoriteAll.Visibility = Visibility.Collapsed;
 			unSortedFilesUC.Visibility = Visibility.Collapsed;
 			rspRightSidePane2.Visibility = (group.Name.Equals("Tag", StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
 			rspRightSidePanel.Visibility = (group.Name.Equals("Tag", StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
