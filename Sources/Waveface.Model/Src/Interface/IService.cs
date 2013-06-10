@@ -27,13 +27,16 @@ namespace Waveface.Model
 
 		string Description { get; }
 
-		void Refresh();
-
 		bool IsRecving { get; }
 		#endregion
 
 		#region Event
 		event EventHandler<ContentPropertyChangeEventArgs> ContentPropertyChanged;
+		#endregion
+
+
+		#region Method
+		void Refresh();
 		#endregion
 	}
 }

@@ -5,9 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Name="UserControl"
              UseLayoutRounding="True"
-             d:DesignHeight="86"
              d:DesignWidth="170"
-             mc:Ignorable="d">
+             mc:Ignorable="d" Height="157.25">
 
     <Grid x:Name="LayoutRoot">
         <TextBox x:Name="tbxName"
@@ -23,21 +22,20 @@
                  Foreground="White"
                  Text="[Favorite Name]"
                  TextChanged="tbxName_TextChanged" />
-        <Label Width="62"
+        <Label Width="72"
                Height="21"
                Margin="10,65,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                HorizontalContentAlignment="Center"
                VerticalContentAlignment="Center"
-               Content="Available on TV"
+               Content="Home Sharing"
                FontFamily="Segoe UI Light"
-               FontSize="8"
-               Foreground="White" />
+               Foreground="White" Padding="0" />
         <ToggleButton x:Name="btnAction"
-                      Width="82"
+                      Width="70"
                       Height="21"
-                      Margin="78,65,0,0"
+                      Margin="90,65,0,0"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top"
                       Checked="btnAction_Checked"
@@ -46,5 +44,22 @@
                       IsChecked="True"
                       IsEnabledChanged="btnAction_IsEnabledChanged"
                       Unchecked="btnAction_Unchecked" />
+        <Label Width="72"
+        	Height="21"
+        	Margin="10,93,0,0"
+        	HorizontalAlignment="Left"
+        	VerticalAlignment="Top"
+        	HorizontalContentAlignment="Center"
+        	VerticalContentAlignment="Center"
+        	Content="Cloud Sharing"
+        	FontFamily="Segoe UI Light"
+        	Foreground="White" Padding="0" />
+        <Button x:Name="btnAction_Copy"
+        	Width="70"
+        	Height="21"
+        	Margin="90,93,0,0"
+        	HorizontalAlignment="Left"
+        	VerticalAlignment="Top"
+        	Content="Share" Click="btnAction_Copy_Click"/>
     </Grid>
 </UserControl>

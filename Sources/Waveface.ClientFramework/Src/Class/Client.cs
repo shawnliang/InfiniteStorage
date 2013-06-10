@@ -202,10 +202,10 @@ namespace Waveface.ClientFramework
 		#endregion
 
 
-		public void SaveToFavorite()
+		public void SaveToFavorite(string favoriteName)
 		{
 			var labelID = Guid.NewGuid().ToString();
-			StationAPI.AddLabel(labelID, "Untitled Favorite");
+			StationAPI.AddLabel(labelID, favoriteName);
 
 			StationAPI.Tag(string.Join(",", m_TaggedContents.Select(taggedContent => taggedContent.ID).ToArray()), labelID);
 
@@ -215,6 +215,24 @@ namespace Waveface.ClientFramework
 			m_Favorites.Clear();
 			m_Favorites.AddRange(GetFavorites());
 		}
+
+		public void SaveToFavorite()
+		{
+			SaveToFavorite("Untitled Favorite");
+		}
+
+
+		public void AddToFavorite(string favoriteID)
+		{
+			StationAPI.Tag(string.Join(",", m_TaggedContents.Select(taggedContent => taggedContent.ID).ToArray()), favoriteID);
+
+			StationAPI.ClearLabel(m_LabelID);
+
+			m_TaggedContents.Clear();
+			m_Favorites.Clear();
+			m_Favorites.AddRange(GetFavorites());
+		}
+
 
 		public void OnAir(string labelID, Boolean isOnAir)
 		{

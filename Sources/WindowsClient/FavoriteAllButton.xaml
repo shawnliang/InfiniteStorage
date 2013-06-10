@@ -28,7 +28,7 @@
 
         <Button BorderBrush="{x:Null}"
                 Click="Button_Click"
-                Content="Favorite All"
+                Content="Star All"
                 FontFamily="Segoe UI Light"
                 Foreground="White">
             <Button.Background>

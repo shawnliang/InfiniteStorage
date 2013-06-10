@@ -49,16 +49,26 @@
 
         <local:ContentTypeCountConverter x:Key="ContentTypeCountConverter" />
         <!--  Brushes used in Styling of ScrollViewer  -->
-        <SolidColorBrush x:Key="StandardBorderBrush" Color="#888" />
-        <SolidColorBrush x:Key="StandardBackgroundBrush" Color="#FFF" />
-        <SolidColorBrush x:Key="HoverBorderBrush" Color="#DDD" />
-        <SolidColorBrush x:Key="SelectedBackgroundBrush" Color="Gray" />
-        <SolidColorBrush x:Key="SelectedForegroundBrush" Color="White" />
-        <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
-        <SolidColorBrush x:Key="NormalBrush" Color="#888" />
-        <SolidColorBrush x:Key="NormalBorderBrush" Color="#888" />
-        <SolidColorBrush x:Key="HorizontalNormalBrush" Color="#888" />
-        <SolidColorBrush x:Key="HorizontalNormalBorderBrush" Color="#888" />
+        <SolidColorBrush x:Key="StandardBorderBrush"
+                         Color="#888" />
+        <SolidColorBrush x:Key="StandardBackgroundBrush"
+                         Color="#FFF" />
+        <SolidColorBrush x:Key="HoverBorderBrush"
+                         Color="#DDD" />
+        <SolidColorBrush x:Key="SelectedBackgroundBrush"
+                         Color="Gray" />
+        <SolidColorBrush x:Key="SelectedForegroundBrush"
+                         Color="White" />
+        <SolidColorBrush x:Key="DisabledForegroundBrush"
+                         Color="#888" />
+        <SolidColorBrush x:Key="NormalBrush"
+                         Color="#888" />
+        <SolidColorBrush x:Key="NormalBorderBrush"
+                         Color="#888" />
+        <SolidColorBrush x:Key="HorizontalNormalBrush"
+                         Color="#888" />
+        <SolidColorBrush x:Key="HorizontalNormalBorderBrush"
+                         Color="#888" />
         <LinearGradientBrush x:Key="ListBoxBackgroundBrush" StartPoint="0,0" EndPoint="1,0.001">
             <LinearGradientBrush.GradientStops>
                 <GradientStopCollection>
@@ -76,7 +86,8 @@
                 </GradientStopCollection>
             </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
-        <SolidColorBrush x:Key="GlyphBrush" Color="#444" />
+        <SolidColorBrush x:Key="GlyphBrush"
+                         Color="#444" />
         <LinearGradientBrush x:Key="PressedBrush" StartPoint="0,0" EndPoint="0,1">
             <LinearGradientBrush.GradientStops>
                 <GradientStopCollection>
@@ -89,7 +100,8 @@
         </LinearGradientBrush>
 
         <!--  SrollViewer ScrollBar Repeat Buttons (at each end)  -->
-        <Style x:Key="ScrollBarLineButton" TargetType="{x:Type RepeatButton}">
+        <Style x:Key="ScrollBarLineButton"
+               TargetType="{x:Type RepeatButton}">
             <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Setter Property="Focusable" Value="false" />
@@ -124,7 +136,8 @@
             SrollViewer ScrollBar Repeat Buttons (The part in the middle,
             not the thumb the long area between the buttons )
         -->
-        <Style x:Key="ScrollBarPageButton" TargetType="{x:Type RepeatButton}">
+        <Style x:Key="ScrollBarPageButton"
+               TargetType="{x:Type RepeatButton}">
             <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Setter Property="IsTabStop" Value="false" />
@@ -141,7 +154,8 @@
             ScrollViewer ScrollBar Thumb, that part that can be dragged
             up/down or left/right Buttons
         -->
-        <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+        <Style x:Key="ScrollBarThumb"
+               TargetType="{x:Type Thumb}">
             <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Setter Property="IsTabStop" Value="false" />
@@ -158,7 +172,8 @@
             </Setter>
         </Style>
 
-        <ControlTemplate x:Key="VerticalScrollBar" TargetType="{x:Type ScrollBar}">
+        <ControlTemplate x:Key="VerticalScrollBar"
+                         TargetType="{x:Type ScrollBar}">
             <Grid Width="10">
                 <Grid.RowDefinitions>
                     <!--  <RowDefinition MaxHeight="18"/>  -->
@@ -178,7 +193,8 @@
                        Grid.Row="1"
                        IsDirectionReversed="true">
                     <Track.DecreaseRepeatButton>
-                        <RepeatButton Command="ScrollBar.PageUpCommand" Style="{StaticResource ScrollBarPageButton}" />
+                        <RepeatButton Command="ScrollBar.PageUpCommand"
+                                      Style="{StaticResource ScrollBarPageButton}" />
                     </Track.DecreaseRepeatButton>
                     <Track.Thumb>
                         <Thumb Margin="1,0,1,0"
@@ -187,7 +203,8 @@
                                Style="{StaticResource ScrollBarThumb}" />
                     </Track.Thumb>
                     <Track.IncreaseRepeatButton>
-                        <RepeatButton Command="ScrollBar.PageDownCommand" Style="{StaticResource ScrollBarPageButton}" />
+                        <RepeatButton Command="ScrollBar.PageDownCommand"
+                                      Style="{StaticResource ScrollBarPageButton}" />
                     </Track.IncreaseRepeatButton>
                 </Track>
                 <RepeatButton Grid.Row="3"
@@ -199,7 +216,8 @@
             </Grid>
         </ControlTemplate>
         <!--  HorizontalScrollBar Template using the previously created Templates  -->
-        <ControlTemplate x:Key="HorizontalScrollBar" TargetType="{x:Type ScrollBar}">
+        <ControlTemplate x:Key="HorizontalScrollBar"
+                         TargetType="{x:Type ScrollBar}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition MaxWidth="18" />
@@ -218,7 +236,8 @@
                        Grid.Column="1"
                        IsDirectionReversed="False">
                     <Track.DecreaseRepeatButton>
-                        <RepeatButton Command="ScrollBar.PageLeftCommand" Style="{StaticResource ScrollBarPageButton}" />
+                        <RepeatButton Command="ScrollBar.PageLeftCommand"
+                                      Style="{StaticResource ScrollBarPageButton}" />
                     </Track.DecreaseRepeatButton>
                     <Track.Thumb>
                         <Thumb Margin="0,1,0,1"
@@ -227,7 +246,8 @@
                                Style="{StaticResource ScrollBarThumb}" />
                     </Track.Thumb>
                     <Track.IncreaseRepeatButton>
-                        <RepeatButton Command="ScrollBar.PageRightCommand" Style="{StaticResource ScrollBarPageButton}" />
+                        <RepeatButton Command="ScrollBar.PageRightCommand"
+                                      Style="{StaticResource ScrollBarPageButton}" />
                     </Track.IncreaseRepeatButton>
                 </Track>
                 <RepeatButton Grid.Column="3"
@@ -238,7 +258,8 @@
             </Grid>
         </ControlTemplate>
         <!--  Style for overall  ScrollBar  -->
-        <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+        <Style x:Key="{x:Type ScrollBar}"
+               TargetType="{x:Type ScrollBar}">
             <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Style.Triggers>
@@ -256,7 +277,8 @@
         </Style>
 
         <!--  Style for overall  ScrollViewer  -->
-        <Style x:Key="FavsScrollViewer" TargetType="{x:Type ScrollViewer}">
+        <Style x:Key="FavsScrollViewer"
+               TargetType="{x:Type ScrollViewer}">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -318,7 +340,8 @@
 
 
         <!--  Main photo catalog view  -->
-        <Style x:Key="PhotoListBoxStyle" TargetType="{x:Type ListBox}">
+        <Style x:Key="PhotoListBoxStyle"
+               TargetType="{x:Type ListBox}">
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -364,13 +387,18 @@
             <GradientStop Offset="1" Color="#FF1E1E1F" />
             <GradientStop Color="#FF323232" />
         </LinearGradientBrush>
-        <SolidColorBrush x:Key="ContentAreaBackground" Color="#FF1F1F1F" />
-        <SolidColorBrush x:Key="SidePanelBackground" Color="#FF2A2A2B" />
-        <SolidColorBrush x:Key="ButtonBackground" Color="#FF7F7F7F" />
-        <SolidColorBrush x:Key="ButtonForeground" Color="White" />
+        <SolidColorBrush x:Key="ContentAreaBackground"
+                         Color="#FF4F4F4F" />
+        <SolidColorBrush x:Key="SidePanelBackground"
+                         Color="#FF333333" />
+        <SolidColorBrush x:Key="ButtonBackground"
+                         Color="#FF7F7F7F" />
+        <SolidColorBrush x:Key="ButtonForeground"
+                         Color="White" />
     </Window.Resources>
 
-    <Grid x:Name="gdMain" Background="{DynamicResource ContentAreaBackground}">
+    <Grid x:Name="gdMain"
+          Background="{DynamicResource ContentAreaBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="302*" />
@@ -404,11 +432,14 @@
                                   Direction="270"
                                   ShadowDepth="1" />
             </Grid.Effect>
-            <Grid Grid.Row="0" Background="{DynamicResource TitleBarBackground}">
+            <Grid Grid.Row="0"
+                  Background="{DynamicResource TitleBarBackground}">
                 <DockPanel>
 
-                    <WrapPanel VerticalAlignment="Center" DockPanel.Dock="Left">
-                        <local:BackButton x:Name="btnBack" Width="28.666"
+                    <WrapPanel VerticalAlignment="Center"
+                               DockPanel.Dock="Left">
+                        <local:BackButton x:Name="btnBack"
+                                          Width="28.666"
                                           Height="28.666"
                                           Margin="2"
                                           VerticalAlignment="Center"
@@ -450,7 +481,7 @@
             </Grid.Effect>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
@@ -517,23 +548,24 @@
             </Grid.Effect>
             <local:RightSidePanel1 x:Name="rspRightSidePanel"
                                    Margin="10,10,10,5"
+                                   AddToFavorite="rspRightSidePanel_AddToFavorite"
                                    PhotoCount="{Binding LabeledContents,
                                                         ConverterParameter={x:Static wvmodel:ContentType.Photo},
                                                         Converter={StaticResource ContentTypeCountConverter},
                                                         ElementName=window}"
                                    SaveToFavorite="rspRightSidePanel_SaveToFavorite"
-                                   ShareButtonClick="rspRightSidePanel_ShareButtonClick"
                                    VideoCount="{Binding LabeledContents,
                                                         ConverterParameter={x:Static wvmodel:ContentType.Video},
                                                         Converter={StaticResource ContentTypeCountConverter},
                                                         ElementName=window}" />
             <local:RightSidePanel2 x:Name="rspRightSidePane2"
-                                   Margin="0,5,0,326"
+                                   Height="Auto"
+                                   Margin="0,5,0,0"
+                                   CloudSharingClick="rspRightSidePane2_CloudSharingClick"
                                    FavoriteName="{Binding SelectedItem.Name,
                                                           ElementName=lbxFavorites,
                                                           Mode=TwoWay}"
-                                   OnAirClick="rspRightSidePane2_OnAirClick"
-                                   Visibility="Collapsed" />
+                                   OnAirClick="rspRightSidePane2_OnAirClick" />
 
 
         </Grid>
@@ -565,9 +597,12 @@
                          VirtualizingStackPanel.IsVirtualizing="True"
                          VirtualizingStackPanel.VirtualizationMode="Recycling">
                     <ListBox.Resources>
-                        <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
+                        <Style BasedOn="{StaticResource {x:Type ListBoxItem}}"
+                               TargetType="{x:Type ListBoxItem}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True">
+                                <DataTrigger Binding="{Binding IsMouseOver,
+                                                               RelativeSource={RelativeSource Self}}"
+                                             Value="True">
                                     <Setter Property="IsSelected" Value="True" />
                                 </DataTrigger>
                             </Style.Triggers>

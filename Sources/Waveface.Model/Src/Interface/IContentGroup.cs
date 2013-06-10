@@ -13,5 +13,9 @@ namespace Waveface.Model
 		#region Event
 		event EventHandler<ContentPropertyChangeEventArgs> ContentPropertyChanged;
 		#endregion
+
+		#region Method
+		void Refresh();
+		#endregion
 	}
 }

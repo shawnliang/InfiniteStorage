@@ -53,7 +53,7 @@ namespace Waveface.Client
 		
 		
 		#region Event
-		public event EventHandler ShareButtonClick;
+		public event EventHandler AddToFavorite;
 		public event EventHandler SaveToFavorite;
 		#endregion
 		
@@ -65,11 +65,11 @@ namespace Waveface.Client
 		
 		
 		#region Protected Method
-		protected void OnShareButtonClick(EventArgs e)
+		protected void OnAddToFavorite(EventArgs e)
 		{
-			if (ShareButtonClick == null)
+			if (AddToFavorite == null)
 				return;
-			ShareButtonClick(this, e);
+			AddToFavorite(this, e);
 		}
 
 		protected void OnSaveToFavorite(EventArgs e)
@@ -99,12 +99,12 @@ namespace Waveface.Client
 
 		private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
 		{
-			OnSaveToFavorite(EventArgs.Empty);
+				OnAddToFavorite(EventArgs.Empty);
 		}
 
 		private void Button_Click_1(object sender, System.Windows.RoutedEventArgs e)
 		{
-			OnShareButtonClick(EventArgs.Empty);
+			OnSaveToFavorite(EventArgs.Empty);
 		}
 	}
 }

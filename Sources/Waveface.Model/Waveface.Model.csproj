@@ -52,6 +52,7 @@
     <Compile Include="Src\Class\ContentGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Src\Class\FileContentGroup.cs" />
+    <Compile Include="Src\Class\Lazy.cs" />
     <Compile Include="Src\Class\Service.cs" />
     <Compile Include="Src\Class\ServiceSupplier.cs" />
     <Compile Include="Src\Class\ServiceSupplierInfo.cs" />

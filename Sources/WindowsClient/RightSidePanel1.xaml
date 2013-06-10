@@ -13,36 +13,12 @@
     <Grid x:Name="LayoutRoot">
         <Button Width="130"
                 Height="31"
-                Margin="10,0,10,35"
+                Margin="0,0,0,5"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 BorderBrush="{x:Null}"
                 Click="Button_Click"
-                Content="Add to Favorites"
-                Cursor="Hand"
-                FontFamily="Segoe UI Light"
-                FontSize="16"
-                Foreground="White">
-            <Button.Background>
-                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                    <GradientStop Offset="0" Color="#FF616060" />
-                    <GradientStop Offset="1" Color="#FF474646" />
-                </LinearGradientBrush>
-            </Button.Background>
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="3"
-                                  Direction="270"
-                                  Opacity="0.3"
-                                  ShadowDepth="2" />
-            </Button.Effect>
-        </Button>
-        <Button Width="130"
-                Height="31"
-                Margin="10,0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Bottom"
-                BorderBrush="{x:Null}"
-                Content="Export"
+                Content="Add to Favorite"
                 Cursor="Hand"
                 FontFamily="Segoe UI Light"
                 FontSize="16"
@@ -93,12 +69,12 @@
                                   PhotoCount="{Binding Count}" />
         <Button Width="130"
                 Height="31"
-                Margin="10,0,10,71"
+                Margin="0,0,0,42"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 BorderBrush="{x:Null}"
                 Click="Button_Click_1"
-                Content="Share"
+                Content="Create Favorite"
                 Cursor="Hand"
                 FontFamily="Segoe UI Light"
                 FontSize="16"
