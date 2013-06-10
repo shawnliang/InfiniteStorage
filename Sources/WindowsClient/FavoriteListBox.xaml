@@ -18,7 +18,23 @@
                      CacheOption="OnLoad"
                      CreateOptions="IgnoreImageCache"
                      UriSource="ico_fav_select.png" />
+
+        <BitmapImage x:Key="SelectedStar"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="ico_star_select.png" />
+
+        <BitmapImage x:Key="UnselectedStar"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="ico_star_unselect.png" />
+
+
     </ListBox.Resources>
+
+
+
+
     <ListBox.ItemTemplate>
         <DataTemplate>
             <StackPanel x:Name="item"
@@ -46,8 +62,11 @@
                     <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
                     <Setter TargetName="sourceCount" Property="Foreground" Value="Black" />
                 </DataTrigger>
+                
+                <Trigger SourceName="sourceName" Property="Content" Value="TAG">
+                    <Setter TargetName="icon" Property="Source" Value="{StaticResource UnselectedStar}"/>
+                </Trigger>
             </DataTemplate.Triggers>
-
 
         </DataTemplate>
     </ListBox.ItemTemplate>
