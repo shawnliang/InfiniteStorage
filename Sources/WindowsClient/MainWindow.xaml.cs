@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -248,7 +249,14 @@ namespace Waveface.Client
 		
 		private void rspRightSidePanel_SaveToFavorite(object sender, System.EventArgs e)
 		{
-			ClientFramework.Client.Default.SaveToFavorite();
+			var dialog = new CreateFavoriteDialog();
+			dialog.Owner = this;
+			dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+
+			if (dialog.ShowDialog() != true)
+				return;
+
+			ClientFramework.Client.Default.SaveToFavorite(dialog.FavoriteName);
 		}
 
 		private void rspRightSidePane2_OnAirClick(object sender, EventArgs e)
@@ -274,23 +282,38 @@ namespace Waveface.Client
 			}
 		}
 
-		private void rspRightSidePanel_ShareButtonClick(object sender, System.EventArgs e)
+		private void rspRightSidePanel_AddToFavorite(object sender, System.EventArgs e)
+		{
+			var dialog = new AddToFavoriteDialog();
+			dialog.Owner = this;
+			dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+
+			dialog.FavoriteItemSource = Waveface.ClientFramework.Client.Default.Favorites.Skip(1);
+			
+			if (dialog.ShowDialog() != true)
+				return;
+
+			var selectedFavorite = (dialog.SelectedFavorite as IContentGroup);
+			ClientFramework.Client.Default.AddToFavorite(selectedFavorite.ID);
+		}
+
+		private void rspRightSidePane2_CloudSharingClick(object sender, System.EventArgs e)
 		{
 			Wpf_testHTTP.MainWindow _w = new Wpf_testHTTP.MainWindow();
 			var path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
 
 			var iniFile = System.IO.Path.Combine(path, @"sharefavorite.ini");
 
-		    System.IO.File.Create(iniFile).Close();
+			System.IO.File.Create(iniFile).Close();
 
 			_w.setTitle(this.Title);
-            _w.setiniPath (iniFile);
+			_w.setiniPath(iniFile);
 
-			var files = string.Join("~", ClientFramework.Client.Default.TaggedContents.Select(content => content.Uri.LocalPath).ToArray());
+			var files = string.Join("~", (lbxContentContainer.DataContext as IEnumerable<IContentEntity>).Select(content => content.Uri.LocalPath).ToArray());
 
 			_w.setFilename(files);
-            _w.setRun();
-            _w.ShowDialog();
+			_w.setRun();
+			_w.ShowDialog();
 		}
 	}
 }
