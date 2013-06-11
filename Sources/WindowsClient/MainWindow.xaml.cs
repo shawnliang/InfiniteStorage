@@ -351,6 +351,15 @@ namespace Waveface.Client
 			_w.ShowDialog();
 		}
 
+		private void RefreshContentArea()
+		{
+			var group = lblContentLocation.DataContext as IContentGroup;
+			if (group == null)
+				return;
+
+			group.Refresh();
+		}
+
 		private void lbxFavorites_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			ShowSelectedFavoriteContents(sender);
