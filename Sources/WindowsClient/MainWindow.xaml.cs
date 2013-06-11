@@ -355,5 +355,13 @@ namespace Waveface.Client
 		{
 			ShowSelectedFavoriteContents(sender);
 		}
+
+		private void rspRightSidePane2_DeleteButtonClick(object sender, System.EventArgs e)
+		{
+			var group = (lblContentLocation.DataContext as IContentGroup);
+			ClientFramework.Client.Default.RemoveFavorite(group.ID);
+
+			lbxFavorites.SelectedIndex = 0;
+		}
 	}
 }

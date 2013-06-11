@@ -159,7 +159,7 @@ namespace Waveface.ClientFramework
 
 			conn.Open();
 
-			var cmd = new SQLiteCommand("SELECT * FROM Labels where auto_type == 0", conn);
+			var cmd = new SQLiteCommand("SELECT * FROM Labels where auto_type == 0 and deleted == 0", conn);
 
 			var dr = cmd.ExecuteReader();
 
@@ -229,6 +229,14 @@ namespace Waveface.ClientFramework
 			//StationAPI.ClearLabel(m_LabelID);
 
 			//m_TaggedContents.Clear();
+			m_Favorites.Clear();
+			m_Favorites.AddRange(GetFavorites());
+		}
+
+		public void RemoveFavorite(string favoriteID)
+		{
+			StationAPI.DeleteLabel(favoriteID);
+
 			m_Favorites.Clear();
 			m_Favorites.AddRange(GetFavorites());
 		}

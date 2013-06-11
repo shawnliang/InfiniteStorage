@@ -40,6 +40,7 @@ namespace Waveface.Client
 		#region Event
 		public event EventHandler OnAirClick;
 		public event EventHandler CloudSharingClick;
+		public event EventHandler DeleteButtonClick;
 		#endregion
 		
 		
@@ -61,6 +62,13 @@ namespace Waveface.Client
 			if(CloudSharingClick == null)
 				return;
 			CloudSharingClick(this, e);
+		}
+
+		protected void OnDeleteButtonClick(EventArgs e)
+		{
+			if (DeleteButtonClick == null)
+				return;
+			DeleteButtonClick(this, e);
 		}
 		#endregion
 
@@ -101,6 +109,11 @@ namespace Waveface.Client
 		private void btnAction_Copy_Click(object sender, System.Windows.RoutedEventArgs e)
 		{
 			OnCloudSharingClick(EventArgs.Empty);
+		}
+
+		private void btnAction_Copy1_Click(object sender, System.Windows.RoutedEventArgs e)
+		{
+			OnDeleteButtonClick(EventArgs.Empty);
 		}
 	}
 }
