@@ -13,7 +13,7 @@
                Height="150"
                HorizontalAlignment="Center"
                VerticalAlignment="Top"
-               Source="star_noitem.png"
+               Source="{StaticResource NormalStarBox}"
                Visibility="Collapsed" />
         <Label x:Name="lblLabeledCount_Copy1"
                HorizontalAlignment="Center"
@@ -27,7 +27,7 @@
                Height="150"
                HorizontalAlignment="Center"
                VerticalAlignment="Top"
-               Source="star_selected.png" />
+               Source="{StaticResource SelectedStarBox}" />
         <Label x:Name="lblLabeledCount"
                Width="130"
                Height="32"

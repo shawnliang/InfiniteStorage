@@ -6,65 +6,47 @@
          x:Name="UserControl"
          Background="{x:Null}"
          BorderBrush="{x:Null}"
-         ItemsSource="{Binding IsAsync=True}"
          FontFamily="Segoe UI Light"
          FontSize="16"
+         ItemsSource="{Binding IsAsync=True}"
          UseLayoutRounding="True"
          d:DesignHeight="109"
          d:DesignWidth="225"
          mc:Ignorable="d">
-    <ListBox.Resources>
-        <BitmapImage x:Key="SelectedIcon"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
-                     UriSource="ico_fav_select.png" />
-
-        <BitmapImage x:Key="SelectedStar"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
-                     UriSource="ico_star_select.png" />
-
-        <BitmapImage x:Key="UnselectedStar"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
-                     UriSource="ico_star_unselect.png" />
-
-
-    </ListBox.Resources>
-
-
-
 
     <ListBox.ItemTemplate>
         <DataTemplate>
             <StackPanel x:Name="item"
-                                Width="2048"
-                                Background="Transparent"
-                                Orientation="Horizontal">
+                        Width="2048"
+                        Background="Transparent"
+                        Orientation="Horizontal">
                 <Image x:Name="icon"
-                               Source="ico_fav_unselect.png" Margin="20, 0, 0, 0"/>
+                       Margin="20, 0, 0, 0"
+                       Source="{StaticResource UnSelectedFav}" />
                 <Label x:Name="sourceName"
-                               Height="32"
-                               VerticalContentAlignment="Center"
-                               Content="{Binding Name}"
-                               Foreground="White" />
+                       Height="32"
+                       VerticalContentAlignment="Center"
+                       Content="{Binding Name}"
+                       Foreground="White" />
                 <Label x:Name="sourceCount"
-                               Height="32"
-                               VerticalContentAlignment="Center"
-                               Foreground="White" />
+                       Height="32"
+                       VerticalContentAlignment="Center"
+                       Foreground="White" />
             </StackPanel>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem},
-                                                       Path=IsSelected}"
-                                     Value="True">
-                    <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedIcon}" />
+                                               Path=IsSelected}"
+                             Value="True">
+                    <Setter TargetName="icon"
+                            Property="Source"
+                            Value="{StaticResource SelectedFav}" />
                     <Setter TargetName="item" Property="Background" Value="#FFD4D4D3" />
                     <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
                     <Setter TargetName="sourceCount" Property="Foreground" Value="Black" />
                 </DataTrigger>
 
                 <Trigger SourceName="sourceName" Property="Content" Value="STARRED">
-                    <Setter TargetName="icon" Property="Source" Value="{StaticResource UnselectedStar}"/>
+                    <Setter TargetName="icon" Property="Source" Value="{StaticResource UnSelectedStar}" />
                 </Trigger>
             </DataTemplate.Triggers>
 

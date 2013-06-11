@@ -21,6 +21,11 @@
         mc:Ignorable="d">
 
     <Window.Resources>
+        
+        <BitmapImage x:Key="FavoriteLogo"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="pack://application:,,,/Resource/favorite.png"/>
 
         <!--
             <DataTemplate DataType="{x:Type wvmodel:Service}">
@@ -420,7 +425,7 @@
             </Grid.Effect>
             <Image HorizontalAlignment="Left"
                    VerticalAlignment="Center"
-                   Source="favorite.png"
+                   Source="{StaticResource FavoriteLogo}"
                    Stretch="None" />
         </Grid>
         <Grid Grid.Row="0"
@@ -443,8 +448,7 @@
                                           Height="28.666"
                                           Margin="2"
                                           VerticalAlignment="Center"
-                                          Click="BackButton_Click"
-                                          Content="" />
+                                          Click="BackButton_Click"/>
                         <Label x:Name="lblContentLocation"
                                Content="{Binding Name}"
                                FontFamily="Segoe UI Light"

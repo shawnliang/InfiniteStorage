@@ -6,7 +6,7 @@
              xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
- 
+
         <Color x:Key="DefaultColor"
                A="255"
                B="240"
@@ -31,16 +31,54 @@
         <SolidColorBrush x:Key="PressedBrush"
                          Color="{StaticResource PressedColor}" />
 
+        <BitmapImage x:Key="SelectedFav"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="pack://application:,,,/Resource/ico_fav_select.png" />
+        <BitmapImage x:Key="UnSelectedFav"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="pack://application:,,,/Resource/ico_fav_unselect.png" />
 
+        <BitmapImage x:Key="SelectedStar"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="pack://application:,,,/Resource/ico_star_select.png" />
+        <BitmapImage x:Key="UnSelectedStar"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="pack://application:,,,/Resource/ico_star_unselect.png" />
+
+        <BitmapImage x:Key="NormalStarBox"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="pack://application:,,,/Resource/star_noitem.png" />
+        <BitmapImage x:Key="SelectedStarBox"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="pack://application:,,,/Resource/star_selected.png" />
 
         <BitmapImage x:Key="SmallPhotoIcon"
                      CacheOption="OnLoad"
                      CreateOptions="IgnoreImageCache"
-                     UriSource="sliderbarsmallphotoicon.png" />
+                     UriSource="pack://application:,,,/Resource/sliderbarsmallphotoicon.png" />
         <BitmapImage x:Key="BigPhotoIcon"
                      CacheOption="OnLoad"
                      CreateOptions="IgnoreImageCache"
-                     UriSource="sliderbarbigphotoicon.png" />
+                     UriSource="pack://application:,,,/Resource/sliderbarbigphotoicon.png" />
+
+        <BitmapImage x:Key="Up"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="pack://application:,,,/Resource/up.png" />
+        <BitmapImage x:Key="Updis"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="pack://application:,,,/Resource/updis.png" />
+        <BitmapImage x:Key="Uppressed"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="pack://application:,,,/Resource/uppressed.png" />
 
         <Style TargetType="{x:Type Image}">
             <!--
