@@ -57,7 +57,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>FAV_512.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>DF21FCCAA774F4BB594205C397F366F6BDB1749B</ManifestCertificateThumbprint>
@@ -294,25 +295,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Done.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="FAV_064.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="FAV_128.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="flicker2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Delete.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="DeleteRed %281%29.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -340,14 +329,8 @@
     <Resource Include="imagesCARKN71J.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="pass.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="gmail_64.png" />
     <Resource Include="OK_white %281%29.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="FAV_512.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.6\tools\Microsoft.Bcl.Build.targets" />

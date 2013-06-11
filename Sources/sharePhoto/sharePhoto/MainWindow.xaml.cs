@@ -319,8 +319,9 @@ namespace Wpf_testHTTP
             if (i < 0) return false;
 
             // must had "."
-            i = strIn.IndexOf('.');
-            if (i < 0) return false;
+            int i0 = strIn.LastIndexOf('.');
+            if (i0 < 0) return false;
+            if (i0 < i) return false;           // . behind @
 
             return true;
 
