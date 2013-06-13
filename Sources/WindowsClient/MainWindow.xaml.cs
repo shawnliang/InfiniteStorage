@@ -204,6 +204,8 @@ namespace Waveface.Client
 					Back();
 					break;
 				case Key.Enter:
+					if (lbxContentContainer.SelectedItem == null)
+						return;
 					Enter();
 					break;
 			}
