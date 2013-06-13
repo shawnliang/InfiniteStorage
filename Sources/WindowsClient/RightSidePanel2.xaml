@@ -6,7 +6,7 @@
              x:Name="UserControl"
              UseLayoutRounding="True"
              d:DesignWidth="170"
-             mc:Ignorable="d" Height="157.25">
+             mc:Ignorable="d" Height="239.25">
 
     <Grid x:Name="LayoutRoot">
         <TextBox x:Name="tbxName"
@@ -42,5 +42,11 @@
         	HorizontalAlignment="Stretch"
         	VerticalAlignment="Top"
         	Content="Share" Click="btnAction_Copy_Click"/>
+        <Button x:Name="btnAction_Copy1"
+        	MinWidth="144"
+        	Margin="10,146,10,0"
+        	HorizontalAlignment="Stretch"
+        	VerticalAlignment="Top"
+        	Content="Delete" Click="btnAction_Copy1_Click"/>
     </Grid>
 </UserControl>

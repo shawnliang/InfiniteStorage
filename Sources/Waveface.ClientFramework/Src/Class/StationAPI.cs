@@ -83,6 +83,16 @@ namespace Waveface.ClientFramework
 			});
 		}
 
+		public static string DeleteLabel(string labelID)
+		{
+			var uri = LABEL_API_BASE_URL + "/delete";
+
+			return Post(uri, new NameValueCollection() 
+			{
+				{"label_id", labelID}
+			});
+		}
+
 		public static string RenameLabel(string labelID, string name)
 		{
 			var uri = LABEL_API_BASE_URL + "/rename";
