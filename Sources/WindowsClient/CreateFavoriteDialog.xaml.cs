@@ -45,5 +45,18 @@ namespace Waveface.Client
 		{
 				this.DialogResult = true;
 		}
+
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			tbxFavoriteName.SelectAll();
+			tbxFavoriteName.Focus();
+		}
+
+		private void tbxFavoriteName_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key != Key.Enter)
+				return;
+			this.DialogResult = true;
+		}
 	}
 }

@@ -61,5 +61,10 @@ namespace Waveface.Client
 		{
 				this.DialogResult = true;
 		}
+
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			cbxFavoriteName.Focus();
+		}
 	}
 }
