@@ -719,7 +719,7 @@ namespace Wpf_testHTTP
                 image_gmail.Visibility = Visibility.Collapsed;
                 // clear Setup refresh key 
                 iniParser parser = new iniParser();
-                String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+               // String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
                 parser.IniParser(iniPath);
                 parser.AddSetting("Setup", "refreshkey", "");
                 parser.SaveSettings();

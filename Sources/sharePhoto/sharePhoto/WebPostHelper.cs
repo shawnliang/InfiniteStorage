@@ -42,9 +42,10 @@ namespace Wpf_testHTTP
                 _urlConn.Method = "POST";
                 //_urlConn.ServicePoint.Expect100Continue = false;
 
-                _urlConn.Headers.Set("Content-Encoding", "UTF-8");
-                _urlConn.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
-                _urlConn.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                // ### because Google API don't accept these ---------------------------------------------------------
+                //_urlConn.Headers.Set("Content-Encoding", "UTF-8");
+                //_urlConn.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+                //_urlConn.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
                 //設定referer
                 if (referer != null)
