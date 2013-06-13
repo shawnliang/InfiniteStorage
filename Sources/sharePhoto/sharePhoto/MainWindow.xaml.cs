@@ -27,6 +27,7 @@ using Limilabs.Mail;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Wpf_testHTTP
 {
@@ -35,8 +36,10 @@ namespace Wpf_testHTTP
         public static string HostIP = "https://api.waveface.com/v3/";
         public static string BaseURL { get { return HostIP; } }
         public static string APIKEY = "a23f9491-ba70-5075-b625-b8fb5d9ecd90";       // win8 viewer: station
-        public string iniPath = @"C:\ykk\sharefavorite.ini";
+        public string iniPath = @"C:\Users\ruddyl.lee\AppData\Roaming\Bunny\temp\sharefavorite.ini";
         public string favoriteTitle = "Waveface Office";
+        public string RefreshKey_real = "";                                         // kept the real refresh token
+        public string access_token = "";
 
         private static readonly ILog log = LogManager.GetLogger(typeof(MainWindow));
         public void setTitle(string title)
@@ -53,7 +56,12 @@ namespace Wpf_testHTTP
         }
         public void setiniPath(string path)
         {
-            iniPath = path;
+            //MessageBox.Show(path);
+            iniPath = @"C:\Users\ruddyl.lee\AppData\Roaming\Bunny\temp\sharefavorite.ini";
+            if (!Directory.Exists(@"C:\Users\ruddyl.lee\AppData\Roaming\Bunny\temp"))
+            {
+                Directory.CreateDirectory(path);
+            }
             if (File.Exists(iniPath) == false)
             {
                 using (FileStream FS = File.Create(path))
@@ -74,10 +82,19 @@ namespace Wpf_testHTTP
 
             // get ini for refreshkey
             iniParser parser = new iniParser();
-            String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+           
             parser.IniParser(iniPath);  //appStartPath + @"\sharefavorite.ini");
             RefreshKey_saved = parser.GetSetting("Setup", "refreshkey");
             //
+            RefreshKey_real = parser.GetSetting("Setup", "refreshkey_real");
+            if (RefreshKey_real != "")
+            {
+                bool result = get_accesstokenfromrefreshtoken();
+                if (result == true)              // exchange refresh token with refresh token
+                {
+                    RefreshKey_saved = access_token;
+                }
+            }
             AutoCompleteBox.Focusable = true;
             Keyboard.Focus(AutoCompleteBox);
             //
@@ -87,6 +104,44 @@ namespace Wpf_testHTTP
             }
             service_oauth();
         }
+
+        //--- using Refresh token to get the Access token
+        private bool get_accesstokenfromrefreshtoken()
+        {
+
+            string _url = "https://accounts.google.com/o/oauth2/token";
+
+            string _parms = "refresh_token" + "=" + RefreshKey_real + "&" +
+                "client_id" + "=" + clientID + "&" +
+                "client_secret" + "=" + clientSecret + "&" +
+                "grant_type" + "=" + "refresh_token";
+
+
+            WebPostHelper _webPos = new WebPostHelper();
+            bool _isOK = _webPos.doPost(_url, _parms, null);
+
+            if (_isOK)
+            {
+                string _r = _webPos.getContent();
+                access_token = parseAccessToken(_r);
+
+                //
+                accesstoken = access_token;
+            }
+            return _isOK;
+        }
+
+        // using Dynamic to get the token
+        private string parseAccessToken(string _r)
+        {
+            string result = "";
+            var results = JsonConvert.DeserializeObject<dynamic>(_r);
+            var token = results.access_token;
+            result = token.ToString();
+            return result;
+        }
+
+        //---
         public void setFilename(string filestring)
         {
             filename = filestring;              // inpuy filename list
@@ -702,24 +757,21 @@ namespace Wpf_testHTTP
                          ClientCredentialApplicator.PostParameter(clientSecret);
 
                 IAuthorizationState grantedAccess1 = consumer.ProcessUserAuthorization(authCode);
-                bool result = consumer.RefreshAuthorization(grantedAccess1, TimeSpan.FromHours(10));
-
+ 
                 accessToken = grantedAccess1.AccessToken;
+                RefreshKey_real = grantedAccess1.RefreshToken;
 
                 // save key
                 iniParser parser = new iniParser();
-                String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
-                parser.IniParser(iniPath);
-                string _r = grantedAccess1.AccessToken;   //.RefreshToken;
-                parser.AddSetting("Setup", "refreshkey", _r);
+              
+                parser.IniParser(iniPath);              
+                parser.AddSetting("Setup", "refreshkey", grantedAccess1.AccessToken);
+                parser.AddSetting("Setup", "refreshkey_real", grantedAccess1.RefreshToken);
                 parser.SaveSettings();
                 myTabControl.SelectedIndex = 0;
             }
             else
             {
-                // change code immediately
-                //  consumer.RefreshAuthorization(grantedAccess1, TimeSpan.FromDays(30));
-                //accessToken = grantedAccess1.AccessToken;
                 accessToken = RefreshKey_saved;
                 myTabControl.SelectedIndex = 0;
             }
@@ -780,7 +832,7 @@ namespace Wpf_testHTTP
             // myTabControl.SelectedIndex = 0;
             return getSuccess;
 
-            //------------------------
+            //------------------------[ remain for read mail content ]----, using iMap.dll
             //    try
             //    {
             //        // get inbox mail content
@@ -790,15 +842,12 @@ namespace Wpf_testHTTP
             //        {
             //            imap.ConnectSSL("imap.gmail.com");
             //            imap.LoginOAUTH2(user, accessToken);
-
             //            imap.SelectInbox();
             //            List<long> uids = imap.Search(Flag.Unseen);
-
             //            foreach (long uid in uids)
             //            {
             //                string eml = imap.GetMessageByUID(uid);
             //                IMail email = new MailBuilder().CreateFromEml(eml);
-
             //               // listbox1.Items.Add(email.From);
             //            }
             //            imap.Close();
