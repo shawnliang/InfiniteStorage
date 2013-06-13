@@ -71,6 +71,9 @@
                             <ContentControl HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
                                             Content="{TemplateBinding Content}" />
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="0.1" />
+                            </Border.Effect>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
