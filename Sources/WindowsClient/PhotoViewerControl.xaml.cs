@@ -240,7 +240,12 @@ namespace Waveface.Client
 
 		private void lbImages_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
-			if ((lbImages.SelectedItem as IContent).Type == ContentType.Video)
+			var content = (lbImages.SelectedItem as IContent);
+
+			if (content == null)
+				return;
+
+			if (content.Type == ContentType.Video)
 			{
 				vcVideoControl.Visibility = Visibility.Visible;
 				PlayVideo();

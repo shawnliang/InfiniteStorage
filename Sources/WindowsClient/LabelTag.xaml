@@ -9,15 +9,26 @@
              d:DesignWidth="44"
              mc:Ignorable="d">
     <UserControl.Resources>
+        <BitmapImage x:Key="FavoriteContentFlag"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="pack://application:,,,/Resource/favoriteicon.png" />
+        <BitmapImage x:Key="UnFavoriteContentFlag"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="pack://application:,,,/Resource/notfavoriteicon.png" />
         <Storyboard x:Key="MouseOver">
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.Visibility)">
-                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="image"
+                                           Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame KeyTime="0"
+                                        Value="{x:Static Visibility.Visible}" />
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
     </UserControl.Resources>
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="Mouse.MouseEnter">
-            <BeginStoryboard x:Name="MouseOver_BeginStoryboard" Storyboard="{StaticResource MouseOver}" />
+            <BeginStoryboard x:Name="MouseOver_BeginStoryboard"
+                             Storyboard="{StaticResource MouseOver}" />
         </EventTrigger>
         <EventTrigger RoutedEvent="Mouse.MouseLeave">
             <RemoveStoryboard BeginStoryboardName="MouseOver_BeginStoryboard" />
@@ -26,10 +37,10 @@
 
     <Grid x:Name="LayoutRoot">
         <Image x:Name="image"
-               Source="notfavoriteicon.png"
+               Source="{StaticResource UnFavoriteContentFlag}"
                Stretch="Fill" />
         <Image x:Name="imgSelected"
-               Source="favoriteicon.png"
+               Source="{StaticResource FavoriteContentFlag}"
                Stretch="Fill"
                Visibility="Collapsed" />
     </Grid>

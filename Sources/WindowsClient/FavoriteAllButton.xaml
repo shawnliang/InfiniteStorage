@@ -12,8 +12,13 @@
     <Grid x:Name="LayoutRoot">
 
         <Button Click="Button_Click"
-                Content="Star All">
-        </Button>
-        <Image Margin="5,0,0,0" Source="ico_star_unselect.png" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Center" Width="22" Height="22"/>
+                Content="Star All" />
+        <Image Width="22"
+               Height="22"
+               Margin="5,0,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Center"
+               Source="{StaticResource UnSelectedStar}"
+               Stretch="Fill" />
     </Grid>
 </UserControl>

@@ -343,50 +343,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="arrow_circle_double.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="favorite.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="favoriteicon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ico_fav_select.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ico_fav_unselect.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ico_star_select.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ico_folder_select.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ico_folder_unselect.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ico_star_unselect.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ico_unsort_select.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ico_unsort_unselect.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="video_ph.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Resource Include="uppressed.png" />
+    <Resource Include="Resource\arrow_circle_double.png" />
+    <Resource Include="Resource\favorite.png" />
+    <Resource Include="Resource\favoriteicon.png" />
+    <Resource Include="Resource\ico_fav_select.png" />
+    <Resource Include="Resource\ico_fav_unselect.png" />
+    <Resource Include="Resource\ico_star_select.png" />
+    <Resource Include="Resource\ico_folder_select.png" />
+    <Resource Include="Resource\ico_folder_unselect.png" />
+    <Resource Include="Resource\ico_star_unselect.png" />
+    <Resource Include="Resource\ico_unsort_select.png" />
+    <Resource Include="Resource\ico_unsort_unselect.png" />
+    <Resource Include="Resource\video_ph.png" />
+    <Resource Include="Resource\uppressed.png" />
     <Resource Include="FAV_512.ico" />
-    <Content Include="notfavoriteicon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="pplaceholder.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Resource\notfavoriteicon.png" />
+    <Resource Include="Resource\pplaceholder.png" />
     <Resource Include="Ren\Images\add_folder.png" />
     <Resource Include="Ren\Images\android.png" />
     <Resource Include="Ren\Images\checkmark.png" />
@@ -396,22 +368,12 @@
     <Resource Include="Ren\Images\video.png" />
     <Resource Include="Ren\Images\video_130x110.png" />
     <Resource Include="Ren\Images\video_ph.png" />
-    <Content Include="sliderbarbigphotoicon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="sliderbarsmallphotoicon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Resource Include="star_selected.png" />
-    <Content Include="star_noitem.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="up.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="updis.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Resource\sliderbarbigphotoicon.png" />
+    <Resource Include="Resource\sliderbarsmallphotoicon.png" />
+    <Resource Include="Resource\star_selected.png" />
+    <Resource Include="Resource\star_noitem.png" />
+    <Resource Include="Resource\up.png" />
+    <Resource Include="Resource\updis.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\.NETFramework\v4.5\Microsoft.Expression.Blend.WPF.targets" />
