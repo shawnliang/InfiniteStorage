@@ -36,7 +36,7 @@ namespace Wpf_testHTTP
         public static string HostIP = "https://api.waveface.com/v3/";
         public static string BaseURL { get { return HostIP; } }
         public static string APIKEY = "a23f9491-ba70-5075-b625-b8fb5d9ecd90";       // win8 viewer: station
-        public string iniPath = @"C:\Users\ruddyl.lee\AppData\Roaming\Bunny\temp\sharefavorite.ini";
+        public string iniPath = @"C:\Users\ruddy\AppData\Roaming\Bunny\temp\sharefavorite.ini";
         public string favoriteTitle = "Waveface Office";
         public string RefreshKey_real = "";                                         // kept the real refresh token
         public string access_token = "";
@@ -921,11 +921,6 @@ namespace Wpf_testHTTP
             }
         }
 
-        private void Label_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            myTabControl.SelectedIndex = 0;
-        }
-
         private void button_import_Click(object sender, RoutedEventArgs e)
         {
             setRun_button();
@@ -937,11 +932,7 @@ namespace Wpf_testHTTP
             label_pass.Visibility = Visibility.Collapsed;
         }
 
-        private void Label_MouseLeftButtonUp_1(object sender, MouseButtonEventArgs e)
-        {
-            this.Close();
-        }
-
+ 
 
 
 

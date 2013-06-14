@@ -9,7 +9,7 @@
         Icon="FAV_064.png"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        WindowStyle="None">
+        WindowStyle="ToolWindow">
     <Window.Resources>
         <Style x:Key="SimpleButton"
                BasedOn="{x:Null}"
@@ -69,7 +69,7 @@
                          Height="0"
                          Margin="-2,0,-342,2"
                          Header="TabItem">
-                    <Grid Margin="0,20,-4,-12"
+                    <Grid Margin="0,0,-4,-12"
                           Background="#5a5a5a">
                         <Label x:Name="label_debug"
                                Width="31"
@@ -127,7 +127,7 @@
                         <Controls:AutoCompleteBox x:Name="AutoCompleteBox"
                                                   Width="521"
                                                   Height="34"
-                                                  Margin="90,219,0,0"
+                                                  Margin="91,206,0,0"
                                                   HorizontalAlignment="Left"
                                                   VerticalAlignment="Top"
                                                   Background="White"
@@ -149,7 +149,7 @@
                             </Controls:AutoCompleteBox.RenderTransform>
                         </Controls:AutoCompleteBox>
                         <ListBox x:Name="email_list"
-                                 Margin="91,84,81,301"
+                                 Margin="91,84,81,311"
                                  FontSize="20"
                                  Foreground="Black"
                                  MouseRightButtonDown="email_list_MouseRightButtonDown"
@@ -216,12 +216,6 @@
                                 Click="button_import_Click"
                                 Content="Import Google Contact"
                                 Foreground="White" />
-                        <Label Width="30"
-                               Margin="673,-25,0,470"
-                               Content="X"
-                               FontSize="14"
-                               Foreground="#fffdfdfd"
-                               MouseLeftButtonUp="Label_MouseLeftButtonUp_1" />
 
                     </Grid>
                 </TabItem>
@@ -233,14 +227,7 @@
                          Header="TabItem">
                     <Grid Margin="1,20,1,0"
                           Background="#FFE5E5E5">
-                        <Label Width="30"
-                               Margin="672,-27,0,470"
-                               Content="X"
-                               FontSize="14"
-                               Foreground="#fffdfdfd"
-                               MouseLeftButtonUp="Label_MouseLeftButtonUp" />
-                        <WebBrowser x:Name="wb1"
-                                    Width="692" />
+                        <WebBrowser x:Name="wb1" Margin="-13,-27,7,-2" />
                     </Grid>
                 </TabItem>
             </TabControl>
