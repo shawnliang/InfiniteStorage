@@ -57,11 +57,18 @@ namespace Wpf_testHTTP
         public void setiniPath(string path)
         {
             //MessageBox.Show(path);
-            iniPath = @"C:\Users\ruddyl.lee\AppData\Roaming\Bunny\temp\sharefavorite.ini";
-            if (!Directory.Exists(@"C:\Users\ruddyl.lee\AppData\Roaming\Bunny\temp"))
-            {
-                Directory.CreateDirectory(path);
-            }
+            iniPath = path;  
+           
+           int i0 = iniPath.IndexOf(@"\temp");
+           if (i0 < 0)
+           {
+               iniPath=iniPath.Replace(@"\sharefavorite.ini","");
+               if (!Directory.Exists(iniPath+@"\temp"))
+               {
+                   Directory.CreateDirectory(path);
+                   iniPath = iniPath + @"\sharefavorite.ini";
+               }
+           }
             if (File.Exists(iniPath) == false)
             {
                 using (FileStream FS = File.Create(path))
