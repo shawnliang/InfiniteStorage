@@ -21,49 +21,16 @@
         mc:Ignorable="d">
 
     <Window.Resources>
-        
+
         <BitmapImage x:Key="FavoriteLogo"
                      CacheOption="OnLoad"
                      CreateOptions="IgnoreImageCache"
-                     UriSource="pack://application:,,,/Resource/favorite.png"/>
+                     UriSource="pack://application:,,,/Resource/favorite.png" />
 
-        <!--
-            <DataTemplate DataType="{x:Type wvmodel:Service}">
-            <Label Content="{Binding Name}" Foreground="White" Height="40" VerticalContentAlignment="Center"/>
-            </DataTemplate>
-        -->
-
-
-
-        <!--  Labeled photo catalog view  -->
-        <!--
-            <Style TargetType="{x:Type ListBox}" x:Key="LabledPhotoListBoxStyle">
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="Template">
-            <Setter.Value>
-            <ControlTemplate TargetType="{x:Type ListBox}" >
-            <WrapPanel Margin="5" IsItemsHost="True" Orientation="Horizontal"
-            ItemHeight="120"
-            ItemWidth="120"
-            VerticalAlignment="Top" HorizontalAlignment="Stretch" />
-            </ControlTemplate>
-            </Setter.Value>
-            </Setter>
-            </Style>
-        -->
 
         <local:ContentTypeCountConverter x:Key="ContentTypeCountConverter" />
         <!--  Brushes used in Styling of ScrollViewer  -->
-        <SolidColorBrush x:Key="StandardBorderBrush"
-                         Color="#888" />
-        <SolidColorBrush x:Key="StandardBackgroundBrush"
-                         Color="#FFF" />
-        <SolidColorBrush x:Key="HoverBorderBrush"
-                         Color="#DDD" />
-        <SolidColorBrush x:Key="SelectedBackgroundBrush"
-                         Color="Gray" />
-        <SolidColorBrush x:Key="SelectedForegroundBrush"
-                         Color="White" />
+
         <SolidColorBrush x:Key="DisabledForegroundBrush"
                          Color="#888" />
         <SolidColorBrush x:Key="NormalBrush"
@@ -74,25 +41,8 @@
                          Color="#888" />
         <SolidColorBrush x:Key="HorizontalNormalBorderBrush"
                          Color="#888" />
-        <LinearGradientBrush x:Key="ListBoxBackgroundBrush" StartPoint="0,0" EndPoint="1,0.001">
-            <LinearGradientBrush.GradientStops>
-                <GradientStopCollection>
-                    <GradientStop Offset="0.0" Color="White" />
-                    <GradientStop Offset="0.6" Color="White" />
-                    <GradientStop Offset="1.2" Color="#DDDDDD" />
-                </GradientStopCollection>
-            </LinearGradientBrush.GradientStops>
-        </LinearGradientBrush>
-        <LinearGradientBrush x:Key="StandardBrush" StartPoint="0,0" EndPoint="0,1">
-            <LinearGradientBrush.GradientStops>
-                <GradientStopCollection>
-                    <GradientStop Offset="0.0" Color="#FFF" />
-                    <GradientStop Offset="1.0" Color="#CCC" />
-                </GradientStopCollection>
-            </LinearGradientBrush.GradientStops>
-        </LinearGradientBrush>
-        <SolidColorBrush x:Key="GlyphBrush"
-                         Color="#444" />
+
+
         <LinearGradientBrush x:Key="PressedBrush" StartPoint="0,0" EndPoint="0,1">
             <LinearGradientBrush.GradientStops>
                 <GradientStopCollection>
@@ -281,45 +231,6 @@
             </Style.Triggers>
         </Style>
 
-        <!--  Style for overall  ScrollViewer  -->
-        <Style x:Key="FavsScrollViewer"
-               TargetType="{x:Type ScrollViewer}">
-            <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <ScrollContentPresenter Grid.Column="1" />
-
-                            <ScrollBar x:Name="PART_VerticalScrollBar"
-                                       Maximum="{TemplateBinding ScrollableHeight}"
-                                       ViewportSize="{TemplateBinding ViewportHeight}"
-                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                                       Value="{TemplateBinding VerticalOffset}" />
-                            <ScrollBar x:Name="PART_HorizontalScrollBar"
-                                       Grid.Row="1"
-                                       Grid.Column="1"
-                                       Maximum="{TemplateBinding ScrollableWidth}"
-                                       Orientation="Horizontal"
-                                       ViewportSize="{TemplateBinding ViewportWidth}"
-                                       Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
-                                       Value="{TemplateBinding HorizontalOffset}" />
-
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
 
         <!--  Photo Template  -->
         <DataTemplate DataType="{x:Type wvmodel:ContentGroup}">
@@ -396,10 +307,6 @@
                          Color="#FF4F4F4F" />
         <SolidColorBrush x:Key="SidePanelBackground"
                          Color="#FF333333" />
-        <SolidColorBrush x:Key="ButtonBackground"
-                         Color="#FF7F7F7F" />
-        <SolidColorBrush x:Key="ButtonForeground"
-                         Color="White" />
     </Window.Resources>
 
     <Grid x:Name="gdMain"
@@ -448,7 +355,7 @@
                                           Height="28.666"
                                           Margin="2"
                                           VerticalAlignment="Center"
-                                          Click="BackButton_Click"/>
+                                          Click="BackButton_Click" />
                         <Label x:Name="lblContentLocation"
                                Content="{Binding Name}"
                                FontFamily="Segoe UI Light"
@@ -545,7 +452,8 @@
         <Grid x:Name="gdRightSide"
               Grid.Row="1"
               Grid.Column="2"
-              Background="{DynamicResource SidePanelBackground}" Visibility="Collapsed">
+              Background="{DynamicResource SidePanelBackground}"
+              Visibility="Collapsed">
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="1"
                                   Direction="180"
@@ -559,10 +467,11 @@
                                    Height="Auto"
                                    Margin="0,5,0,0"
                                    CloudSharingClick="rspRightSidePane2_CloudSharingClick"
+                                   DeleteButtonClick="rspRightSidePane2_DeleteButtonClick"
                                    FavoriteName="{Binding SelectedItem.Name,
                                                           ElementName=lbxFavorites,
                                                           Mode=TwoWay}"
-                                   OnAirClick="rspRightSidePane2_OnAirClick" DeleteButtonClick="rspRightSidePane2_DeleteButtonClick" />
+                                   OnAirClick="rspRightSidePane2_OnAirClick" />
 
 
         </Grid>

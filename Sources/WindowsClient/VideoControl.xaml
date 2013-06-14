@@ -15,13 +15,15 @@
             <GradientStop Offset="0.5" Color="#B8E2F9" />
             <GradientStop Offset="1" Color="#B0DFF8" />
         </LinearGradientBrush>
-        <SolidColorBrush x:Key="HorizontalSliderThumbHoverBorder" Color="#3C7FB1" />
+        <SolidColorBrush x:Key="HorizontalSliderThumbHoverBorder"
+                         Color="#3C7FB1" />
         <LinearGradientBrush x:Key="HorizontalSliderThumbPressedBackgroundInverted" StartPoint="0,1" EndPoint="0,0">
             <GradientStop Offset="0.25" Color="#B8E4FA" />
             <GradientStop Offset="0.5" Color="#5EB4E3" />
             <GradientStop Offset="1" Color="#4C8BB4" />
         </LinearGradientBrush>
-        <SolidColorBrush x:Key="HorizontalSliderThumbPressedBorder" Color="#2C628B" />
+        <SolidColorBrush x:Key="HorizontalSliderThumbPressedBorder"
+                         Color="#2C628B" />
         <Geometry x:Key="SliderThumbDisabledGeometry">M -5,-10.5 L 5,-10.5 L 5,10.5 L -5,10.5 Z</Geometry>
         <Geometry x:Key="SliderPointedThumbDisabledGeometry">M 4.5,-8.5 L -4.5,-8.5 L -4.5,4.5 L -0.5,8.5 L 0.5,8.5 L 4.5,4.5 Z</Geometry>
         <Geometry x:Key="SliderPointedThumbOuterBorderGeometry">M 4.5,-7.5 A 1 1 0 0 0 3.5,-8.5 L -3.5,-8.5 A 1 1 0 0 0 -4.5,-7.5 L -4.5,4.5 L -0.5,8.5 L 0.5,8.5 L 4.5,4.5 Z</Geometry>
@@ -31,7 +33,8 @@
             <GradientStop Offset=".8" Color="#D6D5D5" />
         </LinearGradientBrush>
         <Geometry x:Key="SliderPointedThumbMiddleBorderGeometry">M 3.5,-7.5 L -3.5,-7.5 L -3.5,4.5 L 0,8 L 3.5,4.5 Z</Geometry>
-        <Style x:Key="HorizontalSliderUpThumbStyle" TargetType="{x:Type Thumb}">
+        <Style x:Key="HorizontalSliderUpThumbStyle"
+               TargetType="{x:Type Thumb}">
             <Setter Property="Focusable" Value="false" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Setter Property="Height" Value="18" />
@@ -103,7 +106,8 @@
             <GradientStop Offset="0.4" Color="#F0EFEF" />
             <GradientStop Offset=".8" Color="#D6D5D5" />
         </LinearGradientBrush>
-        <Style x:Key="HorizontalSliderDownThumbStyle" TargetType="{x:Type Thumb}">
+        <Style x:Key="HorizontalSliderDownThumbStyle"
+               TargetType="{x:Type Thumb}">
             <Setter Property="Focusable" Value="false" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Setter Property="Height" Value="18" />
@@ -153,12 +157,10 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <LinearGradientBrush x:Key="HorizontalSliderTrackNormalBorder" StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Offset="0.1" Color="#FFAEB1AF" />
-            <GradientStop Offset=".9" Color="White" />
-        </LinearGradientBrush>
-        <SolidColorBrush x:Key="HorizontalSliderTrackNormalBackground" Color="#FFE7EAEA" />
-        <Style x:Key="DecreaseSliderButtonStyle" TargetType="{x:Type RepeatButton}">
+        <SolidColorBrush x:Key="HorizontalSliderTrackNormalBackground"
+                         Color="#FFE7EAEA" />
+        <Style x:Key="DecreaseSliderButtonStyle"
+               TargetType="{x:Type RepeatButton}">
             <Setter Property="SnapsToDevicePixels" Value="true" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Setter Property="IsTabStop" Value="false" />
@@ -174,7 +176,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="SliderRepeatButtonStyle" TargetType="{x:Type RepeatButton}">
+        <Style x:Key="SliderRepeatButtonStyle"
+               TargetType="{x:Type RepeatButton}">
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Setter Property="IsTabStop" Value="false" />
             <Setter Property="Focusable" Value="false" />
@@ -188,7 +191,8 @@
         </Style>
         <Geometry x:Key="SliderThumbOuterBorderGeometry">M -5,-9.5 A 1 1 0 0 1 -4,-10.5 L 4,-10.5 A 1 1 0 0 1 5,-9.5 L 5,9.5 A 1 1 0 0 1 4,10.5 L -4,10.5 A 1 1 0 0 1 -5,9.5 Z</Geometry>
         <Geometry x:Key="SliderThumbMiddleBorderGeometry">M -4,-9.5 L 4,-9.5 L 4,9.5 L -4,9.5 Z</Geometry>
-        <Style x:Key="HorizontalSliderThumbStyle" TargetType="{x:Type Thumb}">
+        <Style x:Key="HorizontalSliderThumbStyle"
+               TargetType="{x:Type Thumb}">
             <Setter Property="Focusable" Value="false" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Setter Property="Height" Value="22" />
@@ -250,7 +254,8 @@
             <GradientStop Offset="0.4" Color="#F0EFEF" />
             <GradientStop Offset=".8" Color="#D6D5D5" />
         </LinearGradientBrush>
-        <Style x:Key="VerticalSliderLeftThumbStyle" TargetType="{x:Type Thumb}">
+        <Style x:Key="VerticalSliderLeftThumbStyle"
+               TargetType="{x:Type Thumb}">
             <Setter Property="Focusable" Value="false" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Setter Property="Height" Value="10" />
@@ -321,7 +326,8 @@
             <GradientStop Offset="0.4" Color="#F0EFEF" />
             <GradientStop Offset=".8" Color="#D6D5D5" />
         </LinearGradientBrush>
-        <Style x:Key="VerticalSliderRightThumbStyle" TargetType="{x:Type Thumb}">
+        <Style x:Key="VerticalSliderRightThumbStyle"
+               TargetType="{x:Type Thumb}">
             <Setter Property="Focusable" Value="false" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Setter Property="Height" Value="10" />
@@ -381,7 +387,8 @@
             <GradientStop Offset="0.1" Color="#FFAEB1AF" />
             <GradientStop Offset=".9" Color="White" />
         </LinearGradientBrush>
-        <Style x:Key="VerticalSliderThumbStyle" TargetType="{x:Type Thumb}">
+        <Style x:Key="VerticalSliderThumbStyle"
+               TargetType="{x:Type Thumb}">
             <Setter Property="Focusable" Value="false" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Setter Property="Height" Value="11" />
@@ -437,7 +444,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="SliderStyle1" TargetType="{x:Type Slider}">
+        <Style x:Key="SliderStyle1"
+               TargetType="{x:Type Slider}">
             <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="#FFC4C4C4" />
@@ -450,7 +458,8 @@
                                 SnapsToDevicePixels="true">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+                                    <RowDefinition Height="Auto"
+                                                   MinHeight="{TemplateBinding MinHeight}" />
                                 </Grid.RowDefinitions>
                                 <Border x:Name="TrackBackground"
                                         Grid.Row="1"
@@ -470,12 +479,15 @@
                                                    Visibility="Hidden" />
                                     </Canvas>
                                 </Border>
-                                <Track x:Name="PART_Track" Grid.Row="1">
+                                <Track x:Name="PART_Track"
+                                       Grid.Row="1">
                                     <Track.DecreaseRepeatButton>
-                                        <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Style="{StaticResource DecreaseSliderButtonStyle}" />
+                                        <RepeatButton Command="{x:Static Slider.DecreaseLarge}"
+                                                      Style="{StaticResource DecreaseSliderButtonStyle}" />
                                     </Track.DecreaseRepeatButton>
                                     <Track.IncreaseRepeatButton>
-                                        <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Style="{StaticResource SliderRepeatButtonStyle}" />
+                                        <RepeatButton Command="{x:Static Slider.IncreaseLarge}"
+                                                      Style="{StaticResource SliderRepeatButtonStyle}" />
                                     </Track.IncreaseRepeatButton>
                                     <Track.Thumb>
                                         <Thumb x:Name="Thumb"
@@ -517,7 +529,8 @@
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" MinWidth="{TemplateBinding MinWidth}" />
+                                            <ColumnDefinition Width="Auto"
+                                                              MinWidth="{TemplateBinding MinWidth}" />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
                                         <TickBar x:Name="TopTick"
@@ -550,15 +563,19 @@
                                                            Visibility="Hidden" />
                                             </Canvas>
                                         </Border>
-                                        <Track x:Name="PART_Track" Grid.Column="1">
+                                        <Track x:Name="PART_Track"
+                                               Grid.Column="1">
                                             <Track.DecreaseRepeatButton>
-                                                <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Style="{StaticResource SliderRepeatButtonStyle}" />
+                                                <RepeatButton Command="{x:Static Slider.DecreaseLarge}"
+                                                              Style="{StaticResource SliderRepeatButtonStyle}" />
                                             </Track.DecreaseRepeatButton>
                                             <Track.IncreaseRepeatButton>
-                                                <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Style="{StaticResource SliderRepeatButtonStyle}" />
+                                                <RepeatButton Command="{x:Static Slider.IncreaseLarge}"
+                                                              Style="{StaticResource SliderRepeatButtonStyle}" />
                                             </Track.IncreaseRepeatButton>
                                             <Track.Thumb>
-                                                <Thumb x:Name="Thumb" Style="{StaticResource VerticalSliderThumbStyle}" />
+                                                <Thumb x:Name="Thumb"
+                                                       Style="{StaticResource VerticalSliderThumbStyle}" />
                                             </Track.Thumb>
                                         </Track>
                                     </Grid>
