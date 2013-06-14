@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Waveface.Client
 {
@@ -21,7 +12,7 @@ namespace Waveface.Client
 	{
 		public static readonly DependencyProperty _isPlaying = DependencyProperty.Register("IsPlaying", typeof(bool), typeof(VideoControl), new UIPropertyMetadata(false, new PropertyChangedCallback(OnIsPlayingChanged)));
 		public static readonly DependencyProperty _duration = DependencyProperty.Register("Duration", typeof(double), typeof(VideoControl), new UIPropertyMetadata(0.0, new PropertyChangedCallback(OnDurationChanged)));
-	
+
 		public bool IsPlaying
 		{
 			get
@@ -36,7 +27,7 @@ namespace Waveface.Client
 			}
 		}
 
-		
+
 		public double Position
 		{
 			get
@@ -120,7 +111,7 @@ namespace Waveface.Client
 				return;
 			PauseButtonClick(this, e);
 		}
-		
+
 		protected void OnSeekPosition(EventArgs e)
 		{
 			if (SeekPosition == null)

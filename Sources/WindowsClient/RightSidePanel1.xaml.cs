@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Waveface.Client
 {
@@ -50,20 +41,20 @@ namespace Waveface.Client
 			}
 		}
 		#endregion
-		
-		
+
+
 		#region Event
 		public event EventHandler AddToFavorite;
 		public event EventHandler SaveToFavorite;
 		#endregion
-		
+
 
 		public RightSidePanel1()
 		{
 			this.InitializeComponent();
 		}
-		
-		
+
+
 		#region Protected Method
 		protected void OnAddToFavorite(EventArgs e)
 		{
@@ -74,12 +65,12 @@ namespace Waveface.Client
 
 		protected void OnSaveToFavorite(EventArgs e)
 		{
-			if(SaveToFavorite == null)
+			if (SaveToFavorite == null)
 				return;
 			SaveToFavorite(this, e);
 		}
 		#endregion
-		
+
 
 		private static void OnPhotoCountChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
@@ -99,7 +90,7 @@ namespace Waveface.Client
 
 		private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
 		{
-				OnAddToFavorite(EventArgs.Empty);
+			OnAddToFavorite(EventArgs.Empty);
 		}
 
 		private void Button_Click_1(object sender, System.Windows.RoutedEventArgs e)

@@ -222,6 +222,11 @@ namespace Waveface.ClientFramework
 		}
 
 
+		public void UnTag(string labelID , string contentID)
+		{
+			StationAPI.UnTag(contentID, labelID);
+		}
+
 		public void AddToFavorite(string favoriteID)
 		{
 			StationAPI.Tag(string.Join(",", m_TaggedContents.Select(taggedContent => taggedContent.ID).ToArray()), favoriteID);

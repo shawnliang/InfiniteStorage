@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace Waveface.Client
@@ -36,7 +35,7 @@ namespace Waveface.Client
 			this.InitializeComponent();
 			this.ltTag.TagStatusChanging += ltTag_TagStatusChanging;
 			this.ltTag.TagStatusChanged += ltTag_TagStatusChanged;
-		} 
+		}
 		#endregion
 
 

@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Waveface.Client
 {
@@ -42,24 +33,24 @@ namespace Waveface.Client
 		public event EventHandler CloudSharingClick;
 		public event EventHandler DeleteButtonClick;
 		#endregion
-		
-		
+
+
 		public RightSidePanel2()
 		{
 			this.InitializeComponent();
 		}
-		
+
 		#region Protected Method
 		protected void OnOnAirClick(EventArgs e)
 		{
-			if(OnAirClick == null)
+			if (OnAirClick == null)
 				return;
 			OnAirClick(this, e);
 		}
-		
+
 		protected void OnCloudSharingClick(EventArgs e)
 		{
-			if(CloudSharingClick == null)
+			if (CloudSharingClick == null)
 				return;
 			CloudSharingClick(this, e);
 		}

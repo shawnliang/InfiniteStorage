@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Shapes;
 using Waveface.ClientFramework;
 using Waveface.Model;
 
@@ -27,13 +24,15 @@ namespace Waveface.Client
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			this.lbxDeviceContainer.DataContext = Waveface.ClientFramework.Client.Default.Services;
-		
+
 			this.lbxFavorites.DataContext = Waveface.ClientFramework.Client.Default.Favorites;
 
 			rspRightSidePane2.tbxName.KeyDown += tbxName_KeyDown;
 			rspRightSidePane2.tbxName.LostFocus += tbxName_LostFocus;
 
 			rspRightSidePanel.btnClearAll.Click += new RoutedEventHandler(btnClearAll_Click);
+
+			lblContentTypeCount.Content = string.Format("0 photos 0 videos");
 		}
 
 		void btnClearAll_Click(object sender, RoutedEventArgs e)
@@ -136,7 +135,6 @@ namespace Waveface.Client
 					return;
 				lblContentLocation.DataContext = null;
 				lbxContentContainer.DataContext = service.Contents;
-				lblContentTypeCount.Content = string.Format("0 photos 0 videos");
 				return;
 			}
 
@@ -179,6 +177,8 @@ namespace Waveface.Client
 			{
 				unSortedFilesUC.Visibility = Visibility.Collapsed;
 			}
+
+			lbxContentContainer.ContextMenu.Visibility = System.Windows.Visibility.Collapsed;
 
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = group.Contents;
@@ -247,6 +247,9 @@ namespace Waveface.Client
 
 			updateRightSidePanel2(group);
 
+			lbxContentContainer.ContextMenu.IsOpen = false;
+			lbxContentContainer.ContextMenu.Visibility = System.Windows.Visibility.Visible;
+
 			gdRightSide.Visibility = System.Windows.Visibility.Visible;
 			Grid.SetColumnSpan(gdContentArea, 1);
 
@@ -282,7 +285,7 @@ namespace Waveface.Client
 				}
 			}
 		}
-		
+
 		private void rspRightSidePanel_SaveToFavorite(object sender, System.EventArgs e)
 		{
 			var dialog = new CreateFavoriteDialog();
@@ -325,7 +328,7 @@ namespace Waveface.Client
 			dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
 
 			dialog.FavoriteItemSource = Waveface.ClientFramework.Client.Default.Favorites.Skip(1);
-			
+
 			if (dialog.ShowDialog() != true)
 				return;
 
@@ -360,6 +363,7 @@ namespace Waveface.Client
 				return;
 
 			group.Refresh();
+			SetContentTypeCount(group);
 		}
 
 		private void lbxFavorites_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -373,6 +377,14 @@ namespace Waveface.Client
 			ClientFramework.Client.Default.RemoveFavorite(group.ID);
 
 			lbxFavorites.SelectedIndex = 0;
+		}
+
+		private void MenuItem_Click(object sender, RoutedEventArgs e)
+		{
+			var group = (lblContentLocation.DataContext as IContentGroup);
+			var content = lbxContentContainer.SelectedItem as IContentEntity;
+			ClientFramework.Client.Default.UnTag(group.ID, content.ID);
+			RefreshContentArea();
 		}
 	}
 }

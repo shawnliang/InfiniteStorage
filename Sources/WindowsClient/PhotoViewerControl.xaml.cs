@@ -19,7 +19,7 @@ namespace Waveface.Client
 		ScaleTransform myScale = new ScaleTransform();
 
 
-		private DispatcherTimer m_Timer 
+		private DispatcherTimer m_Timer
 		{
 			get
 			{
@@ -193,7 +193,7 @@ namespace Waveface.Client
 		void _timer_Tick(object sender, EventArgs e)
 		{
 			vcVideoControl.Position = meVideo.Position.TotalMilliseconds;
-			
+
 		}
 
 		private void meVideo_MediaEnded(object sender, RoutedEventArgs e)
@@ -250,7 +250,7 @@ namespace Waveface.Client
 				vcVideoControl.Visibility = Visibility.Visible;
 				PlayVideo();
 			}
-			else 
+			else
 			{
 				vcVideoControl.Visibility = Visibility.Collapsed;
 			}
@@ -263,7 +263,7 @@ namespace Waveface.Client
 
 		private void vcVideoControl_SeekPosition(object sender, System.EventArgs e)
 		{
-			
+
 			PauseVideo();
 			meVideo.Position = TimeSpan.FromMilliseconds(vcVideoControl.Position);
 			PlayVideo();
