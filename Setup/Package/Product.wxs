@@ -125,50 +125,6 @@
             </File>
           </Component>
 
-          <Component Id="arrow_circle_double.png" Guid="*">
-            <File Id="arrow_circle_double.png" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\arrow_circle_double.png" />
-          </Component>
-          
-          <Component Id="album.png" Guid="*">
-            <File Id="album.png" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\album.png" />
-          </Component>
-
-          <Component Id="albumselected.png" Guid="*">
-            <File Id="albumselected.png" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\albumselected.png" />
-          </Component>
-
-          <Component Id="favorite.png" Guid="*">
-            <File Id="favorite.png" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\favorite.png" />
-          </Component>
-
-          <Component Id="favoriteicon.png" Guid="*">
-            <File Id="favoriteicon.png" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\favoriteicon.png" />
-          </Component>
-
-          <Component Id="notfavoriteicon.png" Guid="*">
-            <File Id="notfavoriteicon.png" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\notfavoriteicon.png" />
-          </Component>
-
-          <Component Id="pplaceholder.png" Guid="*">
-            <File Id="pplaceholder.png" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\pplaceholder.png" />
-          </Component>
-
-          <Component Id="sliderbarbigphotoicon.png" Guid="*">
-            <File Id="sliderbarbigphotoicon.png" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\sliderbarbigphotoicon.png" />
-          </Component>
-
-          <Component Id="sliderbarsmallphotoicon.png" Guid="*">
-            <File Id="sliderbarsmallphotoicon.png" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\sliderbarsmallphotoicon.png" />
-          </Component>
-
-          <Component Id="up.png" Guid="*">
-            <File Id="up.png" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\up.png" />
-          </Component>
-
-          <Component Id="updis.png" Guid="*">
-            <File Id="updis.png" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\updis.png" />
-          </Component>
-
           <Component Id="Waveface.Client.exe.config" Guid="*">
             <File Id="Waveface.Client.exe.config" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Waveface.Client.exe.config" />
           </Component>
@@ -315,17 +271,6 @@
       <ComponentRef Id='Waveface.ClientFramework.dll'/>
       <ComponentRef Id='Waveface.Model.dll'/>
 
-      <ComponentRef Id="arrow_circle_double.png"/>
-      <ComponentRef Id="album.png"/>
-      <ComponentRef Id="albumselected.png"/>
-      <ComponentRef Id="favorite.png"/>
-      <ComponentRef Id="favoriteicon.png" />
-      <ComponentRef Id="notfavoriteicon.png" />
-      <ComponentRef Id="pplaceholder.png" />
-      <ComponentRef Id="sliderbarbigphotoicon.png" />
-      <ComponentRef Id="sliderbarsmallphotoicon.png" />
-      <ComponentRef Id="up.png" />
-      <ComponentRef Id="updis.png" />
       
       <ComponentRef Id='Waveface.Client.exe.config'/>
 
