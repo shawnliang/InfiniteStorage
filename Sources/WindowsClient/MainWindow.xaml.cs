@@ -293,6 +293,7 @@ namespace Waveface.Client
 				return;
 
 			ClientFramework.Client.Default.SaveToFavorite(dialog.FavoriteName);
+			lbxFavorites.SelectedIndex = lbxFavorites.Items.Count - 1;
 		}
 
 		private void rspRightSidePane2_OnAirClick(object sender, EventArgs e)
@@ -332,6 +333,7 @@ namespace Waveface.Client
 			var selectedFavorite = (dialog.SelectedFavorite as IContentGroup);
 			ClientFramework.Client.Default.AddToFavorite(selectedFavorite.ID);
 			selectedFavorite.Refresh();
+			lbxFavorites.SelectedItem = selectedFavorite;
 		}
 
 		private void rspRightSidePane2_CloudSharingClick(object sender, System.EventArgs e)
