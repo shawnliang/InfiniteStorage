@@ -201,6 +201,11 @@ namespace Waveface.ClientFramework
 		}
 		#endregion
 
+		public void Tag(IEnumerable<IContent> contents)
+		{
+			StationAPI.Tag(string.Join(",", contents.Select(taggedContent => taggedContent.ID).ToArray()), m_LabelID);
+		}
+
 
 		public void SaveToFavorite(string favoriteName)
 		{
