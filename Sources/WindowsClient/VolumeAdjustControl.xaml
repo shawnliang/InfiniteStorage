@@ -152,10 +152,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <LinearGradientBrush x:Key="HorizontalSliderTrackNormalBorder" StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Offset="0.1" Color="#FFAEB1AF" />
-            <GradientStop Offset=".9" Color="White" />
-        </LinearGradientBrush>
         <SolidColorBrush x:Key="HorizontalSliderTrackNormalBackground" Color="#FFE7EAEA" />
 
         <Style x:Key="DecreaseSliderButtonStyle" TargetType="{x:Type RepeatButton}">
