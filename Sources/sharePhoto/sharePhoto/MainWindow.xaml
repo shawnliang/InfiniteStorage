@@ -6,7 +6,7 @@
         Width="700"
         Height="520"
         Background="#5a5a5a"
-        Icon="FAV_064.png"
+        Icon="images/FAV_064.png"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="ToolWindow">
@@ -171,7 +171,7 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                Visibility="Collapsed"
-                               Source="gmail_64.png" />
+                               Source="images/gmail_64.png" />
                         <Label x:Name="connected_gmail"
                                Width="154"
                                Margin="125,417,0,0"
@@ -206,7 +206,7 @@
                                Margin="226,324,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
-                               Source="OK_white (1).png"
+                               Source="images/OK_white (1).png"
                                Visibility="Collapsed" />
                         <Button x:Name="button_import"
                                 Width="201"
