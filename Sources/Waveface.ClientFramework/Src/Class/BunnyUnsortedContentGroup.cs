@@ -40,7 +40,7 @@ namespace Waveface.ClientFramework
 			}
 		}
 
-		public void Refresh()
+		public override void Refresh()
 		{
 			var curCount = countUnsortedItems();
 

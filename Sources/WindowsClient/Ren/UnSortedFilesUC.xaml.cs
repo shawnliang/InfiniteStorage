@@ -36,7 +36,6 @@ namespace Waveface.Client
 
 
 		private IService m_currentDevice;
-		private bool m_init;
 		private List<MySliderTick> m_sliderTicks = new List<MySliderTick>();
 		private List<string> m_defaultEventNameCache;
 		private ObservableCollection<EventUC> m_eventUCs;
@@ -97,8 +96,6 @@ namespace Waveface.Client
 			}
 
 			ShowEvents();
-
-			m_init = true;
 
 			ShowTitle();
 

@@ -66,7 +66,7 @@ namespace Waveface.ClientFramework
 				}
 
 			}
-			catch (Exception err)
+			catch
 			{
 			}
 			finally

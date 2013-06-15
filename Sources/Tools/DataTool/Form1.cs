@@ -127,7 +127,6 @@ namespace DataTool
 
 		void client_OnError(object sender, ErrorEventArgs e)
 		{
-			var error = "";
 		}
 
 		void client_OnMessage(object sender, MessageEventArgs e)

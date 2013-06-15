@@ -126,7 +126,7 @@ namespace Waveface.Model
 
 
 		#region Public Method
-		public void Refresh()
+		public virtual void Refresh()
 		{
 			m_Contents.ClearValue();
 			m_ObservableContents.Clear();
