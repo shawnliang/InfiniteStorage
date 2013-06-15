@@ -213,13 +213,8 @@ namespace Waveface.Client
 
 		private void FavoriteAllButton_Click(object sender, RoutedEventArgs e)
 		{
-			foreach (IContent content in lbxContentContainer.Items)
-			{
-				if (!content.Liked)
-				{
-					content.Liked = true;
-				}
-			}
+			ClientFramework.Client.Default.Tag(lbxContentContainer.Items.OfType<IContent>());
+			RefreshContentArea();
 		}
 
 		private void lbxFavorites_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
