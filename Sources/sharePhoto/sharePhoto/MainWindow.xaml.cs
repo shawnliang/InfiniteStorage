@@ -567,9 +567,16 @@ namespace Wpf_testHTTP
         }
         private static bool IsBusy;
 
-        public static void just_busy(bool busy)
+        public  void just_busy(bool busy)
         {
-            
+            if (busy == true)
+            {
+                button1.IsEnabled = false;
+            }
+            else
+            {
+                button1.IsEnabled = true;
+            }
             Mouse.OverrideCursor = busy ? Cursors.Wait : null;
         }
         /// <summary>
