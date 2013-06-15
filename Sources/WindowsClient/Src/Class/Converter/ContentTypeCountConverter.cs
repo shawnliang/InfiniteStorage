@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
 using System.Globalization;
-using System.IO;
-using System.Windows.Data;
-using System.Windows.Media.Imaging;
-using Waveface.Model;
 using System.Linq;
+using System.Windows.Data;
+using Waveface.Model;
 
 namespace Waveface.Client
 {

@@ -143,7 +143,7 @@ namespace Waveface.Client
 		}
 
 
-		
+
 
 		private void NextButton_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{

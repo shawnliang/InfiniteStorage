@@ -240,17 +240,7 @@
         <!--  Photo Template  -->
         <DataTemplate DataType="{x:Type wvmodel:Content}">
             <local:ContentItem x:Name="content"
-                               Padding="10"
-                               RenderTransformOrigin="0.5,0.5">
-                <local:ContentItem.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform />
-                        <SkewTransform />
-                        <RotateTransform />
-                        <TranslateTransform />
-                    </TransformGroup>
-                </local:ContentItem.RenderTransform>
-            </local:ContentItem>
+                               Padding="10" />
         </DataTemplate>
 
 
@@ -517,6 +507,12 @@
                     <ListBox.Style>
                         <StaticResource ResourceKey="PhotoListBoxStyle" />
                     </ListBox.Style>
+                    <ListBox.ContextMenu>
+                        <ContextMenu Name="cm">
+                            <MenuItem Click="MenuItem_Click"
+                                      Header="Delete" />
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
                 </ListBox>
             </ScrollViewer>
             <Grid Grid.Row="1"
