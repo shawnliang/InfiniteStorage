@@ -350,7 +350,7 @@ namespace Waveface.Client
 
 			_w.setFilename(files);
 			_w.setRun();
-			_w.ShowDialog();
+			_w.Show();
 		}
 
 		private void RefreshContentArea()
