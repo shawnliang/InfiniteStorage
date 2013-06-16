@@ -29,11 +29,14 @@ namespace InfiniteStorage.REST
 				if (label != null)
 					throw new Exception("label_id already exist:" + label_id);
 
+				var seq = SeqNum.GetNextSeq();
+
 				label = new Label
 				{
 					label_id = label_id,
 					name = name,
-					seq = SeqNum.GetNextSeq()
+					seq = seq,
+					share_proc_seq = seq,
 				};
 
 				db.Object.Labels.Add(label);
