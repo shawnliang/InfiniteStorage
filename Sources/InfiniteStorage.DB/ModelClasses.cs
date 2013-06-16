@@ -100,6 +100,8 @@ namespace InfiniteStorage.Model
 
 		public long? share_proc_seq { get; set; }
 
+		public string share_post_id { get; set; }
+
 		public virtual ICollection<ShareRecipient> Recipients { get; set; }
 	}
 

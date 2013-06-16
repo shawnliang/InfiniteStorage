@@ -15,6 +15,7 @@ namespace InfiniteStorage.Share
 			{
 				var q = from lb in db.Object.Labels
 						where lb.seq > lb.share_proc_seq && 
+								!lb.deleted &&
 								lb.auto_type == (int)AutoLabelType.NotAuto && 
 								!lb.name.Equals("STARRED")
 						select lb;
