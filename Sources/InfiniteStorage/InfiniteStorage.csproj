@@ -91,6 +91,14 @@
     <Compile Include="Src\Class\HomeSharing.cs" />
     <Compile Include="Src\Class\Notify\ActiveDeviceNotifyMsg.cs" />
     <Compile Include="Src\Class\REST\LabelOnAirApiHandler.cs" />
+    <Compile Include="Src\Class\Share\IShareEnableTaskDB.cs" />
+    <Compile Include="Src\Class\Share\IShareLabelMonitorDB.cs" />
+    <Compile Include="Src\Class\Share\IShareTaskFactory.cs" />
+    <Compile Include="Src\Class\Share\ShareDisableTask.cs" />
+    <Compile Include="Src\Class\Share\ShareEnableTask.cs" />
+    <Compile Include="Src\Class\Share\ShareLabelMonitor.cs" />
+    <Compile Include="Src\Class\Share\ShareLabelMonitorDB.cs" />
+    <Compile Include="Src\Class\Share\ShareTaskFactory.cs" />
     <Compile Include="Src\Dialog\BackToPhoneDialog.cs">
       <SubType>Form</SubType>
     </Compile>
