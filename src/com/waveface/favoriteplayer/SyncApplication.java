@@ -1,6 +1,5 @@
 package com.waveface.favoriteplayer;
 
-
 import idv.jason.lib.imagemanager.ImageManager;
 
 import java.io.File;
@@ -14,7 +13,6 @@ import android.text.TextUtils;
 
 import com.waveface.favoriteplayer.util.DeviceUtil;
 import com.waveface.favoriteplayer.util.Log;
-import com.waveface.favoriteplayer.util.StringUtil;
 
 public class SyncApplication extends Application{
     public static final String TAG = SyncApplication.class.getSimpleName();
@@ -85,10 +83,10 @@ public class SyncApplication extends Application{
 		mDownloadFolder = mPrefs.getString(Constant.PREF_DOWNLOAD_FOLDER, "");
 		if(TextUtils.isEmpty(mDownloadFolder)){
 			mPrefs.edit().putString(Constant.PREF_DOWNLOAD_FOLDER, Environment.getExternalStorageDirectory().getAbsolutePath()).commit();
-			mImageManager.setDownloadPath(new File(Environment.getExternalStorageDirectory(), "FavoritePlayer/Images").getAbsolutePath());		
+			mImageManager.setDownloadPath(new File(Environment.getExternalStorageDirectory(), "Favorites/Images").getAbsolutePath());		
 		}
 		else{
-			mImageManager.setDownloadPath(new File(new File(mDownloadFolder), "FavoritePlayer/Images").getAbsolutePath());			
+			mImageManager.setDownloadPath(new File(new File(mDownloadFolder), "Favorites/Images").getAbsolutePath());			
 		}
 		sendBroadcast(new Intent(Constant.ACTION_FAVORITE_PLAYER_ALARM));
 	}

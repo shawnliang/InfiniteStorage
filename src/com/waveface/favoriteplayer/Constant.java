@@ -5,7 +5,7 @@ public class Constant {
 	//DEVICE TYPE
 	public static boolean PHONE = true;
 
-	public final static String APP_FOLDER = "/FavoritePlayer";
+	public final static String APP_FOLDER = "/Favorites";
 	public final static String VIDEO_FOLDER = APP_FOLDER+"/Video";
 	public final static String IMAGE_FOLDER = APP_FOLDER+"/Images";	
 	
