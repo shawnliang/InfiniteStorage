@@ -67,7 +67,7 @@ namespace InfiniteStorage.Notify
 
 		private void sendChangedLabels()
 		{
-			var labels = util.QueryAllLabels();
+			var labels = util.QueryAllLabels().Where(x => x.label_id != Guid.Empty);
 
 			foreach (var label in labels)
 			{

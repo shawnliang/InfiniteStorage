@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Wammer.Station;
+using System;
 
 namespace InfiniteStorage.REST
 {
@@ -17,7 +18,7 @@ namespace InfiniteStorage.REST
 			using (var db = new MyDbContext())
 			{
 				labels = (from lb in db.Object.Labels
-						  where !lb.deleted
+						  where !lb.deleted && lb.label_id != Guid.Empty
 						  select lb).ToList();
 			}
 

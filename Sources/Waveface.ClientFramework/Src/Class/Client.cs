@@ -18,7 +18,7 @@ namespace Waveface.ClientFramework
 
 
 		#region Var
-		private string _labelID;
+		private string _labelID = Guid.Empty.ToString();
 		private ObservableCollection<IContentEntity> _taggedContents;
 		private ReadOnlyObservableCollection<IContentEntity> _readonlyTaggedContents;
 		private ObservableCollection<IContentEntity> _favorites;
@@ -42,7 +42,7 @@ namespace Waveface.ClientFramework
 		{
 			get
 			{
-				return _labelID ?? (_labelID = GetDefaultLabelID());
+				return _labelID;
 			}
 		}
 
@@ -111,12 +111,6 @@ namespace Waveface.ClientFramework
 
 
 		#region Private Method
-		private string GetDefaultLabelID()
-		{
-			var json = StationAPI.GetAllLables();
-			var labelID = JObject.Parse(json)["labels"][0]["label_id"].ToString();
-			return labelID;
-		}
 
 		private IEnumerable<IContentEntity> GetTaggedContents()
 		{
