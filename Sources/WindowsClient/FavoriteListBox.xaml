@@ -45,9 +45,10 @@
                     <Setter TargetName="sourceCount" Property="Foreground" Value="Black" />
                 </DataTrigger>
 
-                <Trigger SourceName="sourceName" Property="Content" Value="STARRED">
+                <DataTrigger Binding="{Binding ID}" Value="00000000-0000-0000-0000-000000000000">
                     <Setter TargetName="icon" Property="Source" Value="{StaticResource UnSelectedStar}" />
-                </Trigger>
+                </DataTrigger>
+
             </DataTemplate.Triggers>
 
         </DataTemplate>
