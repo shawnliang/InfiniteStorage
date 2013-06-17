@@ -62,7 +62,12 @@
     </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot" Margin="2.001,0,-2.001,0">
-        <Viewbox DockPanel.Dock="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <Viewbox DockPanel.Dock="Top" x:Name="viewbox">
             <Canvas x:Name="ImgCanvas"
                     Width="602"
                     Height="371"
@@ -93,21 +98,12 @@
                 </ContentControl>
             </Canvas>
         </Viewbox>
-        <Rectangle x:Name="ContentName"
-                   Width="250"
-                   Height="37.5"
-                   Margin="0,13,0,0"
-                   VerticalAlignment="Top"
-                   Fill="#E5000000"
-                   Opacity="0.7"
-                   RadiusX="20"
-                   RadiusY="20"
-                   Stroke="#FFF0E9E9" />
+        
         <Label x:Name="DateTaken"
-               Width="250"
-               Height="37.5"
-               Margin="0,13,0,0"
-               VerticalAlignment="Top"
+               Grid.Row="1"
+               Margin="0,0,8,0"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Right"
                HorizontalContentAlignment="Center"
                VerticalContentAlignment="Center"
                Content="{Binding SelectedItem.Name,
@@ -117,37 +113,7 @@
                FontSize="16"
                Foreground="White"
                Opacity="0.6" />
-        <l:VideoControl x:Name="vcVideoControl"
-                        Width="300"
-                        Height="22"
-                        Margin="0,0,0,73"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom"
-                        DataContext="{Binding SelectedItem,
-                                              ElementName=lbImages,
-                                              IsAsync=True}"
-                        PauseButtonClick="vcVideoControl_PauseButtonClick"
-                        PlayButtonClick="vcVideoControl_PlayButtonClick"
-                        SeekPosition="vcVideoControl_SeekPosition"
-                        Visibility="Collapsed"
-                        VolumeChanged="vcVideoControl_VolumeChanged" />
-        <l:ViewerControl x:Name="vcViewerControl"
-                         Width="300"
-                         Height="60"
-                         Margin="0,0,0,13"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Bottom"
-                         Close="ViewerControl_Close"
-                         DataContext="{Binding SelectedItem,
-                                               ElementName=lbImages,
-                                               IsAsync=True}"
-                         EnableStar="{Binding EnableTag}"
-                         Next="ViewerControl_Next"
-                         Previous="ViewerControl_Previous"
-                         Stared="{Binding SelectedItem.Liked,
-                                          ElementName=lbImages,
-                                          Mode=TwoWay,
-                                          IsAsync=True}" />
+              
         <ListBox x:Name="lbImages"
                  HorizontalAlignment="Center"
                  VerticalAlignment="Bottom"
@@ -164,5 +130,38 @@
                  VirtualizingStackPanel.VirtualizationMode="Recycling"
                  Visibility="Collapsed" />
 
+        <l:VideoControl x:Name="vcVideoControl"
+                        Grid.Row="1"
+                        Width="300"
+                        Height="22"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        DataContext="{Binding SelectedItem,
+                                              ElementName=lbImages,
+                                              IsAsync=True}"
+                        PauseButtonClick="vcVideoControl_PauseButtonClick"
+                        PlayButtonClick="vcVideoControl_PlayButtonClick"
+                        SeekPosition="vcVideoControl_SeekPosition"
+                        Visibility="Collapsed"
+                        VolumeChanged="vcVideoControl_VolumeChanged" />
+        
+        <l:ViewerControl x:Name="vcViewerControl"
+                         Grid.Row="1"
+                         Width="300"
+                         Height="40"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Close="ViewerControl_Close"
+                         DataContext="{Binding SelectedItem,
+                                               ElementName=lbImages,
+                                               IsAsync=True}"
+                         EnableStar="{Binding EnableTag}"
+                         Next="ViewerControl_Next"
+                         Previous="ViewerControl_Previous"
+                         Stared="{Binding SelectedItem.Liked,
+                                          ElementName=lbImages,
+                                          Mode=TwoWay,
+                                          IsAsync=True}" />        
+        
     </Grid>
 </UserControl>
