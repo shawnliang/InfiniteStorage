@@ -60,7 +60,6 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"
                                       MinWidth="19" />
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -124,25 +123,22 @@
                     </ToggleButton.Style>
                 </ToggleButton>
                 <Border x:Name="Bd"
-                        Grid.Column="1"
+                        Grid.Column="0"
+						Grid.ColumnSpan="2"
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        Padding="{TemplateBinding Padding}"
-                        SnapsToDevicePixels="True">
+                        SnapsToDevicePixels="True" Padding="19,0,0,0">
                     <ContentPresenter x:Name="PART_Header"
-                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       Content="{TemplateBinding Header}"
                                       ContentSource="Header"
                                       ContentStringFormat="{TemplateBinding HeaderStringFormat}"
                                       ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                 </Border>
-                <StackPanel Grid.Row="2"
+                    <ItemsPresenter x:Name="ItemsHost" Grid.Row="1"
                             Grid.Column="0"
-                            Grid.ColumnSpan="3">
-                    <ItemsPresenter x:Name="ItemsHost" />
-                </StackPanel>
+                            Grid.ColumnSpan="2"/>
             </Grid>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsExpanded" Value="True">
@@ -180,7 +176,6 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel x:Name="item"
                             Grid.Column="1"
-                            Width="2048"
                             Orientation="Horizontal">
                     <Image x:Name="icon"
                            Source="{StaticResource UnSelectedIcon}" />
