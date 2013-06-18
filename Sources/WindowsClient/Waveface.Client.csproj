@@ -83,28 +83,28 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Compile Include="AddToFavoriteDialog.xaml.cs">
+    <Compile Include="Src\Dialog\AddToFavoriteDialog.xaml.cs">
       <DependentUpon>AddToFavoriteDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BackButton.xaml.cs">
+    <Compile Include="Src\Control\BackButton.xaml.cs">
       <DependentUpon>BackButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CloseButton.xaml.cs">
+    <Compile Include="Src\Control\CloseButton.xaml.cs">
       <DependentUpon>CloseButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="ContentItem.xaml.cs">
       <DependentUpon>ContentItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CreateFavoriteDialog.xaml.cs">
+    <Compile Include="Src\Dialog\CreateFavoriteDialog.xaml.cs">
       <DependentUpon>CreateFavoriteDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FavoriteAllButton.xaml.cs">
+    <Compile Include="Src\Control\FavoriteAllButton.xaml.cs">
       <DependentUpon>FavoriteAllButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="FavoriteListBox.xaml.cs">
       <DependentUpon>FavoriteListBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GroupContentItem.xaml.cs">
+    <Compile Include="Src\Control\GroupContentItem.xaml.cs">
       <DependentUpon>GroupContentItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="LabeledContentInfo.xaml.cs">
@@ -113,10 +113,10 @@
     <Compile Include="LabelTag.xaml.cs">
       <DependentUpon>LabelTag.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NextButton.xaml.cs">
+    <Compile Include="Src\Control\NextButton.xaml.cs">
       <DependentUpon>NextButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PauseButton.xaml.cs">
+    <Compile Include="Src\Control\PauseButton.xaml.cs">
       <DependentUpon>PauseButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="PhotoViewer.xaml.cs">
@@ -125,10 +125,10 @@
     <Compile Include="PhotoViewerControl.xaml.cs">
       <DependentUpon>PhotoViewerControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PlayButton.xaml.cs">
+    <Compile Include="Src\Control\PlayButton.xaml.cs">
       <DependentUpon>PlayButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PreviousButton.xaml.cs">
+    <Compile Include="Src\Control\PreviousButton.xaml.cs">
       <DependentUpon>PreviousButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Ren\Data.cs" />
@@ -142,10 +142,10 @@
     <Compile Include="Ren\Utility\SliderWithDraggingEvents.cs" />
     <Compile Include="Ren\Utility\WatermarkTextBehavior.cs" />
     <Compile Include="Ren\Utility\WebPostHelper.cs" />
-    <Compile Include="RightSidePanel1.xaml.cs">
+    <Compile Include="Src\Control\RightSidePanel1.xaml.cs">
       <DependentUpon>RightSidePanel1.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RightSidePanel2.xaml.cs">
+    <Compile Include="Src\Control\RightSidePanel2.xaml.cs">
       <DependentUpon>RightSidePanel2.xaml</DependentUpon>
     </Compile>
     <Compile Include="SourceTree.xaml.cs">
@@ -154,30 +154,30 @@
     <Compile Include="Src\Class\Converter\ContentTypeCountConverter.cs" />
     <Compile Include="Src\Event\UnSortedItemEventArgs.cs" />
     <Compile Include="Src\Extension\CollectionExtension.cs" />
-    <Compile Include="VideoControl.xaml.cs">
+    <Compile Include="Src\Control\VideoControl.xaml.cs">
       <DependentUpon>VideoControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewerControl.xaml.cs">
+    <Compile Include="Src\Control\ViewerControl.xaml.cs">
       <DependentUpon>ViewerControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VolumeAdjustControl.xaml.cs">
+    <Compile Include="Src\Control\VolumeAdjustControl.xaml.cs">
       <DependentUpon>VolumeAdjustControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VolumeControl.xaml.cs">
+    <Compile Include="Src\Control\VolumeControl.xaml.cs">
       <DependentUpon>VolumeControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ZoomSlider.xaml.cs">
+    <Compile Include="Src\Control\ZoomSlider.xaml.cs">
       <DependentUpon>ZoomSlider.xaml</DependentUpon>
     </Compile>
-    <Page Include="AddToFavoriteDialog.xaml">
+    <Page Include="Src\Dialog\AddToFavoriteDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="BackButton.xaml">
+    <Page Include="Src\Control\BackButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="CloseButton.xaml">
+    <Page Include="Src\Control\CloseButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -185,11 +185,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="CreateFavoriteDialog.xaml">
+    <Page Include="Src\Dialog\CreateFavoriteDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="FavoriteAllButton.xaml">
+    <Page Include="Src\Control\FavoriteAllButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -197,7 +197,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="GroupContentItem.xaml">
+    <Page Include="Src\Control\GroupContentItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -221,11 +221,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="NextButton.xaml">
+    <Page Include="Src\Control\NextButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PauseButton.xaml">
+    <Page Include="Src\Control\PauseButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -237,11 +237,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PlayButton.xaml">
+    <Page Include="Src\Control\PlayButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PreviousButton.xaml">
+    <Page Include="Src\Control\PreviousButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -253,11 +253,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="RightSidePanel1.xaml">
+    <Page Include="Src\Control\RightSidePanel1.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="RightSidePanel2.xaml">
+    <Page Include="Src\Control\RightSidePanel2.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -265,23 +265,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="VideoControl.xaml">
+    <Page Include="Src\Control\VideoControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ViewerControl.xaml">
+    <Page Include="Src\Control\ViewerControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="VolumeAdjustControl.xaml">
+    <Page Include="Src\Control\VolumeAdjustControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="VolumeControl.xaml">
+    <Page Include="Src\Control\VolumeControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ZoomSlider.xaml">
+    <Page Include="Src\Control\ZoomSlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
