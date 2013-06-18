@@ -18,7 +18,7 @@ namespace Waveface.ClientFramework
 
 
 		#region Var
-		private string _labelID;
+		private static string _labelID = Guid.Empty.ToString();
 		private ObservableCollection<IContentEntity> _taggedContents;
 		private ReadOnlyObservableCollection<IContentEntity> _readonlyTaggedContents;
 		private ObservableCollection<IContentEntity> _favorites;
@@ -38,11 +38,11 @@ namespace Waveface.ClientFramework
 
 
 		#region Private Property
-		private string m_LabelID
+		public static string StarredLabelId
 		{
 			get
 			{
-				return _labelID ?? (_labelID = GetDefaultLabelID());
+				return _labelID;
 			}
 		}
 
@@ -111,12 +111,6 @@ namespace Waveface.ClientFramework
 
 
 		#region Private Method
-		private string GetDefaultLabelID()
-		{
-			var json = StationAPI.GetAllLables();
-			var labelID = JObject.Parse(json)["labels"][0]["label_id"].ToString();
-			return labelID;
-		}
 
 		private IEnumerable<IContentEntity> GetTaggedContents()
 		{
@@ -128,7 +122,8 @@ namespace Waveface.ClientFramework
 
 			conn.Open();
 
-			var cmd = new SQLiteCommand("SELECT * FROM Files t1, LabelFiles t2, Labels t3 where t3.name = 'STARRED' and t3.label_id = t2.label_id and t1.file_id = t2.file_id", conn);
+			var cmd = new SQLiteCommand("SELECT * FROM Files t1, LabelFiles t2 where t2.label_id = @starred and t1.file_id = t2.file_id", conn);
+			cmd.Parameters.Add(new SQLiteParameter("@starred", Guid.Empty));
 
 			var dr = cmd.ExecuteReader();
 
@@ -203,7 +198,7 @@ namespace Waveface.ClientFramework
 
 		public void Tag(IEnumerable<IContent> contents)
 		{
-			StationAPI.Tag(string.Join(",", contents.Select(taggedContent => taggedContent.ID).ToArray()), m_LabelID);
+			StationAPI.Tag(string.Join(",", contents.Select(taggedContent => taggedContent.ID).ToArray()), StarredLabelId);
 		}
 
 
@@ -253,7 +248,7 @@ namespace Waveface.ClientFramework
 
 		public void ClearTaggedContents()
 		{
-			StationAPI.ClearLabel(m_LabelID);
+			StationAPI.ClearLabel(StarredLabelId);
 
 			m_TaggedContents.Clear();
 		}
@@ -272,10 +267,10 @@ namespace Waveface.ClientFramework
 			if (content.Liked)
 			{
 				m_TaggedContents.Add(content);
-				StationAPI.Tag(content.ID, m_LabelID);
+				StationAPI.Tag(content.ID, StarredLabelId);
 			}
 			else
-				StationAPI.UnTag(content.ID, m_LabelID);
+				StationAPI.UnTag(content.ID, StarredLabelId);
 		}
 
 		public bool IsOnAir(IContentGroup group)

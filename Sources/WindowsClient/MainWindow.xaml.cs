@@ -251,8 +251,8 @@ namespace Waveface.Client
 			btnFavoriteAll.Visibility = Visibility.Collapsed;
 			btnBack.Visibility = Visibility.Collapsed;
 			unSortedFilesUC.Visibility = Visibility.Collapsed;
-			rspRightSidePane2.Visibility = (group.Name.Equals("STARRED", StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
-			rspRightSidePanel.Visibility = (group.Name.Equals("STARRED", StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+			rspRightSidePane2.Visibility = (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+			rspRightSidePanel.Visibility = (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
 
 			if (rspRightSidePanel.Visibility == System.Windows.Visibility.Visible)
 			{

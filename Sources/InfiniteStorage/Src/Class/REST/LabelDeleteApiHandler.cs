@@ -13,6 +13,9 @@ namespace InfiniteStorage.REST
 
 			var label_id = new Guid(Parameters["label_id"]);
 
+			if (label_id == Guid.Empty)
+				throw new Exception("Cannot delete reserved label: " + Parameters["label_id"]);
+
 			using (var db = new MyDbContext())
 			{
 				var label = (from lb in db.Object.Labels

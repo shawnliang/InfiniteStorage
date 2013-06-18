@@ -93,7 +93,7 @@ INSERT INTO [Labels] (label_id, name, seq, deleted)
 VALUES (@labelId, 'STARRED', 1, 0);
 
 ", conn);
-						cmd.Parameters.Add(new SQLiteParameter("@labelId", Guid.NewGuid()));
+						cmd.Parameters.Add(new SQLiteParameter("@labelId", Guid.Empty));
 						cmd.ExecuteNonQuery();
 						updateDbSchemaVersion(conn, 3);
 						schemaVersion = 3;
