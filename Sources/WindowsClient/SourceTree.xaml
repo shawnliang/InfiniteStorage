@@ -205,8 +205,7 @@
 
     <TreeView.ItemTemplate>
         <HierarchicalDataTemplate ItemsSource="{Binding Contents}">
-            <StackPanel Background="Transparent"
-                        Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal">
                 <Label x:Name="item"
                        Content="{Binding Name}"
                        FontWeight="Bold"
