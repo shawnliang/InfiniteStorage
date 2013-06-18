@@ -170,8 +170,12 @@ namespace Waveface.Client
 				if (service == null)
 					return;
 
+                Cursor = Cursors.Wait;
+
 				unSortedFilesUC.Visibility = Visibility.Visible;
 				unSortedFilesUC.Init(service);
+
+                Cursor = Cursors.Arrow;
 			}
 			else
 			{

@@ -44,6 +44,8 @@ namespace Waveface.Client
 			StartDate = DateTimeCache[RtData.file_changes[0].taken_time].Date;
 			EndDate = DateTimeCache[RtData.file_changes[RtData.file_changes.Count - 1].taken_time].Date;
 
+            GC.Collect();
+
 			return true;
 		}
 

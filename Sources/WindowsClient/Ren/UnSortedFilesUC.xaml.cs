@@ -56,7 +56,6 @@ namespace Waveface.Client
 			InitSliderTicks();
 		}
 
-
 		private void InitSliderTicks()
 		{
 			m_sliderTicks.Add(new MySliderTick { Name = "30 Minutes", Value = 30 });
@@ -202,7 +201,7 @@ namespace Waveface.Client
 
 		private void ShowEvents()
 		{
-			Mouse.OverrideCursor = Cursors.Wait;
+			Cursor = Cursors.Wait;
 
 			m_defaultEventNameCache = new List<string>();
 
@@ -394,12 +393,12 @@ namespace Waveface.Client
 
 		private void listBoxEvent_LayoutUpdated(object sender, EventArgs e)
 		{
-			Mouse.OverrideCursor = Cursors.Arrow;
+			Cursor = Cursors.Arrow;
 		}
 
 		private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
-			Mouse.OverrideCursor = Cursors.Wait;
+			Cursor = Cursors.Wait;
 		}
 
 		public static DateTime StartOfWeek(DateTime dt, DayOfWeek startOfWeek = DayOfWeek.Sunday)
@@ -428,7 +427,7 @@ namespace Waveface.Client
 
 		public void AddEventToFolder(EventUC eventUC)
 		{
-			Mouse.OverrideCursor = Cursors.Wait;
+			Cursor = Cursors.Wait;
 
 			DoImport(eventUC, false);
 
@@ -450,7 +449,7 @@ namespace Waveface.Client
 
 			m_currentDevice.Refresh();
 
-			Mouse.OverrideCursor = Cursors.Arrow;
+			Cursor = Cursors.Arrow;
 		}
 
 		#region DoEvents
@@ -486,7 +485,7 @@ namespace Waveface.Client
 
 		private void DoImport(EventUC eventUC, bool all)
 		{
-			Mouse.OverrideCursor = Cursors.Wait;
+			Cursor = Cursors.Wait;
 
 			PendingSort _pendingSort = new PendingSort
 			{
@@ -560,7 +559,7 @@ namespace Waveface.Client
 			{
 			}
 
-			Mouse.OverrideCursor = Cursors.Arrow;
+			Cursor = Cursors.Arrow;
 		}
 	}
 }
