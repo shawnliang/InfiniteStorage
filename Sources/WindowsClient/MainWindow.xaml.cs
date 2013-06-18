@@ -193,6 +193,8 @@ namespace Waveface.Client
 
 			rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
 			rspRightSidePane2.Visibility = System.Windows.Visibility.Collapsed;
+
+			lbxFavorites.SelectedItem = null;
 		}
 
 
@@ -254,6 +256,12 @@ namespace Waveface.Client
 			rspRightSidePane2.Visibility = (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
 			rspRightSidePanel.Visibility = (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
 
+			if (lbxDeviceContainer.SelectedItem != null)
+			{
+				lbxDeviceContainer.ClearSelection();
+			}
+
+
 			if (rspRightSidePanel.Visibility == System.Windows.Visibility.Visible)
 			{
 				var contentEntities = lbxContentContainer.DataContext as IEnumerable<IContentEntity>;
@@ -280,6 +288,8 @@ namespace Waveface.Client
 				}
 			}
 		}
+
+
 
 		private void rspRightSidePanel_SaveToFavorite(object sender, System.EventArgs e)
 		{
