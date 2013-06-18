@@ -117,15 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="location.Size" type="System.Drawing.Size, System.Drawing">
-    <value>382, 20</value>
-  </data>
-  <data name="&gt;&gt;location.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="$this.Title" xml:space="preserve">
-    <value>Favorite Home location</value>
+  <data name="&gt;&gt;lblDescription.Name" xml:space="preserve">
+    <value>lblDescription</value>
   </data>
   <data name="&gt;&gt;lblDescription.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -134,8 +127,9 @@
   <data name="lblDescription.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>10, 15, 10, 5</value>
   </data>
-  <data name="lblDescription.Text" xml:space="preserve">
-    <value>Choose your Favorite Home location:</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="location.Size" type="System.Drawing.Size, System.Drawing">
+    <value>382, 20</value>
   </data>
   <data name="&gt;&gt;sdcbDiskSpace.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -143,9 +137,6 @@
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="sdcbDiskSpace.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
-  </data>
-  <data name="&gt;&gt;location.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>SharpSetup.UI.Forms.Modern.ModernActionStep, SharpSetup, Version=1.4.1.158, Culture=neutral, PublicKeyToken=null</value>
@@ -168,20 +159,20 @@
   <data name="&gt;&gt;lblDescription.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="$this.Subtitle" xml:space="preserve">
-    <value>Please choose where Favorite Home saves synced files</value>
-  </data>
   <data name="changeButton.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
   <data name="changeButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>409, 111</value>
   </data>
-  <data name="&gt;&gt;sdcbDiskSpace.Type" xml:space="preserve">
-    <value>SharpSetup.UI.Controls.SimpleDiskCostBox, SharpSetup, Version=1.4.1.158, Culture=neutral, PublicKeyToken=null</value>
+  <data name="sdcbDiskSpace.Size" type="System.Drawing.Size, System.Drawing">
+    <value>476, 67</value>
   </data>
   <data name="location.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 113</value>
+  </data>
+  <data name="&gt;&gt;sdcbDiskSpace.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="sdcbDiskSpace.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -189,20 +180,29 @@
   <data name="&gt;&gt;changeButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;location.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
   <data name="&gt;&gt;location.Name" xml:space="preserve">
     <value>location</value>
   </data>
-  <data name="lblDescription.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;location.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;changeButton.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="lblDescription.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="&gt;&gt;changeButton.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;location.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="$this.Subtitle" xml:space="preserve">
+    <value>Please choose where Favorite Home saves synced files</value>
+  </data>
+  <data name="lblDescription.Text" xml:space="preserve">
+    <value>Choose your Favorite Home location:</value>
   </data>
   <data name="changeButton.Text" xml:space="preserve">
     <value>Change...</value>
@@ -210,29 +210,29 @@
   <data name="sdcbDiskSpace.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>10, 10, 10, 10</value>
   </data>
-  <data name="&gt;&gt;sdcbDiskSpace.Name" xml:space="preserve">
-    <value>sdcbDiskSpace</value>
+  <data name="&gt;&gt;sdcbDiskSpace.Type" xml:space="preserve">
+    <value>SharpSetup.UI.Controls.SimpleDiskCostBox, SharpSetup, Version=1.4.1.158, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="lblDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 13</value>
-  </data>
-  <data name="&gt;&gt;sdcbDiskSpace.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+  <data name="&gt;&gt;location.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;changeButton.Name" xml:space="preserve">
     <value>changeButton</value>
   </data>
-  <data name="sdcbDiskSpace.Size" type="System.Drawing.Size, System.Drawing">
-    <value>476, 67</value>
-  </data>
-  <data name="&gt;&gt;lblDescription.Name" xml:space="preserve">
-    <value>lblDescription</value>
+  <data name="$this.Title" xml:space="preserve">
+    <value>Favorite Home location</value>
   </data>
   <data name="sdcbDiskSpace.Location" type="System.Drawing.Point, System.Drawing">
     <value>10, 237</value>
+  </data>
+  <data name="lblDescription.Size" type="System.Drawing.Size, System.Drawing">
+    <value>181, 13</value>
+  </data>
+  <data name="&gt;&gt;sdcbDiskSpace.Name" xml:space="preserve">
+    <value>sdcbDiskSpace</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
   </data>
   <data name="&gt;&gt;lblDescription.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
