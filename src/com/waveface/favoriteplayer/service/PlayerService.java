@@ -201,16 +201,24 @@ public class PlayerService extends Service{
 				@Override
                 public void serviceResolved(ServiceEvent ev) {
                 	ServiceInfo si = ev.getInfo();
+                	String homeSharing = "";
                 	if(!TextUtils.isEmpty(si.getPropertyString(Constant.PARAM_SERVER_ID))){
     	                final ServerEntity entity = new ServerEntity();
     	            	entity.serverName = si.getName();
     	            	entity.ip = si.getHostAddress();
     					entity.serverId = si.getPropertyString(Constant.PARAM_SERVER_ID);
+    	                homeSharing = si.getPropertyString(Constant.PARAM_SERVER_HOME_SHARING);
+    	                if(!TextUtils.isEmpty(homeSharing) && homeSharing.equals("false")){
+    	                	ServersLogic.purgeBonjourServerByServerId(mContext, entity.serverId);
+    	                	return;
+    	                }
+    					
     					entity.wsPort = si.getPropertyString(Constant.PARAM_WS_PORT);
     					entity.notifyPort = si.getPropertyString(Constant.PARAM_NOTIFY_PORT);
     					entity.restPort = si.getPropertyString(Constant.PARAM_REST_PORT);
     	                entity.wsLocation = "ws://"+si.getHostAddress()+":"+si.getPort();
     	                Log.d(TAG, "Resolved SERVER NAME:"+entity.serverName);
+    	                
     	                ServersLogic.updateBonjourServer(mContext, entity);
     	        		mPairedServers = ServersLogic.getPairedServer(mContext);
     	        		if(mPairedServers.size()!=0){
