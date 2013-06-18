@@ -40,6 +40,7 @@
 			this.subcribeFiles = new System.Windows.Forms.CheckBox();
 			this.fileSeq = new System.Windows.Forms.TextBox();
 			this.label_seq = new System.Windows.Forms.TextBox();
+			this.btnSimulateConnect = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// generateButton
@@ -157,11 +158,22 @@
 			this.label_seq.TabIndex = 11;
 			this.label_seq.Text = "0";
 			// 
+			// btnSimulateConnect
+			// 
+			this.btnSimulateConnect.Location = new System.Drawing.Point(12, 103);
+			this.btnSimulateConnect.Name = "btnSimulateConnect";
+			this.btnSimulateConnect.Size = new System.Drawing.Size(218, 23);
+			this.btnSimulateConnect.TabIndex = 12;
+			this.btnSimulateConnect.Text = "Simulate Device Connect";
+			this.btnSimulateConnect.UseVisualStyleBackColor = true;
+			this.btnSimulateConnect.Click += new System.EventHandler(this.btnSimulateConnect_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(527, 423);
+			this.Controls.Add(this.btnSimulateConnect);
 			this.Controls.Add(this.label_seq);
 			this.Controls.Add(this.fileSeq);
 			this.Controls.Add(this.subcribeFiles);
@@ -195,6 +207,7 @@
 		private System.Windows.Forms.CheckBox subcribeFiles;
 		private System.Windows.Forms.TextBox fileSeq;
 		private System.Windows.Forms.TextBox label_seq;
+		private System.Windows.Forms.Button btnSimulateConnect;
 	}
 }
 

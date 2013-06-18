@@ -74,6 +74,7 @@
 			this.TopMost = true;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PairingRequestDialog_FormClosing);
 			this.Load += new System.EventHandler(this.PairingRequestDialog_Load);
+			this.Shown += new System.EventHandler(this.PairingRequestDialog_Shown);
 			this.ResumeLayout(false);
 
 		}

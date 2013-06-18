@@ -6,12 +6,14 @@ using System.Data;
 using System.Data.SQLite;
 using System.Windows.Forms;
 using WebSocketSharp;
+using System.Collections.Generic;
 
 namespace DataTool
 {
 	public partial class Form1 : Form
 	{
 		WebSocket client;
+		List<WebSocket> trash = new List<WebSocket>();
 
 		public Form1()
 		{
@@ -165,6 +167,26 @@ namespace DataTool
 				client.Close();
 				client = null;
 			}
+		}
+
+		private void btnSimulateConnect_Click(object sender, EventArgs e)
+		{
+			WebSocket ws = new WebSocket("ws://127.0.0.1:13895/", new string[] { });
+
+			ws.OnOpen += (s, arg) => {
+				var cmd = JsonConvert.SerializeObject(new
+				{
+					action = "connect",
+					device_name = "dev name" + trash.Count,
+					device_id = Guid.NewGuid().ToString(),
+					transfer_count = 1000,
+				});
+
+				ws.Send(cmd);
+			};
+			ws.Connect();
+
+			trash.Add(ws);
 		}
 	}
 }

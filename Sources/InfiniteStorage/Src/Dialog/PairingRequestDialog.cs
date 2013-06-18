@@ -1,12 +1,15 @@
 ﻿using InfiniteStorage.Properties;
 using InfiniteStorage.WebsocketProtocol;
 using System;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace InfiniteStorage
 {
 	public partial class PairingRequestDialog : Form
 	{
+		static int concurrentCount;
+
 		private ProtocolContext ctx;
 
 		public PairingRequestDialog(ProtocolContext ctx)
@@ -48,6 +51,14 @@ namespace InfiniteStorage
 
 		private void PairingRequestDialog_FormClosing(object sender, FormClosingEventArgs e)
 		{
+			Interlocked.Decrement(ref concurrentCount);
+		}
+
+		private void PairingRequestDialog_Shown(object sender, EventArgs e)
+		{
+			var count = Interlocked.Increment(ref concurrentCount);
+
+			Location = new System.Drawing.Point(Location.X + count * 10, Location.Y + count * 10);
 		}
 	}
 }
