@@ -210,6 +210,9 @@ public class Constant {
 	//SYNC STATUS
 	public final static String PREF_SYNC_STATUS_THUMB_UPLOAD_ID = "sync_status_thumb_upload_id";
 	
+	//Home Sharing
+	public final static String PREF_HOME_SHARING_STATUS = "home_sharing_status";
+	
 	//REQUEST CODE
 	public static final int REQUEST_CODE_OPEN_SERVER_CHOOSER = 0;
 	public static final int REQUEST_CODE_ADD_SERVER = 1;

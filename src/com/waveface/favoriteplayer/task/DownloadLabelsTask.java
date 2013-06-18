@@ -77,6 +77,8 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 					Constant.STATION_CONNECTION_TIMEOUT);
 			entity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.class);
 			if (entity != null) {
+				mEditor.putString(Constant.PREF_HOME_SHARING_STATUS, entity.home_sharing);
+				mEditor.commit();
 				DownloadLogic.updateAllLabels(mContext, entity);
 			}
 		} catch (WammerServerException e) {

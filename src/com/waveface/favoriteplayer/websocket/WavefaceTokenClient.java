@@ -35,6 +35,7 @@ import android.text.TextUtils;
 
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
+import com.waveface.favoriteplayer.entity.HomeSharingEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.LabelChangeEvent;
@@ -166,11 +167,21 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 				entity = RuntimeState.GSON.fromJson(jsonOutput,
 						LabelChangeEntity.class);
 				
+				HomeSharingEntity homeSharingEntity   =RuntimeState.GSON.fromJson(jsonOutput,
+						HomeSharingEntity.class);	
 
 				int downloadLableInitStatus = mPrefs.getInt(
 						Constant.PREF_DOWNLOAD_LABEL_INIT_STATUS, 0);
-
-				if (downloadLableInitStatus == 1) {
+				
+				
+				if(homeSharingEntity.home_sharing!=null){
+					
+					mEditor.putString(Constant.PREF_HOME_SHARING_STATUS, homeSharingEntity.home_sharing);
+					mEditor.commit();
+				}
+				String homeSharingStatus = mPrefs.getString(Constant.PREF_HOME_SHARING_STATUS, "");
+			
+				if (downloadLableInitStatus == 1 && homeSharingStatus.equals("true")) {
 
 					try {
 						if (!TextUtils.isEmpty(jsonOutput))
