@@ -337,7 +337,7 @@ namespace Waveface.Client
 
 			if (!favorites.Any())
 			{
-				MessageBox.Show("Without any favorite can be added!");
+				MessageBox.Show("No existing Favorites");
 				return;
 			}
 

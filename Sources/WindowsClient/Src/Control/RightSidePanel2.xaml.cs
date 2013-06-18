@@ -84,12 +84,12 @@ namespace Waveface.Client
 
 		private void btnAction_Unchecked(object sender, RoutedEventArgs e)
 		{
-			btnAction.Content = "Turn on Home Sharing";
+			btnAction.Content = "Home Sharing is Off";
 		}
 
 		private void btnAction_Checked(object sender, RoutedEventArgs e)
 		{
-			btnAction.Content = "Turn off Home Sharing";
+			btnAction.Content = "Home Sharing is On";
 		}
 
 		private void tbxName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
