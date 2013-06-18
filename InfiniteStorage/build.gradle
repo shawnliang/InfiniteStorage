@@ -1,0 +1,53 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.4'
+    }
+}
+apply plugin: 'android'
+
+dependencies {
+    compile files('./libs/android-support-v4.jar')
+    compile files('./libs/apache-mime4j-0.6.jar')
+    compile files('./libs/crashlytics.jar')
+    compile files('./libs/eventbus.jar')
+    compile files('./libs/gson-2.0.jar')
+    compile files('./libs/httpclient-4.1.2.jar')
+    compile files('./libs/httpmime-4.1.2.jar')
+    compile files('./libs/imagemanager.jar')
+    compile files('./libs/jWebSocketClientAPI-1.0.jar')
+    compile files('./libs/jWebSocketCommon-1.0.jar')
+    compile files('./libs/jWebSocketJavaSEClient-1.0.jar')
+    compile files('./libs/jackson-core-asl-1.9.3.jar')
+    compile files('./libs/jackson-mapper-asl-1.9.3.jar')
+    compile files('./libs/jakarta-oro.jar')
+    compile files('./libs/javolution-5.5.1.jar')
+    compile files('./libs/joda-time-2.0.jar')
+    compile files('./libs/libGoogleAnalyticsV2.jar')
+    compile files('./libs/ocpsoft-pretty-time-1.0.7.jar')
+}
+
+android {
+    compileSdkVersion 17
+    buildToolsVersion "17"
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 9
+    }
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+
+        instrumentTest.setRoot('tests')
+    }
+}
