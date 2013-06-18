@@ -66,7 +66,7 @@ namespace Waveface.Client
 			set
 			{
 				SetValue(_stared, value);
-				staredControl.Stared = value;
+				staredControl.Tagged = value;
 			}
 		}
 		#endregion

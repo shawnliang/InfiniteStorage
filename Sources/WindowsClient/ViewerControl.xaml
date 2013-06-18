@@ -22,13 +22,13 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <local:Star x:Name="staredControl"
+        <local:LabelTag x:Name="staredControl"
                     Margin="190,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Background="Transparent"
                     Cursor="Hand"
-                    MouseDown="staredControl_MouseDown_1" />
+                    MouseDown="staredControl_MouseDown_1" Width="21" Height="21" />
         <Path Width="0.872"
               Height="46"
               Margin="0,0,64,0"

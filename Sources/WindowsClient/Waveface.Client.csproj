@@ -154,9 +154,6 @@
     <Compile Include="Src\Class\Converter\ContentTypeCountConverter.cs" />
     <Compile Include="Src\Event\UnSortedItemEventArgs.cs" />
     <Compile Include="Src\Extension\CollectionExtension.cs" />
-    <Compile Include="Star.xaml.cs">
-      <DependentUpon>Star.xaml</DependentUpon>
-    </Compile>
     <Compile Include="VideoControl.xaml.cs">
       <DependentUpon>VideoControl.xaml</DependentUpon>
     </Compile>
@@ -265,10 +262,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SourceTree.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Star.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
