@@ -196,7 +196,7 @@ namespace Waveface.Client
 		}
 
 
-		private void Window_KeyDown(object sender, KeyEventArgs e)
+		private void lbxContentContainer_KeyDown(object sender, KeyEventArgs e)
 		{
 			switch (e.Key)
 			{
