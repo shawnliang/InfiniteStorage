@@ -20,14 +20,19 @@
                B="215"
                G="215"
                R="215" />
+
+        <BitmapImage x:Key="VideoContentPlaceHolder"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="pack://application:,,,/Resource/video_ph.png" />
         <SolidColorBrush x:Key="HighlightBrush"
                          Color="{StaticResource HighlightColor}" />
 
         <SolidColorBrush x:Key="PressedBrush"
                          Color="{StaticResource PressedColor}" />
 
-						   
-		<BitmapImage x:Key="FavoriteContentFlag"
+
+        <BitmapImage x:Key="FavoriteContentFlag"
                      CacheOption="OnLoad"
                      CreateOptions="IgnoreImageCache"
                      UriSource="pack://application:,,,/Resource/favoriteicon.png" />

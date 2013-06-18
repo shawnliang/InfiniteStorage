@@ -358,11 +358,9 @@
     <Resource Include="Ren\Images\android.png" />
     <Resource Include="Ren\Images\checkmark.png" />
     <Resource Include="Ren\Images\clock.png" />
-    <Resource Include="Ren\Images\FAV_128.png" />
     <Resource Include="Ren\Images\folder.png" />
     <Resource Include="Ren\Images\video.png" />
     <Resource Include="Ren\Images\video_130x110.png" />
-    <Resource Include="Ren\Images\video_ph.png" />
     <Resource Include="Resource\sliderbarbigphotoicon.png" />
     <Resource Include="Resource\sliderbarsmallphotoicon.png" />
     <Resource Include="Resource\star_selected.png" />

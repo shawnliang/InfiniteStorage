@@ -9,10 +9,6 @@
              d:DesignWidth="602"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <BitmapImage x:Key="VideoContentPlaceHolder"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
-                     UriSource="pack://application:,,,/Resource/video_ph.png" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Storyboard x:Key="ShowInfo">
             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="photoInfo"
@@ -119,14 +115,14 @@
                        TextWrapping="Wrap" />
         </Grid>
         <Image x:Name="imgVideoIcon"
-        	Width="48"
-        	Height="35"
-        	Margin="0,0,2,2"
-        	HorizontalAlignment="Right"
-        	VerticalAlignment="Bottom"
-        	Source="{StaticResource VideoContentPlaceHolder}"
-        	Stretch="Fill"
-        	Style="{StaticResource VideoIconStyle}" />
+               Width="48"
+               Height="35"
+               Margin="0,0,2,2"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Bottom"
+               Source="{StaticResource VideoContentPlaceHolder}"
+               Stretch="Fill"
+               Style="{StaticResource VideoIconStyle}" />
         <Grid Visibility="{Binding EnableTag, Converter={StaticResource BooleanToVisibilityConverter}}">
             <l:LabelTag x:Name="ltTag"
                         Width="30"
