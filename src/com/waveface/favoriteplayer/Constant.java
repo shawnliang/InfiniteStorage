@@ -165,6 +165,7 @@ public class Constant {
 	public final static String PARAM_WS_PORT = "ws_port";	
 	public final static String PARAM_NOTIFY_PORT = "notify_port";	
 	public final static String PARAM_REST_PORT = "rest_port";	
+	public final static String PARAM_SERVER_HOME_SHARING = "home_sharing";
 	
 	public final static String PARAM_SERVER_WS_LOCATION = "server_ws_location";		
 	public final static String PARAM_SERVER_OS = "os";		
