@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
+import com.waveface.favoriteplayer.RuntimeState;
 import com.waveface.favoriteplayer.event.LabelImportedEvent;
 import com.waveface.favoriteplayer.event.ServerChooseEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
@@ -60,15 +61,9 @@ public class MainActivity extends FragmentActivity implements onSyncFragmentChan
 			if(ServersLogic.hasBackupedServers(this) == false) {
 				PickserverDialogFragment df = new PickserverDialogFragment();
 				df.show(getSupportFragmentManager(), PickserverDialogFragment.class.getSimpleName());
-			} else {			
-				if(NetworkUtil.isWifiNetworkAvailable(this)){
-					showSyncInProgressFragment();
-					new DownloadLabelsTask(this).execute(new Void[]{});
-				}
-				else{
-					mActivityLaunch = true;
-					mHander.post(mShowPlaybackRunnable);
-				}
+			} else {
+				mActivityLaunch = true;
+				mHander.post(mShowPlaybackRunnable);
 			}
 		}
         sendBroadcast(new Intent(Constant.ACTION_FAVORITE_PLAYER_ALARM));

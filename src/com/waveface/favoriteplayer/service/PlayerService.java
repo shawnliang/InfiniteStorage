@@ -82,8 +82,8 @@ public class PlayerService extends Service{
             		connectPCWithPairedServer();
             		autoPairingConnect();
             	}
-            	if(NetworkUtil.isWifiNetworkAvailable(mContext) &&
-            			!ServersLogic.hasBackupedServers(mContext)){
+            	if(NetworkUtil.isWifiNetworkAvailable(mContext) /*&&
+            			!ServersLogic.hasBackupedServers(mContext)*/){
                 	long fromTime = System.currentTimeMillis()-mMDNSSetupTime;
                 	if(NetworkUtil.isWifiNetworkAvailable(mContext)
                 			&& RuntimeState.isMDNSSetUped  
@@ -332,13 +332,13 @@ public class PlayerService extends Service{
 						bonjourServer.notifyPort,
 						bonjourServer.restPort
 						,false);
-				while(!RuntimeState.OnWebSocketOpened){
-					try {
-						Thread.sleep(50);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
+//				while(!RuntimeState.OnWebSocketOpened){
+//					try {
+//						Thread.sleep(50);
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
+//				}
 			}
 		}
 	}

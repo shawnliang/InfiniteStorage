@@ -498,7 +498,7 @@ public class ServersLogic {
 				context.sendBroadcast(new Intent(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED));
 
 				
-				Log.d(TAG, "onCreateView");
+				Log.d(TAG, "startWSServerConnect");
 
 			} catch (WebSocketException e) {
 				e.printStackTrace();
