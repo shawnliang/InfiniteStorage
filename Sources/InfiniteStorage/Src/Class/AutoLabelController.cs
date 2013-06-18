@@ -187,6 +187,11 @@ namespace InfiniteStorage
 						db.Object.LabelFiles.Add(new LabeledFile { file_id = act, label_id = label_id });
 					}
 
+					var lbRecord = (from lb in db.Object.Labels
+									where lb.label_id == label_id
+									select lb).First();
+					lbRecord.seq = SeqNum.GetNextSeq();
+
 					db.Object.SaveChanges();
 				}
 			}
