@@ -14,7 +14,6 @@
         MinWidth="1000"
         MinHeight="600"
         Icon="FAV_512.ico"
-        KeyDown="Window_KeyDown"
         Loaded="Window_Loaded"
         UseLayoutRounding="True"
         WindowState="Maximized"
@@ -491,6 +490,7 @@
                          MouseDoubleClick="OnPhotoClick"
                          SelectedIndex="0"
                          VirtualizingStackPanel.IsVirtualizing="True"
+						 KeyDown="lbxContentContainer_KeyDown"
                          VirtualizingStackPanel.VirtualizationMode="Recycling">
                     <ListBox.Resources>
                         <Style BasedOn="{StaticResource {x:Type ListBoxItem}}"
