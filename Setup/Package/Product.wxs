@@ -21,6 +21,7 @@
     <!-- <Icon Id="icon.ico" SourceFile="..\ProductBuild\sampleIcon.ico" /> -->
 
     <Directory Id="TARGETDIR" Name="SourceDir" DiskId="1">
+      
       <Directory Id="ProgramMenuFolder" Name="Programs">
         <Directory Id="ProgramMenuDir" Name="!(loc.APPNAME)">
           <Component Id="pmd" Guid="{971d558a-99d6-40cc-89ed-f24620bfcf4b}">
@@ -28,6 +29,11 @@
             <RegistryValue Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Run" Type="string" Name="com.waveface.FavoriteHome"  Value="&quot;[INSTALLLOCATION]InfiniteStorage.exe&quot;" />
             
             <RemoveFolder Id="ProgramMenuDirRF" On="uninstall" />
+
+            <Shortcut Id="Desktop.Shortcut.Fav" Name="!(loc.APPNAME)"
+                      WorkingDirectory="INSTALLDIR" Target="[INSTALLLOCATION]InfiniteStorage.exe" Directory="DesktopFolder">
+              <ShortcutProperty Key="System.AppUserModel.ID" Value="com.waveface.infiniteStorage.app"></ShortcutProperty>
+            </Shortcut>
 
             <Shortcut Id="ProgMenu.Shortcut.MainEntry" Name="!(loc.APPNAME)"
                       WorkingDirectory="INSTALLDIR" Target="[INSTALLLOCATION]InfiniteStorage.exe">

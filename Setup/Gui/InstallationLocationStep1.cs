@@ -16,19 +16,17 @@ namespace Gui
 
 		private void InstallationLocationStep1_Entering(object sender, ChangeStepEventArgs e)
 		{
-			//if (!Wizard.GetVariable<bool>("CustomInstallation"))
-			//    Wizard.ContinueMove();
-
-
 			location.Text = Path.Combine(Environment.GetEnvironmentVariable("UserProfile"), "Favorite Home");
 		}
 
 		private void changeButton_Click(object sender, EventArgs e)
 		{
 			var dialog = new FolderBrowserDialog();
-			dialog.SelectedPath = location.Text;
+			dialog.SelectedPath = Path.GetDirectoryName(location.Text);
+
+
 			if (dialog.ShowDialog() == DialogResult.OK)
-				location.Text = dialog.SelectedPath;
+				location.Text = Path.Combine(dialog.SelectedPath, "Favorite Home");
 		}
 
 		private void InstallationLocationStep1_MoveNext(object sender, ChangeStepEventArgs e)
