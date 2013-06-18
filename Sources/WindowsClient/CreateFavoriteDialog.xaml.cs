@@ -34,6 +34,17 @@ namespace Waveface.Client
 
 		private void Button_Click_1(object sender, System.Windows.RoutedEventArgs e)
 		{
+			OK();
+		}
+
+		private void OK()
+		{
+			if (string.IsNullOrWhiteSpace(tbxFavoriteName.Text))
+			{
+				MessageBox.Show("Empty favorite name!");
+				tbxFavoriteName.Focus();
+				return;
+			}
 			this.DialogResult = true;
 		}
 
@@ -47,7 +58,7 @@ namespace Waveface.Client
 		{
 			if (e.Key != Key.Enter)
 				return;
-			this.DialogResult = true;
+			OK();
 		}
 	}
 }
