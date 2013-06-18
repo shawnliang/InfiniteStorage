@@ -487,10 +487,10 @@
                          BorderBrush="{DynamicResource ContentAreaBackground}"
                          IsSynchronizedWithCurrentItem="True"
                          ItemsSource="{Binding IsAsync=True}"
+                         KeyDown="lbxContentContainer_KeyDown"
                          MouseDoubleClick="OnPhotoClick"
                          SelectedIndex="0"
                          VirtualizingStackPanel.IsVirtualizing="True"
-						 KeyDown="lbxContentContainer_KeyDown"
                          VirtualizingStackPanel.VirtualizationMode="Recycling">
                     <ListBox.Resources>
                         <Style BasedOn="{StaticResource {x:Type ListBoxItem}}"
@@ -522,7 +522,6 @@
                                   Margin="10,0,0,0"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Center"
-                                  Cursor="Hand"
                                   Maximum="400"
                                   Minimum="150"
                                   Value="200" />
