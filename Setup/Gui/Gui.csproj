@@ -124,6 +124,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FinishStep.resx">
       <DependentUpon>FinishStep.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FinishStep.zh-TW.resx">
       <DependentUpon>FinishStep.cs</DependentUpon>
@@ -142,6 +143,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InstallationModeStep.resx">
       <DependentUpon>InstallationModeStep.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="InstallationModeStep.zh-TW.resx">
       <DependentUpon>InstallationModeStep.cs</DependentUpon>

@@ -213,7 +213,7 @@
     <value>4</value>
   </data>
   <data name="cbRunNow.Text" xml:space="preserve">
-    <value>Run Bunny</value>
+    <value>Run Favorite Home</value>
   </data>
   <data name="&gt;&gt;lblInstruction.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
