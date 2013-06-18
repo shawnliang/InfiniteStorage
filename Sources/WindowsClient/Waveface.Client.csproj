@@ -154,6 +154,8 @@
     <Compile Include="Src\Class\Converter\ContentTypeCountConverter.cs" />
     <Compile Include="Src\Event\UnSortedItemEventArgs.cs" />
     <Compile Include="Src\Extension\CollectionExtension.cs" />
+
+    <Compile Include="Src\Extension\TreeViewExtension.cs" />
     <Compile Include="Src\Control\VideoControl.xaml.cs">
       <DependentUpon>VideoControl.xaml</DependentUpon>
     </Compile>
