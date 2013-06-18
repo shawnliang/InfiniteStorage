@@ -45,7 +45,7 @@ namespace InfiniteStorage
 			txt.Add("version", "1.0");
 			txt.Add("service_name", ServiceName);
 			txt.Add("waiting_for_pair", is_accepting ? "true" : "false");
-
+			txt.Add("home_sharing", HomeSharing.Enabled ? "true" : "false");
 			m_svc.TxtRecord = txt;
 			m_svc.Register();
 		}

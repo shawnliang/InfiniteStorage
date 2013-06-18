@@ -121,6 +121,8 @@ namespace InfiniteStorage
 				{
 					NginxUtility.Instance.Stop();
 				}
+
+				BonjourServiceRegistrator.Instance.Register();
 			}
 
 		}
