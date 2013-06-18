@@ -306,9 +306,9 @@
             <!--  <RowDefinition Height="25"/>  -->
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="225" />
+            <ColumnDefinition Width="225" MinWidth="225" />
             <ColumnDefinition />
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="200" MinWidth="200"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Row="0"
               Grid.Column="0"
@@ -381,8 +381,8 @@
             </Grid.Effect>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" MinHeight="100"/>
+                    <RowDefinition Height="*" MinHeight="100"/>
                 </Grid.RowDefinitions>
 
                 <Grid>
@@ -467,6 +467,7 @@
 
         <GridSplitter Grid.Row="1"
                       Grid.Column="2"
+					  Width="5"
                       HorizontalAlignment="Left"
                       Background="Transparent" />
         <Grid x:Name="gdContentArea"
