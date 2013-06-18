@@ -319,11 +319,19 @@ namespace Waveface.Client
 
 		private void rspRightSidePanel_AddToFavorite(object sender, System.EventArgs e)
 		{
+			var favorites = Waveface.ClientFramework.Client.Default.Favorites.Skip(1);
+
+			if (!favorites.Any())
+			{
+				MessageBox.Show("Without any favorite can be added!");
+				return;
+			}
+
 			var dialog = new AddToFavoriteDialog();
 			dialog.Owner = this;
 			dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
 
-			dialog.FavoriteItemSource = Waveface.ClientFramework.Client.Default.Favorites.Skip(1);
+			dialog.FavoriteItemSource = favorites;
 
 			if (dialog.ShowDialog() != true)
 				return;
