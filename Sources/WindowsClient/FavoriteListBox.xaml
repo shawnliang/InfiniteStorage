@@ -11,15 +11,17 @@
          ItemsSource="{Binding IsAsync=True}"
          UseLayoutRounding="True"
          d:DesignHeight="109"
-         d:DesignWidth="225"
+         d:DesignWidth="400"
          mc:Ignorable="d">
 
     <ListBox.ItemTemplate>
         <DataTemplate>
-            <StackPanel x:Name="item"
-                        Width="2048"
-                        Background="Transparent"
-                        Orientation="Horizontal">
+            <Grid x:Name="item">
+				<Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0">
                 <Image x:Name="icon"
                        Margin="20, 0, 0, 0"
                        Source="{StaticResource UnSelectedFav}" />
@@ -28,24 +30,25 @@
                        VerticalContentAlignment="Center"
                        Content="{Binding Name}"
                        Foreground="White" />
+				</StackPanel>
                 <Label x:Name="sourceCount"
                        Height="32"
                        VerticalContentAlignment="Center"
-                       Foreground="White" />
-            </StackPanel>
+                       Content="{Binding ContentCount}"
+                       Foreground="White" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" />
+            </Grid>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem},
                                                Path=IsSelected}"
                              Value="True">
-                    <Setter TargetName="icon"
-                            Property="Source"
-                            Value="{StaticResource SelectedFav}" />
+                    <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedFav}" />
                     <Setter TargetName="item" Property="Background" Value="#FFD4D4D3" />
                     <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
                     <Setter TargetName="sourceCount" Property="Foreground" Value="Black" />
                 </DataTrigger>
 
-                <DataTrigger Binding="{Binding ID}" Value="00000000-0000-0000-0000-000000000000">
+                <DataTrigger Binding="{Binding ID}"
+                             Value="00000000-0000-0000-0000-000000000000">
                     <Setter TargetName="icon" Property="Source" Value="{StaticResource UnSelectedStar}" />
                 </DataTrigger>
 
