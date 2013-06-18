@@ -118,6 +118,15 @@
                                       IsAsync=True}"
                        TextWrapping="Wrap" />
         </Grid>
+        <Image x:Name="imgVideoIcon"
+        	Width="48"
+        	Height="35"
+        	Margin="0,0,2,2"
+        	HorizontalAlignment="Right"
+        	VerticalAlignment="Bottom"
+        	Source="{StaticResource VideoContentPlaceHolder}"
+        	Stretch="Fill"
+        	Style="{StaticResource VideoIconStyle}" />
         <Grid Visibility="{Binding EnableTag, Converter={StaticResource BooleanToVisibilityConverter}}">
             <l:LabelTag x:Name="ltTag"
                         Width="30"
@@ -128,15 +137,6 @@
                                          Mode=TwoWay}"
                         Visibility="{Binding Liked,
                                              Converter={StaticResource BooleanToVisibilityConverter}}" />
-            <Image x:Name="imgVideoIcon"
-                   Width="48"
-                   Height="35"
-                   Margin="0,0,2,2"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Bottom"
-                   Source="{StaticResource VideoContentPlaceHolder}"
-                   Stretch="Fill"
-                   Style="{StaticResource VideoIconStyle}" />
 
         </Grid>
     </Grid>
