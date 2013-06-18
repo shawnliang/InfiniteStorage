@@ -110,12 +110,7 @@
       <Component Id="System.Net.Http.WebRequest.dll" Guid="*">
         <File Id="System.Net.Http.WebRequest.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Net.Http.WebRequest.dll" />
       </Component>
-      <Component Id="System.Runtime.dll" Guid="*">
-        <File Id="System.Runtime.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Runtime.dll" />
-      </Component>
-      <Component Id="System.Threading.Tasks.dll" Guid="*">
-        <File Id="System.Threading.Tasks.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Threading.Tasks.dll" />
-      </Component>
+
       <Component Id="System.Windows.Controls.DataVisualization.Toolkit.dll" Guid="*">
         <File Id="System.Windows.Controls.DataVisualization.Toolkit.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Windows.Controls.DataVisualization.Toolkit.dll" />
       </Component>
@@ -176,8 +171,6 @@
       <ComponentRef Id="System.Net.Http.Extensions.dll" />
       <ComponentRef Id="System.Net.Http.Primitives.dll" />
       <ComponentRef Id="System.Net.Http.WebRequest.dll" />
-      <ComponentRef Id="System.Runtime.dll" />
-      <ComponentRef Id="System.Threading.Tasks.dll" />
       <ComponentRef Id="System.Windows.Controls.DataVisualization.Toolkit.dll" />
       <ComponentRef Id="System.Windows.Controls.Input.Toolkit.Design.dll" />
       <ComponentRef Id="System.Windows.Controls.Input.Toolkit.dll" />
