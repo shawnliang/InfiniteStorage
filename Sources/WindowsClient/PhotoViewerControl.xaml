@@ -131,26 +131,24 @@
                  Visibility="Collapsed" />
 
         <l:VideoControl x:Name="vcVideoControl"
-                        Grid.Row="1"
                         Width="300"
                         Height="22"
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
+                        VerticalAlignment="Bottom"
                         DataContext="{Binding SelectedItem,
                                               ElementName=lbImages,
                                               IsAsync=True}"
                         PauseButtonClick="vcVideoControl_PauseButtonClick"
                         PlayButtonClick="vcVideoControl_PlayButtonClick"
                         SeekPosition="vcVideoControl_SeekPosition"
-                        Visibility="Collapsed"
-                        VolumeChanged="vcVideoControl_VolumeChanged" />
+                        VolumeChanged="vcVideoControl_VolumeChanged" Margin="0" Visibility="Collapsed" />
         
         <l:ViewerControl x:Name="vcViewerControl"
                          Grid.Row="1"
                          Width="300"
                          Height="40"
                          HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
+                         VerticalAlignment="Bottom"
                          Close="ViewerControl_Close"
                          DataContext="{Binding SelectedItem,
                                                ElementName=lbImages,
