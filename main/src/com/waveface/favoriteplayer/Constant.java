@@ -165,6 +165,7 @@ public class Constant {
 	public final static String PARAM_WS_PORT = "ws_port";	
 	public final static String PARAM_NOTIFY_PORT = "notify_port";	
 	public final static String PARAM_REST_PORT = "rest_port";	
+	public final static String PARAM_SERVER_HOME_SHARING = "home_sharing";
 	
 	public final static String PARAM_SERVER_WS_LOCATION = "server_ws_location";		
 	public final static String PARAM_SERVER_OS = "os";		
@@ -209,6 +210,9 @@ public class Constant {
 
 	//SYNC STATUS
 	public final static String PREF_SYNC_STATUS_THUMB_UPLOAD_ID = "sync_status_thumb_upload_id";
+	
+	//Home Sharing
+	public final static String PREF_HOME_SHARING_STATUS = "home_sharing_status";
 	
 	//REQUEST CODE
 	public static final int REQUEST_CODE_OPEN_SERVER_CHOOSER = 0;
