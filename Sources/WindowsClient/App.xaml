@@ -4,7 +4,7 @@
              xmlns:fw="clr-namespace:Waveface.ClientFramework;assembly=Waveface.ClientFramework"
              xmlns:local="clr-namespace:Waveface.Client"
              xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
-             StartupUri="MainWindow.xaml">
+             StartupUri="Src\Window\MainWindow.xaml">
     <Application.Resources>
 
         <SolidColorBrush x:Key="DefaultBrush"

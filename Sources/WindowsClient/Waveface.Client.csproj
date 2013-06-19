@@ -41,7 +41,7 @@
     <StartupObject>Waveface.Client.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>FAV_512.ico</ApplicationIcon>
+    <ApplicationIcon>Resource\FAV_512.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -92,7 +92,7 @@
     <Compile Include="Src\Control\CloseButton.xaml.cs">
       <DependentUpon>CloseButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ContentItem.xaml.cs">
+    <Compile Include="Src\Control\ContentItem.xaml.cs">
       <DependentUpon>ContentItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Dialog\CreateFavoriteDialog.xaml.cs">
@@ -101,16 +101,16 @@
     <Compile Include="Src\Control\FavoriteAllButton.xaml.cs">
       <DependentUpon>FavoriteAllButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FavoriteListBox.xaml.cs">
+    <Compile Include="Src\Control\FavoriteListBox.xaml.cs">
       <DependentUpon>FavoriteListBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Control\GroupContentItem.xaml.cs">
       <DependentUpon>GroupContentItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LabeledContentInfo.xaml.cs">
+    <Compile Include="Src\Control\LabeledContentInfo.xaml.cs">
       <DependentUpon>LabeledContentInfo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LabelTag.xaml.cs">
+    <Compile Include="Src\Control\LabelTag.xaml.cs">
       <DependentUpon>LabelTag.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Control\NextButton.xaml.cs">
@@ -119,10 +119,10 @@
     <Compile Include="Src\Control\PauseButton.xaml.cs">
       <DependentUpon>PauseButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PhotoViewer.xaml.cs">
+    <Compile Include="Src\Control\PhotoViewer.xaml.cs">
       <DependentUpon>PhotoViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PhotoViewerControl.xaml.cs">
+    <Compile Include="Src\Control\PhotoViewerControl.xaml.cs">
       <DependentUpon>PhotoViewerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Control\PlayButton.xaml.cs">
@@ -148,13 +148,12 @@
     <Compile Include="Src\Control\RightSidePanel2.xaml.cs">
       <DependentUpon>RightSidePanel2.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SourceTree.xaml.cs">
+    <Compile Include="Src\Control\SourceTree.xaml.cs">
       <DependentUpon>SourceTree.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Class\Converter\ContentTypeCountConverter.cs" />
     <Compile Include="Src\Event\UnSortedItemEventArgs.cs" />
     <Compile Include="Src\Extension\CollectionExtension.cs" />
-
     <Compile Include="Src\Extension\TreeViewExtension.cs" />
     <Compile Include="Src\Control\VideoControl.xaml.cs">
       <DependentUpon>VideoControl.xaml</DependentUpon>
@@ -183,7 +182,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ContentItem.xaml">
+    <Page Include="Src\Control\ContentItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -195,7 +194,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="FavoriteListBox.xaml">
+    <Page Include="Src\Control\FavoriteListBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -203,15 +202,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="LabeledContentInfo.xaml">
+    <Page Include="Src\Control\LabeledContentInfo.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="LabelTag.xaml">
+    <Page Include="Src\Control\LabelTag.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Src\Window\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -219,7 +218,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Src\Window\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -231,11 +230,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PhotoViewer.xaml">
+    <Page Include="Src\Control\PhotoViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PhotoViewerControl.xaml">
+    <Page Include="Src\Control\PhotoViewerControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -263,7 +262,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SourceTree.xaml">
+    <Page Include="Src\Control\SourceTree.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -353,7 +352,7 @@
     <Resource Include="Resource\ico_unsort_unselect.png" />
     <Resource Include="Resource\video_ph.png" />
     <Resource Include="Resource\uppressed.png" />
-    <Resource Include="FAV_512.ico" />
+    <Resource Include="Resource\FAV_512.ico" />
     <Resource Include="Resource\notfavoriteicon.png" />
     <Resource Include="Resource\pplaceholder.png" />
     <Resource Include="Ren\Images\add_folder.png" />
