@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.db.LabelDB;
@@ -38,10 +40,15 @@ public class PlaybackActivity extends SherlockFragmentActivity {
 	private ArrayList<PlaybackData> mDatas;
 	private String mLabelTitle;
 	private ProgressBar mProgress;
+	private boolean mTV = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstance) {
 		super.onCreate(savedInstance);
+	    
+		if (getPackageManager().hasSystemFeature("com.google.android.tv")) {
+			mTV = true;
+		}
 
 		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 		
@@ -59,10 +66,35 @@ public class PlaybackActivity extends SherlockFragmentActivity {
 		String labelId = data.getString(Constant.ARGUMENT1);
 		mLabelTitle = data.getString(Constant.ARGUMENT3);
 		
-		new LoadPlaybackData(this,labelId).execute(null, null, null);
+	    getSupportActionBar().setTitle(mLabelTitle);
+	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
-
+		new LoadPlaybackData(this,labelId).execute(null, null, null);
 	}
+	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	if(mTV) {
+	        menu.add(0, 0, 0, R.string.previous_page)
+	            .setIcon(R.drawable.ic_back_normal)
+	            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+    	}
+    	menu.add(0, 1, 0, R.string.setting_title);
+        return super.onCreateOptionsMenu(menu);
+    }
+    
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+    	switch(item.getItemId()) {
+    	case android.R.id.home:
+    	case 0:
+    		onBackPressed();
+    		break;
+    	case 1:
+    		break;
+    	}
+    	return true;
+    }
 	
 	@Override
 	protected void onResume() {

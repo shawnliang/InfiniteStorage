@@ -1,38 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <TextView
-        android:id="@+id/textview_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="@dimen/galleryview_horizontal_margin"
-        android:layout_marginTop="@dimen/galleryview_title_margin"
-        android:padding="0dip"
-        android:gravity="center_vertical"
-        android:textColor="@color/white"
-        android:textSize="@dimen/galleryview_title_text_size" />
-
-    <TextView
-        android:id="@+id/textview_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="@dimen/galleryview_horizontal_margin"
-        android:layout_marginTop="@dimen/galleryview_title_margin"
-        android:clickable="true"
-        android:drawableLeft="@drawable/ic_back"
-        android:drawablePadding="5dip"
-        android:focusable="true"
-        android:gravity="center"
-        android:text="@string/previous_page"
-        android:textColor="@drawable/indicator_textcolor"
-        android:textSize="@dimen/galleryview_back_text_size" />
 
     <GridView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/grid_view"
         style="@style/GalleryView"
         android:layout_width="match_parent"
@@ -46,5 +15,3 @@
         android:listSelector="@drawable/list_selector"
         android:stretchMode="columnWidth"
         android:verticalSpacing="5dp" />
-
-</RelativeLayout>

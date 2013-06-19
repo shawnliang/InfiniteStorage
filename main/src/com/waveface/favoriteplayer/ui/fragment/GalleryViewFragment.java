@@ -49,11 +49,6 @@ public class GalleryViewFragment extends Fragment implements OnItemClickListener
 		mGridView.requestFocus();
 		mGridView.setOnItemClickListener(this);
 		
-		TextView tv = (TextView) mRootView.findViewById(R.id.textview_title);
-		tv.setText(data.getString(Constant.ARGUMENT3));
-		
-		mRootView.findViewById(R.id.textview_back).setOnClickListener(this);
-		
 		return mRootView;
 	}
 	
