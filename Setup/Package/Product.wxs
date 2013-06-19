@@ -52,8 +52,14 @@
     <CustomAction Id="AddUrlAcl" Directory="INSTALLLOCATION"
                       ExeCommand="[SystemFolder]netsh.exe http add urlacl url=http://+:14005/ user=users"
                       Return="ignore" Execute="deferred" />
-
+    <CustomAction Id="KillProcess" Directory="INSTALLLOCATION"
+                      ExeCommand="[INSTALLLOCATION]InfiniteStorage.exe --close-all-processes"
+                      Return="ignore"/>
+    
     <InstallExecuteSequence>
+      <Custom Action="KillProcess" Before="InstallValidate">
+        (&amp;MainFeature = 2) AND (!MainFeature = 3)
+      </Custom>
       <Custom Action="AddUrlAcl" Before="InstallFinalize"><![CDATA[NOT Installed AND VersionNT >= 601]]></Custom>
     </InstallExecuteSequence>
 

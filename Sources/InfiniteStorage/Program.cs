@@ -17,6 +17,7 @@ using WebSocketSharp.Server;
 using Waveface.Common;
 using System.Globalization;
 using System.Threading;
+using System.Diagnostics;
 
 namespace InfiniteStorage
 {
@@ -33,6 +34,12 @@ namespace InfiniteStorage
 		[STAThread]
 		static void Main()
 		{
+			if (Environment.GetCommandLineArgs().Contains("--close-all-processes"))
+			{
+				forceCloseAllProcesses();
+				return;
+			}
+
 			Boolean bCreatedNew;
 
 			var cultureName = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "Culture", "");
@@ -59,8 +66,8 @@ namespace InfiniteStorage
 			AppDomain.CurrentDomain.UnhandledException += NBug.Handler.UnhandledException;
 			Application.ThreadException += NBug.Handler.ThreadException;
 
-
 			Log4netConfigure.InitLog4net();
+
 			log4net.LogManager.GetLogger("main").Warn("==== program started ====");
 
 			if (!Settings.Default.IsUpgraded)
@@ -187,6 +194,60 @@ namespace InfiniteStorage
 		{
 			MessageBox.Show("Bonjour DNS operation error: " + e.error, "Error");
 			log4net.LogManager.GetLogger("main").Warn("Bonjour DNS operation error: " + e.error.ToString());
+		}
+
+		private static void forceCloseAllProcesses()
+		{
+			try
+			{
+				int retry = 10;
+				while (procExists("nginx") && retry > 0)
+				{
+					NginxUtility.Instance.Stop();
+					Thread.Sleep(500);
+
+					retry--;
+				}
+			}
+			catch(Exception e)
+			{
+				log4net.LogManager.GetLogger("uninstall").Warn("stop nginx error: ", e);
+			}
+
+			forceCloseProcess("Waveface.Client");
+			forceCloseProcess("InfiniteStorage");
+		}
+
+		private static bool procExists(string procName)
+		{
+			var procs = Process.GetProcessesByName(procName);
+			return procs != null && procs.Any();
+		}
+
+		private static void forceCloseProcess(string procName)
+		{
+			Process[] uiProcesses;
+			int retry = 10;
+
+			while ((uiProcesses = Process.GetProcessesByName(procName)) != null && uiProcesses.Any() && retry > 0)
+			{
+				foreach (var proc in uiProcesses)
+				{
+					if (proc.Id == Process.GetCurrentProcess().Id)
+						continue;
+
+					try
+					{
+						proc.Kill();
+						proc.WaitForExit(500);
+					}
+					catch (Exception e)
+					{
+					}
+				}
+
+				retry--;
+			}
 		}
 	}
 }
