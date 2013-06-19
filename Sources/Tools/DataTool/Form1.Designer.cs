@@ -41,6 +41,7 @@
 			this.fileSeq = new System.Windows.Forms.TextBox();
 			this.label_seq = new System.Windows.Forms.TextBox();
 			this.btnSimulateConnect = new System.Windows.Forms.Button();
+			this.resetStarredGuidBtn = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// generateButton
@@ -168,11 +169,22 @@
 			this.btnSimulateConnect.UseVisualStyleBackColor = true;
 			this.btnSimulateConnect.Click += new System.EventHandler(this.btnSimulateConnect_Click);
 			// 
+			// resetStarredGuidBtn
+			// 
+			this.resetStarredGuidBtn.Location = new System.Drawing.Point(317, 103);
+			this.resetStarredGuidBtn.Name = "resetStarredGuidBtn";
+			this.resetStarredGuidBtn.Size = new System.Drawing.Size(181, 23);
+			this.resetStarredGuidBtn.TabIndex = 13;
+			this.resetStarredGuidBtn.Text = "Reset STARRED GUID";
+			this.resetStarredGuidBtn.UseVisualStyleBackColor = true;
+			this.resetStarredGuidBtn.Click += new System.EventHandler(this.resetStarredGuidBtn_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(527, 423);
+			this.Controls.Add(this.resetStarredGuidBtn);
 			this.Controls.Add(this.btnSimulateConnect);
 			this.Controls.Add(this.label_seq);
 			this.Controls.Add(this.fileSeq);
@@ -208,6 +220,7 @@
 		private System.Windows.Forms.TextBox fileSeq;
 		private System.Windows.Forms.TextBox label_seq;
 		private System.Windows.Forms.Button btnSimulateConnect;
+		private System.Windows.Forms.Button resetStarredGuidBtn;
 	}
 }
 

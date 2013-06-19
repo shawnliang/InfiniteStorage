@@ -188,5 +188,19 @@ namespace DataTool
 
 			trash.Add(ws);
 		}
+
+		private void resetStarredGuidBtn_Click(object sender, EventArgs e)
+		{
+			using (var conn = new SQLiteConnection())
+			{
+				conn.ConnectionString = MyDbContext.ConnectionString;
+				conn.Open();
+
+				var cmd = conn.CreateCommand();
+				cmd.CommandText = "update [Labels] set label_id = @label where [name] = 'STARRED'";
+				cmd.Parameters.Add(new SQLiteParameter("@label", Guid.Empty));
+				cmd.ExecuteNonQuery();
+			}
+		}
 	}
 }
