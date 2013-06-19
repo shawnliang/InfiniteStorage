@@ -63,8 +63,8 @@ namespace Waveface.Client
         private void InitTimer()
         {
             m_dispatcherTimer = new DispatcherTimer();
-            m_dispatcherTimer.Tick += m_dispatcherTimer_Tick;
-            m_dispatcherTimer.Interval = new TimeSpan(0, 0, 3);
+            m_dispatcherTimer.Tick += dispatcherTimer_Tick;
+            m_dispatcherTimer.Interval = new TimeSpan(0, 0, 2);
         }
 
         private void InitSliderTicks()
@@ -117,18 +117,16 @@ namespace Waveface.Client
             return true;
         }
 
-        void m_dispatcherTimer_Tick(object sender, EventArgs e)
+        void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             int _count = BunnyUnsortedContentGroup.countUnsortedItems(m_currentDevice.ID);
 
             if (_count != Rt.RtData.file_changes.Count)
             {
-                m_dispatcherTimer.Stop();
-
-                Init(m_currentDevice);
-
-                GC.Collect();
+                btnRefresh.Visibility = Visibility.Visible;
             }
+
+            btnRefresh.Content = "Refresh " + "(" + (_count - (VideosCount + PhotosCount)) + ")";
         }
 
         public void Stop()
@@ -137,6 +135,21 @@ namespace Waveface.Client
             {
                 m_dispatcherTimer.Stop();
             }
+        }
+
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            m_dispatcherTimer.Stop();
+
+            Cursor = Cursors.Wait;
+
+            DoEvents();
+
+            Init(m_currentDevice);
+
+            Cursor = Cursors.Arrow;
+
+            GC.Collect();
         }
 
         #region REST
@@ -270,6 +283,8 @@ namespace Waveface.Client
 
                 m_eventUCs.Add(_ctl);
             }
+
+            DoEvents();
 
             DataTemplate _dataTemplate = FindResource("SbPreviewTemplate") as DataTemplate;
 
@@ -518,12 +533,15 @@ namespace Waveface.Client
             m_eventUCs.Clear();
 
             ShowInfor();
+
             m_currentDevice.Refresh();
         }
 
         private void DoImport(EventUC eventUC, bool all)
         {
             Cursor = Cursors.Wait;
+
+            m_dispatcherTimer.Stop();
 
             PendingSort _pendingSort = new PendingSort
             {
@@ -596,6 +614,8 @@ namespace Waveface.Client
             catch
             {
             }
+
+            m_dispatcherTimer.Start();
 
             Cursor = Cursors.Arrow;
         }
