@@ -110,7 +110,12 @@ namespace Waveface.Client
 
 					BitmapImage _vidoeThumb = new BitmapImage();
 					_vidoeThumb.BeginInit();
-					_vidoeThumb.UriSource = new Uri(_file.tiny_path, UriKind.Absolute);
+
+					if (File.Exists(_file.tiny_path))
+						_vidoeThumb.UriSource = new Uri(_file.tiny_path, UriKind.Absolute);
+					else
+						_vidoeThumb.UriSource = new Uri("pack://application:,,,/Ren/Images/video_130x110.png");
+
 					_vidoeThumb.EndInit();
 
 					_eventPhoto.MediaSource = _vidoeThumb;
