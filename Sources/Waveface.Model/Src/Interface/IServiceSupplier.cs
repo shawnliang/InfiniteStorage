@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Waveface.Model
 {
@@ -37,7 +38,7 @@ namespace Waveface.Model
 		/// Gets the services.
 		/// </summary>
 		/// <value>The services.</value>
-		IEnumerable<IService> Services { get; }
+		ObservableCollection<IService> Services { get; }
 		#endregion
 	}
 }

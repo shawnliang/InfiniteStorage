@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace Waveface.Model
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	public abstract class ServiceSupplier : IServiceSupplier
+	public abstract class ServiceSupplier : IServiceSupplier, INotifyPropertyChanged
 	{
 		#region Var
-		private IEnumerable<IService> _services;
+		private ObservableCollection<IService> _services;
 		#endregion
 
 
@@ -55,15 +57,11 @@ namespace Waveface.Model
 		/// Gets the services.
 		/// </summary>
 		/// <value>The services.</value>
-		public virtual IEnumerable<IService> Services
+		public virtual ObservableCollection<IService> Services
 		{
 			get
 			{
-				return _services;
-			}
-			protected set
-			{
-				_services = value;
+				return _services ?? (_services = new ObservableCollection<IService>());
 			}
 		}
 
@@ -88,5 +86,16 @@ namespace Waveface.Model
 			return this.Name;
 		}
 		#endregion
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		protected void OnPropertyChanged(string name)
+		{
+			var handler = PropertyChanged;
+			if (handler != null)
+			{
+				handler(this, new PropertyChangedEventArgs(name));
+			}
+		}
 	}
 }
