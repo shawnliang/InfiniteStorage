@@ -13,7 +13,7 @@
         Height="498.5"
         MinWidth="1000"
         MinHeight="600"
-        Icon="FAV_512.ico"
+        Icon="/Waveface.Client;component/Resource/FAV_512.ico"
         Loaded="Window_Loaded"
         UseLayoutRounding="True"
         WindowState="Maximized"
@@ -306,9 +306,11 @@
             <!--  <RowDefinition Height="25"/>  -->
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="225" MinWidth="225" />
+            <ColumnDefinition Width="225"
+                              MinWidth="225" />
             <ColumnDefinition />
-            <ColumnDefinition Width="200" MinWidth="200"/>
+            <ColumnDefinition Width="200"
+                              MinWidth="200" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Row="0"
               Grid.Column="0"
@@ -381,8 +383,10 @@
             </Grid.Effect>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" MinHeight="100"/>
-                    <RowDefinition Height="*" MinHeight="100"/>
+                    <RowDefinition Height="*"
+                                   MinHeight="100" />
+                    <RowDefinition Height="*"
+                                   MinHeight="100" />
                 </Grid.RowDefinitions>
 
                 <Grid>
@@ -467,7 +471,7 @@
 
         <GridSplitter Grid.Row="1"
                       Grid.Column="2"
-					  Width="5"
+                      Width="5"
                       HorizontalAlignment="Left"
                       Background="Transparent" />
         <Grid x:Name="gdContentArea"
