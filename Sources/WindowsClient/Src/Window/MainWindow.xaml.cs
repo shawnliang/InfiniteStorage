@@ -223,6 +223,11 @@ namespace Waveface.Client
 		{
 			ClientFramework.Client.Default.Tag(lbxContentContainer.Items.OfType<IContent>());
 			RefreshContentArea();
+			RefreshStarted();
+		}
+
+		private void RefreshStarted()
+		{
 			RefreshFavorite(lbxFavorites.Items.OfType<IContentGroup>().FirstOrDefault());
 		}
 
@@ -433,21 +438,5 @@ namespace Waveface.Client
 			RefreshContentArea();
 		}
 
-		private void content_TagStatusChanged(object sender, EventArgs e)
-		{
-			var content = (sender as ContentItem).DataContext as IContent;
-			if (content == null)
-				return;
-
-			switch (content.Liked)
-			{
- 				case true:
-					ClientFramework.Client.Default.Tag(new IContent[] { content });
-					break;
-				case false:
-					ClientFramework.Client.Default.UnTag(content.ID);
-					break;
-			}
-		}
 	}
 }

@@ -77,6 +77,23 @@ namespace Waveface.ClientFramework
 		#endregion
 
 
+		public Client()
+		{
+			foreach (var service in BunnyServiceSupplier.Default.Services)
+			{
+				service.ContentPropertyChanged += service_ContentPropertyChanged;
+			}
+			BunnyServiceSupplier.Default.Services.CollectionChanged += Services_CollectionChanged;
+		}
+
+		void Services_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			foreach (var service in e.NewItems.OfType<IService>())
+			{
+				service.ContentPropertyChanged += service_ContentPropertyChanged;
+			}
+		}
+
 		#region Private Method
 		private IEnumerable<IContentEntity> GetFavorites()
 		{
@@ -130,11 +147,19 @@ namespace Waveface.ClientFramework
 		}
 		#endregion
 
+
+
 		//TODO: tag & untag 接口一致...
+
+		public void Tag(IEnumerable<IContent> contents, string starredLabelId)
+		{
+			StationAPI.Tag(string.Join(",", contents.Select(content => content.ID).ToArray()), starredLabelId);
+			(m_Favorites.First() as IContentGroup).Refresh();
+		}
 
 		public void Tag(IEnumerable<IContent> contents)
 		{
-			StationAPI.Tag(string.Join(",", contents.Select(content => content.ID).ToArray()), StarredLabelId);
+			Tag(contents, StarredLabelId);
 		}
 
 
@@ -166,6 +191,7 @@ namespace Waveface.ClientFramework
 		public void UnTag(string labelID , string contentID)
 		{
 			StationAPI.UnTag(contentID, labelID);
+			(m_Favorites.First() as IContentGroup).Refresh();
 		}
 
 		public void AddToFavorite(string favoriteID)
@@ -198,19 +224,17 @@ namespace Waveface.ClientFramework
 			StationAPI.OnAirLabel(labelID, isOnAir);
 		}
 
-		//void service_ContentPropertyChanged(object sender, ContentPropertyChangeEventArgs e)
-		//{
-		//	var content = e.Content as IContent;
+		void service_ContentPropertyChanged(object sender, ContentPropertyChangeEventArgs e)
+		{
+			var content = e.Content as IContent;
 
-		//	m_TaggedContents.Remove(content);
-		//	if (content.Liked)
-		//	{
-		//		m_TaggedContents.Add(content);
-		//		StationAPI.Tag(content.ID, StarredLabelId);
-		//	}
-		//	else
-		//		StationAPI.UnTag(content.ID, StarredLabelId);
-		//}
+			if (content.Liked)
+			{
+				Tag(new IContent[] { content }, StarredLabelId);
+			}
+			else
+				UnTag(content.ID, StarredLabelId);
+		}
 
 		public bool IsOnAir(IContentGroup group)
 		{
