@@ -239,8 +239,7 @@
         <!--  Photo Template  -->
         <DataTemplate DataType="{x:Type wvmodel:Content}">
             <local:ContentItem x:Name="content"
-                               Padding="10"
-                               TagStatusChanged="content_TagStatusChanged" />
+                               Padding="10" />
         </DataTemplate>
 
 
