@@ -223,10 +223,10 @@
                 </StackPanel>
             </Grid>
 
-            <Button x:Name="btnRefresh" Content="Refresh !" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Margin="0, 0, 0, -24" Foreground="White" Background="#4F4F4F" 
-                                FontSize="14" Padding="24, 4" Style="{StaticResource FlatButtonStyle}">
+            <Button x:Name="btnRefresh" Content="Refresh !" HorizontalAlignment="Center" VerticalAlignment="Bottom" Cursor="Hand" Margin="0, 0, 0, -28" Foreground="White" FontWeight="Bold" Background="#4F4F4F" 
+                                FontSize="14" Padding="36, 8" Style="{StaticResource FlatButtonStyle}" Click="btnRefresh_Click">
                 <Button.Effect>
-                    <DropShadowEffect ShadowDepth="0.5"/>
+                    <DropShadowEffect/>
                 </Button.Effect>
             </Button>
             

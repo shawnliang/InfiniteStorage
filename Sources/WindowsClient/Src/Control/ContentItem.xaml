@@ -36,30 +36,34 @@
             </Style.Triggers>
         </Style>
 
-        <Style TargetType="MediaElement">
+        <!--
+            <Style TargetType="MediaElement">
             <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Type,
-                                               IsAsync=True}"
-                             Value="Video">
-                    <Setter Property="Visibility" Value="Visible" />
-                    <Setter Property="Source" Value="{Binding Uri, IsAsync=True}" />
-                </DataTrigger>
+            <DataTrigger Binding="{Binding Type,
+            IsAsync=True}"
+            Value="Video">
+            <Setter Property="Visibility" Value="Visible" />
+            <Setter Property="Source" Value="{Binding Uri, IsAsync=True}" />
+            </DataTrigger>
             </Style.Triggers>
-        </Style>
+            </Style>
+        -->
 
-        <Style x:Key="PhotoStyle"
-               TargetType="Image">
+        <!--
+            <Style x:Key="PhotoStyle"
+            TargetType="Image">
             <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Type,
-                                               IsAsync=True}"
-                             Value="Photo">
-                    <Setter Property="Visibility" Value="Visible" />
-                    <Setter Property="Source" Value="{Binding ThumbnailSource, IsAsync=True}" />
-                </DataTrigger>
+            <DataTrigger Binding="{Binding Type,
+            IsAsync=True}"
+            Value="Photo">
+            <Setter Property="Visibility" Value="Visible" />
+            <Setter Property="Source" Value="{Binding ThumbnailSource, IsAsync=True}" />
+            </DataTrigger>
             </Style.Triggers>
-        </Style>
+            </Style>
+        -->
     </UserControl.Resources>
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="Mouse.MouseEnter">
@@ -75,15 +79,18 @@
         <Grid.Effect>
             <DropShadowEffect Direction="270" />
         </Grid.Effect>
-        <MediaElement LoadedBehavior="Pause"
-                      ScrubbingEnabled="True"
-                      Stretch="UniformToFill" />
+        <!--
+            <MediaElement LoadedBehavior="Pause"
+            ScrubbingEnabled="True"
+            Stretch="UniformToFill" />
+        -->
         <Image HorizontalAlignment="Center"
                VerticalAlignment="Center"
                OpacityMask="Black"
                RenderTransformOrigin="0.5,0.5"
-               Stretch="UniformToFill"
-               Style="{StaticResource PhotoStyle}">
+               Source="{Binding ThumbnailSource,
+                                IsAsync=True}"
+               Stretch="UniformToFill">
             <Image.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />

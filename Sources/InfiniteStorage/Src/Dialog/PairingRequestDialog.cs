@@ -8,7 +8,7 @@ namespace InfiniteStorage
 {
 	public partial class PairingRequestDialog : Form
 	{
-		static int concurrentCount;
+		private static int concurrentCount;
 
 		private ProtocolContext ctx;
 
@@ -59,6 +59,11 @@ namespace InfiniteStorage
 			var count = Interlocked.Increment(ref concurrentCount);
 
 			Location = new System.Drawing.Point(Location.X + count * 10, Location.Y + count * 10);
+		}
+
+		public static int CurrentOpeningCount
+		{
+			get { return concurrentCount; }
 		}
 	}
 }

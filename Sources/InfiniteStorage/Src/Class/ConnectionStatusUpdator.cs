@@ -1,6 +1,7 @@
 ﻿using InfiniteStorage.Properties;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace InfiniteStorage
 {
@@ -11,7 +12,7 @@ namespace InfiniteStorage
 			var peers = ConnectedClientCollection.Instance.GetAllConnections();
 			var util = new WebsocketProtocol.ConnectMsgHandlerUtil();
 
-			foreach (var peer in peers)
+			foreach (var peer in peers.Distinct())
 			{
 				try
 				{
@@ -32,6 +33,8 @@ namespace InfiniteStorage
 								video_count = summary.video_count,
 								audio_count = summary.audio_count
 							});
+
+						log4net.LogManager.GetLogger(GetType()).Debug("send backup-info to " + peer.device_name);
 					}
 				}
 				catch (Exception e)

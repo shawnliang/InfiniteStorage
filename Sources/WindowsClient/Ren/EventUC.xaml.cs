@@ -102,7 +102,7 @@ namespace Waveface.Client
 
                     BitmapImage _bi = new BitmapImage();
                     _bi.BeginInit();
-					_bi.UriSource = new Uri("pack://application:,,,/Resource/video_ph.png");
+                    _bi.UriSource = new Uri("pack://application:,,,/Resource/video_ph.png");
                     _bi.EndInit();
 
                     _eventPhoto.BitmapImage = _bi;
@@ -248,6 +248,7 @@ namespace Waveface.Client
             double _rs;
             double _h;
             int _e = 0;
+            int _wc;
 
             foreach (Size _s in _sizes)
             {
@@ -259,16 +260,15 @@ namespace Waveface.Client
                 else
                 {
                     _rs = 0;
+                    _wc = 0;
 
                     for (int j = _start; j < k; j++)
                     {
-                        if (_s.Width > _s.Height)
+                        _rs += _sizes[j].Width / _sizes[j].Height;
+
+                        if (_sizes[j].Width > _sizes[j].Height)
                         {
-                            _rs += _s.Width / _s.Height;
-                        }
-                        else
-                        {
-                            _rs += _s.Height / _s.Width;
+                            _wc++;
                         }
                     }
 
@@ -277,8 +277,9 @@ namespace Waveface.Client
                     for (int j = _start; j < k; j++)
                     {
                         ListBoxItem _lbi = lbEvent.ItemContainerGenerator.ContainerFromIndex(j) as ListBoxItem;
-                        _lbi.Height = _h;
-                        _lbi.Width = _h * (_s.Width / _s.Height) - (8.0 / _e);
+
+                        _lbi.Height = _h + ((_e - _wc) * 5);
+                        _lbi.Width = _h * (_sizes[j].Width / _sizes[j].Height) - (8.0 / _e);
                     }
 
                     _start = k;

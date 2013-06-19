@@ -49,7 +49,7 @@ namespace Waveface.ClientFramework
 
 			if (!timerStarted)
 			{
-				timer.Change(2000, Timeout.Infinite);
+				timer.Change(1000, Timeout.Infinite);
 				timerStarted = true;
 			}
 		}
@@ -69,7 +69,7 @@ namespace Waveface.ClientFramework
 			}
 			finally
 			{
-				timer.Change(2000, Timeout.Infinite);
+				timer.Change(1000, Timeout.Infinite);
 			}
 		}
 
