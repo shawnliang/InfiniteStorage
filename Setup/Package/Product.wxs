@@ -111,6 +111,12 @@
             </File>
           </Component>
 
+          <Component Id="ffmpeg.exe" Guid="*">
+            <File Id="ffmpeg.exe" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\ffmpeg.exe">
+            </File>
+          </Component>
+          
+          
           <Component Id="Microsoft.Expression.Controls.dll" Guid="*">
             <File Id="Microsoft.Expression.Controls.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Microsoft.Expression.Controls.dll" />
           </Component>
@@ -311,7 +317,8 @@
       <ComponentRef Id="Empty.png"/>
       <ComponentRef Id="CultureSetting"/>
       <ComponentRef Id="InfiniteStorage.resources.zhtw" />
-
+      <ComponentRef Id="ffmpeg.exe"/>
+      
       <ComponentGroupRef Id="photoSharedFiles" />
     </Feature>
 

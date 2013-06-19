@@ -8,6 +8,8 @@ using System.IO;
 using System.Linq;
 using Wammer.Utility;
 using Waveface.Common;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace InfiniteStorage
 {
@@ -66,8 +68,13 @@ namespace InfiniteStorage
 			{
 				try
 				{
-					int width, height;
-					generateThumbnail(file, out width, out height);
+					int width = 0, height = 0;
+					if (file.type == (int)FileAssetType.image)
+						generateThumbnail(file, out width, out height);
+					else if (file.type == (int)FileAssetType.video)
+						extractStillImage(file);
+					else
+						continue;
 
 
 					file.width = width;
@@ -84,6 +91,34 @@ namespace InfiniteStorage
 
 			if (successFiles.Any())
 				from = successFiles.Max(x => x.seq);
+		}
+
+		private void extractStillImage(PendingFile file)
+		{
+			var file_path = Path.Combine(MyFileFolder.Pending, file.saved_path);
+
+			var thumb_path = Path.Combine(MyFileFolder.Thumbs, file.file_id.ToString() + ".medium.thumb");
+
+			if (File.Exists(thumb_path))
+				File.Delete(thumb_path);
+
+			using (var process = new Process())
+			{
+				process.StartInfo = new ProcessStartInfo
+					{
+						FileName = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ffmpeg.exe"),
+						Arguments = string.Format("-i \"{0}\" -r 1 -t 1 -s vga -f image2 \"{1}\"", file_path, thumb_path),
+						CreateNoWindow = true,
+						WindowStyle = ProcessWindowStyle.Hidden
+					};
+
+				process.Start();
+				if (!process.WaitForExit(30 * 1000))
+					throw new Exception("ffmpeg does not exit in 30 secs: " + process.StartInfo.Arguments);
+
+				if (!File.Exists(thumb_path))
+					throw new Exception("ffmpeg failed extract still image:" + process.StartInfo.Arguments);
+			}
 		}
 
 		private void markFilesHavingThumbnail(List<PendingFile> successFiles)
@@ -199,7 +234,7 @@ namespace InfiniteStorage
 			using (var db = new MyDbContext())
 			{
 				var query = from f in db.Object.PendingFiles
-							where f.seq >= fromSeq && !f.deleted && !f.thumb_ready && f.type == (int)FileAssetType.image
+							where f.seq >= fromSeq && !f.deleted && !f.thumb_ready
 							orderby f.seq ascending
 							select f;
 

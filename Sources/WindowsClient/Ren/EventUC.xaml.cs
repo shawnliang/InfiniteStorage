@@ -21,7 +21,7 @@ namespace Waveface.Client
         public double MyHeight { get; set; }
         public bool IsVideo { get; set; }
         public bool IsPhoto { get; set; }
-        public string MediaSource { get; set; }
+        public BitmapImage MediaSource { get; set; }
     }
 
     public partial class EventUC : UserControl
@@ -107,7 +107,13 @@ namespace Waveface.Client
 
                     _eventPhoto.BitmapImage = _bi;
 
-                    _eventPhoto.MediaSource = _file.tiny_path;
+
+					BitmapImage _vidoeThumb = new BitmapImage();
+					_vidoeThumb.BeginInit();
+					_vidoeThumb.UriSource = new Uri(_file.tiny_path, UriKind.Absolute);
+					_vidoeThumb.EndInit();
+
+					_eventPhoto.MediaSource = _vidoeThumb;
 
                     _controls.Add(_eventPhoto);
                 }

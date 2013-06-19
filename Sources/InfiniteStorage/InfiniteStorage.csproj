@@ -361,6 +361,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\Libs\ffmpeg\ffmpeg.exe">
+      <Link>ffmpeg.exe</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\..\Libs\Mono.Zeroconf\Mono.Zeroconf.Providers.Bonjour.dll">
       <Link>Mono.Zeroconf.Providers.Bonjour.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
