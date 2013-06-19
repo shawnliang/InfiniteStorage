@@ -251,7 +251,7 @@ public class DownloadLogic {
 		if (maxLabelcursor != null && maxLabelcursor.getCount() > 0) {
 			maxLabelcursor.moveToFirst();
 			labSeq = maxLabelcursor.getString(maxLabelcursor
-					.getColumnIndex(LabelTable.COLUMN_SEQ));
+					.getColumnIndex(LabelTable.COLUMN_SERVER_SEQ));
 			// send broadcast label change
 		}
 		maxLabelcursor.close();

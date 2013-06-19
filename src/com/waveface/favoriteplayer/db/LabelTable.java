@@ -21,13 +21,14 @@ public class LabelTable implements BaseColumns {
 	public static final String COLUMN_LABEL_ID = "id";	
 	public static final String COLUMN_LABEL_NAME = "labelName";
 	public static final String COLUMN_SEQ = "seq";
-	public static final String COLUMN_UPDATE_TIME = "update_time";
-	public static final String COLUMN_COVER_URL = "cover_url";
-	public static final String COLUMN_AUTO_TYPE = "auto_type";
+	public static final String COLUMN_SERVER_SEQ = "serverSeq";
+	public static final String COLUMN_UPDATE_TIME = "updateTime";
+	public static final String COLUMN_COVER_URL = "coverUrl";
+	public static final String COLUMN_AUTO_TYPE = "autoType";
 	// auto_type ; 0:favorite ; 1:Recent photo today  ; 2: Recent photo yesterday ; 3: Recent photo this week  
 	// 4:Recent video today  ; 5: Recent video yesterday ; 6: Recent video this week
-	public static final String COLUMN_ON_AIR = "on_air";
-	public static final String COLUMN_DISPLAY_STATUS = "display_status";
+	public static final String COLUMN_ON_AIR = "onAir";
+	public static final String COLUMN_DISPLAY_STATUS = "displayStatus";
 	
 	private LabelTable() {
 

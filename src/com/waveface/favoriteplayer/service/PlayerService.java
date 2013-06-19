@@ -29,6 +29,7 @@ import com.waveface.favoriteplayer.entity.ConnectForGTVEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.WebSocketEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
+import com.waveface.favoriteplayer.task.ChangeLabelsTask;
 import com.waveface.favoriteplayer.task.DownloadLabelsTask;
 import com.waveface.favoriteplayer.util.DeviceUtil;
 import com.waveface.favoriteplayer.util.Log;
@@ -114,6 +115,7 @@ public class PlayerService extends Service{
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);	
 		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
+		filter.addAction(Constant.ACTION_LABEL_CHANGE_NOTIFICATION);
 		registerReceiver(mReceiver, filter);
 		
 		connectPCWithPairedServer();
@@ -155,6 +157,8 @@ public class PlayerService extends Service{
 					RuntimeState.isDownloadingLabel = true;
 					new DownloadLabelsTask(mContext).execute(new Void[]{});
 				}
+			}else if(Constant.ACTION_LABEL_CHANGE_NOTIFICATION.equals(action)){
+				new ChangeLabelsTask(mContext).execute(new Void[]{});
 			}
 		}
 	};
@@ -368,7 +372,7 @@ public class PlayerService extends Service{
 			String labSeq ="0";
 			if(cursor!=null && cursor.getCount()>0){
 				cursor.moveToFirst();
-				labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
+				labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SERVER_SEQ));
 			}
 			cursor.close();
 			ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();

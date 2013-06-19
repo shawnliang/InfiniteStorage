@@ -31,10 +31,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
+import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.entity.HomeSharingEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
@@ -188,7 +190,25 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 							entity = RuntimeState.GSON.fromJson(jsonOutput,
 									LabelChangeEntity.class);
 						if (entity != null) {
-							ArrayList<ServerEntity> servers = ServersLogic
+							
+							//TODO: update label table's  serverSeq column 
+							
+							Cursor  labelCusor = LabelDB.getLabelByLabelId(mContext, entity.label_change.label_id);
+							
+							labelCusor.moveToFirst();
+							
+							// label exist
+							if(labelCusor.getCount()>0){
+								LabelDB.updateLabelServerSeq(mContext, entity.label_change.label_id, entity.label_change.seq);
+								
+								if(entity.label_change.deleted.equals("true") ){
+									LabelDB.deleteLabel(mContext, entity.label_change.label_id);
+									LabelDB.removeAllFileInLabel(mContext, entity.label_change.label_id);
+								}
+								
+							}else{
+								
+									ArrayList<ServerEntity> servers = ServersLogic
 									.getPairedServer(mContext);
 							ServerEntity pairedServer = servers.get(0);
 							String restfulAPIURL = "http://" + pairedServer.ip
@@ -202,11 +222,11 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 							jsonOutput = HttpInvoker.executePost(getLabelURL,
 									param, Constant.STATION_CONNECTION_TIMEOUT,
 									Constant.STATION_CONNECTION_TIMEOUT);
-							// single label download
+							
 							LabelEntity.Label labelEntity = RuntimeState.GSON
 									.fromJson(jsonOutput,
 											LabelEntity.Label.class);
-
+	
 							labelEntity.cover_url=entity.label_change.cover_url;
 							labelEntity.auto_type=entity.label_change.auto_type;
 							labelEntity.on_air=entity.label_change.on_air;
@@ -215,8 +235,11 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 							RuntimeState.labelsHashSet.add(entity.label_change.label_id);
 							mEditor.putStringSet(Constant.PREF_SERVER_CHANGE_LABELS, RuntimeState.labelsHashSet);
 							mEditor.commit();
-						
-							DownloadLogic.updateLabel(mContext, labelEntity);
+							LabelDB.updateLabelChang(mContext, labelEntity,true);	
+							}
+							
+							labelCusor.close();
+							mContext.sendBroadcast(new Intent(Constant.ACTION_LABEL_CHANGE_NOTIFICATION));
 							EventBus.getDefault().post(new LabelChangeEvent(entity.label_change.label_id, entity.label_change.auto_type));
 						}
 					} catch (Exception e) {
