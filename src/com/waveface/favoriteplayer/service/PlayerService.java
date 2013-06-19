@@ -98,7 +98,7 @@ public class PlayerService extends Service{
             	//
             	if(NetworkUtil.isWifiNetworkAvailable(mContext)){
             		long fromTime = System.currentTimeMillis()-mSendSubcribeSetupTime;
-            		if(fromTime > (60*1000) && RuntimeState.OnWebSocketOpened==false){
+            		if(fromTime > (60*1000) && RuntimeState.OnWebSocketOpened==true){
             			sendSubcribe();
             		}
             	}            	

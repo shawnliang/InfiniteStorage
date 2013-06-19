@@ -43,7 +43,6 @@ public class LabelDB {
 			}
 		}else{
 			//delete labelfile in database
-
 			removeAllFileInLabel(context, label.label_id);
 			updateLabelFiles(context, label);
 			updateFiles(context, fileEntity);	
