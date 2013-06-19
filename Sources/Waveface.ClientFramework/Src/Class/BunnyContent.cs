@@ -164,7 +164,7 @@ namespace Waveface.ClientFramework
 		private string GetThumbnailFile()
 		{
 			var resourceFolderValue = Registry.CurrentUser.OpenSubKey("Software").OpenSubKey("BunnyHome").GetValue("ResourceFolder").ToString();
-			var imageFile = string.Format(@"{0}\.thumbs\{1}.small.thumb", resourceFolderValue, this.ID);
+			var imageFile = string.Format(@"{0}\.thumbs\{1}.{2}.thumb", resourceFolderValue, this.ID, this.Type == ContentType.Photo ? "small" : "medium");
 			return imageFile;
 		}
 
