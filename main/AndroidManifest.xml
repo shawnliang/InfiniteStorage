@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.waveface.favoriteplayer"
+    android:versionCode="14"
+    android:versionName="0.5.7" >
+
+    <uses-sdk android:minSdkVersion="9"
+        android:targetSdkVersion="17" />
+
+    <supports-screens
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="false"
+        android:xlargeScreens="true" />
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission
+        android:name="android.permission.INTERNET"
+        android:required="true" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.BATTERY_STATS" />
+    <uses-feature android:name="com.google.android.tv" android:required="true"/>
+
+    <application
+        android:allowBackup="false"
+        android:name="com.waveface.favoriteplayer.SyncApplication"
+        android:debuggable="true"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/ic_launcher"
+        android:theme="@style/SherlockTheme"
+        android:label="@string/app_name"
+        android:largeHeap="true" >
+        <activity android:name="com.waveface.favoriteplayer.MulticastTestActivity"
+            android:screenOrientation="landscape"
+                  android:label="@string/app_name">
+        </activity>        
+        <activity
+            android:name="com.waveface.favoriteplayer.ui.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.waveface.favoriteplayer.ui.FirstUseActivity"
+            android:screenOrientation="landscape"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Transparent" >
+        </activity>
+        
+        <activity
+            android:name="com.waveface.favoriteplayer.ui.MainTabActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        
+        <activity
+            android:name="com.waveface.favoriteplayer.ui.PlaybackActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        
+        <activity
+            android:name="com.waveface.favoriteplayer.ui.VideoActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        
+        <provider
+            android:name="com.waveface.favoriteplayer.provider.PlayerProvider"
+            android:authorities="com.waveface.favoriteplayer"
+            android:exported="false"
+            android:syncable="true" />
+
+        <receiver
+            android:name="com.waveface.favoriteplayer.service.PlayerReceiver"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.TIME_TICK" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="com.waveface.favoriteplayer.action.FAVORITE_PLAYER_ALARM" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.waveface.favoriteplayer.service.PlayerService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="2de93f37d61a80e50febf2dfa9e0b80d5105afd0" />
+
+    </application>
+
+</manifest>

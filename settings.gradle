@@ -1,2 +1,2 @@
 include 'actionbarsherlock'
-include 'InfiniteStorage'
+include 'main'
