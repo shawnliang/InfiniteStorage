@@ -215,6 +215,22 @@
           </Directory>
 
 
+          <Component Id="System.Reactive.Core.dll" Guid="*">
+            <File Id="System.Reactive.Core.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Reactive.Core.dll" />
+          </Component>
+
+          <Component Id="System.Reactive.Interfaces.dll" Guid="*">
+            <File Id="System.Reactive.Interfaces.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Reactive.Interfaces.dll" />
+          </Component>
+
+          <Component Id="System.Reactive.Linq.dll" Guid="*">
+            <File Id="System.Reactive.Linq.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Reactive.Linq.dll" />
+          </Component>
+
+          <Component Id="System.Reactive.PlatformServices.dll" Guid="*">
+            <File Id="System.Reactive.PlatformServices.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Reactive.PlatformServices.dll" />
+          </Component>
+          
 
 
           <Component Id="log4net.dll" Guid="*">
@@ -318,7 +334,12 @@
       <ComponentRef Id="CultureSetting"/>
       <ComponentRef Id="InfiniteStorage.resources.zhtw" />
       <ComponentRef Id="ffmpeg.exe"/>
-      
+
+      <ComponentRef Id="System.Reactive.Core.dll" />
+      <ComponentRef Id="System.Reactive.Interfaces.dll" />
+      <ComponentRef Id="System.Reactive.Linq.dll" />
+      <ComponentRef Id="System.Reactive.PlatformServices.dll" />
+
       <ComponentGroupRef Id="photoSharedFiles" />
     </Feature>
 
