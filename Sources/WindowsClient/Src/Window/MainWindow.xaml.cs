@@ -38,7 +38,8 @@ namespace Waveface.Client
 		void btnClearAll_Click(object sender, RoutedEventArgs e)
 		{
 			ClientFramework.Client.Default.ClearTaggedContents();
-			ShowSelectedFavoriteContents(lbxFavorites);
+			RefreshContentArea();
+			RefreshSelectedFavorite();
 		}
 
 		void tbxName_LostFocus(object sender, RoutedEventArgs e)
@@ -222,6 +223,7 @@ namespace Waveface.Client
 		{
 			ClientFramework.Client.Default.Tag(lbxContentContainer.Items.OfType<IContent>());
 			RefreshContentArea();
+			RefreshFavorite(lbxFavorites.Items.OfType<IContentGroup>().FirstOrDefault());
 		}
 
 		private void lbxFavorites_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -298,6 +300,12 @@ namespace Waveface.Client
 
 		private void rspRightSidePanel_SaveToFavorite(object sender, System.EventArgs e)
 		{
+			if (!lbxContentContainer.HasItems)
+			{
+				MessageBox.Show("Without any content");
+				return;
+			}
+
 			var dialog = new CreateFavoriteDialog();
 			dialog.Owner = this;
 			dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
@@ -334,6 +342,12 @@ namespace Waveface.Client
 
 		private void rspRightSidePanel_AddToFavorite(object sender, System.EventArgs e)
 		{
+			if (!lbxContentContainer.HasItems)
+			{
+				MessageBox.Show("Without any content");
+				return;
+			}
+
 			var favorites = Waveface.ClientFramework.Client.Default.Favorites.Skip(1);
 
 			if (!favorites.Any())
@@ -353,8 +367,20 @@ namespace Waveface.Client
 
 			var selectedFavorite = (dialog.SelectedFavorite as IContentGroup);
 			ClientFramework.Client.Default.AddToFavorite(selectedFavorite.ID);
-			selectedFavorite.Refresh();
 			lbxFavorites.SelectedItem = selectedFavorite;
+			RefreshSelectedFavorite();
+		}
+
+		private void RefreshFavorite(IContentGroup favorite)
+		{
+			if (favorite == null)
+				return;
+			favorite.Refresh();
+		}
+
+		private void RefreshSelectedFavorite()
+		{
+			RefreshFavorite(lbxFavorites.SelectedItem as IContentGroup);
 		}
 
 		private void rspRightSidePane2_CloudSharingClick(object sender, System.EventArgs e)
@@ -405,6 +431,23 @@ namespace Waveface.Client
 			var content = lbxContentContainer.SelectedItem as IContentEntity;
 			ClientFramework.Client.Default.UnTag(group.ID, content.ID);
 			RefreshContentArea();
+		}
+
+		private void content_TagStatusChanged(object sender, EventArgs e)
+		{
+			var content = (sender as ContentItem).DataContext as IContent;
+			if (content == null)
+				return;
+
+			switch (content.Liked)
+			{
+ 				case true:
+					ClientFramework.Client.Default.Tag(new IContent[] { content });
+					break;
+				case false:
+					ClientFramework.Client.Default.UnTag(content.ID);
+					break;
+			}
 		}
 	}
 }

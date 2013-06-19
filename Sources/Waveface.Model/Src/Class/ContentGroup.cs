@@ -130,6 +130,7 @@ namespace Waveface.Model
 		{
 			m_Contents.ClearValue();
 			m_ObservableContents.Clear();
+			OnPropertyChanged("ContentCount");
 		}
 		#endregion
 
