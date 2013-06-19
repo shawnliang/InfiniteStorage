@@ -292,7 +292,7 @@ namespace InfiniteStorage
 
 					args.ctx.handleApprove();
 
-					if (WaitForPairingDialog.Instance.Visible)
+					if (WaitForPairingDialog.Instance.Visible && PairingRequestDialog.CurrentOpeningCount == 0)
 						WaitForPairingDialog.Instance.Close();
 
 					if (Settings.Default.IsFirstUse)
