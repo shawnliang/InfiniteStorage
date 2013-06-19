@@ -132,9 +132,12 @@
                                 <Grid>
                                     <Rectangle Fill="#888888" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}"/>
 
-                                    <MediaElement Source="{Binding MediaSource, IsAsync=True}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" ScrubbingEnabled="True" LoadedBehavior="Pause"
-                                    Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}"/>
+                                    <!--<MediaElement Source="{Binding MediaSource, IsAsync=True}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" ScrubbingEnabled="True" LoadedBehavior="Pause"
+                                    Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}"/>-->
 
+                                    <Image Source="{Binding Path=MediaSource}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill"
+                                    Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}"/>
+                                    
                                     <Image Source="{Binding Path=BitmapImage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill"  Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=Width}"
                                     Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=Height}" 
                                     Visibility="{Binding Path=IsPhoto, Converter={StaticResource BoolToHiddenConverter}}"/>
