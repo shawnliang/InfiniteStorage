@@ -19,7 +19,7 @@ namespace InfiniteStorage
 		private NotifyIcon m_notifyIcon;
 		private NotifyIconController m_notifyIconController;
 		private Timer m_NotifyTimer;
-		private System.Timers.Timer m_BackupStatusTimer;
+		private NoReentrantTimer m_pingTimer;
 		private NoReentrantTimer m_ReRegBonjourTimer;
 		private NoReentrantTimer m_recentLabelTimer;
 		private WebSocketServer<InfiniteStorageWebSocketService> backup_server;
@@ -49,14 +49,8 @@ namespace InfiniteStorage
 
 
 			// ----- backup status timer -----
-			m_BackupStatusTimer = new System.Timers.Timer();
-			m_BackupStatusTimer.Elapsed += (s, e) =>
-			{
-				m_BackupStatusTimer.Enabled = false;
-				var updator = new ConnectionStatusUpdator();
-				updator.UpdateStatusToPeers();
-				m_BackupStatusTimer.Enabled = true;
-			};
+			m_pingTimer = new NoReentrantTimer(pingPeerToCheckConnection, null, 3000, 10000);
+			m_pingTimer.Start();
 
 			// ----- notifier -----
 			m_notifier = new Notifier();
@@ -106,7 +100,7 @@ namespace InfiniteStorage
 		public void Start()
 		{
 			m_NotifyTimer.Start();
-			m_BackupStatusTimer.Start();
+			m_pingTimer.Start();
 			m_notifier.Start();
 			
 			rest_server.Start();
@@ -128,7 +122,7 @@ namespace InfiniteStorage
 			m_thumbnailCreator.Stop();
 
 			m_NotifyTimer.Stop();
-			m_BackupStatusTimer.Stop();
+			m_pingTimer.Stop();
 			m_notifier.Start();
 			m_recentLabelTimer.Stop();
 			m_autoUpdate.Stop();
@@ -179,6 +173,19 @@ namespace InfiniteStorage
 		{
 			var ballonText = string.Format(Resources.BallonText_AtService, Resources.ProductName);
 			m_notifyIcon.ShowBalloonTip(3000, Resources.ProductName, ballonText, ToolTipIcon.None);
+		}
+
+		private void pingPeerToCheckConnection(object nil)
+		{
+			try
+			{
+				var ping = new ConnectionStatusUpdator();
+				ping.UpdateStatusToPeers();
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("Exception at remove out of date labels", err);
+			}
 		}
 
 		private void removeOutOfDateLabels(object nil)

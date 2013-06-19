@@ -16,46 +16,13 @@ namespace InfiniteStorage
 			{
 				try
 				{
-					var summary = util.GetDeviceSummary(peer.device_id);
-
-					if (summary != null)
-					{
-						peer.Send(new
-							{
-								action = "backup-info",
-								server_id = Settings.Default.ServerId,
-								server_name = BonjourService.ServiceName,
-								backup_startdate = summary.backup_range.start,
-								backup_enddate = summary.backup_range.end,
-								backup_folder = MyFileFolder.Photo,
-								backup_folder_free_space = getStorageFreeSpace(),
-								photo_count = summary.photo_count,
-								video_count = summary.video_count,
-								audio_count = summary.audio_count
-							});
-
-						log4net.LogManager.GetLogger(GetType()).Debug("send backup-info to " + peer.device_name);
-					}
+					peer.Ping();
+					log4net.LogManager.GetLogger(GetType()).Debug("Ping to " + peer.device_name);
 				}
 				catch (Exception e)
 				{
 					log4net.LogManager.GetLogger(this.GetType()).Warn("Unable to send backup info to peer:" + peer.device_name, e);
 				}
-			}
-		}
-
-		private static long getStorageFreeSpace()
-		{
-			try
-			{
-				var driveInfo = new DriveInfo(Path.GetPathRoot(MyFileFolder.Photo));
-				var freeBytes = driveInfo.AvailableFreeSpace;
-				return freeBytes;
-			}
-			catch (Exception e)
-			{
-				log4net.LogManager.GetLogger(typeof(ConnectionStatusUpdator)).Warn("Unable to get free space: " + MyFileFolder.Photo, e);
-				return 0L;
 			}
 		}
 	}

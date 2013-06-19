@@ -34,7 +34,8 @@ namespace InfiniteStorage
 			var ctx = new ProtocolContext(new TempFileFactory(MyFileFolder.Temp), storage, new UnconnectedState())
 			{
 				SendFunc = this.Send,
-				StopFunc = this.Stop
+				StopFunc = this.Stop,
+				PingFunc = this.Ping
 			};
 
 			ctx.OnConnectAccepted += DeviceAccepted;

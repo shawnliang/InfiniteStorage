@@ -12,5 +12,7 @@ namespace InfiniteStorage
 		void Stop(WebSocketSharp.Frame.CloseStatusCode code, string reason);
 
 		bool IsRecving { get; }
+
+		bool Ping();
 	}
 }

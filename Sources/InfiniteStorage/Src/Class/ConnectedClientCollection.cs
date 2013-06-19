@@ -18,7 +18,8 @@ namespace InfiniteStorage
 		{
 			lock (cs)
 			{
-				connections.AddLast(status);
+				if (!connections.Contains(status))
+					connections.AddLast(status);
 			}
 		}
 

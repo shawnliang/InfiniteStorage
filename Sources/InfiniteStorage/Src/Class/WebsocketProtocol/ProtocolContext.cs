@@ -24,6 +24,7 @@ namespace InfiniteStorage.WebsocketProtocol
 
 		public SendTextDelegate SendFunc { private get; set; }
 		public StopDelegate StopFunc { private get; set; }
+		public Func<bool> PingFunc { private get; set; }
 
 		public event EventHandler<WebsocketEventArgs> OnConnectAccepted;
 		public event EventHandler<WebsocketEventArgs> OnPairingRequired;
@@ -165,6 +166,18 @@ namespace InfiniteStorage.WebsocketProtocol
 		public bool IsRecving
 		{
 			get { return total_count > 0 && total_count != backup_count; }
+		}
+
+
+		public bool Ping()
+		{
+			var func = PingFunc;
+
+			if (func != null)
+				return func();
+
+			else
+				throw new InvalidOperationException("PingFunc is not set");
 		}
 	}
 }
