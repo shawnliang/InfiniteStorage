@@ -19,8 +19,6 @@ namespace Waveface.ClientFramework
 
 		#region Var
 		private static string _labelID = Guid.Empty.ToString();
-		private ObservableCollection<IContentEntity> _taggedContents;
-		private ReadOnlyObservableCollection<IContentEntity> _readonlyTaggedContents;
 		private ObservableCollection<IContentEntity> _favorites;
 		private ReadOnlyObservableCollection<IContentEntity> _readonlyFavorites;
 		#endregion
@@ -43,18 +41,6 @@ namespace Waveface.ClientFramework
 			get
 			{
 				return _labelID;
-			}
-		}
-
-		private ObservableCollection<IContentEntity> m_TaggedContents
-		{
-			get
-			{
-				if (_taggedContents == null)
-				{
-					_taggedContents = new ObservableCollection<IContentEntity>(GetTaggedContents());
-				}
-				return _taggedContents;
 			}
 		}
 
@@ -88,62 +74,10 @@ namespace Waveface.ClientFramework
 				return _readonlyFavorites ?? (_readonlyFavorites = new ReadOnlyObservableCollection<IContentEntity>(m_Favorites));
 			}
 		}
-
-		public ReadOnlyObservableCollection<IContentEntity> TaggedContents
-		{
-			get
-			{
-				return _readonlyTaggedContents ?? (_readonlyTaggedContents = new ReadOnlyObservableCollection<IContentEntity>(m_TaggedContents));
-			}
-		}
 		#endregion
 
 
-
-		public Client()
-		{
-			foreach (var service in Services)
-			{
-				service.ContentPropertyChanged += service_ContentPropertyChanged;
-			}
-		}
-
-
-
 		#region Private Method
-
-		private IEnumerable<IContentEntity> GetTaggedContents()
-		{
-			var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
-
-			var dbFilePath = Path.Combine(appDir, "database.s3db");
-
-			var conn = new SQLiteConnection(string.Format("Data source={0}", dbFilePath));
-
-			conn.Open();
-
-			var cmd = new SQLiteCommand("SELECT * FROM Files t1, LabelFiles t2 where t2.label_id = @starred and t1.file_id = t2.file_id", conn);
-			cmd.Parameters.Add(new SQLiteParameter("@starred", Guid.Empty));
-
-			var dr = cmd.ExecuteReader();
-
-			while (dr.Read())
-			{
-				var deviceID = dr["device_id"].ToString();
-
-				var savedPath = dr["saved_path"].ToString();
-
-				var file = Path.Combine(BunnyDB.ResourceFolder, savedPath);
-
-				var type = ((long)dr["type"] == 0) ? ContentType.Photo : ContentType.Video;
-				yield return new BunnyContent(new Uri(file), dr["file_id"].ToString(), type);
-			}
-
-
-			conn.Close();
-		}
-
-
 		private IEnumerable<IContentEntity> GetFavorites()
 		{
 			var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
@@ -196,9 +130,11 @@ namespace Waveface.ClientFramework
 		}
 		#endregion
 
+		//TODO: tag & untag 接口一致...
+
 		public void Tag(IEnumerable<IContent> contents)
 		{
-			StationAPI.Tag(string.Join(",", contents.Select(taggedContent => taggedContent.ID).ToArray()), StarredLabelId);
+			StationAPI.Tag(string.Join(",", contents.Select(content => content.ID).ToArray()), StarredLabelId);
 		}
 
 
@@ -207,7 +143,7 @@ namespace Waveface.ClientFramework
 			var labelID = Guid.NewGuid().ToString();
 			StationAPI.AddLabel(labelID, favoriteName);
 
-			StationAPI.Tag(string.Join(",", m_TaggedContents.Select(taggedContent => taggedContent.ID).ToArray()), labelID);
+			StationAPI.Tag(string.Join(",", (m_Favorites.First() as IContentGroup).Contents.Select(content => content.ID).ToArray()), labelID);
 
 			//StationAPI.ClearLabel(m_LabelID);
 
@@ -222,6 +158,11 @@ namespace Waveface.ClientFramework
 		}
 
 
+		public void UnTag(string contentID)
+		{
+			UnTag(contentID, StarredLabelId);
+		}
+
 		public void UnTag(string labelID , string contentID)
 		{
 			StationAPI.UnTag(contentID, labelID);
@@ -229,7 +170,7 @@ namespace Waveface.ClientFramework
 
 		public void AddToFavorite(string favoriteID)
 		{
-			StationAPI.Tag(string.Join(",", m_TaggedContents.Select(taggedContent => taggedContent.ID).ToArray()), favoriteID);
+			StationAPI.Tag(string.Join(",", (m_Favorites.First() as IContentGroup).Contents.Select(content => content.ID).ToArray()), favoriteID);
 
 			//StationAPI.ClearLabel(m_LabelID);
 
@@ -249,8 +190,6 @@ namespace Waveface.ClientFramework
 		public void ClearTaggedContents()
 		{
 			StationAPI.ClearLabel(StarredLabelId);
-
-			m_TaggedContents.Clear();
 		}
 
 
@@ -259,19 +198,19 @@ namespace Waveface.ClientFramework
 			StationAPI.OnAirLabel(labelID, isOnAir);
 		}
 
-		void service_ContentPropertyChanged(object sender, ContentPropertyChangeEventArgs e)
-		{
-			var content = e.Content as IContent;
+		//void service_ContentPropertyChanged(object sender, ContentPropertyChangeEventArgs e)
+		//{
+		//	var content = e.Content as IContent;
 
-			m_TaggedContents.Remove(content);
-			if (content.Liked)
-			{
-				m_TaggedContents.Add(content);
-				StationAPI.Tag(content.ID, StarredLabelId);
-			}
-			else
-				StationAPI.UnTag(content.ID, StarredLabelId);
-		}
+		//	m_TaggedContents.Remove(content);
+		//	if (content.Liked)
+		//	{
+		//		m_TaggedContents.Add(content);
+		//		StationAPI.Tag(content.ID, StarredLabelId);
+		//	}
+		//	else
+		//		StationAPI.UnTag(content.ID, StarredLabelId);
+		//}
 
 		public bool IsOnAir(IContentGroup group)
 		{
