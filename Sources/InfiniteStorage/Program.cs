@@ -172,6 +172,15 @@ namespace InfiniteStorage
 			{
 				log4net.LogManager.GetLogger("main").Debug("stop error", err);
 			}
+
+			try
+			{
+				ImportUIPresenter.Instance.StopViewer();
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger("main").Debug("stop error", err);
+			}
 		}
 
 		static void m_bonjourService_Error(object sender, BonjourErrorEventArgs e)

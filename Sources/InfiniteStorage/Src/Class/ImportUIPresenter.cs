@@ -11,6 +11,7 @@ namespace InfiniteStorage
 	{
 		private static ImportUIPresenter instance = new ImportUIPresenter();
 		private string VIEWER_UI_PROGRAM = "Waveface.Client";
+		private Process viewerProcess;
 
 		private ImportUIPresenter()
 		{
@@ -34,15 +35,22 @@ namespace InfiniteStorage
 				StartInfo = new ProcessStartInfo
 				{
 					FileName = Path.Combine(getProgDir(), VIEWER_UI_PROGRAM + ".exe")
-				}
+				},
 			};
+			p.Exited += new EventHandler(viewer_exited);
+			p.EnableRaisingEvents = true;
 			p.Start();
+			viewerProcess = p;
+		}
+
+		void viewer_exited(object sender, EventArgs e)
+		{
+			viewerProcess = null;
 		}
 
 		private bool isViewerRunning()
 		{
-			var proc = Process.GetProcessesByName(VIEWER_UI_PROGRAM);
-			return proc.Any();
+			return viewerProcess != null;
 		}
 
 		public void StartViewer()
@@ -51,7 +59,19 @@ namespace InfiniteStorage
 				runViewerUI();
 			else
 				activateExistingViewerUI();
+		}
 
+		public bool StopViewer()
+		{
+			if (viewerProcess == null)
+				return true;
+
+			viewerProcess.CloseMainWindow();
+			if (viewerProcess.WaitForExit(500))
+				return true;
+
+			viewerProcess.Kill();
+			return viewerProcess.WaitForExit(500);
 		}
 
 		private void activateExistingViewerUI()
