@@ -32,6 +32,9 @@ public class LabelEntity {
 	
 	@SerializedName("on_air")
 	public String on_air;
+	
+	@SerializedName("deleted")
+	public String deleted;
 
 	public String[] files;
 	}
