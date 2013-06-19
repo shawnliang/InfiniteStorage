@@ -5,7 +5,6 @@ using System.IO;
 
 namespace Waveface.ClientFramework
 {
-
 	static class BunnyDB
 	{
 		private static string connString;

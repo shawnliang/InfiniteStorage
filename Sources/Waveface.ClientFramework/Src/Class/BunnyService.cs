@@ -49,7 +49,7 @@ namespace Waveface.ClientFramework
 
 			if (!timerStarted)
 			{
-				timer.Change(500, Timeout.Infinite);
+				timer.Change(2000, Timeout.Infinite);
 				timerStarted = true;
 			}
 		}
@@ -58,8 +58,6 @@ namespace Waveface.ClientFramework
 		{
 			try
 			{
-				var unsortedGroup = unsorted;
-
 				if (unsorted != null)
 				{
 					unsorted.Refresh();
@@ -71,7 +69,7 @@ namespace Waveface.ClientFramework
 			}
 			finally
 			{
-				timer.Change(500, Timeout.Infinite);
+				timer.Change(2000, Timeout.Infinite);
 			}
 		}
 	}

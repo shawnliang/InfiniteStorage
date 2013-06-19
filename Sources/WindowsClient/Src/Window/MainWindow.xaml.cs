@@ -179,6 +179,7 @@ namespace Waveface.Client
 			}
 			else
 			{
+			    unSortedFilesUC.Stop();
 				unSortedFilesUC.Visibility = Visibility.Collapsed;
 			}
 

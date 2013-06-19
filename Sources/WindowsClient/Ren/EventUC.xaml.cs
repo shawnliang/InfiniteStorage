@@ -240,7 +240,7 @@ namespace Waveface.Client
 
             foreach (Size _s in _sizes)
             {
-                if ((_wTotal + _s.Width) < lbEvent.ActualWidth)
+                if ((_wTotal + _s.Width) < (lbEvent.ActualWidth - 8.0))
                 {
                     _wTotal += _s.Width;
                     _e++;
@@ -251,7 +251,14 @@ namespace Waveface.Client
 
                     for (int j = _start; j < k; j++)
                     {
-                        _rs += _s.Width / _s.Height;
+                        if (_s.Width > _s.Height)
+                        {
+                            _rs += _s.Width / _s.Height;
+                        }
+                        else
+                        {
+                            _rs += _s.Height / _s.Width;
+                        }
                     }
 
                     _h = lbEvent.ActualWidth / _rs;

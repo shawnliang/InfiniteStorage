@@ -6,7 +6,7 @@ using Waveface.Model;
 
 namespace Waveface.ClientFramework
 {
-	class BunnyUnsortedContentGroup : ContentGroup
+	public class BunnyUnsortedContentGroup : ContentGroup
 	{
 		private string deviceId;
 		private int _contentCount = -1;
@@ -22,27 +22,27 @@ namespace Waveface.ClientFramework
 			get
 			{
 				if (_contentCount < 0)
-					_contentCount = countUnsortedItems();
+                    _contentCount = countUnsortedItems(this.deviceId);
 
 				return _contentCount;
 			}
 		}
 
-		private int countUnsortedItems()
+		public static int countUnsortedItems(string deviceID)
 		{
 			using (var conn = BunnyDB.CreateConnection())
 			{
 				conn.Open();
 				var cmd = conn.CreateCommand();
 				cmd.CommandText = "select count(*) from [PendingFiles] where device_id = @dev";
-				cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@dev", this.deviceId));
+				cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@dev", deviceID));
 				return (int)(long)cmd.ExecuteScalar();
 			}
 		}
 
 		public override void Refresh()
 		{
-			var curCount = countUnsortedItems();
+            var curCount = countUnsortedItems(this.deviceId);
 
 			if (curCount != _contentCount)
 			{

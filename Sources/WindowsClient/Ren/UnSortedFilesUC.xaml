@@ -7,7 +7,35 @@
              SizeChanged="Window_SizeChanged">
 
     <UserControl.Resources>
-
+        <Style TargetType="Button" x:Key="FlatButtonStyle">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="#9B9B9B" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    Background="{TemplateBinding Background}"
+                    Padding="{TemplateBinding Padding}"
+                                
+                    CornerRadius="0">
+                            <ContentControl Content="{TemplateBinding Content}" HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource HighlightBrush}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{StaticResource PressedBrush}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
         <Style x:Key="SimpleListBoxItem"
                TargetType="ListBoxItem">
@@ -181,13 +209,27 @@
                                 Grid.Column="1"
                                 Margin="18,0,24,0"
                                 Click="btnImportAll_Click"
+                                Foreground="White" Background="#4F4F4F" 
+                                FontSize="14"
+                                Padding="8, 4"
+                                Style="{StaticResource FlatButtonStyle}"
                                 Content="Move All Files" VerticalAlignment="Center">
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="0.25"/>
+                            </Button.Effect>
                         </Button>
 
                     </Grid>
                 </StackPanel>
             </Grid>
 
+            <Button x:Name="btnRefresh" Content="Refresh !" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Margin="0, 0, 0, -24" Foreground="White" Background="#4F4F4F" 
+                                FontSize="14" Padding="24, 4" Style="{StaticResource FlatButtonStyle}">
+                <Button.Effect>
+                    <DropShadowEffect ShadowDepth="0.5"/>
+                </Button.Effect>
+            </Button>
+            
             <Grid x:Name="gridEmptyPanel"
                   Grid.Row="1"
                   Grid.RowSpan="2"
