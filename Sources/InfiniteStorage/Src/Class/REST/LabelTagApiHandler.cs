@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using Wammer.Station;
+using System.Data.SQLite;
 
 namespace InfiniteStorage.REST
 {
@@ -14,38 +15,57 @@ namespace InfiniteStorage.REST
 			var file_ids = Parameters["file_id"].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => new Guid(x)).ToList();
 			var label_id = new Guid(Parameters["label_id"]);
 
-			using (var db = new MyDbContext())
+
+			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
 			{
+				conn.Open();
 
-				foreach (var file_id in file_ids)
+				var query = conn.CreateCommand();
+				query.CommandText = "select 1 from [LabelFiles] where label_id = @label and file_id = @file";
+				query.Prepare();
+
+
+				var insert = conn.CreateCommand();
+				insert.CommandText = "insert into [LabelFiles] (label_id, file_id) values (@label, @file)";
+				insert.Prepare();
+
+
+				using (var trans = conn.BeginTransaction())
 				{
-					bool alreadyTaged = (from lf in db.Object.LabelFiles
-										 where lf.label_id == label_id && lf.file_id == file_id
-										 select lf).Any();
+					bool inserted = false;
 
-					if (!alreadyTaged)
+					foreach (var file_id in file_ids)
 					{
-						var label = (from lb in db.Object.Labels
-									 where lb.label_id == label_id
-									 select lb).FirstOrDefault();
+						var param_file = new SQLiteParameter("@file", file_id);
+						var param_label = new SQLiteParameter("@label", label_id);
+						query.Parameters.Clear();
+						query.Parameters.Add(param_file);
+						query.Parameters.Add(param_label);
 
-						if (label == null)
-							throw new Exception("No such label_id: " + label_id);
+						var alreadyTagged = (query.ExecuteScalar() != null);
 
-						var fileExists = (from f in db.Object.Files
-										  where f.file_id == file_id
-										  select new { a = 1 }).Any();
-
-						if (!fileExists)
-							throw new Exception("No such file_id: " + file_id);
+						if (alreadyTagged)
+							continue;
 
 
-						label.seq = SeqNum.GetNextSeq();
-						db.Object.LabelFiles.Add(new LabeledFile { file_id = file_id, label_id = label_id });
+						insert.Parameters.Clear();
+						insert.Parameters.Add(param_file);
+						insert.Parameters.Add(param_label);
+						insert.ExecuteNonQuery();
+						inserted = true;
 					}
-				}
 
-				db.Object.SaveChanges();
+					if (inserted)
+					{
+						var update = conn.CreateCommand();
+						update.CommandText = "update [Labels] set seq = @seq where label_id = @label";
+						update.Parameters.Add(new SQLiteParameter("@label", label_id));
+						update.Parameters.Add(new SQLiteParameter("@seq", (object)SeqNum.GetNextSeq()));
+						update.ExecuteNonQuery();
+					}
+
+					trans.Commit();
+				}
 			}
 
 			respondSuccess();
