@@ -6,6 +6,10 @@ using System.Linq;
 using Waveface.Model;
 using WebSocketSharp;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
+using System.Reactive.Linq;
+using System.Reactive.Concurrency;
+using System.Threading;
 
 namespace Waveface.ClientFramework
 {
@@ -46,7 +50,26 @@ namespace Waveface.ClientFramework
 		#region Constructor
 		private BunnyServiceSupplier()
 		{
-			SetServices();
+			InitServices();
+			var syncContext = SynchronizationContext.Current;
+			Observable.Interval(TimeSpan.FromMilliseconds(5000)).Subscribe((times) => 
+			{
+				var services = GetServices();
+
+				var newServices = services.Except(this.Services);
+				var expiredServices = this.Services.Except(services);
+
+				if (!newServices.Any() && !expiredServices.Any())
+					return;
+
+				syncContext.Send((o) =>
+				{
+					this.Services.AddRange(newServices);
+
+					foreach (var expiredService in expiredServices)
+						this.Services.Remove(expiredService);
+				}, null);
+			});
 		}
 		#endregion
 
@@ -57,7 +80,18 @@ namespace Waveface.ClientFramework
 		#endregion
 
 		#region Private Method
-		private void SetServices()
+		private void InitServices()
+		{
+			this.Services.AddRange(GetServices());
+
+			if (!ws_inited)
+			{
+				subscribeActiveDeviceAsync();
+				ws_inited = true;
+			}
+		}
+
+		private List<Service> GetServices()
 		{
 			var services = new List<Service>();
 			var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
@@ -80,14 +114,7 @@ namespace Waveface.ClientFramework
 			}
 
 			conn.Close();
-
-			this.Services = services;
-
-			if (!ws_inited)
-			{
-				subscribeActiveDeviceAsync();
-				ws_inited = true;
-			}
+			return services;
 		}
 
 		private void subscribeActiveDeviceAsync()

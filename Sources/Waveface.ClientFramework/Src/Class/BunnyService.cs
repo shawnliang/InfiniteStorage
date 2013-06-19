@@ -72,5 +72,31 @@ namespace Waveface.ClientFramework
 				timer.Change(2000, Timeout.Infinite);
 			}
 		}
+
+		#region Public Method
+		public override bool Equals(object obj)
+		{
+			//檢查參數是否為null
+			if (obj == null)
+				return false;
+
+			//檢查是否與自身是相同物件
+			if (object.ReferenceEquals(this, obj))
+				return true;
+
+			//檢查是否型態相等
+			var value = obj as IService;
+			if (value == null)
+				return false;
+
+			//比較內容是否相等
+			return this.Name == value.Name;
+		}
+
+		public override int GetHashCode()
+		{
+			return this.Name.GetHashCode();
+		}
+		#endregion
 	}
 }
