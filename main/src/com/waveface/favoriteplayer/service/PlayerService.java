@@ -14,6 +14,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -25,7 +26,10 @@ import android.text.TextUtils;
 
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
+import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.entity.ServerEntity;
+import com.waveface.favoriteplayer.event.LabelImportedEvent;
+import com.waveface.favoriteplayer.logic.DownloadLogic;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.task.ChangeLabelsTask;
 import com.waveface.favoriteplayer.task.DownloadLabelsTask;
@@ -35,6 +39,8 @@ import com.waveface.jmdns.JMDNS;
 import com.waveface.jmdns.ServiceEvent;
 import com.waveface.jmdns.ServiceInfo;
 import com.waveface.jmdns.ServiceListener;
+
+import de.greenrobot.event.EventBus;
 
 
 public class PlayerService extends Service{
@@ -191,12 +197,23 @@ public class PlayerService extends Service{
 				}
 			}
 			else if (Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED.equals(action)) {
-				if(RuntimeState.isDownloadingLabel==false){
+				SharedPreferences mPrefs = mContext.getSharedPreferences(
+						Constant.PREFS_NAME, Context.MODE_PRIVATE);
+				int downloadLableInitStatus = mPrefs.getInt(
+						Constant.PREF_DOWNLOAD_LABEL_INIT_STATUS, 0);
+				if(downloadLableInitStatus == 0 && RuntimeState.isDownloadingLabel==false){
 					RuntimeState.isDownloadingLabel = true;
 					new DownloadLabelsTask(mContext).execute(new Void[]{});
 				}
+				String ServerSeq = LabelDB.getMAXServerSeq(mContext);
+				if (!TextUtils.isEmpty(ServerSeq)) {
+					DownloadLogic.subscribe(mContext);
+				}
 			}else if(Constant.ACTION_LABEL_CHANGE_NOTIFICATION.equals(action)){
-				new ChangeLabelsTask(mContext).execute(new Void[]{});
+				if(RuntimeState.needToSync() == false){
+					RuntimeState.setSyncing(true);
+					new ChangeLabelsTask(mContext).execute(new Void[]{});
+				}
 			}
 		}
 	};

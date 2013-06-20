@@ -31,7 +31,7 @@ public class RuntimeState{
 	public static boolean isScaning = false;
 	public static boolean wasFirstTimeImportScanDone = false;	
 	public static boolean isBackuping = false;
-	public static boolean isSyncing = false;
+	private static boolean isSyncing = false;
 	public static boolean isDownloadingLabel = false;
 	
 	
@@ -107,6 +107,14 @@ public class RuntimeState{
 			return false;
 		}
 	}
+	
+	public static boolean needToSync(){
+		return isSyncing;
+	}
+	public static void setSyncing(boolean value){
+		isSyncing = value;
+	}
+	
 	
 	public static Set<String> labelsHashSet = new HashSet<String>();
 	

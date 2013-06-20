@@ -262,7 +262,7 @@ public class ServerChooserFragment extends FragmentBase
 		param.put(Constant.PARAM_SERVER_IP, entity.ip);
 		param.put(Constant.PARAM_NOTIFY_PORT, entity.notifyPort);
 		param.put(Constant.PARAM_REST_PORT,entity.restPort);
-	    new LinkBonjourServer().execute(param);
+	    new LinkBonjourServer(getActivity()).execute(param);
     }
 	@Override
 	public void onClick(View v) {
@@ -290,6 +290,10 @@ public class ServerChooserFragment extends FragmentBase
 	
 
 	class LinkBonjourServer extends AsyncTask<HashMap<String,String>,Void,Void>{
+		private Context mContext;
+		LinkBonjourServer(Context context){
+			mContext = context;
+		}
 		@Override
 		protected Void doInBackground(HashMap<String,String>... params) {			
 			String serverId = params[0].get(Constant.PARAM_SERVER_ID);
@@ -298,7 +302,7 @@ public class ServerChooserFragment extends FragmentBase
 			String notifyPort =params[0].get(Constant.PARAM_NOTIFY_PORT);
 			String restPort =params[0].get(Constant.PARAM_REST_PORT);
 			String wsLocation = "ws://"+ip+":"+notifyPort;
-			ServersLogic.startWSServerConnect(getActivity(), wsLocation,serverId,serverName,ip,notifyPort,restPort,true);						
+			ServersLogic.startWSServerConnect(mContext, wsLocation,serverId,serverName,ip,notifyPort,restPort,true);						
 			return null;
 		}
 	}
