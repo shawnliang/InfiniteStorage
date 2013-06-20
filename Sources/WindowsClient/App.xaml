@@ -116,9 +116,12 @@
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="0"
                                 Padding="{TemplateBinding Padding}">
+							<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+							<Image Source="{StaticResource UnSelectedStar}" Width="21" Height="21" VerticalAlignment="Center"/>
                             <ContentControl HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
                                             Content="{TemplateBinding Content}" />
+							</StackPanel>
                             <Border.Effect>
                                 <DropShadowEffect ShadowDepth="0.1" />
                             </Border.Effect>
