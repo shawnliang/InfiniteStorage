@@ -100,6 +100,7 @@ namespace Waveface.Client
             else
             {
                 gridEmptyPanel.Visibility = Visibility.Visible;
+                btnRefresh.Visibility = Visibility.Collapsed;
 
                 tbTitle0.Visibility = Visibility.Collapsed;
                 tbTitle.Visibility = Visibility.Collapsed;
@@ -300,6 +301,7 @@ namespace Waveface.Client
             if (m_eventUCs.Count == 0)
             {
                 gridEmptyPanel.Visibility = Visibility.Visible;
+                btnRefresh.Visibility = Visibility.Collapsed;
                 tbTotalCount.Text = "";
             }
             else
