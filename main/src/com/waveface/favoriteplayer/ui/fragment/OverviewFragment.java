@@ -205,7 +205,14 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 
 		@Override
 		protected OverviewData doInBackground(Void... params) {
-			return loadLabelData(mLabelId,FileUtil.getDownloadFolder(getActivity()));
+			OverviewData data = loadLabelData(mLabelId,FileUtil.getDownloadFolder(getActivity()));
+			if(data != null) {
+				Log.e(TAG, "updatea success mLabelId=" + mLabelId);
+				data.title = getLableTitle(data.autoType);
+			} else {
+				Log.e(TAG, "updatea fail mLabelId=" + mLabelId);
+			}
+			return data;
 		}
 		
 		@Override
@@ -297,37 +304,33 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 				OverviewData data = loadLabelData(labelId,FileUtil.getDownloadFolder(getActivity())); 
 				
 				if(data != null) {
-					if(mType == OVERVIEW_VIEW_TYPE_RECENT_PHOTO) {
-						switch(type) {
-						case Constant.TYPE_RECENT_PHOTO_TODAY:
-							data.title = getResources().getText(R.string.today).toString();
-							break;
-						case Constant.TYPE_RECENT_PHOTO_YESTERDAY:
-							data.title = getResources().getText(R.string.yesterday).toString();
-							break;
-						case Constant.TYPE_RECENT_PHOTO_THISWEEK:
-							data.title = getResources().getText(R.string.thisweek).toString();
-							break;
-						}
-					} else if(mType == OVERVIEW_VIEW_TYPE_RECENT_VIDEO) {
-						switch(type) {
-						case Constant.TYPE_RECENT_VIDEO_TODAY:
-							data.title = getResources().getText(R.string.today).toString();
-							break;
-						case Constant.TYPE_RECENT_VIDEO_YESTERDAY:
-							data.title = getResources().getText(R.string.yesterday).toString();
-							break;
-						case Constant.TYPE_RECENT_VIDEO_THISWEEK:
-							data.title = getResources().getText(R.string.thisweek).toString();
-							break;
-						}
-					}
-						
+					data.title = getLableTitle(type);
 					datas.add(data);
 				}
 			}
 			c.close();
 		}
+	}
+	
+	
+	private String getLableTitle(int type) {
+		String title = null;
+		
+		switch(type) {
+		case Constant.TYPE_RECENT_VIDEO_TODAY:
+		case Constant.TYPE_RECENT_PHOTO_TODAY:
+			title = getResources().getText(R.string.today).toString();
+			break;
+		case Constant.TYPE_RECENT_VIDEO_YESTERDAY:
+		case Constant.TYPE_RECENT_PHOTO_YESTERDAY:
+			title = getResources().getText(R.string.yesterday).toString();
+			break;
+		case Constant.TYPE_RECENT_VIDEO_THISWEEK:
+		case Constant.TYPE_RECENT_PHOTO_THISWEEK:
+			title = getResources().getText(R.string.thisweek).toString();
+			break;
+		}
+		return title;
 	}
 
 	private OverviewData loadLabelData(String labelId,String realDownloadFolder) {
@@ -340,8 +343,9 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			data.labelId = labelId;
 			data.url = mServerUrl + labelCursor.getString(2);
 			data.count = fileCursor.getCount();
+			data.autoType = labelCursor.getInt(3);
 			fileCursor.moveToFirst();
-			data.type = fileCursor.getString(fileCursor.getColumnIndex(LabelFileView.COLUMN_TYPE));
+			data.fileType = fileCursor.getString(fileCursor.getColumnIndex(LabelFileView.COLUMN_TYPE));
 			data.filename = fileCursor.getString(fileCursor.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
 			if(mType == OVERVIEW_VIEW_TYPE_FAVORITE) {
 				data.title = labelCursor.getString(1);

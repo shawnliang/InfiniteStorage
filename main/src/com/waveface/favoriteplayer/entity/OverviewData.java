@@ -9,9 +9,10 @@ public class OverviewData implements Parcelable{
 	public boolean landscape;
 	public String title;
 	public String labelId;
-	public String type;	
+	public String fileType;	
 	public String filename;		
 	public int count;
+	public int autoType;
 	
 	public static final Parcelable.Creator<OverviewData> CREATOR = new Creator<OverviewData>() {
 
@@ -31,9 +32,10 @@ public class OverviewData implements Parcelable{
 		landscape = false;
 		title = null;
 		labelId = null;
-		type = null;
+		fileType = null;
 		filename = null;
 		count = 0;
+		autoType = 0;
 	}
 	
 	public OverviewData(Parcel in) {
@@ -41,9 +43,10 @@ public class OverviewData implements Parcelable{
 		landscape = in.readInt() == 1 ? true:false;
 		title = in.readString();
 		labelId = in.readString();
-		type = in.readString();
+		fileType = in.readString();
 		filename = in.readString();
 		count = in.readInt();
+		autoType = in.readInt();
 	}
 	
 	@Override
@@ -56,9 +59,10 @@ public class OverviewData implements Parcelable{
 		out.writeInt(landscape?1:0);
 		out.writeString(title);
 		out.writeString(labelId);
-		out.writeString(type);		
+		out.writeString(fileType);		
 		out.writeString(filename);				
 		out.writeInt(count);
+		out.writeInt(autoType);
 	}
 }
 

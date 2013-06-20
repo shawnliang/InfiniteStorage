@@ -78,13 +78,14 @@ public class OverviewAdapter extends BaseAdapter{
 	}
 	
 	public void updateLabel(OverviewData data) {
-		for(int i=0; i<mDatas.size(); ++i) {
-			if(mDatas.get(i).labelId.equals(data.labelId)) {
-				mDatas.remove(i);
+		int index = 0;
+		for(index=0; index<mDatas.size(); ++index) {
+			if(mDatas.get(index).labelId.equals(data.labelId)) {
+				mDatas.remove(index);
 				break;
 			}
 		}
-		mDatas.add(0, data);
+		mDatas.add(index, data);
 	}
 	
 	public ArrayList<OverviewData> getDatas() {
@@ -158,7 +159,7 @@ public class OverviewAdapter extends BaseAdapter{
 		attr.setApplyWithAnimation(true);
 		attr.setDoneScaleType(ScaleType.CENTER_CROP);
 		
-		if(Constant.FILE_TYPE_VIDEO.equals(data.type)) {
+		if(Constant.FILE_TYPE_VIDEO.equals(data.fileType)) {
 			
 			String fullFilename = mFilePath + data.filename;
 			Bitmap bmThumbnail = mImageManager.getImage(fullFilename, attr);
