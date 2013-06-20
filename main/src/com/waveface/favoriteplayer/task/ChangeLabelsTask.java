@@ -39,7 +39,15 @@ public class ChangeLabelsTask extends AsyncTask<Void, Void, Void> {
 		if (NetworkUtil.isWifiNetworkAvailable(mContext) == false)
 			return null;
 		// Find a different seq and server seq For All Label
-		syncLabelProcess(LabelDB.getUnsyncedLabel(mContext));
+		Cursor cursor = LabelDB.getUnsyncedLabel(mContext);
+		while (cursor!=null && cursor.moveToFirst()) {
+			syncLabelProcess(cursor);
+			cursor.close();
+			cursor = null;
+			cursor = LabelDB.getUnsyncedLabel(mContext);
+		}
+		if (cursor!=null)
+			cursor.close();
 		return null;
 	}
 
@@ -50,50 +58,49 @@ public class ChangeLabelsTask extends AsyncTask<Void, Void, Void> {
 		String autoType = null;
 		String serverSeq = null;		
 		String onAir = null;
-		if (cursor != null && cursor.getCount() > 0) {
-			ArrayList<ServerEntity> servers = ServersLogic
-					.getPairedServer(mContext);
-			ServerEntity pairedServer = servers.get(0);
-			String restfulAPIURL = "http://" + pairedServer.ip + ":"
-					+ pairedServer.restPort;
-			String getLabelURL = restfulAPIURL + Constant.URL_GET_LABEL;
-			HashMap<String, String> param = null;
-			cursor.moveToFirst();			
-			for(int i = 0 ; i < cursor.getCount();i++){
-				labelId = cursor.getString(cursor
-								.getColumnIndex(LabelTable.COLUMN_LABEL_ID));
-				coverUrl = cursor.getString(cursor
-								.getColumnIndex(LabelTable.COLUMN_COVER_URL));
-				autoType = cursor.getString(cursor
-								.getColumnIndex(LabelTable.COLUMN_AUTO_TYPE));
-				onAir = cursor.getString(cursor
-						.getColumnIndex(LabelTable.COLUMN_ON_AIR));
-				serverSeq = cursor.getString(cursor
-						.getColumnIndex(LabelTable.COLUMN_SERVER_SEQ));
-				param = new HashMap<String, String>();
-				param.put(Constant.PARAM_LABEL_ID, labelId);
-				try {
-					jsonOutput = HttpInvoker.executePost(getLabelURL, param,
-							Constant.STATION_CONNECTION_TIMEOUT,
-							Constant.STATION_CONNECTION_TIMEOUT);
-	
-					LabelEntity.Label labelEntity = RuntimeState.GSON.fromJson(
-							jsonOutput, LabelEntity.Label.class);
-	
-					labelEntity.cover_url = coverUrl;
-					labelEntity.auto_type = autoType;
-					labelEntity.on_air = onAir;
-					labelEntity.deleted = "false";
-	
-					DownloadLogic.updateLabel(mContext, labelEntity,serverSeq);
-				} catch (WammerServerException e) {
-					e.printStackTrace();
-				}
-				cursor.moveToNext();
+
+		ArrayList<ServerEntity> servers = ServersLogic
+				.getPairedServer(mContext);
+		ServerEntity pairedServer = servers.get(0);
+		String restfulAPIURL = "http://" + pairedServer.ip + ":"
+				+ pairedServer.restPort;
+		String getLabelURL = restfulAPIURL + Constant.URL_GET_LABEL;
+		HashMap<String, String> param = null;
+					
+		for(int i = 0 ; i < cursor.getCount();i++){
+			labelId = cursor.getString(cursor
+							.getColumnIndex(LabelTable.COLUMN_LABEL_ID));
+			coverUrl = cursor.getString(cursor
+							.getColumnIndex(LabelTable.COLUMN_COVER_URL));
+			autoType = cursor.getString(cursor
+							.getColumnIndex(LabelTable.COLUMN_AUTO_TYPE));
+			onAir = cursor.getString(cursor
+					.getColumnIndex(LabelTable.COLUMN_ON_AIR));
+			serverSeq = cursor.getString(cursor
+					.getColumnIndex(LabelTable.COLUMN_SERVER_SEQ));
+			String seq = cursor.getString(cursor
+					.getColumnIndex(LabelTable.COLUMN_SEQ));
+			
+			param = new HashMap<String, String>();
+			param.put(Constant.PARAM_LABEL_ID, labelId);
+			try {
+				jsonOutput = HttpInvoker.executePost(getLabelURL, param,
+						Constant.STATION_CONNECTION_TIMEOUT,
+						Constant.STATION_CONNECTION_TIMEOUT);
+
+				LabelEntity.Label labelEntity = RuntimeState.GSON.fromJson(
+						jsonOutput, LabelEntity.Label.class);
+
+				labelEntity.cover_url = coverUrl;
+				labelEntity.auto_type = autoType;
+				labelEntity.on_air = onAir;
+				labelEntity.deleted = "false";
+
+				DownloadLogic.updateLabel(mContext, labelEntity,serverSeq);
+			} catch (WammerServerException e) {
+				e.printStackTrace();
 			}
-			cursor.close();
+			cursor.moveToNext();
 		}
-		//Still have new Data
-		syncLabelProcess(LabelDB.getUnsyncedLabel(mContext));
 	}
 }

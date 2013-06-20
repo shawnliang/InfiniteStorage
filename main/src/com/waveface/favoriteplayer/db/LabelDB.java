@@ -309,7 +309,8 @@ public class LabelDB {
 							   LabelTable.COLUMN_SEQ,
 							   LabelTable.COLUMN_SERVER_SEQ,
 							   LabelTable.COLUMN_COVER_URL,
-							   LabelTable.COLUMN_AUTO_TYPE },
+							   LabelTable.COLUMN_AUTO_TYPE,
+							   LabelTable.COLUMN_ON_AIR},
 						LabelTable.COLUMN_SEQ +" <> "+ LabelTable.COLUMN_SERVER_SEQ ,null,
 				LabelTable.COLUMN_SEQ );
 
