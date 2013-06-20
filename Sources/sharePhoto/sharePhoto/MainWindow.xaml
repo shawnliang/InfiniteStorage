@@ -170,8 +170,8 @@
                                Margin="91,417,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
-                               Visibility="Collapsed"
-                               Source="images/gmail_64.png" />
+                               Source="images/gmail_64.png"
+                               Visibility="Collapsed" />
                         <Label x:Name="connected_gmail"
                                Width="154"
                                Margin="125,417,0,0"
@@ -180,7 +180,7 @@
                                Content="Connected"
                                FontSize="18"
                                Foreground="White"
-                               Visibility="Collapsed"/>
+                               Visibility="Collapsed" />
                         <Label x:Name="label_invalid"
                                Width="235"
                                Margin="91,250,0,0"
@@ -227,7 +227,8 @@
                          Header="TabItem">
                     <Grid Margin="1,20,1,0"
                           Background="#FFE5E5E5">
-                        <WebBrowser x:Name="wb1" Margin="-13,-27,7,-2" />
+                        <WebBrowser x:Name="wb1"
+                                    Margin="-13,-27,7,-2" />
                     </Grid>
                 </TabItem>
             </TabControl>

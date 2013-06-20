@@ -167,7 +167,11 @@ namespace InfiniteStorage
 			{
 				var actual = (from f in db.Object.Files
 							  where f.event_time >= yes_start && f.event_time < yes_end && f.type == (int)file_type
-							  select f.file_id).ToList();
+							  select f.file_id).Union(
+							  from f in db.Object.PendingFiles
+							  where f.event_time >= yes_start && f.event_time < yes_end && f.type == (int)file_type
+							  select f.file_id
+							  ).ToList();
 
 				var current = (from f in db.Object.LabelFiles
 							   where f.label_id == label_id
