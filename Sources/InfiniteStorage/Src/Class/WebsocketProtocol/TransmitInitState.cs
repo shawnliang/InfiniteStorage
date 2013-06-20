@@ -50,19 +50,19 @@ namespace InfiniteStorage.WebsocketProtocol
 				type = type
 			};
 
-
 			var hasDup = util.HasDuplicateFile(fileCtx, ctx.device_id);
 
 			if (hasDup)
 			{
 				ctx.fileCtx = null;
+				ctx.raiseOnFileReceiving();
 				ctx.Send(new TextCommand { action = "file-exist", file_name = cmd.file_name });
 				log4net.LogManager.GetLogger("wsproto").Debug("file duplicate! send back file-exist");
 			}
 			else
 			{
 				ctx.fileCtx = fileCtx;
-
+				ctx.raiseOnFileReceiving();
 				ctx.temp_file = ctx.factory.CreateTempFile();
 				ctx.Send(new TextCommand { action = "file-go", file_name = cmd.file_name });
 				ctx.SetState(new TransmitStartedState());

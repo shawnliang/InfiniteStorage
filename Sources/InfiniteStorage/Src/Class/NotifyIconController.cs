@@ -42,6 +42,15 @@ namespace InfiniteStorage
 			ImportUIPresenter.Instance.StartViewer();
 		}
 
+		public void OnFileReceiving(object sender, WebsocketEventArgs arg)
+		{
+			if (!arg.ctx.BackToPhoneDialogClosed)
+			{
+				BackToPhoneDialog.CloseOpenedWindow(arg.ctx);
+				arg.ctx.BackToPhoneDialogClosed = true;
+			}
+		}
+
 		private static void openFolderInExplorer(string folder)
 		{
 			if (!Directory.Exists(folder))
@@ -302,9 +311,8 @@ namespace InfiniteStorage
 					}
 
 					// Show Hint to press "start on PC"
-					var backToPhoneDialog = new BackToPhoneDialog();
+					var backToPhoneDialog = new BackToPhoneDialog() { Ctx = args.ctx };
 					backToPhoneDialog.Show();
-
 				}
 			}
 			catch (Exception err)
