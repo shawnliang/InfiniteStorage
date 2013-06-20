@@ -1,11 +1,10 @@
 ﻿using Mono.Zeroconf;
 using System;
-using InfiniteStorage.Properties;
 
 
-namespace InfiniteStorage
+namespace BonjourAgent
 {
-	public class BonjourService
+	public class BonjourService : IDisposable
 	{
 		private const string SVC_TYPE = "_infinite-storage._tcp";
 
@@ -13,10 +12,10 @@ namespace InfiniteStorage
 
 		public event EventHandler<BonjourErrorEventArgs> Error;
 
-		public BonjourService()
+		public BonjourService(string serviceName)
 		{
+			this.ServiceName = serviceName;
 			m_svc = new RegisterService();
-
 			m_svc.Response += new RegisterServiceEventHandler(m_svc_Response);
 		}
 
@@ -30,7 +29,7 @@ namespace InfiniteStorage
 			}
 		}
 
-		public void Register(ushort backup_port, ushort notify_port, ushort rest_port, string server_id, bool is_accepting = true)
+		public void Register(ushort backup_port, ushort notify_port, ushort rest_port, string server_id, bool is_accepting, bool home_sharing)
 		{
 			m_svc.Name = Environment.MachineName;
 			m_svc.Port = (short)backup_port;
@@ -45,17 +44,15 @@ namespace InfiniteStorage
 			txt.Add("version", "1.0");
 			txt.Add("service_name", ServiceName);
 			txt.Add("waiting_for_pair", is_accepting ? "true" : "false");
-			txt.Add("home_sharing", HomeSharing.Enabled ? "true" : "false");
+			txt.Add("home_sharing", home_sharing ? "true" : "false");
 			m_svc.TxtRecord = txt;
 			m_svc.Register();
 		}
 
-		public static string ServiceName
+		public string ServiceName
 		{
-			get
-			{
-				return Settings.Default.LibraryName;
-			}
+			get;
+			set;
 		}
 
 		public void Dispose()

@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfiniteStorage.DB", "Sourc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharePhoto", "Sources\sharePhoto\sharePhoto\sharePhoto.csproj", "{89AA1D98-C9BC-47F6-BD9D-AC4BFE5AF411}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BonjourAgent", "Sources\BonjourAgent\BonjourAgent.csproj", "{F7E699DE-DE7F-447E-8A74-B608E5D2FBBE}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = InfiniteStorage.vsmdi
@@ -135,6 +137,20 @@ Global
 		{89AA1D98-C9BC-47F6-BD9D-AC4BFE5AF411}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{89AA1D98-C9BC-47F6-BD9D-AC4BFE5AF411}.Release|Win32.ActiveCfg = Release|Any CPU
 		{89AA1D98-C9BC-47F6-BD9D-AC4BFE5AF411}.Release|x86.ActiveCfg = Release|Any CPU
+		{F7E699DE-DE7F-447E-8A74-B608E5D2FBBE}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{F7E699DE-DE7F-447E-8A74-B608E5D2FBBE}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{F7E699DE-DE7F-447E-8A74-B608E5D2FBBE}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{F7E699DE-DE7F-447E-8A74-B608E5D2FBBE}.Debug|Win32.ActiveCfg = Debug|x86
+		{F7E699DE-DE7F-447E-8A74-B608E5D2FBBE}.Debug|Win32.Build.0 = Debug|x86
+		{F7E699DE-DE7F-447E-8A74-B608E5D2FBBE}.Debug|x86.ActiveCfg = Debug|x86
+		{F7E699DE-DE7F-447E-8A74-B608E5D2FBBE}.Debug|x86.Build.0 = Debug|x86
+		{F7E699DE-DE7F-447E-8A74-B608E5D2FBBE}.Release|Any CPU.ActiveCfg = Release|x86
+		{F7E699DE-DE7F-447E-8A74-B608E5D2FBBE}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{F7E699DE-DE7F-447E-8A74-B608E5D2FBBE}.Release|Mixed Platforms.Build.0 = Release|x86
+		{F7E699DE-DE7F-447E-8A74-B608E5D2FBBE}.Release|Win32.ActiveCfg = Release|x86
+		{F7E699DE-DE7F-447E-8A74-B608E5D2FBBE}.Release|Win32.Build.0 = Release|x86
+		{F7E699DE-DE7F-447E-8A74-B608E5D2FBBE}.Release|x86.ActiveCfg = Release|x86
+		{F7E699DE-DE7F-447E-8A74-B608E5D2FBBE}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

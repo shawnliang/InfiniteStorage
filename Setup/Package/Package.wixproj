@@ -42,6 +42,14 @@
     <Content Include="Product.Uninstaller.wxi" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sources\BonjourAgent\BonjourAgent.csproj">
+      <Name>BonjourAgent</Name>
+      <Project>{f7e699de-de7f-447e-8a74-b608e5d2fbbe}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\..\Sources\InfiniteStorage.DB\InfiniteStorage.DB.csproj">
       <Name>InfiniteStorage.DB</Name>
       <Project>{793d45b0-147c-4304-8578-7ff2792102c8}</Project>

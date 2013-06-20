@@ -26,8 +26,8 @@ namespace Waveface.Client
 
     public partial class EventUC : UserControl
     {
-        private double WW = 156; //170
-        private double HH = 132; //144
+        private double WW = 150; //170
+        private double HH = 150; //144
 
         public List<FileChange> Event { get; set; }
         public int VideosCount { get; set; }
@@ -108,17 +108,17 @@ namespace Waveface.Client
                     _eventPhoto.BitmapImage = _bi;
 
 
-					BitmapImage _vidoeThumb = new BitmapImage();
-					_vidoeThumb.BeginInit();
+                    BitmapImage _vidoeThumb = new BitmapImage();
+                    _vidoeThumb.BeginInit();
 
-					if (File.Exists(_file.tiny_path))
-						_vidoeThumb.UriSource = new Uri(_file.tiny_path, UriKind.Absolute);
-					else
-						_vidoeThumb.UriSource = new Uri("pack://application:,,,/Ren/Images/video_130x110.png");
+                    if (File.Exists(_file.tiny_path))
+                        _vidoeThumb.UriSource = new Uri(_file.tiny_path, UriKind.Absolute);
+                    else
+                        _vidoeThumb.UriSource = new Uri("pack://application:,,,/Ren/Images/video_130x110.png");
 
-					_vidoeThumb.EndInit();
+                    _vidoeThumb.EndInit();
 
-					_eventPhoto.MediaSource = _vidoeThumb;
+                    _eventPhoto.MediaSource = _vidoeThumb;
 
                     _controls.Add(_eventPhoto);
                 }
@@ -243,12 +243,12 @@ namespace Waveface.Client
             }
 
             int _start = 0;
-            double _wTotal = 0;
-            int k = 0;
-            double _rs;
-            double _h;
             int _e = 0;
             int _wc;
+            int k = 0;
+            double _wTotal = 0;
+            double _rs;
+            double _h;
 
             foreach (Size _s in _sizes)
             {
@@ -278,8 +278,20 @@ namespace Waveface.Client
                     {
                         ListBoxItem _lbi = lbEvent.ItemContainerGenerator.ContainerFromIndex(j) as ListBoxItem;
 
-                        _lbi.Height = _h + ((_e - _wc) * 5);
+                        _lbi.Height = _h;
                         _lbi.Width = _h * (_sizes[j].Width / _sizes[j].Height) - (8.0 / _e);
+
+                        if (((_e - _wc) != 0) && (_wc != 0))
+                        {
+                            if (_sizes[j].Width > _sizes[j].Height)
+                            {
+                                _lbi.Width -= _h / _wc;
+                            }
+                            else
+                            {
+                                _lbi.Width += _h / (_e - _wc);
+                            }
+                        }
                     }
 
                     _start = k;
