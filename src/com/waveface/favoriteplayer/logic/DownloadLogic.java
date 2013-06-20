@@ -9,11 +9,9 @@ import java.util.HashMap;
 
 import org.jwebsocket.kit.WebSocketException;
 
-import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
@@ -72,7 +70,6 @@ public class DownloadLogic {
 						Constant.STATION_CONNECTION_TIMEOUT,
 						Constant.STATION_CONNECTION_TIMEOUT);
 			} catch (WammerServerException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -179,55 +176,30 @@ public class DownloadLogic {
 		subscribe(context);
 	}
 
-	@SuppressLint("NewApi")
 	public static void updateLabel(Context context,
-			LabelEntity.Label labelEntity) {
-		downloadLabel(context, labelEntity, false, true);
-		// while(!wasSynced(context)){
-		// //
-		// downloadLabel(context,labelEntity);
-		// }
-		SharedPreferences mPrefs = context.getSharedPreferences(
-				Constant.PREFS_NAME, Context.MODE_PRIVATE);
-		Editor mEditor = mPrefs.edit();
-		RuntimeState.labelsHashSet.remove(labelEntity.label_id);
-		mEditor.putStringSet(Constant.PREF_SERVER_CHANGE_LABELS,
-				RuntimeState.labelsHashSet);
-		mEditor.commit();
-
-		Cursor maxLabelcursor = LabelDB.getMAXSEQLabel(context);
-		String labSeq = "0";
-		if (maxLabelcursor != null && maxLabelcursor.getCount() > 0) {
-			maxLabelcursor.moveToFirst();
-			labSeq = maxLabelcursor.getString(maxLabelcursor
-					.getColumnIndex(LabelTable.COLUMN_SEQ));
-			// send broadcast label change
-		}
-		maxLabelcursor.close();
-		if (Integer.parseInt(labSeq) >= Integer.parseInt(labelEntity.seq)) {
-			subscribe(context);
-		}
-	}
-
-	public static boolean wasSynced(Context context) {
-		// TODO: PREF MAS SEQ ID == DB SEQ MAX ID
-		int dbSeq = 0;
-		boolean wasSynced = false;
-		SharedPreferences mPrefs = context.getSharedPreferences(
-				Constant.PREFS_NAME, Context.MODE_PRIVATE);
-		int prefSeq = mPrefs.getInt(Constant.PREF_SERVER_LABEL_SEQ, 0);
-		Cursor cursor = LabelDB.getMAXSEQLabel(context);
-
-		if (cursor != null && cursor.getCount() > 0) {
-			cursor.moveToFirst();
-			dbSeq = cursor.getInt(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
-		}
-		cursor.close();
-
-		if (dbSeq >= prefSeq) {
-			wasSynced = true;
-		}
-		return wasSynced;
+			LabelEntity.Label entity,String serverSeq) {
+		downloadLabel(context, entity, false, true);
+		//Update Seq equals ServerSeq
+		ContentValues cv = new ContentValues();
+		cv.put(LabelTable.COLUMN_SEQ, serverSeq);
+		
+		int result = context.getContentResolver().update(LabelTable.CONTENT_URI, 
+				cv, 
+				LabelTable.COLUMN_LABEL_ID+"=?", 
+				new String[]{entity.label_id});
+		Log.i(TAG, "Update SEQ to ["+serverSeq+"]:"+result);
+//		Cursor maxLabelcursor = LabelDB.getMAXSEQLabel(context);
+//		String labSeq = "0";
+//		if (maxLabelcursor != null && maxLabelcursor.getCount() > 0) {
+//			maxLabelcursor.moveToFirst();
+//			labSeq = maxLabelcursor.getString(maxLabelcursor
+//					.getColumnIndex(LabelTable.COLUMN_SEQ));
+//			// send broadcast label change
+//		}
+//		maxLabelcursor.close();
+//		if (Integer.parseInt(labSeq) >= Integer.parseInt(entity.seq)) {
+//			subscribe(context);
+//		}
 	}
 
 	public static void downloadVideo(String fileId, String fileName, String url) {
@@ -246,15 +218,17 @@ public class DownloadLogic {
 		if (RuntimeState.OnWebSocketOpened == false)
 			return;
 		// sendSubcribe
-		Cursor maxLabelcursor = LabelDB.getMAXSEQLabel(context);
-		String labSeq = "0";
-		if (maxLabelcursor != null && maxLabelcursor.getCount() > 0) {
-			maxLabelcursor.moveToFirst();
-			labSeq = maxLabelcursor.getString(maxLabelcursor
-					.getColumnIndex(LabelTable.COLUMN_SERVER_SEQ));
-			// send broadcast label change
-		}
-		maxLabelcursor.close();
+//		Cursor maxLabelcursor = LabelDB.getMAXSEQLabel(context);
+//		String labSeq = "0";
+//		if (maxLabelcursor != null && maxLabelcursor.getCount() > 0) {
+//			maxLabelcursor.moveToFirst();
+//			labSeq = maxLabelcursor.getString(maxLabelcursor
+//					.getColumnIndex(LabelTable.COLUMN_SERVER_SEQ));
+//			// send broadcast label change
+//		}
+//		maxLabelcursor.close();
+		String labSeq = LabelDB.getMAXServerSeq(context);
+		
 		ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
 		ConnectForGTVEntity.Connect connect = new ConnectForGTVEntity.Connect();
 		connect.deviceId = DeviceUtil.id(context);
@@ -269,13 +243,7 @@ public class DownloadLogic {
 		try {
 			RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));
 		} catch (WebSocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
-	public static boolean isLableChang(String lableId) {
-		return RuntimeState.labelsHashSet.contains(lableId);
-	}
-
 }

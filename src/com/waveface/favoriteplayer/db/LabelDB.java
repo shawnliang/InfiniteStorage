@@ -270,21 +270,46 @@ public class LabelDB {
 
 		Cursor cursor = context.getContentResolver().query(
 				LabelTable.CONTENT_URI,
-				new String[] { LabelTable.COLUMN_LABEL_ID,
-						LabelTable.COLUMN_LABEL_NAME,LabelTable.COLUMN_SEQ,LabelTable.COLUMN_COVER_URL,LabelTable.COLUMN_AUTO_TYPE,LabelTable.COLUMN_SERVER_SEQ,LabelTable.COLUMN_COVER_URL,LabelTable.COLUMN_ON_AIR ,LabelTable.COLUMN_AUTO_TYPE},
+				new String[] { 
+						LabelTable.COLUMN_LABEL_ID,
+						LabelTable.COLUMN_LABEL_NAME,
+						LabelTable.COLUMN_SEQ,
+						LabelTable.COLUMN_COVER_URL,
+						LabelTable.COLUMN_AUTO_TYPE,
+						LabelTable.COLUMN_SERVER_SEQ,
+						LabelTable.COLUMN_COVER_URL,
+						LabelTable.COLUMN_ON_AIR ,
+						LabelTable.COLUMN_AUTO_TYPE},
 				null, null,
 				LabelTable.COLUMN_SEQ + " DESC LIMIT 1");
 
 		return cursor;
 	}
+	public static String getMAXServerSeq(Context context) {
+		String serverSeq = "";
+		Cursor cursor = context.getContentResolver().query(
+				LabelTable.CONTENT_URI,
+				new String[] {LabelTable.COLUMN_SERVER_SEQ},
+				null, null,
+				LabelTable.COLUMN_SERVER_SEQ + " DESC LIMIT 1");
+		if(cursor!=null && cursor.getCount()!=0){
+			cursor.moveToFirst();
+			serverSeq = cursor.getString(0);
+		}
+		cursor.close();
+		return serverSeq;
+	}
 
 	
-	public static Cursor getDiffSeqLabel(Context context) {
-
+	public static Cursor getUnsyncedLabel(Context context) {
 		Cursor cursor = context.getContentResolver().query(
 				LabelTable.CONTENT_URI,
 				new String[] { LabelTable.COLUMN_LABEL_ID,
-						LabelTable.COLUMN_LABEL_NAME,LabelTable.COLUMN_SEQ,LabelTable.COLUMN_COVER_URL,LabelTable.COLUMN_AUTO_TYPE },
+							   LabelTable.COLUMN_LABEL_NAME,
+							   LabelTable.COLUMN_SEQ,
+							   LabelTable.COLUMN_SERVER_SEQ,
+							   LabelTable.COLUMN_COVER_URL,
+							   LabelTable.COLUMN_AUTO_TYPE },
 						LabelTable.COLUMN_SEQ +" <> "+ LabelTable.COLUMN_SERVER_SEQ ,null,
 				LabelTable.COLUMN_SEQ );
 
