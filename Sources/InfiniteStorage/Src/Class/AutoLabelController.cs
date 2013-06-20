@@ -152,7 +152,7 @@ namespace InfiniteStorage
 		private void recomputeYesterday()
 		{
 			recomputeYesterday(FileAssetType.image);
-			recomputeYesterday(FileAssetType.audio);
+			recomputeYesterday(FileAssetType.video);
 		}
 
 		private static void recomputeYesterday(FileAssetType file_type)
