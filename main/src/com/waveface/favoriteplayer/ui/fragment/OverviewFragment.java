@@ -69,6 +69,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 				ViewHolder holder = (ViewHolder) child.getTag();
 				if(labelId.equals(holder.labelId)) {
 					holder.progress.setVisibility(View.VISIBLE);
+					holder.countText.setVisibility(View.INVISIBLE);
 					break;
 				} else {
 					child = null;
@@ -237,10 +238,16 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 				mAdapter.notifyDataSetChanged();
 			}
 			
+			if(mAdapter.getCount() == 0) {
+				mNoContent.setVisibility(View.VISIBLE);
+			} else {
+				mNoContent.setVisibility(View.INVISIBLE);
+			}
 
 			if (view != null) {
 				ViewHolder holder = (ViewHolder) view.getTag();
 				holder.progress.setVisibility(View.INVISIBLE);
+				holder.countText.setVisibility(View.VISIBLE);
 			}
 		}
 		
