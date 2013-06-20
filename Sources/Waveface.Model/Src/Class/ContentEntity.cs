@@ -55,7 +55,7 @@ namespace Waveface.Model
 			{
 				return _name ?? string.Empty;
 			}
-			protected set
+			set
 			{
 				if (_name == value)
 					return;
