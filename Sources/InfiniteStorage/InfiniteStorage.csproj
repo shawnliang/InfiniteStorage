@@ -365,10 +365,6 @@
       <Link>ffmpeg.exe</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Libs\Mono.Zeroconf\Mono.Zeroconf.Providers.Bonjour.dll">
-      <Link>Mono.Zeroconf.Providers.Bonjour.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="..\..\Libs\nginx-1.2.3\html\50x.html">
       <Link>nginx\html\50x.html</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

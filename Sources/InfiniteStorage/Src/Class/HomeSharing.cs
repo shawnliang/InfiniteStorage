@@ -6,7 +6,7 @@ using Microsoft.Win32;
 
 namespace InfiniteStorage
 {
-	static class HomeSharing
+	public static class HomeSharing
 	{
 		public static bool Enabled
 		{
