@@ -236,7 +236,8 @@ public class LabelDB {
 				LabelTable.CONTENT_URI,
 				new String[] { LabelTable.COLUMN_LABEL_ID,
 						LabelTable.COLUMN_LABEL_NAME,
-						LabelTable.COLUMN_COVER_URL},
+						LabelTable.COLUMN_COVER_URL,
+						LabelTable.COLUMN_AUTO_TYPE},
 				LabelTable.COLUMN_LABEL_ID + " = ?", new String[] { labelId },
 				null);
 
