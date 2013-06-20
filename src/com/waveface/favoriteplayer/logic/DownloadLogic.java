@@ -195,9 +195,6 @@ public class DownloadLogic {
 				RuntimeState.labelsHashSet);
 		mEditor.commit();
 
-		LabelImportedEvent doneEvent = new LabelImportedEvent(
-				LabelImportedEvent.STATUS_DONE);
-
 		Cursor maxLabelcursor = LabelDB.getMAXSEQLabel(context);
 		String labSeq = "0";
 		if (maxLabelcursor != null && maxLabelcursor.getCount() > 0) {

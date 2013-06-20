@@ -27,19 +27,29 @@ public class LabelDB {
 
 	public static void updateLabelInfo(Context context,
 			LabelEntity.Label label, FileEntity fileEntity ,boolean isChangeLabel) {
-		updateLabel(context, label);
+		
+		
+			updateLabel(context, label);
+		
+		
 		if(isChangeLabel){
-			//Changed Label
-			//delete labelfile in database
-			removeAllFileInLabel(context, label.label_id);
-			if(label.on_air.equals("false")){
-
-               //TODO: delete file in db and file's real source(image or video file)
+			
+			if(label.deleted.equals("true") ){
+				deleteLabel(context, label.label_id);
+				removeAllFileInLabel(context, label.label_id);
 				removeFile(context,label);
-			}
-			else{
-				updateLabelFiles(context, label);
-				updateFiles(context, fileEntity);
+			}else{
+				//Changed Label
+				//delete labelfile in database
+				removeAllFileInLabel(context, label.label_id);
+				if(label.on_air.equals("false") ){
+					//TODO: delete file in db and file's real source(image or video file)
+					removeFile(context,label);
+				}
+				else{
+					updateLabelFiles(context, label);
+					updateFiles(context, fileEntity);
+				}
 			}
 		}else{
 			//delete labelfile in database
