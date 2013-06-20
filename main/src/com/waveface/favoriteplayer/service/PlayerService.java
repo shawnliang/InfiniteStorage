@@ -205,10 +205,7 @@ public class PlayerService extends Service{
 					RuntimeState.isDownloadingLabel = true;
 					new DownloadLabelsTask(mContext).execute(new Void[]{});
 				}
-				String ServerSeq = LabelDB.getMAXServerSeq(mContext);
-				if (!TextUtils.isEmpty(ServerSeq)) {
-					DownloadLogic.subscribe(mContext);
-				}
+				DownloadLogic.subscribe(mContext);
 			}else if(Constant.ACTION_LABEL_CHANGE_NOTIFICATION.equals(action)){
 				if(RuntimeState.needToSync() == false){
 					RuntimeState.setSyncing(true);

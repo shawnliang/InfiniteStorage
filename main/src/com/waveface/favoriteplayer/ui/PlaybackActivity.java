@@ -158,7 +158,8 @@ public class PlaybackActivity extends SherlockFragmentActivity {
 		Log.d(TAG, "onBackPressed:" + mCurrentFragment);
 		if(GalleryViewFragment.class.getSimpleName().equals(mCurrentFragment)) {
 			GalleryViewFragment fragment = (GalleryViewFragment) getSupportFragmentManager().findFragmentByTag(mCurrentFragment);
-			fragment.fadeOut();
+			if (fragment!=null)
+				fragment.fadeOut();
 			finish();
 			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 		} else {
@@ -179,11 +180,13 @@ public class PlaybackActivity extends SherlockFragmentActivity {
 		Log.d(TAG, "onKeyDown:" + keyCode);
 		if(PlaybackFragment.class.getSimpleName().equals(mCurrentFragment) && keyCode != KeyEvent.KEYCODE_BACK) {
 			PlaybackFragment fragment = (PlaybackFragment) getSupportFragmentManager().findFragmentByTag(mCurrentFragment);
-			fragment.onKeyEvent(keyCode, event);
+			if (fragment!=null)
+				fragment.onKeyEvent(keyCode, event);
 			return true;
 		} else if(FullScreenSlideshowFragment.class.getSimpleName().equals(mCurrentFragment)){
 			FullScreenSlideshowFragment fragment = (FullScreenSlideshowFragment) getSupportFragmentManager().findFragmentByTag(mCurrentFragment);
-			fragment.onKeyEvent(keyCode, event);
+			if (fragment!=null)
+				fragment.onKeyEvent(keyCode, event);
 			return true;
 		} else {
 			Log.d(TAG, "mCurrentFragment=" + mCurrentFragment);

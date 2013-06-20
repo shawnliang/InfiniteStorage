@@ -45,7 +45,6 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 //		Cursor cursor = LabelDB.getMAXSEQLabel(mContext);
 //		if (cursor != null && cursor.getCount() > 0) {
 		if (!TextUtils.isEmpty(ServerSeq)) {
-			DownloadLogic.subscribe(mContext);
 			LabelImportedEvent doneEvent = new LabelImportedEvent(
 					LabelImportedEvent.STATUS_DONE);
 			EventBus.getDefault().post(doneEvent);
