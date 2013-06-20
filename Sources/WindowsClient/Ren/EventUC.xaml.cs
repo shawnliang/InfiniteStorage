@@ -72,7 +72,7 @@ namespace Waveface.Client
             {
                 if (_file.type == 0)
                 {
-                    string _path = _file.tiny_path;
+                    string _path = _file.tiny_path.Replace("tiny", "small");
 
                     if (File.Exists(_path))
                     {
