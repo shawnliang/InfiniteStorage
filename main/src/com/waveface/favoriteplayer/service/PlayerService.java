@@ -1,6 +1,7 @@
 package com.waveface.favoriteplayer.service;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.math.BigInteger;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
@@ -8,46 +9,38 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.jwebsocket.kit.WebSocketException;
-
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
 import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
+import android.os.Process;
 import android.text.TextUtils;
 
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
-import com.waveface.favoriteplayer.db.LabelDB;
-import com.waveface.favoriteplayer.db.LabelTable;
-import com.waveface.favoriteplayer.entity.ConnectForGTVEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
-import com.waveface.favoriteplayer.event.WebSocketEvent;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.task.DownloadLabelsTask;
-import com.waveface.favoriteplayer.util.DeviceUtil;
 import com.waveface.favoriteplayer.util.Log;
 import com.waveface.favoriteplayer.util.NetworkUtil;
-import com.waveface.favoriteplayer.websocket.RuntimeWebClient;
 import com.waveface.jmdns.JMDNS;
 import com.waveface.jmdns.ServiceEvent;
 import com.waveface.jmdns.ServiceInfo;
 import com.waveface.jmdns.ServiceListener;
-
-import de.greenrobot.event.EventBus;
 
 
 public class PlayerService extends Service{
 	private static final String TAG = PlayerService.class.getSimpleName();
 	private Context mContext;
 
-    private long mMDNSSetupTime;
-    private long mSendSubcribeSetupTime;
+    private long mMDNSSetupTime = System.currentTimeMillis();
 	//DATA 
 	private ArrayList<ServerEntity> mPairedServers ;
 	private String mCondidateServerId ;
@@ -57,13 +50,21 @@ public class PlayerService extends Service{
     private final int UPDATE_INTERVAL = 20 * 1000;
 
     private Timer SyncTimer = null;
-
-    //TEST FOR MDNS
+    
+    //JMDNS
 	private WifiManager.MulticastLock mLock;
 	private JMDNS mJMDNS = null;
     private ServiceListener mListener = null;
 
-    
+	private volatile ServiceHandler mServiceHandler;
+	private static HandlerThread mBJThread;
+	private static final int MSG_SETUP_BONJOUR = 1;
+	private static final int MSG_RELEASE_BONJOUR = 2;	
+	private static final int MSG_WEBSOCKET_CONNECT = 3;	
+
+	private ServerEntity mCandidateServer = null;
+	
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -82,26 +83,16 @@ public class PlayerService extends Service{
             		connectPCWithPairedServer();
             		autoPairingConnect();
             	}
-            	if(NetworkUtil.isWifiNetworkAvailable(mContext) /*&&
-            			!ServersLogic.hasBackupedServers(mContext)*/){
+            	if(NetworkUtil.isWifiNetworkAvailable(mContext) ){
                 	long fromTime = System.currentTimeMillis()-mMDNSSetupTime;
                 	if(NetworkUtil.isWifiNetworkAvailable(mContext)
-                			&& RuntimeState.isMDNSSetUped  
-                			&& fromTime > (60*1000)
-                			&& RuntimeState .OnWebSocketOpened == false){
+                			&& RuntimeState .OnWebSocketOpened == false
+                			&& fromTime > (60*1000)){
                 		    Log.d(TAG, "reset MDNS FOR WAIT FOR 1 Minutes");
-    						releaseMDNS();
-    						Log.d(TAG, "reset MDNS");
-    						setupMDNS();
+    						finishBonjourPaired();
+    						startupBonjourPaired();
                 	}                	            	
             	}
-            	//
-            	if(NetworkUtil.isWifiNetworkAvailable(mContext)){
-            		long fromTime = System.currentTimeMillis()-mSendSubcribeSetupTime;
-            		if(fromTime > (60*1000) && RuntimeState.OnWebSocketOpened==false){
-            			sendSubcribe();
-            		}
-            	}            	
             }
         }, 0, UPDATE_INTERVAL);
 	    return Service.START_NOT_STICKY;
@@ -117,12 +108,55 @@ public class PlayerService extends Service{
 		registerReceiver(mReceiver, filter);
 		
 		connectPCWithPairedServer();
-		Log.d(TAG,"Wi-Fi-Network:"+NetworkUtil.isWifiNetworkAvailable(mContext));		
-		RuntimeState.mAutoConnectMode = ServersLogic.hasBackupedServers(this);		
-		if(!ServersLogic.hasBackupedServers(mContext)){
-			new SetupMDNS().execute(new Void[]{});
+		RuntimeState.mAutoConnectMode = ServersLogic.hasBackupedServers(this);				
+		if(RuntimeState.OnWebSocketOpened == false){
+			startupBonjourPaired();
 		}
 		Log.d(TAG, "onCreate");		
+	}
+
+	public void startWebSocketConnect(boolean autoConnect){
+		initServiceHandlerAndThread();
+		try {
+			if(RuntimeState.OnWebSocketOpened == false){
+				Message.obtain(mServiceHandler,MSG_WEBSOCKET_CONNECT,autoConnect?1:0,0)
+						.sendToTarget();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void initServiceHandlerAndThread() {
+		if(mBJThread==null){
+			mBJThread = new HandlerThread(PlayerService.class.getSimpleName(), Process.THREAD_PRIORITY_BACKGROUND);
+			mBJThread.start();
+			mServiceHandler = new ServiceHandler(this, mBJThread.getLooper());
+			Log.d(TAG, "start mServiceLooper");
+		}
+	}
+
+	public void startupBonjourPaired(){
+		initServiceHandlerAndThread();
+		try {
+			Message.obtain(mServiceHandler, MSG_SETUP_BONJOUR)
+					.sendToTarget();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void finishBonjourPaired(){
+		if(mBJThread!=null){
+			try {
+				Message.obtain(mServiceHandler, MSG_RELEASE_BONJOUR)
+						.sendToTarget();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else{
+			RuntimeState.isMDNSSetUped = false;
+		}
 	}
 
 	
@@ -134,17 +168,21 @@ public class PlayerService extends Service{
 				String actionContent = intent.getStringExtra(Constant.EXTRA_NETWROK_STATE);
 				if(actionContent!=null){
 					if(actionContent.equals(Constant.NETWORK_ACTION_WIFI_BROKEN)){
-						if(!ServersLogic.hasBackupedServers(mContext)){
-							Log.d(TAG, "release MDNS");
+						if(RuntimeState.isMDNSSetUped== true){
+							Log.d(TAG, "release MDNS by network broken");
 							ServersLogic.purgeAllBonjourServer(mContext);
-							releaseMDNS();
+							finishBonjourPaired();
 						}
 					}
 					else if(actionContent.equals(Constant.NETWORK_ACTION_WIFI_CONNECTED)){
 						if(NetworkUtil.isWifiNetworkAvailable(mContext) && RuntimeState.isMDNSSetUped== false){
-							if(!ServersLogic.hasBackupedServers(mContext)){
-								Log.d(TAG, "reset MDNS");
-								setupMDNS();
+							if(ServersLogic.hasBackupedServers(mContext)){
+								connectPCWithPairedServer();	
+							}
+							if(RuntimeState.OnWebSocketOpened == false){
+								Log.d(TAG, "reset MDNS BY WI-Fi Network Recoverd");
+								RuntimeState.isMDNSSetUped = false;
+								startupBonjourPaired();
 							}
 						}
 					}
@@ -166,8 +204,10 @@ public class PlayerService extends Service{
  		if(SyncTimer!=null){
 			SyncTimer.cancel();
 		}
-		if(!ServersLogic.hasBackupedServers(mContext)){
-			releaseMDNS();  
+ 		
+		Log.d(TAG, "quit mServiceHandler");
+		if(mServiceHandler!=null){
+			mServiceHandler.getLooper().quit();
 		}
 		ServersLogic.purgeAllBonjourServer(this);
     	ServersLogic.updateAllBackedServerStatus(this,Constant.SERVER_OFFLINE);
@@ -300,16 +340,12 @@ public class PlayerService extends Service{
 				//CONNECT FIRST FOR THREE TIME
 				int retryCount= 0;
 				while(retryCount<3 &&NetworkUtil.isWifiNetworkAvailable(mContext) && RuntimeState.OnWebSocketOpened==false){
-					ServersLogic.startWSServerConnect(this, 
-							"ws://"+entity.ip+":"+entity.notifyPort, 
-							entity.serverId,
-							entity.serverName, 
-							entity.ip,
-							entity.notifyPort,
-							entity.restPort
-							,true);
+					entity.wsLocation = "ws://"+entity.ip+":"+entity.notifyPort;					
+					mCandidateServer = entity;
+					Log.d(TAG, "auto connect");
+					startWebSocketConnect(true);	
 					try {
-						Thread.sleep(50);
+						Thread.sleep(200);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -332,61 +368,55 @@ public class PlayerService extends Service{
 				mCondidateServerId = pairedServer.serverId;
 				mCondidateWSLocation = "ws://"+bonjourServer.ip+":"+bonjourServer.notifyPort;
 				Log.d(TAG, "PAIRING WITH "+pairedServer.serverName+","+mCondidateWSLocation);
-				ServersLogic.startWSServerConnect(this, 
-						mCondidateWSLocation, 
-						mCondidateServerId,
-						bonjourServer.serverName,
-						bonjourServer.ip,
-						bonjourServer.notifyPort,
-						bonjourServer.restPort
-						,false);
-//				while(!RuntimeState.OnWebSocketOpened){
-//					try {
-//						Thread.sleep(50);
-//					} catch (InterruptedException e) {
-//						e.printStackTrace();
-//					}
-//				}
+				
+				mCandidateServer = new ServerEntity();
+				mCandidateServer.serverId = mCondidateServerId;
+				mCandidateServer.wsLocation = mCondidateWSLocation;
+				mCandidateServer.serverName = bonjourServer.serverName;
+				mCandidateServer.ip = bonjourServer.ip;
+				mCandidateServer.notifyPort = bonjourServer.notifyPort;
+				mCandidateServer.restPort = bonjourServer.restPort;
+				Log.d(TAG, "auto paired connect");
+				startWebSocketConnect(false);
 			}
 		}
 	}
 	
-	class SetupMDNS extends AsyncTask<Void,Void,Void>{
-		@Override
-		protected Void doInBackground(Void... params) {
-			setupMDNS();
-			return null;
-		}	
-	}
 	
-	public void sendSubcribe() {
+	private final class ServiceHandler extends Handler {
+		private WeakReference<PlayerService> mRef;
+		public ServiceHandler(PlayerService service, Looper looper) {
+			super(looper);
+			mRef = new WeakReference<PlayerService>(service);
+		}
 		
-		mSendSubcribeSetupTime = System.currentTimeMillis();
-		if(RuntimeState.OnWebSocketOpened){
-			Cursor cursor = LabelDB.getMAXSEQLabel(mContext);
-			EventBus.getDefault().post(new WebSocketEvent(WebSocketEvent.STATUS_CONNECT));
-			String labSeq ="0";
-			if(cursor!=null && cursor.getCount()>0){
-				cursor.moveToFirst();
-				labSeq=cursor.getString(cursor.getColumnIndex(LabelTable.COLUMN_SEQ));
-			}
-			cursor.close();
-			ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();
-			ConnectForGTVEntity.Connect  connect = new ConnectForGTVEntity.Connect();
-			connect.deviceId=DeviceUtil.id(mContext);
-			connect.deviceName = DeviceUtil
-					.getDeviceNameForDisplay(mContext);
-			connectForGTV.setConnect(connect);
-			ConnectForGTVEntity.Subscribe subscribe = new ConnectForGTVEntity.Subscribe();
-			subscribe.labels=true;
-			subscribe.labels_from_seq = labSeq;
-			connectForGTV.setSubscribe(subscribe);
-			try {
-				RuntimeWebClient.send(RuntimeState.GSON.toJson(connectForGTV));
-			} catch (WebSocketException e) {
-				e.printStackTrace();
+		@Override
+		public void handleMessage(Message msg){
+			switch (msg.what) {
+				case MSG_SETUP_BONJOUR:
+					if(RuntimeState.isMDNSSetUped == false 
+						&& RuntimeState.OnWebSocketOpened == false){
+						setupMDNS();
+					}
+					break;
+				case MSG_RELEASE_BONJOUR:
+					if(RuntimeState.isMDNSSetUped == true){
+						releaseMDNS();
+					}
+					break;
+				case MSG_WEBSOCKET_CONNECT:					
+					int autoConnect = msg.arg1;
+					ServersLogic.startWSServerConnect(mContext, 
+							mCandidateServer.wsLocation, 
+							mCandidateServer.serverId,
+							mCandidateServer.serverName,
+							mCandidateServer.ip,
+							mCandidateServer.notifyPort,
+							mCandidateServer.restPort
+							,autoConnect==1?true:false);
+					break;
 			}
 		}
-		Log.v(TAG, "exit WorkerTimerTask.run()");
 	}
+
 }
