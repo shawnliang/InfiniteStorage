@@ -235,7 +235,7 @@ namespace InfiniteStorage
 						proc.Kill();
 						proc.WaitForExit(500);
 					}
-					catch (Exception e)
+					catch
 					{
 					}
 				}

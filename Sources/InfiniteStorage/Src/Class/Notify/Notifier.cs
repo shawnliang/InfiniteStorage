@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Waveface.Common;
 
 namespace InfiniteStorage.Notify
 {
@@ -8,12 +9,11 @@ namespace InfiniteStorage.Notify
 	{
 		private List<NotifySender> senders = new List<NotifySender>();
 		private object cs = new object();
-		private object timer_lock = new object();
-		private System.Timers.Timer timer = new System.Timers.Timer(500.0);
+		private NoReentrantTimer timer;
 
 		public Notifier()
 		{
-			timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
+			timer = new NoReentrantTimer(timer_elapsed, null, 3000, 1000);
 		}
 
 		public void Start()
@@ -47,41 +47,33 @@ namespace InfiniteStorage.Notify
 			}
 		}
 
-		void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+
+		void timer_elapsed(object nil)
 		{
-			lock (timer_lock)
+			try
 			{
-				timer.Stop();
+				List<NotifySender> allChannels = null;
 
-				try
+				lock (cs)
 				{
-					List<NotifySender> allChannels = null;
+					allChannels = senders.ToList();
+				}
 
-					lock (cs)
+				foreach (var channel in allChannels)
+				{
+					try
 					{
-						allChannels = senders.ToList();
+						channel.Notify();
 					}
-
-					foreach (var channel in allChannels)
+					catch (Exception err)
 					{
-						try
-						{
-							channel.Notify();
-						}
-						catch (Exception err)
-						{
-							log4net.LogManager.GetLogger(GetType()).Warn("unable to notify:", err);
-						}
+						log4net.LogManager.GetLogger(GetType()).Warn("unable to notify:", err);
 					}
 				}
-				catch (Exception err)
-				{
-					log4net.LogManager.GetLogger(GetType()).Warn("unable to notify:", err);
-				}
-				finally
-				{
-					timer.Start();
-				}
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("unable to notify:", err);
 			}
 		}
 	}
