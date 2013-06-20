@@ -219,9 +219,9 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"
                                               SharedSizeGroup="iconCol" />
-                            <ColumnDefinition Width="auto"
+                            <ColumnDefinition Width="*"
                                               SharedSizeGroup="nameCol" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
 
                         <Image x:Name="icon"
