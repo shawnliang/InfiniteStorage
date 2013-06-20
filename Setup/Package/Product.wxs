@@ -111,6 +111,10 @@
             <File Id="BonjourAgent.exe" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\BonjourAgent.exe" />
           </Component>
 
+          <Component Id="CommandLine.dll" Guid="*">
+            <File Id="CommandLine.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\CommandLine.dll" />
+          </Component>
+          
           <Component Id="InfiniteStorage.db.dll" Guid="*">
             <File Id="InfiniteStorage.db.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\InfiniteStorage.db.dll" />
           </Component>
@@ -350,6 +354,7 @@
       <ComponentRef Id="System.Reactive.Linq.dll" />
       <ComponentRef Id="System.Reactive.PlatformServices.dll" />
       <ComponentRef Id="BonjourAgent.exe" />
+      <ComponentRef Id="CommandLine.dll" />
                  
       <ComponentGroupRef Id="photoSharedFiles" />
     </Feature>
