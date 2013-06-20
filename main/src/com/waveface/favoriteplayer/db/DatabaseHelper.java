@@ -70,7 +70,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		  .append(LabelTable.COLUMN_COVER_URL + " TEXT NOT NULL ,")
 		  .append(LabelTable.COLUMN_AUTO_TYPE + " TEXT NOT NULL ,")
 		  .append(LabelTable.COLUMN_DISPLAY_STATUS + " TEXT NOT NULL ,")
-		  .append( LabelTable.COLUMN_ON_AIR + " TEXT NOT NULL );");		
+		  .append(LabelTable.COLUMN_ON_AIR + " TEXT NOT NULL ,")
+		  .append( LabelTable.COLUMN_SERVER_SEQ + " TEXT NOT NULL );");		
 		createTable(db, sqlBuilder.toString(), LabelTable.TABLE_NAME);
 		
 		// Create Label Files table

@@ -440,6 +440,13 @@ public class PlayerProvider extends ContentProvider {
 			sendCustomizedNotifyChangedInfo(matchUri);
 			break;
 			
+			
+		case LABELS:
+			affected = db.update(LabelTable.TABLE_NAME, values, where,
+					whereArgs);
+			sendCustomizedNotifyChangedInfo(matchUri);
+			break;				
+			
 		case FILES:
 			affected = db.update(FileTable.TABLE_NAME, values, where,
 					whereArgs);
@@ -546,8 +553,9 @@ public class PlayerProvider extends ContentProvider {
 						+ LabelTable.COLUMN_COVER_URL + ","
 						+ LabelTable.COLUMN_AUTO_TYPE + ","
 						+ LabelTable.COLUMN_ON_AIR + ","
-						+ LabelTable.COLUMN_DISPLAY_STATUS + ")"
-						+ " values (?,?,?,?,?,?,?,?)");
+						+ LabelTable.COLUMN_DISPLAY_STATUS + ","
+						+ LabelTable.COLUMN_SERVER_SEQ + ")"
+						+ " values (?,?,?,?,?,?,?,?,?)");
 
 				for (ContentValues value : values) {
 					// bind the 1-indexed ?'s to the values specified
@@ -559,6 +567,7 @@ public class PlayerProvider extends ContentProvider {
 					insert.bindString(6, value.getAsString(LabelTable.COLUMN_AUTO_TYPE));
 					insert.bindString(7, value.getAsString(LabelTable.COLUMN_ON_AIR));
 					insert.bindString(8, value.getAsString(LabelTable.COLUMN_DISPLAY_STATUS));
+					insert.bindString(9, value.getAsString(LabelTable.COLUMN_SERVER_SEQ));
 					insert.execute();
 				}
 				db.setTransactionSuccessful();

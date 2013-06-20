@@ -42,16 +42,17 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 	protected Void doInBackground(Void... params) {
 		if (NetworkUtil.isWifiNetworkAvailable(mContext) == false)
 			return null;
-		Cursor cursor = LabelDB.getMAXSEQLabel(mContext);
-		if (cursor != null && cursor.getCount() > 0) {
-			
+		String ServerSeq = LabelDB.getMAXServerSeq(mContext);
+//		Cursor cursor = LabelDB.getMAXSEQLabel(mContext);
+//		if (cursor != null && cursor.getCount() > 0) {
+		if (!TextUtils.isEmpty(ServerSeq)) {
 			DownloadLogic.subscribe(mContext);
 			LabelImportedEvent doneEvent = new LabelImportedEvent(
 					LabelImportedEvent.STATUS_DONE);
 			EventBus.getDefault().post(doneEvent);
 			return null;
 		}
-		cursor.close();
+//		cursor.close();
 		SharedPreferences mPrefs = mContext.getSharedPreferences(
 				Constant.PREFS_NAME, Context.MODE_PRIVATE);
 		Editor mEditor = mPrefs.edit();

@@ -1,6 +1,5 @@
 package com.waveface.favoriteplayer.websocket;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +7,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import javolution.util.FastMap;
-
 
 import org.jwebsocket.api.WebSocketClientEvent;
 import org.jwebsocket.api.WebSocketClientListener;
@@ -31,10 +29,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
+import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.entity.HomeSharingEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
@@ -150,7 +150,6 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 			RuntimeState.setServerStatus(Constant.WS_ACTION_SOCKET_OPENED);
 		}
 
-		@SuppressLint("NewApi")
 		@Override
 		public void processPacket(WebSocketClientEvent aEvent,
 				WebSocketPacket aPacket) {
@@ -166,58 +165,82 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 				LabelChangeEntity entity = null;
 				entity = RuntimeState.GSON.fromJson(jsonOutput,
 						LabelChangeEntity.class);
-				
-				HomeSharingEntity homeSharingEntity   =RuntimeState.GSON.fromJson(jsonOutput,
-						HomeSharingEntity.class);	
+
+				HomeSharingEntity homeSharingEntity = RuntimeState.GSON
+						.fromJson(jsonOutput, HomeSharingEntity.class);
 
 				int downloadLableInitStatus = mPrefs.getInt(
 						Constant.PREF_DOWNLOAD_LABEL_INIT_STATUS, 0);
-				
-				
-				if(homeSharingEntity.home_sharing!=null){
-					
-					mEditor.putString(Constant.PREF_HOME_SHARING_STATUS, homeSharingEntity.home_sharing);
+
+				if (homeSharingEntity.home_sharing != null) {
+
+					mEditor.putString(Constant.PREF_HOME_SHARING_STATUS,
+							homeSharingEntity.home_sharing);
 					mEditor.commit();
 				}
-				String homeSharingStatus = mPrefs.getString(Constant.PREF_HOME_SHARING_STATUS, "");
-			
-				if (downloadLableInitStatus == 1 && homeSharingStatus.equals("true")) {
+				String homeSharingStatus = mPrefs.getString(
+						Constant.PREF_HOME_SHARING_STATUS, "");
+
+				if (downloadLableInitStatus == 1
+						&& homeSharingStatus.equals("true")) {
 
 					try {
 						if (!TextUtils.isEmpty(jsonOutput))
 							entity = RuntimeState.GSON.fromJson(jsonOutput,
 									LabelChangeEntity.class);
 						if (entity != null) {
-							ArrayList<ServerEntity> servers = ServersLogic
-									.getPairedServer(mContext);
-							ServerEntity pairedServer = servers.get(0);
-							String restfulAPIURL = "http://" + pairedServer.ip
-									+ ":" + pairedServer.restPort;
-							String getLabelURL = restfulAPIURL
-									+ Constant.URL_GET_LABEL;
-							HashMap<String, String> param = new HashMap<String, String>();
-							param.clear();
-							param.put(Constant.PARAM_LABEL_ID,
-									entity.label_change.label_id);
-							jsonOutput = HttpInvoker.executePost(getLabelURL,
-									param, Constant.STATION_CONNECTION_TIMEOUT,
-									Constant.STATION_CONNECTION_TIMEOUT);
-							// single label download
-							LabelEntity.Label labelEntity = RuntimeState.GSON
-									.fromJson(jsonOutput,
-											LabelEntity.Label.class);
+							Cursor labelCusor = LabelDB.getLabelByLabelId(
+									mContext, entity.label_change.label_id);
+							// label exist
+							if (labelCusor !=null && labelCusor.getCount() > 0) {
+								LabelDB.updateLabelServerSeq(mContext,
+										entity.label_change.label_id,
+										entity.label_change.seq);
+								if (entity.label_change.deleted.equals("true")) {
+									LabelDB.deleteLabel(mContext,
+											entity.label_change.label_id);
+									LabelDB.removeAllFileInLabel(mContext,
+											entity.label_change.label_id);
+								}
+							}//new Label for insert 
+							else {
+								ArrayList<ServerEntity> servers = ServersLogic
+										.getPairedServer(mContext);
+								ServerEntity pairedServer = servers.get(0);
+								String restfulAPIURL = "http://"
+										+ pairedServer.ip + ":"
+										+ pairedServer.restPort;
+								String getLabelURL = restfulAPIURL
+										+ Constant.URL_GET_LABEL;
+								HashMap<String, String> param = new HashMap<String, String>();
+								param.clear();
+								param.put(Constant.PARAM_LABEL_ID,
+										entity.label_change.label_id);
+								jsonOutput = HttpInvoker.executePost(
+										getLabelURL, param,
+										Constant.STATION_CONNECTION_TIMEOUT,
+										Constant.STATION_CONNECTION_TIMEOUT);
 
-							labelEntity.cover_url=entity.label_change.cover_url;
-							labelEntity.auto_type=entity.label_change.auto_type;
-							labelEntity.on_air=entity.label_change.on_air;
-							labelEntity.deleted=entity.label_change.deleted;
-							
-							RuntimeState.labelsHashSet.add(entity.label_change.label_id);
-							mEditor.putStringSet(Constant.PREF_SERVER_CHANGE_LABELS, RuntimeState.labelsHashSet);
-							mEditor.commit();
-						
-							DownloadLogic.updateLabel(mContext, labelEntity);
-							EventBus.getDefault().post(new LabelChangeEvent(entity.label_change.label_id, entity.label_change.auto_type));
+								LabelEntity.Label labelEntity = RuntimeState.GSON
+										.fromJson(jsonOutput,
+												LabelEntity.Label.class);
+
+								labelEntity.cover_url = entity.label_change.cover_url;
+								labelEntity.auto_type = entity.label_change.auto_type;
+								labelEntity.on_air = entity.label_change.on_air;
+								labelEntity.deleted = entity.label_change.deleted;
+
+								LabelDB.updateLabelChang(mContext, labelEntity,
+										true);
+							}
+
+							labelCusor.close();
+							mContext.sendBroadcast(new Intent(
+									Constant.ACTION_LABEL_CHANGE_NOTIFICATION));
+							EventBus.getDefault().post(
+									new LabelChangeEvent(
+											entity.label_change.label_id,
+											entity.label_change.auto_type));
 						}
 					} catch (Exception e) {
 						e.printStackTrace();

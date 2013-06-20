@@ -69,6 +69,43 @@ public class LabelDB {
 			cv.put(LabelTable.COLUMN_LABEL_ID, label.label_id);
 			cv.put(LabelTable.COLUMN_LABEL_NAME, label.label_name);
 			cv.put(LabelTable.COLUMN_SEQ, label.seq);
+			cv.put(LabelTable.COLUMN_SERVER_SEQ, label.seq);
+			cv.put(LabelTable.COLUMN_UPDATE_TIME, StringUtil.localtimeToIso8601(new Date()));
+			if(TextUtils.isEmpty(label.cover_url)){
+				label.cover_url = "";
+			}
+			cv.put(LabelTable.COLUMN_COVER_URL, label.cover_url);
+			if(TextUtils.isEmpty(label.auto_type)){
+				label.auto_type = "";
+			}			
+			cv.put(LabelTable.COLUMN_AUTO_TYPE, label.auto_type);
+			
+			if(TextUtils.isEmpty(label.on_air)){
+				label.on_air = "";
+			}
+			cv.put(LabelTable.COLUMN_ON_AIR, label.on_air);
+			cv.put(LabelTable.COLUMN_DISPLAY_STATUS, label.on_air.equals("true")?"true":"false");			
+			// insert label
+			result = cr.bulkInsert(LabelTable.CONTENT_URI,
+					new ContentValues[] { cv });
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static int updateLabelChang(Context context, LabelEntity.Label label,boolean isExistLabel) {
+		int result = 0;
+
+		ContentResolver cr = context.getContentResolver();
+		try {
+
+			ContentValues cv = new ContentValues();
+			cv.put(LabelTable.COLUMN_LABEL_ID, label.label_id);
+			cv.put(LabelTable.COLUMN_LABEL_NAME, label.label_name);
+			cv.put(LabelTable.COLUMN_SEQ, isExistLabel?"0":label.seq);
+			cv.put(LabelTable.COLUMN_SERVER_SEQ, label.seq);
 			cv.put(LabelTable.COLUMN_UPDATE_TIME, StringUtil.localtimeToIso8601(new Date()));
 			if(TextUtils.isEmpty(label.cover_url)){
 				label.cover_url = "";
@@ -172,7 +209,7 @@ public class LabelDB {
 
 
 	
-	private static void removeAllFileInLabel(Context context, String labelId) {
+	public static void removeAllFileInLabel(Context context, String labelId) {
 		ContentResolver cr = context.getContentResolver();
 		cr.delete(LabelFileTable.CONTENT_URI, 
 				LabelFileTable.COLUMN_LABEL_ID+"=?", 
@@ -233,16 +270,51 @@ public class LabelDB {
 
 		Cursor cursor = context.getContentResolver().query(
 				LabelTable.CONTENT_URI,
-				new String[] { LabelTable.COLUMN_LABEL_ID,
-						LabelTable.COLUMN_LABEL_NAME,LabelTable.COLUMN_SEQ,LabelTable.COLUMN_COVER_URL,LabelTable.COLUMN_AUTO_TYPE },
+				new String[] { 
+						LabelTable.COLUMN_LABEL_ID,
+						LabelTable.COLUMN_LABEL_NAME,
+						LabelTable.COLUMN_SEQ,
+						LabelTable.COLUMN_COVER_URL,
+						LabelTable.COLUMN_AUTO_TYPE,
+						LabelTable.COLUMN_SERVER_SEQ,
+						LabelTable.COLUMN_COVER_URL,
+						LabelTable.COLUMN_ON_AIR ,
+						LabelTable.COLUMN_AUTO_TYPE},
 				null, null,
 				LabelTable.COLUMN_SEQ + " DESC LIMIT 1");
 
 		return cursor;
 	}
+	public static String getMAXServerSeq(Context context) {
+		String serverSeq = "";
+		Cursor cursor = context.getContentResolver().query(
+				LabelTable.CONTENT_URI,
+				new String[] {LabelTable.COLUMN_SERVER_SEQ},
+				null, null,
+				LabelTable.COLUMN_SERVER_SEQ + " DESC LIMIT 1");
+		if(cursor!=null && cursor.getCount()!=0){
+			cursor.moveToFirst();
+			serverSeq = cursor.getString(0);
+		}
+		cursor.close();
+		return serverSeq;
+	}
 
 	
-	
+	public static Cursor getUnsyncedLabel(Context context) {
+		Cursor cursor = context.getContentResolver().query(
+				LabelTable.CONTENT_URI,
+				new String[] { LabelTable.COLUMN_LABEL_ID,
+							   LabelTable.COLUMN_LABEL_NAME,
+							   LabelTable.COLUMN_SEQ,
+							   LabelTable.COLUMN_SERVER_SEQ,
+							   LabelTable.COLUMN_COVER_URL,
+							   LabelTable.COLUMN_AUTO_TYPE },
+						LabelTable.COLUMN_SEQ +" <> "+ LabelTable.COLUMN_SERVER_SEQ ,null,
+				LabelTable.COLUMN_SEQ );
+
+		return cursor;
+	}
 
 
 	public static Cursor getLabelFileViewByLabelId(Context context, String labelId) {
@@ -351,6 +423,15 @@ public class LabelDB {
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
 		cv.put(LabelTable.COLUMN_SEQ, Integer.parseInt(seq));
+
+		return cr.update(LabelTable.CONTENT_URI, cv, LabelTable.COLUMN_LABEL_ID + "=?",
+				new String[] { labelId });
+	}
+	
+	public static int updateLabelServerSeq(Context context, String labelId,String seq) {
+		ContentResolver cr = context.getContentResolver();
+		ContentValues cv = new ContentValues();
+		cv.put(LabelTable.COLUMN_SERVER_SEQ, Integer.parseInt(seq));
 
 		return cr.update(LabelTable.CONTENT_URI, cv, LabelTable.COLUMN_LABEL_ID + "=?",
 				new String[] { labelId });

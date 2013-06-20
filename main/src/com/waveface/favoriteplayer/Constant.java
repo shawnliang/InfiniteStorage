@@ -26,7 +26,8 @@ public class Constant {
 	public final static String ACTION_WEB_SOCKET_SERVER_CONNECTED = "com.waveface.favoriteplayer.action.WEB_SOCKET_SERVER_CONNECTED";
 	public final static String ACTION_WEB_SOCKET_SERVER_DISCONNECTED = "com.waveface.favoriteplayer.action.WEB_SOCKET_SERVER_DISCONNECTED";	
 	public final static String ACTION_RELEASE_PAIRED_SERVER_BY_CLIENT = "com.waveface.favoriteplayer.action.RELEASE_PAIRED_SERVER_BY_CLIENT";	
-    public final static String ACTION_NOT_ENOUGH_SPACE="com.waveface.favoriteplayer.action.NOT_ENOUGH_SPACE";	
+    public final static String ACTION_NOT_ENOUGH_SPACE="com.waveface.favoriteplayer.action.NOT_ENOUGH_SPACE";
+    public final static String ACTION_LABEL_CHANGE_NOTIFICATION = "com.waveface.favoriteplayer.action.LABEL_CHANGE_NOTIFICATION";
 
 	//BUNDLE DATA
 	public static final String BUNDLE_FILE_TYPE = "FILE_TYPE";	
