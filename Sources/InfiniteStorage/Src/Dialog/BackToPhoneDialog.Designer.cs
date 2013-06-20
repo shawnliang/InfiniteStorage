@@ -55,7 +55,9 @@
 			this.Controls.Add(this.label1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "BackToPhoneDialog";
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.BackToPhoneDialog_FormClosed);
 			this.Load += new System.EventHandler(this.BackToPhoneDialog_Load);
+			this.Shown += new System.EventHandler(this.BackToPhoneDialog_Shown);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			this.ResumeLayout(false);
 

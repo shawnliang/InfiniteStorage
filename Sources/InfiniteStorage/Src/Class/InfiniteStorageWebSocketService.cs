@@ -17,6 +17,7 @@ namespace InfiniteStorage
 		public static event EventHandler<WebsocketEventArgs> DeviceDisconnected;
 		public static event EventHandler<WebsocketEventArgs> PairingRequesting;
 		public static event EventHandler<WebsocketEventArgs> TotalCountUpdated;
+		public static event EventHandler<WebsocketEventArgs> FileReceiving;
 		public static event EventHandler<WebsocketEventArgs> FileEnding;
 		public static event EventHandler<WebsocketEventArgs> FileReceived;
 
@@ -41,6 +42,7 @@ namespace InfiniteStorage
 			ctx.OnConnectAccepted += DeviceAccepted;
 			ctx.OnPairingRequired += PairingRequesting;
 			ctx.OnTotalCountUpdated += TotalCountUpdated;
+			ctx.OnFileReceiving += FileReceiving;
 			ctx.OnFileReceived += FileReceived;
 			ctx.OnFileEnding += FileEnding;
 

@@ -167,6 +167,7 @@ namespace InfiniteStorage
 			InfiniteStorageWebSocketService.DeviceDisconnected += m_notifyIconController.OnDeviceDisconnected;
 			InfiniteStorageWebSocketService.PairingRequesting += m_notifyIconController.OnDevicePairingRequesting;
 			InfiniteStorageWebSocketService.TotalCountUpdated += m_notifyIconController.OnTotalCountUpdated;
+			InfiniteStorageWebSocketService.FileReceiving += m_notifyIconController.OnFileReceiving;
 		}
 
 		private void showProgramIsAtServiceBallonTips()

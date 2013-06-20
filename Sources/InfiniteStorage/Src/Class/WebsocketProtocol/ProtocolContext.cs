@@ -29,8 +29,10 @@ namespace InfiniteStorage.WebsocketProtocol
 		public event EventHandler<WebsocketEventArgs> OnConnectAccepted;
 		public event EventHandler<WebsocketEventArgs> OnPairingRequired;
 		public event EventHandler<WebsocketEventArgs> OnTotalCountUpdated;
+		public event EventHandler<WebsocketEventArgs> OnFileReceiving;
 		public event EventHandler<WebsocketEventArgs> OnFileEnding;
 		public event EventHandler<WebsocketEventArgs> OnFileReceived;
+		
 
 		public ProtocolContext(ITempFileFactory factory, IFileStorage storage, AbstractProtocolState initialState)
 		{
@@ -141,6 +143,14 @@ namespace InfiniteStorage.WebsocketProtocol
 				handler(this, new WebsocketEventArgs(this));
 		}
 
+		internal void raiseOnFileReceiving()
+		{
+			var handler = OnFileReceiving;
+			if (handler != null)
+				handler(this, new WebsocketEventArgs(this));
+
+		}
+
 		public void Send(object data)
 		{
 			var msg = data as string;
@@ -179,5 +189,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			else
 				throw new InvalidOperationException("PingFunc is not set");
 		}
+
+		public bool BackToPhoneDialogClosed { get; set; }
 	}
 }
