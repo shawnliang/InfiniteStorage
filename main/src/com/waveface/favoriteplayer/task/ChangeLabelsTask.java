@@ -29,9 +29,6 @@ public class ChangeLabelsTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		if (NetworkUtil.isWifiNetworkAvailable(mContext)){
-			DownloadLogic.subscribe(mContext);
-		}
 	}
 
 	@Override

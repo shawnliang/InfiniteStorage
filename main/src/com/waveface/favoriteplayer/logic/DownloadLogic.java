@@ -173,7 +173,6 @@ public class DownloadLogic {
 		LabelImportedEvent doneEvent = new LabelImportedEvent(
 				LabelImportedEvent.STATUS_DONE);
 		EventBus.getDefault().post(doneEvent);
-		subscribe(context);
 	}
 
 	public static void updateLabel(Context context,
