@@ -185,7 +185,7 @@ namespace Waveface.ClientFramework
 
 		public void UnTag(string contentID)
 		{
-			UnTag(contentID, StarredLabelId);
+			UnTag(StarredLabelId, contentID);
 		}
 
 		public void UnTag(string labelID , string contentID)
@@ -233,7 +233,7 @@ namespace Waveface.ClientFramework
 				Tag(new IContent[] { content }, StarredLabelId);
 			}
 			else
-				UnTag(content.ID, StarredLabelId);
+				UnTag(StarredLabelId, content.ID);
 		}
 
 		public bool IsOnAir(IContentGroup group)
