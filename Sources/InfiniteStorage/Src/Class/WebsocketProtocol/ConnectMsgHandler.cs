@@ -1,5 +1,6 @@
 ﻿using InfiniteStorage.Model;
 using System;
+using InfiniteStorage.Properties;
 
 namespace InfiniteStorage.WebsocketProtocol
 {
@@ -51,7 +52,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			{
 				action = "accept",
 				server_id = Util.GetServerId(),
-				server_name = BonjourService.ServiceName,
+				server_name = Settings.Default.LibraryName,
 				backup_folder = Util.GetPhotoFolder(),
 				backup_folder_free_space = Util.GetFreeSpace(Util.GetPhotoFolder()),
 

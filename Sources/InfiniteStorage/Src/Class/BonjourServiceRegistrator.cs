@@ -99,11 +99,6 @@ namespace InfiniteStorage
 			}
 		}
 
-		void bonjour_Error(object sender, BonjourErrorEventArgs e)
-		{
-			log4net.LogManager.GetLogger(GetType()).Warn("bonjour service error: " + e.error.ToString());
-		}
-
 		public bool IsAccepting
 		{
 			get { return is_accepting; }

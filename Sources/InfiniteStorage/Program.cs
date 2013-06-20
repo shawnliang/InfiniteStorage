@@ -190,12 +190,6 @@ namespace InfiniteStorage
 			}
 		}
 
-		static void m_bonjourService_Error(object sender, BonjourErrorEventArgs e)
-		{
-			MessageBox.Show("Bonjour DNS operation error: " + e.error, "Error");
-			log4net.LogManager.GetLogger("main").Warn("Bonjour DNS operation error: " + e.error.ToString());
-		}
-
 		private static void forceCloseAllProcesses()
 		{
 			try
