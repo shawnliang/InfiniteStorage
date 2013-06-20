@@ -18,8 +18,8 @@
         <DataTemplate>
             <Grid x:Name="item">
 				<Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 				<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0">
                 <Image x:Name="icon"
