@@ -50,9 +50,7 @@ namespace Wammer.Utility
 
 		public static Image ScaleBasedOnLongSide(Bitmap original, int sideLength)
 		{
-			float ratio1 = sideLength / (float)original.Width;
-			float ratio2 = sideLength / (float)original.Height;
-			float ratio = (original.Width > original.Height) ? ratio1 : ratio2;
+			var ratio = sideLength / (float)((original.Width > original.Height) ? original.Width : original.Height);
 
 
 			return Scale(original, ratio);
@@ -60,9 +58,7 @@ namespace Wammer.Utility
 
 		public static Image ScaleBasedOnShortSide(Bitmap original, int sideLength)
 		{
-			float ratio1 = sideLength / (float)original.Width;
-			float ratio2 = sideLength / (float)original.Height;
-			float ratio = (original.Width < original.Height) ? ratio1 : ratio2;
+			var ratio = sideLength / (float)((original.Width < original.Height) ? original.Width : original.Height);
 
 			return Scale(original, ratio);
 		}
