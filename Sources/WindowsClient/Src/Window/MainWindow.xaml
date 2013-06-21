@@ -21,11 +21,6 @@
 
     <Window.Resources>
 
-        <BitmapImage x:Key="FavoriteLogo"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
-                     UriSource="pack://application:,,,/Resource/favorite.png" />
-
 
         <local:ContentTypeCountConverter x:Key="ContentTypeCountConverter" />
         <!--  Brushes used in Styling of ScrollViewer  -->
@@ -312,23 +307,6 @@
             <ColumnDefinition Width="200"
                               MinWidth="200" />
         </Grid.ColumnDefinitions>
-        <!--
-            <Grid Grid.Row="0"
-            Grid.Column="0"
-            Margin="0,0,0,1"
-            Background="{DynamicResource TitleBarBackground}"
-            Visibility="Collapsed">
-            <Grid.Effect>
-            <DropShadowEffect BlurRadius="1"
-            Direction="270"
-            ShadowDepth="1" />
-            </Grid.Effect>
-            <Image HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            Source="{StaticResource FavoriteLogo}"
-            Stretch="None" />
-            </Grid>
-        -->
         <Grid Grid.Row="0"
               Grid.Column="1"
               Margin="0,0,0,1"

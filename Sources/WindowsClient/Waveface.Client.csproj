@@ -340,7 +340,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\arrow_circle_double.png" />
-    <Resource Include="Resource\favorite.png" />
     <Resource Include="Resource\favoriteicon.png" />
     <Resource Include="Resource\ico_fav_select.png" />
     <Resource Include="Resource\ico_fav_unselect.png" />
