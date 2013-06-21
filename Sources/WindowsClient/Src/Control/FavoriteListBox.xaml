@@ -17,25 +17,30 @@
     <ListBox.ItemTemplate>
         <DataTemplate>
             <Grid x:Name="item">
-				<Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
-				</Grid.ColumnDefinitions>
-				<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0">
-                <Image x:Name="icon"
-                       Margin="10, 0, 0, 0"
-                       Source="{StaticResource UnSelectedFav}" />
-                <Label x:Name="sourceName"
-                       Height="32"
-                       VerticalContentAlignment="Center"
-                       Content="{Binding Name}"
-                       Foreground="White" />
-				</StackPanel>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Row="0"
+                            Grid.Column="0"
+                            Orientation="Horizontal">
+                    <Image x:Name="icon"
+                           Margin="10, 0, 0, 0"
+                           Source="{StaticResource UnSelectedFav}" />
+                    <Label x:Name="sourceName"
+                           Height="32"
+                           VerticalContentAlignment="Center"
+                           Content="{Binding Name}"
+                           Foreground="White" />
+                </StackPanel>
                 <Label x:Name="sourceCount"
+                       Grid.Row="0"
+                       Grid.Column="1"
                        Height="32"
+                       HorizontalAlignment="Left"
                        VerticalContentAlignment="Center"
                        Content="{Binding ContentCount}"
-                       Foreground="White" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" />
+                       Foreground="White" />
             </Grid>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem},
@@ -47,10 +52,21 @@
                     <Setter TargetName="sourceCount" Property="Foreground" Value="Black" />
                 </DataTrigger>
 
-                <DataTrigger Binding="{Binding ID}"
-                             Value="00000000-0000-0000-0000-000000000000">
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ID}" Value="00000000-0000-0000-0000-000000000000" />
+                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedStar}" />
+                </MultiDataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ID}" Value="00000000-0000-0000-0000-000000000000" />
+                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="False" />
+                    </MultiDataTrigger.Conditions>
                     <Setter TargetName="icon" Property="Source" Value="{StaticResource UnSelectedStar}" />
-                </DataTrigger>
+                </MultiDataTrigger>
 
             </DataTemplate.Triggers>
 
