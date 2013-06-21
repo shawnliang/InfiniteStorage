@@ -53,9 +53,10 @@ namespace Waveface.Client
 		private void UserControl_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			var tv = sender as TreeView;
+
 			var item = tv.ItemContainerGenerator.ContainerFromItem(tv.SelectedItem) as TreeViewItem;
 
-			if (item != null)
+			if (item != null && item.IsMouseOver)
 				item.IsExpanded = !item.IsExpanded;
 
 			e.Handled = true;

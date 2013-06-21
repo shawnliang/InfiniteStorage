@@ -9,6 +9,7 @@
          FontFamily="Segoe UI Light"
          FontSize="16"
          ItemsSource="{Binding IsAsync=True}"
+         PreviewKeyDown="UserControl_PreviewKeyDown"
          UseLayoutRounding="True"
          d:DesignHeight="109"
          d:DesignWidth="400"
