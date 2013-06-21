@@ -29,7 +29,7 @@ import com.waveface.favoriteplayer.RuntimeState;
 import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.logic.BackupLogic;
 import com.waveface.favoriteplayer.logic.ServersLogic;
-import com.waveface.favoriteplayer.task.DownloadLabelsTask;
+import com.waveface.favoriteplayer.task.InitDownloadLabelsTask;
 
 import com.waveface.favoriteplayer.ui.FirstUseActivity;
 import com.waveface.favoriteplayer.util.NetworkUtil;

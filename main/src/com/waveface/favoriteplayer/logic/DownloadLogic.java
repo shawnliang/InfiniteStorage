@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import org.jwebsocket.kit.WebSocketException;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +27,6 @@ import com.waveface.favoriteplayer.SyncApplication;
 import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelFileView;
 import com.waveface.favoriteplayer.db.LabelTable;
-
 import com.waveface.favoriteplayer.entity.ConnectForGTVEntity;
 import com.waveface.favoriteplayer.entity.FileEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
@@ -166,9 +166,17 @@ public class DownloadLogic {
 	}
 
 	public static void updateAllLabels(Context context, LabelEntity entity) {
-
+		ContentValues cv = null;
+		ContentResolver cr = context.getContentResolver();
 		for (LabelEntity.Label label : entity.labels) {
 			downloadLabel(context, label, true, false);
+			//Update Seq equals ServerSeq
+			cv = new ContentValues();
+			cv.put(LabelTable.COLUMN_SERVER_SEQ, label.seq);
+			cr.update(LabelTable.CONTENT_URI, 
+					cv, 
+					LabelTable.COLUMN_LABEL_ID+"=?", 
+					new String[]{label.label_id});
 		}
 		LabelImportedEvent doneEvent = new LabelImportedEvent(
 				LabelImportedEvent.STATUS_DONE);
@@ -187,18 +195,6 @@ public class DownloadLogic {
 				LabelTable.COLUMN_LABEL_ID+"=?", 
 				new String[]{entity.label_id});
 		Log.i(TAG, "Update SEQ to ["+serverSeq+"]:"+result);
-//		Cursor maxLabelcursor = LabelDB.getMAXSEQLabel(context);
-//		String labSeq = "0";
-//		if (maxLabelcursor != null && maxLabelcursor.getCount() > 0) {
-//			maxLabelcursor.moveToFirst();
-//			labSeq = maxLabelcursor.getString(maxLabelcursor
-//					.getColumnIndex(LabelTable.COLUMN_SEQ));
-//			// send broadcast label change
-//		}
-//		maxLabelcursor.close();
-//		if (Integer.parseInt(labSeq) >= Integer.parseInt(entity.seq)) {
-//			subscribe(context);
-//		}
 	}
 
 	public static void downloadVideo(String fileId, String fileName, String url) {
@@ -217,15 +213,6 @@ public class DownloadLogic {
 		if (RuntimeState.OnWebSocketOpened == false)
 			return;
 		// sendSubcribe
-//		Cursor maxLabelcursor = LabelDB.getMAXSEQLabel(context);
-//		String labSeq = "0";
-//		if (maxLabelcursor != null && maxLabelcursor.getCount() > 0) {
-//			maxLabelcursor.moveToFirst();
-//			labSeq = maxLabelcursor.getString(maxLabelcursor
-//					.getColumnIndex(LabelTable.COLUMN_SERVER_SEQ));
-//			// send broadcast label change
-//		}
-//		maxLabelcursor.close();
 		String labSeq = LabelDB.getMAXServerSeq(context);
 		
 		ConnectForGTVEntity connectForGTV = new ConnectForGTVEntity();

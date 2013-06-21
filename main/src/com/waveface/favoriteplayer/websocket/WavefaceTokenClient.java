@@ -158,24 +158,22 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 			Log.d(TAG, "WebSocket jsonOutput=" + jsonOutput);
 
 			if (NetworkUtil.isWifiNetworkAvailable(mContext)) {
-				// TODO:handle retrive label
 				SharedPreferences mPrefs = mContext.getSharedPreferences(
 						Constant.PREFS_NAME, Context.MODE_PRIVATE);
 				Editor mEditor = mPrefs.edit();
-				LabelChangeEntity entity = null;
-				entity = RuntimeState.GSON.fromJson(jsonOutput,
+				LabelChangeEntity entity = 
+						RuntimeState.GSON.fromJson(jsonOutput,
 						LabelChangeEntity.class);
 
-				HomeSharingEntity homeSharingEntity = RuntimeState.GSON
-						.fromJson(jsonOutput, HomeSharingEntity.class);
-
+				boolean needToSync = true;
+				
 				int downloadLableInitStatus = mPrefs.getInt(
 						Constant.PREF_DOWNLOAD_LABEL_INIT_STATUS, 0);
 
-				if (homeSharingEntity.home_sharing != null) {
+				if (entity.home_sharing != null) {
 
 					mEditor.putString(Constant.PREF_HOME_SHARING_STATUS,
-							homeSharingEntity.home_sharing);
+							entity.home_sharing);
 					mEditor.commit();
 				}
 				String homeSharingStatus = mPrefs.getString(
@@ -183,64 +181,65 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 
 				if (downloadLableInitStatus == 1
 						&& homeSharingStatus.equals("true")) {
-
 					try {
-						if (!TextUtils.isEmpty(jsonOutput))
-							entity = RuntimeState.GSON.fromJson(jsonOutput,
-									LabelChangeEntity.class);
 						if (entity != null) {
-							Cursor labelCusor = LabelDB.getLabelByLabelId(
+							Cursor cusor = LabelDB.getLabelByLabelId(
 									mContext, entity.label_change.label_id);
 							// label exist
-							if (labelCusor !=null && labelCusor.getCount() > 0) {
+							if (cusor !=null && cusor.getCount() > 0) {
 								LabelDB.updateLabelServerSeq(mContext,
 										entity.label_change.label_id,
 										entity.label_change.seq);
 								if (entity.label_change.deleted.equals("true")) {
-									LabelDB.deleteLabel(mContext,
-											entity.label_change.label_id);
-									LabelDB.removeAllFileInLabel(mContext,
-											entity.label_change.label_id);
+									needToSync = false;
+									LabelDB.updateLabeDisplayStatus(mContext,
+											entity.label_change.label_id,"false");
 								}
 							}//new Label for insert 
 							else {
-								ArrayList<ServerEntity> servers = ServersLogic
-										.getPairedServer(mContext);
-								ServerEntity pairedServer = servers.get(0);
-								String restfulAPIURL = "http://"
-										+ pairedServer.ip + ":"
-										+ pairedServer.restPort;
-								String getLabelURL = restfulAPIURL
-										+ Constant.URL_GET_LABEL;
-								HashMap<String, String> param = new HashMap<String, String>();
-								param.clear();
-								param.put(Constant.PARAM_LABEL_ID,
-										entity.label_change.label_id);
-								jsonOutput = HttpInvoker.executePost(
-										getLabelURL, param,
-										Constant.STATION_CONNECTION_TIMEOUT,
-										Constant.STATION_CONNECTION_TIMEOUT);
-
-								LabelEntity.Label labelEntity = RuntimeState.GSON
-										.fromJson(jsonOutput,
-												LabelEntity.Label.class);
-
-								labelEntity.cover_url = entity.label_change.cover_url;
-								labelEntity.auto_type = entity.label_change.auto_type;
-								labelEntity.on_air = entity.label_change.on_air;
-								labelEntity.deleted = entity.label_change.deleted;
-
-								LabelDB.updateLabelChang(mContext, labelEntity,
-										true);
+									ArrayList<ServerEntity> servers = ServersLogic
+											.getPairedServer(mContext);
+									ServerEntity pairedServer = servers.get(0);
+									String restfulAPIURL = "http://"
+											+ pairedServer.ip + ":"
+											+ pairedServer.restPort;
+									String getLabelURL = restfulAPIURL
+											+ Constant.URL_GET_LABEL;
+									HashMap<String, String> param = new HashMap<String, String>();
+									param.clear();
+									param.put(Constant.PARAM_LABEL_ID,
+											entity.label_change.label_id);
+									jsonOutput = HttpInvoker.executePost(
+											getLabelURL, param,
+											Constant.STATION_CONNECTION_TIMEOUT,
+											Constant.STATION_CONNECTION_TIMEOUT);
+	
+									LabelEntity.Label labelEntity = RuntimeState.GSON
+											.fromJson(jsonOutput,
+													LabelEntity.Label.class);
+	
+									labelEntity.cover_url = entity.label_change.cover_url;
+									labelEntity.auto_type = entity.label_change.auto_type;
+									labelEntity.on_air = entity.label_change.on_air;
+									labelEntity.deleted = entity.label_change.deleted;
+	
+									LabelDB.updateLabelChang(mContext, labelEntity,
+											true);
+								if (entity.label_change.deleted.equals("true")) {
+									needToSync = false;
+								}
 							}
-
-							labelCusor.close();
-							mContext.sendBroadcast(new Intent(
-									Constant.ACTION_LABEL_CHANGE_NOTIFICATION));
-							EventBus.getDefault().post(
-									new LabelChangeEvent(
-											entity.label_change.label_id,
-											entity.label_change.auto_type));
+							cusor.close();
+							if(needToSync){
+								mContext.sendBroadcast(new Intent(
+										Constant.ACTION_LABEL_CHANGE_NOTIFICATION));
+							}
+							else{
+								EventBus.getDefault().post(
+										new LabelChangeEvent(
+												entity.label_change.label_id,
+												entity.label_change.auto_type));									
+							}
 						}
 					} catch (Exception e) {
 						e.printStackTrace();

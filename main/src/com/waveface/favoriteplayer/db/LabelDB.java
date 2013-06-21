@@ -1,9 +1,6 @@
 package com.waveface.favoriteplayer.db;
 
 import java.util.ArrayList;
-
-
-
 import java.util.Date;
 
 import android.content.ContentResolver;
@@ -12,10 +9,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 
-
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.entity.FileEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
+import com.waveface.favoriteplayer.util.Log;
 import com.waveface.favoriteplayer.util.StringUtil;
 
 
@@ -26,14 +23,9 @@ public class LabelDB {
 	public static String TAG = "LabelDB";
 
 	public static void updateLabelInfo(Context context,
-			LabelEntity.Label label, FileEntity fileEntity ,boolean isChangeLabel) {
-		
-		
-			updateLabel(context, label);
-		
-		
-		if(isChangeLabel){
-			
+		LabelEntity.Label label, FileEntity fileEntity ,boolean isChangeLabel) {
+		updateLabel(context, label);
+		if(isChangeLabel){			
 			if(label.deleted.equals("true") ){
 				deleteLabel(context, label.label_id);
 				removeAllFileInLabel(context, label.label_id);
@@ -246,7 +238,9 @@ public class LabelDB {
 						LabelTable.COLUMN_LABEL_NAME,
 						LabelTable.COLUMN_COVER_URL,
 						LabelTable.COLUMN_AUTO_TYPE},
-				LabelTable.COLUMN_LABEL_ID + " = ?", new String[] { labelId },
+				LabelTable.COLUMN_LABEL_ID + " = ? AND "
+						+LabelTable.COLUMN_DISPLAY_STATUS+"=?", 
+						new String[] { labelId,"true" },
 				null);
 
 		return cursor;
@@ -266,32 +260,16 @@ public class LabelDB {
 		return cursor;
 	}
 	
-	
-	public static Cursor getMAXSEQLabel(Context context) {
-
-		Cursor cursor = context.getContentResolver().query(
-				LabelTable.CONTENT_URI,
-				new String[] { 
-						LabelTable.COLUMN_LABEL_ID,
-						LabelTable.COLUMN_LABEL_NAME,
-						LabelTable.COLUMN_SEQ,
-						LabelTable.COLUMN_COVER_URL,
-						LabelTable.COLUMN_AUTO_TYPE,
-						LabelTable.COLUMN_SERVER_SEQ,
-						LabelTable.COLUMN_COVER_URL,
-						LabelTable.COLUMN_ON_AIR ,
-						LabelTable.COLUMN_AUTO_TYPE},
-				null, null,
-				LabelTable.COLUMN_SEQ + " DESC LIMIT 1");
-
-		return cursor;
-	}
 	public static String getMAXServerSeq(Context context) {
-		String serverSeq = "";
+		String serverSeq = "0";
 		Cursor cursor = context.getContentResolver().query(
 				LabelTable.CONTENT_URI,
-				new String[] {LabelTable.COLUMN_SERVER_SEQ},
-				null, null,
+				new String[] {
+						LabelTable.COLUMN_SERVER_SEQ,
+						LabelTable.COLUMN_SEQ,
+						LabelTable.COLUMN_LABEL_NAME},
+				null, 
+				null,
 				LabelTable.COLUMN_SERVER_SEQ + " DESC LIMIT 1");
 		if(cursor!=null && cursor.getCount()!=0){
 			cursor.moveToFirst();
@@ -303,6 +281,10 @@ public class LabelDB {
 
 	
 	public static Cursor getUnsyncedLabel(Context context) {
+		
+		String whereCLause = 
+				LabelTable.COLUMN_SEQ +" <> "+ LabelTable.COLUMN_SERVER_SEQ
+		      +" AND "+ LabelTable.COLUMN_DISPLAY_STATUS+"=?";
 		Cursor cursor = context.getContentResolver().query(
 				LabelTable.CONTENT_URI,
 				new String[] { LabelTable.COLUMN_LABEL_ID,
@@ -311,9 +293,10 @@ public class LabelDB {
 							   LabelTable.COLUMN_SERVER_SEQ,
 							   LabelTable.COLUMN_COVER_URL,
 							   LabelTable.COLUMN_AUTO_TYPE,
-							   LabelTable.COLUMN_ON_AIR},
-						LabelTable.COLUMN_SEQ +" <> "+ LabelTable.COLUMN_SERVER_SEQ ,null,
-				LabelTable.COLUMN_SEQ );
+							   LabelTable.COLUMN_ON_AIR,
+							   LabelTable.COLUMN_DISPLAY_STATUS},
+							   whereCLause ,new String[]{"true"},
+							   LabelTable.COLUMN_SEQ );
 
 		return cursor;
 	}

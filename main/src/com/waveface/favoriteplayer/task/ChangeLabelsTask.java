@@ -13,10 +13,13 @@ import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.db.LabelTable;
 import com.waveface.favoriteplayer.entity.LabelEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
+import com.waveface.favoriteplayer.event.LabelChangeEvent;
 import com.waveface.favoriteplayer.logic.DownloadLogic;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.util.NetworkUtil;
 import com.waveface.service.HttpInvoker;
+
+import de.greenrobot.event.EventBus;
 
 public class ChangeLabelsTask extends AsyncTask<Void, Void, Void> {
 
@@ -28,6 +31,7 @@ public class ChangeLabelsTask extends AsyncTask<Void, Void, Void> {
 
 	@Override
 	protected void onPostExecute(Void result) {
+		RuntimeState.setSyncing(false);
 		super.onPostExecute(result);
 	}
 
@@ -77,6 +81,9 @@ public class ChangeLabelsTask extends AsyncTask<Void, Void, Void> {
 					.getColumnIndex(LabelTable.COLUMN_SERVER_SEQ));
 			String seq = cursor.getString(cursor
 					.getColumnIndex(LabelTable.COLUMN_SEQ));
+			String displayStatus = cursor.getString(cursor
+					.getColumnIndex(LabelTable.COLUMN_DISPLAY_STATUS));
+			
 			
 			param = new HashMap<String, String>();
 			param.put(Constant.PARAM_LABEL_ID, labelId);
@@ -94,6 +101,10 @@ public class ChangeLabelsTask extends AsyncTask<Void, Void, Void> {
 				labelEntity.deleted = "false";
 
 				DownloadLogic.updateLabel(mContext, labelEntity,serverSeq);
+				EventBus.getDefault().post(
+						new LabelChangeEvent(
+								labelId,autoType));
+
 			} catch (WammerServerException e) {
 				e.printStackTrace();
 			}

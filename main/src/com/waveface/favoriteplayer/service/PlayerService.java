@@ -14,6 +14,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -26,9 +27,10 @@ import android.text.TextUtils;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
 import com.waveface.favoriteplayer.entity.ServerEntity;
+import com.waveface.favoriteplayer.logic.DownloadLogic;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.task.ChangeLabelsTask;
-import com.waveface.favoriteplayer.task.DownloadLabelsTask;
+import com.waveface.favoriteplayer.task.InitDownloadLabelsTask;
 import com.waveface.favoriteplayer.util.Log;
 import com.waveface.favoriteplayer.util.NetworkUtil;
 import com.waveface.jmdns.JMDNS;
@@ -64,7 +66,9 @@ public class PlayerService extends Service{
 	private static final int MSG_WEBSOCKET_CONNECT = 3;	
 
 	private ServerEntity mCandidateServer = null;
-	
+	private SharedPreferences mPrefs ;
+	private int mLableInitStatus = 0;
+
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -102,7 +106,10 @@ public class PlayerService extends Service{
 	@Override
 	public void onCreate() {
 		mContext = getApplicationContext();
-
+		mPrefs = mContext.getSharedPreferences(
+				Constant.PREFS_NAME, Context.MODE_PRIVATE);
+		mLableInitStatus = mPrefs.getInt(
+				Constant.PREF_DOWNLOAD_LABEL_INIT_STATUS, 0);
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);	
 		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
@@ -191,12 +198,17 @@ public class PlayerService extends Service{
 				}
 			}
 			else if (Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED.equals(action)) {
-				if(RuntimeState.isDownloadingLabel==false){
-					RuntimeState.isDownloadingLabel = true;
-					new DownloadLabelsTask(mContext).execute(new Void[]{});
+				if(mLableInitStatus == 0){
+					new InitDownloadLabelsTask(mContext).execute(new Void[]{});
 				}
+				DownloadLogic.subscribe(mContext);
 			}else if(Constant.ACTION_LABEL_CHANGE_NOTIFICATION.equals(action)){
-				new ChangeLabelsTask(mContext).execute(new Void[]{});
+				mLableInitStatus = mPrefs.getInt(
+						Constant.PREF_DOWNLOAD_LABEL_INIT_STATUS, 0);
+				if(mLableInitStatus == 1 && RuntimeState.needToSync() == false){
+					RuntimeState.setSyncing(true);
+					new ChangeLabelsTask(mContext).execute(new Void[]{});
+				}
 			}
 		}
 	};
