@@ -61,5 +61,10 @@ namespace Waveface.Client
 			e.Handled = true;
 		}
 
+		private void UserControl_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+		{
+			e.Handled = true;
+		}
+
 	}
 }
