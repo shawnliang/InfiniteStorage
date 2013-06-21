@@ -202,7 +202,8 @@ public class PlayerService extends Service{
 				}
 			}
 			else if (Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED.equals(action)) {
-				if(mLableInitStatus == 0){
+				if(mLableInitStatus == 0 && RuntimeState.isDownloadingLabel== false 	){
+					RuntimeState.isDownloadingLabel = true;
 					new InitDownloadLabelsTask(mContext).execute(new Void[]{});					
 				}
 				else{

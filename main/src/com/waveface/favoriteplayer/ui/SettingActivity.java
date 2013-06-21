@@ -3,14 +3,12 @@ package com.waveface.favoriteplayer.ui;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.waveface.favoriteplayer.Constant;
@@ -46,6 +44,7 @@ public class SettingActivity extends SherlockPreferenceActivity implements OnSha
 		
 		pref = findPreference(Constant.PREF_UNLINK_SERVER);
 		pref.setOnPreferenceClickListener(this);
+		
 	}
 
 	@Override
@@ -65,8 +64,9 @@ public class SettingActivity extends SherlockPreferenceActivity implements OnSha
 	@Override
 	public boolean onPreferenceClick(Preference pref) {
 		if(pref.getKey().equals(Constant.PREF_UNLINK_SERVER)) {
-//			Toast.makeText(this, "unlink here", Toast.LENGTH_SHORT).show();
+			//TODO:clean Image Manager'db
 			ServersLogic.disconnectPairedServer(this);
+			startActivity(new Intent(this,MainActivity.class));
 			finish();
 		}
 		return false;

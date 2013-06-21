@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -15,7 +14,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.ui.fragment.OverviewFragment;
-
 
 public class MainTabActivity extends SherlockFragmentActivity{
 	public static final String TAG = MainTabActivity.class.getSimpleName();
