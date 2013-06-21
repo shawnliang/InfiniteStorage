@@ -259,7 +259,7 @@ public class LabelDB {
 	}
 	
 	public static String getMAXServerSeq(Context context) {
-		String serverSeq = "";
+		String serverSeq = "0";
 		Cursor cursor = context.getContentResolver().query(
 				LabelTable.CONTENT_URI,
 				new String[] {
