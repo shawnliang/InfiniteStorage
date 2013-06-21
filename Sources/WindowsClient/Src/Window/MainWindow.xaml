@@ -306,9 +306,9 @@
             <!--  <RowDefinition Height="25"/>  -->
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="225"
-                              MinWidth="225" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="215"
+                              MinWidth="215" />
+            <ColumnDefinition MinWidth="100"/>
             <ColumnDefinition Width="200"
                               MinWidth="200" />
         </Grid.ColumnDefinitions>
