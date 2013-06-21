@@ -162,17 +162,17 @@ public class DownloadLogic {
 	}
 
 	public static void updateAllLabels(Context context, LabelEntity entity) {
-		ContentValues cv = null;
-		ContentResolver cr = context.getContentResolver();
+//		ContentValues cv = null;
+//		ContentResolver cr = context.getContentResolver();
 		for (LabelEntity.Label label : entity.labels) {
 			downloadLabel(context, label, true, false);
 			//Update Seq equals ServerSeq
-			cv = new ContentValues();
-			cv.put(LabelTable.COLUMN_SERVER_SEQ, label.seq);
-			cr.update(LabelTable.CONTENT_URI, 
-					cv, 
-					LabelTable.COLUMN_LABEL_ID+"=?", 
-					new String[]{label.label_id});
+//			cv = new ContentValues();
+//			cv.put(LabelTable.COLUMN_SERVER_SEQ, label.seq);
+//			cr.update(LabelTable.CONTENT_URI, 
+//					cv, 
+//					LabelTable.COLUMN_LABEL_ID+"=?", 
+//					new String[]{label.label_id});
 		}
 		LabelImportedEvent doneEvent = new LabelImportedEvent(
 				LabelImportedEvent.STATUS_DONE);

@@ -192,7 +192,6 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 									String getLabelURL = restfulAPIURL
 											+ Constant.URL_GET_LABEL;
 									HashMap<String, String> param = new HashMap<String, String>();
-									param.clear();
 									param.put(Constant.PARAM_LABEL_ID,
 											entity.label_change.label_id);
 									jsonOutput = HttpInvoker.executePost(
@@ -209,8 +208,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 									labelEntity.on_air = entity.label_change.on_air;
 									labelEntity.deleted = entity.label_change.deleted;
 	
-									LabelDB.updateLabelChang(mContext, labelEntity,
-											true);
+									LabelDB.addNewLabelForChangNotify(mContext, labelEntity);
 								if (entity.label_change.deleted.equals("true")) {
 									needToSync = false;
 								}

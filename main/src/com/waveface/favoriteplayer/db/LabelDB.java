@@ -74,9 +74,12 @@ public class LabelDB {
 				label.on_air = "";
 			}
 			cv.put(LabelTable.COLUMN_ON_AIR, label.on_air);
-			cv.put(LabelTable.COLUMN_DISPLAY_STATUS,
-					label.on_air.equals("true") ? "true" : "false");
-			// insert label
+			if (!TextUtils.isEmpty(label.deleted)
+					&& label.deleted.equals("true")) {
+				cv.put(LabelTable.COLUMN_DISPLAY_STATUS, "false");
+			} else {
+				cv.put(LabelTable.COLUMN_DISPLAY_STATUS, "true");
+			}
 			result = cr.bulkInsert(LabelTable.CONTENT_URI,
 					new ContentValues[] { cv });
 
@@ -86,17 +89,15 @@ public class LabelDB {
 		return result;
 	}
 
-	public static int updateLabelChang(Context context,
-			LabelEntity.Label label, boolean isExistLabel) {
+	public static int addNewLabelForChangNotify(Context context,
+			LabelEntity.Label label) {
 		int result = 0;
-
 		ContentResolver cr = context.getContentResolver();
 		try {
-
 			ContentValues cv = new ContentValues();
 			cv.put(LabelTable.COLUMN_LABEL_ID, label.label_id);
 			cv.put(LabelTable.COLUMN_LABEL_NAME, label.label_name);
-			cv.put(LabelTable.COLUMN_SEQ, isExistLabel ? "0" : label.seq);
+			cv.put(LabelTable.COLUMN_SEQ, "0");
 			cv.put(LabelTable.COLUMN_SERVER_SEQ, label.seq);
 			cv.put(LabelTable.COLUMN_UPDATE_TIME,
 					StringUtil.localtimeToIso8601(new Date()));
@@ -108,14 +109,16 @@ public class LabelDB {
 				label.auto_type = "";
 			}
 			cv.put(LabelTable.COLUMN_AUTO_TYPE, label.auto_type);
-
 			if (TextUtils.isEmpty(label.on_air)) {
-				label.on_air = "";
+				label.on_air = "true";
 			}
 			cv.put(LabelTable.COLUMN_ON_AIR, label.on_air);
-			cv.put(LabelTable.COLUMN_DISPLAY_STATUS,
-					label.on_air.equals("true") ? "true" : "false");
-			// insert label
+			if (!TextUtils.isEmpty(label.deleted)
+					&& label.deleted.equals("true")) {
+				cv.put(LabelTable.COLUMN_DISPLAY_STATUS, "false");
+			} else {
+				cv.put(LabelTable.COLUMN_DISPLAY_STATUS, "true");
+			}
 			result = cr.bulkInsert(LabelTable.CONTENT_URI,
 					new ContentValues[] { cv });
 
@@ -124,6 +127,36 @@ public class LabelDB {
 		}
 		return result;
 	}
+	public static int updateLabelByServerChangeNotify(Context context,
+			LabelChangeEntity entity) {
+		ContentResolver cr = context.getContentResolver();
+		ContentValues cv = new ContentValues();
+		cv.put(LabelTable.COLUMN_LABEL_NAME, entity.label_change.label_name);
+		if (!TextUtils.isEmpty(entity.label_change.deleted)
+				&& entity.label_change.deleted.equals("true")) {
+			cv.put(LabelTable.COLUMN_DISPLAY_STATUS, "false");
+		} else {
+			cv.put(LabelTable.COLUMN_DISPLAY_STATUS, "true");
+		}
+		cv.put(LabelTable.COLUMN_SERVER_SEQ, entity.label_change.seq);
+		cv.put(LabelTable.COLUMN_UPDATE_TIME,
+				StringUtil.localtimeToIso8601(new Date()));
+		if (TextUtils.isEmpty(entity.label_change.cover_url)) {
+			entity.label_change.cover_url = "";
+		}		
+		cv.put(LabelTable.COLUMN_COVER_URL, entity.label_change.cover_url);
+		if (TextUtils.isEmpty(entity.label_change.auto_type)) {
+			entity.label_change.auto_type = "";
+		}
+		cv.put(LabelTable.COLUMN_AUTO_TYPE, entity.label_change.auto_type);
+		if (TextUtils.isEmpty(entity.label_change.on_air)) {
+			entity.label_change.on_air = "true";
+		}
+		cv.put(LabelTable.COLUMN_ON_AIR, entity.label_change.on_air);
+		return cr.update(LabelTable.CONTENT_URI, cv, LabelTable.COLUMN_LABEL_ID
+				+ "=?", new String[] { entity.label_change.label_id });
+	}
+
 
 	public static int updateLabelFiles(Context context, LabelEntity.Label label) {
 		int result = 0;
@@ -427,27 +460,6 @@ public class LabelDB {
 		cv.put(LabelTable.COLUMN_COVER_URL, coverUrl);
 		return cr.update(LabelTable.CONTENT_URI, cv, LabelTable.COLUMN_LABEL_ID
 				+ "=?", new String[] { labelId });
-	}
-
-	public static int updateLabelByServerChangeNotify(Context context,
-			LabelChangeEntity entity) {
-		ContentResolver cr = context.getContentResolver();
-		ContentValues cv = new ContentValues();
-		cv.put(LabelTable.COLUMN_LABEL_NAME, entity.label_change.label_name);
-		if (!TextUtils.isEmpty(entity.label_change.deleted)
-				&& entity.label_change.deleted.equals("true")) {
-			cv.put(LabelTable.COLUMN_DISPLAY_STATUS, "false");
-		} else {
-			cv.put(LabelTable.COLUMN_DISPLAY_STATUS, "true");
-		}
-		cv.put(LabelTable.COLUMN_SERVER_SEQ, entity.label_change.seq);
-		cv.put(LabelTable.COLUMN_COVER_URL, entity.label_change.cover_url);
-		cv.put(LabelTable.COLUMN_AUTO_TYPE, entity.label_change.auto_type);
-		cv.put(LabelTable.COLUMN_ON_AIR, entity.label_change.on_air);
-		cv.put(LabelTable.COLUMN_UPDATE_TIME,
-				StringUtil.localtimeToIso8601(new Date()));
-		return cr.update(LabelTable.CONTENT_URI, cv, LabelTable.COLUMN_LABEL_ID
-				+ "=?", new String[] { entity.label_change.label_id });
 	}
 
 	public static int updateLabeDisplayStatus(Context context, String labelId,
