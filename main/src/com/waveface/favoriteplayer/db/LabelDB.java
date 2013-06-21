@@ -414,11 +414,11 @@ public class LabelDB {
 				new String[] { labelId });
 	}
 	
-	public static int updateLabelServerSeq(Context context, String labelId,String seq) {
+	public static int updateLabelServerSeqAndCoverUrl(Context context, String labelId,String seq,String coverUrl) {
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
-		cv.put(LabelTable.COLUMN_SERVER_SEQ, Integer.parseInt(seq));
-
+		cv.put(LabelTable.COLUMN_SERVER_SEQ, Integer.parseInt(seq));		
+		cv.put(LabelTable.COLUMN_COVER_URL, coverUrl);
 		return cr.update(LabelTable.CONTENT_URI, cv, LabelTable.COLUMN_LABEL_ID + "=?",
 				new String[] { labelId });
 	}

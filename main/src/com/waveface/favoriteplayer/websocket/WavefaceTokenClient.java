@@ -187,9 +187,10 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 									mContext, entity.label_change.label_id);
 							// label exist
 							if (cusor !=null && cusor.getCount() > 0) {
-								LabelDB.updateLabelServerSeq(mContext,
+								LabelDB.updateLabelServerSeqAndCoverUrl(mContext,
 										entity.label_change.label_id,
-										entity.label_change.seq);
+										entity.label_change.seq,
+										entity.label_change.cover_url);
 								if (entity.label_change.deleted.equals("true")) {
 									needToSync = false;
 									LabelDB.updateLabeDisplayStatus(mContext,
