@@ -209,7 +209,10 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			OverviewData data = loadLabelData(mLabelId,FileUtil.getDownloadFolder(getActivity()));
 			if(data != null) {
 				Log.e(TAG, "updatea success mLabelId=" + mLabelId);
-				data.title = getLableTitle(data.autoType);
+				if(mType != OVERVIEW_VIEW_TYPE_FAVORITE) {
+					// already get title from loadLabelData
+					data.title = getLableTitle(data.autoType);
+				}
 			} else {
 				Log.e(TAG, "updatea fail mLabelId=" + mLabelId);
 			}
@@ -311,7 +314,10 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 				OverviewData data = loadLabelData(labelId,FileUtil.getDownloadFolder(getActivity())); 
 				
 				if(data != null) {
-					data.title = getLableTitle(type);
+					if(mType != OVERVIEW_VIEW_TYPE_FAVORITE) {
+						// already get title from loadLabelData
+						data.title = getLableTitle(type);
+					}
 					datas.add(data);
 				}
 			}
