@@ -217,11 +217,9 @@
                     <Grid x:Name="item"
                           Background="Transparent">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"
-                                              SharedSizeGroup="iconCol" />
-                            <ColumnDefinition Width="*"
-                                              SharedSizeGroup="nameCol" />
-                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <Image x:Name="icon"
@@ -231,14 +229,12 @@
 
                         <Label x:Name="sourceName"
                                Grid.Column="1"
-                               Height="32"
                                VerticalContentAlignment="Center"
                                Content="{Binding Name}"
                                Foreground="White" />
 
                         <Label x:Name="sourceCount"
                                Grid.Column="2"
-                               Height="32"
                                VerticalContentAlignment="Center"
 							   HorizontalAlignment="Right"
                                Content="{Binding ContentCount}"

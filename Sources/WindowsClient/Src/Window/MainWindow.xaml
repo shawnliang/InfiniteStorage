@@ -312,20 +312,23 @@
             <ColumnDefinition Width="200"
                               MinWidth="200" />
         </Grid.ColumnDefinitions>
-        <Grid Grid.Row="0"
-              Grid.Column="0"
-              Margin="0,0,0,1"
-              Background="{DynamicResource TitleBarBackground}">
+        <!--
+            <Grid Grid.Row="0"
+            Grid.Column="0"
+            Margin="0,0,0,1"
+            Background="{DynamicResource TitleBarBackground}"
+            Visibility="Collapsed">
             <Grid.Effect>
-                <DropShadowEffect BlurRadius="1"
-                                  Direction="270"
-                                  ShadowDepth="1" />
+            <DropShadowEffect BlurRadius="1"
+            Direction="270"
+            ShadowDepth="1" />
             </Grid.Effect>
             <Image HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Source="{StaticResource FavoriteLogo}"
-                   Stretch="None" />
-        </Grid>
+            VerticalAlignment="Center"
+            Source="{StaticResource FavoriteLogo}"
+            Stretch="None" />
+            </Grid>
+        -->
         <Grid Grid.Row="0"
               Grid.Column="1"
               Margin="0,0,0,1"
@@ -373,7 +376,7 @@
                                   ShadowDepth="1" />
             </Grid.Effect>
         </Grid>
-        <Grid Grid.Row="1"
+        <Grid Grid.RowSpan="2"
               Grid.Column="0"
               Background="{DynamicResource SidePanelBackground}">
             <Grid.Effect>
@@ -381,13 +384,7 @@
                                   Direction="0"
                                   ShadowDepth="1" />
             </Grid.Effect>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"
-                                   MinHeight="100" />
-                    <RowDefinition Height="*"
-                                   MinHeight="100" />
-                </Grid.RowDefinitions>
+            <StackPanel>
 
                 <Grid>
                     <Grid.RowDefinitions>
@@ -395,7 +392,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0"
-                           Background="Black"
+                           Background="{x:Null}"
                            Content="SOURCES"
                            FontFamily="Segoe UI Light"
                            Foreground="#FFA5A5A5" />
@@ -411,20 +408,14 @@
 
                 </Grid>
 
-                <GridSplitter Grid.Row="0"
-                              Height="5"
-                              HorizontalAlignment="Stretch"
-                              VerticalAlignment="Bottom"
-                              Background="Transparent" />
-
-                <Grid Grid.Row="1">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0"
                            Height="30"
-                           Background="Black"
+                           Background="{x:Null}"
                            Content="FAVORITES"
                            FontFamily="Segoe UI Light"
                            Foreground="#FFA5A5A5" />
@@ -435,7 +426,7 @@
                                            SelectionChanged="lbxFavorites_SelectionChanged" />
                 </Grid>
 
-            </Grid>
+            </StackPanel>
         </Grid>
         <GridSplitter Grid.Row="1"
                       Grid.Column="0"
