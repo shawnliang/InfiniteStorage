@@ -65,7 +65,9 @@ public class SettingActivity extends SherlockPreferenceActivity implements OnSha
 	@Override
 	public boolean onPreferenceClick(Preference pref) {
 		if(pref.getKey().equals(Constant.PREF_UNLINK_SERVER)) {
-			Toast.makeText(this, "unlink here", Toast.LENGTH_SHORT).show();
+//			Toast.makeText(this, "unlink here", Toast.LENGTH_SHORT).show();
+			ServersLogic.disconnectPairedServer(this);
+			finish();
 		}
 		return false;
 	}
