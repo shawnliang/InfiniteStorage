@@ -173,19 +173,10 @@ public class DownloadLogic {
 			//Update Seq equals ServerSeq
 			cv = new ContentValues();
 			cv.put(LabelTable.COLUMN_SERVER_SEQ, label.seq);
-			int result = cr.update(LabelTable.CONTENT_URI, 
+			cr.update(LabelTable.CONTENT_URI, 
 					cv, 
 					LabelTable.COLUMN_LABEL_ID+"=?", 
 					new String[]{label.label_id});
-			Log.i(TAG, "INIT Favorite:labal name:"+label.label_name+",seq:"+label.seq+",result:"+result);
-			Cursor cursor = cr.query(LabelTable.CONTENT_URI, 
-					new String[]{LabelTable.COLUMN_SEQ,
-					LabelTable.COLUMN_SERVER_SEQ},
-					LabelTable.COLUMN_LABEL_ID+"=?", 
-					new String[]{label.label_id}, null);
-			cursor.moveToFirst();
-			Log.i(TAG, "Seq:"+cursor.getString(0)+",server_seq:"+cursor.getString(1));
-			cursor.close();
 		}
 		LabelImportedEvent doneEvent = new LabelImportedEvent(
 				LabelImportedEvent.STATUS_DONE);
