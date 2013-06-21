@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
@@ -34,6 +35,10 @@ public class InitDownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected void onPostExecute(Void result) {
 		RuntimeState.isDownloadingLabel = false;
+		if(LabelDB.needToSyncLabel(mContext)){
+			mContext.sendBroadcast(new Intent(
+					Constant.ACTION_LABEL_CHANGE_NOTIFICATION));
+		}
 		super.onPostExecute(result);
 	}
 
