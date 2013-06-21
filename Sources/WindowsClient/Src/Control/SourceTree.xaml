@@ -12,6 +12,7 @@
           ItemContainerStyle="{DynamicResource TreeViewItemStyle1}"
           ItemsSource="{Binding IsAsync=True}"
           MouseUp="UserControl_MouseUp"
+          PreviewKeyDown="UserControl_PreviewKeyDown"
           VirtualizingStackPanel.IsVirtualizing="True"
           VirtualizingStackPanel.VirtualizationMode="Recycling"
           d:DesignHeight="392.26"
