@@ -42,6 +42,8 @@ public class PlaybackActivity extends SherlockFragmentActivity {
 	private ProgressBar mProgress;
 	private boolean mTV = false;
 	
+	private AsyncTask<Void, Void, ArrayList<PlaybackData>> mTask;
+	
 	@Override
 	protected void onCreate(Bundle savedInstance) {
 		super.onCreate(savedInstance);
@@ -69,7 +71,7 @@ public class PlaybackActivity extends SherlockFragmentActivity {
 	    getSupportActionBar().setTitle(mLabelTitle);
 	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		new LoadPlaybackData(this,labelId).execute(null, null, null);
+	    mTask = new LoadPlaybackData(this,labelId).execute(null, null, null);
 	}
 	
     @Override
@@ -81,6 +83,12 @@ public class PlaybackActivity extends SherlockFragmentActivity {
     	}
     	menu.add(0, 1, 0, R.string.setting_title);
         return super.onCreateOptionsMenu(menu);
+    }
+    
+    @Override
+    protected void onDestroy() {
+    	super.onDestroy();
+    	mTask.cancel(true);
     }
     
     @Override
@@ -239,6 +247,10 @@ public class PlaybackActivity extends SherlockFragmentActivity {
 		
 		@Override
 		protected void onPostExecute(ArrayList<PlaybackData> result) {
+			if(isCancelled() == true) {
+				Log.d(TAG, "activity been canceled");
+				return;
+			}
 			mDatas = result;
 			Bundle data = new Bundle();
 			data.putParcelableArrayList(Constant.ARGUMENT1, result);
