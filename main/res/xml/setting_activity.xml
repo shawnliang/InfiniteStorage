@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <Preference
+        android:key="pref_connect_server" 
+        />
+    
+    <Preference
+        android:key="pref_home_sharing_status" 
+        android:title="@string/home_sharing_title"
+        />
+    
+    <Preference
+        android:key="pref_unlink_server" 
+        android:title="@string/unlink_server"
+        />
+
+</PreferenceScreen>

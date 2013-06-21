@@ -268,4 +268,8 @@ public class Constant {
 	public final static String PREF_DOWNLOAD_FOLDER = "download_folder";
 	
 	public final static int AVAIABLE_SPACE =30;
+	
+	public final static String PREF_HOME_SHARING = "pref_home_sharing_status";
+	public final static String PREF_CONNECT_SERVER = "pref_connect_server";
+	public final static String PREF_UNLINK_SERVER = "pref_unlink_server";
 }

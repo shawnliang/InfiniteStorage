@@ -1,6 +1,7 @@
 package com.waveface.favoriteplayer.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -73,7 +74,8 @@ public class MainTabActivity extends SherlockFragmentActivity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
 		case 0:
-			Toast.makeText(this, "go setting", Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(this, SettingActivity.class);
+			startActivity(intent);
 			break;
 		}
 		return super.onOptionsItemSelected(item);
