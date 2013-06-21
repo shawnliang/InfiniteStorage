@@ -113,6 +113,7 @@ public class PlayerService extends Service{
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);	
 		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
+		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_DISCONNECTED);
 		filter.addAction(Constant.ACTION_LABEL_CHANGE_NOTIFICATION);
 		registerReceiver(mReceiver, filter);
 		
@@ -195,13 +196,19 @@ public class PlayerService extends Service{
 							}
 						}
 					}
+					else if(actionContent.equals(Constant.ACTION_WEB_SOCKET_SERVER_DISCONNECTED)){
+						//
+					}
 				}
 			}
 			else if (Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED.equals(action)) {
-				if(mLableInitStatus == 0){
-					new InitDownloadLabelsTask(mContext).execute(new Void[]{});
+				if(mLableInitStatus == 0 && RuntimeState.isDownloadingLabel== false 	){
+					RuntimeState.isDownloadingLabel = true;
+					new InitDownloadLabelsTask(mContext).execute(new Void[]{});					
 				}
-				DownloadLogic.subscribe(mContext);
+				else{
+					DownloadLogic.subscribe(mContext);
+				}
 			}else if(Constant.ACTION_LABEL_CHANGE_NOTIFICATION.equals(action)){
 				mLableInitStatus = mPrefs.getInt(
 						Constant.PREF_DOWNLOAD_LABEL_INIT_STATUS, 0);

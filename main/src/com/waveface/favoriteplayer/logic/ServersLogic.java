@@ -594,6 +594,7 @@ public class ServersLogic {
 			//2.kill all paired server data and relative data
 		    ContentResolver cr = context.getContentResolver();
 		    cr.delete(PairedServersTable.CONTENT_URI,null,null);
+		    cr.delete(BonjourServersTable.CONTENT_URI, null,null);
 		    cr.delete(LabelTable.CONTENT_URI,null,null);
 		    cr.delete(FileTable.CONTENT_URI,null,null);
 		    cr.delete(LabelFileTable.CONTENT_URI,null,null);
