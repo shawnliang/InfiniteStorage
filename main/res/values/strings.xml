@@ -153,4 +153,11 @@
     <!-- GALLERY FRAGMENT  -->
     <string name="previous_page">Previous Page</string>
     
+    <!-- SETTING PREFENCE  -->
+    <string name="connect_server">Connect to server %1$s.</string>
+    <string name="home_sharing_title">Home Sharing</string>
+    <string name="unlink_server">Unlink Server</string>
+    <string name="enable">Enable</string>
+    <string name="disable">Disable by server</string>
+    
 </resources>
