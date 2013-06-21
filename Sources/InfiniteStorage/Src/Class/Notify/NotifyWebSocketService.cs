@@ -49,7 +49,7 @@ namespace InfiniteStorage.Notify
 		protected override void onError(object sender, ErrorEventArgs e)
 		{
 			logger.Warn("connection error: " + e.Message);
-			closeAndFireEvent(WebSocketSharp.Frame.CloseStatusCode.SERVER_ERROR, e.Message);
+			raiseDisconnectedEvent();
 		}
 
 		protected override void onOpen(object sender, EventArgs e)

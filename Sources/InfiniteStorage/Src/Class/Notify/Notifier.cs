@@ -32,7 +32,8 @@ namespace InfiniteStorage.Notify
 
 			lock (cs)
 			{
-				senders.Add(channel);
+				if (!senders.Where(x=>x.ctx == arg.Ctx).Any())
+					senders.Add(channel);
 			}
 		}
 
@@ -40,7 +41,7 @@ namespace InfiniteStorage.Notify
 		{
 			lock (cs)
 			{
-				var channel = senders.Where(x => x.ctx == arg).FirstOrDefault();
+				var channel = senders.Where(x => x.ctx == arg.Ctx).FirstOrDefault();
 
 				if (channel != null)
 					senders.Remove(channel);

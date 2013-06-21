@@ -186,6 +186,10 @@ namespace InfiniteStorage
 						thum.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".large.thumb"), ImageFormat.Jpeg);
 					}
 				}
+				else
+				{
+					fullImage.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".large.thumb"), ImageFormat.Jpeg);
+				}
 
 				if (longSide > 1024)
 				{
@@ -194,6 +198,10 @@ namespace InfiniteStorage
 						ImageHelper.CorrectOrientation(orientation, thum);
 						thum.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".medium.thumb"), ImageFormat.Jpeg);
 					}
+				}
+				else
+				{
+					fullImage.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".medium.thumb"), ImageFormat.Jpeg);
 				}
 
 				if (longSide > 512)
@@ -204,6 +212,10 @@ namespace InfiniteStorage
 						thum.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".small.thumb"), ImageFormat.Jpeg);
 					}
 				}
+				else
+				{
+					fullImage.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".small.thumb"), ImageFormat.Jpeg);
+				}
 
 				if (longSide > 256)
 				{
@@ -212,6 +224,10 @@ namespace InfiniteStorage
 						ImageHelper.CorrectOrientation(orientation, thum);
 						thum.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".tiny.thumb"), ImageFormat.Jpeg);
 					}
+				}
+				else
+				{
+					fullImage.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".tiny.thumb"), ImageFormat.Jpeg);
 				}
 			}
 		}
