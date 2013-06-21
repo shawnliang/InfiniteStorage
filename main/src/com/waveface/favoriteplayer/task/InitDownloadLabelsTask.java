@@ -23,11 +23,11 @@ import com.waveface.service.HttpInvoker;
 
 import de.greenrobot.event.EventBus;
 
-public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
+public class InitDownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 
 	private Context mContext;
 
-	public DownloadLabelsTask(Context context) {
+	public InitDownloadLabelsTask(Context context) {
 		mContext = context;
 	}
 
@@ -42,15 +42,12 @@ public class DownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 		if (NetworkUtil.isWifiNetworkAvailable(mContext) == false)
 			return null;
 		String ServerSeq = LabelDB.getMAXServerSeq(mContext);
-//		Cursor cursor = LabelDB.getMAXSEQLabel(mContext);
-//		if (cursor != null && cursor.getCount() > 0) {
-		if (!TextUtils.isEmpty(ServerSeq)) {
+		if (!TextUtils.isEmpty(ServerSeq) && !ServerSeq.equals("0")) {
 			LabelImportedEvent doneEvent = new LabelImportedEvent(
 					LabelImportedEvent.STATUS_DONE);
 			EventBus.getDefault().post(doneEvent);
 			return null;
 		}
-//		cursor.close();
 		SharedPreferences mPrefs = mContext.getSharedPreferences(
 				Constant.PREFS_NAME, Context.MODE_PRIVATE);
 		Editor mEditor = mPrefs.edit();

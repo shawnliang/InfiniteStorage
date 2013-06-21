@@ -334,30 +334,30 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 	}
 
 	private OverviewData loadLabelData(String labelId,String realDownloadFolder) {
-		Cursor labelCursor = LabelDB.getLabelByLabelId(getActivity(), labelId);
-		Cursor fileCursor = LabelDB.getLabelFileViewByLabelId(getActivity(), labelId);
-		Log.d(TAG, "There are " + fileCursor.getCount() + " files");
+		Cursor labelCursor = LabelDB.getLabelByLabelId(getActivity(), labelId);		
+		Cursor viewCursor = LabelDB.getLabelFileViewByLabelId(getActivity(), labelId);
+		Log.d(TAG, "There are " + viewCursor.getCount() + " files");
 		OverviewData data = null;
-		if(labelCursor.moveToFirst() && fileCursor.getCount() > 0) {
+		if(labelCursor.moveToFirst() && viewCursor.moveToFirst()) {
 			data = new OverviewData();
 			data.labelId = labelId;
 			data.url = mServerUrl + labelCursor.getString(2);
-			data.count = fileCursor.getCount();
+			data.count = viewCursor.getCount();
 			data.autoType = labelCursor.getInt(3);
-			fileCursor.moveToFirst();
-			data.fileType = fileCursor.getString(fileCursor.getColumnIndex(LabelFileView.COLUMN_TYPE));
-			data.filename = fileCursor.getString(fileCursor.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
+			data.fileType = viewCursor.getString(viewCursor.getColumnIndex(LabelFileView.COLUMN_TYPE));
+			data.filename = viewCursor.getString(viewCursor.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));	
+		
 			if(mType == OVERVIEW_VIEW_TYPE_FAVORITE) {
 				data.title = labelCursor.getString(1);
 			} else if(mType == OVERVIEW_VIEW_TYPE_RECENT_VIDEO) {
 //				if(fileCursor.moveToFirst()) {
-					String fileName =  realDownloadFolder + Constant.VIDEO_FOLDER+ "/"  +fileCursor
-							.getString(fileCursor.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
+					String fileName =  realDownloadFolder + Constant.VIDEO_FOLDER+ "/"  +viewCursor
+							.getString(viewCursor.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
 					data.url = fileName;
 //				}
 			}
 		}
-		fileCursor.close();
+		viewCursor.close();
 		labelCursor.close();
 		return data;
 	}

@@ -191,10 +191,6 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 										entity.label_change.label_id,
 										entity.label_change.seq);
 								if (entity.label_change.deleted.equals("true")) {
-//									LabelDB.deleteLabel(mContext,
-//											entity.label_change.label_id);
-//									LabelDB.removeAllFileInLabel(mContext,
-//											entity.label_change.label_id);
 									needToSync = false;
 									LabelDB.updateLabeDisplayStatus(mContext,
 											entity.label_change.label_id,"false");
@@ -237,6 +233,12 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 							if(needToSync){
 								mContext.sendBroadcast(new Intent(
 										Constant.ACTION_LABEL_CHANGE_NOTIFICATION));
+							}
+							else{
+								EventBus.getDefault().post(
+										new LabelChangeEvent(
+												entity.label_change.label_id,
+												entity.label_change.auto_type));									
 							}
 						}
 					} catch (Exception e) {

@@ -238,7 +238,9 @@ public class LabelDB {
 						LabelTable.COLUMN_LABEL_NAME,
 						LabelTable.COLUMN_COVER_URL,
 						LabelTable.COLUMN_AUTO_TYPE},
-				LabelTable.COLUMN_LABEL_ID + " = ?", new String[] { labelId },
+				LabelTable.COLUMN_LABEL_ID + " = ? AND "
+						+LabelTable.COLUMN_DISPLAY_STATUS+"=?", 
+						new String[] { labelId,"true" },
 				null);
 
 		return cursor;
