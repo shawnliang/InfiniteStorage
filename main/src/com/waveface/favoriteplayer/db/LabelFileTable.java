@@ -27,8 +27,6 @@ public class LabelFileTable implements BaseColumns {
 
 	}
 	
-
-	
 	public static Cursor getLableFiles(Context context, String labelId) {
 		Cursor cursor = context.getContentResolver().query(
 				LabelFileTable.CONTENT_URI, 

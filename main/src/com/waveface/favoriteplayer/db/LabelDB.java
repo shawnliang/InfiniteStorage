@@ -279,6 +279,29 @@ public class LabelDB {
 		return serverSeq;
 	}
 
+	public static boolean needToSyncLabel(Context context) {
+		boolean needToSync = false;
+		String whereCLause = LabelTable.COLUMN_SEQ + " <> "
+				+ LabelTable.COLUMN_SERVER_SEQ + " AND "
+				+ LabelTable.COLUMN_DISPLAY_STATUS + "=?";
+		Cursor cursor = context.getContentResolver().query(
+				LabelTable.CONTENT_URI,
+				new String[] { LabelTable.COLUMN_LABEL_ID,
+						LabelTable.COLUMN_LABEL_NAME, LabelTable.COLUMN_SEQ,
+						LabelTable.COLUMN_SERVER_SEQ,
+						LabelTable.COLUMN_COVER_URL,
+						LabelTable.COLUMN_AUTO_TYPE, LabelTable.COLUMN_ON_AIR,
+						LabelTable.COLUMN_DISPLAY_STATUS }, 
+						whereCLause,
+						new String[] { "true" }, 
+						LabelTable.COLUMN_SEQ+" LIMIT 1");
+		if(cursor!=null && cursor.getCount()>0){
+			needToSync = true;
+			cursor.close();
+		}
+		return needToSync;
+	}
+	
 	public static Cursor getUnsyncedLabel(Context context) {
 
 		String whereCLause = LabelTable.COLUMN_SEQ + " <> "

@@ -203,7 +203,7 @@ public class PlayerService extends Service{
 			}
 			else if (Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED.equals(action)) {
 				if(mLableInitStatus == 0){
-					new InitDownloadLabelsTask(mContext).execute(new Void[]{});
+					new InitDownloadLabelsTask(mContext).execute(new Void[]{});					
 				}
 				DownloadLogic.subscribe(mContext);
 			}else if(Constant.ACTION_LABEL_CHANGE_NOTIFICATION.equals(action)){
