@@ -326,12 +326,12 @@
                                           Height="28.666"
                                           Margin="2"
                                           VerticalAlignment="Center"
-                                          Click="BackButton_Click" />
+                                          Click="BackButton_Click" Visibility="Collapsed" />
                         <Label x:Name="lblContentLocation"
                                Content="{Binding Name}"
                                FontFamily="Segoe UI Light"
                                FontSize="18.667"
-                               Foreground="White" />
+                               Foreground="White" DataContextChanged="lblContentLocation_DataContextChanged" />
                         <Label x:Name="lblContentTypeCount"
                                VerticalContentAlignment="Bottom"
                                Content="0 photos 0 videos"

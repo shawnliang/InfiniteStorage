@@ -194,7 +194,6 @@ namespace Waveface.Client
 			Grid.SetColumnSpan(gdContentArea, 2);
 
 			btnFavoriteAll.Visibility = Visibility.Visible;
-			btnBack.Visibility = Visibility.Visible;
 			gdRightSide.Visibility = System.Windows.Visibility.Collapsed;
 
 			rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
@@ -263,7 +262,6 @@ namespace Waveface.Client
 			Grid.SetColumnSpan(gdContentArea, 1);
 
 			btnFavoriteAll.Visibility = Visibility.Collapsed;
-			btnBack.Visibility = Visibility.Collapsed;
 			unSortedFilesUC.Visibility = Visibility.Collapsed;
 			rspRightSidePane2.Visibility = (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
 			rspRightSidePanel.Visibility = (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
@@ -436,6 +434,19 @@ namespace Waveface.Client
 			var content = lbxContentContainer.SelectedItem as IContentEntity;
 			ClientFramework.Client.Default.UnTag(group.ID, content.ID);
 			RefreshContentArea();
+		}
+
+		private void lblContentLocation_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+		{
+			if (lblContentLocation.DataContext == null)
+			{
+				btnBack.Visibility = System.Windows.Visibility.Collapsed;
+				return;
+			}
+
+			btnBack.Visibility = (lblContentLocation.DataContext as IContentGroup).Parent == null ?
+			System.Windows.Visibility.Collapsed :
+			System.Windows.Visibility.Visible;
 		}
 
 	}
