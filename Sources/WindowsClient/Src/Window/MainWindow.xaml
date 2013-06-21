@@ -11,13 +11,11 @@
         Title="Favorite"
         Width="807"
         Height="498.5"
-        MinWidth="1000"
-        MinHeight="600"
         Icon="/Waveface.Client;component/Resource/FAV_512.ico"
         Loaded="Window_Loaded"
         UseLayoutRounding="True"
         WindowState="Maximized"
-        mc:Ignorable="d">
+        mc:Ignorable="d" MinWidth="1000" MinHeight="600">
 
     <Window.Resources>
 
@@ -302,8 +300,9 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="215"
-                              MinWidth="215" />
-            <ColumnDefinition MinWidth="100"/>
+                              MinWidth="215" 
+							  MaxWidth="400"/>
+            <ColumnDefinition/>
             <ColumnDefinition Width="200"
                               MinWidth="200" />
         </Grid.ColumnDefinitions>
@@ -362,49 +361,50 @@
                                   Direction="0"
                                   ShadowDepth="1" />
             </Grid.Effect>
-            <StackPanel>
+        	<ScrollViewer VerticalScrollBarVisibility="Auto">
+        		<StackPanel>
+        			<Grid>
+        				<Grid.RowDefinitions>
+        					<RowDefinition Height="30" />
+        					<RowDefinition Height="*" />
+        				</Grid.RowDefinitions>
+        				<Label Grid.Row="0"
+        					Background="{x:Null}"
+        					Content="SOURCES"
+        					FontFamily="Segoe UI Light"
+        					Foreground="#FFA5A5A5" />
 
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0"
-                           Background="{x:Null}"
-                           Content="SOURCES"
-                           FontFamily="Segoe UI Light"
-                           Foreground="#FFA5A5A5" />
+        				<local:SourceTree x:Name="lbxDeviceContainer"
+        					Grid.Row="1"
+        					BorderBrush="{x:Null}"
+        					Padding="0"
+        					ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+        					TreeViewItemClick="TreeViewItem_PreviewMouseLeftButtonDown"
+        					VirtualizingStackPanel.IsVirtualizing="True"
+        					VirtualizingStackPanel.VirtualizationMode="Recycling" />
 
-                    <local:SourceTree x:Name="lbxDeviceContainer"
-                                      Grid.Row="1"
-                                      BorderBrush="{x:Null}"
-                                      Padding="0"
-                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                      TreeViewItemClick="TreeViewItem_PreviewMouseLeftButtonDown"
-                                      VirtualizingStackPanel.IsVirtualizing="True"
-                                      VirtualizingStackPanel.VirtualizationMode="Recycling" />
+        			</Grid>
 
-                </Grid>
+        			<Grid>
+        				<Grid.RowDefinitions>
+        					<RowDefinition Height="30" />
+        					<RowDefinition Height="*" />
+        				</Grid.RowDefinitions>
+        				<Label Grid.Row="0"
+        					Height="30"
+        					Background="{x:Null}"
+        					Content="FAVORITES"
+        					FontFamily="Segoe UI Light"
+        					Foreground="#FFA5A5A5" />
+        				<local:FavoriteListBox x:Name="lbxFavorites"
+        					Grid.Row="1"
+        					PreviewMouseDown="lbxFavorites_PreviewMouseDown"
+        					ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+        					SelectionChanged="lbxFavorites_SelectionChanged" />
+        			</Grid>
 
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0"
-                           Height="30"
-                           Background="{x:Null}"
-                           Content="FAVORITES"
-                           FontFamily="Segoe UI Light"
-                           Foreground="#FFA5A5A5" />
-                    <local:FavoriteListBox x:Name="lbxFavorites"
-                                           Grid.Row="1"
-                                           PreviewMouseDown="lbxFavorites_PreviewMouseDown"
-                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                           SelectionChanged="lbxFavorites_SelectionChanged" />
-                </Grid>
-
-            </StackPanel>
+        		</StackPanel>
+        	</ScrollViewer>
         </Grid>
         <GridSplitter Grid.Row="1"
                       Grid.Column="0"
