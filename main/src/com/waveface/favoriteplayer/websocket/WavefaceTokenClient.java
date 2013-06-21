@@ -24,23 +24,17 @@ import org.jwebsocket.token.TokenFactory;
 import org.jwebsocket.token.WebSocketResponseTokenListener;
 import org.jwebsocket.util.Tools;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
-import android.text.TextUtils;
-
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
 import com.waveface.favoriteplayer.db.LabelDB;
-import com.waveface.favoriteplayer.entity.HomeSharingEntity;
 import com.waveface.favoriteplayer.entity.LabelEntity;
 import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.LabelChangeEvent;
 
-import com.waveface.favoriteplayer.logic.DownloadLogic;
 import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.util.Log;
 import com.waveface.favoriteplayer.util.NetworkUtil;
@@ -183,18 +177,11 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 						&& homeSharingStatus.equals("true")) {
 					try {
 						if (entity != null) {
-							Cursor cusor = LabelDB.getLabelByLabelId(
-									mContext, entity.label_change.label_id);
 							// label exist
-							if (cusor !=null && cusor.getCount() > 0) {
-								LabelDB.updateLabelServerSeqAndCoverUrl(mContext,
-										entity.label_change.label_id,
-										entity.label_change.seq,
-										entity.label_change.cover_url);
+							if (LabelDB.hasThisLabel(mContext, entity.label_change.label_id)) {	
+								LabelDB.updateLabelByServerChangeNotify(mContext, entity);
 								if (entity.label_change.deleted.equals("true")) {
 									needToSync = false;
-									LabelDB.updateLabeDisplayStatus(mContext,
-											entity.label_change.label_id,"false");
 								}
 							}//new Label for insert 
 							else {
@@ -230,7 +217,6 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 									needToSync = false;
 								}
 							}
-							cusor.close();
 							if(needToSync){
 								mContext.sendBroadcast(new Intent(
 										Constant.ACTION_LABEL_CHANGE_NOTIFICATION));

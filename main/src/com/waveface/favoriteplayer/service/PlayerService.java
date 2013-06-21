@@ -113,6 +113,7 @@ public class PlayerService extends Service{
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constant.ACTION_NETWORK_STATE_CHANGE);	
 		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
+		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_DISCONNECTED);
 		filter.addAction(Constant.ACTION_LABEL_CHANGE_NOTIFICATION);
 		registerReceiver(mReceiver, filter);
 		
@@ -194,6 +195,9 @@ public class PlayerService extends Service{
 								startupBonjourPaired();
 							}
 						}
+					}
+					else if(actionContent.equals(Constant.ACTION_WEB_SOCKET_SERVER_DISCONNECTED)){
+						//
 					}
 				}
 			}

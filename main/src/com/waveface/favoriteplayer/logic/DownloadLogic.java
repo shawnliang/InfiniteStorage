@@ -160,7 +160,6 @@ public class DownloadLogic {
 				}
 			}
 			LabelDB.updateLabel(context, label);
-
 		}
 
 	}
