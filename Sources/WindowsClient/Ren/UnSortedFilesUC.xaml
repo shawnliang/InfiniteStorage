@@ -177,14 +177,19 @@
                                        Foreground="#929292"
                                        Text="LONGER" />
 
-                            <TextBlock Grid.Row="0"
-                                       Grid.Column="1"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Bottom"
+                            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                                <TextBlock                                                                                                            
+                                       FontSize="11"
+                                       Foreground="#DDDDDD"
+                                       Text="Event Interval: " />
+
+                                <TextBlock
+                                       x:Name="tbEventIntervalType"
                                        FontSize="11"
                                        FontWeight="Bold"
                                        Foreground="#DDDDDD"
-                                       Text="Event Interval" />
+                                       Text="" />
+                            </StackPanel>
 
                             <Waveface:SliderWithDraggingEvents x:Name="sliderEvent"
                                                                Grid.Row="1"
@@ -197,6 +202,7 @@
                                                                Maximum="6"
                                                                Minimum="0"
                                                                ThumbDragCompleted="sliderEvent_ThumbDragCompleted"
+                                                               ValueChanged="sliderEvent_ValueChanged"
                                                                TickFrequency="1"
                                                                Value="4">
                                 <Waveface:SliderWithDraggingEvents.Effect>
@@ -229,7 +235,7 @@
                     <DropShadowEffect/>
                 </Button.Effect>
             </Button>
-            
+
             <Grid x:Name="gridEmptyPanel"
                   Grid.Row="1"
                   Grid.RowSpan="2"

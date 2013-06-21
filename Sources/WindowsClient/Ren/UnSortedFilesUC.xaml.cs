@@ -76,6 +76,21 @@ namespace Waveface.Client
             m_sliderTicks.Add(new MySliderTick { Name = "Day", Value = BY_DAY });
             m_sliderTicks.Add(new MySliderTick { Name = "Week", Value = BY_WEEK });
             m_sliderTicks.Add(new MySliderTick { Name = "Month", Value = BY_MONTH });
+
+            SetEventIntervalTypeText();
+        }
+
+        private void sliderEvent_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            SetEventIntervalTypeText();
+        }
+
+        private void SetEventIntervalTypeText()
+        {
+            if (m_sliderTicks.Count > 0)
+            {
+                tbEventIntervalType.Text = m_sliderTicks[(int)sliderEvent.Value].Name;
+            }
         }
 
         public bool Init(IService device)
@@ -127,7 +142,18 @@ namespace Waveface.Client
                 btnRefresh.Visibility = Visibility.Visible;
             }
 
-            btnRefresh.Content = "Refresh " + "(" + (_count - (VideosCount + PhotosCount)) + ")";
+            int _d = (_count - (VideosCount + PhotosCount));
+
+            if (_d == 0)
+            {
+                btnRefresh.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                btnRefresh.Visibility = Visibility.Visible;
+            }
+
+            btnRefresh.Content = "Refresh " + "(" + _d + ")";
         }
 
         public void Stop()
