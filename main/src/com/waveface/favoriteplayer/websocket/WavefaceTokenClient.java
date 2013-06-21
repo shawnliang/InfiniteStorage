@@ -149,23 +149,19 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 				WebSocketPacket aPacket) {
 
 			String jsonOutput = aPacket.getUTF8();
-			Log.d(TAG, "WebSocket jsonOutput=" + jsonOutput);
+			Log.d(TAG, "jsonOutput=" + jsonOutput);
 
 			if (NetworkUtil.isWifiNetworkAvailable(mContext)) {
 				SharedPreferences mPrefs = mContext.getSharedPreferences(
 						Constant.PREFS_NAME, Context.MODE_PRIVATE);
-				Editor mEditor = mPrefs.edit();
 				LabelChangeEntity entity = 
 						RuntimeState.GSON.fromJson(jsonOutput,
 						LabelChangeEntity.class);
 
 				boolean needToSync = true;
 				
-				int downloadLableInitStatus = mPrefs.getInt(
-						Constant.PREF_DOWNLOAD_LABEL_INIT_STATUS, 0);
-
 				if (entity.home_sharing != null) {
-
+					Editor mEditor = mPrefs.edit();
 					mEditor.putString(Constant.PREF_HOME_SHARING_STATUS,
 							entity.home_sharing);
 					mEditor.commit();
@@ -173,8 +169,10 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 				String homeSharingStatus = mPrefs.getString(
 						Constant.PREF_HOME_SHARING_STATUS, "");
 
-				if (downloadLableInitStatus == 1
-						&& homeSharingStatus.equals("true")) {
+				int downloadLableInitStatus = mPrefs.getInt(
+						Constant.PREF_DOWNLOAD_LABEL_INIT_STATUS, 0);	
+
+				if (homeSharingStatus.equals("true")) {
 					try {
 						if (entity != null) {
 							// label exist
@@ -218,8 +216,10 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 								}
 							}
 							if(needToSync){
-								mContext.sendBroadcast(new Intent(
-										Constant.ACTION_LABEL_CHANGE_NOTIFICATION));
+								if(downloadLableInitStatus == 1 && RuntimeState.needToSync() == false){
+									mContext.sendBroadcast(new Intent(
+											Constant.ACTION_LABEL_CHANGE_NOTIFICATION));
+								}
 							}
 							else{
 								EventBus.getDefault().post(

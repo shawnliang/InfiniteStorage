@@ -154,14 +154,11 @@ public class DownloadLogic {
 			}
 			filecursor.close();
 		} else {
-			if (label.label_name.equals("TAG")) {
-				if (label.files.length == 0) {
-					LabelDB.removeLabelFileByLabelId(context, label.label_id);
-				}
-			}
+			if (label.files.length == 0) {
+				LabelDB.removeLabelFileByLabelId(context, label.label_id);
+			}			
 			LabelDB.updateLabel(context, label);
 		}
-
 	}
 
 	public static void updateAllLabels(Context context, LabelEntity entity) {

@@ -205,7 +205,9 @@ public class PlayerService extends Service{
 				if(mLableInitStatus == 0){
 					new InitDownloadLabelsTask(mContext).execute(new Void[]{});					
 				}
-				DownloadLogic.subscribe(mContext);
+				else{
+					DownloadLogic.subscribe(mContext);
+				}
 			}else if(Constant.ACTION_LABEL_CHANGE_NOTIFICATION.equals(action)){
 				mLableInitStatus = mPrefs.getInt(
 						Constant.PREF_DOWNLOAD_LABEL_INIT_STATUS, 0);
