@@ -238,9 +238,10 @@ public class LabelDB {
 						LabelTable.COLUMN_LABEL_NAME,
 						LabelTable.COLUMN_COVER_URL,
 						LabelTable.COLUMN_AUTO_TYPE},
-				LabelTable.COLUMN_LABEL_ID + " = ? AND "
-						+LabelTable.COLUMN_DISPLAY_STATUS+"=?", 
-						new String[] { labelId,"true" },
+						LabelTable.COLUMN_LABEL_ID + " = ? AND "+
+						LabelTable.COLUMN_ON_AIR + " = ? AND "+
+						LabelTable.COLUMN_DISPLAY_STATUS+"=?", 
+						new String[] { labelId,"true","true" },
 				null);
 
 		return cursor;
