@@ -238,9 +238,10 @@ public class LabelDB {
 						LabelTable.COLUMN_LABEL_NAME,
 						LabelTable.COLUMN_COVER_URL,
 						LabelTable.COLUMN_AUTO_TYPE},
-				LabelTable.COLUMN_LABEL_ID + " = ? AND "
-						+LabelTable.COLUMN_DISPLAY_STATUS+"=?", 
-						new String[] { labelId,"true" },
+						LabelTable.COLUMN_LABEL_ID + " = ? AND "+
+						LabelTable.COLUMN_ON_AIR + " = ? AND "+
+						LabelTable.COLUMN_DISPLAY_STATUS+"=?", 
+						new String[] { labelId,"true","true" },
 				null);
 
 		return cursor;
@@ -413,11 +414,11 @@ public class LabelDB {
 				new String[] { labelId });
 	}
 	
-	public static int updateLabelServerSeq(Context context, String labelId,String seq) {
+	public static int updateLabelServerSeqAndCoverUrl(Context context, String labelId,String seq,String coverUrl) {
 		ContentResolver cr = context.getContentResolver();
 		ContentValues cv = new ContentValues();
-		cv.put(LabelTable.COLUMN_SERVER_SEQ, Integer.parseInt(seq));
-
+		cv.put(LabelTable.COLUMN_SERVER_SEQ, Integer.parseInt(seq));		
+		cv.put(LabelTable.COLUMN_COVER_URL, coverUrl);
 		return cr.update(LabelTable.CONTENT_URI, cv, LabelTable.COLUMN_LABEL_ID + "=?",
 				new String[] { labelId });
 	}

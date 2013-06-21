@@ -97,7 +97,6 @@ public class ChangeLabelsTask extends AsyncTask<Void, Void, Void> {
 
 				labelEntity.cover_url = coverUrl;
 				labelEntity.auto_type = autoType;
-				labelEntity.on_air = onAir;
 				labelEntity.deleted = "false";
 
 				DownloadLogic.updateLabel(mContext, labelEntity,serverSeq);
