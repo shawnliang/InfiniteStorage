@@ -64,6 +64,6 @@
 
         <Button Click="Button_Click"
                 Content="Star All"
-                Style="{DynamicResource ButtonStyle1}" />
+                Style="{DynamicResource ButtonStyle1}" Foreground="White" />
     </Grid>
 </UserControl>

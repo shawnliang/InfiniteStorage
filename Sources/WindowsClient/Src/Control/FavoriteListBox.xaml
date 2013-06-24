@@ -32,7 +32,7 @@
                            Height="32"
                            VerticalContentAlignment="Center"
                            Content="{Binding Name}"
-                           Foreground="White" />
+                           Foreground="#a8a8a8" />
                 </StackPanel>
                 <Label x:Name="sourceCount"
                        Grid.Row="0"
@@ -41,14 +41,14 @@
                        HorizontalAlignment="Left"
                        VerticalContentAlignment="Center"
                        Content="{Binding ContentCount}"
-                       Foreground="White" />
+                       Foreground="#a8a8a8" />
             </Grid>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem},
                                                Path=IsSelected}"
                              Value="True">
                     <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedFav}" />
-                    <Setter TargetName="item" Property="Background" Value="#FFD4D4D3" />
+                    <Setter TargetName="item" Property="Background" Value="#d5d5d5" />
                     <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
                     <Setter TargetName="sourceCount" Property="Foreground" Value="Black" />
                 </DataTrigger>

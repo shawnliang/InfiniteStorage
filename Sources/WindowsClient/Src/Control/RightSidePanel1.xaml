@@ -12,20 +12,20 @@
 
     <Grid x:Name="LayoutRoot">
         <Button Width="163"
-                Margin="0,237,0,0"
+                Margin="0,267,0,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Click="Button_Click"
                 Content="Add to existing Favorite"
-                Cursor="Hand">
+                Cursor="Hand" Foreground="White">
         </Button>
         <Button x:Name="btnClearAll"
                 Width="163"
-                Margin="10,155,10,0"
+                Margin="10,162,10,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Content="Clear All"
-                Cursor="Hand">
+                Cursor="Hand" Foreground="White">
         </Button>
         <local:LabeledContentInfo x:Name="LabeledCount"
                                   Width="150"
@@ -35,12 +35,12 @@
                                   PhotoCount="{Binding PhotoCount, ElementName=UserControl}" 
 								  VideoCount="{Binding VideoCount, ElementName=UserControl}"/>
         <Button Width="163"
-                Margin="0,196,0,0"
+                Margin="0,223,0,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Click="Button_Click_1"
                 Content="Create a new Favorite"
-                Cursor="Hand">
+                Cursor="Hand" Foreground="White">
            
         </Button>
 
