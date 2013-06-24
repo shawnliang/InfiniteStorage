@@ -144,7 +144,7 @@
             </Grid>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsExpanded" Value="True">
-                    <Setter TargetName="Item" Property="Background" Value="#FF1D1C1B" />
+                    <Setter TargetName="Item" Property="Background" Value="#252525" />
                 </Trigger>
                 <Trigger Property="IsExpanded" Value="False">
                     <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed" />
@@ -209,7 +209,7 @@
                 <Label x:Name="item"
                        Content="{Binding Name}"
                        FontWeight="Bold"
-                       Foreground="White" />
+                       Foreground="#a8a8a8" />
                 <Image x:Name="recvingIcon"
                        IsVisibleChanged="recvingIcon_IsVisibleChanged"
                        Source="{StaticResource CycleIcon}"
@@ -235,14 +235,14 @@
                                Grid.Column="1"
                                VerticalContentAlignment="Center"
                                Content="{Binding Name}"
-                               Foreground="White" />
+                               Foreground="#a8a8a8" />
 
                         <Label x:Name="sourceCount"
                                Grid.Column="2"
                                HorizontalAlignment="Right"
                                VerticalContentAlignment="Center"
                                Content="{Binding ContentCount}"
-                               Foreground="White" />
+                               Foreground="#a8a8a8" />
                     </Grid>
 
                     <DataTemplate.Triggers>
@@ -251,7 +251,7 @@
                                      Value="True">
                             <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedIcon}" />
                             <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
-                            <Setter TargetName="item" Property="Background" Value="#FFD4D4D3" />
+                            <Setter TargetName="item" Property="Background" Value="#d5d5d5" />
                             <Setter TargetName="sourceCount" Property="Foreground" Value="Black" />
                         </DataTrigger>
 

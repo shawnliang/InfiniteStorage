@@ -39,7 +39,7 @@
                                  ElementName=UserControl}"
                ContentStringFormat=" {0} photos"
                FontFamily="Segoe UI Light"
-               Foreground="White" />
+               Foreground="#FFA8A8A8" />
         <Label x:Name="lblLabeledCount_Copy"
                Width="130"
                Height="32"
@@ -51,6 +51,6 @@
                                  ElementName=UserControl}"
                ContentStringFormat=" {0} videos"
                FontFamily="Segoe UI Light"
-               Foreground="White" />
+               Foreground="#FFA8A8A8" />
     </Grid>
 </UserControl>

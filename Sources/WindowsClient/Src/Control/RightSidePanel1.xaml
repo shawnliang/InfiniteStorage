@@ -17,7 +17,7 @@
                 VerticalAlignment="Top"
                 Click="Button_Click"
                 Content="Add to existing Favorite"
-                Cursor="Hand">
+                Cursor="Hand" Foreground="#FFA8A8A8">
         </Button>
         <Button x:Name="btnClearAll"
                 Width="163"
@@ -25,7 +25,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Content="Clear All"
-                Cursor="Hand">
+                Cursor="Hand" Foreground="#FFA8A8A8">
         </Button>
         <local:LabeledContentInfo x:Name="LabeledCount"
                                   Width="150"
@@ -40,7 +40,7 @@
                 VerticalAlignment="Top"
                 Click="Button_Click_1"
                 Content="Create a new Favorite"
-                Cursor="Hand">
+                Cursor="Hand" Foreground="#FFA8A8A8">
            
         </Button>
 
