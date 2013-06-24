@@ -298,7 +298,8 @@ ALTER TABLE [PendingFiles] Add Column [orientation] INTEGER NULL;
 ALTER TABLE [Files] Add Column [on_cloud] BOOLEAN NULL;
 ALTER TABLE [Labels] Add Column [share_enabled] BOOLEAN NULL;
 ALTER TABLE [Labels] Add Column [share_proc_seq] INTEGER NULL;
-ALTER TABLE [Labels] Add Column [share_url] NVARCHAR NULL;
+ALTER TABLE [Labels] Add Column [share_code] NVARCHAR NULL;
+ALTER TABLE [Labels] Add Column [share_post_id] NVARCHAR NULL;
 
 CREATE TABLE [LabelShareTo] (
 [id] INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,

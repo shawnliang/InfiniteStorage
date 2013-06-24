@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using System.Web;
 
 namespace postServiceLibrary
 {
@@ -57,7 +58,7 @@ namespace postServiceLibrary
             string _post_id = System.Web.HttpUtility.UrlEncode(post_id);
             string _session_token = System.Web.HttpUtility.UrlEncode(session_token);
             string _parms = "post_id" + "=" + _post_id + "&" +
-                "session_token" + "=" + session_token + "&" +
+                "session_token" + "=" + HttpUtility.UrlEncode(session_token) + "&" +
                 "apikey" + "=" + APIKEY;
 
             WebPostHelper _webPos = new WebPostHelper();
@@ -85,7 +86,7 @@ namespace postServiceLibrary
             string _url = "https://develop.waveface.com/v3/pio_posts/tuneon_sharedcode";
 
             string _parms = "post_id" + "=" + post_id + "&" +
-                "session_token" + "=" + session_token + "&" +
+                "session_token" + "=" + HttpUtility.UrlEncode(session_token) + "&" +
                  "apikey" + "=" + APIKEY;
 
             WebPostHelper _webPos = new WebPostHelper();
@@ -231,7 +232,7 @@ namespace postServiceLibrary
  #endregion   
 
 #region create New post
-        public string NewPost(string session_token,List<string> object_arr,List<string> email_arr )
+        public string NewPost(string session_token,List<string> object_arr,List<string> email_arr, string post_id)
         {
             string result = null;
             // verify
@@ -249,53 +250,26 @@ namespace postServiceLibrary
             _ws.APIKEY = APIKEY;
             string object_id = _ws._object_id;
             string content = "";
-            string attachment_id_array = count_attachments(object_arr); 
+            string attachment_id_array = toJsonArray(object_arr); 
             string preview = "";
             string type = "event";
-            string share_email_list = count_emails(email_arr); 
+			string share_email_list = toJsonArray(email_arr); 
             string coverAttach = "";
             string event_type = "favorite_shared";
             string favorite = "0";
-            try
-            {
-               string ret_post = _ws.posts_new(session_token, group_id, content, attachment_id_array, preview, type, coverAttach, share_email_list, event_type, favorite);
-                if (ret_post != null)       // exception return null
-                    result = ret_post;
-                else
-                    result = null;
-            }
-            catch (Exception err)
-            {
-                result = null;
-            }
 
-            return result;
+            string ret_post = _ws.posts_new(session_token, group_id, content, attachment_id_array, preview, type, coverAttach, share_email_list, event_type, favorite, post_id);
+
+			if (ret_post == null)
+				throw new Exception("new post failed");
+
+			var retObj = JsonConvert.DeserializeObject<dynamic>(ret_post);
+			return retObj.post.shared_code.ToString();
         }
 
-        private string count_emails(List<string> email_arr)
+        private string toJsonArray(List<string> object_arr)
         {
-            string result = "";
-            string att0 = "[";
-            foreach (string _mail in email_arr)
-            {
-                att0 += '"' + _mail + '"' + ",";
-            }
-            att0 = att0.Substring(0, att0.Length - 1) + "]";
-            result = att0.Replace(@"\\", "/");
-            return result;
-        }
-
-        private string count_attachments(List<string> object_arr)
-        {
-            string result = "";
-            string att0 = "[";
-            foreach (string _id in object_arr)
-            {
-                att0 += '"' + _id + '"' + ",";
-            }
-            att0 = att0.Substring(0, att0.Length - 1) + "]";
-            result = att0.Replace(@"\\", "/");
-            return result;
+			return "[" + string.Join(",", object_arr.Select(x => "\"" + x + "\"").ToArray()) + "]";
         }
 #endregion
 
@@ -348,16 +322,16 @@ namespace postServiceLibrary
             return result;
         }
 
-        string user = "ruddytest36@gmail.com";
-        string password =  "a+123456";
-        public string _initial()
-        {           
-            string result = callLogin(user, password);
-            session_token = result;
-            return result;
-        }
+		//string user = "ruddytest36@gmail.com";
+		//string password =  "a+123456";
+		//public string _initial()
+		//{           
+		//    string result = callLogin(user, password);
+		//    session_token = result;
+		//    return result;
+		//}
 
-        private string callLogin(string user, string password)
+        public string callLogin(string user, string password)
         {
             string result = "";
             if (user == "" || password == "")

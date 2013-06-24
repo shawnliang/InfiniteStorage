@@ -94,7 +94,7 @@ namespace InfiniteStorage.Model
 
 		public bool on_air { get; set; }
 
-		public string share_url { get; set; }
+		public string share_code { get; set; }
 
 		public bool? share_enabled { get; set; }
 
