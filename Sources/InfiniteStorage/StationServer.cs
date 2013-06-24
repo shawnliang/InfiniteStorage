@@ -239,7 +239,6 @@ namespace InfiniteStorage
 			m_notifyIcon.DoubleClick += m_notifyIconController.OnOpenUIMenuItemCliecked;
 			InfiniteStorageWebSocketService.DeviceAccepted += m_notifyIconController.OnDeviceConnected;
 			InfiniteStorageWebSocketService.DeviceDisconnected += m_notifyIconController.OnDeviceDisconnected;
-			InfiniteStorageWebSocketService.PairingRequesting += m_notifyIconController.OnDevicePairingRequesting;
 			InfiniteStorageWebSocketService.TotalCountUpdated += m_notifyIconController.OnTotalCountUpdated;
 			InfiniteStorageWebSocketService.FileReceiving += m_notifyIconController.OnFileReceiving;
 		}
