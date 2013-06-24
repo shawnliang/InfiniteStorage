@@ -16,49 +16,52 @@ namespace Waveface.Client
     public partial class WaitForPairingDialog : Window
     {
         private WebSocket m_webSocket;
-        private DispatcherTimer m_dispatcherTimer;
+        private DispatcherTimer m_uiDelayTimer;
         private pairing_request m_pairingRequest;
+        private bool m_closeByApp;
 
         public WaitForPairingDialog()
         {
             InitializeComponent();
-
-            m_dispatcherTimer = new DispatcherTimer();
-            m_dispatcherTimer.Tick += dispatcherTimer_Tick;
-            m_dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            m_uiDelayTimer = new DispatcherTimer();
+            m_uiDelayTimer.Tick += uiDelayTimer_Tick;
+            m_uiDelayTimer.Interval = new TimeSpan(0, 0, 1);
+
             try
             {
                 var _port = Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "pair_port", 0);
 
                 m_webSocket = new WebSocket("ws://127.0.0.1:" + _port);
-                m_webSocket.OnMessage += m_webSocket_OnMessage;
+                m_webSocket.OnMessage += webSocket_OnMessage;
                 m_webSocket.Connect();
 
-                ws_subscribe_start();
+                WS_subscribe_start();
             }
             catch
             {
             }
         }
 
-        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        private void uiDelayTimer_Tick(object sender, EventArgs e)
         {
-            m_dispatcherTimer.Stop();
+            m_uiDelayTimer.Stop();
 
             MessageBoxResult _messageBoxResult = MessageBox.Show("Pairing Request", "InfiniteStorage", MessageBoxButton.YesNo);
 
             if (_messageBoxResult == MessageBoxResult.Yes)
             {
-                ws_accept_reject(true);
+                WS_accept_reject(true);
             }
             else
             {
-                ws_accept_reject(false);
+                WS_accept_reject(false);
             }
+
+            m_closeByApp = true;
 
             Close();
         }
@@ -67,6 +70,11 @@ namespace Waveface.Client
         {
             try
             {
+                if (!m_closeByApp)
+                {
+                    WS_close_byUser();
+                }
+
                 m_webSocket.Close();
             }
             catch
@@ -74,10 +82,9 @@ namespace Waveface.Client
             }
         }
 
-        private void m_webSocket_OnMessage(object sender, MessageEventArgs e)
+        private void webSocket_OnMessage(object sender, MessageEventArgs e)
         {
-            //Debug
-            Application.Current.Dispatcher.Invoke((Action)delegate { MessageBox.Show(e.Data); });
+            //Application.Current.Dispatcher.Invoke((Action)(() => MessageBox.Show(e.Data)));
 
             try
             {
@@ -85,14 +92,14 @@ namespace Waveface.Client
 
                 m_pairingRequest = _msgs.pairing_request;
 
-                Application.Current.Dispatcher.Invoke((Action)(() => m_dispatcherTimer.Start()));
+                Application.Current.Dispatcher.Invoke((Action)(() => m_uiDelayTimer.Start()));
             }
             catch
             {
             }
         }
 
-        private void ws_subscribe_start()
+        private void WS_subscribe_start()
         {
             PairingClientMsgs _msgs = new PairingClientMsgs
                                           {
@@ -106,7 +113,7 @@ namespace Waveface.Client
             m_webSocket.Send(_json);
         }
 
-        private void ws_accept_reject(bool accept)
+        private void WS_accept_reject(bool accept)
         {
             PairingClientMsgs _msgs = new PairingClientMsgs
                                           {
@@ -121,6 +128,18 @@ namespace Waveface.Client
             {
                 _msgs.reject = new accept_reject { device_id = m_pairingRequest.device_id };
             }
+
+            string _json = JsonConvert.SerializeObject(_msgs);
+
+            m_webSocket.Send(_json);
+        }
+
+        private void WS_close_byUser()
+        {
+            PairingClientMsgs _msgs = new PairingClientMsgs
+                                          {
+                                              pairing_mode = new pairing_mode { enabled = false }
+                                          };
 
             string _json = JsonConvert.SerializeObject(_msgs);
 
