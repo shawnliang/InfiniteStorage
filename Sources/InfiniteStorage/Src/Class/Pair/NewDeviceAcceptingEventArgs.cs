@@ -5,9 +5,9 @@ using System.Text;
 
 namespace InfiniteStorage.Pair
 {
-	class NewDeviceAcceptingEventArgs : EventArgs
+	class NewDeviceRespondingEventArgs : EventArgs
 	{
-		public NewDeviceAcceptingEventArgs(string device_id)
+		public NewDeviceRespondingEventArgs(string device_id)
 		{
 			this.device_id = device_id;
 		}

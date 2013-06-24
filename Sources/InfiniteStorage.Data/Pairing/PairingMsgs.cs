@@ -11,7 +11,9 @@ namespace InfiniteStorage.Data.Pairing
 
 		public pairing_mode pairing_mode { get; set; }
 
-		public accept accept { get; set; }
+		public accept_reject accept { get; set; }
+
+		public accept_reject reject { get; set; }
 	}
 
 	public class PairingServerMsgs
@@ -29,7 +31,7 @@ namespace InfiniteStorage.Data.Pairing
 		public bool enabled { get; set; }
 	}
 
-	public class accept
+	public class accept_reject
 	{
 		public string device_id { get; set; }
 	}

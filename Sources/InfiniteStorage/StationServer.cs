@@ -32,6 +32,9 @@ namespace InfiniteStorage
 		private AutoUpdate m_autoUpdate;
 		private ThumbnailCreator m_thumbnailCreator;
 
+		private List<WebsocketProtocol.ProtocolContext> waitForUserAccept = new List<WebsocketProtocol.ProtocolContext>();
+		private object userAcceptCS = new object();
+
 		public StationServer()
 		{
 			// ----- notify icon and controller -----
@@ -48,6 +51,12 @@ namespace InfiniteStorage
 			m_autoLabel = new AutoLabelController();
 			InfiniteStorageWebSocketService.FileReceived += ProgressTooltip.Instance.OnFileEnding;
 			InfiniteStorageWebSocketService.FileReceived += m_autoLabel.FileReceived;
+
+			// ----- pair -----
+			InfiniteStorageWebSocketService.PairingRequesting += InfiniteStorageWebSocketService_PairingRequesting;
+			Pair.PairWebSocketService.PairingModeChanging += PairWebSocketService_PairingModeChanging;
+			Pair.PairWebSocketService.NewDeviceAccepting += PairWebSocketService_NewDeviceAccepting;
+			Pair.PairWebSocketService.NewDeviceRejecting += PairWebSocketService_NewDeviceRejecting;
 
 
 			// ----- backup status timer -----
@@ -97,6 +106,66 @@ namespace InfiniteStorage
 			};
 
 			m_thumbnailCreator = new ThumbnailCreator();
+		}
+
+		
+		void InfiniteStorageWebSocketService_PairingRequesting(object sender, WebsocketProtocol.WebsocketEventArgs e)
+		{
+			var subscribers = Pair.PairWebSocketService.GetAllSubscribers();
+
+			foreach (var subscriber in subscribers)
+			{
+				subscriber.NewPairingRequestComing(e.ctx.device_id, e.ctx.device_name);
+			}
+
+			lock(userAcceptCS)
+			{
+				if (!waitForUserAccept.Contains(e.ctx))
+					waitForUserAccept.Add(e.ctx);
+			}
+
+		}
+
+		void PairWebSocketService_NewDeviceAccepting(object sender, Pair.NewDeviceRespondingEventArgs e)
+		{
+			lock (userAcceptCS)
+			{
+				var toRemove = new List<WebsocketProtocol.ProtocolContext>();
+
+				var devices = waitForUserAccept.Where(x => x.device_id == e.device_id);
+				foreach (var ctx in devices)
+				{
+					ctx.handleApprove();
+					toRemove.Add(ctx);
+				}
+
+				foreach (var ctx in toRemove)
+					waitForUserAccept.Remove(ctx);
+			}
+		}
+
+		void PairWebSocketService_NewDeviceRejecting(object sender, Pair.NewDeviceRespondingEventArgs e)
+		{
+			lock (userAcceptCS)
+			{
+				var toRemove = new List<WebsocketProtocol.ProtocolContext>();
+
+				var devices = waitForUserAccept.Where(x => x.device_id == e.device_id);
+				foreach (var ctx in devices)
+				{
+					ctx.handleDisapprove();
+					toRemove.Add(ctx);
+				}
+
+				foreach (var ctx in toRemove)
+					waitForUserAccept.Remove(ctx);
+			}
+		}
+
+
+		void PairWebSocketService_PairingModeChanging(object sender, Pair.PairingModeChangingEventArgs e)
+		{
+			BonjourServiceRegistrator.Instance.Register(e.enabled);
 		}
 
 		public void Start()

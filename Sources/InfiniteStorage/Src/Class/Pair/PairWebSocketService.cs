@@ -11,11 +11,12 @@ namespace InfiniteStorage.Pair
 {
 	class PairWebSocketService : WebSocketService
 	{
-		private object cs = new object();
-		private List<PairWebSocketService> subscribers = new List<PairWebSocketService>();
+		private static object cs = new object();
+		private static List<PairWebSocketService> subscribers = new List<PairWebSocketService>();
 
-		public event EventHandler<PairingModeChangingEventArgs> PairingModeChanging;
-		public event EventHandler<NewDeviceAcceptingEventArgs> NewDeviceAccepting;
+		public static event EventHandler<PairingModeChangingEventArgs> PairingModeChanging;
+		public static event EventHandler<NewDeviceRespondingEventArgs> NewDeviceAccepting;
+		public static event EventHandler<NewDeviceRespondingEventArgs> NewDeviceRejecting;
 
 		protected override void onOpen(object sender, EventArgs e)
 		{
@@ -27,6 +28,9 @@ namespace InfiniteStorage.Pair
 			{
 				if (e.Type != WebSocketSharp.Frame.Opcode.TEXT)
 					throw new FormatException("only accept text msg");
+
+
+				log4net.LogManager.GetLogger(GetType()).Debug(e.Data);
 
 				PairingClientMsgs msg = null;
 
@@ -53,6 +57,11 @@ namespace InfiniteStorage.Pair
 				if (msg.accept != null)
 				{
 					raiseNewDeviceAcceptingEvent(msg.accept.device_id);
+				}
+
+				if (msg.reject != null)
+				{
+					raiseNewDeviceRejectingEvent(msg.reject.device_id);
 				}
 			}
 			catch (FormatException err)
@@ -100,7 +109,14 @@ namespace InfiniteStorage.Pair
 		{
 			var handler = NewDeviceAccepting;
 			if (handler != null)
-				handler(this, new NewDeviceAcceptingEventArgs(device_id));
+				handler(this, new NewDeviceRespondingEventArgs(device_id));
+		}
+
+		private void raiseNewDeviceRejectingEvent(string device_id)
+		{
+			var handler = NewDeviceRejecting;
+			if (handler != null)
+				handler(this, new NewDeviceRespondingEventArgs(device_id));
 		}
 
 		private void raisePairingModeChangingEvent(bool enable)
@@ -108,6 +124,14 @@ namespace InfiniteStorage.Pair
 			var handler = PairingModeChanging;
 			if (handler != null)
 				handler(this, new PairingModeChangingEventArgs(enable));
+		}
+
+		public static ICollection<IPairingSubscriber> GetAllSubscribers()
+		{
+			lock (cs)
+			{
+				return subscribers.Select(x => new PairingSubscriber(x)).Cast<IPairingSubscriber>().ToList();
+			}
 		}
 	}
 }
