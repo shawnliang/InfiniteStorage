@@ -130,6 +130,10 @@ namespace Waveface.Client
 
             m_dispatcherTimer.Start();
 
+            //////////////////// Test
+            WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog();
+            _waitForPairingDialog.Show();
+
             return true;
         }
 
