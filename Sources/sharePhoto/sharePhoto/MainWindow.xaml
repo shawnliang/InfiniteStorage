@@ -225,10 +225,10 @@
                          BorderBrush="#FF060606"
                          BorderThickness="1"
                          Header="TabItem">
-                    <Grid Margin="1,20,1,0"
+                    <Grid Margin="1,20,-1,0"
                           Background="#FFE5E5E5">
                         <WebBrowser x:Name="wb1"
-                                    Margin="-13,-27,7,-2" />
+                                    Margin="-13,-27,2,-2" />
                     </Grid>
                 </TabItem>
             </TabControl>
