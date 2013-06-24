@@ -331,25 +331,15 @@ namespace Waveface.Client
 
 		private void rspRightSidePane2_OnAirClick(object sender, EventArgs e)
 		{
-			var isOnAir = ClientFramework.Client.Default.IsOnAir((IContentGroup)lblContentLocation.DataContext);
-
-			ClientFramework.Client.Default.OnAir((lblContentLocation.DataContext as IContentEntity).ID, !isOnAir);
+			ClientFramework.Client.Default.OnAir((lblContentLocation.DataContext as IContentEntity).ID, rspRightSidePane2.swbHomeSharing.IsOn);
 		}
 
 		private void updateRightSidePanel2(IContentGroup group)
 		{
-			//rspRightSidePane2.FavoriteName = group.Name;
+			var isOnAir = ClientFramework.Client.Default.IsOnAir(group);
 
-			if (!ClientFramework.Client.Default.HomeSharingEnabled)
-			{
-				rspRightSidePane2.btnAction.IsEnabled = false;
-			}
-			else
-			{
-				var isOnAir = ClientFramework.Client.Default.IsOnAir(group);
-				rspRightSidePane2.btnAction.IsEnabled = true;
-				rspRightSidePane2.btnAction.IsChecked = isOnAir;
-			}
+			rspRightSidePane2.swbHomeSharing.IsEnabled = ClientFramework.Client.Default.HomeSharingEnabled;
+			rspRightSidePane2.swbHomeSharing.IsOn = isOnAir;
 		}
 
 		private void rspRightSidePanel_AddToFavorite(object sender, System.EventArgs e)

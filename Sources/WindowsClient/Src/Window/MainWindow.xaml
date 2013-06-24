@@ -363,8 +363,8 @@
             </Grid.Effect>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="2*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="2*" MinHeight="100"/>
+                    <RowDefinition Height="*" MinHeight="100"/>
                 </Grid.RowDefinitions>
                 <Grid>
                     <Grid.RowDefinitions>
