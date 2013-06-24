@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
@@ -168,6 +169,13 @@ namespace Waveface.Client
 
 						if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
 						{
+							if (!Properties.Settings.Default.IsFirstSelectUnsorted)
+							{
+								Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215521-step2-organizing-photos-and-videos-in-favorite-");
+								Properties.Settings.Default.IsFirstSelectUnsorted = true;
+								Properties.Settings.Default.Save();
+							}
+
 							ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(ti) as TreeViewItem;
 
 							if (parent == null)
@@ -255,6 +263,25 @@ namespace Waveface.Client
 
 			if (group == null)
 				return;
+
+			if (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase))
+			{
+				if (!Properties.Settings.Default.IsFirstSelectStarred)
+				{
+					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215522-step3-view-favorite-memories-on-tablets-and-tvs-");
+					Properties.Settings.Default.IsFirstSelectStarred = true;
+					Properties.Settings.Default.Save();
+				}
+			}
+			else 
+			{
+				if (!Properties.Settings.Default.IsFirstSelectFavorite)
+				{
+					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215523-step4-share-favorites-with-your-favorite-people");
+					Properties.Settings.Default.IsFirstSelectFavorite = true;
+					Properties.Settings.Default.Save();
+				}
+			}
 
 			group.Refresh();
 
