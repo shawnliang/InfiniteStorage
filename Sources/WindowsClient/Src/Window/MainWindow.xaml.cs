@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -147,59 +149,66 @@ namespace Waveface.Client
 
 		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, EventArgs e)
 		{
-			var ti = sender as TreeViewItem;
-
-			if (ti == null)
-				return;
-
-			var group = ti.DataContext as IContentGroup;
-
-			if (group == null)
-				return;
-
-			group.Refresh();
-
-			if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
+			var syncContext = SynchronizationContext.Current;
+			Observable.Return<object>(null).Delay(TimeSpan.FromMilliseconds(50)).Subscribe((o) =>
 			{
-				ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(ti) as TreeViewItem;
+				syncContext.Send((obj) =>
+					{
+						var ti = sender as TreeViewItem;
 
-				if (parent == null)
-					return;
+						if (ti == null)
+							return;
 
-				var service = parent.DataContext as IService;
+						var group = ti.DataContext as IContentGroup;
 
-				if (service == null)
-					return;
+						if (group == null)
+							return;
 
-                Cursor = Cursors.Wait;
+						group.Refresh();
 
-				unSortedFilesUC.Visibility = Visibility.Visible;
-				unSortedFilesUC.Init(service);
+						if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
+						{
+							ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(ti) as TreeViewItem;
 
-                Cursor = Cursors.Arrow;
-			}
-			else
-			{
-			    unSortedFilesUC.Stop();
-				unSortedFilesUC.Visibility = Visibility.Collapsed;
-			}
+							if (parent == null)
+								return;
 
-			lbxContentContainer.ContextMenu.Visibility = System.Windows.Visibility.Collapsed;
+							var service = parent.DataContext as IService;
 
-			lblContentLocation.DataContext = group;
-			lbxContentContainer.DataContext = group.Contents;
-			SetContentTypeCount(group);
+							if (service == null)
+								return;
+
+							Cursor = Cursors.Wait;
+
+							unSortedFilesUC.Visibility = Visibility.Visible;
+							unSortedFilesUC.Init(service);
+
+							Cursor = Cursors.Arrow;
+						}
+						else
+						{
+							unSortedFilesUC.Stop();
+							unSortedFilesUC.Visibility = Visibility.Collapsed;
+						}
+
+						lbxContentContainer.ContextMenu.Visibility = System.Windows.Visibility.Collapsed;
+
+						lblContentLocation.DataContext = group;
+						lbxContentContainer.DataContext = group.Contents;
+						SetContentTypeCount(group);
 
 
-			Grid.SetColumnSpan(gdContentArea, 2);
+						Grid.SetColumnSpan(gdContentArea, 2);
 
-			btnFavoriteAll.Visibility = Visibility.Visible;
-			gdRightSide.Visibility = System.Windows.Visibility.Collapsed;
+						btnFavoriteAll.Visibility = Visibility.Visible;
+						gdRightSide.Visibility = System.Windows.Visibility.Collapsed;
 
-			rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
-			rspRightSidePane2.Visibility = System.Windows.Visibility.Collapsed;
+						rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
+						rspRightSidePane2.Visibility = System.Windows.Visibility.Collapsed;
 
-			lbxFavorites.SelectedItem = null;
+						lbxFavorites.SelectedItem = null;
+					}, null);
+			});
 		}
 
 
