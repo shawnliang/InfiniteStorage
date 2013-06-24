@@ -11,6 +11,7 @@ using InfiniteStorage.Properties;
 using System.Drawing;
 using InfiniteStorage.REST;
 using System.IO;
+using Microsoft.Win32;
 
 namespace InfiniteStorage
 {
@@ -24,6 +25,7 @@ namespace InfiniteStorage
 		private NoReentrantTimer m_recentLabelTimer;
 		private WebSocketServer<InfiniteStorageWebSocketService> backup_server;
 		private WebSocketServer<NotifyWebSocketService> notify_server;
+		private WebSocketServer<Pair.PairWebSocketService> pair_server;
 		private HttpServer rest_server;
 		private Notifier m_notifier;
 		private AutoLabelController m_autoLabel;
@@ -106,6 +108,9 @@ namespace InfiniteStorage
 			rest_server.Start();
 			var backup_port = initWebsocketServer<InfiniteStorageWebSocketService>(out backup_server, 13895);
 			var notify_port = initWebsocketServer<NotifyWebSocketService>(out notify_server, 13995);
+			var pair_port = initWebsocketServer<Pair.PairWebSocketService>(out pair_server, 14105);
+
+			Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "pair_port", pair_port);
 
 			BonjourServiceRegistrator.Instance.SetPorts(backup_port, notify_port, 14005);
 
