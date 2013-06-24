@@ -149,18 +149,23 @@ namespace Wpf_testHTTP
 
         #region attachments
 
-        public string callUploadAttachment(string filename, string user_email)
+        public string callUploadAttachment(string filename)
         {
             string result = "";
-           string title="";
-            string description="";
-           string type="image";
-            string image_data="medium";
+            string title = "";
+            string description = "";
+            string type = "image";
+            string image_data = "medium";
             string object_id = genGuid();
             string post_id = "";
             try
             {
-                MR_attachments_upload _attachment = attachments_upload(session_token, group_id, filename, title, description, type, image_data, object_id, post_id);
+                int i0 = filename.IndexOf(".mp4");
+                if (i0 > 0)
+                {
+                    type = "video";
+                }
+                MR_attachments_upload _attachment = attachments_upload(null, session_token, group_id, filename, title, description, type, image_data, object_id, post_id);
                 result = _attachment.object_id;
             }
             catch (Exception err)
@@ -171,7 +176,7 @@ namespace Wpf_testHTTP
             return result;
         }
 
-        public MR_attachments_upload attachments_upload(string session_token, string group_id, string fileName,
+        public MR_attachments_upload attachments_upload(byte[] file_data, string session_token, string group_id, string fileName,
                                                         string title, string description, string type, string image_meta,
                                                         string object_id, string post_id)
         {
@@ -182,14 +187,21 @@ namespace Wpf_testHTTP
                 string _url = "https://develop.waveface.com:443/v3" + "/pio_attachments/upload";
 
                 string _mimeType = FileUtility.GetMimeType(new FileInfo(fileName));
-
-                byte[] _data = FileUtility.ConvertFileToByteArray(fileName);
+                byte[] _data;
+                if (file_data != null)
+                {
+                    _data = file_data;
+                }
+                else
+                {
+                    _data = FileUtility.ConvertFileToByteArray(fileName);
+                }
 
                 Dictionary<string, object> _dic = new Dictionary<string, object>();
                 _dic.Add("apikey", APIKEY);
                 _dic.Add("session_token", session_token);
                 _dic.Add("group_id", group_id);
-                _dic.Add("file_name", "image_001.jpg");
+                _dic.Add("file_name", fileName);
                 _dic.Add("title", title);
                 //
                 DateTime fileCreatedDate = File.GetCreationTime(fileName);
@@ -244,6 +256,7 @@ namespace Wpf_testHTTP
 
             }
 
+
             return _ret;
         }
         #region
@@ -289,7 +302,6 @@ namespace Wpf_testHTTP
             }
             return result;
         }
-
         #endregion
 
         public byte[] imageToByteArray(System.Drawing.Image imageIn)
@@ -368,11 +380,20 @@ namespace Wpf_testHTTP
                     webClient.Headers[HttpRequestHeader.AcceptEncoding] = "gzip, deflate";
                     webClient.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
                     //webClient.UploadData(address, _postData);
-                    byte[] s=   webClient.UploadValues(address, "post", nameValueCollection);
+                    byte[] s = webClient.UploadValues(address, "post", nameValueCollection);
 
-                    var str =  System.Text.Encoding.Default.GetString(s);
+                    var str = System.Text.Encoding.Default.GetString(s);
                     result = str;
 
+                }
+            }
+            catch (WebException _e)
+            {
+                if (_e.Status == WebExceptionStatus.ProtocolError)
+                {
+                    HttpWebResponse _res = (HttpWebResponse)_e.Response;
+                    log.Error("Create POst_new, failed: " + _e.Data);
+                    log.Error("HttpWebResponse, return: " + _res);
                 }
             }
             catch (Exception err)
@@ -381,8 +402,6 @@ namespace Wpf_testHTTP
             }
             return result;
         }
-
-
         #endregion
 
 

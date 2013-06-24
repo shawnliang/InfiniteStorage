@@ -414,7 +414,10 @@ namespace Wpf_testHTTP
     #endregion
 
     #region MR_auth
-
+    public class MR_auth_signup_sessionToken : General_R
+    {
+        public User user { get; set; }
+    }
     public class MR_auth_signup : General_R
     {
         public User user { get; set; }
