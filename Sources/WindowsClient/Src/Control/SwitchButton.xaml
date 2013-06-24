@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="Waveface.Client.SwitchButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ec="http://schemas.microsoft.com/expression/2010/controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="UserControl"
+             Width="79.667"
+             Height="27.001"
+             UseLayoutRounding="True"
+             mc:Ignorable="d">
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Ellipse Grid.Column="0"
+                 Grid.ColumnSpan="2"
+                 Fill="#FF818181" />
+        <Rectangle Grid.Column="1"
+                   Grid.ColumnSpan="3"
+                   Fill="#FF818181" MouseDown="Rectangle_MouseDown" />
+        <Ellipse Grid.Column="3"
+                 Grid.ColumnSpan="2"
+                 Fill="#FF818181" />
+
+        <Ellipse x:Name="epOffButton" Grid.Column="0"
+                 Grid.ColumnSpan="2"
+                 Fill="#FFBBBBBB" MouseDown="epOffButton_MouseDown" />
+        <Label x:Name="lblOffText" Grid.Column="1"
+               Grid.ColumnSpan="4"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Content="Off"
+               Foreground="White" MouseDown="lblOffText_MouseDown" />
+
+        <Ellipse x:Name="epOnButton" Grid.Column="3"
+                 Grid.ColumnSpan="2"
+                 Fill="#FFBBBBBB"
+                 Visibility="Collapsed" MouseDown="epOnButton_MouseDown" />
+        <Label x:Name="lblOnText" Grid.Column="0"
+               Grid.ColumnSpan="4"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Content="On"
+               Foreground="White"
+               Visibility="Collapsed" MouseDown="lblOnText_MouseDown" />
+    </Grid>
+</UserControl>

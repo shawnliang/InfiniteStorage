@@ -170,6 +170,9 @@
     <Compile Include="Src\Control\ZoomSlider.xaml.cs">
       <DependentUpon>ZoomSlider.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Src\Control\SwitchButton.xaml.cs">
+      <DependentUpon>SwitchButton.xaml</DependentUpon>
+    </Compile>
     <Page Include="Src\Dialog\AddToFavoriteDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -283,6 +286,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Src\Control\ZoomSlider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Src\Control\SwitchButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
