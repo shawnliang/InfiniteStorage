@@ -114,7 +114,7 @@ namespace Waveface.ClientFramework
 				var labelID = dr["label_id"].ToString();
 				var labelName = dr["name"].ToString();
 
-				yield return new ContentGroup(labelID, labelName, new Uri(string.Format("c:\\{0}",labelName)), (group, contents) => 
+				yield return new ContentGroup(labelID, labelName, new Uri(string.Format("c:\\{0}", labelName)), (group, contents) =>
 				{
 					var conn2 = new SQLiteConnection(string.Format("Data source={0}", dbFilePath));
 
