@@ -13,11 +13,13 @@ namespace InfiniteStorage.Share
 		{
 			using (var db = new MyDbContext())
 			{
+				var starred = Guid.Empty;
+
 				var q = from lb in db.Object.Labels
 						where lb.seq > lb.share_proc_seq && 
 								!lb.deleted &&
 								lb.auto_type == (int)AutoLabelType.NotAuto && 
-								!lb.name.Equals("STARRED")
+								lb.label_id != starred
 						select lb;
 
 				return q.ToList();

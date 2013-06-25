@@ -67,9 +67,8 @@ namespace InfiniteStorage.Share
 				db.Open();
 
 				var cmd = db.CreateCommand();
-				cmd.CommandText = "update [Labels] set share_proc_seq = @seq, share_post_id = @post_id where label_id = @label";
+				cmd.CommandText = "update [Labels] set share_proc_seq = @seq where label_id = @label";
 				cmd.Parameters.Add(new SQLiteParameter("@seq", (object)label.seq));
-				cmd.Parameters.Add(new SQLiteParameter("@post_id", label.label_id.ToString()));
 				cmd.Parameters.Add(new SQLiteParameter("@label", label.label_id));
 				cmd.ExecuteNonQuery();
 			}

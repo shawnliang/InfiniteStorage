@@ -29,7 +29,7 @@ namespace postServiceLibrary
 
 
 		// last_update_time ???
-		public void posts_update(string session_token, string group_id, string post_id, string attachment_id_array, string last_update_time, string type, string event_type, string favorite)
+		public void posts_update(string session_token, string group_id, string post_id, string attachment_id_array, string type, string event_type, string favorite, DateTime last_update_time)
 		{
 			log.Info("start Post_update");
 			string _re = null;
@@ -41,10 +41,10 @@ namespace postServiceLibrary
 			attachment_id_array = System.Web.HttpUtility.UrlEncode(attachment_id_array);
 			event_type = System.Web.HttpUtility.UrlEncode(event_type);
 			favorite = System.Web.HttpUtility.UrlEncode(favorite);
+			var lastUpdateTime = last_update_time.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
 
 
 			string _url = "https://develop.waveface.com:443/v3" + "/pio_posts/update";
-			string _date = last_update_time;
 			DateTime _update = DateTime.Now;
 			string _dateStr = _update.ToString(@"yyyy-MM-ddTHH\:mm\:ssZ");
 
@@ -54,8 +54,8 @@ namespace postServiceLibrary
 				"type" + "=" + type + "&" +
 				"favorite" + "=" + favorite + "&" +
 				"update_time" + "=" + _dateStr + "&" +
-				"event_type" + "=" + event_type + "&" +
-			   "last_update_time" + "=" + _date + "&";
+				"event_type" + "=" + event_type + "&" + 
+				"last_update_time" + "=" + lastUpdateTime + "&";
 
 
 
@@ -121,18 +121,10 @@ namespace postServiceLibrary
 			return _webPos.doPost(_url, _parms, null);
 			
 		}
-
-		private string genGuid()
-		{
-			Guid g;
-			// Create and display the value of two GUIDs.
-			g = Guid.NewGuid();
-			return g.ToString();
-		}
 		#endregion
 
 		#region login
-		// public string email { get; set; }
+
 		public string auth_login(string user, string password)
 		{
 			string result = "";
@@ -163,120 +155,6 @@ namespace postServiceLibrary
 
 			return session_token;
 		}
-		#endregion
-
-		#region attachment upload
-
-		public string callUploadAttachment(string session_token, string filename)
-		{
-			string result = "";
-			string title = "";
-			string description = "";
-			string type = "image";
-			string image_data = "medium";
-			string object_id = genGuid();
-			string post_id = "";
-			try
-			{
-				int i0 = filename.IndexOf(".mp4");
-				if (i0 > 0)
-				{
-					type = "video";
-				}
-				MR_attachments_upload _attachment = attachments_upload(null, session_token, group_id, filename, title, description, type, image_data, object_id, post_id);
-				result = _attachment.object_id;
-			}
-			catch (Exception err)
-			{
-				log.Error("upload error: " + err.Message);
-				Console.WriteLine("Error: " + err.Message);
-			}
-			return result;
-		}
-
-		public MR_attachments_upload attachments_upload(byte[] file_data, string session_token, string group_id, string fileName,
-														string title, string description, string type, string image_meta,
-														string object_id, string post_id)
-		{
-			MR_attachments_upload _ret = null;
-
-			try
-			{
-				string _url = "https://develop.waveface.com:443/v3" + "/pio_attachments/upload";
-
-				string _mimeType = FileUtility.GetMimeType(new FileInfo(fileName));
-				byte[] _data;
-				if (file_data != null)
-				{
-					_data = file_data;
-				}
-				else
-				{
-					_data = FileUtility.ConvertFileToByteArray(fileName);
-				}
-
-				Dictionary<string, object> _dic = new Dictionary<string, object>();
-				_dic.Add("apikey", APIKEY);
-				_dic.Add("session_token", session_token);
-				_dic.Add("group_id", group_id);
-				_dic.Add("file_name", fileName);
-				_dic.Add("title", title);
-				//
-				DateTime fileCreatedDate = File.GetCreationTime(fileName);
-				string _date = fileCreatedDate.ToString(@"yyyy-MM-ddTHH\:mm\:ssZ");
-				_dic.Add("file_create_time", _date);
-
-				//if (description == string.Empty)
-				//   description = title;
-
-				_dic.Add("description", description);
-				_dic.Add("type", type);
-
-				if (type == "image")
-					_dic.Add("image_meta", image_meta);
-
-				if (object_id != string.Empty)
-					_dic.Add("object_id", object_id);
-
-				if (post_id != string.Empty)
-					_dic.Add("post_id", post_id);
-
-				_dic.Add("file", _data);
-
-				string _userAgent = "Windows";
-
-				string _fileName = new FileInfo(fileName).Name;
-
-				HttpWebResponse _webResponse = MultipartFormDataPostHelper.MultipartFormDataPost(_url, _userAgent, _dic,
-																								 _fileName, _mimeType);
-
-
-				// Process response
-				StreamReader _responseReader = new StreamReader(_webResponse.GetResponseStream());
-				string _r = _responseReader.ReadToEnd();
-				_webResponse.Close();
-
-				_ret = JsonConvert.DeserializeObject<MR_attachments_upload>(_r);
-			}
-			catch (WebException _e)
-			{
-				//NLogUtility.WebException(s_logger, _e, "attachments_upload", true);
-
-				if (_e.Status == WebExceptionStatus.ProtocolError)
-				{
-					HttpWebResponse res = (HttpWebResponse)_e.Response;
-					log.Error("upload attachments error response: " + res);
-				}
-
-			}
-			catch (Exception _e)
-			{
-
-			}
-
-			return _ret;
-		}
-
 		#endregion
 	}
 
