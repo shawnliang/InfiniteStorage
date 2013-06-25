@@ -249,7 +249,14 @@ namespace Waveface.Client
 
 		private void lbxFavorites_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
-			ShowSelectedFavoriteContents(sender);
+			var syncContext = SynchronizationContext.Current;
+			Observable.Return<object>(null).Delay(TimeSpan.FromMilliseconds(50)).Subscribe((o) =>
+			{
+				syncContext.Send((obj) =>
+				{
+					ShowSelectedFavoriteContents(sender);
+				}, null);
+			});
 		}
 
 		private void ShowSelectedFavoriteContents(object sender)
@@ -283,10 +290,14 @@ namespace Waveface.Client
 				}
 			}
 
+			var sw = Stopwatch.StartNew();
 			group.Refresh();
 
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = group.Contents;
+
+			Trace.WriteLine(sw.ElapsedMilliseconds.ToString());
+
 			SetContentTypeCount(group);
 
 			updateRightSidePanel2(group);
