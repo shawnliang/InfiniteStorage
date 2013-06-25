@@ -33,9 +33,22 @@ namespace Waveface.Client
 			rspRightSidePane2.tbxName.KeyDown += tbxName_KeyDown;
 			rspRightSidePane2.tbxName.LostFocus += tbxName_LostFocus;
 
+			rspRightSidePane2.swbCloudSharing.IsOnStatusChanged += swbCloudSharing_IsOnStatusChanged;
+			rspRightSidePane2.btnCopyShareLink.Click += btnCopyShareLink_Click;
+
 			rspRightSidePanel.btnClearAll.Click += new RoutedEventHandler(btnClearAll_Click);
 
 			lblContentTypeCount.Content = string.Format("0 photos 0 videos");
+		}
+
+		void btnCopyShareLink_Click(object sender, RoutedEventArgs e)
+		{
+			Clipboard.SetText((lblContentLocation.DataContext as BunnyLabelContentGroup).ShareURL);
+		}
+
+		void swbCloudSharing_IsOnStatusChanged(object sender, EventArgs e)
+		{
+			Waveface.ClientFramework.Client.Default.ShareLabel((lblContentLocation.DataContext as ContentGroup).ID, rspRightSidePane2.swbCloudSharing.IsOn);
 		}
 
 		void btnClearAll_Click(object sender, RoutedEventArgs e)
@@ -151,72 +164,77 @@ namespace Waveface.Client
 		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, EventArgs e)
 		{
 			var syncContext = SynchronizationContext.Current;
-			Observable.Return<object>(null).Delay(TimeSpan.FromMilliseconds(50)).Subscribe((o) =>
+			Observable.Return<object>(null).Delay(TimeSpan.FromMilliseconds(10)).Subscribe((o) =>
 			{
 				syncContext.Send((obj) =>
+				{
+					var ti = sender as TreeViewItem;
+
+					if (ti == null)
+						return;
+
+					var group = ti.DataContext as IContentGroup;
+
+					if (group == null)
+						return;
+
+					group.Refresh();
+
+					if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
 					{
-						var ti = sender as TreeViewItem;
+						TryDisplayUnsortedTutorial();
 
-						if (ti == null)
+						ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(ti) as TreeViewItem;
+
+						if (parent == null)
 							return;
 
-						var group = ti.DataContext as IContentGroup;
+						var service = parent.DataContext as IService;
 
-						if (group == null)
+						if (service == null)
 							return;
 
-						group.Refresh();
+						Cursor = Cursors.Wait;
 
-						if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
-						{
-							if (!Properties.Settings.Default.IsFirstSelectUnsorted)
-							{
-								Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215521-step2-organizing-photos-and-videos-in-favorite-");
-								Properties.Settings.Default.IsFirstSelectUnsorted = true;
-								Properties.Settings.Default.Save();
-							}
+						unSortedFilesUC.Visibility = Visibility.Visible;
+						unSortedFilesUC.Init(service);
 
-							ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(ti) as TreeViewItem;
+						Cursor = Cursors.Arrow;
+					}
+					else
+					{
+						unSortedFilesUC.Stop();
+						unSortedFilesUC.Visibility = Visibility.Collapsed;
+					}
 
-							if (parent == null)
-								return;
+					lbxContentContainer.ContextMenu.Visibility = System.Windows.Visibility.Collapsed;
 
-							var service = parent.DataContext as IService;
-
-							if (service == null)
-								return;
-
-							Cursor = Cursors.Wait;
-
-							unSortedFilesUC.Visibility = Visibility.Visible;
-							unSortedFilesUC.Init(service);
-
-							Cursor = Cursors.Arrow;
-						}
-						else
-						{
-							unSortedFilesUC.Stop();
-							unSortedFilesUC.Visibility = Visibility.Collapsed;
-						}
-
-						lbxContentContainer.ContextMenu.Visibility = System.Windows.Visibility.Collapsed;
-
-						lblContentLocation.DataContext = group;
-						lbxContentContainer.DataContext = group.Contents;
-						SetContentTypeCount(group);
+					lblContentLocation.DataContext = group;
+					lbxContentContainer.DataContext = group.Contents;
+					SetContentTypeCount(group);
 
 
-						Grid.SetColumnSpan(gdContentArea, 2);
+					Grid.SetColumnSpan(gdContentArea, 2);
 
-						btnFavoriteAll.Visibility = Visibility.Visible;
-						gdRightSide.Visibility = System.Windows.Visibility.Collapsed;
+					btnFavoriteAll.Visibility = Visibility.Visible;
+					gdRightSide.Visibility = System.Windows.Visibility.Collapsed;
 
-						rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
-						rspRightSidePane2.Visibility = System.Windows.Visibility.Collapsed;
+					rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
+					rspRightSidePane2.Visibility = System.Windows.Visibility.Collapsed;
 
-						lbxFavorites.SelectedItem = null;
-					}, null);
+					lbxFavorites.SelectedItem = null;
+				}, null);
 			});
+		}
+
+		private static void TryDisplayUnsortedTutorial()
+		{
+			if (!Properties.Settings.Default.IsFirstSelectUnsorted)
+			{
+				Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215521-step2-organizing-photos-and-videos-in-favorite-");
+				Properties.Settings.Default.IsFirstSelectUnsorted = true;
+				Properties.Settings.Default.Save();
+			}
 		}
 
 
@@ -250,7 +268,7 @@ namespace Waveface.Client
 		private void lbxFavorites_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
 			var syncContext = SynchronizationContext.Current;
-			Observable.Return<object>(null).Delay(TimeSpan.FromMilliseconds(50)).Subscribe((o) =>
+			Observable.Return<object>(null).Delay(TimeSpan.FromMilliseconds(10)).Subscribe((o) =>
 			{
 				syncContext.Send((obj) =>
 				{
@@ -271,36 +289,28 @@ namespace Waveface.Client
 			if (group == null)
 				return;
 
+			lblContentLocation.DataContext = group;
+
 			if (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase))
 			{
-				if (!Properties.Settings.Default.IsFirstSelectStarred)
-				{
-					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215522-step3-view-favorite-memories-on-tablets-and-tvs-");
-					Properties.Settings.Default.IsFirstSelectStarred = true;
-					Properties.Settings.Default.Save();
-				}
+				TryDisplayStarredTutorial();
+
+				SetContentTypeCount(group);
 			}
 			else 
 			{
-				if (!Properties.Settings.Default.IsFirstSelectFavorite)
-				{
-					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215523-step4-share-favorites-with-your-favorite-people");
-					Properties.Settings.Default.IsFirstSelectFavorite = true;
-					Properties.Settings.Default.Save();
-				}
+				TryDisplayFavoriteTutorial();
+
+				updateRightSidePanel2(group);
 			}
 
-			lblContentLocation.DataContext = group;
-			lbxContentContainer.DataContext = group.Contents;
+				lbxContentContainer.DataContext = group.Contents;
 
-			SetContentTypeCount(group);
+			var contextMenu = lbxContentContainer.ContextMenu;
+			contextMenu.IsOpen = false;
+			contextMenu.Visibility = Visibility.Visible;
 
-			updateRightSidePanel2(group);
-
-			lbxContentContainer.ContextMenu.IsOpen = false;
-			lbxContentContainer.ContextMenu.Visibility = System.Windows.Visibility.Visible;
-
-			gdRightSide.Visibility = System.Windows.Visibility.Visible;
+			gdRightSide.Visibility = Visibility.Visible;
 			Grid.SetColumnSpan(gdContentArea, 1);
 
 			btnFavoriteAll.Visibility = Visibility.Collapsed;
@@ -314,7 +324,7 @@ namespace Waveface.Client
 			}
 
 
-			if (rspRightSidePanel.Visibility == System.Windows.Visibility.Visible)
+			if (rspRightSidePanel.Visibility == Visibility.Visible)
 			{
 				var contentEntities = lbxContentContainer.DataContext as IEnumerable<IContentEntity>;
 
@@ -338,6 +348,26 @@ namespace Waveface.Client
 						return content.Type == ContentType.Video;
 					});
 				}
+			}
+		}
+
+		private static void TryDisplayFavoriteTutorial()
+		{
+			if (!Properties.Settings.Default.IsFirstSelectFavorite)
+			{
+				Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215523-step4-share-favorites-with-your-favorite-people");
+				Properties.Settings.Default.IsFirstSelectFavorite = true;
+				Properties.Settings.Default.Save();
+			}
+		}
+
+		private static void TryDisplayStarredTutorial()
+		{
+			if (!Properties.Settings.Default.IsFirstSelectStarred)
+			{
+				Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215522-step3-view-favorite-memories-on-tablets-and-tvs-");
+				Properties.Settings.Default.IsFirstSelectStarred = true;
+				Properties.Settings.Default.Save();
 			}
 		}
 
@@ -373,6 +403,10 @@ namespace Waveface.Client
 
 			rspRightSidePane2.swbHomeSharing.IsEnabled = ClientFramework.Client.Default.HomeSharingEnabled;
 			rspRightSidePane2.swbHomeSharing.IsOn = isOnAir;
+
+			rspRightSidePane2.swbCloudSharing.IsOn = (group as BunnyLabelContentGroup).ShareEnabled;
+
+			rspRightSidePane2.lbxSharedPeoples.ItemsSource = (group as BunnyLabelContentGroup).Recipients.Select(item => string.Format("{0} ({1})", item.Name, item.Email));
 		}
 
 		private void rspRightSidePanel_AddToFavorite(object sender, System.EventArgs e)
@@ -402,7 +436,7 @@ namespace Waveface.Client
 
 			var selectedFavorite = (dialog.SelectedFavorite as IContentGroup);
 			ClientFramework.Client.Default.AddToFavorite(selectedFavorite.ID);
-			lbxFavorites.SelectedIndex = dialog.SelectedFavoriteIndex;
+			lbxFavorites.SelectedIndex = dialog.SelectedFavoriteIndex + 1;
 			RefreshSelectedFavorite();
 		}
 

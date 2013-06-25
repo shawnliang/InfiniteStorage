@@ -16,7 +16,7 @@ namespace Waveface.ClientFramework
 		public string ShareURL
 		{
 			get {
-				if (ShareEnabled)
+				if (!string.IsNullOrWhiteSpace(m_shareCode))
 					return "https://devweb.waveface.com/favorite/" + m_shareCode; // TODO: remove hard code;
 				else
 					return string.Empty;
@@ -40,6 +40,7 @@ namespace Waveface.ClientFramework
 			SetContents(populateContents);
 			this.ShareEnabled = shareEnabled;
 			this.m_shareCode = shared_code;
+
 			this.m_readonlyRecipients = new ReadOnlyObservableCollection<BunnyRecipient>(m_recipients);
 
 			if (this.ShareEnabled)
