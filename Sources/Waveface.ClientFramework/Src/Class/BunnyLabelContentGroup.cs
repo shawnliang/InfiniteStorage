@@ -40,6 +40,7 @@ namespace Waveface.ClientFramework
 			SetContents(populateContents);
 			this.ShareEnabled = shareEnabled;
 			this.m_shareCode = shared_code;
+
 			this.m_readonlyRecipients = new ReadOnlyObservableCollection<BunnyRecipient>(m_recipients);
 
 			if (this.ShareEnabled)

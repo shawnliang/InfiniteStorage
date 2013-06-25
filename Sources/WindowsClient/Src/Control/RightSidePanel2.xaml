@@ -37,10 +37,10 @@
 		</Grid>
 		<StackPanel Margin="10,20,10,0" Visibility="{Binding IsOn, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=swbCloudSharing}">
 			<Button x:Name="btnCopyShareLink" Height="34" Content="Copy share link" Margin="0" VerticalAlignment="Top"/>
-			<Label x:Name="lbxSharedPeoples" Content="Shared people" Foreground="White" Margin="0,20,0,0"/>
+			<Label Content="Shared people" Foreground="White" Margin="0,20,0,0"/>
 			<DockPanel Height="198" VerticalAlignment="Top" Background="#FF212121" Margin="0">
 				<Button Height="34" DockPanel.Dock="Bottom" Content="Add..." Click="Button_Click"/>
-				<ListBox Background="{x:Null}"/>
+				<ListBox x:Name="lbxSharedPeoples" Background="{x:Null}" Foreground="#FFA8A8A8"/>
 			</DockPanel>
 		</StackPanel>
 		<Button x:Name="btnDelete"

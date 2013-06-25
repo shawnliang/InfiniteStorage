@@ -390,7 +390,7 @@ namespace Waveface.Client
 
 			rspRightSidePane2.swbCloudSharing.IsOn = (group as BunnyLabelContentGroup).ShareEnabled;
 
-			rspRightSidePane2.lbxSharedPeoples.DataContext = (group as BunnyLabelContentGroup).Recipients.Select(item => string.Format("{0} ({1})", item.Name, item.Email));
+			rspRightSidePane2.lbxSharedPeoples.ItemsSource = (group as BunnyLabelContentGroup).Recipients.Select(item => string.Format("{0} ({1})", item.Name, item.Email));
 		}
 
 		private void rspRightSidePanel_AddToFavorite(object sender, System.EventArgs e)
