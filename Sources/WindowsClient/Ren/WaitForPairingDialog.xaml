@@ -6,7 +6,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="349" d:DesignWidth="639" Height="349" Width="639"
 	  Title="Wait For Pairing" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Topmost="True"
-      Background="#303032" Closing="Window_Closing" Loaded="Window_Loaded"
+      Closing="Window_Closing" Loaded="Window_Loaded"
       >
 
     <Grid>
