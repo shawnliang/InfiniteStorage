@@ -23,7 +23,10 @@ namespace Waveface.ClientFramework
 			}
 		}
 
-		public ReadOnlyObservableCollection<BunnyRecipient> Recipients { get; private set; }
+		public ReadOnlyObservableCollection<BunnyRecipient> Recipients
+		{
+			get { return m_readonlyRecipients; }
+		}
 
 
 		private string m_shareCode { get; set; }
