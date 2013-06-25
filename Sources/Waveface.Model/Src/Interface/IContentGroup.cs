@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Waveface.Model
 {
 	public interface IContentGroup : IContentEntity
 	{
 		#region Property
-		IEnumerable<IContentEntity> Contents { get; }
+		ReadOnlyObservableCollection<IContentEntity> Contents { get; }
 		int ContentCount { get; }
 		#endregion
 

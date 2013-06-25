@@ -649,6 +649,7 @@
             <ScrollViewer x:Name="svContentContainer"
                           Grid.Row="0"
                           HorizontalScrollBarVisibility="Disabled"
+                          IsDeferredScrollingEnabled="True"
                           VerticalScrollBarVisibility="Auto">
                 <ListBox x:Name="lbxContentContainer"
                          BorderBrush="{DynamicResource ContentAreaBackground}"

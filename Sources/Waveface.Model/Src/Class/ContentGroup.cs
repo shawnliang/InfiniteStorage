@@ -13,6 +13,8 @@ namespace Waveface.Model
 	{
 		#region Var
 		private ObservableCollection<IContentEntity> _observableContents;
+		private ReadOnlyObservableCollection<IContentEntity> _readOnlyObservableContents;
+		private Action<ObservableCollection<IContentEntity>> _setContentAction;
 		#endregion
 
 
@@ -33,17 +35,24 @@ namespace Waveface.Model
 				return _observableContents;
 			}
 		}
-
-		private Lazy<IEnumerable<IContentEntity>> m_Contents { get; set; }
 		#endregion
 
 
 		#region Public Property
-		public IEnumerable<IContentEntity> Contents
+		public ReadOnlyObservableCollection<IContentEntity> Contents
 		{
 			get
 			{
-				return m_Contents.Value;
+				if (_readOnlyObservableContents == null)
+				{
+					_setContentAction(m_ObservableContents);
+					_readOnlyObservableContents = new ReadOnlyObservableCollection<IContentEntity>(m_ObservableContents);
+				}
+				return _readOnlyObservableContents;
+			}
+			private set
+			{
+				_readOnlyObservableContents = value;
 			}
 		}
 
@@ -51,7 +60,7 @@ namespace Waveface.Model
 		{
 			get
 			{
-				return m_Contents.Value.Count();
+				return Contents.Count;
 			}
 		}
 		#endregion
@@ -107,12 +116,11 @@ namespace Waveface.Model
 		/// <param name="func">The func.</param>
 		protected void SetContents(Action<ObservableCollection<IContentEntity>> func)
 		{
-			m_Contents = new Lazy<IEnumerable<IContentEntity>>(() =>
+			_setContentAction = (contents) =>
 			{
-				m_ObservableContents.Clear();
-				func(m_ObservableContents);
-				return m_ObservableContents;
-			});
+				contents.Clear();
+				func(contents);
+			};
 		}
 
 		protected void SetContents(IEnumerable<IContentEntity> values)
@@ -128,7 +136,7 @@ namespace Waveface.Model
 		#region Public Method
 		public virtual void Refresh()
 		{
-			m_Contents.ClearValue();
+			Contents = null;
 			m_ObservableContents.Clear();
 			OnPropertyChanged("ContentCount");
 		}

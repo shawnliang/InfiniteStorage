@@ -164,7 +164,7 @@ namespace Waveface.Client
 		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, EventArgs e)
 		{
 			var syncContext = SynchronizationContext.Current;
-			Observable.Return<object>(null).Delay(TimeSpan.FromMilliseconds(50)).Subscribe((o) =>
+			Observable.Return<object>(null).Delay(TimeSpan.FromMilliseconds(10)).Subscribe((o) =>
 			{
 				syncContext.Send((obj) =>
 				{
@@ -182,12 +182,7 @@ namespace Waveface.Client
 
 					if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
 					{
-						if (!Properties.Settings.Default.IsFirstSelectUnsorted)
-						{
-							Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215521-step2-organizing-photos-and-videos-in-favorite-");
-							Properties.Settings.Default.IsFirstSelectUnsorted = true;
-							Properties.Settings.Default.Save();
-						}
+						TryDisplayUnsortedTutorial();
 
 						ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(ti) as TreeViewItem;
 
@@ -232,6 +227,16 @@ namespace Waveface.Client
 			});
 		}
 
+		private static void TryDisplayUnsortedTutorial()
+		{
+			if (!Properties.Settings.Default.IsFirstSelectUnsorted)
+			{
+				Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215521-step2-organizing-photos-and-videos-in-favorite-");
+				Properties.Settings.Default.IsFirstSelectUnsorted = true;
+				Properties.Settings.Default.Save();
+			}
+		}
+
 
 		private void lbxContentContainer_KeyDown(object sender, KeyEventArgs e)
 		{
@@ -263,7 +268,7 @@ namespace Waveface.Client
 		private void lbxFavorites_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
 			var syncContext = SynchronizationContext.Current;
-			Observable.Return<object>(null).Delay(TimeSpan.FromMilliseconds(50)).Subscribe((o) =>
+			Observable.Return<object>(null).Delay(TimeSpan.FromMilliseconds(10)).Subscribe((o) =>
 			{
 				syncContext.Send((obj) =>
 				{
@@ -284,31 +289,22 @@ namespace Waveface.Client
 			if (group == null)
 				return;
 
+			lblContentLocation.DataContext = group;
+
 			if (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase))
 			{
-				if (!Properties.Settings.Default.IsFirstSelectStarred)
-				{
-					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215522-step3-view-favorite-memories-on-tablets-and-tvs-");
-					Properties.Settings.Default.IsFirstSelectStarred = true;
-					Properties.Settings.Default.Save();
-				}
+				TryDisplayStarredTutorial();
+
+				SetContentTypeCount(group);
 			}
 			else 
 			{
-				if (!Properties.Settings.Default.IsFirstSelectFavorite)
-				{
-					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215523-step4-share-favorites-with-your-favorite-people");
-					Properties.Settings.Default.IsFirstSelectFavorite = true;
-					Properties.Settings.Default.Save();
-				}
+				TryDisplayFavoriteTutorial();
+
+				updateRightSidePanel2(group);
 			}
 
-			lblContentLocation.DataContext = group;
-			lbxContentContainer.DataContext = group.Contents;
-
-			SetContentTypeCount(group);
-
-			updateRightSidePanel2(group);
+				lbxContentContainer.DataContext = group.Contents;
 
 			var contextMenu = lbxContentContainer.ContextMenu;
 			contextMenu.IsOpen = false;
@@ -352,6 +348,26 @@ namespace Waveface.Client
 						return content.Type == ContentType.Video;
 					});
 				}
+			}
+		}
+
+		private static void TryDisplayFavoriteTutorial()
+		{
+			if (!Properties.Settings.Default.IsFirstSelectFavorite)
+			{
+				Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215523-step4-share-favorites-with-your-favorite-people");
+				Properties.Settings.Default.IsFirstSelectFavorite = true;
+				Properties.Settings.Default.Save();
+			}
+		}
+
+		private static void TryDisplayStarredTutorial()
+		{
+			if (!Properties.Settings.Default.IsFirstSelectStarred)
+			{
+				Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215522-step3-view-favorite-memories-on-tablets-and-tvs-");
+				Properties.Settings.Default.IsFirstSelectStarred = true;
+				Properties.Settings.Default.Save();
 			}
 		}
 
@@ -420,7 +436,7 @@ namespace Waveface.Client
 
 			var selectedFavorite = (dialog.SelectedFavorite as IContentGroup);
 			ClientFramework.Client.Default.AddToFavorite(selectedFavorite.ID);
-			lbxFavorites.SelectedIndex = dialog.SelectedFavoriteIndex;
+			lbxFavorites.SelectedIndex = dialog.SelectedFavoriteIndex + 1;
 			RefreshSelectedFavorite();
 		}
 
