@@ -91,6 +91,10 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="websocket-sharp, Version=1.0.2.34197, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\websocket-sharp\websocket-sharp.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -99,6 +103,7 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Ren\WaitForPairingDialog.xaml.cs" />
     <Compile Include="Src\Dialog\AddToFavoriteDialog.xaml.cs">
       <DependentUpon>AddToFavoriteDialog.xaml</DependentUpon>
     </Compile>
@@ -186,6 +191,10 @@
     <Compile Include="Src\Control\ZoomSlider.xaml.cs">
       <DependentUpon>ZoomSlider.xaml</DependentUpon>
     </Compile>
+    <Page Include="Ren\WaitForPairingDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Compile Include="Src\Control\SwitchButton.xaml.cs">
       <DependentUpon>SwitchButton.xaml</DependentUpon>
     </Compile>
@@ -348,6 +357,10 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InfiniteStorage.Data\InfiniteStorage.Data.csproj">
+      <Project>{9c9bf6a4-a4c0-4c80-9608-c2f7d7aaaf72}</Project>
+      <Name>InfiniteStorage.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\sharePhoto\sharePhoto\sharePhoto.csproj">
       <Project>{89AA1D98-C9BC-47F6-BD9D-AC4BFE5AF411}</Project>
       <Name>sharePhoto</Name>

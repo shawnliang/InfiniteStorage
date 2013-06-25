@@ -56,7 +56,6 @@ namespace Wpf_testHTTP
         }
         public void setiniPath(string path)
         {
-            //MessageBox.Show(path);
             iniPath = path;
 
             int i0 = iniPath.IndexOf(@"\temp");
@@ -67,19 +66,22 @@ namespace Wpf_testHTTP
                 {
                     string _p = iniPath + @"\temp";
                     Directory.CreateDirectory(_p);
-                    iniPath = iniPath + @"\sharefavorite.ini";
+                    iniPath = iniPath + @"\temp\sharefavorite.ini";
+                }
+                else
+                {
+                    iniPath = iniPath + @"\temp\sharefavorite.ini";
                 }
             }
             if (File.Exists(iniPath) == false)
             {
-                using (FileStream FS = File.Create(path))
+                using (FileStream FS = File.Create(iniPath))
                 {
                     Byte[] info = new UTF8Encoding(true).GetBytes("[Setup]\r\n refreshKey=");
                     FS.Write(info, 0, info.Length);
                     FS.Close();
                 }
             }
-            //MessageBox.Show(path);
         }
         private bool checkTempExist()
         {

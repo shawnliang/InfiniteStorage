@@ -249,7 +249,14 @@ namespace Waveface.Client
 
 		private void lbxFavorites_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
-			ShowSelectedFavoriteContents(sender);
+			var syncContext = SynchronizationContext.Current;
+			Observable.Return<object>(null).Delay(TimeSpan.FromMilliseconds(50)).Subscribe((o) =>
+			{
+				syncContext.Send((obj) =>
+				{
+					ShowSelectedFavoriteContents(sender);
+				}, null);
+			});
 		}
 
 		private void ShowSelectedFavoriteContents(object sender)
@@ -283,10 +290,9 @@ namespace Waveface.Client
 				}
 			}
 
-			group.Refresh();
-
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = group.Contents;
+
 			SetContentTypeCount(group);
 
 			updateRightSidePanel2(group);
@@ -396,7 +402,7 @@ namespace Waveface.Client
 
 			var selectedFavorite = (dialog.SelectedFavorite as IContentGroup);
 			ClientFramework.Client.Default.AddToFavorite(selectedFavorite.ID);
-			lbxFavorites.SelectedItem = selectedFavorite;
+			lbxFavorites.SelectedIndex = dialog.SelectedFavoriteIndex;
 			RefreshSelectedFavorite();
 		}
 
@@ -441,18 +447,6 @@ namespace Waveface.Client
 			SetContentTypeCount(group);
 		}
 
-		private void lbxFavorites_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-		{
-			var syncContext = SynchronizationContext.Current;
-			Observable.Return<object>(null).Delay(TimeSpan.FromMilliseconds(50)).Subscribe((o) =>
-			{
-				syncContext.Send((obj) =>
-					{
-						ShowSelectedFavoriteContents(sender);
-					}, null);
-			});
-		}
-
 		private void rspRightSidePane2_DeleteButtonClick(object sender, System.EventArgs e)
 		{
 			var group = (lblContentLocation.DataContext as IContentGroup);
@@ -482,5 +476,10 @@ namespace Waveface.Client
 			System.Windows.Visibility.Visible;
 		}
 
+        private void btnAddNewSource_Click(object sender, RoutedEventArgs e)
+        {
+            WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog();
+            _waitForPairingDialog.Show();
+        }
 	}
 }

@@ -144,13 +144,13 @@ namespace Waveface.Client
 
             int _d = (_count - (VideosCount + PhotosCount));
 
-            if (_d == 0)
+            if (_d > 0)
             {
-                btnRefresh.Visibility = Visibility.Collapsed;
+                btnRefresh.Visibility = Visibility.Visible;
             }
             else
             {
-                btnRefresh.Visibility = Visibility.Visible;
+                btnRefresh.Visibility = Visibility.Collapsed;
             }
 
             btnRefresh.Content = "Refresh " + "(" + _d + ")";
@@ -571,6 +571,8 @@ namespace Waveface.Client
 
             m_dispatcherTimer.Stop();
 
+            sliderEvent.IsEnabled = false;
+
             PendingSort _pendingSort = new PendingSort
             {
                 device_id = m_currentDevice.ID
@@ -642,6 +644,8 @@ namespace Waveface.Client
             catch
             {
             }
+
+            sliderEvent.IsEnabled = true;
 
             m_dispatcherTimer.Start();
 

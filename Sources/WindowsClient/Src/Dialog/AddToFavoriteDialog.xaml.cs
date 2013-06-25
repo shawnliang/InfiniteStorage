@@ -35,6 +35,18 @@ namespace Waveface.Client
 			}
 		}
 
+		public int SelectedFavoriteIndex 
+		{
+			get
+			{
+				return cbxFavoriteName.SelectedIndex;
+			}
+			set
+			{
+				cbxFavoriteName.SelectedIndex = value;
+			}
+		}
+
 		public AddToFavoriteDialog()
 		{
 			this.InitializeComponent();

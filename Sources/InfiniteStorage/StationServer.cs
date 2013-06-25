@@ -11,6 +11,7 @@ using InfiniteStorage.Properties;
 using System.Drawing;
 using InfiniteStorage.REST;
 using System.IO;
+using Microsoft.Win32;
 
 namespace InfiniteStorage
 {
@@ -24,11 +25,15 @@ namespace InfiniteStorage
 		private NoReentrantTimer m_recentLabelTimer;
 		private WebSocketServer<InfiniteStorageWebSocketService> backup_server;
 		private WebSocketServer<NotifyWebSocketService> notify_server;
+		private WebSocketServer<Pair.PairWebSocketService> pair_server;
 		private HttpServer rest_server;
 		private Notifier m_notifier;
 		private AutoLabelController m_autoLabel;
 		private AutoUpdate m_autoUpdate;
 		private ThumbnailCreator m_thumbnailCreator;
+
+		private List<WebsocketProtocol.ProtocolContext> waitForUserAccept = new List<WebsocketProtocol.ProtocolContext>();
+		private object userAcceptCS = new object();
 
 		public StationServer()
 		{
@@ -46,6 +51,12 @@ namespace InfiniteStorage
 			m_autoLabel = new AutoLabelController();
 			InfiniteStorageWebSocketService.FileReceived += ProgressTooltip.Instance.OnFileEnding;
 			InfiniteStorageWebSocketService.FileReceived += m_autoLabel.FileReceived;
+
+			// ----- pair -----
+			InfiniteStorageWebSocketService.PairingRequesting += InfiniteStorageWebSocketService_PairingRequesting;
+			Pair.PairWebSocketService.PairingModeChanging += PairWebSocketService_PairingModeChanging;
+			Pair.PairWebSocketService.NewDeviceAccepting += PairWebSocketService_NewDeviceAccepting;
+			Pair.PairWebSocketService.NewDeviceRejecting += PairWebSocketService_NewDeviceRejecting;
 
 
 			// ----- backup status timer -----
@@ -100,6 +111,66 @@ namespace InfiniteStorage
 			m_thumbnailCreator = new ThumbnailCreator();
 		}
 
+		
+		void InfiniteStorageWebSocketService_PairingRequesting(object sender, WebsocketProtocol.WebsocketEventArgs e)
+		{
+			var subscribers = Pair.PairWebSocketService.GetAllSubscribers();
+
+			foreach (var subscriber in subscribers)
+			{
+				subscriber.NewPairingRequestComing(e.ctx.device_id, e.ctx.device_name);
+			}
+
+			lock(userAcceptCS)
+			{
+				if (!waitForUserAccept.Contains(e.ctx))
+					waitForUserAccept.Add(e.ctx);
+			}
+
+		}
+
+		void PairWebSocketService_NewDeviceAccepting(object sender, Pair.NewDeviceRespondingEventArgs e)
+		{
+			lock (userAcceptCS)
+			{
+				var toRemove = new List<WebsocketProtocol.ProtocolContext>();
+
+				var devices = waitForUserAccept.Where(x => x.device_id == e.device_id);
+				foreach (var ctx in devices)
+				{
+					ctx.handleApprove();
+					toRemove.Add(ctx);
+				}
+
+				foreach (var ctx in toRemove)
+					waitForUserAccept.Remove(ctx);
+			}
+		}
+
+		void PairWebSocketService_NewDeviceRejecting(object sender, Pair.NewDeviceRespondingEventArgs e)
+		{
+			lock (userAcceptCS)
+			{
+				var toRemove = new List<WebsocketProtocol.ProtocolContext>();
+
+				var devices = waitForUserAccept.Where(x => x.device_id == e.device_id);
+				foreach (var ctx in devices)
+				{
+					ctx.handleDisapprove();
+					toRemove.Add(ctx);
+				}
+
+				foreach (var ctx in toRemove)
+					waitForUserAccept.Remove(ctx);
+			}
+		}
+
+
+		void PairWebSocketService_PairingModeChanging(object sender, Pair.PairingModeChangingEventArgs e)
+		{
+			BonjourServiceRegistrator.Instance.Register(e.enabled);
+		}
+
 		public void Start()
 		{
 			m_NotifyTimer.Start();
@@ -109,6 +180,9 @@ namespace InfiniteStorage
 			rest_server.Start();
 			var backup_port = initWebsocketServer<InfiniteStorageWebSocketService>(out backup_server, 13895);
 			var notify_port = initWebsocketServer<NotifyWebSocketService>(out notify_server, 13995);
+			var pair_port = initWebsocketServer<Pair.PairWebSocketService>(out pair_server, 14105);
+
+			Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "pair_port", pair_port);
 
 			BonjourServiceRegistrator.Instance.SetPorts(backup_port, notify_port, 14005);
 
@@ -168,7 +242,6 @@ namespace InfiniteStorage
 			m_notifyIcon.DoubleClick += m_notifyIconController.OnOpenUIMenuItemCliecked;
 			InfiniteStorageWebSocketService.DeviceAccepted += m_notifyIconController.OnDeviceConnected;
 			InfiniteStorageWebSocketService.DeviceDisconnected += m_notifyIconController.OnDeviceDisconnected;
-			InfiniteStorageWebSocketService.PairingRequesting += m_notifyIconController.OnDevicePairingRequesting;
 			InfiniteStorageWebSocketService.TotalCountUpdated += m_notifyIconController.OnTotalCountUpdated;
 			InfiniteStorageWebSocketService.FileReceiving += m_notifyIconController.OnFileReceiving;
 		}
