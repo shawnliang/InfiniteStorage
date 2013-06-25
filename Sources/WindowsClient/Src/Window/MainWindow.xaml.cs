@@ -290,13 +290,8 @@ namespace Waveface.Client
 				}
 			}
 
-			var sw = Stopwatch.StartNew();
-			group.Refresh();
-
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = group.Contents;
-
-			Trace.WriteLine(sw.ElapsedMilliseconds.ToString());
 
 			SetContentTypeCount(group);
 
@@ -407,7 +402,7 @@ namespace Waveface.Client
 
 			var selectedFavorite = (dialog.SelectedFavorite as IContentGroup);
 			ClientFramework.Client.Default.AddToFavorite(selectedFavorite.ID);
-			lbxFavorites.SelectedItem = selectedFavorite;
+			lbxFavorites.SelectedIndex = dialog.SelectedFavoriteIndex;
 			RefreshSelectedFavorite();
 		}
 
@@ -450,11 +445,6 @@ namespace Waveface.Client
 
 			group.Refresh();
 			SetContentTypeCount(group);
-		}
-
-		private void lbxFavorites_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-		{
-			ShowSelectedFavoriteContents(sender);
 		}
 
 		private void rspRightSidePane2_DeleteButtonClick(object sender, System.EventArgs e)

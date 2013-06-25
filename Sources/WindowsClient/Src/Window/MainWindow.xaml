@@ -283,7 +283,8 @@
         </Style>
 
 
-        <SolidColorBrush x:Key="TitleBarBackground" Color="#FF2E2E2E"/>
+        <SolidColorBrush x:Key="TitleBarBackground"
+                         Color="#FF2E2E2E" />
         <SolidColorBrush x:Key="ContentAreaBackground"
                          Color="#FF4F4F4F" />
         <SolidColorBrush x:Key="SidePanelBackground"
@@ -318,8 +319,9 @@
                   Background="{DynamicResource TitleBarBackground}">
                 <DockPanel>
 
-                    <WrapPanel VerticalAlignment="Center"
-                               DockPanel.Dock="Left" Margin="10,0,0,0">
+                    <WrapPanel Margin="10,0,0,0"
+                               VerticalAlignment="Center"
+                               DockPanel.Dock="Left">
                         <local:BackButton x:Name="btnBack"
                                           Width="28.666"
                                           Height="28.666"
@@ -363,8 +365,10 @@
             </Grid.Effect>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="2*" MinHeight="100"/>
-                    <RowDefinition Height="*" MinHeight="100"/>
+                    <RowDefinition Height="2*"
+                                   MinHeight="100" />
+                    <RowDefinition Height="*"
+                                   MinHeight="100" />
                 </Grid.RowDefinitions>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -403,7 +407,6 @@
                            Foreground="#FFA8A8A8" />
                     <local:FavoriteListBox x:Name="lbxFavorites"
                                            Grid.Row="1"
-                                           PreviewMouseDown="lbxFavorites_PreviewMouseDown"
                                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                            SelectionChanged="lbxFavorites_SelectionChanged" />
                 </Grid>
