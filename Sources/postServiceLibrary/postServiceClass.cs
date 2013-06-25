@@ -31,27 +31,17 @@ namespace postServiceLibrary
                 "apikey" + "=" + APIKEY;
 
             WebPostHelper _webPos = new WebPostHelper();
-            bool _isOK = _webPos.doPost(_url, _parms, null);
+            var response = _webPos.doPost(_url, _parms, null);
 
-            if (_isOK)
-            {
-                string _r = _webPos.getContent();
-                var results = JsonConvert.DeserializeObject<dynamic>(_r);
-                var sharedcode = results.shared_code;
-                result = sharedcode.ToString();
-            }
-            else
-            {
-                result = null;
-            }
-            return result;
+			var results = JsonConvert.DeserializeObject<dynamic>(response);
+			return results.shared_code.ToString();
         }
-        public bool tuneOffSharedcode(string session_token, string post_id)
+        public void tuneOffSharedcode(string session_token, string post_id)
         {
             bool result = false;
             if (session_token == "" || post_id == "")
             {
-                return false;
+				throw new ArgumentNullException();
             }
             string _url = "https://develop.waveface.com/v3/pio_posts/tuneoff_sharedcode";
 
@@ -62,26 +52,15 @@ namespace postServiceLibrary
                 "apikey" + "=" + APIKEY;
 
             WebPostHelper _webPos = new WebPostHelper();
-            bool _isOK = _webPos.doPost(_url, _parms, null);
-
-            if (_isOK)
-            {
-                string _r = _webPos.getContent();      
-                result = true;
-            }
-            else
-            {
-                result = false;
-            }
-            return result;
+            _webPos.doPost(_url, _parms, null);
         }
 
-        public bool tuneOnSharedcode(string session_token, string post_id)
+        public void tuneOnSharedcode(string session_token, string post_id)
         {
             bool result = false;
             if (session_token == "" || post_id == "")
             {
-                return false;
+				throw new ArgumentNullException();
             }
             string _url = "https://develop.waveface.com/v3/pio_posts/tuneon_sharedcode";
 
@@ -90,22 +69,11 @@ namespace postServiceLibrary
                  "apikey" + "=" + APIKEY;
 
             WebPostHelper _webPos = new WebPostHelper();
-            bool _isOK = _webPos.doPost(_url, _parms, null);
-
-            if (_isOK)
-            {
-                string _r = _webPos.getContent();
-                result = true;
-            }
-            else
-            {
-                result = false;
-            }
-            return result;
+            _webPos.doPost(_url, _parms, null);
         }
                                                                             
 #region create new account
-        public  string createAccount(string user, String password, string nickname)
+        public string createAccount(string user, String password, string nickname)
         {
             string result = null;
 
@@ -133,19 +101,10 @@ namespace postServiceLibrary
                 "apikey" + "=" + APIKEY;
 
             WebPostHelper _webPos = new WebPostHelper();
-            bool _isOK = _webPos.doPost(_url, _parms, null);
+            var response = _webPos.doPost(_url, _parms, null);
 
-            if (_isOK)
-            {
-                string _r = _webPos.getContent();
-                session_token = getSessionToken(_r);
-                result = session_token;
-            }
-            else
-            {
-                result = null;
-            }
-            return result;
+            session_token = getSessionToken(response);
+			return session_token;
         }
 
         public bool IsValidEmail(string strIn)
@@ -176,14 +135,13 @@ namespace postServiceLibrary
 #endregion
 
 #region Update Post
-        public string UpdatePost(string session_token,String post_id, List<string> attachments_arr,string lastUpdateTime)
+        public void UpdatePost(string session_token,String post_id, List<string> attachments_arr,string lastUpdateTime)
         {
             string result = null;
             // verify
             if (session_token == "" || post_id == null || attachments_arr == null || lastUpdateTime==null)
             {
-                result = null;
-                // log for parmeters error
+				throw new ArgumentNullException();
             }
             //--
             APIKEY = "a23f9491-ba70-5075-b625-b8fb5d9ecd90";
@@ -200,20 +158,8 @@ namespace postServiceLibrary
             string coverAttach = "";
             string event_type = "favorite_shared";
             string favorite = "0";
-            try
-            {
-                string ret_post = _ws.posts_update(session_token, group_id, post_id, attachment_id_array, lastUpdateTime, type, event_type, favorite);
-                if (ret_post != null)
-                    result = ret_post;
-                else
-                    result = null;
-            }
-            catch (Exception err)
-            {
-                result = null;
-            }
 
-            return result;
+			_ws.posts_update(session_token, group_id, post_id, attachment_id_array, lastUpdateTime, type, event_type, favorite);
         }
  
 
