@@ -15,7 +15,8 @@ namespace InfiniteStorage.Share
 			{
 				var q = from lf in db.Object.LabelFiles
 						join f in db.Object.Files on lf.file_id equals f.file_id
-						where !f.deleted
+						join lb in db.Object.Labels on lf.label_id equals lb.label_id
+						where !f.deleted && lb.label_id == label.label_id
 						select f;
 
 				return q.ToList();

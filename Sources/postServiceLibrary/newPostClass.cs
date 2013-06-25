@@ -45,7 +45,7 @@ namespace postServiceLibrary
 
 
 			string _url = "https://develop.waveface.com:443/v3" + "/pio_posts/update";
-			DateTime _update = DateTime.Now;
+			DateTime _update = DateTime.UtcNow;
 			string _dateStr = _update.ToString(@"yyyy-MM-ddTHH\:mm\:ssZ");
 
 			string _parms = "post_id" + "=" + _post_id + "&" +
