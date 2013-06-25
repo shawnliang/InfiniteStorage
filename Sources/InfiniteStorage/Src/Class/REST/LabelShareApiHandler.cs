@@ -40,13 +40,14 @@ namespace InfiniteStorage.REST
 
 						label.share_post_id = post_id;
 						label.share_code = shared_code;
-						label.share_enabled = enabled;
 					}
 					else if (!string.IsNullOrEmpty(label.share_code) && (!label.share_enabled.HasValue || !label.share_enabled.Value))
 					{
 						var api = Cloud.CloudService.CreateCloudAPI();
 						api.tuneOnSharedcode(api.session_token, label.share_post_id);
 					}
+
+					label.share_enabled = enabled;
 				}
 				else
 				{
