@@ -81,11 +81,6 @@ namespace Waveface.Client
 			FavoriteName = tbxName.Text;
 		}
 
-		private void btnAction_Copy_Click(object sender, System.Windows.RoutedEventArgs e)
-		{
-			OnCloudSharingClick(EventArgs.Empty);
-		}
-
 		private void btnAction_Copy1_Click(object sender, System.Windows.RoutedEventArgs e)
 		{
 			OnDeleteButtonClick(EventArgs.Empty);

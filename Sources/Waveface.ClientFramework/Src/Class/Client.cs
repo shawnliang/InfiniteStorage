@@ -201,6 +201,11 @@ namespace Waveface.ClientFramework
 			StationAPI.OnAirLabel(labelID, isOnAir);
 		}
 
+		public void ShareLabel(string labelID, Boolean isShared)
+		{
+			StationAPI.ShareLabel(labelID, isShared);
+		}
+
 		void service_ContentPropertyChanged(object sender, ContentPropertyChangeEventArgs e)
 		{
 			var content = e.Content as IContent;

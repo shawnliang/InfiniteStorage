@@ -16,7 +16,7 @@ namespace Waveface.ClientFramework
 		public string ShareURL
 		{
 			get {
-				if (ShareEnabled)
+				if (!string.IsNullOrWhiteSpace(m_shareCode))
 					return "https://devweb.waveface.com/favorite/" + m_shareCode; // TODO: remove hard code;
 				else
 					return string.Empty;

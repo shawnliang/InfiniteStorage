@@ -146,6 +146,17 @@ namespace Waveface.ClientFramework
 				{"on_air", isOnAir? "true": "false"}
 			});
 		}
+
+		public static string ShareLabel(string labelID, bool isShared)
+		{
+			var uri = LABEL_API_BASE_URL + "/share";
+
+			return Post(uri, new NameValueCollection() 
+			{
+				{"label_id", labelID},
+				{"enabled", isShared? "true": "false"}
+			});
+		}
 		#endregion
 	}
 }
