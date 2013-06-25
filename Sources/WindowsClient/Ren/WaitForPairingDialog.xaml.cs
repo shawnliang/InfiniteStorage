@@ -145,5 +145,10 @@ namespace Waveface.Client
 
             m_webSocket.Send(_json);
         }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
