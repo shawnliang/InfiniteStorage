@@ -454,14 +454,7 @@ namespace Waveface.Client
 
 		private void lbxFavorites_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
-			var syncContext = SynchronizationContext.Current;
-			Observable.Return<object>(null).Delay(TimeSpan.FromMilliseconds(50)).Subscribe((o) =>
-			{
-				syncContext.Send((obj) =>
-					{
-						ShowSelectedFavoriteContents(sender);
-					}, null);
-			});
+			ShowSelectedFavoriteContents(sender);
 		}
 
 		private void rspRightSidePane2_DeleteButtonClick(object sender, System.EventArgs e)
