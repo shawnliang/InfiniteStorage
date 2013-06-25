@@ -343,7 +343,7 @@ namespace Wammer.Station
 						new
 						{
 							api_ret_code = 400,
-							api_ret_message = e.ToString(),
+							api_ret_message = e.Message,
 							status = (int)HttpStatusCode.BadRequest
 						}));
 				}
