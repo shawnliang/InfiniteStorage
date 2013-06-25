@@ -57,7 +57,11 @@ namespace InfiniteStorage.REST
 
 				db.Object.SaveChanges();
 
-				respondSuccess(new { shared_code = label.share_code, status = 200, api_ret_code = 0, api_ret_message = "success" });
+
+				if (enabled)
+					respondSuccess(new { shared_code = label.share_code, status = 200, api_ret_code = 0, api_ret_message = "success" });
+				else
+					respondSuccess();
 			}
 		}
 	}
