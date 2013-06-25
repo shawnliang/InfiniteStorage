@@ -119,6 +119,10 @@
             <File Id="InfiniteStorage.db.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\InfiniteStorage.db.dll" />
           </Component>
 
+          <Component Id="InfiniteStorage.Data.dll" Guid="*">
+            <File Id="InfiniteStorage.Data.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\InfiniteStorage.Data.dll" />
+          </Component>
+
           <Component Id="Waveface.Client.exe" Guid="*">
             <File Id="Waveface.Client.exe" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Waveface.Client.exe">
               <netfx:NativeImage Id="ngen_Waveface.Client.exe" Platform="32bit" Priority="0"/>
@@ -311,6 +315,7 @@
       <ComponentRef Id='pmd'/>
       <ComponentRef Id='InfiniteStorage.exe' />
       <ComponentRef Id='InfiniteStorage.db.dll' />
+      <ComponentRef Id="InfiniteStorage.Data.dll" />
       <ComponentRef Id='Waveface.Client.exe'/>
       <ComponentRef Id='Microsoft.Expression.Drawing.dll'/>
       <ComponentRef Id="Microsoft.Expression.Controls.dll"/>

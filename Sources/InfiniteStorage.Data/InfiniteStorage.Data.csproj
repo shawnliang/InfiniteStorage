@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>InfiniteStorage.Data</RootNamespace>
-    <AssemblyName>InfiniteStorage.Msg</AssemblyName>
+    <AssemblyName>InfiniteStorage.Data</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
