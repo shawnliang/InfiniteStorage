@@ -76,22 +76,6 @@ namespace Waveface.Client
 			OnOnAirClick(EventArgs.Empty);
 		}
 
-		private void btnAction_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
-		{
-			if (!btnAction.IsEnabled)
-				btnAction.Content = "Home Sharing disabled";
-		}
-
-		private void btnAction_Unchecked(object sender, RoutedEventArgs e)
-		{
-			btnAction.Content = "Home Sharing is Off";
-		}
-
-		private void btnAction_Checked(object sender, RoutedEventArgs e)
-		{
-			btnAction.Content = "Home Sharing is On";
-		}
-
 		private void tbxName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
 		{
 			FavoriteName = tbxName.Text;
@@ -105,6 +89,16 @@ namespace Waveface.Client
 		private void btnAction_Copy1_Click(object sender, System.Windows.RoutedEventArgs e)
 		{
 			OnDeleteButtonClick(EventArgs.Empty);
+		}
+
+		private void swbHomeSharing_IsOnStatusChanged(object sender, System.EventArgs e)
+		{
+			OnOnAirClick(EventArgs.Empty);
+		}
+
+		private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+		{
+			OnCloudSharingClick(EventArgs.Empty);
 		}
 	}
 }

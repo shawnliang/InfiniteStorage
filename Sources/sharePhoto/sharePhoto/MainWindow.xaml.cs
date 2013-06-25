@@ -36,7 +36,7 @@ namespace Wpf_testHTTP
         public static string HostIP = "https://api.waveface.com/v3/";
         public static string BaseURL { get { return HostIP; } }
         public static string APIKEY = "a23f9491-ba70-5075-b625-b8fb5d9ecd90";       // win8 viewer: station
-        public string iniPath = @"C:\Users\ruddyl.lee\AppData\Roaming\Bunny\temp\sharefavorite.ini";
+        public string iniPath = @"C:\Users\ruddy\AppData\Roaming\Bunny\temp\sharefavorite.ini";
         public string favoriteTitle = "Waveface Office";
         public string RefreshKey_real = "";                                         // kept the real refresh token
         public string access_token = "";
@@ -56,7 +56,6 @@ namespace Wpf_testHTTP
         }
         public void setiniPath(string path)
         {
-         //   MessageBox.Show(path);
             iniPath = path;
 
             int i0 = iniPath.IndexOf(@"\temp");
@@ -67,7 +66,7 @@ namespace Wpf_testHTTP
                 {
                     string _p = iniPath + @"\temp";
                     Directory.CreateDirectory(_p);
-                    iniPath = iniPath + @"\sharefavorite.ini";
+                    iniPath = iniPath + @"\temp\sharefavorite.ini";
                 }
                 else
                 {
@@ -76,14 +75,45 @@ namespace Wpf_testHTTP
             }
             if (File.Exists(iniPath) == false)
             {
-                using (FileStream FS = File.Create(path))
+                using (FileStream FS = File.Create(iniPath))
                 {
                     Byte[] info = new UTF8Encoding(true).GetBytes("[Setup]\r\n refreshKey=");
                     FS.Write(info, 0, info.Length);
                     FS.Close();
                 }
             }
-            //MessageBox.Show(path);
+        }
+        private bool checkTempExist()
+        {
+            bool result = false;
+            int i0 = iniPath.IndexOf(@"\temp");
+            if (i0 < 0)
+            {
+                iniPath = iniPath.Replace(@"\sharefavorite.ini", "");
+                if (!Directory.Exists(iniPath + @"\temp"))
+                {
+
+                    string _p = iniPath + @"\temp";
+                    Directory.CreateDirectory(_p);
+                    iniPath = iniPath + @"\sharefavorite.ini";
+                    result = true;
+                }
+            }
+            return result;
+        }
+        private bool checkIniExist()
+        {
+            bool result = false;
+            if (!File.Exists(iniPath))
+            {
+                using (FileStream FS = File.Create(iniPath))
+                {
+                    Byte[] info = new UTF8Encoding(true).GetBytes("[Setup]\r\n refreshKey=");
+                    FS.Write(info, 0, info.Length);
+                    FS.Close();
+                }
+            }
+            return result;
         }
         public void setRun()
         {
@@ -124,8 +154,69 @@ namespace Wpf_testHTTP
             }
             service_oauth();
         }
+        //
+        //public List<string> getMailList()
+        //{
+        //    List<string> mailList = new List<string>();
+        //    mailList = email_arr;
 
+        //    return mailList;
+        //}
+              // Anonymous
+        private void createAccount(string serverId)
+        {
+            iniParser parser = new iniParser();
+            checkTempExist();
+            checkIniExist();
+            parser.IniParser(iniPath);
 
+            string _session = parser.GetSetting("Setup", "session_token");
+            if (_session != "" && _session != null)
+            {
+                session_token_key = _session;
+                string _user = parser.GetSetting("Setup", "user");
+                string _user1 = parser.GetSetting("Setup", "user1");
+                string _password = _user1;
+                //
+                user = _user;
+                password = _password;
+                return;
+            }
+            // check
+
+            string _url = "https://develop.waveface.com/v3/auth/signup";
+            string user_email = serverId + ".anonymous@waveface.com";
+            string user_password = "anonymous+123456";
+            string user_nickname = "abc.anonymous";
+
+            string _user_password = System.Web.HttpUtility.UrlEncode(user_password);
+
+            string _parms = "email" + "=" + user_email + "&" +
+                "password" + "=" + _user_password + "&" +
+                "nickname" + "=" + user_nickname + "&" +
+                "apikey" + "=" + APIKEY;
+
+            WebPostHelper _webPos = new WebPostHelper();
+            bool _isOK = _webPos.doPost(_url, _parms, null);
+
+            if (_isOK)
+            {
+                string _r = _webPos.getContent();
+                MR_auth_signup_sessionToken results = JsonConvert.DeserializeObject<MR_auth_signup_sessionToken>(_r);
+                session_token_key = results.session_token;
+
+                // session_token_key = getSessionToken(_r);
+                // MessageBox.Show(session_token_key);
+                parser.AddSetting("Setup", "session_token", session_token_key);
+                parser.AddSetting("Setup", "user", user_email);
+                parser.AddSetting("Setup", "user1", user_password);
+                parser.SaveSettings();
+                //
+                user = user_email;
+                password = user_password;
+            }
+            return;
+        }
         //--- using Refresh token to get the Access token
         private bool get_accesstokenfromrefreshtoken()
         {
@@ -169,6 +260,10 @@ namespace Wpf_testHTTP
         }
         public MainWindow()
         {
+            string serverId = "isserverid23";
+            createAccount(serverId);
+            // return;
+
             string[] args = Environment.GetCommandLineArgs();
             // args = null;
             if (args.Length >= 2)
@@ -188,27 +283,14 @@ namespace Wpf_testHTTP
             Thread thread = new Thread(worker_DoWork);
             thread.IsBackground = true;
             thread.Start();
+
             // use timer to send New Post
             System.Windows.Threading.DispatcherTimer dispatcherTimer1 = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer1.Tick += new EventHandler(dispatcherTimer1_Tick);
             dispatcherTimer1.Interval = new TimeSpan(0, 0, 0, 0, 100);
             dispatcherTimer1.Start();
-            log.Info("start another Thread");
 
-            //// get ini for refreshkey
-            //iniParser parser = new iniParser();
-            //String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
-            //parser.IniParser(iniPath);  //appStartPath + @"\sharefavorite.ini");
-            //RefreshKey_saved = parser.GetSetting("Setup", "refreshkey");
-            ////
-            //AutoCompleteBox.Focusable = true;
-            //Keyboard.Focus(AutoCompleteBox);
-            ////
-            //if (RefreshKey_saved == "")
-            //{
-            //    myTabControl.SelectedIndex = 1;
-            //}
-            //service_oauth();
+            log.Info("start another Thread");
 
         }
 
@@ -239,19 +321,21 @@ namespace Wpf_testHTTP
             log.Info("End of attachments!");                            //
         }
 
+        public event EventHandler _sendDataCompleted = delegate { };
         private void worker_RunWorkerCompleted()
         {
             complete = true;
             uploadFinished = true;
+            _sendDataCompleted(this, EventArgs.Empty);
         }
 
         bool uploadFinished = false;
-        string user = "ruddytest29@gmail.com";
-        string password = "a+123456";
+        string user = "isserverId0.anonymous@waveface.com";  // "ruddytest29@gmail.com";
+        string password = "anonymous123456"; // "a+123456";
         newPostClass _ws = new newPostClass();
         string group_id = "";
-        string session_token = "";
-        string filename = @"C:/Users/Ruddy/Pictures/IMG_2299.jpg~C:/Users/Ruddy/Pictures/IMG_2317.jpg~C:/Users/Ruddy/Pictures/IMG_2288.jpg";
+        string session_token_key = "";
+        string filename = @"C:/Users/Ruddy/Pictures/IMG_2299.jpg~C:/Users/Ruddy/Pictures/momentshow.mp4~C:/Users/Ruddy/Pictures/IMG_2288.jpg";
         string email = "";
         int no_of_attachments = 0;
         string[] arr;
@@ -294,72 +378,20 @@ namespace Wpf_testHTTP
             {
                 email_arr.Add(_mail);
             }
-           // SetBusyState();
             shareButtonClick = true;
             just_busy(true);
-            return;
 
-            //int i = 0;      // handle user press share button before upload finished
-            //do
-            //{
-            //    System.Threading.Thread.Sleep(100);
-            //    i++;
-            //} while (uploadFinished == false && i <= 1000);
+            return;
 
             log.Info("3. create New Post ");                               //
 
             #region step 1& 2 (do by background worker)
-            ////// 1. login 
-            //if (already_login == false)
-            //{
-            //    string data = callLogin(user, password);
-            //    textBox_return.Text = data;
-            //    already_login = true;
-            //}
-            //// 2. upload attachments
-            ////Configure the ProgressBar
 
-            //char[] delimiterChars = { '~' };
-            //arr = filename.Split(delimiterChars);
-            //no_of_attachments = arr.Length;
-
-            //foreach (string _mail in arr)
-            //{
-            //    string _data = callUploadAttachment(_mail);
-            //    textBox_return.Text += "object id= " + _data + "\r\n";
-            //}
             #endregion
 
+            service_run();
             //// 3. new POST
-            _ws.group_id = group_id;
-            _ws.session_token = session_token;
-            _ws.APIKEY = APIKEY;
-            string object_id = _ws._object_id;
-            string content = "";
-            string attachment_id_array = count_attachments(); //  "[" + '"' + object_id.ToString() + '"' + "]";
-            string preview = "";
-            string type = "event";
-            string share_email_list = count_emails(); // "[" + '"' + email + '"' + "]";
-            string coverAttach = "";
-            string event_type = "favorite_shared";
-            string favorite = "0";
-            try
-            {
-                MR_posts_new ret_post = _ws.posts_new(session_token, group_id, content, attachment_id_array, preview, type, coverAttach, share_email_list, event_type, favorite);
-                textBox_return.Text = "Upload 完畢! \r\n Create post_id= " + ret_post.post.post_id + ", " + ret_post.api_ret_message + " !";
-                textBox_return.Text += "\r\n\r\n" + _ws._responseMessage;
-                //email_list.Items.Clear();
-                AutoCompleteBox.Text = "";
-            }
-            catch (Exception err)
-            {
-                // to log error
-                textBox_return.Text = "return NULL, get image error!";
-                log.Error("Create New Post, return NULL: " + err.Message);                  //
-            }
-            //busy_flag.Visibility = Visibility.Visible;
-            label_favorite.Visibility = Visibility.Visible;
-            label_pass.Visibility = Visibility.Visible;
+
             log.Info("end of create new Post ");
         }
 
@@ -367,7 +399,7 @@ namespace Wpf_testHTTP
         {
             shareButtonClick = false;
             _ws.group_id = group_id;
-            _ws.session_token = session_token;
+            _ws.session_token = session_token_key;
             _ws.APIKEY = APIKEY;
             string object_id = _ws._object_id;
             string content = "";
@@ -380,7 +412,7 @@ namespace Wpf_testHTTP
             string favorite = "0";
             try
             {
-                MR_posts_new ret_post = _ws.posts_new(session_token, group_id, content, attachment_id_array, preview, type, coverAttach, share_email_list, event_type, favorite);
+                MR_posts_new ret_post = _ws.posts_new(session_token_key, group_id, content, attachment_id_array, preview, type, coverAttach, share_email_list, event_type, favorite);
                 textBox_return.Text = "Upload 完畢! \r\n Create post_id= " + ret_post.post.post_id + ", " + ret_post.api_ret_message + " !";
                 textBox_return.Text += "\r\n\r\n" + _ws._responseMessage;
                 //email_list.Items.Clear();
@@ -411,9 +443,7 @@ namespace Wpf_testHTTP
             }
             result = result.Substring(0, result.Length - 1);
             return result;
-
         }
-
         bool already_start = false;
         private void dispatcherTimer1_Tick(object sender, EventArgs e)
         {
@@ -428,6 +458,7 @@ namespace Wpf_testHTTP
             }
             already_start = false;
         }
+
         #region emailavailable
         private bool checkAvailable(string _emailStr)
         {
@@ -536,19 +567,20 @@ namespace Wpf_testHTTP
 
             result = _ws.auth_login(user, password);
             group_id = _ws.group_id;
-            session_token = _ws.session_token;
+            session_token_key = _ws.session_token;
+            result = session_token_key;
             return result;
         }
 
-        string user_email = "ruddyl.lee@waveface.com";
+     //   string user_email = "ruddyl.lee@waveface.com";
         private string callUploadAttachment(string filename)
         {
             string result = "";
 
             _ws.group_id = group_id;
-            _ws.session_token = session_token;
+            _ws.session_token = session_token_key;
             _ws.APIKEY = APIKEY;
-            result = _ws.callUploadAttachment(filename, user_email);
+            result = _ws.callUploadAttachment(filename);
             _ws._object_id = result;
             object_arr.Add(result);
             return result;
@@ -619,7 +651,6 @@ namespace Wpf_testHTTP
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            just_busy(false);
             this.Close();
         }
 
@@ -795,8 +826,8 @@ namespace Wpf_testHTTP
                 if (i0 >= 0)
                 {
                     myTabControl.SelectedIndex = 0;
-					image_gmail.Visibility = System.Windows.Visibility.Collapsed;
-					connected_gmail.Visibility = image_gmail.Visibility;
+                    image_gmail.Visibility = System.Windows.Visibility.Collapsed;
+                    connected_gmail.Visibility = image_gmail.Visibility;
                     button_import.Visibility = Visibility.Visible;
                     // user say no, just return to input page
                     // myTabControl.SelectedIndex = 0;
@@ -815,7 +846,7 @@ namespace Wpf_testHTTP
                 image_gmail.Visibility = Visibility.Collapsed;
                 // clear Setup refresh key 
                 iniParser parser = new iniParser();
-               // String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+                // String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
                 parser.IniParser(iniPath);
                 parser.AddSetting("Setup", "refreshkey", "");
                 parser.SaveSettings();
@@ -873,10 +904,7 @@ namespace Wpf_testHTTP
             }
             try
             {
-
                 GoogleApi api = new GoogleApi(accessToken);
-
-
                 // string user = "ruddyl.lee@waveface.com"; // api.GetEmail();
                 // GoogleApi api = new GoogleApi(accessToken);
 
@@ -927,32 +955,6 @@ namespace Wpf_testHTTP
             label_invalid.Visibility = Visibility.Collapsed;
             // myTabControl.SelectedIndex = 0;
             return getSuccess;
-
-            //------------------------[ remain for read mail content ]----, using iMap.dll
-            //    try
-            //    {
-            //        // get inbox mail content
-            //       // #region get InBox
-            //        string user = "ruddyl.lee@waveface.com"; // api.GetEmail();
-            //        using (Imap imap = new Imap())
-            //        {
-            //            imap.ConnectSSL("imap.gmail.com");
-            //            imap.LoginOAUTH2(user, accessToken);
-            //            imap.SelectInbox();
-            //            List<long> uids = imap.Search(Flag.Unseen);
-            //            foreach (long uid in uids)
-            //            {
-            //                string eml = imap.GetMessageByUID(uid);
-            //                IMail email = new MailBuilder().CreateFromEml(eml);
-            //               // listbox1.Items.Add(email.From);
-            //            }
-            //            imap.Close();
-            //        }
-            //    }
-            //    catch (Exception err)
-            //    {
-            //        MessageBox.Show("error: " + err.Message);
-            //    }
 
         }
 
@@ -1020,10 +1022,6 @@ namespace Wpf_testHTTP
             label_favorite.Visibility = Visibility.Collapsed;
             label_pass.Visibility = Visibility.Collapsed;
         }
-
- 
-
-
 
     }
 }

@@ -8,55 +8,62 @@
              d:DesignHeight="30"
              d:DesignWidth="100"
              mc:Ignorable="d">
-	<UserControl.Resources>
+    <UserControl.Resources>
 
 
-		<Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
-			<Setter Property="SnapsToDevicePixels" Value="True" />
-			<Setter Property="BorderThickness" Value="1" />
-			<Setter Property="BorderBrush" Value="#9B9B9B" />
-			<Setter Property="Foreground" Value="White" />
-			<Setter Property="FontSize" Value="14" />
-			<Setter Property="Height" Value="34" />
-			<Setter Property="OverridesDefaultStyle" Value="True" />
-			<Setter Property="Background" Value="{StaticResource DefaultBrush}" />
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="{x:Type Button}">
-						<Border Background="{TemplateBinding Background}"
-							BorderBrush="{TemplateBinding BorderBrush}"
-							BorderThickness="{TemplateBinding BorderThickness}"
-							CornerRadius="0"
-							Padding="{TemplateBinding Padding}">
-							<Border.Effect>
-								<DropShadowEffect ShadowDepth="0.1" />
-							</Border.Effect>
-									<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-							<Image Source="{StaticResource UnSelectedStar}" Width="21" Height="21" VerticalAlignment="Center"/>
-                            <ContentControl HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Content="{TemplateBinding Content}" />
-							</StackPanel>
-						</Border>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-			<Style.Triggers>
-				<Trigger Property="IsMouseOver" Value="True">
-					<Setter Property="Background" Value="{StaticResource HighlightBrush}" />
-				</Trigger>
-				<Trigger Property="IsPressed" Value="True">
-					<Setter Property="Background" Value="{StaticResource PressedBrush}" />
-				</Trigger>
-			</Style.Triggers>
-		</Style>
+        <Style x:Key="ButtonStyle1"
+               TargetType="{x:Type Button}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#9B9B9B" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Height" Value="34" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="0"
+                                Padding="{TemplateBinding Padding}">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="0.1" />
+                            </Border.Effect>
+                            <StackPanel HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal">
+                                <Image Width="21"
+                                       Height="21"
+                                       VerticalAlignment="Center"
+                                       Source="{StaticResource UnSelectedStar}" />
+                                <ContentControl HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Content="{TemplateBinding Content}" />
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource HighlightBrush}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{StaticResource PressedBrush}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
 
-	</UserControl.Resources>
+    </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot">
 
         <Button Click="Button_Click"
-                Content="Star All" Style="{DynamicResource ButtonStyle1}" />
+                Content="Star All"
+                Style="{DynamicResource ButtonStyle1}" Foreground="White" />
     </Grid>
 </UserControl>

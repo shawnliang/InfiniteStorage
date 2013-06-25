@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -147,59 +150,73 @@ namespace Waveface.Client
 
 		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, EventArgs e)
 		{
-			var ti = sender as TreeViewItem;
-
-			if (ti == null)
-				return;
-
-			var group = ti.DataContext as IContentGroup;
-
-			if (group == null)
-				return;
-
-			group.Refresh();
-
-			if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
+			var syncContext = SynchronizationContext.Current;
+			Observable.Return<object>(null).Delay(TimeSpan.FromMilliseconds(50)).Subscribe((o) =>
 			{
-				ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(ti) as TreeViewItem;
+				syncContext.Send((obj) =>
+					{
+						var ti = sender as TreeViewItem;
 
-				if (parent == null)
-					return;
+						if (ti == null)
+							return;
 
-				var service = parent.DataContext as IService;
+						var group = ti.DataContext as IContentGroup;
 
-				if (service == null)
-					return;
+						if (group == null)
+							return;
 
-                Cursor = Cursors.Wait;
+						group.Refresh();
 
-				unSortedFilesUC.Visibility = Visibility.Visible;
-				unSortedFilesUC.Init(service);
+						if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
+						{
+							if (!Properties.Settings.Default.IsFirstSelectUnsorted)
+							{
+								Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215521-step2-organizing-photos-and-videos-in-favorite-");
+								Properties.Settings.Default.IsFirstSelectUnsorted = true;
+								Properties.Settings.Default.Save();
+							}
 
-                Cursor = Cursors.Arrow;
-			}
-			else
-			{
-			    unSortedFilesUC.Stop();
-				unSortedFilesUC.Visibility = Visibility.Collapsed;
-			}
+							ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(ti) as TreeViewItem;
 
-			lbxContentContainer.ContextMenu.Visibility = System.Windows.Visibility.Collapsed;
+							if (parent == null)
+								return;
 
-			lblContentLocation.DataContext = group;
-			lbxContentContainer.DataContext = group.Contents;
-			SetContentTypeCount(group);
+							var service = parent.DataContext as IService;
+
+							if (service == null)
+								return;
+
+							Cursor = Cursors.Wait;
+
+							unSortedFilesUC.Visibility = Visibility.Visible;
+							unSortedFilesUC.Init(service);
+
+							Cursor = Cursors.Arrow;
+						}
+						else
+						{
+							unSortedFilesUC.Stop();
+							unSortedFilesUC.Visibility = Visibility.Collapsed;
+						}
+
+						lbxContentContainer.ContextMenu.Visibility = System.Windows.Visibility.Collapsed;
+
+						lblContentLocation.DataContext = group;
+						lbxContentContainer.DataContext = group.Contents;
+						SetContentTypeCount(group);
 
 
-			Grid.SetColumnSpan(gdContentArea, 2);
+						Grid.SetColumnSpan(gdContentArea, 2);
 
-			btnFavoriteAll.Visibility = Visibility.Visible;
-			gdRightSide.Visibility = System.Windows.Visibility.Collapsed;
+						btnFavoriteAll.Visibility = Visibility.Visible;
+						gdRightSide.Visibility = System.Windows.Visibility.Collapsed;
 
-			rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
-			rspRightSidePane2.Visibility = System.Windows.Visibility.Collapsed;
+						rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
+						rspRightSidePane2.Visibility = System.Windows.Visibility.Collapsed;
 
-			lbxFavorites.SelectedItem = null;
+						lbxFavorites.SelectedItem = null;
+					}, null);
+			});
 		}
 
 
@@ -232,7 +249,14 @@ namespace Waveface.Client
 
 		private void lbxFavorites_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
 		{
-			ShowSelectedFavoriteContents(sender);
+			var syncContext = SynchronizationContext.Current;
+			Observable.Return<object>(null).Delay(TimeSpan.FromMilliseconds(50)).Subscribe((o) =>
+			{
+				syncContext.Send((obj) =>
+				{
+					ShowSelectedFavoriteContents(sender);
+				}, null);
+			});
 		}
 
 		private void ShowSelectedFavoriteContents(object sender)
@@ -247,10 +271,33 @@ namespace Waveface.Client
 			if (group == null)
 				return;
 
+			if (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase))
+			{
+				if (!Properties.Settings.Default.IsFirstSelectStarred)
+				{
+					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215522-step3-view-favorite-memories-on-tablets-and-tvs-");
+					Properties.Settings.Default.IsFirstSelectStarred = true;
+					Properties.Settings.Default.Save();
+				}
+			}
+			else 
+			{
+				if (!Properties.Settings.Default.IsFirstSelectFavorite)
+				{
+					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215523-step4-share-favorites-with-your-favorite-people");
+					Properties.Settings.Default.IsFirstSelectFavorite = true;
+					Properties.Settings.Default.Save();
+				}
+			}
+
+			var sw = Stopwatch.StartNew();
 			group.Refresh();
 
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = group.Contents;
+
+			Trace.WriteLine(sw.ElapsedMilliseconds.ToString());
+
 			SetContentTypeCount(group);
 
 			updateRightSidePanel2(group);
@@ -322,25 +369,15 @@ namespace Waveface.Client
 
 		private void rspRightSidePane2_OnAirClick(object sender, EventArgs e)
 		{
-			var isOnAir = ClientFramework.Client.Default.IsOnAir((IContentGroup)lblContentLocation.DataContext);
-
-			ClientFramework.Client.Default.OnAir((lblContentLocation.DataContext as IContentEntity).ID, !isOnAir);
+			ClientFramework.Client.Default.OnAir((lblContentLocation.DataContext as IContentEntity).ID, rspRightSidePane2.swbHomeSharing.IsOn);
 		}
 
 		private void updateRightSidePanel2(IContentGroup group)
 		{
-			//rspRightSidePane2.FavoriteName = group.Name;
+			var isOnAir = ClientFramework.Client.Default.IsOnAir(group);
 
-			if (!ClientFramework.Client.Default.HomeSharingEnabled)
-			{
-				rspRightSidePane2.btnAction.IsEnabled = false;
-			}
-			else
-			{
-				var isOnAir = ClientFramework.Client.Default.IsOnAir(group);
-				rspRightSidePane2.btnAction.IsEnabled = true;
-				rspRightSidePane2.btnAction.IsChecked = isOnAir;
-			}
+			rspRightSidePane2.swbHomeSharing.IsEnabled = ClientFramework.Client.Default.HomeSharingEnabled;
+			rspRightSidePane2.swbHomeSharing.IsOn = isOnAir;
 		}
 
 		private void rspRightSidePanel_AddToFavorite(object sender, System.EventArgs e)

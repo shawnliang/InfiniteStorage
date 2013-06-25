@@ -283,10 +283,7 @@
         </Style>
 
 
-        <LinearGradientBrush x:Key="TitleBarBackground" StartPoint="0.5,0" EndPoint="0.5,1">
-            <GradientStop Offset="1" Color="#FF1E1E1F" />
-            <GradientStop Color="#FF323232" />
-        </LinearGradientBrush>
+        <SolidColorBrush x:Key="TitleBarBackground" Color="#FF2E2E2E"/>
         <SolidColorBrush x:Key="ContentAreaBackground"
                          Color="#FF4F4F4F" />
         <SolidColorBrush x:Key="SidePanelBackground"
@@ -322,7 +319,7 @@
                 <DockPanel>
 
                     <WrapPanel VerticalAlignment="Center"
-                               DockPanel.Dock="Left">
+                               DockPanel.Dock="Left" Margin="10,0,0,0">
                         <local:BackButton x:Name="btnBack"
                                           Width="28.666"
                                           Height="28.666"
@@ -341,7 +338,7 @@
                                Content="0 photos 0 videos"
                                FontFamily="Segoe UI Light"
                                FontSize="15"
-                               Foreground="#FF5A5A5A" />
+                               Foreground="#FFA8A8A8" />
                     </WrapPanel>
 
                 </DockPanel>
@@ -358,7 +355,7 @@
             </Grid.Effect>
         </Grid>
         <Grid Grid.RowSpan="2"
-              Background="{DynamicResource SidePanelBackground}">
+              Background="#FF151515">
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="1"
                                   Direction="0"
@@ -366,8 +363,8 @@
             </Grid.Effect>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="2*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="2*" MinHeight="100"/>
+                    <RowDefinition Height="*" MinHeight="100"/>
                 </Grid.RowDefinitions>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -378,7 +375,7 @@
                            Background="Black"
                            Content="SOURCES"
                            FontFamily="Segoe UI Light"
-                           Foreground="#FFA5A5A5" />
+                           Foreground="#FFA8A8A8" />
 
                     <local:SourceTree x:Name="lbxDeviceContainer"
                                       Grid.Row="1"
@@ -403,7 +400,7 @@
                            Background="Black"
                            Content="FAVORITES"
                            FontFamily="Segoe UI Light"
-                           Foreground="#FFA5A5A5" />
+                           Foreground="#FFA8A8A8" />
                     <local:FavoriteListBox x:Name="lbxFavorites"
                                            Grid.Row="1"
                                            PreviewMouseDown="lbxFavorites_PreviewMouseDown"
@@ -498,7 +495,7 @@
             </ScrollViewer>
             <Grid Grid.Row="1"
                   Margin="0"
-                  Background="#FF3E3E3E">
+                  Background="#FF333333">
                 <local:ZoomSlider x:Name="zoomSlider"
                                   Margin="10,0,0,0"
                                   HorizontalAlignment="Left"
