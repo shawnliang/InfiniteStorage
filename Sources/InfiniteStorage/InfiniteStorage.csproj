@@ -97,6 +97,7 @@
     <Compile Include="Src\Class\HomeSharing.cs" />
     <Compile Include="Src\Class\Notify\ActiveDeviceNotifyMsg.cs" />
     <Compile Include="Src\Class\REST\LabelOnAirApiHandler.cs" />
+    <Compile Include="Src\Class\REST\LabelInviteApiHandler.cs" />
     <Compile Include="Src\Class\REST\LabelShareApiHandler.cs" />
     <Compile Include="Src\Class\Share\IShareCloudAPI.cs" />
     <Compile Include="Src\Class\Share\IShareEnableTaskDB.cs" />
