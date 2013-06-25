@@ -185,6 +185,10 @@ namespace Wpf_testHTTP
             // check
 
             string _url = "https://develop.waveface.com/v3/auth/signup";
+            Guid g;
+            // Create and display the value of two GUIDs.
+            g = Guid.NewGuid();
+            serverId = g.ToString();
             string user_email = serverId + ".anonymous@waveface.com";
             string user_password = "anonymous+123456";
             string user_nickname = "abc.anonymous";
@@ -260,7 +264,7 @@ namespace Wpf_testHTTP
         }
         public MainWindow()
         {
-            string serverId = "isserverid23";
+            string serverId = "isserverid";
             createAccount(serverId);
             // return;
 
@@ -335,7 +339,7 @@ namespace Wpf_testHTTP
         newPostClass _ws = new newPostClass();
         string group_id = "";
         string session_token_key = "";
-        string filename = @"C:/Users/Ruddy/Pictures/IMG_2299.jpg~C:/Users/Ruddy/Pictures/momentshow.mp4~C:/Users/Ruddy/Pictures/IMG_2288.jpg";
+        string filename = @"C:/Users/Ruddy/Pictures/2.jpg~C:/Users/Ruddy/Pictures/video.mp4~C:/Users/Ruddy/Pictures/3.jpg";
         string email = "";
         int no_of_attachments = 0;
         string[] arr;
@@ -659,31 +663,6 @@ namespace Wpf_testHTTP
             label_debug.Visibility = Visibility.Visible;
         }
 
-        //private void AutoCompleteBox_MouseUp(object sender, MouseButtonEventArgs e)
-        //{
-        //    if ((label_invalid.Visibility == Visibility.Visible) && (AutoCompleteBox.Text == ""))
-        //    {
-        //        label_invalid.Visibility = Visibility.Collapsed;
-        //    }
-
-        //}
-        //private void AutoCompleteBox_MouseUp(object sender, MouseEventArgs e)
-        //{
-
-        //    if (IsValidEmail(AutoCompleteBox.Text) == false)
-        //        return;
-        //    bool result = checkAvailable(AutoCompleteBox.Text);
-        //    if (result == true)
-        //    {
-        //        result = checkAvailable_repeat();
-        //        if (result == true)
-        //        {
-        //            email_list.Items.Add(AutoCompleteBox.Text);
-        //            AutoCompleteBox.Text = "";                          // $$$
-        //        }
-        //    }
-        //}
-
         private bool checkAvailable_repeat()
         {
 
@@ -860,17 +839,6 @@ namespace Wpf_testHTTP
 
         }
 
-        //private static string LoadRefreshToken()
-        //{
-        //    return Encoding.Unicode.GetString(ProtectedData.Unprotect(Convert.FromBase64String(Properties.Settings.Default.RefreshToken), aditionalEntropy, DataProtectionScope.CurrentUser));
-        //}
-
-        //private static void StoreRefreshToken(IAuthorizationState state)
-        //{
-        //    Properties.Settings.Default.RefreshToken = Convert.ToBase64String(ProtectedData.Protect(Encoding.Unicode.GetBytes(state.RefreshToken), aditionalEntropy, DataProtectionScope.CurrentUser));
-        //    Properties.Settings.Default.Save();
-        //}
-
         int emailCount = 0;
         List<string> mail_arr = new List<string>();
         IAuthorizationState grantedAccess1;
@@ -911,6 +879,15 @@ namespace Wpf_testHTTP
                 XmlDocument contacts = api.GetContacts();
 
                 XmlNamespaceManager nsmgr = new XmlNamespaceManager(contacts.NameTable);
+                //
+                if (textbox_name.Text == "")
+                {
+                    XmlNodeList _title = contacts.GetElementsByTagName("title");
+                    string temp = _title.Item(0).InnerText;
+                    temp = temp.Replace("'s Contacts", "");
+                    textbox_name.Text = temp;
+                }
+                //
                 nsmgr.AddNamespace("gd", "http://schemas.google.com/g/2005");
                 nsmgr.AddNamespace("a", "http://www.w3.org/2005/Atom");
                 emailCount = 0;
@@ -1021,6 +998,17 @@ namespace Wpf_testHTTP
         {
             label_favorite.Visibility = Visibility.Collapsed;
             label_pass.Visibility = Visibility.Collapsed;
+        }
+
+        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            myTabControl.SelectedIndex = 0;
+            tab2.Visibility = Visibility.Collapsed;
+        }
+
+        private void AutoCompleteBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            label_invalid.Visibility = Visibility.Collapsed;
         }
 
     }
