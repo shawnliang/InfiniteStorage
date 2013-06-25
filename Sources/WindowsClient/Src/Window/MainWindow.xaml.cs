@@ -476,5 +476,10 @@ namespace Waveface.Client
 			System.Windows.Visibility.Visible;
 		}
 
+        private void btnAddNewSource_Click(object sender, RoutedEventArgs e)
+        {
+            WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog();
+            _waitForPairingDialog.Show();
+        }
 	}
 }

@@ -236,11 +236,6 @@ namespace InfiniteStorage
 
 		}
 
-		public void OnDevicePairingRequesting(object sender, WebsocketProtocol.WebsocketEventArgs args)
-		{
-			SynchronizationContextHelper.SendMainSyncContext(() => { showApproveDialog(args); });
-		}
-
 		private void removeDeviceFromNotifyIconMenu(WebsocketEventArgs evt)
 		{
 			try
@@ -267,60 +262,6 @@ namespace InfiniteStorage
 				log4net.LogManager.GetLogger(GetType()).Warn("Error in removeDeviceFromNotifyIconMenu", err);
 			}
 		}
-
-		private void showApproveDialog(WebsocketProtocol.WebsocketEventArgs args)
-		{
-			try
-			{
-				if (!BonjourServiceRegistrator.Instance.IsAccepting)
-				{
-					args.ctx.handleDisapprove();
-					return;
-				}
-				else
-				{
-
-					var pairingDialog = new PairingRequestDialog(args.ctx);
-					if (pairingDialog.ShowDialog() != DialogResult.Yes)
-					{
-						var t = new System.Threading.Tasks.Task(() =>
-						{
-							try
-							{
-								args.ctx.handleDisapprove();
-							}
-							catch (Exception err)
-							{
-								log4net.LogManager.GetLogger(GetType()).Warn("disapprove error", err);
-							}
-						});
-						t.Start();
-
-						return;
-					}
-
-					args.ctx.handleApprove();
-
-					if (WaitForPairingDialog.Instance.Visible && PairingRequestDialog.CurrentOpeningCount == 0)
-						WaitForPairingDialog.Instance.Close();
-
-					if (Settings.Default.IsFirstUse)
-					{
-						Settings.Default.IsFirstUse = false;
-						Settings.Default.Save();
-					}
-
-					// Show Hint to press "start on PC"
-					var backToPhoneDialog = new BackToPhoneDialog() { Ctx = args.ctx };
-					backToPhoneDialog.Show();
-				}
-			}
-			catch (Exception err)
-			{
-				log4net.LogManager.GetLogger(GetType()).Warn("showApproveDialog error", err);
-			}
-		}
-
 
 		public void OnAddingNewSources(object sender, EventArgs e)
 		{

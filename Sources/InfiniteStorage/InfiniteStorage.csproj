@@ -90,6 +90,10 @@
     <Compile Include="Src\Class\Common\NoReentrantTimer.cs" />
     <Compile Include="Src\Class\HomeSharing.cs" />
     <Compile Include="Src\Class\Notify\ActiveDeviceNotifyMsg.cs" />
+    <Compile Include="Src\Class\Pair\IPairingSubscriber.cs" />
+    <Compile Include="Src\Class\Pair\NewDeviceAcceptingEventArgs.cs" />
+    <Compile Include="Src\Class\Pair\PairingModeChangingEventArgs.cs" />
+    <Compile Include="Src\Class\Pair\PairWebSocketService.cs" />
     <Compile Include="Src\Class\REST\LabelOnAirApiHandler.cs" />
     <Compile Include="Src\Dialog\BackToPhoneDialog.cs">
       <SubType>Form</SubType>
@@ -394,6 +398,10 @@
     <None Include="Resources\Tea-Cup1.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InfiniteStorage.Data\InfiniteStorage.Data.csproj">
+      <Project>{9C9BF6A4-A4C0-4C80-9608-C2F7D7AAAF72}</Project>
+      <Name>InfiniteStorage.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InfiniteStorage.DB\InfiniteStorage.DB.csproj">
       <Project>{793d45b0-147c-4304-8578-7ff2792102c8}</Project>
       <Name>InfiniteStorage.DB</Name>
