@@ -77,6 +77,8 @@
     <Compile Include="Src\Class\BunnyContent.cs" />
     <Compile Include="Src\Class\BunnyContentGroup.cs" />
     <Compile Include="Src\Class\BunnyDB.cs" />
+    <Compile Include="Src\Class\BunnyLabelContentGroup.cs" />
+    <Compile Include="Src\Class\BunnyRecipient.cs" />
     <Compile Include="Src\Class\BunnyService.cs" />
     <Compile Include="Src\Class\BunnyServiceSupplier.cs" />
     <Compile Include="Src\Class\BunnyUnsortedContentGroup.cs" />

@@ -291,6 +291,38 @@ ALTER TABLE [PendingFiles] Add Column [orientation] INTEGER NULL;
 						schemaVersion = 10;
 					}
 
+					if (schemaVersion == 10L)
+					{
+						var cmd = new SQLiteCommand(
+@"
+ALTER TABLE [Files] Add Column [on_cloud] BOOLEAN NULL;
+ALTER TABLE [Labels] Add Column [share_enabled] BOOLEAN NULL;
+ALTER TABLE [Labels] Add Column [share_proc_seq] INTEGER NULL;
+ALTER TABLE [Labels] Add Column [share_code] NVARCHAR NULL;
+ALTER TABLE [Labels] Add Column [share_post_id] NVARCHAR NULL;
+
+CREATE TABLE [LabelShareTo] (
+[id] INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
+[label_id] GUID  NOT NULL,
+[email] NVARCHAR  NOT NULL,
+[name] NVARCHAR  NULL,
+[on_cloud] BOOLEAN  NULL
+);
+
+CREATE INDEX [IDX_LABELSHARETO_LABEL_ID] ON [LabelShareTo](
+[label_id]  ASC,
+[on_cloud]  ASC
+);
+
+update [Labels] set share_enabled = 0, share_proc_seq = seq;
+
+", conn);
+						cmd.ExecuteNonQuery();
+
+						updateDbSchemaVersion(conn, 11);
+						schemaVersion = 11;
+					}
+
 					transaction.Commit();
 				}
 

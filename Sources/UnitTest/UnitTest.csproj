@@ -74,6 +74,8 @@
     <Compile Include="Pending\testEventDirOrganizer.cs" />
     <Compile Include="Pending\testPendingToResourceUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="share\testEnableTask.cs" />
+    <Compile Include="share\testMonitor.cs" />
     <Compile Include="testConnectMsgHandler.cs" />
     <Compile Include="testFileEnd.cs" />
     <Compile Include="testFileMover.cs" />

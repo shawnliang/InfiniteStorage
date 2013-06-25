@@ -129,7 +129,11 @@
             <File Id="ffmpeg.exe" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\ffmpeg.exe">
             </File>
           </Component>
-          
+
+          <Component Id="postServiceLibrary.dll" Guid="*">
+            <File Id="postServiceLibrary.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\postServiceLibrary.dll">
+            </File>
+          </Component>
           
           <Component Id="Microsoft.Expression.Controls.dll" Guid="*">
             <File Id="Microsoft.Expression.Controls.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Microsoft.Expression.Controls.dll" />
@@ -348,6 +352,7 @@
       <ComponentRef Id="CultureSetting"/>
       <ComponentRef Id="InfiniteStorage.resources.zhtw" />
       <ComponentRef Id="ffmpeg.exe"/>
+      <ComponentRef Id="postServiceLibrary.dll"/>
 
       <ComponentRef Id="System.Reactive.Core.dll" />
       <ComponentRef Id="System.Reactive.Interfaces.dll" />

@@ -72,6 +72,7 @@
       <HintPath>..\..\Libs\System.Data.SQLite.1.0.84.0\net40\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Management" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -87,6 +88,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\Class\Cloud\CloudService.cs" />
+    <Compile Include="Src\Class\Common\FileUtility.cs" />
+    <Compile Include="Src\Class\Common\HexConvert.cs" />
+    <Compile Include="Src\Class\Common\HttpHelper.cs" />
+    <Compile Include="Src\Class\Common\MultipartFormDataPostHelper.cs" />
     <Compile Include="Src\Class\Common\NoReentrantTimer.cs" />
     <Compile Include="Src\Class\HomeSharing.cs" />
     <Compile Include="Src\Class\Notify\ActiveDeviceNotifyMsg.cs" />
@@ -95,6 +101,19 @@
     <Compile Include="Src\Class\Pair\PairingModeChangingEventArgs.cs" />
     <Compile Include="Src\Class\Pair\PairWebSocketService.cs" />
     <Compile Include="Src\Class\REST\LabelOnAirApiHandler.cs" />
+    <Compile Include="Src\Class\REST\LabelInviteApiHandler.cs" />
+    <Compile Include="Src\Class\REST\LabelShareApiHandler.cs" />
+    <Compile Include="Src\Class\Share\IShareCloudAPI.cs" />
+    <Compile Include="Src\Class\Share\IShareEnableTaskDB.cs" />
+    <Compile Include="Src\Class\Share\IShareLabelMonitorDB.cs" />
+    <Compile Include="Src\Class\Share\IShareTaskFactory.cs" />
+    <Compile Include="Src\Class\Share\ShareCloudAPI.cs" />
+    <Compile Include="Src\Class\Share\ShareDisableTask.cs" />
+    <Compile Include="Src\Class\Share\ShareEnableTask.cs" />
+    <Compile Include="Src\Class\Share\ShareEnableTaskDB.cs" />
+    <Compile Include="Src\Class\Share\ShareLabelMonitor.cs" />
+    <Compile Include="Src\Class\Share\ShareLabelMonitorDB.cs" />
+    <Compile Include="Src\Class\Share\ShareTaskFactory.cs" />
     <Compile Include="Src\Dialog\BackToPhoneDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -406,7 +425,12 @@
       <Project>{793d45b0-147c-4304-8578-7ff2792102c8}</Project>
       <Name>InfiniteStorage.DB</Name>
     </ProjectReference>
+    <ProjectReference Include="..\postServiceLibrary\postServiceLibrary.csproj">
+      <Project>{74CF7E76-3F40-4FA1-942F-BCDBCD6E6B15}</Project>
+      <Name>postServiceLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release signtool.exe sign /f "$(SolutionDir)Tools\WavefaceCert.pfx" /p waveface /t http://timestamp.verisign.com/scripts/timstamp.dll /v "$(TargetPath)"</PostBuildEvent>

@@ -113,33 +113,10 @@ namespace Waveface.ClientFramework
 			{
 				var labelID = dr["label_id"].ToString();
 				var labelName = dr["name"].ToString();
+				var share_enabled = (bool)dr["share_enabled"];
+				var share_code = dr["share_code"].ToString();
 
-				yield return new ContentGroup(labelID, labelName, new Uri(string.Format("c:\\{0}", labelName)), (group, contents) =>
-				{
-					var conn2 = new SQLiteConnection(string.Format("Data source={0}", dbFilePath));
-
-					conn2.Open();
-
-					var cmd2 = new SQLiteCommand("SELECT * FROM Files t1, LabelFiles t2, Labels t3 where t3.label_id = @labelID and t3.label_id = t2.label_id and t1.file_id = t2.file_id order by t1.event_time asc", conn2);
-
-					cmd2.Parameters.Add(new SQLiteParameter("@labelID", new Guid(labelID)));
-
-					var dr2 = cmd2.ExecuteReader();
-
-					while (dr2.Read())
-					{
-						var deviceID = dr2["device_id"].ToString();
-
-						var savedPath = dr2["saved_path"].ToString();
-
-						var file = Path.Combine(BunnyDB.ResourceFolder, savedPath);
-
-						var type = ((long)dr2["type"] == 0) ? ContentType.Photo : ContentType.Video;
-						contents.Add(new BunnyContent(new Uri(file), dr2["file_id"].ToString(), type));
-					}
-
-					conn2.Close();
-				});
+				yield return new BunnyLabelContentGroup(labelID, labelName, share_enabled, share_code);
 			}
 
 

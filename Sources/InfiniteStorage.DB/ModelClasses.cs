@@ -55,7 +55,7 @@ namespace InfiniteStorage.Model
 
 		public int? orientation { get; set; }
 
-		public virtual Device device { get; set; }
+		public bool? on_cloud { get; set; }
 	}
 
 
@@ -78,6 +78,7 @@ namespace InfiniteStorage.Model
 		{
 			on_air = true;
 			auto_type = (int)AutoLabelType.NotAuto;
+			share_enabled = false;
 		}
 
 		[Key]
@@ -92,6 +93,16 @@ namespace InfiniteStorage.Model
 		public int auto_type { get; set; }
 
 		public bool on_air { get; set; }
+
+		public string share_code { get; set; }
+
+		public bool? share_enabled { get; set; }
+
+		public long? share_proc_seq { get; set; }
+
+		public string share_post_id { get; set; }
+
+		public virtual ICollection<ShareRecipient> Recipients { get; set; }
 	}
 
 	[Table("LabelFiles")]
@@ -104,6 +115,22 @@ namespace InfiniteStorage.Model
 		[Key]
 		[Column(Order = 1)]
 		public Guid file_id { get; set; }
+	}
+
+	[Table("LabelShareTo")]
+	public class ShareRecipient
+	{
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public long id { get; set; }
+
+		public Guid label_id { get; set; }
+
+		public string email { get; set; }
+
+		public string name { get; set; }
+
+		public bool? on_cloud { get; set; }
 	}
 
 	[Table("PendingFiles")]
@@ -138,8 +165,6 @@ namespace InfiniteStorage.Model
 		public int height { get; set; }
 
 		public int? orientation { get; set; }
-
-		public virtual Device device { get; set; }
 	}
 
 	public class Folder
@@ -181,6 +206,8 @@ namespace InfiniteStorage.Model
 		public DbSet<LabeledFile> LabelFiles { get; set; }
 
 		public DbSet<PendingFile> PendingFiles { get; set; }
+
+		public DbSet<ShareRecipient> ShareRecipients { get; set; }
 
 		public InfiniteStorageContext(DbConnection conn, bool contextOwnsConnection)
 			: base(conn, contextOwnsConnection)
