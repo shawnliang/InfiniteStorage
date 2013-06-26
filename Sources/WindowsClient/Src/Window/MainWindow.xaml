@@ -225,13 +225,10 @@
             </Style.Triggers>
         </Style>
 
-
-        <!--  Photo Template  -->
         <DataTemplate DataType="{x:Type wvmodel:ContentGroup}">
             <local:GroupContentItem Padding="10" />
         </DataTemplate>
 
-        <!--  Photo Template  -->
         <DataTemplate DataType="{x:Type wvmodel:Content}">
             <local:ContentItem x:Name="content"
                                Padding="10" />

@@ -36,34 +36,6 @@
             </Style.Triggers>
         </Style>
 
-        <!--
-            <Style TargetType="MediaElement">
-            <Setter Property="Visibility" Value="Collapsed" />
-            <Style.Triggers>
-            <DataTrigger Binding="{Binding Type,
-            IsAsync=True}"
-            Value="Video">
-            <Setter Property="Visibility" Value="Visible" />
-            <Setter Property="Source" Value="{Binding Uri, IsAsync=True}" />
-            </DataTrigger>
-            </Style.Triggers>
-            </Style>
-        -->
-
-        <!--
-            <Style x:Key="PhotoStyle"
-            TargetType="Image">
-            <Setter Property="Visibility" Value="Collapsed" />
-            <Style.Triggers>
-            <DataTrigger Binding="{Binding Type,
-            IsAsync=True}"
-            Value="Photo">
-            <Setter Property="Visibility" Value="Visible" />
-            <Setter Property="Source" Value="{Binding ThumbnailSource, IsAsync=True}" />
-            </DataTrigger>
-            </Style.Triggers>
-            </Style>
-        -->
     </UserControl.Resources>
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="Mouse.MouseEnter">
@@ -79,11 +51,6 @@
         <Grid.Effect>
             <DropShadowEffect Direction="270" />
         </Grid.Effect>
-        <!--
-            <MediaElement LoadedBehavior="Pause"
-            ScrubbingEnabled="True"
-            Stretch="UniformToFill" />
-        -->
         <Image HorizontalAlignment="Center"
                VerticalAlignment="Center"
                OpacityMask="Black"
