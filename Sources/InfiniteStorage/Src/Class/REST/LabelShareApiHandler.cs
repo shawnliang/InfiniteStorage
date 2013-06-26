@@ -28,10 +28,16 @@ namespace InfiniteStorage.REST
 					throw new Exception("no such label_id:" + label_id.ToString());
 
 				
-				label.seq = SeqNum.GetNextSeq();
+				
 
 				if (enabled)
 				{
+					if (isShareEnabled(label))
+					{
+						respondSuccess(new { shared_code = label.share_code, status = 200, api_ret_code = 0, api_ret_message = "success" });
+						return;
+					}
+
 					if (string.IsNullOrEmpty(label.share_post_id))
 					{
 						var post_id = Guid.NewGuid().ToString();
@@ -51,11 +57,18 @@ namespace InfiniteStorage.REST
 				}
 				else
 				{
+					if (!isShareEnabled(label))
+					{
+						respondSuccess();
+						return;
+					}
+
 					var api = Cloud.CloudService.CreateCloudAPI();
 					api.tuneOffSharedcode(api.session_token, label.share_post_id);
 					label.share_enabled = enabled;
 				}
 
+				label.seq = SeqNum.GetNextSeq();
 				db.Object.SaveChanges();
 
 
@@ -64,6 +77,15 @@ namespace InfiniteStorage.REST
 				else
 					respondSuccess();
 			}
+		}
+
+		private static bool isShareEnabled(Label label)
+		{
+			return
+				label.share_enabled.HasValue && 
+				label.share_enabled.Value && 
+				!string.IsNullOrEmpty(label.share_post_id) &&
+				!string.IsNullOrEmpty(label.share_code);
 		}
 	}
 }
