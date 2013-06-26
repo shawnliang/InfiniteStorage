@@ -41,6 +41,8 @@ namespace Wpf_testHTTP
         public string RefreshKey_real = "";                                         // kept the real refresh token
         public string access_token = "";
         public string label_id = "";
+        public string sender_name = "";
+        public string sender_msg = "";
 
         private static readonly ILog log = LogManager.GetLogger(typeof(MainWindow));
 
@@ -260,6 +262,61 @@ namespace Wpf_testHTTP
         {
             filename = filestring;              // inpuy filename list
         }
+        // ####
+        public bool sendEmailList()
+        {
+            bool result = false;
+            if (label_id == "")
+                MessageBox.Show("label_id is empty");
+
+            string recipients_json = getEmailListinJson();
+            string rel = Wpf_testHTTP.labelCommand.inviteShared(label_id, sender_name, sender_msg, recipients_json);
+            if (rel != null && rel != "")
+            {
+                result = true;
+            }
+            return result;
+        }
+
+        private string getEmailListinJson()
+        {
+            string result = null;
+            string json = "[]";
+            if (title_arr.Count <= 0)
+            {
+                return result;
+            }
+            string a = "[";
+            int i = 0;
+            string _title = "";
+            foreach (string _mail in email_arr)
+            {
+                _title = getTitle(_mail);
+                a = a + "{'" + _title + "':" + "'" + _mail + "'},";
+            }
+            string _json = a;
+            _json = _json.Substring(0, _json.Length - 1) + "]";
+
+            result = _json;
+            return result;
+        }
+
+        private string getTitle(string _mail)
+        {
+            string result = "";
+            int i = 0;
+            foreach (string mail in gmail_arr)
+            {
+                if (_mail == mail)
+                {
+                    result = title_arr[i];
+                    break;
+                }
+                i++;
+            }
+            return result;
+        }
+
         public MainWindow()
         {
             string serverId = "isserverid";
@@ -341,9 +398,12 @@ namespace Wpf_testHTTP
         string email = "";
         int no_of_attachments = 0;
         string[] arr;
-        List<string> object_arr = new List<string>();
-        List<string> email_arr = new List<string>();
+        List<string> object_arr = new List<string>();           // Attachments object_id
+        List<string> email_arr = new List<string>();            // shared email address
 
+        // save google api return contacts in gmail_arr & title_arr
+        List<string> gmail_arr = new List<string>();                // contacts data email
+        List<string> title_arr = new List<string>();                //  contacts data title
         // share
         bool complete = false;
         bool shareButtonClick = false;
@@ -384,7 +444,8 @@ namespace Wpf_testHTTP
             just_busy(true);
 
             return;
-
+            
+            //-- never run, except testing
             log.Info("3. create New Post ");                               //
 
             #region step 1& 2 (do by background worker)
@@ -432,6 +493,7 @@ namespace Wpf_testHTTP
             label_pass.Visibility = Visibility.Visible;
             log.Info("end of create new Post ");
 
+            sendEmailList();            // send email list to server
             just_busy(false);
         }
         private string setup_emailList()
@@ -838,7 +900,6 @@ namespace Wpf_testHTTP
         }
 
         int emailCount = 0;
-        List<string> mail_arr = new List<string>();
         IAuthorizationState grantedAccess1;
         private bool getAccessToken(string authCode)
         {
@@ -871,41 +932,46 @@ namespace Wpf_testHTTP
             try
             {
                 GoogleApi api = new GoogleApi(accessToken);
+
                 // string user = "ruddyl.lee@waveface.com"; // api.GetEmail();
                 // GoogleApi api = new GoogleApi(accessToken);
 
                 XmlDocument contacts = api.GetContacts();
-
                 XmlNamespaceManager nsmgr = new XmlNamespaceManager(contacts.NameTable);
                 //
+
+                XmlNodeList _title = contacts.GetElementsByTagName("title");
+                string temp = _title.Item(0).InnerText;
+                temp = temp.Replace("'s Contacts", "");
+                sender_name = temp;
                 if (textbox_name.Text == "")
                 {
-                    XmlNodeList _title = contacts.GetElementsByTagName("title");
-                    string temp = _title.Item(0).InnerText;
-                    temp = temp.Replace("'s Contacts", "");
                     textbox_name.Text = temp;
                 }
-                //
+
                 nsmgr.AddNamespace("gd", "http://schemas.google.com/g/2005");
                 nsmgr.AddNamespace("a", "http://www.w3.org/2005/Atom");
                 emailCount = 0;
+
                 foreach (XmlNode contact in contacts.GetElementsByTagName("entry"))
                 {
                     XmlNode title = contact.SelectSingleNode("a:title", nsmgr);
                     XmlNode email = contact.SelectSingleNode("gd:email", nsmgr);
 
+
                     // Console.WriteLine("{0}: {1}",title.InnerText, email.Attributes["address"].Value);
                     if (email != null)
                     {
-                        mail_arr.Add(email.Attributes["address"].Value);
+                        title_arr.Add(title.InnerText);
+                        gmail_arr.Add(email.Attributes["address"].Value);
                         emailCount++;
                     }
-                    //   listbox1.Items.Add(title.InnerText + " , " + email.Attributes["address"].Value);
+
                 }
                 getSuccess = true;
                 button_import.Visibility = Visibility.Collapsed;
-				image_gmail.Visibility = System.Windows.Visibility.Visible;
-				connected_gmail.Visibility = image_gmail.Visibility;
+                image_gmail.Visibility = System.Windows.Visibility.Visible;
+                connected_gmail.Visibility = image_gmail.Visibility;
                 myTabControl.SelectedIndex = 0;
             }
             catch (Exception err)
@@ -918,7 +984,7 @@ namespace Wpf_testHTTP
             // everything is good, goto input : autocomplete
             contactData.inc(emailCount);
             int i = 0;
-            foreach (string emailAddress in mail_arr)
+            foreach (string emailAddress in gmail_arr)
             {
                 contactData.States.SetValue(emailAddress, i);
                 i++;
@@ -1009,5 +1075,9 @@ namespace Wpf_testHTTP
             label_invalid.Visibility = Visibility.Collapsed;
         }
 
+        private void label_title_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            //sendEmailList();
+        }
     }
 }
