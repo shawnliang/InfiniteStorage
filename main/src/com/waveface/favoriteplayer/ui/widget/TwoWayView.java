@@ -1392,7 +1392,7 @@ public class TwoWayView extends AdapterView<ListAdapter> implements
                 reportScrollStateChange(OnScrollListener.SCROLL_STATE_TOUCH_SCROLL);
                 motionPosition = findMotionRowOrColumn((int) mLastTouchPos);
                 return true;
-            } else if (mMotionPosition >= 0 && mAdapter.isEnabled(mMotionPosition)) {
+            } else if (mMotionPosition >= 0 && (mAdapter != null && mAdapter.isEnabled(mMotionPosition))) {
                 mTouchMode = TOUCH_MODE_DOWN;
                 triggerCheckForTap();
             }
