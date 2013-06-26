@@ -48,7 +48,11 @@ namespace Waveface.Client
 
 		void swbCloudSharing_IsOnStatusChanged(object sender, EventArgs e)
 		{
-			Waveface.ClientFramework.Client.Default.ShareLabel((lblContentLocation.DataContext as ContentGroup).ID, rspRightSidePane2.swbCloudSharing.IsOn);
+			var labelGroup = lblContentLocation.DataContext as BunnyLabelContentGroup;
+
+			Waveface.ClientFramework.Client.Default.ShareLabel(labelGroup.ID, rspRightSidePane2.swbCloudSharing.IsOn);
+
+			labelGroup.RefreshShareProperties();
 		}
 
 		void btnClearAll_Click(object sender, RoutedEventArgs e)

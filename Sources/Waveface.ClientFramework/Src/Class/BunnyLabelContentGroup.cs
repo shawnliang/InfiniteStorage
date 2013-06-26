@@ -103,6 +103,14 @@ namespace Waveface.ClientFramework
 			refreshRecipients();
 		}
 
+		public void RefreshShareProperties()
+		{
+			refreshShareProperties();
+
+			refreshRecipients();
+		}
+
+
 		private void refreshShareProperties()
 		{
 			using (var conn = BunnyDB.CreateConnection())
