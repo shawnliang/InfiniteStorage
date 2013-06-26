@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -36,7 +36,8 @@ namespace Waveface.Client
             rspRightSidePane2.tbxName.KeyDown += tbxName_KeyDown;
             rspRightSidePane2.tbxName.LostFocus += tbxName_LostFocus;
 
-            rspRightSidePane2.swbCloudSharing.IsOnStatusChanged += swbCloudSharing_IsOnStatusChanged;
+			rspRightSidePane2.tbtnCloudSharing.Checked += tbtnCloudSharing_Checked;
+			rspRightSidePane2.tbtnCloudSharing.Unchecked += tbtnCloudSharing_Checked;
             rspRightSidePane2.btnCopyShareLink.Click += btnCopyShareLink_Click;
 
             rspRightSidePanel.btnClearAll.Click += new RoutedEventHandler(btnClearAll_Click);
@@ -107,11 +108,11 @@ namespace Waveface.Client
             Clipboard.SetText((lblContentLocation.DataContext as BunnyLabelContentGroup).ShareURL);
         }
 
-        void swbCloudSharing_IsOnStatusChanged(object sender, EventArgs e)
+		void tbtnCloudSharing_Checked(object sender, EventArgs e)
         {
 			var labelGroup = lblContentLocation.DataContext as BunnyLabelContentGroup;
 
-			Waveface.ClientFramework.Client.Default.ShareLabel(labelGroup.ID, rspRightSidePane2.swbCloudSharing.IsOn);
+			Waveface.ClientFramework.Client.Default.ShareLabel(labelGroup.ID, rspRightSidePane2.tbtnCloudSharing.IsChecked.Value);
 
 			labelGroup.RefreshShareProperties();
         }
@@ -445,20 +446,20 @@ namespace Waveface.Client
 
         private void rspRightSidePane2_OnAirClick(object sender, EventArgs e)
         {
-            ClientFramework.Client.Default.OnAir((lblContentLocation.DataContext as IContentEntity).ID, rspRightSidePane2.swbHomeSharing.IsOn);
+            ClientFramework.Client.Default.OnAir((lblContentLocation.DataContext as IContentEntity).ID, rspRightSidePane2.tbtnHomeSharing.IsChecked.Value);
         }
 
         private void updateRightSidePanel2(IContentGroup group)
         {
             var isOnAir = ClientFramework.Client.Default.IsOnAir(group);
 
-            rspRightSidePane2.swbHomeSharing.IsEnabled = ClientFramework.Client.Default.HomeSharingEnabled;
-            rspRightSidePane2.swbHomeSharing.IsOn = isOnAir;
+			rspRightSidePane2.tbtnHomeSharing.IsEnabled = ClientFramework.Client.Default.HomeSharingEnabled;
+            rspRightSidePane2.tbtnHomeSharing.IsChecked = isOnAir;
 
-            rspRightSidePane2.swbCloudSharing.IsOn = (group as BunnyLabelContentGroup).ShareEnabled;
+            rspRightSidePane2.tbtnCloudSharing.IsChecked = (group as BunnyLabelContentGroup).ShareEnabled;
 
-            rspRightSidePane2.lbxSharedPeoples.ItemsSource = (group as BunnyLabelContentGroup).Recipients.Select(item => string.Format("{0} ({1})", item.Name, item.Email));
-        }
+			rspRightSidePane2.tbxShareLink.Text = (lblContentLocation.DataContext as BunnyLabelContentGroup).ShareURL;
+		}
 
         private void rspRightSidePanel_AddToFavorite(object sender, System.EventArgs e)
         {

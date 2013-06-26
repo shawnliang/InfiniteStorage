@@ -10,44 +10,88 @@
              mc:Ignorable="d" Height="557.25">
 	<UserControl.Resources>
 		<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+		<Style x:Key="HomeSharingButtonStyle"
+               TargetType="ToggleButton">
+			<Setter Property="Content" Value="Turn Off Home Sharing" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked,
+											   ElementName=tbtnHomeSharing,
+                                               IsAsync=True}"
+                             Value="True">
+                    <Setter Property="Content" Value="Turn On Home Sharing" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+		<Style x:Key="ShareLinkButtonStyle"
+               TargetType="ToggleButton">
+			<Setter Property="Content" Value="Turn Off Public Website" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked,
+											   ElementName=tbtnCloudSharing,
+                                               IsAsync=True}"
+                             Value="True">
+                    <Setter Property="Content" Value="Turn On Public Website" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+		<Style x:Key="ShareLinkTipStyle"
+               TargetType="TextBlock">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked,
+											   ElementName=tbtnCloudSharing,
+                                               IsAsync=True}"
+                             Value="True">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
 	</UserControl.Resources>
 
-	<StackPanel x:Name="LayoutRoot">
-		<TextBox x:Name="tbxName"
-			Height="34"
-			Margin="10,10,10,0"
-			HorizontalAlignment="Stretch"
-			VerticalAlignment="Top"
-			HorizontalContentAlignment="Center"
-			VerticalContentAlignment="Center"
-			Background="#FF3B3B3B"
-			BorderBrush="Black"
-			BorderThickness="1"
-			FontFamily="Segoe UI Light"
-			Foreground="White"
-			Text="[Favorite Name]"
-			TextChanged="tbxName_TextChanged" FontSize="18.667" />
-		<Grid Margin="10,20,10,0" Height="25">
-			<Label Content="Home Sharing" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="White"/>
-			<local:SwitchButton x:Name="swbHomeSharing" VerticalAlignment="Top" Height="22" Margin="90,2,0,0" Width="60" IsOnStatusChanged="swbHomeSharing_IsOnStatusChanged"/>
-		</Grid>
-		<Grid Margin="10,20,10,0" Height="25">
-			<Label Content="Cloud Sharing" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="White"/>
-			<local:SwitchButton x:Name="swbCloudSharing" VerticalAlignment="Top" Height="22" Margin="90,2,0,0" Width="60"/>
-		</Grid>
-		<StackPanel Margin="10,20,10,0" Visibility="{Binding IsOn, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=swbCloudSharing}">
-			<Button x:Name="btnCopyShareLink" Height="34" Content="Copy share link" Margin="0" VerticalAlignment="Top"/>
-			<Label Content="Shared people" Foreground="White" Margin="0,20,0,0"/>
-			<DockPanel Height="198" VerticalAlignment="Top" Background="#FF212121" Margin="0">
-				<Button Height="34" DockPanel.Dock="Bottom" Content="Add..." Click="Button_Click"/>
-				<ListBox x:Name="lbxSharedPeoples" Background="{x:Null}" Foreground="#FFA8A8A8"/>
-			</DockPanel>
+
+		<StackPanel x:Name="LayoutRoot">
+			<TextBox x:Name="tbxName"
+				Height="34"
+				Margin="10,10,10,0"
+				HorizontalAlignment="Stretch"
+				VerticalAlignment="Top"
+				HorizontalContentAlignment="Center"
+				VerticalContentAlignment="Center"
+				Background="#FF3B3B3B"
+				BorderBrush="Black"
+				BorderThickness="1"
+				FontFamily="Segoe UI"
+				Foreground="White"
+				Text="[Favorite Name]"
+				TextChanged="tbxName_TextChanged" FontSize="18.667" FontWeight="Bold" />
+
+			<ToggleButton x:Name="tbtnHomeSharing" Margin="10,20,10,0" Height="34" Style="{DynamicResource HomeSharingButtonStyle}"/>
+			<Label Margin="10,0" Content="What is Home Sharing?" Foreground="#FFA8A8A8" HorizontalAlignment="Center"/>
+
+			<ToggleButton x:Name="tbtnCloudSharing" Margin="10,20,10,0" Height="34" Style="{DynamicResource ShareLinkButtonStyle}"/>
+			<TextBlock Margin="10,0" Text="Share this Favorite to your friends on GoFavorite.com" Foreground="#FFA8A8A8" HorizontalAlignment="Center" TextWrapping="WrapWithOverflow" Style="{DynamicResource ShareLinkTipStyle}"/>
+			<Grid Margin="10,20,10,0" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=tbtnCloudSharing}">
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+				<Label Content="See this Favorite at:" Foreground="#FFA8A8A8" Grid.ColumnSpan="2"/>
+				<TextBox x:Name="tbxShareLink" VerticalAlignment="Top" Margin="0,23,0,5" IsReadOnly="True" Grid.ColumnSpan="2" Height="23" VerticalContentAlignment="Center"/>
+				<Button x:Name="btnCopyShareLink" Height="34" Content="Copy" Margin="0,0,2.5,0" VerticalAlignment="Top" Grid.Row="1"/>
+				<Button Content="Email..." Click="Button_Click" Height="34" VerticalAlignment="Top" Margin="2.5,0,0,0" Grid.Row="1" Grid.Column="1"/>
+			</Grid>
+			<Button x:Name="btnDelete"
+				MinWidth="144"
+				Margin="10,20,10,0"
+				HorizontalAlignment="Stretch"
+				VerticalAlignment="Top"
+				Content="Delete" Click="btnAction_Copy1_Click" Visibility="Collapsed"/>
+			
 		</StackPanel>
-		<Button x:Name="btnDelete"
-			MinWidth="144"
-			Margin="10,20,10,0"
-			HorizontalAlignment="Stretch"
-			VerticalAlignment="Top"
-			Content="Delete" Click="btnAction_Copy1_Click" Visibility="Collapsed"/>
-	</StackPanel>
 </UserControl>
