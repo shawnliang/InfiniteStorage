@@ -109,7 +109,7 @@
                Content="{Binding SelectedItem.Name,
                                  ElementName=lbImages,
                                  IsAsync=True}"
-               FontFamily="Segoe UI Light"
+               FontFamily="Segoe UI"
                FontSize="16"
                Foreground="White"
                Opacity="0.6" />

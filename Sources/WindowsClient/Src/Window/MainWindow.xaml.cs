@@ -567,10 +567,16 @@ namespace Waveface.Client
             System.Windows.Visibility.Visible;
         }
 
-        private void btnAddNewSource_Click(object sender, RoutedEventArgs e)
+        private void btnAddNewSource_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog();
-            _waitForPairingDialog.Show();
+			WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog();
+			_waitForPairingDialog.Show();
         }
+
+		private void Label_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog();
+			_waitForPairingDialog.Show();
+		}
     }
 }

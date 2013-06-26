@@ -54,7 +54,7 @@
                HorizontalContentAlignment="Center"
                VerticalContentAlignment="Center"
                Content="/"
-               FontFamily="Segoe UI Light"
+               FontFamily="Segoe UI"
                Foreground="White"
                Padding="0" />
         <Label x:Name="lblPageNo"
@@ -66,7 +66,7 @@
                HorizontalContentAlignment="Center"
                VerticalContentAlignment="Center"
                Content="0"
-               FontFamily="Segoe UI Light"
+               FontFamily="Segoe UI"
                FontSize="14.667"
                Foreground="White"
                Padding="0" />
@@ -79,7 +79,7 @@
                HorizontalContentAlignment="Center"
                VerticalContentAlignment="Center"
                Content="0"
-               FontFamily="Segoe UI Light"
+               FontFamily="Segoe UI"
                FontSize="14.667"
                Foreground="White"
                Padding="0" />
