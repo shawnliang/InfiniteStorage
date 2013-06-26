@@ -1,6 +1,5 @@
 package com.waveface.favoriteplayer.ui.fragment;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import android.content.Intent;
@@ -50,6 +49,9 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 	public static final int OVERVIEW_VIEW_TYPE_RECENT_VIDEO = 3;
 	private String mServerUrl = null; 
 	
+	private ArrayList<String> mUpdateList = new ArrayList<String>();
+	private ArrayList<String> mPendingList = new ArrayList<String>();
+	
 	private Handler mHandler = new Handler();
 	
 	class ReloadRunnable implements Runnable {
@@ -75,8 +77,20 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 					child = null;
 				}
 			}
-
-			new ReloadLabelTask(child, labelId).execute(null, null, null);
+			synchronized (mUpdateList) {
+				if(mUpdateList.contains(labelId) == false) {
+					Log.d(TAG, "start task for label:" + labelId);
+					new ReloadLabelTask(labelId).execute(null, null, null);
+					mUpdateList.add(labelId);
+				} else {
+					Log.d(TAG, "task pending for label:" + labelId);
+					if(mPendingList .contains(labelId) == false) {
+						Log.d(TAG, "pend");
+						mPendingList.add(labelId);
+					}
+				}
+			}
+			
 		}
 		
 	}
@@ -127,7 +141,6 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		}
 		
 		new PrepareViewTask().execute(null, null, null);
-
 		
 		mNoContent = (TextView) root.findViewById(R.id.text_no_content);
 		switch(mType) {
@@ -157,6 +170,8 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 	}
 	
 	public void onEvent(LabelChangeEvent event) {
+		if(mAdapter == null)
+			return;
 		boolean needProcess = false;
 		
 		switch(mType) {
@@ -193,14 +208,9 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 	}
 	
 	private class ReloadLabelTask extends AsyncTask<Void, Void, OverviewData> {
-		private WeakReference<View> mView;
 		private String mLabelId;
-		private boolean mHasView = false;
 		
-		public ReloadLabelTask(View view, String labelId) {
-			if(view != null)
-				mHasView = true;
-			mView = new WeakReference<View>(view);
+		public ReloadLabelTask(String labelId) {
 			mLabelId = labelId;
 		}
 
@@ -208,7 +218,7 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		protected OverviewData doInBackground(Void... params) {
 			OverviewData data = loadLabelData(mLabelId,FileUtil.getDownloadFolder(getActivity()));
 			if(data != null) {
-				Log.e(TAG, "updatea success mLabelId=" + mLabelId);
+				Log.d(TAG, "updatea success mLabelId=" + mLabelId);
 				if(mType != OVERVIEW_VIEW_TYPE_FAVORITE) {
 					// already get title from loadLabelData
 					data.title = getLableTitle(data.autoType);
@@ -221,36 +231,33 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		
 		@Override
 		protected void onPostExecute(OverviewData result) {
-			View view = mView.get();
-			if (result != null) {
-				if (mHasView == false) {
-					// new
-					mAdapter.insertLabel(result);
+			synchronized (mUpdateList) {
+				if (result != null) {
+					mAdapter.updateLabel(result);
 					mAdapter.notifyDataSetChanged();
 					mList.invalidate();
 				} else {
-					// update
-					if (view != null) {
-						mAdapter.updateLabel(result);
-						mAdapter.notifyDataSetChanged();
-					}
+					// remove
+					mAdapter.removeLable(mLabelId);
+					mAdapter.notifyDataSetChanged();
 				}
-			} else {
-				// remove
-				mAdapter.removeLable(mLabelId);
-				mAdapter.notifyDataSetChanged();
-			}
+				
+				if(mAdapter.getCount() == 0) {
+					mNoContent.setVisibility(View.VISIBLE);
+				} else {
+					mNoContent.setVisibility(View.INVISIBLE);
+				}
 			
-			if(mAdapter.getCount() == 0) {
-				mNoContent.setVisibility(View.VISIBLE);
-			} else {
-				mNoContent.setVisibility(View.INVISIBLE);
-			}
-
-			if (view != null) {
-				ViewHolder holder = (ViewHolder) view.getTag();
-				holder.progress.setVisibility(View.INVISIBLE);
-				holder.countText.setVisibility(View.VISIBLE);
+				Log.d(TAG, "reload task done");
+				mUpdateList.remove(mLabelId);
+				if(mPendingList.contains(mLabelId)) {
+					Log.d(TAG, "start pending task for label:" + mLabelId);
+					ReloadRunnable runnable = new ReloadRunnable();
+					runnable.setupLabelId(mLabelId);
+					mHandler.post(runnable);
+					
+					mPendingList.remove(mLabelId);
+				}
 			}
 		}
 		
@@ -263,10 +270,8 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			if(getActivity() == null)
 				return null;
 			
-
+			Log.d(TAG, "PrepareViewTask start");
 			ArrayList<OverviewData> datas = new ArrayList<OverviewData>();
-			
-			Log.d(TAG, "PrepareViewTask: type=" + mType);
 			switch(mType) {
 			case OVERVIEW_VIEW_TYPE_FAVORITE:
 				fillData(datas, Constant.TYPE_FAVORITE);
@@ -289,25 +294,22 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 		
 		@Override
 		protected void onPostExecute(ArrayList<OverviewData> datas) {
+			mProgress.setVisibility(View.GONE);
 			if(datas != null) {
-				mProgress.setVisibility(View.GONE);
 				mAdapter = new OverviewAdapter(getActivity(), datas);
 				mList.setAdapter(mAdapter);
 				
 				if(datas.size() == 0) {
 					mNoContent.setVisibility(View.VISIBLE);
 				}
-				
-
-				ReloadRunnable runnable = new ReloadRunnable();
-//				runnable.setupLabelId(event.labelId);
-				mHandler.postDelayed(runnable, 3000);
+			} else {
+				Log.d(TAG, "no data");
 			}
+			Log.d(TAG, "PrepareViewTask done");
 		}
 		
 		private void fillData(ArrayList<OverviewData> datas, int type) {
 			Cursor c = LabelDB.getCategoryLabelByLabelId(getActivity(), type);
-			Log.d(TAG, "There are " + c.getCount() + " labels");
 			for(int i=0; i<c.getCount(); ++i) {
 				c.moveToPosition(i);
 				String labelId = c.getString(0);
@@ -349,7 +351,6 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 	private OverviewData loadLabelData(String labelId,String realDownloadFolder) {
 		Cursor labelCursor = LabelDB.getLabelByLabelId(getActivity(), labelId);		
 		Cursor viewCursor = LabelDB.getLabelFileViewByLabelId(getActivity(), labelId);
-		Log.d(TAG, "There are " + viewCursor.getCount() + " files");
 		OverviewData data = null;
 		if(labelCursor.moveToFirst() && viewCursor.moveToFirst()) {
 			data = new OverviewData();
@@ -363,11 +364,9 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			if(mType == OVERVIEW_VIEW_TYPE_FAVORITE) {
 				data.title = labelCursor.getString(1);
 			} else if(mType == OVERVIEW_VIEW_TYPE_RECENT_VIDEO) {
-//				if(fileCursor.moveToFirst()) {
-					String fileName =  realDownloadFolder + Constant.VIDEO_FOLDER+ "/"  +viewCursor
-							.getString(viewCursor.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
-					data.url = fileName;
-//				}
+				String fileName =  realDownloadFolder + Constant.VIDEO_FOLDER+ "/"  +viewCursor
+						.getString(viewCursor.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
+				data.url = fileName;
 			}
 		}
 		viewCursor.close();

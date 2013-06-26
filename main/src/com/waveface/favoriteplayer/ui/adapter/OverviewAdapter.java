@@ -194,5 +194,8 @@ public class OverviewAdapter extends BaseAdapter{
 
 		holder.labelText.setText(data.title);
 		holder.countText.setText(Integer.toString(data.count));
+		
+		holder.progress.setVisibility(View.INVISIBLE);
+		holder.countText.setVisibility(View.VISIBLE);
 	}
 }
