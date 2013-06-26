@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -510,16 +510,15 @@ namespace Waveface.Client
 
             var iniFile = System.IO.Path.Combine(path, @"sharefavorite.ini");
 
-            System.IO.File.Create(iniFile).Close();
-
             _w.setTitle(this.Title);
             _w.setiniPath(iniFile);
 
             var files = string.Join("~", (lbxContentContainer.DataContext as IEnumerable<IContentEntity>).Select(content => content.Uri.LocalPath).ToArray());
 
             _w.setFilename(files);
+			_w.setLabelId((lblContentLocation.DataContext as IContentGroup).ID);
             _w.setRun();
-            _w.Show();
+            _w.ShowDialog();
         }
 
         private void RefreshContentArea()
