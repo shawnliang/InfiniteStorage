@@ -13,26 +13,26 @@
 
 		<Style x:Key="HomeSharingButtonStyle"
                TargetType="ToggleButton">
-			<Setter Property="Content" Value="Turn Off Home Sharing" />
+			<Setter Property="Content" Value="Turn On Home Sharing" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsChecked,
 											   ElementName=tbtnHomeSharing,
                                                IsAsync=True}"
                              Value="True">
-                    <Setter Property="Content" Value="Turn On Home Sharing" />
+                    <Setter Property="Content" Value="Turn Off Home Sharing" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
 		<Style x:Key="ShareLinkButtonStyle"
                TargetType="ToggleButton">
-			<Setter Property="Content" Value="Turn Off Public Website" />
+			<Setter Property="Content" Value="Turn On Public Website" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsChecked,
 											   ElementName=tbtnCloudSharing,
                                                IsAsync=True}"
                              Value="True">
-                    <Setter Property="Content" Value="Turn On Public Website" />
+                    <Setter Property="Content" Value="Turn Off Public Website" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
