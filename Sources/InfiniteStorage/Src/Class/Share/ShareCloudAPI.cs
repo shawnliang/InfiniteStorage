@@ -8,6 +8,9 @@ using InfiniteStorage.Properties;
 using InfiniteStorage.Model;
 using System.IO;
 
+using Microsoft.WindowsAPICodePack.Shell;
+using InfiniteStorage.Common;
+
 namespace InfiniteStorage.Share
 {
 	class ShareCloudAPI : IShareCloudAPI
@@ -28,7 +31,54 @@ namespace InfiniteStorage.Share
 			}
 			else
 			{
-				log4net.LogManager.GetLogger(GetType()).Warn("video upload is not implemented yet");
+
+				var file_data = getVideoThumbnail(file);
+
+				if (file_data == null)
+				{
+					log4net.LogManager.GetLogger(GetType()).WarnFormat("{1} seems not a valid video... {0}", file.file_id, file.saved_path);
+					return;
+				}
+
+				postServiceClass.attachments_upload(file_data, CloudService.SessionToken, Settings.Default.GroupId, file.file_name + ".mp4", "", "", "video", "medium", file.file_id.ToString(), null, CloudService.APIKey, file.event_time);
+			}
+		}
+
+		private byte[] getVideoThumbnail(FileAsset file)
+		{
+			var thumb_path = Path.Combine(MyFileFolder.Thumbs, file.file_id.ToString() + ".thumb.mp4");
+
+			if (File.Exists(thumb_path))
+				File.Delete(thumb_path);
+
+			var file_path = Path.Combine(MyFileFolder.Photo, file.saved_path);
+
+			var videoWidth = getVideoWidth(file_path);
+
+
+			if (videoWidth <= 0)
+				return null;
+
+			if (videoWidth > 720)
+				FFmpegHelper.MakeVideoThumbnail720(file_path, thumb_path);
+			else
+				FFmpegHelper.MakeVideoThumbnail(file_path, thumb_path);
+
+			return File.ReadAllBytes(thumb_path);
+		}
+
+		private static int getVideoWidth(string file_path)
+		{
+			try
+			{
+				var fileInfo = ShellFile.FromFilePath(file_path);
+				var videoWidth = (int)fileInfo.Properties.System.Video.FrameWidth.Value;
+				return videoWidth;
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(typeof(ShareCloudAPI)).WarnFormat("Unable to get video width: " + file_path, err);
+				return -1;
 			}
 		}
 
