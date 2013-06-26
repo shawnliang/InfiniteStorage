@@ -6,7 +6,7 @@
           x:Name="UserControl"
           Background="{x:Null}"
           BorderBrush="{x:Null}"
-          FontFamily="Segoe UI Light"
+          FontFamily="Segoe UI"
           FontSize="16"
           Grid.IsSharedSizeScope="True"
           ItemContainerStyle="{DynamicResource TreeViewItemStyle1}"
@@ -204,7 +204,6 @@
             <StackPanel Orientation="Horizontal">
                 <Label x:Name="item"
                        Content="{Binding Name}"
-                       FontWeight="Bold"
                        Foreground="#a8a8a8" />
                 <Image x:Name="recvingIcon"
                        IsVisibleChanged="recvingIcon_IsVisibleChanged"
