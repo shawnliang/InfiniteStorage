@@ -70,12 +70,7 @@ namespace InfiniteStorage.Cloud
 						var post = new postServiceClass { APIKEY = APIKey };
 						_session_token = post.createAccount(UserEmail, Password, "anonymous");
 
-						if (string.IsNullOrEmpty(_session_token))
-							throw new Exception("create account not success");
-
 						_session_token = post.callLogin(UserEmail, Password);
-						if (string.IsNullOrEmpty(_session_token))
-							throw new Exception("login not success");
 
 						Settings.Default.GroupId = post.group_id;
 						Settings.Default.UserRegistered = true;
@@ -85,9 +80,6 @@ namespace InfiniteStorage.Cloud
 					{
 						var post = new postServiceClass { APIKEY = APIKey };
 						_session_token = post.callLogin(UserEmail, Password);
-
-						if (string.IsNullOrEmpty(_session_token))
-							throw new Exception("create account not success");
 					}
 				}
 				

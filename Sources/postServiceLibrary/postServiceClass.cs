@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using System.Web;
+using System.IO;
+using System.Net;
 
 namespace postServiceLibrary
 {
@@ -31,27 +33,17 @@ namespace postServiceLibrary
                 "apikey" + "=" + APIKEY;
 
             WebPostHelper _webPos = new WebPostHelper();
-            bool _isOK = _webPos.doPost(_url, _parms, null);
+            var response = _webPos.doPost(_url, _parms, null);
 
-            if (_isOK)
-            {
-                string _r = _webPos.getContent();
-                var results = JsonConvert.DeserializeObject<dynamic>(_r);
-                var sharedcode = results.shared_code;
-                result = sharedcode.ToString();
-            }
-            else
-            {
-                result = null;
-            }
-            return result;
+			var results = JsonConvert.DeserializeObject<dynamic>(response);
+			return results.shared_code.ToString();
         }
-        public bool tuneOffSharedcode(string session_token, string post_id)
+        public void tuneOffSharedcode(string session_token, string post_id)
         {
             bool result = false;
             if (session_token == "" || post_id == "")
             {
-                return false;
+				throw new ArgumentNullException();
             }
             string _url = "https://develop.waveface.com/v3/pio_posts/tuneoff_sharedcode";
 
@@ -62,26 +54,15 @@ namespace postServiceLibrary
                 "apikey" + "=" + APIKEY;
 
             WebPostHelper _webPos = new WebPostHelper();
-            bool _isOK = _webPos.doPost(_url, _parms, null);
-
-            if (_isOK)
-            {
-                string _r = _webPos.getContent();      
-                result = true;
-            }
-            else
-            {
-                result = false;
-            }
-            return result;
+            _webPos.doPost(_url, _parms, null);
         }
 
-        public bool tuneOnSharedcode(string session_token, string post_id)
+        public void tuneOnSharedcode(string session_token, string post_id)
         {
             bool result = false;
             if (session_token == "" || post_id == "")
             {
-                return false;
+				throw new ArgumentNullException();
             }
             string _url = "https://develop.waveface.com/v3/pio_posts/tuneon_sharedcode";
 
@@ -90,22 +71,11 @@ namespace postServiceLibrary
                  "apikey" + "=" + APIKEY;
 
             WebPostHelper _webPos = new WebPostHelper();
-            bool _isOK = _webPos.doPost(_url, _parms, null);
-
-            if (_isOK)
-            {
-                string _r = _webPos.getContent();
-                result = true;
-            }
-            else
-            {
-                result = false;
-            }
-            return result;
+            _webPos.doPost(_url, _parms, null);
         }
                                                                             
-#region create new account
-        public  string createAccount(string user, String password, string nickname)
+		#region create new account
+        public string createAccount(string user, String password, string nickname)
         {
             string result = null;
 
@@ -133,19 +103,10 @@ namespace postServiceLibrary
                 "apikey" + "=" + APIKEY;
 
             WebPostHelper _webPos = new WebPostHelper();
-            bool _isOK = _webPos.doPost(_url, _parms, null);
+            var response = _webPos.doPost(_url, _parms, null);
 
-            if (_isOK)
-            {
-                string _r = _webPos.getContent();
-                session_token = getSessionToken(_r);
-                result = session_token;
-            }
-            else
-            {
-                result = null;
-            }
-            return result;
+            session_token = getSessionToken(response);
+			return session_token;
         }
 
         public bool IsValidEmail(string strIn)
@@ -173,17 +134,16 @@ namespace postServiceLibrary
             result = token.ToString();
             return result;
         }
-#endregion
+		#endregion
 
-#region Update Post
-        public string UpdatePost(string session_token,String post_id, List<string> attachments_arr,string lastUpdateTime)
+		#region Update Post
+        public void UpdatePost(string session_token,String post_id, List<string> attachments_arr, DateTime lastUpdateTime)
         {
             string result = null;
             // verify
-            if (session_token == "" || post_id == null || attachments_arr == null || lastUpdateTime==null)
+            if (session_token == "" || post_id == null || attachments_arr == null)
             {
-                result = null;
-                // log for parmeters error
+				throw new ArgumentNullException();
             }
             //--
             APIKEY = "a23f9491-ba70-5075-b625-b8fb5d9ecd90";
@@ -200,20 +160,8 @@ namespace postServiceLibrary
             string coverAttach = "";
             string event_type = "favorite_shared";
             string favorite = "0";
-            try
-            {
-                string ret_post = _ws.posts_update(session_token, group_id, post_id, attachment_id_array, lastUpdateTime, type, event_type, favorite);
-                if (ret_post != null)
-                    result = ret_post;
-                else
-                    result = null;
-            }
-            catch (Exception err)
-            {
-                result = null;
-            }
 
-            return result;
+			_ws.posts_update(session_token, group_id, post_id, attachment_id_array, type, event_type, favorite, lastUpdateTime);
         }
  
 
@@ -229,9 +177,9 @@ namespace postServiceLibrary
             result = att0.Replace(@"\\", "/");
             return result;
         }   
- #endregion   
+		#endregion   
 
-#region create New post
+		#region create New post
         public string NewPost(string session_token,List<string> object_arr,List<string> email_arr, string post_id)
         {
             string result = null;
@@ -271,82 +219,83 @@ namespace postServiceLibrary
         {
 			return "[" + string.Join(",", object_arr.Select(x => "\"" + x + "\"").ToArray()) + "]";
         }
-#endregion
+		#endregion
 
- #region upload attachments
-        // do Multi attachments
-        // input: in [ xxxx~yyyy~zzzz ] format
-        // output: return List<string> of object id
-        // return null for error
-        public List<string> addAttachments(string session_token,string filenames)
-        {
-            List<string> object_arr = new List<string>();
+		#region upload attachments
+		public static MR_attachments_upload attachments_upload(byte[] file_data, string session_token, string group_id, string fileName,
+														string title, string description, string type, string image_meta,
+														string object_id, string post_id, string APIKEY, DateTime fileCreateTime)
+		{
+			string _url = "https://develop.waveface.com:443/v3" + "/pio_attachments/upload";
 
-            try
-            {
-                char[] delimiterChars = { '~' };
-                string[] arr = filenames.Split(delimiterChars);
-                int no_of_attachments = arr.Length;
+			string _mimeType = FileUtility.GetMimeType(new FileInfo(fileName));
+			byte[] _data;
+			if (file_data != null)
+			{
+				_data = file_data;
+			}
+			else
+			{
+				_data = FileUtility.ConvertFileToByteArray(fileName);
+			}
 
-                // log.Info("2. start Add attachments ");                      //
-              
-                foreach (string _file in arr)
-                {
-                    // log.Info("Add attachments: " + _file);
-                    string _data = callUploadAttachments(session_token,_file);
-                    object_arr.Add(_data);
-                }             
-            }
-            catch (Exception err)
-            {               
-                object_arr = null;
-            }
-            
-            return object_arr;
-        }
+			Dictionary<string, object> _dic = new Dictionary<string, object>();
+			_dic.Add("apikey", APIKEY);
+			_dic.Add("session_token", session_token);
+			_dic.Add("group_id", group_id);
+			_dic.Add("file_name", fileName);
+			_dic.Add("title", title);
+			//
 
-        private string callUploadAttachments(string session_token,string filename)
-        {
-            if (session_token == "" || filename == "")
-            {
-                return null;
-            }
-            newPostClass _ws = new newPostClass();
-                    
-            _ws.group_id = group_id;
-            _ws.session_token = session_token;
-            _ws.APIKEY = APIKEY;
-            string result = _ws.callUploadAttachment(session_token,filename);
-            _ws._object_id = result;
-            
-            return result;
-        }
+			string _date = fileCreateTime.ToUniversalTime().ToString(@"yyyy-MM-ddTHH\:mm\:ssZ");
+			_dic.Add("file_create_time", _date);
+			_dic.Add("description", description);
+			_dic.Add("type", type);
 
-		//string user = "ruddytest36@gmail.com";
-		//string password =  "a+123456";
-		//public string _initial()
-		//{           
-		//    string result = callLogin(user, password);
-		//    session_token = result;
-		//    return result;
-		//}
+			if (type == "image")
+				_dic.Add("image_meta", image_meta);
 
-        public string callLogin(string user, string password)
-        {
-            string result = "";
-            if (user == "" || password == "")
-            {
-                return null;
-            }
-            newPostClass _ws = new newPostClass();
-            _ws.APIKEY = "a23f9491-ba70-5075-b625-b8fb5d9ecd90";
-            
-            result = _ws.auth_login(user, password);
-            group_id = _ws.group_id;
-            session_token = _ws.session_token;
-            result = session_token;
-            return result;
-        }
- #endregion
+			if (!string.IsNullOrEmpty(object_id))
+				_dic.Add("object_id", object_id);
+
+			if (!string.IsNullOrEmpty(post_id))
+				_dic.Add("post_id", post_id);
+
+			_dic.Add("file", _data);
+
+			string _userAgent = "Windows";
+
+			string _fileName = new FileInfo(fileName).Name;
+
+			HttpWebResponse _webResponse = MultipartFormDataPostHelper.MultipartFormDataPost(_url, _userAgent, _dic,
+																							 _fileName, _mimeType);
+
+
+			// Process response
+			StreamReader _responseReader = new StreamReader(_webResponse.GetResponseStream());
+			string _r = _responseReader.ReadToEnd();
+			_webResponse.Close();
+
+			return JsonConvert.DeserializeObject<MR_attachments_upload>(_r);
+		}
+
+		#endregion
+
+		public string callLogin(string user, string password)
+		{
+			string result = "";
+			if (user == "" || password == "")
+			{
+				return null;
+			}
+			newPostClass _ws = new newPostClass();
+			_ws.APIKEY = "a23f9491-ba70-5075-b625-b8fb5d9ecd90";
+
+			result = _ws.auth_login(user, password);
+			group_id = _ws.group_id;
+			session_token = _ws.session_token;
+			result = session_token;
+			return result;
+		}
     }
 }

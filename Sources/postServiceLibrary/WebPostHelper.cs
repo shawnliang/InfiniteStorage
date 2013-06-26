@@ -29,9 +29,8 @@ namespace postServiceLibrary
 			return m_buff;
 		}
 
-		public bool doPost(string sUrl, string data, string referer)
+		public string doPost(string sUrl, string data, string referer)
 		{
-			bool _dosuccess = false;
 			HttpWebRequest _urlConn = null;
 
 			try
@@ -80,7 +79,7 @@ namespace postServiceLibrary
 				//取回回傳內容
 				m_buff = (new StreamReader(_urlConn.GetResponse().GetResponseStream())).ReadToEnd();
 
-				_dosuccess = true;
+				return m_buff;
 			}
 			catch (WebException _e)
 			{
@@ -97,10 +96,8 @@ namespace postServiceLibrary
 						throw new Exception(errObj.api_ret_message.ToString(), _e);
 					}
 				}
-			}
-			catch (Exception _e)
-			{
-				// NLogUtility.Exception(s_logger, _e, "doPost");
+				else
+					throw;
 			}
 			finally
 			{
@@ -116,8 +113,6 @@ namespace postServiceLibrary
 				{
 				}
 			}
-
-			return _dosuccess;
 		}
 	}
 }

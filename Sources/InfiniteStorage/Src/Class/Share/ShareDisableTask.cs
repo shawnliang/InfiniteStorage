@@ -9,7 +9,8 @@ namespace InfiniteStorage.Share
 	{
 		public void Process(Model.Label label)
 		{
-			throw new NotImplementedException();
+			var db = new ShareEnableTaskDB();
+			db.UpdateShareComplete(label);
 		}
 	}
 }

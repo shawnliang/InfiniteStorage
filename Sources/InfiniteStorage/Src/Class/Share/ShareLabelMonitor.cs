@@ -10,17 +10,35 @@ namespace InfiniteStorage.Share
 	{
 		private IShareLabelMonitorDB db;
 		private IShareTaskFactory factory;
+		private NoReentrantTimer timer;
 
 		public ShareLabelMonitor()
 		{
 			this.db = new ShareLabelMonitorDB();
 			this.factory = new ShareTaskFactory();
+			this.timer = new NoReentrantTimer(Timer_elapsed, null, 3000, 10000);
 		}
 
 		public ShareLabelMonitor(IShareLabelMonitorDB db, IShareTaskFactory factory)
 		{
 			this.db = db;
 			this.factory = factory;
+			this.timer = new NoReentrantTimer(Timer_elapsed, null, 3000, 10000);
+		}
+
+		public void Start()
+		{
+			timer.Start();
+		}
+
+		public void Stop()
+		{
+			timer.Stop();
+		}
+
+		private void Timer_elapsed(object nil)
+		{
+			Run();
 		}
 
 		public void Run()

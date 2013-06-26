@@ -13,8 +13,7 @@ namespace InfiniteStorage.Share
 		public ShareEnableTask()
 		{
 			this.db = new ShareEnableTaskDB();
-
-			throw new NotImplementedException();
+			this.api = new ShareCloudAPI();
 		}
 
 		public ShareEnableTask(IShareEnableTaskDB db, IShareCloudAPI api)

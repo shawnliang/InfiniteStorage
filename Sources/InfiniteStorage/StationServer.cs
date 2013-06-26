@@ -12,6 +12,7 @@ using System.Drawing;
 using InfiniteStorage.REST;
 using System.IO;
 using Microsoft.Win32;
+using InfiniteStorage.Share;
 
 namespace InfiniteStorage
 {
@@ -31,6 +32,7 @@ namespace InfiniteStorage
 		private AutoLabelController m_autoLabel;
 		private AutoUpdate m_autoUpdate;
 		private ThumbnailCreator m_thumbnailCreator;
+		private ShareLabelMonitor m_shareMonitor;
 
 		private List<WebsocketProtocol.ProtocolContext> waitForUserAccept = new List<WebsocketProtocol.ProtocolContext>();
 		private object userAcceptCS = new object();
@@ -109,6 +111,8 @@ namespace InfiniteStorage
 			};
 
 			m_thumbnailCreator = new ThumbnailCreator();
+
+			m_shareMonitor = new ShareLabelMonitor();
 		}
 
 		
@@ -191,6 +195,7 @@ namespace InfiniteStorage
 			m_ReRegBonjourTimer.Start();
 
 			m_thumbnailCreator.Start();
+			m_shareMonitor.Start();
 		}
 
 
@@ -204,6 +209,7 @@ namespace InfiniteStorage
 			m_recentLabelTimer.Stop();
 			m_autoUpdate.Stop();
 			m_ReRegBonjourTimer.Stop();
+			m_shareMonitor.Stop();
 		}
 
 		private void reregisterBonjour(object nil)

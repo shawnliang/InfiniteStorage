@@ -62,6 +62,8 @@ namespace Waveface.Client
 
         public void SetUI()
         {
+            bool _smallFileExists;
+
             GetCounts();
 
             SetInfor();
@@ -70,11 +72,22 @@ namespace Waveface.Client
 
             foreach (var _file in Event)
             {
+                _smallFileExists = false;
+
                 if (_file.type == 0)
                 {
                     string _path = _file.tiny_path.Replace("tiny", "small");
 
                     if (File.Exists(_path))
+                    {
+                        _smallFileExists = true;
+                    }
+                    else
+                    {
+                        _path = _file.tiny_path;
+                    }
+
+                    if (_smallFileExists || File.Exists(_path))
                     {
                         EventPhoto _eventPhoto = new EventPhoto
                                                      {
