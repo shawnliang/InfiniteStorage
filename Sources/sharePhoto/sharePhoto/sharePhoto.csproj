@@ -231,6 +231,7 @@
     <Compile Include="contactData.cs" />
     <Compile Include="FileUtility.cs" />
     <Compile Include="iniParser.cs" />
+    <Compile Include="labelCommand.cs" />
     <Compile Include="MultiPartClass.cs">
       <SubType>Component</SubType>
     </Compile>
