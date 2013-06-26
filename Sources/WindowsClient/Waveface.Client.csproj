@@ -434,6 +434,15 @@
     <Resource Include="Resource\380.gif" />
     <Resource Include="Resource\en_generic_rgb_wo_60.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\ico_fav_star_unselect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\ico_arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\ico_add_source.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\.NETFramework\v4.5\Microsoft.Expression.Blend.WPF.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

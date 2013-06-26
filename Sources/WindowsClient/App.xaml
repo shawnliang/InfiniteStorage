@@ -60,6 +60,11 @@
                      CreateOptions="IgnoreImageCache"
                      UriSource="pack://application:,,,/Resource/ico_star_unselect.png" />
 
+        <BitmapImage x:Key="UnSelectedFavStar"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="pack://application:,,,/Resource/ico_fav_star_unselect.png" />
+
         <BitmapImage x:Key="NormalStarBox"
                      CacheOption="OnLoad"
                      CreateOptions="IgnoreImageCache"

@@ -632,7 +632,7 @@
                VerticalContentAlignment="Center"
                Content="{Binding Maximum,
                                  ElementName=PlayProgress}"
-               FontFamily="Segoe UI Light"
+               FontFamily="Segoe UI"
                FontSize="8"
                Foreground="#FFF3F3F7"
                Padding="0"
@@ -646,7 +646,7 @@
                VerticalContentAlignment="Center"
                Content="{Binding Value,
                                  ElementName=PlayProgress}"
-               FontFamily="Segoe UI Light"
+               FontFamily="Segoe UI"
                FontSize="8"
                Foreground="#FFF3F3F7"
                Padding="0"
@@ -659,7 +659,7 @@
                HorizontalContentAlignment="Center"
                VerticalContentAlignment="Center"
                Content="/"
-               FontFamily="Segoe UI Light"
+               FontFamily="Segoe UI"
                FontSize="8"
                Foreground="#FFF3F3F7"
                Padding="0"
