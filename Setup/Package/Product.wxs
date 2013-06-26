@@ -114,6 +114,14 @@
           <Component Id="CommandLine.dll" Guid="*">
             <File Id="CommandLine.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\CommandLine.dll" />
           </Component>
+
+          <Component Id="Microsoft.WindowsAPICodePack.dll" Guid="*">
+            <File Id="Microsoft.WindowsAPICodePack.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Microsoft.WindowsAPICodePack.dll" />
+          </Component>
+
+          <Component Id="Microsoft.WindowsAPICodePack.Shell.dll" Guid="*">
+            <File Id="Microsoft.WindowsAPICodePack.Shell.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\Microsoft.WindowsAPICodePack.Shell.dll" />
+          </Component>
           
           <Component Id="InfiniteStorage.db.dll" Guid="*">
             <File Id="InfiniteStorage.db.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\InfiniteStorage.db.dll" />
@@ -365,7 +373,8 @@
       <ComponentRef Id="System.Reactive.PlatformServices.dll" />
       <ComponentRef Id="BonjourAgent.exe" />
       <ComponentRef Id="CommandLine.dll" />
-                 
+      <ComponentRef Id="Microsoft.WindowsAPICodePack.dll" />
+      <ComponentRef Id="Microsoft.WindowsAPICodePack.Shell.dll" />
       <ComponentGroupRef Id="photoSharedFiles" />
     </Feature>
 
