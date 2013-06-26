@@ -86,6 +86,8 @@
         -->
         <Image HorizontalAlignment="Center"
                VerticalAlignment="Center"
+               OpacityMask="Black"
+               RenderTransformOrigin="0.5,0.5"
                Source="{Binding ThumbnailSource,
                                 IsAsync=True}"
                Stretch="UniformToFill">

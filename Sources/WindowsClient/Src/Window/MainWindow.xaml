@@ -576,7 +576,6 @@
                                       Grid.Row="1"
                                       BorderBrush="{x:Null}"
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                      TreeViewItemClick="TreeViewItem_PreviewMouseLeftButtonDown"
                                       VirtualizingStackPanel.IsVirtualizing="True"
                                       VirtualizingStackPanel.VirtualizationMode="Recycling" />
                 </Grid>
@@ -598,8 +597,7 @@
                            Foreground="#FFA8A8A8" />
                     <local:FavoriteListBox x:Name="lbxFavorites"
                                            Grid.Row="1"
-                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                           SelectionChanged="lbxFavorites_SelectionChanged" />
+                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
                 </Grid>
 
             </Grid>

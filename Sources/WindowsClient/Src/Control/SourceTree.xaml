@@ -25,10 +25,6 @@
         <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
                          Color="Transparent" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <Style TargetType="{x:Type TreeViewItem}">
-            <EventSetter Event="UIElement.PreviewMouseLeftButtonDown"
-                         Handler="TreeViewItem_PreviewMouseLeftButtonDown" />
-        </Style>
         <BitmapImage x:Key="SelectedIcon"
                      CacheOption="OnLoad"
                      CreateOptions="IgnoreImageCache"
