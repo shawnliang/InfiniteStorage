@@ -287,6 +287,9 @@ public class PlayerService extends Service{
     	        		if(mPairedServers.size()!=0){
     	        			RuntimeState.mAutoConnectMode = true ;
     	        		}
+    	        		else{
+    	        			RuntimeState.mAutoConnectMode = false ;
+    	        		}
 	                	if(NetworkUtil.isWifiNetworkAvailable(mContext) 
 	                			&& RuntimeState.OnWebSocketOpened == false){
 		                	if(RuntimeState.mAutoConnectMode){
