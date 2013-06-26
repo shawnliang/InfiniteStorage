@@ -36,6 +36,9 @@ namespace Waveface.Client
             rspRightSidePane2.tbxName.KeyDown += tbxName_KeyDown;
             rspRightSidePane2.tbxName.LostFocus += tbxName_LostFocus;
 
+			rspRightSidePane2.tbtnHomeSharing.Checked += rspRightSidePane2_OnAirClick;
+			rspRightSidePane2.tbtnHomeSharing.Unchecked += rspRightSidePane2_OnAirClick;
+
 			rspRightSidePane2.tbtnCloudSharing.Checked += tbtnCloudSharing_Checked;
 			rspRightSidePane2.tbtnCloudSharing.Unchecked += tbtnCloudSharing_Checked;
             rspRightSidePane2.btnCopyShareLink.Click += btnCopyShareLink_Click;
