@@ -192,6 +192,9 @@
       <DependentUpon>SourceTree.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Class\Converter\ContentTypeCountConverter.cs" />
+    <Compile Include="Src\Dialog\TakeTourDialog.xaml.cs">
+      <DependentUpon>TakeTourDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Event\UnSortedItemEventArgs.cs" />
     <Compile Include="Src\Extension\CollectionExtension.cs" />
     <Compile Include="Src\Extension\TreeViewExtension.cs" />
@@ -256,6 +259,10 @@
     <Page Include="Src\Control\LabelTag.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Src\Dialog\TakeTourDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Src\Window\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

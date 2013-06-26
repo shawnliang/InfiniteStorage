@@ -292,11 +292,16 @@ namespace Waveface.Client
             lbxFavorites.SelectedItem = null;
         }
 
-        private static void TryDisplayUnsortedTutorial()
+        private void TryDisplayUnsortedTutorial()
         {
             if (!Properties.Settings.Default.IsFirstSelectUnsorted)
             {
-                Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215521-step2-organizing-photos-and-videos-in-favorite-");
+				var result = TakeTourDialog.Show("Organizing thousands of photos on your phone will be breeze from now on. Check out a couple basic tips to get started.", this);
+				
+				if (result.HasValue && result.Value)
+					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215521-step2-organizing-photos-and-videos-in-favorite-");
+
+
                 Properties.Settings.Default.IsFirstSelectUnsorted = true;
                 Properties.Settings.Default.Save();
             }
@@ -409,21 +414,27 @@ namespace Waveface.Client
             }
         }
 
-        private static void TryDisplayFavoriteTutorial()
+        private void TryDisplayFavoriteTutorial()
         {
             if (!Properties.Settings.Default.IsFirstSelectFavorite)
             {
-                Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215523-step4-share-favorites-with-your-favorite-people");
+				var result = TakeTourDialog.Show("Share precious moments you’ve picked out to your favorite people. Check out a couple basic tips to get started.", this);
+				if (result.HasValue && result.Value)
+					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215523-step4-share-favorites-with-your-favorite-people");
+
                 Properties.Settings.Default.IsFirstSelectFavorite = true;
                 Properties.Settings.Default.Save();
             }
         }
 
-        private static void TryDisplayStarredTutorial()
+        private void TryDisplayStarredTutorial()
         {
             if (!Properties.Settings.Default.IsFirstSelectStarred)
             {
-                Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215522-step3-view-favorite-memories-on-tablets-and-tvs-");
+				var result = TakeTourDialog.Show("View your favorite stuff on your tablet and TV in no time. Check out a couple basic tips to get started.", this);
+				if (result.HasValue && result.Value)
+					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215522-step3-view-favorite-memories-on-tablets-and-tvs-");
+
                 Properties.Settings.Default.IsFirstSelectStarred = true;
                 Properties.Settings.Default.Save();
             }
