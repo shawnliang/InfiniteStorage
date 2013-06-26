@@ -33,6 +33,7 @@ import com.waveface.favoriteplayer.task.ChangeLabelsTask;
 import com.waveface.favoriteplayer.task.InitDownloadLabelsTask;
 import com.waveface.favoriteplayer.util.Log;
 import com.waveface.favoriteplayer.util.NetworkUtil;
+import com.waveface.favoriteplayer.websocket.RuntimeWebClient;
 import com.waveface.jmdns.JMDNS;
 import com.waveface.jmdns.ServiceEvent;
 import com.waveface.jmdns.ServiceInfo;
@@ -50,7 +51,7 @@ public class PlayerService extends Service{
 	private String mCondidateWSLocation ;
 
 	//TIMER
-    private final int UPDATE_INTERVAL = 20 * 1000;
+    private final int UPDATE_INTERVAL = 30 * 1000;
 
     private Timer SyncTimer = null;
     
@@ -84,16 +85,20 @@ public class PlayerService extends Service{
         SyncTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-            	if(RuntimeState.OnWebSocketOpened == false){
+            	if(RuntimeState.OnWebSocketOpened == false && RuntimeState.isMDNSSetUped == false){
             		connectPCWithPairedServer();
-            		autoPairingConnect();
             	}
+            	try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
             	if(NetworkUtil.isWifiNetworkAvailable(mContext) ){
-                	long fromTime = System.currentTimeMillis()-mMDNSSetupTime;
+//                	long fromTime = System.currentTimeMillis()-mMDNSSetupTime;
                 	if(NetworkUtil.isWifiNetworkAvailable(mContext)
-                			&& RuntimeState .OnWebSocketOpened == false
-                			&& fromTime > (60*1000)){
-                		    Log.d(TAG, "reset MDNS FOR WAIT FOR 1 Minutes");
+                			&& (RuntimeWebClient.isConnected() == false || RuntimeState.OnWebSocketOpened == false)){
+//                			&& fromTime > (60*1000)){
+                		    Log.d(TAG, "reset MDNS ");
     						finishBonjourPaired();
     						startupBonjourPaired();
                 	}                	            	
@@ -118,8 +123,7 @@ public class PlayerService extends Service{
 		registerReceiver(mReceiver, filter);
 		
 		connectPCWithPairedServer();
-		RuntimeState.mAutoConnectMode = ServersLogic.hasBackupedServers(this);				
-		if(RuntimeState.OnWebSocketOpened == false){
+		if(RuntimeState.OnWebSocketOpened == false && SyncTimer==null){
 			startupBonjourPaired();
 		}
 		Log.d(TAG, "onCreate");		
@@ -196,20 +200,21 @@ public class PlayerService extends Service{
 							}
 						}
 					}
-					else if(actionContent.equals(Constant.ACTION_WEB_SOCKET_SERVER_DISCONNECTED)){
-						//
-					}
 				}
 			}
 			else if (Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED.equals(action)) {
-				if(mLableInitStatus == 0 && RuntimeState.isDownloadingLabel== false 	){
+				if(mLableInitStatus == 0 && RuntimeState.isDownloadingLabel== false){
 					RuntimeState.isDownloadingLabel = true;
 					new InitDownloadLabelsTask(mContext).execute(new Void[]{});					
 				}
 				else{
 					DownloadLogic.subscribe(mContext);
 				}
-			}else if(Constant.ACTION_LABEL_CHANGE_NOTIFICATION.equals(action)){
+			}
+			else if(Constant.ACTION_WEB_SOCKET_SERVER_DISCONNECTED.equals(action)){
+				RuntimeState.OnWebSocketOpened = false;
+			}
+			else if(Constant.ACTION_LABEL_CHANGE_NOTIFICATION.equals(action)){
 				mLableInitStatus = mPrefs.getInt(
 						Constant.PREF_DOWNLOAD_LABEL_INIT_STATUS, 0);
 				if(mLableInitStatus == 1 && RuntimeState.needToSync() == false){
@@ -280,7 +285,8 @@ public class PlayerService extends Service{
     					entity.notifyPort = si.getPropertyString(Constant.PARAM_NOTIFY_PORT);
     					entity.restPort = si.getPropertyString(Constant.PARAM_REST_PORT);
     	                entity.wsLocation = "ws://"+si.getHostAddress()+":"+si.getPort();
-    	                Log.d(TAG, "Resolved SERVER NAME:"+entity.serverName);
+    	                Log.d(TAG, "Resolved SERVER:"+entity.serverName);    	                
+    	                Log.d(TAG, "Resolved SERVER DATA:"+entity.wsLocation);
     	                
     	                ServersLogic.updateBonjourServer(mContext, entity);
     	        		mPairedServers = ServersLogic.getPairedServer(mContext);
@@ -371,7 +377,7 @@ public class PlayerService extends Service{
 					Log.d(TAG, "auto connect");
 					startWebSocketConnect(true);	
 					try {
-						Thread.sleep(200);
+						Thread.sleep(350);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -420,18 +426,21 @@ public class PlayerService extends Service{
 		public void handleMessage(Message msg){
 			switch (msg.what) {
 				case MSG_SETUP_BONJOUR:
-					if(RuntimeState.isMDNSSetUped == false 
-						&& RuntimeState.OnWebSocketOpened == false){
+//					if(RuntimeState.isMDNSSetUped == false 
+//						&& RuntimeState.OnWebSocketOpened == false){
+						Log.d(TAG, "Setup MDNS");
 						setupMDNS();
-					}
+//					}
 					break;
 				case MSG_RELEASE_BONJOUR:
 					if(RuntimeState.isMDNSSetUped == true){
+						Log.d(TAG, "Release MDNS");
 						releaseMDNS();
 					}
 					break;
 				case MSG_WEBSOCKET_CONNECT:					
 					int autoConnect = msg.arg1;
+					Log.d(TAG, "CONNECT IP:"+mCandidateServer.ip);
 					ServersLogic.startWSServerConnect(mContext, 
 							mCandidateServer.wsLocation, 
 							mCandidateServer.serverId,
