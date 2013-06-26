@@ -40,8 +40,14 @@ namespace Wpf_testHTTP
         public string favoriteTitle = "Waveface Office";
         public string RefreshKey_real = "";                                         // kept the real refresh token
         public string access_token = "";
+        public string label_id = "";
 
         private static readonly ILog log = LogManager.GetLogger(typeof(MainWindow));
+
+        public void setLabelId(string labelid)
+        {
+            label_id = labelid;
+        }
         public void setTitle(string title)
         {
             favoriteTitle = title;
@@ -154,15 +160,7 @@ namespace Wpf_testHTTP
             }
             service_oauth();
         }
-        //
-        //public List<string> getMailList()
-        //{
-        //    List<string> mailList = new List<string>();
-        //    mailList = email_arr;
 
-        //    return mailList;
-        //}
-              // Anonymous
         private void createAccount(string serverId)
         {
             iniParser parser = new iniParser();
