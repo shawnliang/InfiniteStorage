@@ -324,8 +324,8 @@ namespace Wpf_testHTTP
 
         public MainWindow()
         {
-            string serverId = "isserverid";
-            createAccount(serverId);
+            //string serverId = "isserverid";
+            //createAccount(serverId);
             // return;
 
             string[] args = Environment.GetCommandLineArgs();
@@ -364,25 +364,25 @@ namespace Wpf_testHTTP
         private void worker_DoWork()
         {
 
-            log.Info("1. Login with: " + user + " / " + password);            //
-            // 1. login 
-            string data = callLogin(user, password);
+            //log.Info("1. Login with: " + user + " / " + password);            //
+            //// 1. login 
+            //string data = callLogin(user, password);
 
-            // 2. upload attachments
-            char[] delimiterChars = { '~' };
-            arr = filename.Split(delimiterChars);
-            no_of_attachments = arr.Length;
+            //// 2. upload attachments
+            //char[] delimiterChars = { '~' };
+            //arr = filename.Split(delimiterChars);
+            //no_of_attachments = arr.Length;
 
-            log.Info("2. start Add attachments ");                      //
+            //log.Info("2. start Add attachments ");                      //
 
-            foreach (string _mail in arr)
-            {
-                log.Info("Add attachments: " + _mail);
-                string _data = callUploadAttachment(_mail);
-            }
+            //foreach (string _mail in arr)
+            //{
+            //    log.Info("Add attachments: " + _mail);
+            //    string _data = callUploadAttachment(_mail);
+            //}
             worker_RunWorkerCompleted();
 
-            log.Info("End of attachments!");                            //
+            //log.Info("End of attachments!");                            //
         }
 
         public event EventHandler _sendDataCompleted = delegate { };
@@ -446,8 +446,9 @@ namespace Wpf_testHTTP
                 email_arr.Add(_mail);
             }
             shareButtonClick = true;
+          
+            //sendEmailList();    
             just_busy(true);
-
             return;
             
             //-- never run, except testing
@@ -466,33 +467,33 @@ namespace Wpf_testHTTP
         private void service_run()
         {
             shareButtonClick = false;
-            _ws.group_id = group_id;
-            _ws.session_token = session_token_key;
-            _ws.APIKEY = APIKEY;
-            string object_id = _ws._object_id;
-            string content = "";
-            string attachment_id_array = count_attachments(); //  "[" + '"' + object_id.ToString() + '"' + "]";
-            string preview = "";
-            string type = "event";
-            string share_email_list = count_emails(); // "[" + '"' + email + '"' + "]";
-            string coverAttach = "";
-            string event_type = "favorite_shared";
-            string favorite = "0";
-            try
-            {
-                MR_posts_new ret_post = _ws.posts_new(session_token_key, group_id, content, attachment_id_array, preview, type, coverAttach, share_email_list, event_type, favorite);
-                textBox_return.Text = "Upload 完畢! \r\n Create post_id= " + ret_post.post.post_id + ", " + ret_post.api_ret_message + " !";
-                textBox_return.Text += "\r\n\r\n" + _ws._responseMessage;
-                //email_list.Items.Clear();
-                AutoCompleteBox.Text = "";
-            }
-            catch (Exception err)
-            {
-                just_busy(false);
-                // to log error
-                textBox_return.Text = "return NULL, get image error!";
-                log.Error("Create New Post, return NULL: " + err.Message);                  //
-            }
+            //_ws.group_id = group_id;
+            //_ws.session_token = session_token_key;
+            //_ws.APIKEY = APIKEY;
+            //string object_id = _ws._object_id;
+            //string content = "";
+            //string attachment_id_array = count_attachments(); //  "[" + '"' + object_id.ToString() + '"' + "]";
+            //string preview = "";
+            //string type = "event";
+            //string share_email_list = count_emails(); // "[" + '"' + email + '"' + "]";
+            //string coverAttach = "";
+            //string event_type = "favorite_shared";
+            //string favorite = "0";
+            //try
+            //{
+            //    MR_posts_new ret_post = _ws.posts_new(session_token_key, group_id, content, attachment_id_array, preview, type, coverAttach, share_email_list, event_type, favorite);
+            //    textBox_return.Text = "Upload 完畢! \r\n Create post_id= " + ret_post.post.post_id + ", " + ret_post.api_ret_message + " !";
+            //    textBox_return.Text += "\r\n\r\n" + _ws._responseMessage;
+            //    //email_list.Items.Clear();
+            //    AutoCompleteBox.Text = "";
+            //}
+            //catch (Exception err)
+            //{
+            //    just_busy(false);
+            //    // to log error
+            //    textBox_return.Text = "return NULL, get image error!";
+            //    log.Error("Create New Post, return NULL: " + err.Message);                  //
+            //}
             //busy_flag.Visibility = Visibility.Visible;
             label_favorite.Visibility = Visibility.Visible;
             label_pass.Visibility = Visibility.Visible;
