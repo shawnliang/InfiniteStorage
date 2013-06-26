@@ -191,7 +191,7 @@ namespace InfiniteStorage
 		{
 			if (checkboxAutoRun.Checked)
 			{
-				var value = "\"" + Assembly.GetExecutingAssembly().Location + "\"";
+				var value = "\"" + Assembly.GetExecutingAssembly().Location + "\" --minimized";
 				Registry.SetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run", "com.waveface.FavoriteHome", value);
 			}
 			else

@@ -262,12 +262,5 @@ namespace InfiniteStorage
 				log4net.LogManager.GetLogger(GetType()).Warn("Error in removeDeviceFromNotifyIconMenu", err);
 			}
 		}
-
-		public void OnAddingNewSources(object sender, EventArgs e)
-		{
-			WaitForPairingDialog.Instance.Show();
-			WaitForPairingDialog.Instance.Activate();
-			WaitForPairingDialog.Instance.BringToFront();
-		}
 	}
 }

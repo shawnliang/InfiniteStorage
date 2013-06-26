@@ -107,14 +107,10 @@ namespace InfiniteStorage
 			server = new StationServer();
 			server.Start();
 
-			if (hasAnyRegisteredDevice())
-			{
-				BonjourServiceRegistrator.Instance.Register(false);
-			}
-			else
-			{
-				WaitForPairingDialog.Instance.Show();
-			}
+			BonjourServiceRegistrator.Instance.Register(false);
+
+			if (!Environment.GetCommandLineArgs().Contains("--minimized"))
+				ImportUIPresenter.Instance.StartViewer();
 			
 			Application.Run();
 		}

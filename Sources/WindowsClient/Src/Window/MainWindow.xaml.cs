@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Waveface.ClientFramework;
 using Waveface.Model;
 
@@ -17,6 +18,8 @@ namespace Waveface.Client
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+        private DispatcherTimer uiDelayTimer;
+
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -39,6 +42,33 @@ namespace Waveface.Client
 			rspRightSidePanel.btnClearAll.Click += new RoutedEventHandler(btnClearAll_Click);
 
 			lblContentTypeCount.Content = string.Format("0 photos 0 videos");
+
+            if (Properties.Settings.Default.IsFirstUse)
+            {
+                uiDelayTimer = new DispatcherTimer();
+                uiDelayTimer.Tick += uiDelayTimer_Tick;
+                uiDelayTimer.Interval = new TimeSpan(0, 0, 1);
+                uiDelayTimer.Start();
+            }
+        }
+
+        void uiDelayTimer_Tick(object sender, EventArgs e)
+        {
+            uiDelayTimer.Stop();
+
+            MessageBoxResult _messageBoxResult = MessageBox.Show("See a quick tour ?", "Favorite*", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
+
+            if (_messageBoxResult == MessageBoxResult.Yes)
+            {
+                Process.Start(@"http://waveface.com/");
+            }
+
+            WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog();
+            _waitForPairingDialog.ShowDialog();
+
+            //測試中, 先不存
+            //Properties.Settings.Default.IsFirstUse = false;
+            //Properties.Settings.Default.Save();
 		}
 
 		void btnCopyShareLink_Click(object sender, RoutedEventArgs e)

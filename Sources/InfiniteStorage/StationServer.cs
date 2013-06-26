@@ -236,7 +236,6 @@ namespace InfiniteStorage
 			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_OpenBackupFolder, null, m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked);
 
 			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Preferences, null, m_notifyIconController.OnPreferencesMenuItemClicked);
-			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_AddNewSources, null, m_notifyIconController.OnAddingNewSources);
 			m_notifyIcon.ContextMenuStrip.Items.Add("-");
 
 			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Quit, null, m_notifyIconController.OnQuitMenuItemClicked);
