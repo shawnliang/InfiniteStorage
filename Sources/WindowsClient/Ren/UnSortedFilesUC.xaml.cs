@@ -80,11 +80,6 @@ namespace Waveface.Client
             SetEventIntervalTypeText();
         }
 
-        private void sliderEvent_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            SetEventIntervalTypeText();
-        }
-
         private void SetEventIntervalTypeText()
         {
             if (m_sliderTicks.Count > 0)
@@ -185,6 +180,7 @@ namespace Waveface.Client
         private string getPending_cmd0 = HostIP + "/pending/get?device_id=";
         private string getPending_cmd1 = "&seq=";
         private string getPending_cmd2 = "&limit=500";
+        private bool m_humbDraging;
 
         private string processAllFile(string device)
         {
@@ -320,6 +316,8 @@ namespace Waveface.Client
             ShowInfor();
 
             GC.Collect();
+
+            SetEventIntervalTypeText();
         }
 
         private void ShowInfor()
@@ -467,9 +465,31 @@ namespace Waveface.Client
 
         #endregion
 
+        private void sliderEvent_ThumbDragStarted(object sender, DragStartedEventArgs e)
+        {
+            m_humbDraging = true;
+        }
+
         private void sliderEvent_ThumbDragCompleted(object sender, DragCompletedEventArgs e)
         {
+            m_humbDraging = false;
+
             ShowEvents();
+        }
+
+        private void sliderEvent_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (m_sliderTicks.Count == 0)
+            {
+                return;
+            }
+
+            if (m_humbDraging)
+            {
+                return;
+            }
+
+            ShowEvents();           
         }
 
         private void listBoxEvent_LayoutUpdated(object sender, EventArgs e)

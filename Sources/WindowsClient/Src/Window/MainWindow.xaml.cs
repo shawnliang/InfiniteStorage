@@ -43,63 +43,65 @@ namespace Waveface.Client
 
             lblContentTypeCount.Content = string.Format("0 photos 0 videos");
 
-			var syncContext = SynchronizationContext.Current;
+            var syncContext = SynchronizationContext.Current;
 
 
-			Observable.FromEventPattern(
-				h => lbxDeviceContainer.TreeViewItemClick += h,
-				h => lbxDeviceContainer.TreeViewItemClick -= h
-				)
-				.Window(TimeSpan.FromMilliseconds(50))
-				.SelectMany(x => x.TakeLast(1))
-				.Subscribe(ex =>
-				{
-					syncContext.Send((o) =>
-						{
-							TreeViewItem_PreviewMouseLeftButtonDown(ex.Sender, ex.EventArgs);
-						}, null);
-				});
+            Observable.FromEventPattern(
+                h => lbxDeviceContainer.TreeViewItemClick += h,
+                h => lbxDeviceContainer.TreeViewItemClick -= h
+                )
+                .Window(TimeSpan.FromMilliseconds(50))
+                .SelectMany(x => x.TakeLast(1))
+                .Subscribe(ex =>
+                {
+                    syncContext.Send((o) =>
+                        {
+                            TreeViewItem_PreviewMouseLeftButtonDown(ex.Sender, ex.EventArgs);
+                        }, null);
+                });
 
-			Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
-				handler => (s, ex) => handler(ex),
-				h => lbxFavorites.SelectionChanged += h,
-				h => lbxFavorites.SelectionChanged -= h
-				)
-				.Window(TimeSpan.FromMilliseconds(50))
-				.SelectMany(x => x.TakeLast(1))
-				.Subscribe(ex =>
-				{
-					syncContext.Send((o) =>
-					{
-						lbxFavorites_SelectionChanged(lbxFavorites, ex);
-					}, null);
-				});
-            if (Properties.Settings.Default.IsFirstUse)
-            {
-                uiDelayTimer = new DispatcherTimer();
-                uiDelayTimer.Tick += uiDelayTimer_Tick;
-                uiDelayTimer.Interval = new TimeSpan(0, 0, 1);
-                uiDelayTimer.Start();
-            }
+            Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
+                handler => (s, ex) => handler(ex),
+                h => lbxFavorites.SelectionChanged += h,
+                h => lbxFavorites.SelectionChanged -= h
+                )
+                .Window(TimeSpan.FromMilliseconds(50))
+                .SelectMany(x => x.TakeLast(1))
+                .Subscribe(ex =>
+                {
+                    syncContext.Send((o) =>
+                    {
+                        lbxFavorites_SelectionChanged(lbxFavorites, ex);
+                    }, null);
+                });
+
+            uiDelayTimer = new DispatcherTimer();
+            uiDelayTimer.Tick += uiDelayTimer_Tick;
+            uiDelayTimer.Interval = new TimeSpan(0, 0, 1);
+            uiDelayTimer.Start();
         }
 
         void uiDelayTimer_Tick(object sender, EventArgs e)
         {
             uiDelayTimer.Stop();
 
-            MessageBoxResult _messageBoxResult = MessageBox.Show("See a quick tour ?", "Favorite*", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
-
-            if (_messageBoxResult == MessageBoxResult.Yes)
+            if (Properties.Settings.Default.IsFirstUse)
             {
-                Process.Start(@"http://waveface.com/");
+                MessageBoxResult _messageBoxResult = MessageBox.Show("See a quick tour ?", "Favorite*", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
+
+                if (_messageBoxResult == MessageBoxResult.Yes)
+                {
+                    Process.Start(@"http://waveface.com/");
+                }
+
+                WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog();
+                _waitForPairingDialog.Owner = this;
+                _waitForPairingDialog.ShowDialog();
+
+                //測試中, 先不存
+                //Properties.Settings.Default.IsFirstUse = false;
+                //Properties.Settings.Default.Save();
             }
-
-            WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog();
-            _waitForPairingDialog.ShowDialog();
-
-            //測試中, 先不存
-            //Properties.Settings.Default.IsFirstUse = false;
-            //Properties.Settings.Default.Save();
         }
 
         void btnCopyShareLink_Click(object sender, RoutedEventArgs e)
@@ -109,11 +111,11 @@ namespace Waveface.Client
 
         void swbCloudSharing_IsOnStatusChanged(object sender, EventArgs e)
         {
-			var labelGroup = lblContentLocation.DataContext as BunnyLabelContentGroup;
+            var labelGroup = lblContentLocation.DataContext as BunnyLabelContentGroup;
 
-			Waveface.ClientFramework.Client.Default.ShareLabel(labelGroup.ID, rspRightSidePane2.swbCloudSharing.IsOn);
+            Waveface.ClientFramework.Client.Default.ShareLabel(labelGroup.ID, rspRightSidePane2.swbCloudSharing.IsOn);
 
-			labelGroup.RefreshShareProperties();
+            labelGroup.RefreshShareProperties();
         }
 
         void btnClearAll_Click(object sender, RoutedEventArgs e)
@@ -228,61 +230,61 @@ namespace Waveface.Client
 
         private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, EventArgs e)
         {
-                    var ti = sender as TreeViewItem;
+            var ti = sender as TreeViewItem;
 
-                    if (ti == null)
-                        return;
+            if (ti == null)
+                return;
 
-                    var group = ti.DataContext as IContentGroup;
+            var group = ti.DataContext as IContentGroup;
 
-                    if (group == null)
-                        return;
+            if (group == null)
+                return;
 
-                    group.Refresh();
+            group.Refresh();
 
-                    if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        TryDisplayUnsortedTutorial();
+            if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
+            {
+                TryDisplayUnsortedTutorial();
 
-                        ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(ti) as TreeViewItem;
+                ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(ti) as TreeViewItem;
 
-                        if (parent == null)
-                            return;
+                if (parent == null)
+                    return;
 
-                        var service = parent.DataContext as IService;
+                var service = parent.DataContext as IService;
 
-                        if (service == null)
-                            return;
+                if (service == null)
+                    return;
 
-                        Cursor = Cursors.Wait;
+                Cursor = Cursors.Wait;
 
-                        unSortedFilesUC.Visibility = Visibility.Visible;
-                        unSortedFilesUC.Init(service);
+                unSortedFilesUC.Visibility = Visibility.Visible;
+                unSortedFilesUC.Init(service);
 
-                        Cursor = Cursors.Arrow;
-                    }
-                    else
-                    {
-                        unSortedFilesUC.Stop();
-                        unSortedFilesUC.Visibility = Visibility.Collapsed;
-                    }
+                Cursor = Cursors.Arrow;
+            }
+            else
+            {
+                unSortedFilesUC.Stop();
+                unSortedFilesUC.Visibility = Visibility.Collapsed;
+            }
 
-                    lbxContentContainer.ContextMenu.Visibility = System.Windows.Visibility.Collapsed;
+            lbxContentContainer.ContextMenu.Visibility = System.Windows.Visibility.Collapsed;
 
-                    lblContentLocation.DataContext = group;
-                    lbxContentContainer.DataContext = group.Contents;
-                    SetContentTypeCount(group);
+            lblContentLocation.DataContext = group;
+            lbxContentContainer.DataContext = group.Contents;
+            SetContentTypeCount(group);
 
 
-                    Grid.SetColumnSpan(gdContentArea, 2);
+            Grid.SetColumnSpan(gdContentArea, 2);
 
-                    btnFavoriteAll.Visibility = Visibility.Visible;
-                    gdRightSide.Visibility = System.Windows.Visibility.Collapsed;
+            btnFavoriteAll.Visibility = Visibility.Visible;
+            gdRightSide.Visibility = System.Windows.Visibility.Collapsed;
 
-                    rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
-                    rspRightSidePane2.Visibility = System.Windows.Visibility.Collapsed;
+            rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
+            rspRightSidePane2.Visibility = System.Windows.Visibility.Collapsed;
 
-                    lbxFavorites.SelectedItem = null;
+            lbxFavorites.SelectedItem = null;
         }
 
         private static void TryDisplayUnsortedTutorial()
@@ -325,7 +327,7 @@ namespace Waveface.Client
 
         private void lbxFavorites_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-                    ShowSelectedFavoriteContents(sender);
+            ShowSelectedFavoriteContents(sender);
         }
 
         private void ShowSelectedFavoriteContents(object sender)

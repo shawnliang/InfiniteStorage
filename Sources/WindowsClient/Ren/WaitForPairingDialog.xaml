@@ -5,8 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:gif="clr-namespace:WpfAnimatedGif"
         mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="600" Height="300" Width="600"
-	  Title="Wait For Pairing" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Topmost="True"
-      Closing="Window_Closing" Loaded="Window_Loaded"
+	  Title="Wait For Pairing" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+      Closing="Window_Closing" Loaded="Window_Loaded" 
       >
 
     <Grid>
