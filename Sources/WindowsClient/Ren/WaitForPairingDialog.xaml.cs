@@ -50,7 +50,7 @@ namespace Waveface.Client
         {
             m_uiDelayTimer.Stop();
 
-            MessageBoxResult _messageBoxResult = MessageBox.Show("Pairing Request", "InfiniteStorage", MessageBoxButton.YesNo);
+            MessageBoxResult _messageBoxResult = MessageBox.Show("Pairing Request - [" + m_pairingRequest.device_name + "]", "Favorite*", MessageBoxButton.YesNo);
 
             if (_messageBoxResult == MessageBoxResult.Yes)
             {
