@@ -134,7 +134,7 @@ public class DownloadLogic {
 							String url = restfulAPIURL + Constant.URL_IMAGE
 									+ "/" + fileId + Constant.URL_IMAGE_LARGE;
 							if(imageManager.getImageId(url, null) == null) {
-								imageManager.getImageWithoutThread(url, null);
+								imageManager.getImageWithoutThread(url, null, false);
 							}
 						}
 					} else {
