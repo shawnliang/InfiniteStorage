@@ -49,6 +49,11 @@ namespace Wpf_testHTTP
         public void setLabelId(string labelid)
         {
             label_id = labelid;
+            iniParser parser = new iniParser();
+            parser.IniParser(iniPath);
+            parser.AddSetting("Setup", "label", label_id);
+            parser.SaveSettings();
+           
         }
         public void setTitle(string title)
         {
@@ -267,7 +272,7 @@ namespace Wpf_testHTTP
         {
             bool result = false;
             if (label_id == "")
-                MessageBox.Show("label_id is empty");
+                return false;
 
             string recipients_json = getEmailListinJson();
             string rel = Wpf_testHTTP.labelCommand.inviteShared(label_id, sender_name, sender_msg, recipients_json);
