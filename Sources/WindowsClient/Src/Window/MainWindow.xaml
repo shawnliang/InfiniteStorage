@@ -25,6 +25,7 @@
                      CreateOptions="IgnoreImageCache"
                      UriSource="pack://application:,,,/Resource/ico_add_source.png" />
 
+
         <local:ContentTypeCountConverter x:Key="ContentTypeCountConverter" />
         <!--  Brushes used in Styling of ScrollViewer  -->
 
@@ -290,7 +291,18 @@
         <SolidColorBrush x:Key="SidePanelBackground"
                          Color="#FF333333" />
 
-
+						 
+		<Style TargetType="local:AddSourceTip">
+			<Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Items.Count,
+											   ElementName=lbxDeviceContainer,
+                                               IsAsync=True}"
+                             Value="0">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
 
     </Window.Resources>
 
@@ -484,7 +496,9 @@
                           IsDeferredScrollingEnabled="True"
                           VerticalScrollBarVisibility="Auto">
                 <ListBox x:Name="lbxContentContainer"
-                         BorderBrush="{DynamicResource ContentAreaBackground}"
+                         Background="{x:Null}"
+                         BorderBrush="{x:Null}"
+                         Foreground="{x:Null}"
                          IsSynchronizedWithCurrentItem="True"
                          ItemsSource="{Binding IsAsync=True}"
                          KeyDown="lbxContentContainer_KeyDown"
@@ -515,6 +529,7 @@
                     </ListBox.ContextMenu>
                 </ListBox>
             </ScrollViewer>
+            <local:AddSourceTip Grid.Row="0" Width="Auto" Height="Auto"/>
             <Grid Grid.Row="1"
                   Margin="0"
                   Background="#FF333333">

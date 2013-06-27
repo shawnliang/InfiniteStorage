@@ -22,6 +22,12 @@
                G="215"
                R="215" />
 
+
+        <BitmapImage x:Key="AddDeviceArrowIcon"
+                     CacheOption="OnLoad"
+                     CreateOptions="IgnoreImageCache"
+                     UriSource="pack://application:,,,/Resource/ico_arrow.png" />
+
         <BitmapImage x:Key="VideoContentPlaceHolder"
                      CacheOption="OnLoad"
                      CreateOptions="IgnoreImageCache"
