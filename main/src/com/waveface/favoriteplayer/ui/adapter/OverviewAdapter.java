@@ -6,9 +6,6 @@ import idv.jason.lib.imagemanager.ImageManager;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
-import android.provider.MediaStore.Video.Thumbnails;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +20,9 @@ import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.SyncApplication;
 import com.waveface.favoriteplayer.entity.OverviewData;
 import com.waveface.favoriteplayer.util.FileUtil;
-import com.waveface.favoriteplayer.util.Log;
 
 public class OverviewAdapter extends BaseAdapter{
-	private static final String TAG = OverviewAdapter.class.getSimpleName();
+	public static final String TAG = OverviewAdapter.class.getSimpleName();
 	private ArrayList<OverviewData> mDatas;
 	private ImageManager mImageManager;
 	private LayoutInflater mInflater;
@@ -155,42 +151,34 @@ public class OverviewAdapter extends BaseAdapter{
 		
 		ImageAttribute attr = new ImageAttribute(holder.image);
 		attr = new ImageAttribute(holder.image);
-		attr.setResizeSize(mChildWidth, mChildHeight);
 		attr.setApplyWithAnimation(true);
 		attr.setDoneScaleType(ScaleType.CENTER_CROP);
 		
 		if(Constant.FILE_TYPE_VIDEO.equals(data.fileType)) {
-			
-			String fullFilename = mFilePath + data.filename;
-			Bitmap bmThumbnail = mImageManager.getImage(fullFilename, attr);
-			if(bmThumbnail==null){
-				if(FileUtil.isFileExisted(fullFilename)){
-					bmThumbnail = ThumbnailUtils.createVideoThumbnail(fullFilename, 
-					        Thumbnails.MINI_KIND);
-					String dbId = mImageManager.setBitmapToFile(bmThumbnail, 
-							fullFilename, null, false);
-					Log.d(TAG, "ThumbNail DB ID:"+dbId);
-				}
-				else{
-					
-				}
-			}
 			holder.placeholder.setVisibility(View.VISIBLE);
-			coverUrl = fullFilename;
+			coverUrl = mFilePath + data.filename;
+			mImageManager.getLocalVideoThumbnail(coverUrl, attr);
 		}
 		else{
 			holder.placeholder.setVisibility(View.INVISIBLE);
 			coverUrl = data.url;
-		}
-		mImageManager.getImage(coverUrl, attr);			
+			attr.setResizeSize(mChildWidth, mChildHeight);
 
+			mImageManager.getImage(coverUrl, attr);			
+		}
+
+		// reflection image
 		attr = new ImageAttribute(holder.reflection);
-		attr.setResizeSize(mChildWidth, mChildHeight);
 		attr.setReflection(true);
 		attr.setHighQuality(true);
 		attr.setApplyWithAnimation(true);
 		attr.setDoneScaleType(ScaleType.CENTER_CROP);
-		mImageManager.getImage(coverUrl, attr);
+		if(Constant.FILE_TYPE_VIDEO.equals(data.fileType)) {
+			mImageManager.getLocalVideoThumbnail(coverUrl, attr);
+		} else {
+			attr.setResizeSize(mChildWidth, mChildHeight);
+			mImageManager.getImage(coverUrl, attr);
+		}
 
 		holder.labelText.setText(data.title);
 		holder.countText.setText(Integer.toString(data.count));

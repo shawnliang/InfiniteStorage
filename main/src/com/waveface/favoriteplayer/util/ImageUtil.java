@@ -452,11 +452,4 @@ public class ImageUtil {
 			drawable.startTransition(300);
 		}
 	}
-	
-	public static void generateVideoThumb(String fullFilename,ImageManager imageManager){
-		Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(fullFilename, 
-		        Thumbnails.MINI_KIND);
-		String dbId = imageManager.setBitmapToFile(bmThumbnail, fullFilename, null, false);
-		Log.d(TAG, "ThumbNail DB ID:"+dbId);
-	}
 }

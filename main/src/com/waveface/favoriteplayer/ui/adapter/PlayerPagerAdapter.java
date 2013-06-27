@@ -57,15 +57,13 @@ public class PlayerPagerAdapter extends PagerAdapter {
 				false);
 		ImageView iv = (ImageView) root.findViewById(R.id.image);
 		ImageAttribute attr = new ImageAttribute(iv);
-		attr.setMaxSizeEqualsScreenSize(mInflater.getContext());
 		attr.setDoneScaleType(ScaleType.FIT_CENTER);
 		attr.setApplyWithAnimation(true);
-		mImageManager.getImage(mDatas.get(position).url, attr);
-		container.addView(root);
 		
 		root.setTag(Integer.valueOf(position));
 		
 		if(Constant.FILE_TYPE_VIDEO.equals(mDatas.get(position).type)) {
+			mImageManager.getLocalVideoThumbnail(mDatas.get(position).url, attr);
 			View placeholder = root.findViewById(R.id.image_play);
 			placeholder.setVisibility(View.VISIBLE);
 			placeholder.setTag(Integer.valueOf(position));
@@ -76,7 +74,11 @@ public class PlayerPagerAdapter extends PagerAdapter {
 					startVideoPlayback(position);
 				}
 			});
+		} else {
+			attr.setMaxSizeEqualsScreenSize(mInflater.getContext());
+			mImageManager.getImage(mDatas.get(position).url, attr);			
 		}
+		container.addView(root);
 		return root;
 	}
 	

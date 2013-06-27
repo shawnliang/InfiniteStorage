@@ -6,9 +6,6 @@ import idv.jason.lib.imagemanager.ImageManager;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
-import android.provider.MediaStore.Video.Thumbnails;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +17,6 @@ import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.SyncApplication;
 import com.waveface.favoriteplayer.entity.PlaybackData;
 import com.waveface.favoriteplayer.ui.widget.SquareImageView;
-import com.waveface.favoriteplayer.util.FileUtil;
-import com.waveface.favoriteplayer.util.ImageUtil;
 import com.waveface.favoriteplayer.util.Log;
 
 public class GalleryViewAdapter extends BaseAdapter{
@@ -60,33 +55,19 @@ public class GalleryViewAdapter extends BaseAdapter{
 		SquareImageView iv = (SquareImageView) root.findViewById(R.id.picture);
 		
 		ImageAttribute attr = new ImageAttribute(iv);
-		attr.setMaxSize(mImageSize, mImageSize);
 		attr.setApplyWithAnimation(true);
-//		attr.setLoadFromThread(true);
+		attr.setLoadFromThread(true);
 		attr.setDoneScaleType(ScaleType.CENTER_CROP);
 		
 		//Display Image
 		if(Constant.FILE_TYPE_VIDEO.equals(mDatas.get(position).type)) {
-			String fullFilename = mDatas.get(position).url;
-			Bitmap bmThumbnail = mImageManager.getImage(fullFilename, attr);
-			if(bmThumbnail==null){
-				if(FileUtil.isFileExisted(fullFilename)){
-					bmThumbnail = ThumbnailUtils.createVideoThumbnail(fullFilename, 
-					        Thumbnails.MINI_KIND);
-					String dbId = mImageManager.setBitmapToFile(bmThumbnail, 
-							fullFilename, null, false);
-					Log.d(TAG, "ThumbNail DB ID:"+dbId);
-				}
-			}
-			else{
-				attr.setLoadFromThread(true);
-			}
+			mImageManager.getLocalVideoThumbnail(mDatas.get(position).url, attr);
 			root.findViewById(R.id.image_play).setVisibility(View.VISIBLE);
+		} else {
+			Log.d(TAG, "get image:" + mDatas.get(position).url);
+			attr.setMaxSize(mImageSize, mImageSize);
+			mImageManager.getImage(mDatas.get(position).url, attr);
 		}
-		else{
-			attr.setLoadFromThread(true);
-		}
-		mImageManager.getImage(mDatas.get(position).url, attr);
 		return root;
 	}
 

@@ -1,5 +1,6 @@
 package com.waveface.favoriteplayer.logic;
 
+import idv.jason.lib.imagemanager.ImageAttribute;
 import idv.jason.lib.imagemanager.ImageManager;
 
 import java.io.File;
@@ -9,7 +10,6 @@ import java.util.HashMap;
 
 import org.jwebsocket.kit.WebSocketException;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -93,7 +93,11 @@ public class DownloadLogic {
 
 			ImageManager imageManager = SyncApplication
 					.getWavefacePlayerApplication(context).getImageManager();
-
+			
+			if(TextUtils.isEmpty(label.cover_url) == false) {
+				imageManager.getImageWithoutThread(restfulAPIURL + label.cover_url, null, false);
+			}
+ 
 			Cursor filecursor = LabelDB.getLabelFileViewByLabelId(context,
 					label.label_id);
 			if (filecursor != null && filecursor.getCount() > 0) {
@@ -120,11 +124,11 @@ public class DownloadLogic {
 									+ Constant.VIDEO_FOLDER + "/" + fileName;
 							if (!FileUtil.isFileExisted(fullFilename)) {
 								downloadVideo(fileId, fullFilename, url);
-								Bitmap bmThumbnail = ThumbnailUtils
-										.createVideoThumbnail(fullFilename,
-												Thumbnails.MINI_KIND);
-								imageManager.setBitmapToFile(bmThumbnail,
-										fullFilename, null, false);
+								imageManager.getLocalVideoThumbnailWithoutThread(fullFilename, null, false);
+								ImageAttribute attr = new ImageAttribute();
+								attr.setReflection(true);
+								attr.setHighQuality(true);
+								imageManager.getLocalVideoThumbnailWithoutThread(fullFilename, attr, false);
 							}
 							//check file in storage
 							if(!FileUtil.isFileExisted(fullFilename)){
