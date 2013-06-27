@@ -119,7 +119,13 @@ namespace InfiniteStorage.Share
 
 			// use an old last_update_time to work around cloud consistency checking
 			var lastUpdateTime = DateTime.Now.AddMinutes(-10.0);
-			api.UpdatePost(api.session_token, label.share_post_id, files.Select(x => x.file_id.ToString()).ToList(), lastUpdateTime);
+			api.UpdatePost(
+				api.session_token,
+				label.share_post_id,
+				files.Select(x => x.file_id.ToString()).ToList(),
+				lastUpdateTime,
+				recipients.Select(x=>x.email).ToList()
+				);
 		}
 	}
 }

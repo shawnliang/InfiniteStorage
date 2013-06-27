@@ -137,7 +137,7 @@ namespace postServiceLibrary
 		#endregion
 
 		#region Update Post
-        public void UpdatePost(string session_token,String post_id, List<string> attachments_arr, DateTime lastUpdateTime)
+        public void UpdatePost(string session_token,String post_id, List<string> attachments_arr, DateTime lastUpdateTime, List<string> recipientEmailList)
         {
             string result = null;
             // verify
@@ -154,29 +154,23 @@ namespace postServiceLibrary
             _ws.APIKEY = APIKEY;
             //string object_id = _ws._object_id;
             string content = "";
-            string attachment_id_array = countattachments_arr(attachments_arr);
+            string attachment_id_array = joinToJsonList(attachments_arr);
+			string recipient_email_array = joinToJsonList(recipientEmailList);
             string preview = "";
             string type = "event";
             string coverAttach = "";
             string event_type = "favorite_shared";
             string favorite = "0";
 
-			_ws.posts_update(session_token, group_id, post_id, attachment_id_array, type, event_type, favorite, lastUpdateTime);
+			_ws.posts_update(session_token, group_id, post_id, attachment_id_array, type, event_type, favorite, lastUpdateTime, recipient_email_array);
         }
  
 
-        private string countattachments_arr(List<string> attachments_arr)
+        private string joinToJsonList(List<string> list)
         {
-            string result = "";
-            string att0 = "[";
-            foreach (string _att in attachments_arr)
-            {
-                att0 += '"' + _att + '"' + ",";
-            }
-            att0 = att0.Substring(0, att0.Length - 1) + "]";
-            result = att0.Replace(@"\\", "/");
-            return result;
-        }   
+			return "[" + string.Join(",", list.Select(x => "\"" + x + "\"").ToArray()) + "]";
+        }
+
 		#endregion   
 
 		#region create New post

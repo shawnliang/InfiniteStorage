@@ -29,7 +29,7 @@ namespace postServiceLibrary
 
 
 		// last_update_time ???
-		public void posts_update(string session_token, string group_id, string post_id, string attachment_id_array, string type, string event_type, string favorite, DateTime last_update_time)
+		public void posts_update(string session_token, string group_id, string post_id, string attachment_id_array, string type, string event_type, string favorite, DateTime last_update_time, string email_list)
 		{
 			log.Info("start Post_update");
 			string _re = null;
@@ -42,7 +42,7 @@ namespace postServiceLibrary
 			event_type = System.Web.HttpUtility.UrlEncode(event_type);
 			favorite = System.Web.HttpUtility.UrlEncode(favorite);
 			var lastUpdateTime = last_update_time.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
-
+			var emailList = HttpUtility.UrlEncode(email_list);
 
 			string _url = "https://develop.waveface.com:443/v3" + "/pio_posts/update";
 			DateTime _update = DateTime.UtcNow;
@@ -55,7 +55,8 @@ namespace postServiceLibrary
 				"favorite" + "=" + favorite + "&" +
 				"update_time" + "=" + _dateStr + "&" +
 				"event_type" + "=" + event_type + "&" + 
-				"last_update_time" + "=" + lastUpdateTime + "&";
+				"last_update_time" + "=" + lastUpdateTime + "&" + 
+				"shared_email_list" + "=" + emailList + "&";
 
 
 
