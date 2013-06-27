@@ -75,13 +75,18 @@ public class OverviewAdapter extends BaseAdapter{
 	
 	public void updateLabel(OverviewData data) {
 		int index = 0;
+		boolean found = false;
 		for(index=0; index<mDatas.size(); ++index) {
 			if(mDatas.get(index).labelId.equals(data.labelId)) {
 				mDatas.remove(index);
+				found = true;
 				break;
 			}
 		}
-		mDatas.add(index, data);
+		if(found)
+			mDatas.add(index, data);
+		else
+			mDatas.add(0, data);
 	}
 	
 	public ArrayList<OverviewData> getDatas() {
