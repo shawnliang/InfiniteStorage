@@ -40,7 +40,7 @@ namespace Wpf_testHTTP
         public string favoriteTitle = "Waveface Office";
         public string RefreshKey_real = "";                                         // kept the real refresh token
         public string access_token = "";
-        public string label_id = "";
+        public string label_id = "716cfce5-93d9-4b86-a384-b643f0aa9d31";
         public string sender_name = "";
         public string sender_msg = "";
 
@@ -272,8 +272,10 @@ namespace Wpf_testHTTP
         {
             bool result = false;
             if (label_id == "")
+            {
+                MessageBox.Show("Label id is empty!");
                 return false;
-
+            }
             string recipients_json = getEmailListinJson();
             string rel = Wpf_testHTTP.labelCommand.inviteShared(label_id, sender_name, sender_msg, recipients_json);
             if (rel != null && rel != "")
@@ -297,7 +299,7 @@ namespace Wpf_testHTTP
             foreach (string _mail in email_arr)
             {
                 _title = getTitle(_mail);
-                a = a + "{'" + _title + "':" + "'" + _mail + "'},";
+                a = a + "{'name':" + "'" + _title + "'," + "'email':'" + _mail + "'},";
             }
             string _json = a;
             _json = _json.Substring(0, _json.Length - 1) + "]";
@@ -447,7 +449,7 @@ namespace Wpf_testHTTP
             }
             shareButtonClick = true;
           
-            //sendEmailList();    
+            sendEmailList();    
             just_busy(true);
             return;
             
@@ -499,7 +501,7 @@ namespace Wpf_testHTTP
             label_pass.Visibility = Visibility.Visible;
             log.Info("end of create new Post ");
 
-            sendEmailList();            // send email list to server
+           // sendEmailList();            // send email list to server
             just_busy(false);
         }
         private string setup_emailList()
