@@ -111,6 +111,11 @@
             <TextBlock Text="The Favorite Uploader automatically transfers all your photos and videos from your phone back to your PC." VerticalAlignment="Center" TextWrapping="Wrap" FontSize="14"/>
         </Grid>
 
+        <Grid Grid.Row="3" Margin="20,0">
+            <Button x:Name="btnHelp" Style="{StaticResource LinkButton}" Content="How does it work?" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12" FontWeight="Bold" Click="btnHelp_Click"/>
+            <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Right" Padding="16,4" VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Click="btnClose_Click"/>
+        </Grid>
+
         <GroupBox Grid.Row="2" Margin="14, 8, 20, 0" BorderThickness="1.5" BorderBrush="Gray">
             <GroupBox.Header>
                 <TextBlock Text="Add a Phone" Margin="8,0" FontSize="14" FontWeight="Bold"/>
@@ -190,16 +195,27 @@
                         </StackPanel>
                     </Grid>
 
-                    <Rectangle Grid.Column="1" Fill="DarkGray" Width="180" Height="180" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Column="1" Text="[QR Code]" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="ExtraBold"/>
+                    <Image Grid.Column="1" x:Name="imgQrCode" Width="180" Height="180" Source="pack://application:,,,/Ren/Images/qrcode.png"  HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image.Effect>
+                            <DropShadowEffect ShadowDepth="1" />
+                        </Image.Effect>
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="RenderTransform">
+                                            <Setter.Value>
+                                                <ScaleTransform CenterX="130" CenterY="130" ScaleX="1.8" ScaleY="1.8"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
                 </Grid>
 
             </Grid>
         </GroupBox>
-
-        <Grid Grid.Row="3" Margin="20,0">
-            <Button Style="{StaticResource LinkButton}" Content="How does it work?" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"/>
-            <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Right" Padding="16,4" VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Click="btnClose_Click"/>
-        </Grid>
     </Grid>
 </Window>

@@ -18,6 +18,8 @@ namespace Waveface.Client
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static string HELP_URL = "http://waveface.uservoice.com/knowledgebase/articles/214932-step1-import-photos-videos-from-your-phone";
+        
         private DispatcherTimer uiDelayTimer;
 
         public MainWindow()
@@ -95,16 +97,15 @@ namespace Waveface.Client
 
                 if (_messageBoxResult == MessageBoxResult.Yes)
                 {
-                    Process.Start(@"http://waveface.com/");
+                    Process.Start(HELP_URL);
                 }
 
                 WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog();
                 _waitForPairingDialog.Owner = this;
                 _waitForPairingDialog.ShowDialog();
 
-                //測試中, 先不存
-                //Properties.Settings.Default.IsFirstUse = false;
-                //Properties.Settings.Default.Save();
+                Properties.Settings.Default.IsFirstUse = false;
+                Properties.Settings.Default.Save();
             }
         }
 
