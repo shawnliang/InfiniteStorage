@@ -24,13 +24,11 @@
 
 
         <BitmapImage x:Key="AddDeviceArrowIcon"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/ico_arrow.png" />
 
         <BitmapImage x:Key="VideoContentPlaceHolder"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/video_ph.png" />
         <SolidColorBrush x:Key="HighlightBrush"
                          Color="{StaticResource HighlightColor}" />
@@ -40,66 +38,52 @@
 
 
         <BitmapImage x:Key="FavoriteContentFlag"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/favoriteicon.png" />
         <BitmapImage x:Key="UnFavoriteContentFlag"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/notfavoriteicon.png" />
 
         <BitmapImage x:Key="SelectedFav"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/ico_fav_select.png" />
         <BitmapImage x:Key="UnSelectedFav"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/ico_fav_unselect.png" />
 
         <BitmapImage x:Key="SelectedStar"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/ico_star_select.png" />
         <BitmapImage x:Key="UnSelectedStar"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/ico_star_unselect.png" />
 
         <BitmapImage x:Key="UnSelectedFavStar"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/ico_fav_star_unselect.png" />
 
         <BitmapImage x:Key="NormalStarBox"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/star_noitem.png" />
         <BitmapImage x:Key="SelectedStarBox"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/star_selected.png" />
 
         <BitmapImage x:Key="SmallPhotoIcon"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/sliderbarsmallphotoicon.png" />
         <BitmapImage x:Key="BigPhotoIcon"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/sliderbarbigphotoicon.png" />
 
         <BitmapImage x:Key="Up"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/up.png" />
         <BitmapImage x:Key="Updis"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/updis.png" />
         <BitmapImage x:Key="Uppressed"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/uppressed.png" />
 
         <Style TargetType="{x:Type Image}">

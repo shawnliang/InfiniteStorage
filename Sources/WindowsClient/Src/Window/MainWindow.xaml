@@ -21,8 +21,7 @@
 
     <Window.Resources>
         <BitmapImage x:Key="AddDeviceIcon"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/ico_add_source.png" />
 
 
@@ -229,9 +228,11 @@
             </Style.Triggers>
         </Style>
 
-        <DataTemplate DataType="{x:Type wvmodel:ContentGroup}">
+        <!--
+            <DataTemplate DataType="{x:Type wvmodel:ContentGroup}">
             <local:GroupContentItem Padding="10" />
-        </DataTemplate>
+            </DataTemplate>
+        -->
 
         <DataTemplate DataType="{x:Type wvmodel:Content}">
             <local:ContentItem x:Name="content"
@@ -291,12 +292,12 @@
         <SolidColorBrush x:Key="SidePanelBackground"
                          Color="#FF333333" />
 
-						 
-		<Style TargetType="local:AddSourceTip">
-			<Setter Property="Visibility" Value="Collapsed" />
+
+        <Style TargetType="local:AddSourceTip">
+            <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Items.Count,
-											   ElementName=lbxDeviceContainer,
+                                               ElementName=lbxDeviceContainer,
                                                IsAsync=True}"
                              Value="0">
                     <Setter Property="Visibility" Value="Visible" />
@@ -423,7 +424,8 @@
                            Foreground="#FFA8A8A8" />
                     <local:FavoriteListBox x:Name="lbxFavorites"
                                            Grid.Row="1"
-                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" FontSize="18" />
+                                           FontSize="18"
+                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
                 </Grid>
 
                 <StackPanel x:Name="stackPanel"
@@ -529,7 +531,9 @@
                     </ListBox.ContextMenu>
                 </ListBox>
             </ScrollViewer>
-            <local:AddSourceTip Grid.Row="0" Width="Auto" Height="Auto"/>
+            <local:AddSourceTip Grid.Row="0"
+                                Width="Auto"
+                                Height="Auto" />
             <Grid Grid.Row="1"
                   Margin="0"
                   Background="#FF333333">

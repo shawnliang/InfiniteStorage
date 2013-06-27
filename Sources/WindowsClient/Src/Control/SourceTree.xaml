@@ -26,24 +26,24 @@
                          Color="Transparent" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <BitmapImage x:Key="SelectedIcon"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
+                     
                      UriSource="pack://application:,,,/Resource/ico_folder_select.png" />
         <BitmapImage x:Key="UnSelectedIcon"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
+                     
                      UriSource="pack://application:,,,/Resource/ico_folder_unselect.png" />
         <BitmapImage x:Key="UnsortedIcon"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
+                     
                      UriSource="pack://application:,,,/Resource/ico_unsort_unselect.png" />
         <BitmapImage x:Key="UnsortedSelectedIcon"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
+                     
                      UriSource="pack://application:,,,/Resource/ico_unsort_select.png" />
         <BitmapImage x:Key="CycleIcon"
-                     CacheOption="OnLoad"
-                     CreateOptions="IgnoreImageCache"
+                     CacheOption="OnDemand"
+                     
                      UriSource="pack://application:,,,/Resource/arrow_circle_double.png" />
         <Style x:Key="TreeViewItemStyle1"
                TargetType="{x:Type TreeViewItem}">
