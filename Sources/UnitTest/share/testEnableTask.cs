@@ -61,17 +61,7 @@ namespace UnitTest.share
 		{
 			var label = new Label { label_id = Guid.NewGuid(), seq = 500, share_proc_seq = 100 };
 
-			var rec0 = new ShareRecipient() { };
-			var rec1 = new ShareRecipient() { on_cloud = false };
-			var rec2 = new ShareRecipient() { on_cloud = true };
-
-			var recipients = new List<ShareRecipient>{
-				rec0, rec1, rec2
-			};
-			db.Setup(x=>x.QueryRecipients(label)).Returns(recipients);
-			db.Setup(x => x.UpdateRecipientOnCloud(rec0)).Verifiable();
-			db.Setup(x => x.UpdateRecipientOnCloud(rec1)).Verifiable();
-			api.Setup(x => x.CreatePost(label, recipients, It.IsAny<ICollection<FileAsset>>())).Verifiable();
+			api.Setup(x => x.CreatePost(label, null, It.IsAny<ICollection<FileAsset>>())).Verifiable();
 
 			task.Process(label);
 
@@ -84,17 +74,7 @@ namespace UnitTest.share
 		{
 			var label = new Label { label_id = Guid.NewGuid(), seq = 500, share_proc_seq = 100, share_post_id = "post_id" };
 
-			var rec0 = new ShareRecipient() { };
-			var rec1 = new ShareRecipient() { on_cloud = false };
-			var rec2 = new ShareRecipient() { on_cloud = true };
-
-			var recipients = new List<ShareRecipient>{
-				rec0, rec1, rec2
-			};
-			db.Setup(x => x.QueryRecipients(label)).Returns(recipients);
-			db.Setup(x => x.UpdateRecipientOnCloud(rec0)).Verifiable();
-			db.Setup(x => x.UpdateRecipientOnCloud(rec1)).Verifiable();
-			api.Setup(x => x.UpdatePost(label, recipients, It.IsAny<ICollection<FileAsset>>())).Verifiable();
+			api.Setup(x => x.UpdatePost(label, null, It.IsAny<ICollection<FileAsset>>())).Verifiable();
 
 			task.Process(label);
 
