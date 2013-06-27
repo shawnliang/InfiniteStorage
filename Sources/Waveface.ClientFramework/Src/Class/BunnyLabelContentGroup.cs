@@ -59,13 +59,16 @@ namespace Waveface.ClientFramework
 
 				using (var reader = cmd.ExecuteReader())
 				{
-					var email = reader["email"].ToString();
-					var name = reader["name"].ToString();
+					while (reader.Read())
+					{
+						var email = reader["email"].ToString();
+						var name = reader["name"].ToString();
 
-					var recipient = new BunnyRecipient(email, name);
+						var recipient = new BunnyRecipient(email, name);
 
-					if (!m_recipients.Contains(recipient))
-						m_recipients.Add(recipient);
+						if (!m_recipients.Contains(recipient))
+							m_recipients.Add(recipient);
+					}
 				}
 			}
 		}
