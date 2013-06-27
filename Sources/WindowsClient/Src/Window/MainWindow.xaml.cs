@@ -121,6 +121,8 @@ namespace Waveface.Client
 			Waveface.ClientFramework.Client.Default.ShareLabel(labelGroup.ID, rspRightSidePane2.tbtnCloudSharing.IsChecked.Value);
 
             labelGroup.RefreshShareProperties();
+
+			rspRightSidePane2.tbxShareLink.Text = labelGroup.ShareURL;
         }
 
         void btnClearAll_Click(object sender, RoutedEventArgs e)
