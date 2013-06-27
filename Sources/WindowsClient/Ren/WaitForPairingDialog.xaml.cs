@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
 using InfiniteStorage.Data.Pairing;
@@ -151,7 +152,12 @@ namespace Waveface.Client
 
         private void spGooglePlay_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            ;
+            Process.Start("https://play.google.com/store/apps/details?id=com.waveface.photojournal&hl=nl");
+        }
+
+        private void btnHelp_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(MainWindow.HELP_URL);
         }
     }
 }
