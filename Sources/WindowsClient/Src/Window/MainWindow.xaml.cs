@@ -588,8 +588,11 @@ namespace Waveface.Client
 
 		private void Label_MouseDown(object sender, MouseButtonEventArgs e)
 		{
-			WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog();
-			_waitForPairingDialog.Show();
+			WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog
+			                                                 {
+			                                                     Owner = this
+			                                                 };
+		    _waitForPairingDialog.ShowDialog();
 		}
     }
 }

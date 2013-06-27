@@ -84,8 +84,6 @@ namespace Waveface.Client
 
         private void webSocket_OnMessage(object sender, MessageEventArgs e)
         {
-            //Application.Current.Dispatcher.Invoke((Action)(() => MessageBox.Show(e.Data)));
-
             try
             {
                 PairingServerMsgs _msgs = JsonConvert.DeserializeObject<PairingServerMsgs>(e.Data);
@@ -146,9 +144,14 @@ namespace Waveface.Client
             m_webSocket.Send(_json);
         }
 
-        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        private void btnClose_Click(object sender, RoutedEventArgs e)
         {
+            Close();
+        }
 
+        private void spGooglePlay_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            ;
         }
     }
 }
