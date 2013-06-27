@@ -273,9 +273,10 @@ namespace Wpf_testHTTP
             bool result = false;
             if (label_id == "")
             {
-                MessageBox.Show("Label id is empty!");
                 return false;
             }
+            sender_msg = textbox_message.Text;
+            sender_name = textbox_name.Text;
             string recipients_json = getEmailListinJson();
             string rel = Wpf_testHTTP.labelCommand.inviteShared(label_id, sender_name, sender_msg, recipients_json);
             if (rel != null && rel != "")
@@ -289,13 +290,15 @@ namespace Wpf_testHTTP
         {
             string result = null;
             string json = "[]";
-            if (title_arr.Count <= 0)
-            {
-                return result;
-            }
+            //if (title_arr.Count <= 0)
+            //{
+            //    return result;
+            //}
             string a = "[";
             int i = 0;
             string _title = "";
+            // build email_arr
+           // setup_emailList_nogoogle();
             foreach (string _mail in email_arr)
             {
                 _title = getTitle(_mail);
@@ -303,11 +306,11 @@ namespace Wpf_testHTTP
             }
             string _json = a;
             _json = _json.Substring(0, _json.Length - 1) + "]";
-
+            email_arr.Clear();
             result = _json;
             return result;
         }
-
+ 
         private string getTitle(string _mail)
         {
             string result = "";
