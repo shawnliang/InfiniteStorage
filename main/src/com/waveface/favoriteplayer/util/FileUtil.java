@@ -108,9 +108,9 @@ public class FileUtil {
 			fos.flush();
 			fos.close();
 			bis.close();
-			Log.d(TAG, "download ready in"
-					+ ((System.currentTimeMillis() - startTime) / 1000)
-					+ " sec");
+			Log.d(TAG, "download ready in "
+					+ ((System.currentTimeMillis() - startTime)/1000.0)
+					+ " s");
 			if (f.exists()) {
 				downloaded = true;
 			}
