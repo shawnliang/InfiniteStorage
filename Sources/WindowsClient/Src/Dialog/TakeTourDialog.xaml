@@ -3,17 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Take A Tour?"
         MaxWidth="500"
-        MaxHeight="180"
+        MinHeight="100"
         Background="#FF595959"
         WindowStartupLocation="CenterOwner"
-        WindowStyle="ToolWindow" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        
-        <Grid>
+        WindowStyle="ToolWindow" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
+    <StackPanel>
+        <Grid HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
@@ -27,5 +22,5 @@
             <Button Content="Take a Tour" MinWidth="90" Margin="10" x:Name="takeTourButton" Click="takeTourButton_Click"></Button>
             <Button Content="Later" MinWidth="90" Margin="10" x:Name="laterButton" Click="laterButton_Click"></Button>
         </StackPanel>
-    </Grid>
+    </StackPanel>
 </Window>
