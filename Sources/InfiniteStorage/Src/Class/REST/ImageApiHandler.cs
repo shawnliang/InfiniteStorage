@@ -51,6 +51,7 @@ namespace InfiniteStorage.REST
 							saved_path = f.saved_path,
 							thumb_ready = f.thumb_ready,
 							deleted = f.deleted,
+							type = f.type
 						}).FirstOrDefault();
 
 				if (file == null)
@@ -64,6 +65,7 @@ namespace InfiniteStorage.REST
 								saved_path = @".pending\" + f.saved_path,
 								thumb_ready = f.thumb_ready,
 								deleted = f.deleted,
+								type = f.type
 							}).FirstOrDefault();
 			}
 
@@ -83,11 +85,27 @@ namespace InfiniteStorage.REST
 			}
 			else
 			{
-				file_relative_path = Path.Combine(".thumbs", file.file_id.ToString() + "." + size.ToString() + ".thumb");
+				if (file.type == (int)FileAssetType.image)
+				{
+					file_relative_path = Path.Combine(".thumbs", file.file_id.ToString() + "." + size.ToString() + ".thumb");
 
-				var full_path = Path.Combine(MyFileFolder.Photo, file_relative_path);
-				if (!File.Exists(full_path))
-					file_relative_path = file.saved_path;
+					var full_path = Path.Combine(MyFileFolder.Photo, file_relative_path);
+					if (!File.Exists(full_path))
+						file_relative_path = file.saved_path;
+				}
+				else
+				{
+					file_relative_path = Path.Combine(".thumbs", file.file_id.ToString() + ".medium.thumb");
+
+					var full_path = Path.Combine(MyFileFolder.Photo, file_relative_path);
+					if (!File.Exists(full_path))
+					{
+						Response.StatusCode = (int)HttpStatusCode.NotFound;
+						Response.Close();
+						return;
+					}
+				}
+
 			}
 
 			var url = new UriBuilder("http", Request.Url.Host, 12888, file_relative_path).ToString();
@@ -102,5 +120,6 @@ namespace InfiniteStorage.REST
 		public string saved_path { get; set; }
 		public bool deleted { get; set; }
 		public bool thumb_ready { get; set; }
+		public int type { get; set; }
 	}
 }
