@@ -448,9 +448,12 @@ namespace Wpf_testHTTP
                 email_arr.Add(_mail);
             }
             shareButtonClick = true;
-          
-            sendEmailList();    
-            just_busy(true);
+            just_busy(false);
+            sendEmailList();
+            label_favorite.Visibility = Visibility.Visible;
+            label_pass.Visibility = Visibility.Visible;
+
+          //  just_busy(false);
             return;
             
             //-- never run, except testing
@@ -673,6 +676,7 @@ namespace Wpf_testHTTP
 
         public  void just_busy(bool busy)
         {
+            return;
             if (busy == true)
             {
                 button1.IsEnabled = false;
