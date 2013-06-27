@@ -544,6 +544,8 @@ namespace Waveface.Client
             VideosCount -= eventUC.VideosCount;
             PhotosCount -= eventUC.PhotosCount;
 
+            Rt.RemoveFileChanges(eventUC.Event);
+
             m_eventUCs.Remove(eventUC);
 
             ShowInfor();
