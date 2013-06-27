@@ -1,0 +1,18 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="Waveface.Client.AddSourceTip"
+	x:Name="UserControl"
+	d:DesignWidth="204" d:DesignHeight="158" UseLayoutRounding="True" Height="500" Width="1000">
+
+	<Grid x:Name="LayoutRoot">
+		<Image Source="{StaticResource AddDeviceArrowIcon}" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="158" Width="204"/>
+		<StackPanel Margin="201,0,0,158" Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+			<TextBlock HorizontalAlignment="Left" Margin="0,0,-1,0" TextWrapping="Wrap" Text="No Media Found." VerticalAlignment="Top" FontFamily="Segoe UI" FontSize="48" Foreground="#FFA8A8A8"/>
+			<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Start managing your own devices by clicking &quot;Add Source&quot;." VerticalAlignment="Top" FontFamily="Segoe UI" FontSize="21.333" Foreground="#FFA8A8A8" Height="56" Width="367" Margin="0,20,0,0"/>
+		</StackPanel>
+	</Grid>
+</UserControl>
