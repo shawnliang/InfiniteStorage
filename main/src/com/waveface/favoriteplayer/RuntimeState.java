@@ -30,10 +30,8 @@ public class RuntimeState{
 	public static boolean isAudioScaning = false;	
 	public static boolean isScaning = false;
 	public static boolean wasFirstTimeImportScanDone = false;	
-	public static boolean isBackuping = false;
 	private static boolean isSyncing = false;
 	public static boolean isDownloadingLabel = false;
-	
 	
 
 	public static boolean isNotificationShowing = false;
@@ -58,7 +56,6 @@ public class RuntimeState{
 		}
 		else if(action.equals(Constant.WS_ACTION_DENIED)){
 			OnWebSocketOpened = false;			
-			isBackuping = false;
 			mWebSocketServerId = "";
 		}
 		else if(action.equals(Constant.WS_ACTION_WAIT_FOR_PAIR)){
@@ -72,15 +69,8 @@ public class RuntimeState{
 				||action.equals(Constant.BS_ACTION_SERVER_REMOVED)
 				||action.equals(Constant.NETWORK_ACTION_WIFI_BROKEN) ){
 			OnWebSocketOpened = false;
-			isBackuping = false;
 			mWebSocketServerId = "";
 		}
-		else if(action.equals(Constant.WS_ACTION_START_BACKUP)){
-			isBackuping = true;
-		}
-		else if(action.equals(Constant.WS_ACTION_END_BACKUP)){
-			isBackuping = false;			
-		}		
 		else if(action.equals(Constant.WS_ACTION_SERVER_REMOVED)){
 			OnWebSocketOpened = true;			
 			mWebSocketServerId = "";			
@@ -95,18 +85,6 @@ public class RuntimeState{
 			return false;
 		}
 	}	
-	public static boolean canBackup(Context context){
-//		if(RuntimeState.isScaning == false
-//    			&& isWebSocketAvaliable(context) 
-//				&& RuntimeState.isBackuping == false){
-		if(isWebSocketAvaliable(context) 
-				&& RuntimeState.isBackuping == false){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
 	
 	public static boolean needToSync(){
 		return isSyncing;
@@ -114,8 +92,4 @@ public class RuntimeState{
 	public static void setSyncing(boolean value){
 		isSyncing = value;
 	}
-	
-	
-	public static Set<String> labelsHashSet = new HashSet<String>();
-	
 }

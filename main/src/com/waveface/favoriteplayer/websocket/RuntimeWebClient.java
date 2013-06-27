@@ -123,7 +123,10 @@ public class RuntimeWebClient {
 	}
 
 	public static boolean isConnected() {
-		return mWebSocketClient.isConnected();
+		if (mWebSocketClient!=null)
+			return mWebSocketClient.isConnected();
+		else
+			return false;
 	}
 
 	/**

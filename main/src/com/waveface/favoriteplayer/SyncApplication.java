@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import com.waveface.favoriteplayer.logic.BackupLogic;
 import com.waveface.favoriteplayer.util.DeviceUtil;
 import com.waveface.favoriteplayer.util.Log;
 
@@ -89,5 +90,13 @@ public class SyncApplication extends Application{
 			mImageManager.setDownloadPath(new File(new File(mDownloadFolder), "Favorites/Images").getAbsolutePath());			
 		}
 		sendBroadcast(new Intent(Constant.ACTION_FAVORITE_PLAYER_ALARM));
+		boolean alarmEnable = mPrefs.getBoolean(
+				Constant.PREF_BONJOUR_SERVER_ALRM_ENNABLED, false);
+		if (alarmEnable == false) {
+			BackupLogic.setAlarmWakeUpService(this);
+			mPrefs.edit().putBoolean(Constant.PREF_BONJOUR_SERVER_ALRM_ENNABLED, true)
+					.commit();
+		}
+
 	}
 }

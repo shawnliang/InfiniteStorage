@@ -247,6 +247,7 @@ public class WavefaceTokenClient extends WavefaceBaseWebSocketClient implements
 		 */
 		@Override
 		public void processClosed(WebSocketClientEvent aEvent) {
+			close();
 			RuntimeState.setServerStatus(Constant.WS_ACTION_SOCKET_CLOSED);
 			ServersLogic.updateAllBackedServerStatus(mContext,
 					Constant.SERVER_OFFLINE);
