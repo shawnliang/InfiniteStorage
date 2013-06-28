@@ -33,7 +33,8 @@ namespace Wpf_testHTTP
 {
     public partial class MainWindow : Window
     {
-        public static string HostIP = "https://api.waveface.com/v3/";
+        public static string serverBaseUrl="https://develop.waveface.com/v3";
+        public static string HostIP = serverBaseUrl;  //"https://api.waveface.com/v3/";
         public static string BaseURL { get { return HostIP; } }
         public static string APIKEY = "a23f9491-ba70-5075-b625-b8fb5d9ecd90";       // win8 viewer: station
         public static string machine_user =Environment.UserName;
@@ -55,6 +56,14 @@ namespace Wpf_testHTTP
             parser.AddSetting("Setup", "label", label_id);
             parser.SaveSettings();
            
+        }
+        public void setServerUrl(string url)
+        {
+            if (url != null && url != "")
+            {
+                serverBaseUrl = url;
+                HostIP = url;
+            }
         }
         public void setTitle(string title)
         {
@@ -189,7 +198,7 @@ namespace Wpf_testHTTP
             }
             // check
 
-            string _url = "https://develop.waveface.com/v3/auth/signup";
+            string _url = serverBaseUrl+"/auth/signup";
             Guid g;
             // Create and display the value of two GUIDs.
             g = Guid.NewGuid();
