@@ -27,11 +27,13 @@ namespace InfiniteStorage.WebsocketProtocol
 				if (Util.RejectUnpairedDevices)
 				{
 					ctx.SetState(new UnconnectedState());
+					log4net.LogManager.GetLogger("pairing").Debug("send denied because reject-all is enabled, state = unconnected");
 					ctx.Send(new { action = "denied", reason = "Not allowed" });
 					ctx.Stop(WebSocketSharp.Frame.CloseStatusCode.POLICY_VIOLATION, "Not allowed");
 				}
 				else
 				{
+					log4net.LogManager.GetLogger("pairing").Debug("send wait-for-pair, state = " + ctx.GetState().ToString());
 					ctx.Send(new { action = "wait-for-pair" });
 					ctx.SetState(new WaitForApproveState());
 					ctx.raiseOnPairingRequired();
@@ -66,6 +68,8 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			ctx.SetState(new TransmitInitState());
 			ctx.raiseOnConnectAccepted();
+
+			log4net.LogManager.GetLogger("pairing").Debug("send accept, state is " + ctx.GetState().ToString());
 			ctx.Send(response);
 			ctx.storage.setDeviceName(ctx.device_folder_name);
 		}

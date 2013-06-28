@@ -89,6 +89,7 @@ namespace InfiniteStorage.WebsocketProtocol
 
 		public void Clear()
 		{
+			log4net.LogManager.GetLogger("pairing").Debug("Clear context");
 			SetState(new UnconnectedState());
 
 			IsClosed = true;

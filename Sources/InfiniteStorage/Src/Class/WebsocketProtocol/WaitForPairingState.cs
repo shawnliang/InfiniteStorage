@@ -38,6 +38,7 @@ namespace InfiniteStorage.WebsocketProtocol
 				reason = "user rejected"
 			};
 
+			log4net.LogManager.GetLogger("pairing").Debug("send denied");
 			ctx.Send(response);
 			ctx.Stop(WebSocketSharp.Frame.CloseStatusCode.POLICY_VIOLATION, "User rejected");
 			ctx.SetState(new UnconnectedState());
