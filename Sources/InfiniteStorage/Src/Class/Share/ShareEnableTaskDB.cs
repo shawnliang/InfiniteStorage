@@ -17,6 +17,7 @@ namespace InfiniteStorage.Share
 						join f in db.Object.Files on lf.file_id equals f.file_id
 						join lb in db.Object.Labels on lf.label_id equals lb.label_id
 						where !f.deleted && lb.label_id == label.label_id
+						orderby f.event_time ascending
 						select f;
 
 				return q.ToList();
