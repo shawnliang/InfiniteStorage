@@ -135,6 +135,8 @@ namespace InfiniteStorage
 
 		void PairWebSocketService_NewDeviceAccepting(object sender, Pair.NewDeviceRespondingEventArgs e)
 		{
+
+			log4net.LogManager.GetLogger("pairing").Debug("UI accepts " + e.device_id);
 			lock (userAcceptCS)
 			{
 				var toRemove = new List<WebsocketProtocol.ProtocolContext>();
@@ -142,6 +144,7 @@ namespace InfiniteStorage
 				var devices = waitForUserAccept.Where(x => x.device_id == e.device_id);
 				foreach (var ctx in devices)
 				{
+					log4net.LogManager.GetLogger("pairing").Debug("call handleApprove()");
 					ctx.handleApprove();
 					toRemove.Add(ctx);
 				}

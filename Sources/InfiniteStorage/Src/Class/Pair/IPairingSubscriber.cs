@@ -30,6 +30,8 @@ namespace InfiniteStorage.Pair
 					}
 				});
 
+			log4net.LogManager.GetLogger("pairing").Debug("send pairing request to UI");
+
 			peer.Send(msg);
 		}
 	}
