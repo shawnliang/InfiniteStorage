@@ -33,10 +33,12 @@ namespace Wpf_testHTTP
 {
     public partial class MainWindow : Window
     {
-        public static string HostIP = "https://api.waveface.com/v3/";
+        public static string serverBaseUrl="https://develop.waveface.com/v3";
+        public static string HostIP = serverBaseUrl;  //"https://api.waveface.com/v3/";
         public static string BaseURL { get { return HostIP; } }
         public static string APIKEY = "a23f9491-ba70-5075-b625-b8fb5d9ecd90";       // win8 viewer: station
-        public string iniPath = @"C:\Users\ruddy\AppData\Roaming\Bunny\temp\sharefavorite.ini";
+        public static string machine_user =Environment.UserName;
+        public string iniPath = @"C:\Users\"+machine_user+@"\AppData\Roaming\Bunny\temp\sharefavorite.ini";
         public string favoriteTitle = "Waveface Office";
         public string RefreshKey_real = "";                                         // kept the real refresh token
         public string access_token = "";
@@ -54,6 +56,14 @@ namespace Wpf_testHTTP
             parser.AddSetting("Setup", "label", label_id);
             parser.SaveSettings();
            
+        }
+        public void setServerUrl(string url)
+        {
+            if (url != null && url != "")
+            {
+                serverBaseUrl = url;
+                HostIP = url;
+            }
         }
         public void setTitle(string title)
         {
@@ -142,7 +152,6 @@ namespace Wpf_testHTTP
 
         public void setRun_button()
         {
-
             // get ini for refreshkey
             iniParser parser = new iniParser();
            
@@ -189,7 +198,7 @@ namespace Wpf_testHTTP
             }
             // check
 
-            string _url = "https://develop.waveface.com/v3/auth/signup";
+            string _url = serverBaseUrl+"/auth/signup";
             Guid g;
             // Create and display the value of two GUIDs.
             g = Guid.NewGuid();
@@ -289,25 +298,25 @@ namespace Wpf_testHTTP
         private string getEmailListinJson()
         {
             string result = null;
-            string json = "[]";
-            //if (title_arr.Count <= 0)
-            //{
-            //    return result;
-            //}
             string a = "[";
             int i = 0;
             string _title = "";
-            // build email_arr
-           // setup_emailList_nogoogle();
-            foreach (string _mail in email_arr)
+            try
             {
-                _title = getTitle(_mail);
-                a = a + "{'name':" + "'" + _title + "'," + "'email':'" + _mail + "'},";
+                foreach (string _mail in email_arr)
+                {
+                    _title = getTitle(_mail);
+                    a = a + "{'name':" + "'" + _title + "'," + "'email':'" + _mail + "'},";
+                }
+                string _json = a;
+                _json = _json.Substring(0, _json.Length - 1) + "]";
+                email_arr.Clear();
+                result = _json;
             }
-            string _json = a;
-            _json = _json.Substring(0, _json.Length - 1) + "]";
-            email_arr.Clear();
-            result = _json;
+            catch
+            {
+                result = "[]";              // empty email then send []
+            }
             return result;
         }
  
@@ -315,24 +324,29 @@ namespace Wpf_testHTTP
         {
             string result = "";
             int i = 0;
-            foreach (string mail in gmail_arr)
+            try
             {
-                if (_mail == mail)
+                foreach (string mail in gmail_arr)
                 {
-                    result = title_arr[i];
-                    break;
+                    if (_mail == mail)
+                    {
+                        result = title_arr[i];
+                        break;
+                    }
+                    i++;
                 }
-                i++;
+            }
+            catch
+            {
+                result = "";
             }
             return result;
         }
 
+        
         public MainWindow()
         {
-            //string serverId = "isserverid";
-            //createAccount(serverId);
-            // return;
-
+           
             string[] args = Environment.GetCommandLineArgs();
             // args = null;
             if (args.Length >= 2)
@@ -368,26 +382,8 @@ namespace Wpf_testHTTP
         //  private readonly BackgroundWorker worker = new BackgroundWorker();
         private void worker_DoWork()
         {
-
-            //log.Info("1. Login with: " + user + " / " + password);            //
-            //// 1. login 
-            //string data = callLogin(user, password);
-
-            //// 2. upload attachments
-            //char[] delimiterChars = { '~' };
-            //arr = filename.Split(delimiterChars);
-            //no_of_attachments = arr.Length;
-
-            //log.Info("2. start Add attachments ");                      //
-
-            //foreach (string _mail in arr)
-            //{
-            //    log.Info("Add attachments: " + _mail);
-            //    string _data = callUploadAttachment(_mail);
-            //}
             worker_RunWorkerCompleted();
 
-            //log.Info("End of attachments!");                            //
         }
 
         public event EventHandler _sendDataCompleted = delegate { };
@@ -404,7 +400,7 @@ namespace Wpf_testHTTP
         newPostClass _ws = new newPostClass();
         string group_id = "";
         string session_token_key = "";
-        string filename = @"C:/Users/Ruddy/Pictures/2.jpg~C:/Users/Ruddy/Pictures/video.mp4~C:/Users/Ruddy/Pictures/3.jpg";
+        string filename = @"C:/Users/" + machine_user + "/Pictures/2.jpg~C:/Users/" + machine_user + "/Pictures/video.mp4~C:/Users/" + machine_user + "/Pictures/3.jpg";
         string email = "";
         int no_of_attachments = 0;
         string[] arr;
@@ -421,7 +417,6 @@ namespace Wpf_testHTTP
         {
             char[] delimiterChars0 = { ';' };
             // 0 get email setup
-            setup_emailList();
             string _emailStr = setup_emailList();
             if (email_list.Items.Count <= 0)
             {
@@ -434,14 +429,12 @@ namespace Wpf_testHTTP
                 }
             }
             else if (AutoCompleteBox.Text != "")
-            {
-                //MessageBox.Show("email address ERROR!");
+            {             
                 label_invalid.Visibility = Visibility.Visible;
                 return;
             }
             if (_emailStr == "")
-            {
-                // MessageBox.Show("Plaese input shared email address!");
+            {              
                 label_invalid.Visibility = Visibility.Visible;
                 return;
             }
@@ -451,64 +444,23 @@ namespace Wpf_testHTTP
                 email_arr.Add(_mail);
             }
             shareButtonClick = true;
-            just_busy(false);
+
             sendEmailList();
+
             label_favorite.Visibility = Visibility.Visible;
             label_pass.Visibility = Visibility.Visible;
 
-          //  just_busy(false);
             return;
-            
-            //-- never run, except testing
-            log.Info("3. create New Post ");                               //
-
-            #region step 1& 2 (do by background worker)
-
-            #endregion
-
-            service_run();
-            //// 3. new POST
-
-            log.Info("end of create new Post ");
         }
 
         private void service_run()
         {
             shareButtonClick = false;
-            //_ws.group_id = group_id;
-            //_ws.session_token = session_token_key;
-            //_ws.APIKEY = APIKEY;
-            //string object_id = _ws._object_id;
-            //string content = "";
-            //string attachment_id_array = count_attachments(); //  "[" + '"' + object_id.ToString() + '"' + "]";
-            //string preview = "";
-            //string type = "event";
-            //string share_email_list = count_emails(); // "[" + '"' + email + '"' + "]";
-            //string coverAttach = "";
-            //string event_type = "favorite_shared";
-            //string favorite = "0";
-            //try
-            //{
-            //    MR_posts_new ret_post = _ws.posts_new(session_token_key, group_id, content, attachment_id_array, preview, type, coverAttach, share_email_list, event_type, favorite);
-            //    textBox_return.Text = "Upload 完畢! \r\n Create post_id= " + ret_post.post.post_id + ", " + ret_post.api_ret_message + " !";
-            //    textBox_return.Text += "\r\n\r\n" + _ws._responseMessage;
-            //    //email_list.Items.Clear();
-            //    AutoCompleteBox.Text = "";
-            //}
-            //catch (Exception err)
-            //{
-            //    just_busy(false);
-            //    // to log error
-            //    textBox_return.Text = "return NULL, get image error!";
-            //    log.Error("Create New Post, return NULL: " + err.Message);                  //
-            //}
-            //busy_flag.Visibility = Visibility.Visible;
             label_favorite.Visibility = Visibility.Visible;
             label_pass.Visibility = Visibility.Visible;
             log.Info("end of create new Post ");
 
            // sendEmailList();            // send email list to server
-            just_busy(false);
         }
         private string setup_emailList()
         {
@@ -522,6 +474,7 @@ namespace Wpf_testHTTP
             result = result.Substring(0, result.Length - 1);
             return result;
         }
+
         bool already_start = false;
         private void dispatcherTimer1_Tick(object sender, EventArgs e)
         {
@@ -530,7 +483,6 @@ namespace Wpf_testHTTP
             if (complete == true && shareButtonClick == true)
             {
                 service_run();
-                just_busy(false);
                 complete = false;
                 shareButtonClick = false;
             }
@@ -570,46 +522,8 @@ namespace Wpf_testHTTP
             if (i0 < i) return false;           // . behind @
 
             return true;
-
-            // Use IdnMapping class to convert Unicode domain names. 
-            try
-            {
-                strIn = Regex.Replace(strIn, @"(@)(.+)$", this.DomainMapper, RegexOptions.None);
-            }
-            catch (RegexMatchTimeoutException)
-            {
-                return false;
-            }
-
-            if (invalid)
-                return false;
-
-            // Return true if strIn is in valid e-mail format. 
-            try
-            {
-                return Regex.IsMatch(strIn, @"^(?("")(""[^""]+?""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" + @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9]{2,17}))$");
-            }
-            catch (RegexMatchTimeoutException)
-            {
-                return false;
-            }
         }
-        private string DomainMapper(Match match)
-        {
-            // IdnMapping class with default property values.
-            IdnMapping idn = new IdnMapping();
-
-            string domainName = match.Groups[2].Value;
-            try
-            {
-                domainName = idn.GetAscii(domainName);
-            }
-            catch (ArgumentException)
-            {
-                invalid = true;
-            }
-            return match.Groups[1].Value + domainName;
-        }
+ 
         #endregion
         private string count_emails()
         {
@@ -677,19 +591,6 @@ namespace Wpf_testHTTP
         }
         private static bool IsBusy;
 
-        public  void just_busy(bool busy)
-        {
-            return;
-            if (busy == true)
-            {
-                button1.IsEnabled = false;
-            }
-            else
-            {
-                button1.IsEnabled = true;
-            }
-            Mouse.OverrideCursor = busy ? Cursors.Wait : null;
-        }
         /// <summary>
         /// Sets the busystate as busy.
         /// </summary>
@@ -843,10 +744,7 @@ namespace Wpf_testHTTP
                 // set focus to AutoCompleteBox
                 AutoCompleteBox.Focusable = true;
                 Keyboard.Focus(AutoCompleteBox);
-                // change code immediately
-                //string _accesstoken= consumer.GetScopedAccessToken(RefreshKey_saved,_set1);
-                //consumer.RefreshAuthorization(grantedAccess, TimeSpan.FromMinutes(20));
-                //accessToken = grantedAccess.AccessToken;
+ 
             }
 
             //-------
@@ -973,7 +871,6 @@ namespace Wpf_testHTTP
                     XmlNode title = contact.SelectSingleNode("a:title", nsmgr);
                     XmlNode email = contact.SelectSingleNode("gd:email", nsmgr);
 
-
                     // Console.WriteLine("{0}: {1}",title.InnerText, email.Attributes["address"].Value);
                     if (email != null)
                     {
@@ -981,7 +878,6 @@ namespace Wpf_testHTTP
                         gmail_arr.Add(email.Attributes["address"].Value);
                         emailCount++;
                     }
-
                 }
                 getSuccess = true;
                 button_import.Visibility = Visibility.Collapsed;
@@ -991,7 +887,6 @@ namespace Wpf_testHTTP
             }
             catch (Exception err)
             {
-                // MessageBox.Show("error: " + err.Message);
                 Console.WriteLine("Error: " + err.Message);
                 getSuccess = false;
                 return getSuccess;
@@ -1011,7 +906,6 @@ namespace Wpf_testHTTP
             label_invalid.Visibility = Visibility.Collapsed;
             // myTabControl.SelectedIndex = 0;
             return getSuccess;
-
         }
 
         # endregion
@@ -1019,7 +913,6 @@ namespace Wpf_testHTTP
         // editing the listbox(delete)
         private void email_list_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-
         }
 
         private void Window_MouseDoubleClick(object sender, MouseButtonEventArgs e)

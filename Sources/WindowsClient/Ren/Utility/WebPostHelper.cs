@@ -24,7 +24,7 @@ namespace Waveface.Client
 			return m_buff;
 		}
 
-		public bool doPost(string sUrl, string data, string referer)
+		public bool doPost(string sUrl, string data, string referer, int timeout)
 		{
 			bool _dosuccess = false;
 			HttpWebRequest _urlConn = null;
@@ -34,7 +34,7 @@ namespace Waveface.Client
 				_urlConn = (HttpWebRequest)WebRequest.Create(sUrl);
 
 				//連線最大等待時間
-				//_urlConn.Timeout = 10000;
+                _urlConn.Timeout = timeout;
 				_urlConn.Method = "POST";
 				//_urlConn.ServicePoint.Expect100Continue = false;
 

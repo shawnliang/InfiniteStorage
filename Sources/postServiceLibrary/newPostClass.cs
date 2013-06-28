@@ -44,7 +44,7 @@ namespace postServiceLibrary
 			var lastUpdateTime = last_update_time.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
 			var emailList = HttpUtility.UrlEncode(email_list);
 
-			string _url = "https://develop.waveface.com:443/v3" + "/pio_posts/update";
+            string _url = postServiceClass.serverBaseUrl + "/pio_posts/update";
 			DateTime _update = DateTime.UtcNow;
 			string _dateStr = _update.ToString(@"yyyy-MM-ddTHH\:mm\:ssZ");
 
@@ -88,7 +88,7 @@ namespace postServiceLibrary
 			event_type = System.Web.HttpUtility.UrlEncode(event_type);
 			favorite = System.Web.HttpUtility.UrlEncode(favorite);
 
-			string _url = "https://develop.waveface.com:443/v3" + "/pio_posts/new";
+            string _url = postServiceClass.serverBaseUrl + "/pio_posts/new";
 
 			string _parms = "post_id" + "=" + post_id + "&" +
 				"apikey" + "=" + APIKEY + "&" +
@@ -145,7 +145,7 @@ namespace postServiceLibrary
 						   "&password=" + password;
 
 
-			string uri = "https://develop.waveface.com:443/v3/pio_auth/login"; // "https://develop.waveface.com:443/v3/pio_auth/login";
+			string uri =postServiceClass.serverBaseUrl+"/pio_auth/login"; // "https://develop.waveface.com:443/v3/pio_auth/login";
 
 			var post = new WebPostHelper();
 			post.doPost(uri, postData, "");
