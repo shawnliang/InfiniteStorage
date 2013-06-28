@@ -16,7 +16,16 @@ namespace postServiceLibrary
         public string HostIp { get; set; }
         public string session_token { get; set; }
         public string group_id { get; set; }
+        public static string serverBaseUrl = "https://develop.waveface.com/v3";
 
+        public void setServerBaseUrl(string url)
+        {
+            if (url != "" && url != null)
+            {
+                serverBaseUrl = url;
+                    HostIp=url;
+            }
+        }
         public string renewSharedcode(string session_token, string post_id)
         {
             string result = null;
@@ -24,7 +33,7 @@ namespace postServiceLibrary
             {
                 return null;
             }
-            string _url = "https://develop.waveface.com/v3/pio_posts/renew_sharedcode";
+            string _url = serverBaseUrl + "/pio_posts/renew_sharedcode";
 
             string _post_id = System.Web.HttpUtility.UrlEncode(post_id);
             string _session_token = System.Web.HttpUtility.UrlEncode(session_token);
@@ -45,7 +54,7 @@ namespace postServiceLibrary
             {
 				throw new ArgumentNullException();
             }
-            string _url = "https://develop.waveface.com/v3/pio_posts/tuneoff_sharedcode";
+            string _url = serverBaseUrl + "/pio_posts/tuneoff_sharedcode";
 
             string _post_id = System.Web.HttpUtility.UrlEncode(post_id);
             string _session_token = System.Web.HttpUtility.UrlEncode(session_token);
@@ -64,7 +73,7 @@ namespace postServiceLibrary
             {
 				throw new ArgumentNullException();
             }
-            string _url = "https://develop.waveface.com/v3/pio_posts/tuneon_sharedcode";
+            string _url = serverBaseUrl + "/pio_posts/tuneon_sharedcode";
 
             string _parms = "post_id" + "=" + post_id + "&" +
                 "session_token" + "=" + HttpUtility.UrlEncode(session_token) + "&" +
@@ -90,7 +99,7 @@ namespace postServiceLibrary
                  return null;
              }
 
-            string _url = "https://develop.waveface.com/v3/auth/signup";
+             string _url = serverBaseUrl + "/auth/signup";
             string user_email = user;
             string user_password = password;
             string user_nickname = nickname;
@@ -220,7 +229,7 @@ namespace postServiceLibrary
 														string title, string description, string type, string image_meta,
 														string object_id, string post_id, string APIKEY, DateTime fileCreateTime)
 		{
-			string _url = "https://develop.waveface.com:443/v3" + "/pio_attachments/upload";
+            string _url = serverBaseUrl + "/pio_attachments/upload";
 
 			string _mimeType = FileUtility.GetMimeType(new FileInfo(fileName));
 			byte[] _data;
