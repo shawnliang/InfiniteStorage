@@ -62,7 +62,7 @@ namespace Waveface.ClientFramework
 				if (!newServices.Any() && !expiredServices.Any())
 					return;
 
-				syncContext.Send((o) =>
+				syncContext.Post((o) =>
 				{
 					this.Services.AddRange(newServices);
 
