@@ -39,48 +39,52 @@ namespace Waveface.ClientFramework
 		#region private methods
 		private void AddSubfolders(System.Collections.ObjectModel.ObservableCollection<IContentEntity> contents, SQLiteConnection conn)
 		{
-			var cmd = conn.CreateCommand();
-			cmd.CommandText =
-				"select [name] from [Folders] " +
-				"where [parent_folder] = @parent " +
-				"order by [name]";
-
-			cmd.Parameters.Add(new SQLiteParameter("@parent", Path.Combine(this.parentFolder, this.Name)));
-			cmd.Parameters.Add(new SQLiteParameter("@dev", DeviceId));
-
-			using (var reader = cmd.ExecuteReader())
+			using (var cmd = conn.CreateCommand())
 			{
-				while (reader.Read())
+				cmd.CommandText =
+				   "select [name] from [Folders] " +
+				   "where [parent_folder] = @parent " +
+				   "order by [name]";
+
+				cmd.Parameters.Add(new SQLiteParameter("@parent", Path.Combine(this.parentFolder, this.Name)));
+				cmd.Parameters.Add(new SQLiteParameter("@dev", DeviceId));
+
+				using (var reader = cmd.ExecuteReader())
 				{
-					var subfolder = reader.GetString(0);
-					contents.Add(new BunnyContentGroup(Path.Combine(parentFolder, Name), subfolder, DeviceId));
+					while (reader.Read())
+					{
+						var subfolder = reader.GetString(0);
+						contents.Add(new BunnyContentGroup(Path.Combine(parentFolder, Name), subfolder, DeviceId));
+					}
 				}
 			}
 		}
 
 		private void AddFiles(System.Collections.ObjectModel.ObservableCollection<IContentEntity> contents, SQLiteConnection conn)
 		{
-			var cmd = conn.CreateCommand();
-			cmd.CommandText =
-				"select file_id, file_name, type from Files " +
-				"where parent_folder = @parent and device_id = @dev " +
-				"order by event_time";
-
-			cmd.Parameters.Add(new SQLiteParameter("@parent", Path.Combine(this.parentFolder, this.Name)));
-			cmd.Parameters.Add(new SQLiteParameter("@dev", DeviceId));
-
-			using (var reader = cmd.ExecuteReader())
+			using (var cmd = conn.CreateCommand())
 			{
-				while (reader.Read())
+				cmd.CommandText =
+				   "select file_id, file_name, type from Files " +
+				   "where parent_folder = @parent and device_id = @dev " +
+				   "order by event_time";
+
+				cmd.Parameters.Add(new SQLiteParameter("@parent", Path.Combine(this.parentFolder, this.Name)));
+				cmd.Parameters.Add(new SQLiteParameter("@dev", DeviceId));
+
+				using (var reader = cmd.ExecuteReader())
 				{
-					var file_path = Path.Combine(Uri.LocalPath, reader["file_name"].ToString());
-
-					var type = ((long)reader["type"] == 0L) ? ContentType.Photo : ContentType.Video;
-
-					contents.Add(new BunnyContent(new Uri(file_path), reader["file_id"].ToString(), type) 
+					while (reader.Read())
 					{
-						EnableTag = true
-					});
+						var file_path = Path.Combine(Uri.LocalPath, reader["file_name"].ToString());
+
+						var type = ((long)reader["type"] == 0L) ? ContentType.Photo : ContentType.Video;
+
+						contents.Add(new BunnyContent(new Uri(file_path), reader["file_id"].ToString(), type)
+						{
+							EnableTag = true
+						});
+					}
 				}
 			}
 		}

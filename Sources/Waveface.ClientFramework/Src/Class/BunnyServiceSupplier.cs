@@ -62,7 +62,7 @@ namespace Waveface.ClientFramework
 				if (!newServices.Any() && !expiredServices.Any())
 					return;
 
-				syncContext.Send((o) =>
+				syncContext.Post((o) =>
 				{
 					this.Services.AddRange(newServices);
 
@@ -94,27 +94,28 @@ namespace Waveface.ClientFramework
 		private List<Service> GetServices()
 		{
 			var services = new List<Service>();
-			var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
 
-			var dbFilePath = Path.Combine(appDir, "database.s3db");
-
-			var conn = new SQLiteConnection(string.Format("Data source={0}", dbFilePath));
-
-			conn.Open();
-
-			var cmd = new SQLiteCommand("SELECT * FROM Devices", conn);
-
-			var dr = cmd.ExecuteReader();
-
-			while (dr.Read())
+			using (var conn = BunnyDB.CreateConnection())
 			{
-				var folderName = dr["folder_name"].ToString();
-				var deviceId = dr["device_id"].ToString();
-				services.Add(new BunnyService(this, folderName, deviceId));
-			}
+				conn.Open();
 
-			conn.Close();
-			return services;
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "SELECT * FROM Devices";
+
+					using (var dr = cmd.ExecuteReader())
+					{
+						while (dr.Read())
+						{
+							var folderName = dr["folder_name"].ToString();
+							var deviceId = dr["device_id"].ToString();
+							services.Add(new BunnyService(this, folderName, deviceId));
+						}
+					}
+				}
+
+				return services;
+			}
 		}
 
 		private void subscribeActiveDeviceAsync()

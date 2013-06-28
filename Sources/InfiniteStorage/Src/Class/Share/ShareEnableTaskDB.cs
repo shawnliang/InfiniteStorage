@@ -30,10 +30,12 @@ namespace InfiniteStorage.Share
 			{
 				db.Open();
 
-				var cmd = db.CreateCommand();
-				cmd.CommandText = "update [Files] set on_cloud = 1 where file_id = @file";
-				cmd.Parameters.Add(new SQLiteParameter("@file", file.file_id));
-				cmd.ExecuteNonQuery();
+				using (var cmd = db.CreateCommand())
+				{
+					cmd.CommandText = "update [Files] set on_cloud = 1 where file_id = @file";
+					cmd.Parameters.Add(new SQLiteParameter("@file", file.file_id));
+					cmd.ExecuteNonQuery();
+				}
 			}
 		}
 
@@ -55,10 +57,12 @@ namespace InfiniteStorage.Share
 			{
 				db.Open();
 
-				var cmd = db.CreateCommand();
-				cmd.CommandText = "update [LabelShareTo] set on_cloud = 1 where id = @id";
-				cmd.Parameters.Add(new SQLiteParameter("@id", recipient.id));
-				cmd.ExecuteNonQuery();
+				using (var cmd = db.CreateCommand())
+				{
+					cmd.CommandText = "update [LabelShareTo] set on_cloud = 1 where id = @id";
+					cmd.Parameters.Add(new SQLiteParameter("@id", recipient.id));
+					cmd.ExecuteNonQuery();
+				}
 			}
 		}
 
@@ -68,11 +72,13 @@ namespace InfiniteStorage.Share
 			{
 				db.Open();
 
-				var cmd = db.CreateCommand();
-				cmd.CommandText = "update [Labels] set share_proc_seq = @seq where label_id = @label";
-				cmd.Parameters.Add(new SQLiteParameter("@seq", (object)label.seq));
-				cmd.Parameters.Add(new SQLiteParameter("@label", label.label_id));
-				cmd.ExecuteNonQuery();
+				using (var cmd = db.CreateCommand())
+				{
+					cmd.CommandText = "update [Labels] set share_proc_seq = @seq where label_id = @label";
+					cmd.Parameters.Add(new SQLiteParameter("@seq", (object)label.seq));
+					cmd.Parameters.Add(new SQLiteParameter("@label", label.label_id));
+					cmd.ExecuteNonQuery();
+				}
 			}
 		}
 	}

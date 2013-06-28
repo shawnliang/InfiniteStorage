@@ -49,7 +49,7 @@ namespace Waveface.Client
 
             lblContentTypeCount.Content = string.Format("0 photos 0 videos");
 
-            var syncContext = SynchronizationContext.Current;
+			var syncContext = SynchronizationContext.Current;
 
 
             Observable.FromEventPattern(
@@ -60,10 +60,10 @@ namespace Waveface.Client
                 .SelectMany(x => x.TakeLast(1))
                 .Subscribe(ex =>
                 {
-                    syncContext.Send((o) =>
-                        {
+					syncContext.Post((o) =>
+					    {
                             TreeViewItem_PreviewMouseLeftButtonDown(ex.Sender, ex.EventArgs);
-                        }, null);
+						}, null);
                 });
 
             Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
@@ -75,10 +75,10 @@ namespace Waveface.Client
                 .SelectMany(x => x.TakeLast(1))
                 .Subscribe(ex =>
                 {
-                    syncContext.Send((o) =>
-                    {
+					syncContext.Post((o) =>
+					{
                         lbxFavorites_SelectionChanged(lbxFavorites, ex);
-                    }, null);
+					}, null);
                 });
 
             uiDelayTimer = new DispatcherTimer();

@@ -20,51 +20,54 @@ namespace InfiniteStorage.REST
 			{
 				conn.Open();
 
-				var query = conn.CreateCommand();
-				query.CommandText = "select 1 from [LabelFiles] where label_id = @label and file_id = @file";
-				query.Prepare();
-
-
-				var insert = conn.CreateCommand();
-				insert.CommandText = "insert into [LabelFiles] (label_id, file_id) values (@label, @file)";
-				insert.Prepare();
-
-
-				using (var trans = conn.BeginTransaction())
+				using (var query = conn.CreateCommand())
+				using (var insert = conn.CreateCommand())
 				{
-					bool inserted = false;
+					query.CommandText = "select 1 from [LabelFiles] where label_id = @label and file_id = @file";
+					query.Prepare();
 
-					foreach (var file_id in file_ids)
+					insert.CommandText = "insert into [LabelFiles] (label_id, file_id) values (@label, @file)";
+					insert.Prepare();
+
+
+					using (var trans = conn.BeginTransaction())
 					{
-						var param_file = new SQLiteParameter("@file", file_id);
-						var param_label = new SQLiteParameter("@label", label_id);
-						query.Parameters.Clear();
-						query.Parameters.Add(param_file);
-						query.Parameters.Add(param_label);
+						bool inserted = false;
 
-						var alreadyTagged = (query.ExecuteScalar() != null);
+						foreach (var file_id in file_ids)
+						{
+							var param_file = new SQLiteParameter("@file", file_id);
+							var param_label = new SQLiteParameter("@label", label_id);
+							query.Parameters.Clear();
+							query.Parameters.Add(param_file);
+							query.Parameters.Add(param_label);
 
-						if (alreadyTagged)
-							continue;
+							var alreadyTagged = (query.ExecuteScalar() != null);
+
+							if (alreadyTagged)
+								continue;
 
 
-						insert.Parameters.Clear();
-						insert.Parameters.Add(param_file);
-						insert.Parameters.Add(param_label);
-						insert.ExecuteNonQuery();
-						inserted = true;
+							insert.Parameters.Clear();
+							insert.Parameters.Add(param_file);
+							insert.Parameters.Add(param_label);
+							insert.ExecuteNonQuery();
+							inserted = true;
+						}
+
+						if (inserted)
+						{
+							using (var update = conn.CreateCommand())
+							{
+								update.CommandText = "update [Labels] set seq = @seq where label_id = @label";
+								update.Parameters.Add(new SQLiteParameter("@label", label_id));
+								update.Parameters.Add(new SQLiteParameter("@seq", (object)SeqNum.GetNextSeq()));
+								update.ExecuteNonQuery();
+							}
+						}
+
+						trans.Commit();
 					}
-
-					if (inserted)
-					{
-						var update = conn.CreateCommand();
-						update.CommandText = "update [Labels] set seq = @seq where label_id = @label";
-						update.Parameters.Add(new SQLiteParameter("@label", label_id));
-						update.Parameters.Add(new SQLiteParameter("@seq", (object)SeqNum.GetNextSeq()));
-						update.ExecuteNonQuery();
-					}
-
-					trans.Commit();
 				}
 			}
 

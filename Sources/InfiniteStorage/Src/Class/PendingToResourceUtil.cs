@@ -43,10 +43,8 @@ namespace InfiniteStorage
 			{
 				conn.Open();
 				using (var transaction = conn.BeginTransaction())
+				using(var cmd = conn.CreateCommand())
 				{
-					var cmd = conn.CreateCommand();
-
-
 					var i = 0;
 					var pars = new List<string>();
 					foreach (var fid in file_ids)
@@ -110,36 +108,40 @@ namespace InfiniteStorage
 
 		private static void deletePendingFileRecords(List<FileData> data, SQLiteConnection db)
 		{
-			var delCmd = db.CreateCommand();
-			delCmd.CommandText =
-				"delete from PendingFiles where file_id = @fid";
-			delCmd.Prepare();
-
-			foreach (var file in data)
+			using (var delCmd = db.CreateCommand())
 			{
-				delCmd.Parameters.Clear();
-				delCmd.Parameters.Add(new SQLiteParameter("@fid", file.file_id));
-				delCmd.ExecuteNonQuery();
+				delCmd.CommandText =
+				   "delete from PendingFiles where file_id = @fid";
+				delCmd.Prepare();
+
+				foreach (var file in data)
+				{
+					delCmd.Parameters.Clear();
+					delCmd.Parameters.Add(new SQLiteParameter("@fid", file.file_id));
+					delCmd.ExecuteNonQuery();
+				}
 			}
 		}
 
 		private static void copyToFilesTable(List<FileData> data, SQLiteConnection db)
 		{
-			var cmd = db.CreateCommand();
-			cmd.CommandText =
+			using (var cmd = db.CreateCommand())
+			{
+				cmd.CommandText =
 				"insert into Files (file_id, file_name, file_path, file_size, saved_path, parent_folder, device_id, type, event_time, seq, deleted, thumb_ready, width, height, orientation) " +
 				"select file_id, file_name, file_path, file_size, @saved, @parent, device_id, type, event_time, @seq, deleted, thumb_ready, width, height, orientation from [PendingFiles] " +
 				"where file_id = @fid";
-			cmd.Prepare();
+				cmd.Prepare();
 
-			foreach (var file in data)
-			{
-				cmd.Parameters.Clear();
-				cmd.Parameters.Add(new SQLiteParameter("@saved", file.saved_path));
-				cmd.Parameters.Add(new SQLiteParameter("@parent", file.parent_folder));
-				cmd.Parameters.Add(new SQLiteParameter("@fid", file.file_id));
-				cmd.Parameters.Add(new SQLiteParameter("@seq", SeqNum.GetNextSeq()));
-				cmd.ExecuteNonQuery();
+				foreach (var file in data)
+				{
+					cmd.Parameters.Clear();
+					cmd.Parameters.Add(new SQLiteParameter("@saved", file.saved_path));
+					cmd.Parameters.Add(new SQLiteParameter("@parent", file.parent_folder));
+					cmd.Parameters.Add(new SQLiteParameter("@fid", file.file_id));
+					cmd.Parameters.Add(new SQLiteParameter("@seq", SeqNum.GetNextSeq()));
+					cmd.ExecuteNonQuery();
+				}
 			}
 		}
 
