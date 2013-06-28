@@ -201,7 +201,7 @@ public class FullScreenSlideshowFragment extends Fragment implements AnimationLi
 			}
 			else if(platData.type.equals(Constant.FILE_TYPE_VIDEO)){
 				attr.setDoneScaleType(ScaleType.FIT_CENTER);
-				mImageManager.getImage(platData.url, attr);				
+				mImageManager.getLocalVideoThumbnail(platData.url, attr);				
 			}			
 			if(mDatas.get(mCurrentPosition).type.equals(Constant.FILE_TYPE_VIDEO)){
 				mSlideFrameImage.setVisibility(View.VISIBLE);
