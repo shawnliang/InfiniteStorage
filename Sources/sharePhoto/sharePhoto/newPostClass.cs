@@ -53,7 +53,7 @@ namespace Wpf_testHTTP
 
             try
             {
-                string _url = "https://develop.waveface.com:443/v3" + "/pio_posts/new";
+                string _url = MainWindow.serverBaseUrl + "/pio_posts/new";
 
                 string _parms = "post_id"+"="+post_id+"&"+
                     "apikey" + "=" + APIKEY + "&" +
@@ -128,7 +128,7 @@ namespace Wpf_testHTTP
             };
             try
             {
-                string uri = "https://develop.waveface.com:443/v3/pio_auth/login";
+                string uri = MainWindow.serverBaseUrl + "/pio_auth/login";
                 result = HttpPost(uri, _args);
                 // get session_token
                 MR_auth_login result12 = JsonConvert.DeserializeObject<MR_auth_login>(result);
@@ -184,7 +184,7 @@ namespace Wpf_testHTTP
 
             try
             {
-                string _url = "https://develop.waveface.com:443/v3" + "/pio_attachments/upload";
+                string _url = MainWindow.serverBaseUrl + "/pio_attachments/upload";
 
                 string _mimeType = FileUtility.GetMimeType(new FileInfo(fileName));
                 byte[] _data;
