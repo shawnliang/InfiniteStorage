@@ -200,6 +200,10 @@
     <Reference Include="System.Windows.Controls.Input.Toolkit.VisualStudio.Design, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\Libs\WPFToolkit\System.Windows.Controls.Input.Toolkit.VisualStudio.Design.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libs\Ren\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -238,6 +242,7 @@
     <Compile Include="NativeApplicationClass.cs" />
     <Compile Include="PaintEventArgs.cs" />
     <Compile Include="RegexMatchTimeoutException.cs" />
+    <Compile Include="watermarkClass.cs" />
     <Compile Include="Wdata.cs" />
     <Compile Include="WebPostHelper.cs" />
     <Page Include="MainWindow.xaml">

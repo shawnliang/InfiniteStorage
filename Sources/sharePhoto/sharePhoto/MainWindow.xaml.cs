@@ -141,6 +141,7 @@ namespace Wpf_testHTTP
         public void setRun()
         {
         }
+        public bool initialState = true;
 
         public List<string> getMailList()
         {
@@ -152,6 +153,8 @@ namespace Wpf_testHTTP
 
         public void setRun_button()
         {
+            // add state: if initialState = true; then first time link to google no show screen if failed
+
             // get ini for refreshkey
             iniParser parser = new iniParser();
            
@@ -172,9 +175,15 @@ namespace Wpf_testHTTP
             //
             if (RefreshKey_saved == "")
             {
-                myTabControl.SelectedIndex = 1;
-            }
-            service_oauth();
+                if (initialState == true)
+                {
+                    myTabControl.SelectedIndex = 0;
+                }
+                else
+                {
+                    myTabControl.SelectedIndex = 1;
+                }
+            } service_oauth();
         }
 
         private void createAccount(string serverId)
@@ -346,7 +355,7 @@ namespace Wpf_testHTTP
         
         public MainWindow()
         {
-           
+            initialState = true;
             string[] args = Environment.GetCommandLineArgs();
             // args = null;
             if (args.Length >= 2)
@@ -356,8 +365,10 @@ namespace Wpf_testHTTP
             }
             InitializeComponent();
 
-            AutoCompleteBox.Text = email;
-
+            if (email.Length != 0)
+            {
+                AutoCompleteBox.Text = email;
+            }
             char[] delimiterChars = { '~' };
             arr = filename.Split(delimiterChars);
             no_of_attachments = arr.Length;
@@ -374,7 +385,8 @@ namespace Wpf_testHTTP
             dispatcherTimer1.Start();
 
             log.Info("start another Thread");
-
+            setRun_button();
+            initialState = false;
         }
 
         static string RefreshKey_saved;
@@ -739,6 +751,12 @@ namespace Wpf_testHTTP
                     parser.AddSetting("Setup", "refreshkey", "");
                     parser.SaveSettings();
                     RefreshKey_saved = "";
+                    if (initialState == true)
+                    {
+                        // no switch screen
+                        myTabControl.SelectedIndex = 0;
+                        return;
+                    }
                     myTabControl.SelectedIndex = 1;              // access token expire
                 }
                 // set focus to AutoCompleteBox
@@ -963,6 +981,7 @@ namespace Wpf_testHTTP
 
         private void button_import_Click(object sender, RoutedEventArgs e)
         {
+            initialState = false;
             setRun_button();
         }
 

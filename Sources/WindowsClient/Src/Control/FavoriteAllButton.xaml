@@ -63,7 +63,8 @@
     <Grid x:Name="LayoutRoot">
 
         <Button Click="Button_Click"
-                Content="Star All"
-                Style="{DynamicResource ButtonStyle1}" Foreground="White" />
+                Content="{DynamicResource StarAllButtonText}"
+                Foreground="White"
+                Style="{DynamicResource ButtonStyle1}" />
     </Grid>
 </UserControl>

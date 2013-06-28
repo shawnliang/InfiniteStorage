@@ -7,7 +7,6 @@
          Background="{x:Null}"
          BorderBrush="{x:Null}"
          FontFamily="Segoe UI"
-         FontSize="16"
          ItemsSource="{Binding IsAsync=True}"
          PreviewKeyDown="UserControl_PreviewKeyDown"
          UseLayoutRounding="True"
@@ -17,19 +16,21 @@
 
     <ListBox.ItemTemplate>
         <DataTemplate>
-            <Grid x:Name="item">
+            <Grid x:Name="item" Height="23">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Row="0"
                             Grid.Column="0"
+                            VerticalAlignment="Center"
                             Orientation="Horizontal">
                     <Image x:Name="icon"
+                           Width="17"
+                           Height="17"
                            Margin="10, 0, 0, 0"
                            Source="{StaticResource UnSelectedFav}" />
                     <Label x:Name="sourceName"
-                           Height="32"
                            VerticalContentAlignment="Center"
                            Content="{Binding Name}"
                            Foreground="#a8a8a8" />
@@ -37,7 +38,6 @@
                 <Label x:Name="sourceCount"
                        Grid.Row="0"
                        Grid.Column="1"
-                       Height="32"
                        HorizontalAlignment="Left"
                        VerticalContentAlignment="Center"
                        Content="{Binding ContentCount}"

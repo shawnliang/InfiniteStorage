@@ -5,10 +5,11 @@
              xmlns:local="clr-namespace:Waveface.Client"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Name="UserControl"
+             Width="183"
              UseLayoutRounding="True"
              d:DesignHeight="402"
              d:DesignWidth="150"
-             mc:Ignorable="d" Width="183">
+             mc:Ignorable="d">
 
     <Grid x:Name="LayoutRoot">
         <Button Width="163"
@@ -16,33 +17,34 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Click="Button_Click"
-                Content="Add to existing Favorite"
-                Cursor="Hand" Foreground="White">
-        </Button>
+                Content="{DynamicResource AddToFavoriteButtonText}"
+                Cursor="Hand"
+                Foreground="White" />
         <Button x:Name="btnClearAll"
                 Width="163"
                 Margin="10,162,10,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                Content="Clear All"
-                Cursor="Hand" Foreground="White">
-        </Button>
+                Content="{DynamicResource ClearAllButtonText}"
+                Cursor="Hand"
+                Foreground="White" />
         <local:LabeledContentInfo x:Name="LabeledCount"
                                   Width="150"
                                   Height="150"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Top"
-                                  PhotoCount="{Binding PhotoCount, ElementName=UserControl}" 
-								  VideoCount="{Binding VideoCount, ElementName=UserControl}"/>
+                                  PhotoCount="{Binding PhotoCount,
+                                                       ElementName=UserControl}"
+                                  VideoCount="{Binding VideoCount,
+                                                       ElementName=UserControl}" />
         <Button Width="163"
                 Margin="0,223,0,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Click="Button_Click_1"
-                Content="Create a new Favorite"
-                Cursor="Hand" Foreground="White">
-           
-        </Button>
+                Content="{DynamicResource CreateFavoriteButtonText}"
+                Cursor="Hand"
+                Foreground="White" />
 
 
     </Grid>

@@ -5,133 +5,140 @@
              xmlns:local="clr-namespace:Waveface.Client"
              xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
              ShutdownMode="OnMainWindowClose"
-             StartupUri="Src\Window\MainWindow.xaml">
+             StartupUri="Src\Window\MainWindow.xaml"
+             Startup="Application_Startup">
     <Application.Resources>
 
-        <SolidColorBrush x:Key="DefaultBrush"
-                         Color="#4F4F4F" />
-        <Color x:Key="HighlightColor"
-               A="255"
-               B="229"
-               G="229"
-               R="229" />
-
-        <Color x:Key="PressedColor"
-               A="255"
-               B="215"
-               G="215"
-               R="215" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="StringTable.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
 
-        <BitmapImage x:Key="AddDeviceArrowIcon"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/ico_arrow.png" />
+            <SolidColorBrush x:Key="DefaultBrush"
+                             Color="#4F4F4F" />
+            <Color x:Key="HighlightColor"
+                   A="255"
+                   B="229"
+                   G="229"
+                   R="229" />
 
-        <BitmapImage x:Key="VideoContentPlaceHolder"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/video_ph.png" />
-        <SolidColorBrush x:Key="HighlightBrush"
-                         Color="{StaticResource HighlightColor}" />
-
-        <SolidColorBrush x:Key="PressedBrush"
-                         Color="{StaticResource PressedColor}" />
-
-
-        <BitmapImage x:Key="FavoriteContentFlag"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/favoriteicon.png" />
-        <BitmapImage x:Key="UnFavoriteContentFlag"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/notfavoriteicon.png" />
-
-        <BitmapImage x:Key="SelectedFav"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/ico_fav_select.png" />
-        <BitmapImage x:Key="UnSelectedFav"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/ico_fav_unselect.png" />
-
-        <BitmapImage x:Key="SelectedStar"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/ico_star_select.png" />
-        <BitmapImage x:Key="UnSelectedStar"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/ico_star_unselect.png" />
-
-        <BitmapImage x:Key="UnSelectedFavStar"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/ico_fav_star_unselect.png" />
-
-        <BitmapImage x:Key="NormalStarBox"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/star_noitem.png" />
-        <BitmapImage x:Key="SelectedStarBox"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/star_selected.png" />
-
-        <BitmapImage x:Key="SmallPhotoIcon"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/sliderbarsmallphotoicon.png" />
-        <BitmapImage x:Key="BigPhotoIcon"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/sliderbarbigphotoicon.png" />
-
-        <BitmapImage x:Key="Up"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/up.png" />
-        <BitmapImage x:Key="Updis"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/updis.png" />
-        <BitmapImage x:Key="Uppressed"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/uppressed.png" />
-
-        <Style TargetType="{x:Type Image}">
-            <!--
-                <Setter Property="RenderOptions.BitmapScalingMode"
-                Value="NearestNeighbor" />
-            -->
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-        </Style>
+            <Color x:Key="PressedColor"
+                   A="255"
+                   B="215"
+                   G="215"
+                   R="215" />
 
 
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="BorderBrush" Value="#9B9B9B" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="Height" Value="34" />
-            <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="0"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentControl HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Content="{TemplateBinding Content}" />
-                            <Border.Effect>
-                                <DropShadowEffect ShadowDepth="0.1" />
-                            </Border.Effect>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource HighlightBrush}" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="{StaticResource PressedBrush}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+            <BitmapImage x:Key="AddDeviceArrowIcon"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_arrow.png" />
+
+            <BitmapImage x:Key="VideoContentPlaceHolder"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/video_ph.png" />
+            <SolidColorBrush x:Key="HighlightBrush"
+                             Color="{StaticResource HighlightColor}" />
+
+            <SolidColorBrush x:Key="PressedBrush"
+                             Color="{StaticResource PressedColor}" />
 
 
+            <BitmapImage x:Key="FavoriteContentFlag"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/favoriteicon.png" />
+            <BitmapImage x:Key="UnFavoriteContentFlag"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/notfavoriteicon.png" />
+
+            <BitmapImage x:Key="SelectedFav"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_fav_select.png" />
+            <BitmapImage x:Key="UnSelectedFav"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_fav_unselect.png" />
+
+            <BitmapImage x:Key="SelectedStar"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_star_select.png" />
+            <BitmapImage x:Key="UnSelectedStar"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_star_unselect.png" />
+
+            <BitmapImage x:Key="UnSelectedFavStar"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_fav_star_unselect.png" />
+
+            <BitmapImage x:Key="NormalStarBox"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/star_noitem.png" />
+            <BitmapImage x:Key="SelectedStarBox"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/star_selected.png" />
+
+            <BitmapImage x:Key="SmallPhotoIcon"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/sliderbarsmallphotoicon.png" />
+            <BitmapImage x:Key="BigPhotoIcon"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/sliderbarbigphotoicon.png" />
+
+            <BitmapImage x:Key="Up"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/up.png" />
+            <BitmapImage x:Key="Updis"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/updis.png" />
+            <BitmapImage x:Key="Uppressed"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/uppressed.png" />
+
+            <Style TargetType="{x:Type Image}">
+                <!--
+                    <Setter Property="RenderOptions.BitmapScalingMode"
+                    Value="NearestNeighbor" />
+                -->
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+            </Style>
+
+
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="#9B9B9B" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="34" />
+                <Setter Property="OverridesDefaultStyle" Value="True" />
+                <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="0"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentControl HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Content="{TemplateBinding Content}" />
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0.1" />
+                                </Border.Effect>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{StaticResource HighlightBrush}" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="{StaticResource PressedBrush}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
