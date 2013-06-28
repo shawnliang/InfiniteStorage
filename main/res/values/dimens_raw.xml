@@ -9,6 +9,9 @@
     <dimen name="television_overview_image_width">200dip</dimen>
     <dimen name="television_overview_image_height">250dip</dimen>
     
+    <dimen name="ten_inch_overview_image_width">300dip</dimen>
+    <dimen name="ten_inch_overview_image_height">400dip</dimen>
+    
     <dimen name="phone_overview_reflection_image_height">60dip</dimen>
     <dimen name="television_overview_reflection_image_height">83dip</dimen>
     
