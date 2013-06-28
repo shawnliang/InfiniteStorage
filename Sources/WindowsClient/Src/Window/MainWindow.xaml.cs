@@ -360,8 +360,6 @@ namespace Waveface.Client
             if (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase))
             {
                 TryDisplayStarredTutorial();
-
-                SetContentTypeCount(group);
             }
             else
             {
@@ -369,6 +367,8 @@ namespace Waveface.Client
 
                 updateRightSidePanel2(group);
             }
+
+			SetContentTypeCount(group);
 
             lbxContentContainer.DataContext = group.Contents;
 
