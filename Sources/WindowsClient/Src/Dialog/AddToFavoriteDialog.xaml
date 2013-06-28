@@ -15,7 +15,7 @@
                Margin="10,16,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
-               Content="Add starred items to:"
+               Content="{DynamicResource AddStarredItemTitle}"
                Foreground="White" />
         <ComboBox x:Name="cbxFavoriteName"
                   Width="387"
@@ -31,14 +31,14 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Click="Button_Click_1"
-                Content="OK"
+                Content="{DynamicResource OkButtonText}"
                 TabIndex="1" />
         <Button Width="82"
                 Margin="0,0,10,10"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Click="Button_Click"
-                Content="Cancel"
+                Content="{DynamicResource CancelButtonText}"
                 TabIndex="2" />
     </Grid>
 </Window>
