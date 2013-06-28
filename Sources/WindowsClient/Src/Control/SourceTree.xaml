@@ -7,7 +7,6 @@
           Background="{x:Null}"
           BorderBrush="{x:Null}"
           FontFamily="Segoe UI"
-          FontSize="16"
           Grid.IsSharedSizeScope="True"
           ItemContainerStyle="{DynamicResource TreeViewItemStyle1}"
           ItemsSource="{Binding IsAsync=True}"
@@ -27,23 +26,18 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <BitmapImage x:Key="SelectedIcon"
                      CacheOption="OnDemand"
-                     
                      UriSource="pack://application:,,,/Resource/ico_folder_select.png" />
         <BitmapImage x:Key="UnSelectedIcon"
                      CacheOption="OnDemand"
-                     
                      UriSource="pack://application:,,,/Resource/ico_folder_unselect.png" />
         <BitmapImage x:Key="UnsortedIcon"
                      CacheOption="OnDemand"
-                     
                      UriSource="pack://application:,,,/Resource/ico_unsort_unselect.png" />
         <BitmapImage x:Key="UnsortedSelectedIcon"
                      CacheOption="OnDemand"
-                     
                      UriSource="pack://application:,,,/Resource/ico_unsort_select.png" />
         <BitmapImage x:Key="CycleIcon"
                      CacheOption="OnDemand"
-                     
                      UriSource="pack://application:,,,/Resource/arrow_circle_double.png" />
         <Style x:Key="TreeViewItemStyle1"
                TargetType="{x:Type TreeViewItem}">
@@ -64,7 +58,6 @@
                 </Grid.RowDefinitions>
                 <DockPanel Grid.ColumnSpan="2">
                     <ToggleButton x:Name="Expander"
-                                  Width="20"
                                   Background="Transparent"
                                   ClickMode="Press"
                                   IsChecked="{Binding IsExpanded,
@@ -72,19 +65,13 @@
                         <ToggleButton.Style>
                             <Style TargetType="{x:Type ToggleButton}">
                                 <Setter Property="Focusable" Value="False" />
-                                <Setter Property="Width" Value="16" />
-                                <Setter Property="Height" Value="16" />
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type ToggleButton}">
-                                            <Border Width="16"
-                                                    Height="16"
-                                                    Background="{x:Null}"
+                                            <Border Background="{x:Null}"
                                                     BorderBrush="{x:Null}"
                                                     BorderThickness="1">
                                                 <Path x:Name="ExpandPath"
-                                                      Width="12.688"
-                                                      Height="10.624"
                                                       HorizontalAlignment="Center"
                                                       VerticalAlignment="Center"
                                                       Data="M0.56189528,0.50000001 L0.50000001,10.123809 12.1875,5.625 z"
@@ -133,11 +120,13 @@
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </Border>
                 </DockPanel>
-                <Grid x:Name="gdItems" Grid.ColumnSpan="2" Grid.Row="1">
-                	<ItemsPresenter x:Name="ItemsHost"
-                		Grid.Row="0"
-                		Grid.Column="0"
-                		Grid.ColumnSpan="1" />
+                <Grid x:Name="gdItems"
+                      Grid.Row="1"
+                      Grid.ColumnSpan="2">
+                    <ItemsPresenter x:Name="ItemsHost"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="1" />
                 </Grid>
             </Grid>
             <ControlTemplate.Triggers>
@@ -157,12 +146,6 @@
                     <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
                     <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
                 </Trigger>
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="IsSelected" Value="True" />
-                        <Condition Property="IsSelectionActive" Value="False" />
-                    </MultiTrigger.Conditions>
-                </MultiTrigger>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                 </Trigger>
@@ -173,9 +156,8 @@
     <TreeView.ItemTemplate>
         <HierarchicalDataTemplate ItemsSource="{Binding Contents}">
             <StackPanel Orientation="Horizontal">
-                <Label 
-                       Content="{Binding Name}"
-					   FontSize="18"
+                <Label Content="{Binding Name}"
+                       FontSize="18"
                        Foreground="#a8a8a8" />
                 <Image x:Name="recvingIcon"
                        IsVisibleChanged="recvingIcon_IsVisibleChanged"
@@ -186,6 +168,7 @@
             <HierarchicalDataTemplate.ItemTemplate>
                 <DataTemplate>
                     <Grid x:Name="item"
+                          Height="23"
                           Background="Transparent">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -195,6 +178,8 @@
 
                         <Image x:Name="icon"
                                Grid.Column="0"
+                               Width="17"
+                               Height="17"
                                Margin="10,0,0,0"
                                Source="{StaticResource UnSelectedIcon}" />
 

@@ -42,7 +42,7 @@
                HorizontalAlignment="Right"
                VerticalAlignment="Center"
                Background="Transparent"
-               Content="EXIT"
+               Content="{DynamicResource ExitButtonText}"
                Cursor="Hand"
                Foreground="#FFF3F3F7"
                MouseDown="CloseButton_MouseDown" />

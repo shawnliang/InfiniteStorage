@@ -1,0 +1,31 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="AddDeviceIconText">新增來源</system:String>
+    <system:String x:Key="SourceGroupTitle">來源</system:String>
+    <system:String x:Key="FavoritesGroupTitle">最愛</system:String>
+    <system:String x:Key="StarAllButtonText">全部星號</system:String>
+    <system:String x:Key="AddSourceTipTitle">No Media Found.</system:String>
+    <system:String x:Key="AddSourceTipText">Start managing your own devices by clicking &quot;Add Source&quot;.</system:String>
+    <system:String x:Key="ClearAllButtonText">全部清除</system:String>
+    <system:String x:Key="CreateFavoriteButtonText">Create a new Favorite</system:String>
+    <system:String x:Key="AddToFavoriteButtonText">Add to existing Favorite</system:String>
+    <system:String x:Key="TurnOnHomeSharingButtonText">Turn On Home Sharing</system:String>
+    <system:String x:Key="TurnOffHomeSharingButtonText">Turn Off Home Sharing</system:String>
+    <system:String x:Key="TurnOnCloudSharingButtonText">Turn On Public Website</system:String>
+    <system:String x:Key="TurnOffCloudSharingButtonText">Turn Off Public Website</system:String>
+    <system:String x:Key="HomeSharingTip">What is Home Sharing?</system:String>
+    <system:String x:Key="CloudSharingTip">Share this Favorite to your friends on GoFavorite.com</system:String>
+    <system:String x:Key="SeeFavoriteTitle">See this Favorite at:</system:String>
+    <system:String x:Key="CopyButtonText">複製</system:String>
+    <system:String x:Key="EmailButtonText">Email...</system:String>
+    <system:String x:Key="ExitButtonText">離開</system:String>
+    <system:String x:Key="AddStarredItemTitle">Add starred items to:</system:String>
+    <system:String x:Key="OkButtonText">確定</system:String>
+    <system:String x:Key="CancelButtonText">取消</system:String>
+    <system:String x:Key="GetNewFavoriteName">Please give this new Favorite a name:</system:String>
+    <system:String x:Key="DefaultFavoriteName">未命名</system:String>
+    <system:String x:Key="TakeTourDialogTitle">Take A Tour?</system:String>
+    <system:String x:Key="TakeTourButtonText">Take a Tour</system:String>
+    <system:String x:Key="LaterButtonText">晚點</system:String>
+</ResourceDictionary>
