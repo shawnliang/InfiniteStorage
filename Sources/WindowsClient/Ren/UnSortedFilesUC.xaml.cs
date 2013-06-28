@@ -97,6 +97,11 @@ namespace Waveface.Client
 
             string _allPendingFiles = processAllFile(m_currentDevice.ID);
 
+            if(_allPendingFiles == "")
+            {
+                return false;
+            }
+
             Rt = new RT();
 
             if (Rt.Init(_allPendingFiles))
@@ -182,6 +187,28 @@ namespace Waveface.Client
         private string getPending_cmd2 = "&limit=500";
         private bool m_humbDraging;
 
+        #region ExtendedWebClient
+
+        public class ExtendedWebClient : WebClient
+        {
+            public int Timeout { get; set; }
+
+            public ExtendedWebClient(int timeOut)
+            {
+                Timeout = timeOut;
+            }
+
+            protected override WebRequest GetWebRequest(Uri address)
+            {
+                var _objWebRequest = base.GetWebRequest(address);
+
+                _objWebRequest.Timeout = Timeout;
+                return _objWebRequest;
+            }
+        }
+
+        #endregion
+
         private string processAllFile(string device)
         {
             bool _firstTime = true;
@@ -196,6 +223,11 @@ namespace Waveface.Client
                 {
                     string getPending_cmd = getPending_cmd0 + device + getPending_cmd1 + files_from_seq + getPending_cmd2;
                     string _getData = HttpGet(getPending_cmd);
+
+                    if(_getData == "-1")
+                    {
+                        return "";
+                    }
 
                     RtData _tempRTData = JsonConvert.DeserializeObject<RtData>(_getData);
                     remaining_count = _tempRTData.remaining_count;
@@ -231,7 +263,7 @@ namespace Waveface.Client
         private string HttpGet(string uri)
         {
             String _ret;
-            WebClient _webClient = new WebClient();
+            ExtendedWebClient _webClient = new ExtendedWebClient(5000);
 
             using (_webClient)
             {
@@ -530,7 +562,11 @@ namespace Waveface.Client
         {
             Cursor = Cursors.Wait;
 
-            DoImport(eventUC, false);
+            if(!DoImport(eventUC, false))
+            {
+                Cursor = Cursors.Arrow;
+                return;
+            }
 
             double _h = eventUC.ActualHeight / 10;
 
@@ -578,7 +614,10 @@ namespace Waveface.Client
 
         private void btnImportAll_Click(object sender, RoutedEventArgs e)
         {
-            DoImport(null, true);
+            if(!DoImport(null, true))
+            {
+                return;
+            }
 
             m_eventUCs.Clear();
 
@@ -587,7 +626,7 @@ namespace Waveface.Client
             m_currentDevice.Refresh();
         }
 
-        private void DoImport(EventUC eventUC, bool all)
+        private bool DoImport(EventUC eventUC, bool all)
         {
             Cursor = Cursors.Wait;
 
@@ -646,7 +685,7 @@ namespace Waveface.Client
             }
             catch
             {
-                return;
+                return false;
             }
 
             try
@@ -656,10 +695,10 @@ namespace Waveface.Client
                 string _parms = "how" + "=" + HttpUtility.UrlEncode(_how);
 
                 WebPostHelper _webPos = new WebPostHelper();
-                bool _isOK = _webPos.doPost(_url, _parms, null);
+                bool _isOK = _webPos.doPost(_url, _parms, null, 10000);
 
                 if (!_isOK)
-                    return;
+                    return false;
 
                 _webPos.getContent();
             }
@@ -672,6 +711,8 @@ namespace Waveface.Client
             m_dispatcherTimer.Start();
 
             Cursor = Cursors.Arrow;
+
+            return true;
         }
     }
 }
