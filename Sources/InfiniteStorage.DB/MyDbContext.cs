@@ -10,6 +10,8 @@ namespace InfiniteStorage.Model
 		public static string ConnectionString { get; private set; }
 		public static string DbFilePath { get; private set; }
 
+		private SQLiteConnection conn;
+
 		static MyDbContext()
 		{
 			var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
@@ -20,13 +22,14 @@ namespace InfiniteStorage.Model
 
 		public MyDbContext()
 		{
-			var conn = new SQLiteConnection(ConnectionString);
+			conn = new SQLiteConnection(ConnectionString);
 			Object = new InfiniteStorageContext(conn, true);
 		}
 
 		public void Dispose()
 		{
 			Object.Dispose();
+			conn.Dispose();
 		}
 	}
 }

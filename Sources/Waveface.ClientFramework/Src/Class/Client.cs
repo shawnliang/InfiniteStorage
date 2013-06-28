@@ -97,30 +97,26 @@ namespace Waveface.ClientFramework
 		#region Private Method
 		private IEnumerable<IContentEntity> GetFavorites()
 		{
-			var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
-
-			var dbFilePath = Path.Combine(appDir, "database.s3db");
-
-			var conn = new SQLiteConnection(string.Format("Data source={0}", dbFilePath));
-
-			conn.Open();
-
-			var cmd = new SQLiteCommand("SELECT * FROM Labels where auto_type == 0 and deleted == 0", conn);
-
-			var dr = cmd.ExecuteReader();
-
-			while (dr.Read())
+			using (var conn = BunnyDB.CreateConnection())
 			{
-				var labelID = dr["label_id"].ToString();
-				var labelName = dr["name"].ToString();
-				var share_enabled = (bool)dr["share_enabled"];
-				var share_code = dr["share_code"].ToString();
+				conn.Open();
 
-				yield return new BunnyLabelContentGroup(labelID, labelName, share_enabled, share_code);
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "SELECT * FROM Labels where auto_type == 0 and deleted == 0";
+					using (var dr = cmd.ExecuteReader())
+					{
+						while (dr.Read())
+						{
+							var labelID = dr["label_id"].ToString();
+							var labelName = dr["name"].ToString();
+							var share_enabled = (bool)dr["share_enabled"];
+							var share_code = dr["share_code"].ToString();
+							yield return new BunnyLabelContentGroup(labelID, labelName, share_enabled, share_code);
+						}
+					}
+				}
 			}
-
-
-			conn.Close();
 		}
 		#endregion
 
@@ -223,12 +219,14 @@ namespace Waveface.ClientFramework
 			using (var conn = BunnyDB.CreateConnection())
 			{
 				conn.Open();
-				var cmd = conn.CreateCommand();
-				cmd.CommandText = "select on_air from [Labels] where label_id = @label";
-				cmd.Parameters.Add(new SQLiteParameter("@label", new Guid(group.ID)));
-				var on_air = cmd.ExecuteScalar();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "select on_air from [Labels] where label_id = @label";
+					cmd.Parameters.Add(new SQLiteParameter("@label", new Guid(group.ID)));
+					var on_air = cmd.ExecuteScalar();
 
-				return on_air != null && (bool)on_air;
+					return on_air != null && (bool)on_air;
+				}
 			}
 		}
 

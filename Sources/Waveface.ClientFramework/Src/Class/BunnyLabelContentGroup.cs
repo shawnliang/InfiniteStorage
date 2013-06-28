@@ -53,21 +53,23 @@ namespace Waveface.ClientFramework
 			{
 				conn.Open();
 
-				var cmd = conn.CreateCommand();
-				cmd.CommandText = "select * from [LabelShareTo] where label_id = @label";
-				cmd.Parameters.Add(new SQLiteParameter("@label", new Guid(this.ID)));
-
-				using (var reader = cmd.ExecuteReader())
+				using (var cmd = conn.CreateCommand())
 				{
-					while (reader.Read())
+					cmd.CommandText = "select * from [LabelShareTo] where label_id = @label";
+					cmd.Parameters.Add(new SQLiteParameter("@label", new Guid(this.ID)));
+
+					using (var reader = cmd.ExecuteReader())
 					{
-						var email = reader["email"].ToString();
-						var name = reader["name"].ToString();
+						while (reader.Read())
+						{
+							var email = reader["email"].ToString();
+							var name = reader["name"].ToString();
 
-						var recipient = new BunnyRecipient(email, name);
+							var recipient = new BunnyRecipient(email, name);
 
-						if (!m_recipients.Contains(recipient))
-							m_recipients.Add(recipient);
+							if (!m_recipients.Contains(recipient))
+								m_recipients.Add(recipient);
+						}
 					}
 				}
 			}
@@ -79,20 +81,23 @@ namespace Waveface.ClientFramework
 			{
 				conn.Open();
 
-				var cmd2 = conn.CreateCommand();
-				cmd2.CommandText = "SELECT * FROM Files t1, LabelFiles t2, Labels t3 where t3.label_id = @labelID and t3.label_id = t2.label_id and t1.file_id = t2.file_id order by t1.event_time asc";
-				cmd2.Parameters.Add(new SQLiteParameter("@labelID", new Guid(this.ID)));
-
-				var dr2 = cmd2.ExecuteReader();
-
-				while (dr2.Read())
+				using (var cmd2 = conn.CreateCommand())
 				{
-					var deviceID = dr2["device_id"].ToString();
-					var savedPath = dr2["saved_path"].ToString();
-					var file = Path.Combine(BunnyDB.ResourceFolder, savedPath);
+					cmd2.CommandText = "SELECT * FROM Files t1, LabelFiles t2, Labels t3 where t3.label_id = @labelID and t3.label_id = t2.label_id and t1.file_id = t2.file_id order by t1.event_time asc";
+					cmd2.Parameters.Add(new SQLiteParameter("@labelID", new Guid(this.ID)));
 
-					var type = ((long)dr2["type"] == 0) ? ContentType.Photo : ContentType.Video;
-					contents.Add(new BunnyContent(new Uri(file), dr2["file_id"].ToString(), type));
+					using (var dr2 = cmd2.ExecuteReader())
+					{
+						while (dr2.Read())
+						{
+							var deviceID = dr2["device_id"].ToString();
+							var savedPath = dr2["saved_path"].ToString();
+							var file = Path.Combine(BunnyDB.ResourceFolder, savedPath);
+
+							var type = ((long)dr2["type"] == 0) ? ContentType.Photo : ContentType.Video;
+							contents.Add(new BunnyContent(new Uri(file), dr2["file_id"].ToString(), type));
+						}
+					}
 				}
 			}
 		}
@@ -120,24 +125,26 @@ namespace Waveface.ClientFramework
 			{
 				conn.Open();
 
-				var cmd = conn.CreateCommand();
-				cmd.CommandText = "select * from [labels] where label_id = @label";
-				cmd.Parameters.Add(new SQLiteParameter("@label", new Guid(this.ID)));
-				using (var reader = cmd.ExecuteReader())
+				using (var cmd = conn.CreateCommand())
 				{
-					var share_enabled = (bool)reader["share_enabled"];
-					var share_code = reader["share_code"].ToString();
-
-					if (share_enabled != this.ShareEnabled)
+					cmd.CommandText = "select * from [labels] where label_id = @label";
+					cmd.Parameters.Add(new SQLiteParameter("@label", new Guid(this.ID)));
+					using (var reader = cmd.ExecuteReader())
 					{
-						this.ShareEnabled = share_enabled;
-						OnPropertyChanged("ShareEnabled");
-					}
+						var share_enabled = (bool)reader["share_enabled"];
+						var share_code = reader["share_code"].ToString();
 
-					if (share_code != this.m_shareCode)
-					{
-						this.m_shareCode = share_code;
-						OnPropertyChanged("ShareURL");
+						if (share_enabled != this.ShareEnabled)
+						{
+							this.ShareEnabled = share_enabled;
+							OnPropertyChanged("ShareEnabled");
+						}
+
+						if (share_code != this.m_shareCode)
+						{
+							this.m_shareCode = share_code;
+							OnPropertyChanged("ShareURL");
+						}
 					}
 				}
 			}

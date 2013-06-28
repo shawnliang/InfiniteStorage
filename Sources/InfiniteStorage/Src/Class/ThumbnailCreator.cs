@@ -128,8 +128,9 @@ namespace InfiniteStorage
 				conn.Open();
 
 				using (var trans = conn.BeginTransaction())
+				using (var cmd = conn.CreateCommand())
 				{
-					var cmd = conn.CreateCommand();
+
 					cmd.Connection = conn;
 					cmd.CommandText = "update [PendingFiles] set thumb_ready = 1, width = @width, height = @height, orientation = @ori where file_id = @fid";
 					cmd.CommandType = System.Data.CommandType.Text;

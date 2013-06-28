@@ -33,10 +33,12 @@ namespace Waveface.ClientFramework
 			using (var conn = BunnyDB.CreateConnection())
 			{
 				conn.Open();
-				var cmd = conn.CreateCommand();
-				cmd.CommandText = "select count(*) from [PendingFiles] where device_id = @dev";
-				cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@dev", deviceID));
-				return (int)(long)cmd.ExecuteScalar();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "select count(*) from [PendingFiles] where device_id = @dev";
+					cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@dev", deviceID));
+					return (int)(long)cmd.ExecuteScalar();
+				}
 			}
 		}
 

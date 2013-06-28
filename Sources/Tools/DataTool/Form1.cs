@@ -28,8 +28,9 @@ namespace DataTool
 				conn.Open();
 
 				using (var transaction = conn.BeginTransaction())
+				using (var cmd = conn.CreateCommand())
 				{
-					var cmd = new SQLiteCommand("delete from [files]; delete from [devices]; delete from [labels]; delete from [labelFiles];");
+					cmd.CommandText = "delete from [files]; delete from [devices]; delete from [labels]; delete from [labelFiles];";
 					cmd.Connection = conn;
 					cmd.ExecuteNonQuery();
 
@@ -44,22 +45,24 @@ namespace DataTool
 
 					for (int i = 0; i < int.Parse(filesCountTxtBox.Text); i++)
 					{
-						var cmd1 = new SQLiteCommand(conn);
-						cmd1.CommandText =
-							"insert into [files] " +
-							"(device_id, event_time, file_id, file_name, file_path, file_size, saved_path, seq, thumb_ready, type) " +
-							"values (@devid, @evtTime, @fid, @fname, @fpath, @fsize, @path, @seq, 0, 0)";
-						cmd1.CommandType = CommandType.Text;
-						cmd1.Parameters.Add(new SQLiteParameter("@devid", dev_id));
-						cmd1.Parameters.Add(new SQLiteParameter("@evtTime", DateTime.Now));
-						cmd1.Parameters.Add(new SQLiteParameter("@fid", Guid.NewGuid()));
-						cmd1.Parameters.Add(new SQLiteParameter("@fname", "file" + i + ".jpg"));
-						cmd1.Parameters.Add(new SQLiteParameter("@fpath", "path" + i + ".jpg"));
-						cmd1.Parameters.Add(new SQLiteParameter("@fsize", 12345678));
-						cmd1.Parameters.Add(new SQLiteParameter("@path", @"2012\2012-10\file" + i + ".jpg"));
-						cmd1.Parameters.Add(new SQLiteParameter("@seq", i + 1));
+						using (var cmd1 = conn.CreateCommand())
+						{
+							cmd1.CommandText =
+							   "insert into [files] " +
+							   "(device_id, event_time, file_id, file_name, file_path, file_size, saved_path, seq, thumb_ready, type) " +
+							   "values (@devid, @evtTime, @fid, @fname, @fpath, @fsize, @path, @seq, 0, 0)";
+							cmd1.CommandType = CommandType.Text;
+							cmd1.Parameters.Add(new SQLiteParameter("@devid", dev_id));
+							cmd1.Parameters.Add(new SQLiteParameter("@evtTime", DateTime.Now));
+							cmd1.Parameters.Add(new SQLiteParameter("@fid", Guid.NewGuid()));
+							cmd1.Parameters.Add(new SQLiteParameter("@fname", "file" + i + ".jpg"));
+							cmd1.Parameters.Add(new SQLiteParameter("@fpath", "path" + i + ".jpg"));
+							cmd1.Parameters.Add(new SQLiteParameter("@fsize", 12345678));
+							cmd1.Parameters.Add(new SQLiteParameter("@path", @"2012\2012-10\file" + i + ".jpg"));
+							cmd1.Parameters.Add(new SQLiteParameter("@seq", i + 1));
 
-						cmd1.ExecuteNonQuery();
+							cmd1.ExecuteNonQuery();
+						}
 					}
 
 					var label_id = Guid.NewGuid();
@@ -196,10 +199,12 @@ namespace DataTool
 				conn.ConnectionString = MyDbContext.ConnectionString;
 				conn.Open();
 
-				var cmd = conn.CreateCommand();
-				cmd.CommandText = "update [Labels] set label_id = @label where [name] = 'STARRED'";
-				cmd.Parameters.Add(new SQLiteParameter("@label", Guid.Empty));
-				cmd.ExecuteNonQuery();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "update [Labels] set label_id = @label where [name] = 'STARRED'";
+					cmd.Parameters.Add(new SQLiteParameter("@label", Guid.Empty));
+					cmd.ExecuteNonQuery();
+				}
 			}
 		}
 	}

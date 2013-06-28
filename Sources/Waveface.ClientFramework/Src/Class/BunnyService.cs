@@ -29,22 +29,25 @@ namespace Waveface.ClientFramework
 			{
 				conn.Open();
 
-				var cmd = conn.CreateCommand();
-				cmd.CommandText = "select [name] from [Folders] " +
-								  "where parent_folder = @parent " +
-								  "order by name desc";
-
-
-				cmd.Parameters.Add(new SQLiteParameter("@parent", this.Name));
-
-				using (var reader = cmd.ExecuteReader())
+				using (var cmd = conn.CreateCommand())
 				{
-					while (reader.Read())
+					cmd.CommandText = "select [name] from [Folders] " +
+									 "where parent_folder = @parent " +
+									 "order by name desc";
+
+
+					cmd.Parameters.Add(new SQLiteParameter("@parent", this.Name));
+
+					using (var reader = cmd.ExecuteReader())
 					{
-						var dir = reader.GetString(0);
-						content.Add(new BunnyContentGroup(Name, dir, this.ID));
+						while (reader.Read())
+						{
+							var dir = reader.GetString(0);
+							content.Add(new BunnyContentGroup(Name, dir, this.ID));
+						}
 					}
 				}
+
 			}
 
 			if (!timerStarted)

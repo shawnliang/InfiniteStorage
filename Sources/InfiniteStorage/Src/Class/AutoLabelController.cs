@@ -109,34 +109,37 @@ namespace InfiniteStorage
 
 		private static void updateLabelSeq(SQLiteConnection db, IEnumerable<Guid> labels)
 		{
-			var cmd = db.CreateCommand();
-			cmd.CommandText = "update [labels] set seq = @seq where label_id = @label_id";
-			cmd.Prepare();
-
-			foreach (var label in labels)
+			using (var cmd = db.CreateCommand())
 			{
-				cmd.Parameters.Clear();
-				cmd.Parameters.Add(new SQLiteParameter("@seq", SeqNum.GetNextSeq()));
-				cmd.Parameters.Add(new SQLiteParameter("@label_id", label));
+				cmd.CommandText = "update [labels] set seq = @seq where label_id = @label_id";
+				cmd.Prepare();
 
-				cmd.ExecuteNonQuery();
+				foreach (var label in labels)
+				{
+					cmd.Parameters.Clear();
+					cmd.Parameters.Add(new SQLiteParameter("@seq", SeqNum.GetNextSeq()));
+					cmd.Parameters.Add(new SQLiteParameter("@label_id", label));
+
+					cmd.ExecuteNonQuery();
+				}
 			}
 		}
 
 		private static void tagLabelsOnFile(WebsocketEventArgs args, SQLiteConnection db, Guid[] labels)
 		{
-			var cmd = db.CreateCommand();
-			cmd.CommandText = "insert into [labelFiles] (label_id, file_id) values (@lid, @fid)";
-			cmd.Prepare();
-
-			foreach (var label_id in labels)
+			using (var cmd = db.CreateCommand())
 			{
-				cmd.Parameters.Clear();
-				cmd.Parameters.Add(new SQLiteParameter("@lid", label_id));
-				cmd.Parameters.Add(new SQLiteParameter("@fid", args.ctx.fileCtx.file_id));
-				cmd.ExecuteNonQuery();
-			}
+				cmd.CommandText = "insert into [labelFiles] (label_id, file_id) values (@lid, @fid)";
+				cmd.Prepare();
 
+				foreach (var label_id in labels)
+				{
+					cmd.Parameters.Clear();
+					cmd.Parameters.Add(new SQLiteParameter("@lid", label_id));
+					cmd.Parameters.Add(new SQLiteParameter("@fid", args.ctx.fileCtx.file_id));
+					cmd.ExecuteNonQuery();
+				}
+			}
 		}
 
 		public void RemoveOutOfDateAutoLabels()
@@ -205,18 +208,20 @@ namespace InfiniteStorage
 		{
 			var fileIds = new List<Guid>();
 
-			var cmd = conn.CreateCommand();
-			cmd.CommandText =
+			using (var cmd = conn.CreateCommand())
+			{
+				cmd.CommandText =
 				"select file_id from Files        where event_time >= @yes_start and event_time < @today and [type] = @type union " +
 				"select file_id from PendingFiles where event_time >= @yes_start and event_time < @today and [type] = @type";
-			cmd.Parameters.Add(new SQLiteParameter("@yes_start", yesterdayStart));
-			cmd.Parameters.Add(new SQLiteParameter("@today", yesterdayEnd));
-			cmd.Parameters.Add(new SQLiteParameter("@type", (object)(int)type));
-			using (var reader = cmd.ExecuteReader())
-			{
-				while (reader.Read())
+				cmd.Parameters.Add(new SQLiteParameter("@yes_start", yesterdayStart));
+				cmd.Parameters.Add(new SQLiteParameter("@today", yesterdayEnd));
+				cmd.Parameters.Add(new SQLiteParameter("@type", (object)(int)type));
+				using (var reader = cmd.ExecuteReader())
 				{
-					fileIds.Add(reader.GetGuid(0));
+					while (reader.Read())
+					{
+						fileIds.Add(reader.GetGuid(0));
+					}
 				}
 			}
 			return fileIds;
@@ -228,8 +233,8 @@ namespace InfiniteStorage
 			{
 				db.Open();
 				using (var transaction = db.BeginTransaction())
+				using (var cmd = db.CreateCommand())
 				{
-					var cmd = db.CreateCommand();
 					cmd.CommandText = "delete from labelFiles where label_id=@label and file_id=@file";
 					cmd.Prepare();
 
@@ -242,7 +247,7 @@ namespace InfiniteStorage
 					}
 
 					var changedLabels = toRemove.Select(x => x.label_id).Distinct();
-					
+
 					updateLabelSeq(db, changedLabels);
 
 					transaction.Commit();

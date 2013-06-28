@@ -170,25 +170,20 @@ namespace Waveface.ClientFramework
 
 		private bool GetLiked()
 		{
-			var savedPath = this.ContentPath;
+			using (var conn = BunnyDB.CreateConnection())
+			{
+				conn.Open();
 
-			var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "SELECT 1 FROM LabelFiles where file_id = @fid and label_id = @label";
+					cmd.Parameters.Add(new SQLiteParameter("@fid", new Guid(ID)));
+					cmd.Parameters.Add(new SQLiteParameter("@label", Guid.Empty));
 
-			var dbFilePath = Path.Combine(appDir, "database.s3db");
-
-			var conn = new SQLiteConnection(string.Format("Data source={0}", dbFilePath));
-
-			conn.Open();
-
-			var cmd = new SQLiteCommand("SELECT 1 FROM LabelFiles where file_id = @fid and label_id = @label", conn);
-			cmd.Parameters.Add(new SQLiteParameter("@fid", new Guid(ID)));
-			cmd.Parameters.Add(new SQLiteParameter("@label", Guid.Empty));
-
-			var liked = cmd.ExecuteScalar() != null;
-
-			conn.Close();
-
-			return liked;
+					var liked = cmd.ExecuteScalar() != null;
+					return liked;
+				}
+			}
 		}
 		#endregion
 

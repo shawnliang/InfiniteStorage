@@ -35,32 +35,36 @@ namespace UnitTest.Pending
 			using (var db = new SQLiteConnection(ConnString))
 			{
 				db.Open();
-				var cmd = db.CreateCommand();
-				cmd.CommandText =
-					"insert into pendingFiles (file_id, file_name, file_path, file_size, saved_path, device_id, type, event_time, seq, deleted, thumb_ready, width, height) " +
-					"values (@id, @name, @path, @size, @saved_path, @dev_id, 0, @time, @seq, 0, 1, 1024, 768)";
-				cmd.Connection = db;
-
-				int i = 0;
-				foreach (var fid in file_ids)
+				using (var cmd = db.CreateCommand())
 				{
-					cmd.Parameters.Add(new SQLiteParameter("@id", fid));
-					cmd.Parameters.Add(new SQLiteParameter("@name", "name_" + i));
-					cmd.Parameters.Add(new SQLiteParameter("@path", "path_" + i));
-					cmd.Parameters.Add(new SQLiteParameter("@size", i + 1000));
-					cmd.Parameters.Add(new SQLiteParameter("@saved_path", "saved_" + i));
-					cmd.Parameters.Add(new SQLiteParameter("@dev_id", dev_id));
-					cmd.Parameters.Add(new SQLiteParameter("@time", DateTime.Now));
-					cmd.Parameters.Add(new SQLiteParameter("@seq", i));
+					cmd.CommandText =
+					   "insert into pendingFiles (file_id, file_name, file_path, file_size, saved_path, device_id, type, event_time, seq, deleted, thumb_ready, width, height) " +
+					   "values (@id, @name, @path, @size, @saved_path, @dev_id, 0, @time, @seq, 0, 1, 1024, 768)";
+					cmd.Connection = db;
 
-					i++;
-					cmd.ExecuteNonQuery();
+					int i = 0;
+					foreach (var fid in file_ids)
+					{
+						cmd.Parameters.Add(new SQLiteParameter("@id", fid));
+						cmd.Parameters.Add(new SQLiteParameter("@name", "name_" + i));
+						cmd.Parameters.Add(new SQLiteParameter("@path", "path_" + i));
+						cmd.Parameters.Add(new SQLiteParameter("@size", i + 1000));
+						cmd.Parameters.Add(new SQLiteParameter("@saved_path", "saved_" + i));
+						cmd.Parameters.Add(new SQLiteParameter("@dev_id", dev_id));
+						cmd.Parameters.Add(new SQLiteParameter("@time", DateTime.Now));
+						cmd.Parameters.Add(new SQLiteParameter("@seq", i));
+
+						i++;
+						cmd.ExecuteNonQuery();
+					}
+
+					using (var cmd2 = db.CreateCommand())
+					{
+						cmd2.Connection = db;
+						cmd2.CommandText = "insert into Devices (device_id, device_name, folder_name) values ('" + dev_id + "', 'dev', 'devfolder')";
+						cmd2.ExecuteNonQuery();
+					}
 				}
-
-				cmd = db.CreateCommand();
-				cmd.Connection = db;
-				cmd.CommandText = "insert into Devices (device_id, device_name, folder_name) values ('" + dev_id + "', 'dev', 'devfolder')";
-				cmd.ExecuteNonQuery();
 			}
 		}
 
@@ -104,31 +108,33 @@ namespace UnitTest.Pending
 				int i = 0;
 				foreach (var fid in new Guid[] { file_ids[0], file_ids[1] })
 				{
-					var cmd = conn.CreateCommand();
-					cmd.CommandText = "select * from Files where file_id = @id";
-					cmd.Parameters.Add(new SQLiteParameter("@id", fid));
-					using (var reader = cmd.ExecuteReader())
+					using (var cmd = conn.CreateCommand())
 					{
-						while (reader.Read())
+						cmd.CommandText = "select * from Files where file_id = @id";
+						cmd.Parameters.Add(new SQLiteParameter("@id", fid));
+						using (var reader = cmd.ExecuteReader())
 						{
-							Assert.AreEqual("name_" + i, reader["file_name"]);
-							Assert.AreEqual("path_" + i, reader["file_path"]);
-							Assert.AreEqual(1000L + i, reader["file_size"]);
-							Assert.AreEqual("newp" + i, reader["saved_path"]);
-							Assert.AreEqual("parent" + i, reader["parent_folder"]);
-							Assert.AreEqual(dev_id, reader["device_id"]);
-							Assert.AreEqual(0L, reader["type"]);
-							Assert.AreEqual(1024L, reader["width"]);
-							Assert.AreEqual(768L, reader["height"]);
+							while (reader.Read())
+							{
+								Assert.AreEqual("name_" + i, reader["file_name"]);
+								Assert.AreEqual("path_" + i, reader["file_path"]);
+								Assert.AreEqual(1000L + i, reader["file_size"]);
+								Assert.AreEqual("newp" + i, reader["saved_path"]);
+								Assert.AreEqual("parent" + i, reader["parent_folder"]);
+								Assert.AreEqual(dev_id, reader["device_id"]);
+								Assert.AreEqual(0L, reader["type"]);
+								Assert.AreEqual(1024L, reader["width"]);
+								Assert.AreEqual(768L, reader["height"]);
+							}
 						}
 					}
 
-
-					var checkCmd = conn.CreateCommand();
-					checkCmd.CommandText = "select 1 from PendingFiles where file_id= @id";
-					checkCmd.Parameters.Add(new SQLiteParameter("@id", file_ids[0]));
-					Assert.AreEqual(null, checkCmd.ExecuteScalar());
-
+					using (var checkCmd = conn.CreateCommand())
+					{
+						checkCmd.CommandText = "select 1 from PendingFiles where file_id= @id";
+						checkCmd.Parameters.Add(new SQLiteParameter("@id", file_ids[0]));
+						Assert.AreEqual(null, checkCmd.ExecuteScalar());
+					}
 					i++;
 				} // foreach
 			}

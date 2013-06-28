@@ -13,36 +13,38 @@ namespace InfiniteStorage.REST
 
 			var label_id = new Guid(Parameters["label_id"]);
 
-			using (var db = new MyDbContext())
+			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
 			{
-				var conn = db.Object.Database.Connection;
 				conn.Open();
 
 
-				var cmd = conn.CreateCommand();
-				cmd.Connection = conn;
-				cmd.CommandText = "delete from [LabelFiles] where label_id = @id";
-				cmd.CommandType = System.Data.CommandType.Text;
-
-				var par = cmd.CreateParameter();
-				par.ParameterName = "@id";
-				par.Value = label_id;
-				cmd.Parameters.Add(par);
-
-				var nDeleted = cmd.ExecuteNonQuery();
-
-				if (nDeleted > 0)
+				using (var cmd = conn.CreateCommand())
 				{
-					var delCmd = conn.CreateCommand();
+					cmd.Connection = conn;
+					cmd.CommandText = "delete from [LabelFiles] where label_id = @id";
+					cmd.CommandType = System.Data.CommandType.Text;
 
-					delCmd.CommandText = "update [Labels] set seq = @seq where label_id = @id";
-					
-					var parSeq = delCmd.CreateParameter();
-					parSeq.Value = SeqNum.GetNextSeq();
-					parSeq.ParameterName = "@seq";
-					delCmd.Parameters.Add(parSeq);
-					delCmd.Parameters.Add(new SQLiteParameter("@id", label_id));
-					delCmd.ExecuteNonQuery();
+					var par = cmd.CreateParameter();
+					par.ParameterName = "@id";
+					par.Value = label_id;
+					cmd.Parameters.Add(par);
+
+					var nDeleted = cmd.ExecuteNonQuery();
+
+					if (nDeleted > 0)
+					{
+						using (var delCmd = conn.CreateCommand())
+						{
+							delCmd.CommandText = "update [Labels] set seq = @seq where label_id = @id";
+
+							var parSeq = delCmd.CreateParameter();
+							parSeq.Value = SeqNum.GetNextSeq();
+							parSeq.ParameterName = "@seq";
+							delCmd.Parameters.Add(parSeq);
+							delCmd.Parameters.Add(new SQLiteParameter("@id", label_id));
+							delCmd.ExecuteNonQuery();
+						}
+					}
 				}
 
 
