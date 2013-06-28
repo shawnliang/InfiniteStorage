@@ -117,6 +117,12 @@ namespace InfiniteStorage.Share
 				group_id = Settings.Default.GroupId
 			};
 
+			if (recipients == null)
+				recipients = new List<Model.ShareRecipient>();
+
+			if (files == null)
+				files = new List<Model.FileAsset>();
+
 			// use an old last_update_time to work around cloud consistency checking
 			var lastUpdateTime = DateTime.Now.AddMinutes(-10.0);
 			api.UpdatePost(

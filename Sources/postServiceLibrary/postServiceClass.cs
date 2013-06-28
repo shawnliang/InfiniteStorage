@@ -175,7 +175,7 @@ namespace postServiceLibrary
         }
  
 
-        private string joinToJsonList(List<string> list)
+		private static string joinToJsonList(ICollection<string> list)
         {
 			return "[" + string.Join(",", list.Select(x => "\"" + x + "\"").ToArray()) + "]";
         }
@@ -299,6 +299,24 @@ namespace postServiceLibrary
 			session_token = _ws.session_token;
 			result = session_token;
 			return result;
+		}
+
+		public static void sendFavoriteEmail(string sessionToken, string apikey, ICollection<string> recipients, string shareCode, string sender, string title, string msg)
+		{
+			var _url = "https://develop.waveface.com:443/v3" + "/pio_posts/send_favorite_email";
+
+
+			var postData = string.Format("apikey={0}&session_token={1}&shared_email_list={2}&shared_code={3}&sender_name={4}&title={5}&content={6}",
+								HttpUtility.UrlEncode(apikey),
+								HttpUtility.UrlEncode(sessionToken),
+								HttpUtility.UrlEncode(joinToJsonList(recipients)),
+								HttpUtility.UrlEncode(shareCode),
+								sender != null ? HttpUtility.UrlEncode(sender) : "",
+								title != null ? HttpUtility.UrlEncode(title) : "",
+								msg != null ? HttpUtility.UrlEncode(msg) : "");
+
+			var post = new WebPostHelper();
+			post.doPost(_url, postData, null);
 		}
     }
 }
