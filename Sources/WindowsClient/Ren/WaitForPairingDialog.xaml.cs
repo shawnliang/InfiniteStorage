@@ -51,7 +51,7 @@ namespace Waveface.Client
         {
             m_uiDelayTimer.Stop();
 
-            MessageBoxResult _messageBoxResult = MessageBox.Show("Pairing Request - [" + m_pairingRequest.device_name + "]", "Favorite*", MessageBoxButton.YesNo);
+            MessageBoxResult _messageBoxResult = MessageBox.Show("Allow auto sync from \"" + m_pairingRequest.device_name + "\"?", "Android Device Found", MessageBoxButton.YesNo);
 
             if (_messageBoxResult == MessageBoxResult.Yes)
             {
