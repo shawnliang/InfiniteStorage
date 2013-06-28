@@ -47,6 +47,8 @@ namespace Waveface.Client
 
             rspRightSidePanel.btnClearAll.Click += new RoutedEventHandler(btnClearAll_Click);
 
+			rspRightSidePane2.lblHomeSharingTutorialTip.MouseDown += lblHomeSharingTutorialTip_MouseDown;
+
             lblContentTypeCount.Content = string.Format("0 photos 0 videos");
 
 			var syncContext = SynchronizationContext.Current;
@@ -86,6 +88,11 @@ namespace Waveface.Client
             uiDelayTimer.Interval = new TimeSpan(0, 0, 1);
             uiDelayTimer.Start();
         }
+
+		void lblHomeSharingTutorialTip_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			Process.Start("http://waveface.uservoice.com/knowledgebase/articles/215523-step4-share-favorites-with-your-favorite-people");
+		}
 
         void uiDelayTimer_Tick(object sender, EventArgs e)
         {
