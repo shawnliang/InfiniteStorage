@@ -133,6 +133,7 @@
     <string name="sync_content_connect_server">Conecting server</string>
     <string name="sync_content_one_more">Your favorites will be ready in %1$s minutes</string>
     <string name="sync_content_one">Your favorites will be ready in 1 minute</string>
+    <string name="sync_almost_ready">Almost ready...</string>
 
     <!-- PLAYBACK FRAGMENT  -->
     <string name="everything_played">Everything played</string>

@@ -15,6 +15,7 @@ import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.RuntimeState;
 import com.waveface.favoriteplayer.db.LabelDB;
 import com.waveface.favoriteplayer.entity.LabelEntity;
+import com.waveface.favoriteplayer.entity.LabelEntity.Label;
 import com.waveface.favoriteplayer.entity.ServerEntity;
 import com.waveface.favoriteplayer.event.LabelImportedEvent;
 import com.waveface.favoriteplayer.logic.DownloadLogic;
@@ -79,6 +80,16 @@ public class InitDownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 					Constant.STATION_CONNECTION_TIMEOUT);
 			entity = RuntimeState.GSON.fromJson(jsonOutput, LabelEntity.class);
 			if (entity != null) {
+				LabelImportedEvent syncingEvent = new LabelImportedEvent(
+						LabelImportedEvent.STATUS_SETTING);
+				int fileCount = 0;
+				for(Label label : entity.labels) {
+					fileCount += label.files.length;
+				}
+				syncingEvent.totalFile = fileCount;
+				EventBus.getDefault().post(syncingEvent);
+				
+				
 				mEditor.putString(Constant.PREF_HOME_SHARING_STATUS, entity.home_sharing);
 				mEditor.commit();
 				DownloadLogic.updateAllLabels(mContext, entity);

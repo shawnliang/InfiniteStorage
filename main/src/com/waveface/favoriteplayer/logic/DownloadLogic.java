@@ -78,6 +78,7 @@ public class DownloadLogic {
 					FileEntity.class);
 			LabelImportedEvent syncingEvent = new LabelImportedEvent(
 					LabelImportedEvent.STATUS_SYNCING);
+			syncingEvent.currentIndex = 0;
 			LabelImportedEvent doneEvent = new LabelImportedEvent(
 					LabelImportedEvent.STATUS_DONE);
 
@@ -114,6 +115,7 @@ public class DownloadLogic {
 							.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
 					Log.d(TAG, "filename:" + fileName);
 					Log.d(TAG, "fileId:" + fileId);
+					long time = System.currentTimeMillis();
 					if (StringUtil.isAvaiableSpace(context,
 							Constant.AVAIABLE_SPACE)) {
 						if (type.equals(Constant.FILE_TYPE_VIDEO)) {
@@ -146,10 +148,9 @@ public class DownloadLogic {
 								Constant.ACTION_NOT_ENOUGH_SPACE));
 
 					}
-					long time = System.currentTimeMillis();
 					time = System.currentTimeMillis() - time;
 					syncingEvent.singleTime = time;
-					syncingEvent.currentFile++;
+					syncingEvent.currentIndex++;
 					EventBus.getDefault().post(syncingEvent);
 
 					filecursor.moveToNext();
@@ -168,17 +169,13 @@ public class DownloadLogic {
 	}
 
 	public static void updateAllLabels(Context context, LabelEntity entity) {
-//		ContentValues cv = null;
-//		ContentResolver cr = context.getContentResolver();
+		LabelImportedEvent syncingEvent = new LabelImportedEvent(
+				LabelImportedEvent.STATUS_SETTING);
+		syncingEvent.offset = 0;
 		for (LabelEntity.Label label : entity.labels) {
+			EventBus.getDefault().post(syncingEvent);
 			downloadLabel(context, label, true, false);
-			//Update Seq equals ServerSeq
-//			cv = new ContentValues();
-//			cv.put(LabelTable.COLUMN_SERVER_SEQ, label.seq);
-//			cr.update(LabelTable.CONTENT_URI, 
-//					cv, 
-//					LabelTable.COLUMN_LABEL_ID+"=?", 
-//					new String[]{label.label_id});
+			syncingEvent.offset += label.files.length;
 		}
 		LabelImportedEvent doneEvent = new LabelImportedEvent(
 				LabelImportedEvent.STATUS_DONE);

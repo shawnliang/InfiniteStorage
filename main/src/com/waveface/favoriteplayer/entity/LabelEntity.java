@@ -15,28 +15,28 @@ public class LabelEntity {
     public String home_sharing;	
 
 	public class Label{	
-	@SerializedName("label_id")
-	public String label_id;
-
-	@SerializedName("seq")
-	public String seq;
-
-	@SerializedName("label_name")
-	public String label_name;
-
-	@SerializedName("cover_url")
-	public String cover_url;
+		@SerializedName("label_id")
+		public String label_id;
 	
-	@SerializedName("auto_type")
-	public String auto_type;
+		@SerializedName("seq")
+		public String seq;
 	
-	@SerializedName("on_air")
-	public String on_air;
+		@SerializedName("label_name")
+		public String label_name;
 	
-	@SerializedName("deleted")
-	public String deleted;
-
-	public String[] files;
+		@SerializedName("cover_url")
+		public String cover_url;
+		
+		@SerializedName("auto_type")
+		public String auto_type;
+		
+		@SerializedName("on_air")
+		public String on_air;
+		
+		@SerializedName("deleted")
+		public String deleted;
+	
+		public String[] files;
 	}
 
 }

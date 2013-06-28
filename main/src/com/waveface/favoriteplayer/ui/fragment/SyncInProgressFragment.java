@@ -3,6 +3,7 @@ package com.waveface.favoriteplayer.ui.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,21 +15,35 @@ import com.waveface.favoriteplayer.event.LabelImportedEvent;
 import de.greenrobot.event.EventBus;
 
 public class SyncInProgressFragment extends Fragment {
+	public static final String TAG = SyncInProgressFragment.class.getSimpleName();
 	private TextView mSyncContent;
 	LabelImportedEvent mEvent;
+	
+	private int mTotalFile;
+	private int mOffset;
 
 	private Handler mHandler = new Handler();
 	private Runnable mUpdateStatusRunnable = new Runnable() {
 
 		@Override
 		public void run() {
-			long total = mEvent.singleTime
-					* (mEvent.totalFile - mEvent.currentFile) / (60 * 1000);
-			if (total > 0) {
+			int current = mEvent.currentIndex + mOffset;
+			Log.d(TAG, current + "/"  + mTotalFile );
+			float total = (float)(((float)mTotalFile - current)/20.0);
+			if(current > mTotalFile) {
+				Log.d(TAG, "skip");
+				return;
+			} else if(current == mTotalFile || total < 0.5) {
+				total = 0;
+			}
+			if (total > 1) {
 				if(mSyncContent != null && getActivity() != null)
 					mSyncContent.setText(String.format(getActivity().getResources()
-						.getString(R.string.sync_content_one_more), Long
-						.toString(total)));
+						.getString(R.string.sync_content_one_more), Integer.toString(Math.round(total)))	);
+			} else if(total < 0.5) {
+				if(mSyncContent != null && getActivity() != null)
+					mSyncContent.setText(getActivity().getResources().getString(
+						R.string.sync_almost_ready));
 			} else {
 				if(mSyncContent != null && getActivity() != null)
 					mSyncContent.setText(getActivity().getResources().getString(
@@ -63,6 +78,13 @@ public class SyncInProgressFragment extends Fragment {
 		if (event.status == LabelImportedEvent.STATUS_SYNCING) {
 			mEvent = event;
 			mHandler.post(mUpdateStatusRunnable);
+		} else if(event.status == LabelImportedEvent.STATUS_SETTING) {
+			if(event.totalFile != -1) {
+				mTotalFile = event.totalFile;
+			}
+			if(event.offset != -1) {
+				mOffset = event.offset;
+			}
 		}
 	}
 
