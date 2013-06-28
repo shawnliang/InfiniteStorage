@@ -234,13 +234,6 @@
                 </StackPanel>
             </Grid>
 
-            <Button x:Name="btnRefresh" Content="Refresh !" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Bottom" Cursor="Hand" Margin="0, 0, 0, -28" Foreground="White" FontWeight="Bold" Background="#4F4F4F" 
-                                FontSize="14" Padding="36, 8" Style="{StaticResource FlatButtonStyle}" Click="btnRefresh_Click">
-                <Button.Effect>
-                    <DropShadowEffect/>
-                </Button.Effect>
-            </Button>
-
             <Grid x:Name="gridEmptyPanel"
                   Grid.Row="1"
                   Grid.RowSpan="2"
@@ -254,6 +247,13 @@
                            Foreground="White"
                            Text="All files imported" />
             </Grid>
+
+            <Button x:Name="btnRefresh" Content="Refresh !" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Bottom" Cursor="Hand" Margin="0, 0, 0, -28" Foreground="White" FontWeight="Bold" Background="#4F4F4F" 
+                                FontSize="14" Padding="36, 8" Style="{StaticResource FlatButtonStyle}" Click="btnRefresh_Click">
+                <Button.Effect>
+                    <DropShadowEffect/>
+                </Button.Effect>
+            </Button>
         </Grid>
     </Grid>
 </UserControl>
