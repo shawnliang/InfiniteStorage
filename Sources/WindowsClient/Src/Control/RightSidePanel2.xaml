@@ -49,6 +49,26 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <ControlTemplate x:Key="ButtonBaseControlTemplate1" TargetType="{x:Type ButtonBase}">
+        	<Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+        		<ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        	</Border>
+        	<ControlTemplate.Triggers>
+        		<Trigger Property="Button.IsDefaulted" Value="True">
+        			<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+        		</Trigger>
+        		<Trigger Property="ToggleButton.IsChecked" Value="True">
+        			<Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="Black"/>
+        			<Setter Property="Background" TargetName="border" Value="#FFA0A0A0"/>
+        			<Setter Property="BorderBrush" TargetName="border" Value="Black"/>
+        		</Trigger>
+        		<Trigger Property="IsEnabled" Value="False">
+        			<Setter Property="Background" TargetName="border" Value="#FFF4F4F4"/>
+        			<Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
+        			<Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#FF838383"/>
+        		</Trigger>
+        	</ControlTemplate.Triggers>
+        </ControlTemplate>
     </UserControl.Resources>
 
 
@@ -73,8 +93,8 @@
         <ToggleButton x:Name="tbtnHomeSharing"
                       Height="34"
                       Margin="10,20,10,0"
-                      Style="{DynamicResource HomeSharingButtonStyle}" />
-        <Label Margin="10,0"
+                      Style="{DynamicResource HomeSharingButtonStyle}" Background="#FF4F4F4F" Foreground="White" Template="{DynamicResource ButtonBaseControlTemplate1}" />
+        <Label x:Name="lblHomeSharingTutorialTip" Margin="10,0"
                HorizontalAlignment="Center"
                Content="{DynamicResource HomeSharingTip}"
                Foreground="#FFA8A8A8" />
@@ -82,8 +102,8 @@
         <ToggleButton x:Name="tbtnCloudSharing"
                       Height="34"
                       Margin="10,20,10,0"
-                      Style="{DynamicResource ShareLinkButtonStyle}" />
-        <TextBlock Margin="10,0"
+                      Style="{DynamicResource ShareLinkButtonStyle}" Background="#FF4F4F4F" Foreground="White" Template="{DynamicResource ButtonBaseControlTemplate1}"/>
+        <TextBlock Margin="10,5,10,0"
                    HorizontalAlignment="Center"
                    Foreground="#FFA8A8A8"
                    Style="{DynamicResource ShareLinkTipStyle}"

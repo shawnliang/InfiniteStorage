@@ -29,4 +29,7 @@
     <system:String x:Key="TakeTourDialogTitle">Take A Tour?</system:String>
     <system:String x:Key="TakeTourButtonText">Take a Tour</system:String>
     <system:String x:Key="LaterButtonText">晚點</system:String>
+    <system:String x:Key="UnsortedNodeText">未整理</system:String>
+    <system:String x:Key="WithoutContentMessageText">Without any content</system:String>
+    <system:String x:Key="NoExistingFavoriteMessageText">No existing favorite</system:String>
 </ResourceDictionary>

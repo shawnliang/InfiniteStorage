@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Windows;
@@ -47,24 +48,21 @@ namespace Waveface.Client
 
             rspRightSidePanel.btnClearAll.Click += new RoutedEventHandler(btnClearAll_Click);
 
+			rspRightSidePane2.lblHomeSharingTutorialTip.MouseDown += lblHomeSharingTutorialTip_MouseDown;
+
             lblContentTypeCount.Content = string.Format("0 photos 0 videos");
 
-			var syncContext = SynchronizationContext.Current;
-
-
-            Observable.FromEventPattern(
-                h => lbxDeviceContainer.TreeViewItemClick += h,
-                h => lbxDeviceContainer.TreeViewItemClick -= h
-                )
-                .Window(TimeSpan.FromMilliseconds(50))
-                .SelectMany(x => x.TakeLast(1))
-                .Subscribe(ex =>
-                {
-					syncContext.Post((o) =>
-					    {
-                            TreeViewItem_PreviewMouseLeftButtonDown(ex.Sender, ex.EventArgs);
-						}, null);
-                });
+			Observable.FromEventPattern(
+				h => lbxDeviceContainer.TreeViewItemClick += h,
+				h => lbxDeviceContainer.TreeViewItemClick -= h
+				)
+				.Window(TimeSpan.FromMilliseconds(50))
+				.SelectMany(x => x.TakeLast(1))
+				.ObserveOn(DispatcherScheduler.Current)
+				.Subscribe(ex =>
+				{
+					TreeViewItem_PreviewMouseLeftButtonDown(ex.Sender, ex.EventArgs);
+				});
 
             Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
                 handler => (s, ex) => handler(ex),
@@ -73,12 +71,10 @@ namespace Waveface.Client
                 )
                 .Window(TimeSpan.FromMilliseconds(50))
                 .SelectMany(x => x.TakeLast(1))
+				.ObserveOn(DispatcherScheduler.Current)
                 .Subscribe(ex =>
                 {
-					syncContext.Post((o) =>
-					{
-                        lbxFavorites_SelectionChanged(lbxFavorites, ex);
-					}, null);
+					lbxFavorites_SelectionChanged(lbxFavorites, ex);
                 });
 
             uiDelayTimer = new DispatcherTimer();
@@ -86,6 +82,11 @@ namespace Waveface.Client
             uiDelayTimer.Interval = new TimeSpan(0, 0, 1);
             uiDelayTimer.Start();
         }
+
+		void lblHomeSharingTutorialTip_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			Process.Start("http://waveface.uservoice.com/knowledgebase/articles/215523-step4-share-favorites-with-your-favorite-people");
+		}
 
         void uiDelayTimer_Tick(object sender, EventArgs e)
         {
@@ -250,7 +251,9 @@ namespace Waveface.Client
 
             group.Refresh();
 
-            if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
+
+			string unSortedNodeText = (string)Application.Current.FindResource("UnsortedNodeText");
+			if (group.ID.Equals("unSortedNodeText", StringComparison.CurrentCultureIgnoreCase))
             {
                 TryDisplayUnsortedTutorial();
 
@@ -449,7 +452,9 @@ namespace Waveface.Client
         {
             if (!lbxContentContainer.HasItems)
             {
-                MessageBox.Show("Without any content");
+				string text = (string)Application.Current.FindResource("WithoutContentMessageText");
+
+                MessageBox.Show(text);
                 return;
             }
 
@@ -485,7 +490,9 @@ namespace Waveface.Client
         {
             if (!lbxContentContainer.HasItems)
             {
-                MessageBox.Show("Without any content");
+				string text = (string)Application.Current.FindResource("WithoutContentMessageText");
+
+				MessageBox.Show(text);
                 return;
             }
 
@@ -493,7 +500,9 @@ namespace Waveface.Client
 
             if (!favorites.Any())
             {
-                MessageBox.Show("No existing Favorites");
+				string text = (string)Application.Current.FindResource("NoExistingFavoriteMessageText");
+
+                MessageBox.Show(text);
                 return;
             }
 
@@ -531,13 +540,14 @@ namespace Waveface.Client
 
             var iniFile = System.IO.Path.Combine(path, @"sharefavorite.ini");
 
-            _w.setTitle(this.Title);
+			var group = (lblContentLocation.DataContext as IContentGroup);
+			_w.setTitle(group.Name);
             _w.setiniPath(iniFile);
 
             var files = string.Join("~", (lbxContentContainer.DataContext as IEnumerable<IContentEntity>).Select(content => content.Uri.LocalPath).ToArray());
 
             _w.setFilename(files);
-			_w.setLabelId((lblContentLocation.DataContext as IContentGroup).ID);
+			_w.setLabelId(group.ID);
             _w.setRun();
             _w.ShowDialog();
         }

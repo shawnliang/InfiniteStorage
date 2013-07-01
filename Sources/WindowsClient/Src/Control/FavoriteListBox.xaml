@@ -23,14 +23,15 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Row="0"
                             Grid.Column="0"
-                            VerticalAlignment="Center"
                             Orientation="Horizontal">
                     <Image x:Name="icon"
-                           Width="17"
-                           Height="17"
-                           Margin="10, 0, 0, 0"
+                           Width="18"
+                           Height="18"
+                           Margin="10, 2, 0, 0"
+						   VerticalAlignment="Center"
                            Source="{StaticResource UnSelectedFav}" />
                     <Label x:Name="sourceName"
+						   VerticalAlignment="Center"
                            VerticalContentAlignment="Center"
                            Content="{Binding Name}"
                            Foreground="#a8a8a8" />

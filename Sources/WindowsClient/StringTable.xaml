@@ -32,4 +32,7 @@
     <system:String x:Key="TakeTourMsgOranize">Organizing thousands of photos on your phone will be breeze from now on. Check out a couple basic tips to get started.</system:String>
     <system:String x:Key="TakeTourMsgShare">Share precious moments you’ve picked out to your favorite people. Check out a couple basic tips to get started.</system:String>
     <system:String x:Key="TakeTourMSgHomeShare">View your favorite stuff on your tablet and TV in no time. Check out a couple basic tips to get started.</system:String>
+    <system:String x:Key="UnsortedNodeText">Unsorted</system:String>
+    <system:String x:Key="WithoutContentMessageText">Without any content</system:String>
+    <system:String x:Key="NoExistingFavoriteMessageText">No existing favorite</system:String>
 </ResourceDictionary>
