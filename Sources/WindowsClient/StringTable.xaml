@@ -29,4 +29,7 @@
     <system:String x:Key="TakeTourDialogTitle">Take A Tour?</system:String>
     <system:String x:Key="TakeTourButtonText">Take a Tour</system:String>
     <system:String x:Key="LaterButtonText">Later</system:String>
+    <system:String x:Key="TakeTourMsgOranize">Organizing thousands of photos on your phone will be breeze from now on. Check out a couple basic tips to get started.</system:String>
+    <system:String x:Key="TakeTourMsgShare">Share precious moments you’ve picked out to your favorite people. Check out a couple basic tips to get started.</system:String>
+    <system:String x:Key="TakeTourMSgHomeShare">View your favorite stuff on your tablet and TV in no time. Check out a couple basic tips to get started.</system:String>
 </ResourceDictionary>

@@ -299,7 +299,7 @@ namespace Waveface.Client
         {
             if (!Properties.Settings.Default.IsFirstSelectUnsorted)
             {
-				var result = TakeTourDialog.Show("Organizing thousands of photos on your phone will be breeze from now on. Check out a couple basic tips to get started.", this);
+				var result = TakeTourDialog.ShowWithDynamicResource("TakeTourMsgOranize", this);
 				
 				if (result.HasValue && result.Value)
 					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215521-step2-organizing-photos-and-videos-in-favorite-");
@@ -421,7 +421,7 @@ namespace Waveface.Client
         {
             if (!Properties.Settings.Default.IsFirstSelectFavorite)
             {
-				var result = TakeTourDialog.Show("Share precious moments you’ve picked out to your favorite people. Check out a couple basic tips to get started.", this);
+				var result = TakeTourDialog.ShowWithDynamicResource("TakeTourMsgShare", this);
 				if (result.HasValue && result.Value)
 					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215523-step4-share-favorites-with-your-favorite-people");
 
@@ -434,7 +434,7 @@ namespace Waveface.Client
         {
             if (!Properties.Settings.Default.IsFirstSelectStarred)
             {
-				var result = TakeTourDialog.Show("View your favorite stuff on your tablet and TV in no time. Check out a couple basic tips to get started.", this);
+				var result = TakeTourDialog.ShowWithDynamicResource("TakeTourMSgHomeShare", this);
 				if (result.HasValue && result.Value)
 					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215522-step3-view-favorite-memories-on-tablets-and-tvs-");
 
