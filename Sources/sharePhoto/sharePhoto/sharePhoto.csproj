@@ -263,7 +263,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="newPostClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

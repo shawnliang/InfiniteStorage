@@ -33,9 +33,6 @@ namespace Wpf_testHTTP
 {
     public partial class MainWindow : Window
     {
-        public static string serverBaseUrl="https://develop.waveface.com/v3";
-        public static string HostIP = serverBaseUrl;  //"https://api.waveface.com/v3/";
-        public static string BaseURL { get { return HostIP; } }
         public static string APIKEY = "a23f9491-ba70-5075-b625-b8fb5d9ecd90";       // win8 viewer: station
         public static string machine_user =Environment.UserName;
         public string iniPath = @"C:\Users\"+machine_user+@"\AppData\Roaming\Bunny\temp\sharefavorite.ini";
@@ -57,14 +54,7 @@ namespace Wpf_testHTTP
             parser.SaveSettings();
            
         }
-        public void setServerUrl(string url)
-        {
-            if (url != null && url != "")
-            {
-                serverBaseUrl = url;
-                HostIP = url;
-            }
-        }
+        
         public void setTitle(string title)
         {
             favoriteTitle = title;
@@ -186,64 +176,7 @@ namespace Wpf_testHTTP
             } service_oauth();
         }
 
-        private void createAccount(string serverId)
-        {
-            iniParser parser = new iniParser();
-            checkTempExist();
-            checkIniExist();
-            parser.IniParser(iniPath);
 
-            string _session = parser.GetSetting("Setup", "session_token");
-            if (_session != "" && _session != null)
-            {
-                session_token_key = _session;
-                string _user = parser.GetSetting("Setup", "user");
-                string _user1 = parser.GetSetting("Setup", "user1");
-                string _password = _user1;
-                //
-                user = _user;
-                password = _password;
-                return;
-            }
-            // check
-
-            string _url = serverBaseUrl+"/auth/signup";
-            Guid g;
-            // Create and display the value of two GUIDs.
-            g = Guid.NewGuid();
-            serverId = g.ToString();
-            string user_email = serverId + ".anonymous@waveface.com";
-            string user_password = "anonymous+123456";
-            string user_nickname = "abc.anonymous";
-
-            string _user_password = System.Web.HttpUtility.UrlEncode(user_password);
-
-            string _parms = "email" + "=" + user_email + "&" +
-                "password" + "=" + _user_password + "&" +
-                "nickname" + "=" + user_nickname + "&" +
-                "apikey" + "=" + APIKEY;
-
-            WebPostHelper _webPos = new WebPostHelper();
-            bool _isOK = _webPos.doPost(_url, _parms, null);
-
-            if (_isOK)
-            {
-                string _r = _webPos.getContent();
-                MR_auth_signup_sessionToken results = JsonConvert.DeserializeObject<MR_auth_signup_sessionToken>(_r);
-                session_token_key = results.session_token;
-
-                // session_token_key = getSessionToken(_r);
-                // MessageBox.Show(session_token_key);
-                parser.AddSetting("Setup", "session_token", session_token_key);
-                parser.AddSetting("Setup", "user", user_email);
-                parser.AddSetting("Setup", "user1", user_password);
-                parser.SaveSettings();
-                //
-                user = user_email;
-                password = user_password;
-            }
-            return;
-        }
         //--- using Refresh token to get the Access token
         private bool get_accesstokenfromrefreshtoken()
         {
@@ -409,7 +342,7 @@ namespace Wpf_testHTTP
         bool uploadFinished = false;
         string user = "isserverId0.anonymous@waveface.com";  // "ruddytest29@gmail.com";
         string password = "anonymous123456"; // "a+123456";
-        newPostClass _ws = new newPostClass();
+        //newPostClass _ws = new newPostClass();
         string group_id = "";
         string session_token_key = "";
         string filename = @"C:/Users/" + machine_user + "/Pictures/2.jpg~C:/Users/" + machine_user + "/Pictures/video.mp4~C:/Users/" + machine_user + "/Pictures/3.jpg";
@@ -550,45 +483,18 @@ namespace Wpf_testHTTP
             return result;
 
         }
-        private string count_attachments()
-        {
-            string result = "";
-            string att0 = "[";
-            foreach (string _id in object_arr)
-            {
-                att0 += '"' + _id + '"' + ",";
-            }
-            att0 = att0.Substring(0, att0.Length - 1) + "]";
-            result = att0.Replace(@"\\", "/");
-            return result;
-        }
-        private string callLogin(string user, string password)
-        {
-            string result = "";
-
-            _ws.HostIp = HostIP;
-            _ws.APIKEY = APIKEY;
-
-            result = _ws.auth_login(user, password);
-            group_id = _ws.group_id;
-            session_token_key = _ws.session_token;
-            result = session_token_key;
-            return result;
-        }
-
-     //   string user_email = "ruddyl.lee@waveface.com";
-        private string callUploadAttachment(string filename)
-        {
-            string result = "";
-
-            _ws.group_id = group_id;
-            _ws.session_token = session_token_key;
-            _ws.APIKEY = APIKEY;
-            result = _ws.callUploadAttachment(filename);
-            _ws._object_id = result;
-            object_arr.Add(result);
-            return result;
-        }
+		private string count_attachments()
+		{
+			string result = "";
+			string att0 = "[";
+			foreach (string _id in object_arr)
+			{
+				att0 += '"' + _id + '"' + ",";
+			}
+			att0 = att0.Substring(0, att0.Length - 1) + "]";
+			result = att0.Replace(@"\\", "/");
+			return result;
+		}
 
         private void Label_MouseDown(object sender, MouseButtonEventArgs e)
         {
