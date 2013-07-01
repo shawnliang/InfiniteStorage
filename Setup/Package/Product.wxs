@@ -69,6 +69,7 @@
     
     
     <?include Product.Uninstaller.wxi ?>
+    <?include server.wxi ?>
     <DirectoryRef Id="TARGETDIR">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLLOCATION" Name="$(var.AppCode)">
@@ -76,13 +77,6 @@
           <Component Id="CultureSetting" Guid="{5F519BAE-D3FC-47BE-A679-40C8833097F0}">
             <RegistryKey Root="HKCU" Key="Software\BunnyHome">
               <RegistryValue Type="string" Name="Culture" Value="!(loc.CULTURE)" KeyPath="yes"/>
-            </RegistryKey>
-          </Component>
-
-          <Component Id="ServerSetting" Guid="{C6862A99-40AF-4F2D-AFF5-68959A867267}">
-            <RegistryKey Root="HKCU" Key="Software\BunnyHome">
-              <RegistryValue Type="string" Name="ApiServer" Value="https://develop.waveface.com/" KeyPath="yes" />
-              <RegistryValue Type="string" Name="WebServer" Value="https://devweb.waveface.com/" KeyPath="yes" />
             </RegistryKey>
           </Component>
 

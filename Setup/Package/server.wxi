@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <DirectoryRef Id="INSTALLLOCATION">
+    <Component Id="ServerSetting" Guid="{C6862A99-40AF-4F2D-AFF5-68959A867267}">
+      <RegistryKey Root="HKCU" Key="Software\BunnyHome">
+        <RegistryValue Type="string" Name="ApiServer" Value="https://develop.waveface.com/" KeyPath="yes" />
+        <RegistryValue Type="string" Name="WebServer" Value="https://devweb.waveface.com/" KeyPath="no" />
+      </RegistryKey>
+    </Component>
+  </DirectoryRef>
+  
+</Include>

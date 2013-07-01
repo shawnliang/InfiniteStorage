@@ -38,8 +38,10 @@
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="server_production.wxi" />
     <Content Include="PhotoShare.wxi" />
     <Content Include="Product.Uninstaller.wxi" />
+    <Content Include="server.wxi" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Sources\BonjourAgent\BonjourAgent.csproj">
