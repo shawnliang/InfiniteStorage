@@ -36,9 +36,7 @@ namespace Waveface.Client
 				catch
 				{
 				}
-
 			}
-			
 		}
 	}
 }
