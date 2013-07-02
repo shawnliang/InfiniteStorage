@@ -173,7 +173,8 @@ namespace Wpf_testHTTP
                 {
                     myTabControl.SelectedIndex = 1;
                 }
-            } service_oauth();
+            } 
+            service_oauth();
         }
 
 
@@ -360,6 +361,8 @@ namespace Wpf_testHTTP
         bool shareButtonClick = false;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (AutoCompleteBox.Text == "Invite more people...")
+                AutoCompleteBox.Text = "";
             char[] delimiterChars0 = { ';' };
             // 0 get email setup
             string _emailStr = setup_emailList();
@@ -593,9 +596,13 @@ namespace Wpf_testHTTP
                 }
             }
             if (e.Key == Key.Return || e.Key == Key.Space || e.Key == Key.Tab)
-            {
+            { 
+                if (AutoCompleteBox.Text == "Invite more people...")
+                    AutoCompleteBox.Text = "";
+
                 if (IsValidEmail(AutoCompleteBox.Text) == false)
                     return;
+               
                 bool result = checkAvailable(AutoCompleteBox.Text);
                 if (result == true)
                 {
