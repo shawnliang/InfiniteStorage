@@ -57,43 +57,55 @@ namespace Wpf_testHTTP
         
         public void setTitle(string title)
         {
-            favoriteTitle = title;
-            if (favoriteTitle == "")
+            try
             {
-                label_title.Content = "Share  Favorite with:";
+                favoriteTitle = title;
+                if (favoriteTitle == "")
+                {
+                    label_title.Content = "Share  Favorite with:";
+                }
+                else
+                {
+                    label_title.Content = "Share  Favorite \"" + favoriteTitle + "\" with:";
+                }
             }
-            else
+            catch
             {
-                label_title.Content = "Share  Favorite \"" + favoriteTitle + "\" with:";
+
             }
         }
         public void setiniPath(string path)
         {
             iniPath = path;
-
-            int i0 = iniPath.IndexOf(@"\temp");
-            if (i0 < 0)
+            try
             {
-                iniPath = iniPath.Replace(@"\sharefavorite.ini", "");
-                if (!Directory.Exists(iniPath + @"\temp"))
+                int i0 = iniPath.IndexOf(@"\temp");
+                if (i0 < 0)
                 {
-                    string _p = iniPath + @"\temp";
-                    Directory.CreateDirectory(_p);
-                    iniPath = iniPath + @"\temp\sharefavorite.ini";
+                    iniPath = iniPath.Replace(@"\sharefavorite.ini", "");
+                    if (!Directory.Exists(iniPath + @"\temp"))
+                    {
+                        string _p = iniPath + @"\temp";
+                        Directory.CreateDirectory(_p);
+                        iniPath = iniPath + @"\temp\sharefavorite.ini";
+                    }
+                    else
+                    {
+                        iniPath = iniPath + @"\temp\sharefavorite.ini";
+                    }
                 }
-                else
+                if (File.Exists(iniPath) == false)
                 {
-                    iniPath = iniPath + @"\temp\sharefavorite.ini";
+                    using (FileStream FS = File.Create(iniPath))
+                    {
+                        Byte[] info = new UTF8Encoding(true).GetBytes("[Setup]\r\n refreshKey=");
+                        FS.Write(info, 0, info.Length);
+                        FS.Close();
+                    }
                 }
             }
-            if (File.Exists(iniPath) == false)
+            catch
             {
-                using (FileStream FS = File.Create(iniPath))
-                {
-                    Byte[] info = new UTF8Encoding(true).GetBytes("[Setup]\r\n refreshKey=");
-                    FS.Write(info, 0, info.Length);
-                    FS.Close();
-                }
             }
         }
         private bool checkTempExist()
