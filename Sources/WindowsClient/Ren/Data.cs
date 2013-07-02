@@ -14,17 +14,12 @@ namespace Waveface.Client
 		public string taken_time { get; set; }
 		public int width { get; set; }
 		public int height { get; set; }
-		public int size { get; set; }
+		public long size { get; set; }
 		public int type { get; set; }
-		public string dev_id { get; set; }
-		public string dev_name { get; set; }
-		public int dev_type { get; set; }
-		public int seq { get; set; }
 	}
 
 	public class RtData
 	{
-		public int remaining_count { get; set; }
 		public List<FileChange> file_changes { get; set; }
 
 		public RtData()

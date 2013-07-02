@@ -124,7 +124,22 @@
                      x:Name="lbEvent" 
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                      ItemContainerStyle="{StaticResource SimpleListBoxItem}" 
-                     Loaded="lbEvent_Loaded">
+                     SelectionMode="Multiple"
+                     Loaded="lbEvent_Loaded"
+                     PreviewMouseRightButtonUp="ListBox_PreviewMouseRightButtonUp"
+                     PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown">
+                >
+                <ListBox.ContextMenu>
+                    <ContextMenu x:Name="contextMenu">
+                        <MenuItem x:Name="miSelectAll" Header="Select All Items" Click="miSelectAll_Click"/>
+                        <MenuItem x:Name="miDeselectAll" Header="Deselect All Items" Click="miDeselectAll_Click" />
+                        <Separator />
+                        <MenuItem Header="Move to Folder"/>
+                        <MenuItem x:Name="miSelectAllInThisEvent" Header="Select All Items in this event" Click="miSelectAllInThisEvent_Click"/>
+                        <MenuItem x:Name="miDeselectAllInThisEvent" Header="Deselect All Items in this event" Click="miDeselectAllInThisEvent_Click" />
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
@@ -138,12 +153,12 @@
                                     Visibility="{Binding Path=IsPhoto, Converter={StaticResource BoolToHiddenConverter}}"/>
 
                                     <Image Source="{Binding Path=BitmapImage}" Width="48" Margin="3" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                    Height="36" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" />                                    
-                                    
-                                    <!--Image Source="/PendingUI;component/Images/checkmark.png" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=IsSelected}"
-                                        Stretch="Uniform" Width="20" Height="20" Margin="-8"  HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                    Height="36" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" />
 
-                                    <Rectangle Fill="#44000000" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/-->
+                                    <Image Source="pack://application:,,,/Ren/Images/checkmark.png" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=IsSelected}"
+                                        Stretch="Uniform" Width="40" Height="40" Margin="-8"  HorizontalAlignment="Right" VerticalAlignment="Top"/>
+
+                                    <Rectangle Fill="#44000000" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/>
                                 </Grid>
                             </Border>
                         </StackPanel>

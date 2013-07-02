@@ -1,9 +1,12 @@
 ﻿#region
 
-using Newtonsoft.Json;
+using System.IO;
+using InfiniteStorage.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Win32;
+using Waveface.Model;
 
 #endregion
 
@@ -17,21 +20,47 @@ namespace Waveface.Client
         public DateTime EndDate { get; set; }
         public Dictionary<string, DateTime> DateTimeCache { get; set; }
 
-        public bool Init(string json)
+        public bool Init(List<FileAsset> files, List<PendingFile> pendingFiles, IService device)
         {
-            JsonSerializerSettings _settings = new JsonSerializerSettings
-                                                   {
-                                                       MissingMemberHandling = MissingMemberHandling.Ignore
-                                                   };
+            RtData = new RtData();
 
-            try
-            {
-                RtData = JsonConvert.DeserializeObject<RtData>(json, _settings);
-            }
-            catch
-            {
-                return false;
-            }
+            string _ThumbsPath = (string) Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", "");
+            _ThumbsPath= Path.Combine(_ThumbsPath, ".thumbs");
+
+            List<FileChange> _pFCs = pendingFiles.Select(x => new FileChange
+                                                                  {
+                                                                      id = x.file_id.ToString(),
+                                                                      file_name = x.file_name,
+                                                                      tiny_path =
+                                                                      (x.type == (int)FileAssetType.image)
+                                                                        ? Path.Combine(_ThumbsPath, x.file_id + ".tiny.thumb")
+                                                                        : Path.Combine(_ThumbsPath, x.file_id + ".medium.thumb"),
+                                                                      taken_time = x.event_time.ToString("yyyy-MM-dd HH:mm:ss"),
+                                                                      width = x.width,
+                                                                      height = x.height,
+                                                                      size = x.file_size,
+                                                                      type = x.type,
+                                                                  }).ToList();
+
+
+            List<FileChange> _fCs = files.Select(x => new FileChange
+                                                                  {
+                                                                      id = x.file_id.ToString(),
+                                                                      file_name = x.file_name,
+                                                                      tiny_path =
+                                                                      (x.type == (int)FileAssetType.image)
+                                                                        ? Path.Combine(_ThumbsPath, x.file_id + ".tiny.thumb")
+                                                                        : Path.Combine(_ThumbsPath, x.file_id + ".medium.thumb"),
+                                                                      taken_time = x.event_time.ToString("yyyy-MM-dd HH:mm:ss"),
+                                                                      width = x.width,
+                                                                      height = x.height,
+                                                                      size = x.file_size,
+                                                                      type = x.type,
+                                                                  }).ToList();
+
+
+            RtData.file_changes = _fCs;
+            RtData.file_changes.AddRange(_pFCs);
 
             SortRowDate();
             ParserDate();
@@ -166,7 +195,7 @@ namespace Waveface.Client
             {
                 foreach (FileChange _fileChange in RtData.file_changes)
                 {
-                    if(_fc.id == _fileChange.id)
+                    if (_fc.id == _fileChange.id)
                     {
                         _rms.Add(_fileChange);
                         break;

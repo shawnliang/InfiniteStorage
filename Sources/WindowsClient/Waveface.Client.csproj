@@ -44,6 +44,10 @@
     <ApplicationIcon>Resource\FAV_512.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\EntityFramework.5.0.0\net40\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\log4net-1.2.11\log4net.dll</HintPath>
@@ -413,6 +417,10 @@
     <ProjectReference Include="..\InfiniteStorage.Data\InfiniteStorage.Data.csproj">
       <Project>{9c9bf6a4-a4c0-4c80-9608-c2f7d7aaaf72}</Project>
       <Name>InfiniteStorage.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfiniteStorage.DB\InfiniteStorage.DB.csproj">
+      <Project>{793d45b0-147c-4304-8578-7ff2792102c8}</Project>
+      <Name>InfiniteStorage.DB</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharePhoto\sharePhoto\sharePhoto.csproj">
       <Project>{89AA1D98-C9BC-47F6-BD9D-AC4BFE5AF411}</Project>
