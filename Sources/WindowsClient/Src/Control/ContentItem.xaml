@@ -16,15 +16,17 @@
                 <DiscreteObjectKeyFrame KeyTime="0"
                                         Value="{x:Static Visibility.Visible}" />
             </ObjectAnimationUsingKeyFrames>
-						<ObjectAnimationUsingKeyFrames Storyboard.TargetName="photoInfo"
-				Storyboard.TargetProperty="(UIElement.Visibility)">
-				<DiscreteObjectKeyFrame KeyTime="0"
-					Value="{x:Static Visibility.Visible}" />
-			</ObjectAnimationUsingKeyFrames>
-						<StringAnimationUsingKeyFrames Storyboard.TargetProperty="(l:ContentItemInfo.FileName)" Storyboard.TargetName="photoInfo">
-							<DiscreteStringKeyFrame KeyTime="0" Value="{Binding Name,
-                                      IsAsync=True}"/>
-						</StringAnimationUsingKeyFrames>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="photoInfo"
+                                           Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame KeyTime="0"
+                                        Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+            <StringAnimationUsingKeyFrames Storyboard.TargetName="photoInfo"
+                                           Storyboard.TargetProperty="(l:ContentItemInfo.FileName)">
+                <DiscreteStringKeyFrame KeyTime="0"
+                                        Value="{Binding Name,
+                                                        IsAsync=True}" />
+            </StringAnimationUsingKeyFrames>
         </Storyboard>
 
         <Style x:Key="VideoIconStyle"
@@ -35,7 +37,7 @@
                                                IsAsync=True}"
                              Value="Video">
                     <Setter Property="Visibility" Value="Visible" />
-					<Setter Property="Source" Value="{StaticResource VideoContentPlaceHolder}" />
+                    <Setter Property="Source" Value="{StaticResource VideoContentPlaceHolder}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -71,7 +73,10 @@
                 </TransformGroup>
             </Image.RenderTransform>
         </Image>
-        <l:ContentItemInfo x:Name="photoInfo" Height="37" VerticalAlignment="Bottom" Visibility="Collapsed"/>
+        <l:ContentItemInfo x:Name="photoInfo"
+                           Height="37"
+                           VerticalAlignment="Bottom"
+                           Visibility="Collapsed" />
         <Image x:Name="imgVideoIcon"
                Width="48"
                Height="35"
@@ -87,9 +92,10 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Tagged="{Binding Liked,
-                                         Mode=TwoWay, 
-										 IsAsync=True}"
-                        Visibility="{Binding Tagged, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=ltTag, IsAsync=True}" />
+                                         Mode=TwoWay}"
+                        Visibility="{Binding Tagged,
+                                             Converter={StaticResource BooleanToVisibilityConverter},
+                                             ElementName=ltTag}" />
 
         </Grid>
     </Grid>

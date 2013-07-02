@@ -136,6 +136,7 @@ namespace Waveface.Client
             ClientFramework.Client.Default.ClearTaggedContents();
             RefreshContentArea();
             RefreshSelectedFavorite();
+			TryUpdateRightSidePanelContentCount();
         }
 
         void tbxName_LostFocus(object sender, RoutedEventArgs e)
@@ -396,32 +397,37 @@ namespace Waveface.Client
 
 			lbxContentContainer.DataContext = group.Contents;
 
-            if (rspRightSidePanel.Visibility == Visibility.Visible)
-            {
-                var contentEntities = lbxContentContainer.DataContext as IEnumerable<IContentEntity>;
-
-                if (contentEntities != null)
-                {
-                    rspRightSidePanel.PhotoCount = contentEntities.Count(item =>
-                    {
-                        var content = item as IContent;
-                        if (content == null)
-                            return false;
-
-                        return content.Type == ContentType.Photo;
-                    });
-
-                    rspRightSidePanel.VideoCount = contentEntities.Count(item =>
-                    {
-                        var content = item as IContent;
-                        if (content == null)
-                            return false;
-
-                        return content.Type == ContentType.Video;
-                    });
-                }
-            }
+			TryUpdateRightSidePanelContentCount();
         }
+
+		private void TryUpdateRightSidePanelContentCount()
+		{
+			if (rspRightSidePanel.Visibility == Visibility.Visible)
+			{
+				var contentEntities = lbxContentContainer.DataContext as IEnumerable<IContentEntity>;
+
+				if (contentEntities != null)
+				{
+					rspRightSidePanel.PhotoCount = contentEntities.Count(item =>
+					{
+						var content = item as IContent;
+						if (content == null)
+							return false;
+
+						return content.Type == ContentType.Photo;
+					});
+
+					rspRightSidePanel.VideoCount = contentEntities.Count(item =>
+					{
+						var content = item as IContent;
+						if (content == null)
+							return false;
+
+						return content.Type == ContentType.Video;
+					});
+				}
+			}
+		}
 
         private void TryDisplayFavoriteTutorial()
         {
