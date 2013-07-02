@@ -56,7 +56,7 @@ public class DownloadLogic {
 				+ pairedServer.restPort;
 		String getFileURL = restfulAPIURL + Constant.URL_GET_FILE;
 
-		if (label.files.length > 0) {
+		if (label.on_air.equals("true") && label.files.length > 0 ) {
 
 			for (String f : label.files) {
 				files += f + ",";

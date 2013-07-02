@@ -2,7 +2,7 @@ package com.waveface.favoriteplayer.util;
 
 
 public class Log {
-	static final boolean LOG = false;
+	static final boolean LOG = true;
 
 	public static void i(String tag, String string) {
 		if (LOG)
