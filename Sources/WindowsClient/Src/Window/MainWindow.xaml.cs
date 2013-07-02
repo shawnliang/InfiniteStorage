@@ -113,7 +113,7 @@ namespace Waveface.Client
 
 		private void RefreshContentArea()
 		{
-			var group = lblContentLocation.DataContext as IContentGroup;
+			var group = GetCurrentContentGroup();
 			if (group == null)
 				return;
 
@@ -155,9 +155,20 @@ namespace Waveface.Client
 			lbxFavorites.SelectedIndex = dialog.SelectedFavoriteIndex + 1;
 			RefreshSelectedFavorite();
 		}
+
+		private IContentGroup GetCurrentContentGroup()
+		{
+			return lblContentLocation.DataContext as IContentGroup;
+		}
+
+		private IEnumerable<IContentEntity> GetSelectedContents()
+		{
+			var group = GetCurrentContentGroup();
+			return lbxContentContainer.SelectedItems.OfType<IContentEntity>().ToArray();
+		}
 		#endregion
 
-		private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.lbxDeviceContainer.DataContext = Waveface.ClientFramework.Client.Default.Services;
 
@@ -263,6 +274,7 @@ namespace Waveface.Client
             ClientFramework.Client.Default.ClearTaggedContents();
             RefreshContentArea();
             RefreshSelectedFavorite();
+			TryUpdateRightSidePanelContentCount();
         }
 
         void tbxName_LostFocus(object sender, RoutedEventArgs e)
@@ -427,7 +439,7 @@ namespace Waveface.Client
 			SetContentTypeCount(group);
         }
 
-
+				
 
 
         private void lbxContentContainer_KeyDown(object sender, KeyEventArgs e)
@@ -486,7 +498,7 @@ namespace Waveface.Client
 
 			SetContentTypeCount(group);
 
-
+          
 
 			lbxContentContainer.ContextMenu = this.Resources["cm"] as ContextMenu;
 			lbxContentContainer.ContextMenu.IsOpen = false;
@@ -507,6 +519,11 @@ namespace Waveface.Client
 
 			lbxContentContainer.DataContext = group.Contents;
 
+			TryUpdateRightSidePanelContentCount();
+        }
+
+		private void TryUpdateRightSidePanelContentCount()
+		{
             if (rspRightSidePanel.Visibility == Visibility.Visible)
             {
                 var contentEntities = lbxContentContainer.DataContext as IEnumerable<IContentEntity>;
@@ -534,7 +551,7 @@ namespace Waveface.Client
             }
         }
 
-     
+
 
 
 
@@ -543,7 +560,7 @@ namespace Waveface.Client
         private void rspRightSidePanel_SaveToFavorite(object sender, System.EventArgs e)
         {
 			SaveToFavorite(lbxContentContainer.Items.OfType<IContentEntity>());
-        }
+            }
 
 
 
@@ -568,9 +585,9 @@ namespace Waveface.Client
         private void rspRightSidePanel_AddToFavorite(object sender, System.EventArgs e)
         {
 			AddToFavorite(lbxContentContainer.Items.OfType<IContentEntity>());
-        }
+            }
 
-	
+
 
 
 
@@ -581,7 +598,7 @@ namespace Waveface.Client
 
             var iniFile = System.IO.Path.Combine(path, @"sharefavorite.ini");
 
-			var group = (lblContentLocation.DataContext as IContentGroup);
+			var group = GetCurrentContentGroup();
 			_w.setTitle(group.Name);
             _w.setiniPath(iniFile);
 
@@ -597,7 +614,7 @@ namespace Waveface.Client
 
         private void rspRightSidePane2_DeleteButtonClick(object sender, System.EventArgs e)
         {
-            var group = (lblContentLocation.DataContext as IContentGroup);
+			var group = GetCurrentContentGroup();
             ClientFramework.Client.Default.RemoveFavorite(group.ID);
 
             lbxFavorites.SelectedIndex = 0;
@@ -605,8 +622,7 @@ namespace Waveface.Client
 
 		private void StarMenuItem_Click(object sender, RoutedEventArgs e)
         {
-			var group = (lblContentLocation.DataContext as IContentGroup);
-			var selectedContents = lbxContentContainer.SelectedItems.OfType<IContent>();
+			var selectedContents = GetSelectedContents().OfType<IContent>();
 
 			ClientFramework.Client.Default.Tag(selectedContents);
 
@@ -616,13 +632,15 @@ namespace Waveface.Client
 
 		private void CreateFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
         {
-			var selectedContents = lbxContentContainer.SelectedItems.OfType<IContentEntity>();
+			var selectedContents = GetSelectedContents();
+
 			SaveToFavorite(selectedContents);
         }
 
 		private void AddToFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
         {
-			var selectedContents = lbxContentContainer.SelectedItems.OfType<IContentEntity>();
+			var selectedContents = GetSelectedContents();
+
 			AddToFavorite(selectedContents);
         }
 
@@ -633,14 +651,14 @@ namespace Waveface.Client
 
 		private void UnTagMenuItem_Click(object sender, RoutedEventArgs e)
 		{
-			var group = (lblContentLocation.DataContext as IContentGroup);
-			var selectedContents = lbxContentContainer.SelectedItems.OfType<IContentEntity>();
+			var group = GetCurrentContentGroup();
+			var selectedContents = GetSelectedContents();
 
 			foreach (var content in selectedContents)
-				ClientFramework.Client.Default.UnTag(group.ID, content.ID);
+            ClientFramework.Client.Default.UnTag(group.ID, content.ID);
 
-			RefreshContentArea();
-		}
+            RefreshContentArea();
+        }
 
         private void lblContentLocation_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
         {
@@ -650,7 +668,7 @@ namespace Waveface.Client
                 return;
             }
 
-            btnBack.Visibility = (lblContentLocation.DataContext as IContentGroup).Parent == null ?
+			btnBack.Visibility = GetCurrentContentGroup().Parent == null ?
             System.Windows.Visibility.Collapsed :
             System.Windows.Visibility.Visible;
         }
