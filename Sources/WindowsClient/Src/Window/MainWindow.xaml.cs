@@ -30,7 +30,134 @@ namespace Waveface.Client
             AppDomain.CurrentDomain.UnhandledException += NBug.Handler.UnhandledException;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+		#region Private Method 
+		private void RefreshStarFavorite()
+		{
+			RefreshFavorite(lbxFavorites.Items.OfType<IContentGroup>().FirstOrDefault());
+		}
+
+		private void TryDisplayUnsortedTutorial()
+		{
+			if (!Properties.Settings.Default.IsFirstSelectUnsorted)
+			{
+				var result = TakeTourDialog.ShowWithDynamicResource("TakeTourMsgOranize", this);
+
+				if (result.HasValue && result.Value)
+					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215521-step2-organizing-photos-and-videos-in-favorite-");
+
+
+				Properties.Settings.Default.IsFirstSelectUnsorted = true;
+				Properties.Settings.Default.Save();
+			}
+		}
+
+		private void TryDisplayFavoriteTutorial()
+		{
+			if (!Properties.Settings.Default.IsFirstSelectFavorite)
+			{
+				var result = TakeTourDialog.ShowWithDynamicResource("TakeTourMsgShare", this);
+				if (result.HasValue && result.Value)
+					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215523-step4-share-favorites-with-your-favorite-people");
+
+				Properties.Settings.Default.IsFirstSelectFavorite = true;
+				Properties.Settings.Default.Save();
+			}
+		}
+
+		private void TryDisplayStarredTutorial()
+		{
+			if (!Properties.Settings.Default.IsFirstSelectStarred)
+			{
+				var result = TakeTourDialog.ShowWithDynamicResource("TakeTourMSgHomeShare", this);
+				if (result.HasValue && result.Value)
+					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215522-step3-view-favorite-memories-on-tablets-and-tvs-");
+
+				Properties.Settings.Default.IsFirstSelectStarred = true;
+				Properties.Settings.Default.Save();
+			}
+		}
+
+
+		private void SaveToFavorite(IEnumerable<IContentEntity> contents)
+		{
+			if (!contents.Any())
+			{
+				string text = (string)Application.Current.FindResource("WithoutContentMessageText");
+
+				MessageBox.Show(text);
+				return;
+			}
+
+			var dialog = new CreateFavoriteDialog();
+			dialog.Owner = this;
+			dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+
+			if (dialog.ShowDialog() != true)
+				return;
+
+			ClientFramework.Client.Default.SaveToFavorite(contents, dialog.FavoriteName);
+			lbxFavorites.SelectedIndex = lbxFavorites.Items.Count - 1;
+		}
+
+		private void RefreshFavorite(IContentGroup favorite)
+		{
+			if (favorite == null)
+				return;
+			favorite.Refresh();
+		}
+
+		private void RefreshSelectedFavorite()
+		{
+			RefreshFavorite(lbxFavorites.SelectedItem as IContentGroup);
+		}
+
+		private void RefreshContentArea()
+		{
+			var group = lblContentLocation.DataContext as IContentGroup;
+			if (group == null)
+				return;
+
+			group.Refresh();
+			SetContentTypeCount(group);
+		}
+
+		private void AddToFavorite(IEnumerable<IContentEntity> contents)
+		{
+			if (!contents.Any())
+			{
+				string text = (string)Application.Current.FindResource("WithoutContentMessageText");
+
+				MessageBox.Show(text);
+				return;
+			}
+
+			var favorites = Waveface.ClientFramework.Client.Default.Favorites.Skip(1);
+
+			if (!favorites.Any())
+			{
+				string text = (string)Application.Current.FindResource("NoExistingFavoriteMessageText");
+
+				MessageBox.Show(text);
+				return;
+			}
+
+			var dialog = new AddToFavoriteDialog();
+			dialog.Owner = this;
+			dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+
+			dialog.FavoriteItemSource = favorites;
+
+			if (dialog.ShowDialog() != true)
+				return;
+
+			var selectedFavorite = (dialog.SelectedFavorite as IContentGroup);
+			ClientFramework.Client.Default.AddToFavorite(contents, selectedFavorite.ID);
+			lbxFavorites.SelectedIndex = dialog.SelectedFavoriteIndex + 1;
+			RefreshSelectedFavorite();
+		}
+		#endregion
+
+		private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.lbxDeviceContainer.DataContext = Waveface.ClientFramework.Client.Default.Services;
 
@@ -283,7 +410,7 @@ namespace Waveface.Client
                 unSortedFilesUC.Visibility = Visibility.Collapsed;
             }
 
-            lbxContentContainer.ContextMenu.Visibility = System.Windows.Visibility.Collapsed;
+			lbxContentContainer.ContextMenu = this.Resources["SourceContentContextMenu"] as ContextMenu;
 
             Grid.SetColumnSpan(gdContentArea, 2);
 
@@ -300,20 +427,7 @@ namespace Waveface.Client
 			SetContentTypeCount(group);
         }
 
-        private void TryDisplayUnsortedTutorial()
-        {
-            if (!Properties.Settings.Default.IsFirstSelectUnsorted)
-            {
-				var result = TakeTourDialog.ShowWithDynamicResource("TakeTourMsgOranize", this);
-				
-				if (result.HasValue && result.Value)
-					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215521-step2-organizing-photos-and-videos-in-favorite-");
 
-
-                Properties.Settings.Default.IsFirstSelectUnsorted = true;
-                Properties.Settings.Default.Save();
-            }
-        }
 
 
         private void lbxContentContainer_KeyDown(object sender, KeyEventArgs e)
@@ -335,13 +449,10 @@ namespace Waveface.Client
         {
             ClientFramework.Client.Default.Tag(lbxContentContainer.Items.OfType<IContent>());
             RefreshContentArea();
-            RefreshStarted();
+            RefreshStarFavorite();
         }
 
-        private void RefreshStarted()
-        {
-            RefreshFavorite(lbxFavorites.Items.OfType<IContentGroup>().FirstOrDefault());
-        }
+
 
         private void lbxFavorites_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
@@ -375,11 +486,11 @@ namespace Waveface.Client
 
 			SetContentTypeCount(group);
 
-          
 
-            var contextMenu = lbxContentContainer.ContextMenu;
-            contextMenu.IsOpen = false;
-            contextMenu.Visibility = Visibility.Visible;
+
+			lbxContentContainer.ContextMenu = this.Resources["cm"] as ContextMenu;
+			lbxContentContainer.ContextMenu.IsOpen = false;
+			lbxContentContainer.ContextMenu.Visibility = Visibility.Visible;
 
             gdRightSide.Visibility = Visibility.Visible;
             Grid.SetColumnSpan(gdContentArea, 1);
@@ -423,54 +534,19 @@ namespace Waveface.Client
             }
         }
 
-        private void TryDisplayFavoriteTutorial()
-        {
-            if (!Properties.Settings.Default.IsFirstSelectFavorite)
-            {
-				var result = TakeTourDialog.ShowWithDynamicResource("TakeTourMsgShare", this);
-				if (result.HasValue && result.Value)
-					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215523-step4-share-favorites-with-your-favorite-people");
+     
 
-                Properties.Settings.Default.IsFirstSelectFavorite = true;
-                Properties.Settings.Default.Save();
-            }
-        }
 
-        private void TryDisplayStarredTutorial()
-        {
-            if (!Properties.Settings.Default.IsFirstSelectStarred)
-            {
-				var result = TakeTourDialog.ShowWithDynamicResource("TakeTourMSgHomeShare", this);
-				if (result.HasValue && result.Value)
-					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215522-step3-view-favorite-memories-on-tablets-and-tvs-");
-
-                Properties.Settings.Default.IsFirstSelectStarred = true;
-                Properties.Settings.Default.Save();
-            }
-        }
 
 
 
         private void rspRightSidePanel_SaveToFavorite(object sender, System.EventArgs e)
         {
-            if (!lbxContentContainer.HasItems)
-            {
-				string text = (string)Application.Current.FindResource("WithoutContentMessageText");
-
-                MessageBox.Show(text);
-                return;
-            }
-
-            var dialog = new CreateFavoriteDialog();
-            dialog.Owner = this;
-            dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
-
-            if (dialog.ShowDialog() != true)
-                return;
-
-            ClientFramework.Client.Default.SaveToFavorite(dialog.FavoriteName);
-            lbxFavorites.SelectedIndex = lbxFavorites.Items.Count - 1;
+			SaveToFavorite(lbxContentContainer.Items.OfType<IContentEntity>());
         }
+
+
+
 
         private void rspRightSidePane2_OnAirClick(object sender, EventArgs e)
         {
@@ -491,50 +567,12 @@ namespace Waveface.Client
 
         private void rspRightSidePanel_AddToFavorite(object sender, System.EventArgs e)
         {
-            if (!lbxContentContainer.HasItems)
-            {
-				string text = (string)Application.Current.FindResource("WithoutContentMessageText");
-
-				MessageBox.Show(text);
-                return;
-            }
-
-            var favorites = Waveface.ClientFramework.Client.Default.Favorites.Skip(1);
-
-            if (!favorites.Any())
-            {
-				string text = (string)Application.Current.FindResource("NoExistingFavoriteMessageText");
-
-                MessageBox.Show(text);
-                return;
-            }
-
-            var dialog = new AddToFavoriteDialog();
-            dialog.Owner = this;
-            dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
-
-            dialog.FavoriteItemSource = favorites;
-
-            if (dialog.ShowDialog() != true)
-                return;
-
-            var selectedFavorite = (dialog.SelectedFavorite as IContentGroup);
-            ClientFramework.Client.Default.AddToFavorite(selectedFavorite.ID);
-            lbxFavorites.SelectedIndex = dialog.SelectedFavoriteIndex + 1;
-            RefreshSelectedFavorite();
+			AddToFavorite(lbxContentContainer.Items.OfType<IContentEntity>());
         }
 
-        private void RefreshFavorite(IContentGroup favorite)
-        {
-            if (favorite == null)
-                return;
-            favorite.Refresh();
-        }
+	
 
-        private void RefreshSelectedFavorite()
-        {
-            RefreshFavorite(lbxFavorites.SelectedItem as IContentGroup);
-        }
+
 
         private void rspRightSidePane2_CloudSharingClick(object sender, System.EventArgs e)
         {
@@ -555,15 +593,7 @@ namespace Waveface.Client
             _w.ShowDialog();
         }
 
-        private void RefreshContentArea()
-        {
-            var group = lblContentLocation.DataContext as IContentGroup;
-            if (group == null)
-                return;
 
-            group.Refresh();
-            SetContentTypeCount(group);
-        }
 
         private void rspRightSidePane2_DeleteButtonClick(object sender, System.EventArgs e)
         {
@@ -573,13 +603,44 @@ namespace Waveface.Client
             lbxFavorites.SelectedIndex = 0;
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+		private void StarMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var group = (lblContentLocation.DataContext as IContentGroup);
-            var content = lbxContentContainer.SelectedItem as IContentEntity;
-            ClientFramework.Client.Default.UnTag(group.ID, content.ID);
-            RefreshContentArea();
+			var group = (lblContentLocation.DataContext as IContentGroup);
+			var selectedContents = lbxContentContainer.SelectedItems.OfType<IContent>();
+
+			ClientFramework.Client.Default.Tag(selectedContents);
+
+			RefreshContentArea();
+			RefreshStarFavorite();
         }
+
+		private void CreateFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+			var selectedContents = lbxContentContainer.SelectedItems.OfType<IContentEntity>();
+			SaveToFavorite(selectedContents);
+        }
+
+		private void AddToFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+			var selectedContents = lbxContentContainer.SelectedItems.OfType<IContentEntity>();
+			AddToFavorite(selectedContents);
+        }
+
+        private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+		private void UnTagMenuItem_Click(object sender, RoutedEventArgs e)
+		{
+			var group = (lblContentLocation.DataContext as IContentGroup);
+			var selectedContents = lbxContentContainer.SelectedItems.OfType<IContentEntity>();
+
+			foreach (var content in selectedContents)
+				ClientFramework.Client.Default.UnTag(group.ID, content.ID);
+
+			RefreshContentArea();
+		}
 
         private void lblContentLocation_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
         {

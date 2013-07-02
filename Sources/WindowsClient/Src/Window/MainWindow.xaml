@@ -39,6 +39,23 @@
         <SolidColorBrush x:Key="HorizontalNormalBorderBrush"
                          Color="#888" />
 
+        <ContextMenu x:Key="SourceContentContextMenu">
+            <MenuItem Header="Star"
+                      Click="StarMenuItem_Click"/>
+            <MenuItem Header="Create Favorite"
+                      Click="CreateFavoriteMenuItem_Click" />
+            <MenuItem Header="Add to Favorite"
+                      Click="AddToFavoriteMenuItem_Click" />
+            <Separator />
+            <MenuItem Click="DeleteMenuItem_Click"
+                      Header="Delete" />
+        </ContextMenu>
+
+        <ContextMenu x:Key="cm">
+            <MenuItem Click="UnTagMenuItem_Click"
+                      Header="Delete" />
+        </ContextMenu>
+
 
         <LinearGradientBrush x:Key="PressedBrush" StartPoint="0,0" EndPoint="0,1">
             <LinearGradientBrush.GradientStops>
@@ -276,7 +293,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="Selector.IsSelected" Value="True">
-                                <Setter Property="Background" Value="#445B6249" />
+                                <Setter Property="Background" Value="Blue" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -505,29 +522,12 @@
                          KeyDown="lbxContentContainer_KeyDown"
                          MouseDoubleClick="OnPhotoClick"
                          SelectedIndex="0"
+                         SelectionMode="Extended"
                          VirtualizingStackPanel.IsVirtualizing="True"
                          VirtualizingStackPanel.VirtualizationMode="Recycling">
-                    <ListBox.Resources>
-                        <Style BasedOn="{StaticResource {x:Type ListBoxItem}}"
-                               TargetType="{x:Type ListBoxItem}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsMouseOver,
-                                                               RelativeSource={RelativeSource Self}}"
-                                             Value="True">
-                                    <Setter Property="IsSelected" Value="True" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ListBox.Resources>
                     <ListBox.Style>
                         <StaticResource ResourceKey="PhotoListBoxStyle" />
                     </ListBox.Style>
-                    <ListBox.ContextMenu>
-                        <ContextMenu x:Name="cm">
-                            <MenuItem Click="MenuItem_Click"
-                                      Header="Delete" />
-                        </ContextMenu>
-                    </ListBox.ContextMenu>
                 </ListBox>
             </ScrollViewer>
             <local:AddSourceTip Grid.Row="0"

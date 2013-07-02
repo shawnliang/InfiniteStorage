@@ -135,26 +135,16 @@ namespace Waveface.ClientFramework
 			Tag(contents, StarredLabelId);
 		}
 
-
-		public void SaveToFavorite(string favoriteName)
+		public void SaveToFavorite(IEnumerable<IContentEntity> contents, string favoriteName)
 		{
 			var labelID = Guid.NewGuid().ToString();
 			StationAPI.AddLabel(labelID, favoriteName);
 
-			StationAPI.Tag(string.Join(",", (m_Favorites.First() as IContentGroup).Contents.Select(content => content.ID).ToArray()), labelID);
+			StationAPI.Tag(string.Join(",", contents.Select(content => content.ID).ToArray()), labelID);
 
-			//StationAPI.ClearLabel(m_LabelID);
-
-			//m_TaggedContents.Clear();
 			m_Favorites.Clear();
 			m_Favorites.AddRange(GetFavorites());
 		}
-
-		public void SaveToFavorite()
-		{
-			SaveToFavorite("Untitled Favorite");
-		}
-
 
 		public void UnTag(string contentID)
 		{
@@ -167,13 +157,10 @@ namespace Waveface.ClientFramework
 			(m_Favorites.First() as IContentGroup).Refresh();
 		}
 
-		public void AddToFavorite(string favoriteID)
+		public void AddToFavorite(IEnumerable<IContentEntity> contents, string favoriteID)
 		{
-			StationAPI.Tag(string.Join(",", (m_Favorites.First() as IContentGroup).Contents.Select(content => content.ID).ToArray()), favoriteID);
+			StationAPI.Tag(string.Join(",", contents.Select(content => content.ID).ToArray()), favoriteID);
 
-			//StationAPI.ClearLabel(m_LabelID);
-
-			//m_TaggedContents.Clear();
 			m_Favorites.Clear();
 			m_Favorites.AddRange(GetFavorites());
 		}
