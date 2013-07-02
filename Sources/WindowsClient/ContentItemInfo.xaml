@@ -1,0 +1,22 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="Waveface.Client.ContentItemInfo"
+	x:Name="UserControl"
+	d:DesignWidth="602" d:DesignHeight="371">
+
+	<Grid x:Name="LayoutRoot">
+			<Rectangle x:Name="rectangle"
+				Fill="#E5000000"
+				Opacity="0.65"
+				StrokeThickness="0" />
+			<TextBlock x:Name="DateTaken"
+				FontFamily="Segoe UI Light"
+				FontSize="13"
+				Opacity="0.6"
+				TextWrapping="Wrap" Foreground="#FFA8A8A8" VerticalAlignment="Center" Margin="5,0,0,0" />
+	</Grid>
+</UserControl>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Globalization;
 using System.Windows;
 using Microsoft.Win32;
@@ -13,7 +14,6 @@ namespace Waveface.Client
 	{
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
-
 			var cultureName = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "Culture", "");
 			if (!string.IsNullOrEmpty(cultureName))
 			{
@@ -25,11 +25,17 @@ namespace Waveface.Client
 
 				try
 				{
-					var rd = Application.LoadComponent(new Uri(@"StringTable." + cultureName + ".xaml ", UriKind.Relative)) as ResourceDictionary;
+					var resourceFile = @"StringTable." + cultureName + ".xaml";
+
+					var rd = Application.LoadComponent(new Uri(resourceFile, UriKind.Relative)) as ResourceDictionary;
 
 					if (rd != null)
 					{
-						this.Resources.MergedDictionaries.Clear();
+						var existsRD = this.Resources.MergedDictionaries.Where(item => item.Source.OriginalString.Equals(resourceFile, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+
+						if (existsRD != null)
+							this.Resources.MergedDictionaries.Remove(existsRD);
+						
 						this.Resources.MergedDictionaries.Add(rd);
 					}
 				}

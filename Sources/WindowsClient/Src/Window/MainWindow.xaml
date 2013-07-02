@@ -523,7 +523,7 @@
                         <StaticResource ResourceKey="PhotoListBoxStyle" />
                     </ListBox.Style>
                     <ListBox.ContextMenu>
-                        <ContextMenu Name="cm">
+                        <ContextMenu x:Name="cm">
                             <MenuItem Click="MenuItem_Click"
                                       Header="Delete" />
                         </ContextMenu>

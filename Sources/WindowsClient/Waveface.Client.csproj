@@ -106,6 +106,9 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="ContentItemInfo.xaml.cs">
+      <DependentUpon>ContentItemInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Control\AddSourceTip.xaml.cs">
       <DependentUpon>AddSourceTip.xaml</DependentUpon>
     </Compile>
@@ -224,6 +227,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Page Include="ContentItemInfo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Src\Control\AddSourceTip.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

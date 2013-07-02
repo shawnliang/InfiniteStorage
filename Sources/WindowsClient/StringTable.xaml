@@ -29,7 +29,13 @@
     <system:String x:Key="TakeTourDialogTitle">Take A Tour?</system:String>
     <system:String x:Key="TakeTourButtonText">Take a Tour</system:String>
     <system:String x:Key="LaterButtonText">Later</system:String>
-    <system:String x:Key="UnsortedNodeText">Unsorted</system:String>
     <system:String x:Key="WithoutContentMessageText">Without any content</system:String>
     <system:String x:Key="NoExistingFavoriteMessageText">No existing favorite</system:String>
+
+    <system:String x:Key="ShareWithTitle">Share  Favorite with:</system:String>
+    <system:String x:Key="SenderNameTitle">Your Name:</system:String>
+    <system:String x:Key="SendMessageTitle">Message:</system:String>
+    <system:String x:Key="ImportContactButtonText">Import Google Contact</system:String>
+    <system:String x:Key="SendButtonText">Send</system:String>
+    <system:String x:Key="CloseButtonText">Close</system:String>
 </ResourceDictionary>
