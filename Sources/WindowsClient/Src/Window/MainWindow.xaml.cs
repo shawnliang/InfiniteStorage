@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using Waveface.ClientFramework;
 using Waveface.Model;
@@ -78,6 +79,16 @@ namespace Waveface.Client
 		}
 
 
+		private void StarContent(IEnumerable<IContentEntity> contents)
+		{
+			var selectedContents = contents.OfType<IContent>();
+
+			ClientFramework.Client.Default.Tag(selectedContents);
+
+			RefreshContentArea();
+			RefreshStarFavorite();
+		}
+
 		public bool SaveToFavorite(IEnumerable<IContentEntity> contents)
 		{
 			if (!contents.Any())
@@ -108,9 +119,14 @@ namespace Waveface.Client
 			favorite.Refresh();
 		}
 
+		private IContentGroup GetSelectedFavoriteGroup()
+		{
+			return lbxFavorites.SelectedItem as IContentGroup;
+		}
+
 		private void RefreshSelectedFavorite()
 		{
-			RefreshFavorite(lbxFavorites.SelectedItem as IContentGroup);
+			RefreshFavorite(GetSelectedFavoriteGroup());
 		}
 
 		private void RefreshContentArea()
@@ -153,9 +169,47 @@ namespace Waveface.Client
 				return;
 
 			var selectedFavorite = (dialog.SelectedFavorite as IContentGroup);
-			ClientFramework.Client.Default.AddToFavorite(contents, selectedFavorite.ID);
-			lbxFavorites.SelectedIndex = dialog.SelectedFavoriteIndex + 1;
+			AddToFavorite(selectedFavorite.ID, contents);
+		}
+
+		private void AddToFavorite(string favoriteID, IEnumerable<IContentEntity> contents)
+		{
+			var favorites = Waveface.ClientFramework.Client.Default.Favorites.Skip(1);
+
+			if (!favorites.Any())
+			{
+				string text = (string)Application.Current.FindResource("NoExistingFavoriteMessageText");
+
+				MessageBox.Show(text);
+				return;
+			}
+
+			ClientFramework.Client.Default.AddToFavorite(contents, favoriteID);
+
+			SelectToFavorite(favoriteID);
 			RefreshSelectedFavorite();
+		}
+
+
+		private void SelectToStarFavorite()
+		{
+			SelectToFavorite("00000000-0000-0000-0000-000000000000");
+		}
+
+		private void SelectToFavorite(string favoriteID)
+		{
+			var favorites = Waveface.ClientFramework.Client.Default.Favorites;
+
+			var index = 0;
+			foreach (var favorite in favorites)
+			{
+				if (favorite.ID != favoriteID)
+				{
+					++index;
+					continue;
+				}
+				lbxFavorites.SelectedIndex = index;
+			}
 		}
 
 		private IContentGroup GetCurrentContentGroup()
@@ -296,7 +350,7 @@ namespace Waveface.Client
 
             try
             {
-                StationAPI.RenameLabel((lbxFavorites.SelectedItem as IContentGroup).ID, rspRightSidePane2.tbxName.Text);
+                StationAPI.RenameLabel(GetSelectedFavoriteGroup().ID, rspRightSidePane2.tbxName.Text);
             }
             catch (Exception)
             {
@@ -624,13 +678,11 @@ namespace Waveface.Client
 
 		private void StarMenuItem_Click(object sender, RoutedEventArgs e)
         {
-			var selectedContents = GetSelectedContents().OfType<IContent>();
+			var selectedContents = GetSelectedContents();
 
-			ClientFramework.Client.Default.Tag(selectedContents);
-
-			RefreshContentArea();
-			RefreshStarFavorite();
+			StarContent(selectedContents);
         }
+
 
 		private void CreateFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -688,6 +740,103 @@ namespace Waveface.Client
 			                                                     Owner = this
 			                                                 };
 		    _waitForPairingDialog.ShowDialog();
+		}
+
+		Point startPoint;
+		private void List_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			// Store the mouse position
+			startPoint = e.GetPosition(null);
+		}
+
+		private void List_MouseMove(object sender, MouseEventArgs e)
+		{
+			// Get the current mouse position
+			Point mousePos = e.GetPosition(null);
+			Vector diff = startPoint - mousePos;
+
+			if (e.LeftButton == MouseButtonState.Pressed &&
+				(Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+				Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
+			{
+				ListBox list = sender as ListBox;
+				ListBoxItem item =
+					FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
+
+				var contents = GetSelectedContents();
+
+				// Initialize the drag & drop operation
+				DataObject dragData = new DataObject(typeof(IEnumerable<IContentEntity>), contents);
+				DragDrop.DoDragDrop(item, dragData, DragDropEffects.Move);
+			}
+		}
+
+		// Helper to search up the VisualTree
+		private static T FindAnchestor<T>(DependencyObject current)
+			where T : DependencyObject
+		{
+			do
+			{
+				if (current is T)
+				{
+					return (T)current;
+				}
+				current = VisualTreeHelper.GetParent(current);
+			}
+			while (current != null);
+			return null;
+		}
+
+		private void Sources_DragEnter(object sender, DragEventArgs e)
+		{
+			if (!e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) ||
+				sender == e.Source)
+			{
+				e.Effects = DragDropEffects.None;
+			}
+		}
+
+
+
+		private void Sources_Drop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)))
+			{
+				var contents = e.Data.GetData(typeof(IEnumerable<IContentEntity>)) as IEnumerable<IContentEntity>;
+			}
+		}
+
+		private void Favorites_DragEnter(object sender, DragEventArgs e)
+		{
+			if (!e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) ||
+				sender == e.Source)
+			{
+				e.Effects = DragDropEffects.None;
+			}
+		}
+
+
+
+		private void Favorites_Drop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)))
+			{
+				var contents = e.Data.GetData(typeof(IEnumerable<IContentEntity>)) as IEnumerable<IContentEntity>;
+				ListBox list = sender as ListBox;
+				ListBoxItem item =
+					FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
+
+				var favoriteGroup = item.DataContext as IContentGroup;
+
+				if (favoriteGroup.ID.Equals("00000000-0000-0000-0000-000000000000", StringComparison.CurrentCultureIgnoreCase))
+				{
+					StarContent(contents);
+					SelectToStarFavorite();
+					return;
+				}
+
+				AddToFavorite(favoriteGroup.ID, contents);
+			}
 		}
     }
 }
