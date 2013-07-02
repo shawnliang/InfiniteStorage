@@ -16,7 +16,8 @@
 
     <ListBox.ItemTemplate>
         <DataTemplate>
-            <Grid x:Name="item" Height="23">
+            <Grid x:Name="item"
+                  Height="25">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
@@ -28,10 +29,10 @@
                            Width="18"
                            Height="18"
                            Margin="10, 2, 0, 0"
-						   VerticalAlignment="Center"
+                           VerticalAlignment="Center"
                            Source="{StaticResource UnSelectedFav}" />
                     <Label x:Name="sourceName"
-						   VerticalAlignment="Center"
+                           VerticalAlignment="Center"
                            VerticalContentAlignment="Center"
                            Content="{Binding Name}"
                            Foreground="#a8a8a8" />
@@ -67,9 +68,7 @@
                         <Condition Binding="{Binding ID}" Value="00000000-0000-0000-0000-000000000000" />
                         <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="False" />
                     </MultiDataTrigger.Conditions>
-                    <Setter TargetName="icon"
-                            Property="Source"
-                            Value="{StaticResource UnSelectedFavStar}" />
+                    <Setter TargetName="icon" Property="Source" Value="{StaticResource UnSelectedFavStar}" />
                 </MultiDataTrigger>
 
             </DataTemplate.Triggers>

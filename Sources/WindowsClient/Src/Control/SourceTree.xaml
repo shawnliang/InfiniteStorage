@@ -168,7 +168,7 @@
             <HierarchicalDataTemplate.ItemTemplate>
                 <DataTemplate>
                     <Grid x:Name="item"
-                          Height="23"
+                          Height="25"
                           Background="Transparent">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
