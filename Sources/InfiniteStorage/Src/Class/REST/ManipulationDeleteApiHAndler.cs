@@ -38,7 +38,7 @@ namespace InfiniteStorage.REST
 			deleteFiles(pendingDeleteFiles);
 		}
 
-		private void deleteFiles(List<FileToDelete> pendingDeleteFiles)
+		private void deleteFiles(List<AbstractFileToDelete> pendingDeleteFiles)
 		{
 			foreach (var file in pendingDeleteFiles)
 			{
@@ -101,7 +101,7 @@ namespace InfiniteStorage.REST
 			return deleted;
 		}
 
-		private List<FileToDelete> getFilesFromFolders(List<string> folders)
+		private List<AbstractFileToDelete> getFilesFromFolders(List<string> folders)
 		{
 			using (var db = new MyDbContext())
 			{
@@ -112,11 +112,11 @@ namespace InfiniteStorage.REST
 								file_id = f.file_id,
 								saved_path = f.saved_path
 							};
-				return files.ToList();
+				return files.ToList().Cast<AbstractFileToDelete>().ToList();
 			}
 		}
 
-		private void deleteLabelFiles(List<FileToDelete> pendingDeleteFiles)
+		private void deleteLabelFiles(List<AbstractFileToDelete> pendingDeleteFiles)
 		{
 			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
 			{
@@ -165,7 +165,7 @@ namespace InfiniteStorage.REST
 			}
 		}
 
-		private ICollection<Guid> queryAffectedLabels(List<FileToDelete> pendingDeleteFiles)
+		private ICollection<Guid> queryAffectedLabels(List<AbstractFileToDelete> pendingDeleteFiles)
 		{
 			var affectedLabels = new List<Guid>();
 
@@ -195,7 +195,7 @@ namespace InfiniteStorage.REST
 			return affectedLabels.Distinct().ToList();
 		}
 
-		private void markAsDeleted(List<FileToDelete> pendingDeleteFiles)
+		private void markAsDeleted(List<AbstractFileToDelete> pendingDeleteFiles)
 		{
 			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
 			{
@@ -220,31 +220,7 @@ namespace InfiniteStorage.REST
 			}
 		}
 
-		private List<FileToDelete> moveFilesToRecycleBin(List<FileToDelete> filesToDelete)
-		{
-			var pendingDeleteItems = new List<FileToDelete>();
-
-			foreach (var file in filesToDelete)
-			{
-				var file_path = Path.Combine(MyFileFolder.Photo, file.saved_path);
-
-				try
-				{
-					if (!File.Exists(file_path))
-						continue;
-
-					file.recycle_bin_path = moveToRecycleBin(file_path);
-					pendingDeleteItems.Add(file);
-				}
-				catch (Exception err)
-				{
-					log4net.LogManager.GetLogger(GetType()).Warn("Unable to move file: " + file_path, err);
-				}
-			}
-			return pendingDeleteItems;
-		}
-
-		private string moveToRecycleBin(string file_path)
+		private List<AbstractFileToDelete> moveFilesToRecycleBin(List<AbstractFileToDelete> filesToDelete)
 		{
 			var recycleBinPath = Path.Combine(MyFileFolder.Photo, ".recycleBin");
 			if (!Directory.Exists(recycleBinPath))
@@ -254,10 +230,31 @@ namespace InfiniteStorage.REST
 				dir.Attributes |= FileAttributes.Hidden;
 			}
 
-			var temp_path = Path.Combine(recycleBinPath, Guid.NewGuid().ToString());
-			File.Move(file_path, temp_path);
+			var pendingDeleteItems = new List<AbstractFileToDelete>();
 
-			return temp_path;
+			foreach (var file in filesToDelete)
+			{
+				try
+				{
+					if (File.Exists(file.saved_full_path))
+					{
+						var temp_path = Path.Combine(recycleBinPath, Guid.NewGuid().ToString());
+
+						file.Move(temp_path);
+						file.recycle_bin_path = temp_path;
+						pendingDeleteItems.Add(file);
+					}
+					else
+					{
+						pendingDeleteItems.Add(file);
+					}					
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn("Unable to move file: " + file.saved_full_path, err);
+				}
+			}
+			return pendingDeleteItems;
 		}
 
 		private string[] parseToList(string para)
@@ -269,9 +266,9 @@ namespace InfiniteStorage.REST
 		}
 
 
-		private List<FileToDelete> getFiles(List<Guid> file_ids)
+		private List<AbstractFileToDelete> getFiles(List<Guid> file_ids)
 		{
-			var ret = new List<FileToDelete>();
+			var ret = new List<AbstractFileToDelete>();
 
 			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
 			{
@@ -301,11 +298,18 @@ namespace InfiniteStorage.REST
 	}
 
 
-	internal class FileToDelete
+	internal abstract class AbstractFileToDelete
 	{
 		public Guid file_id { get; set; }
 		public string saved_path { get; set; }
 		public string recycle_bin_path { get; set; }
+
+		public abstract string saved_full_path { get; }
+
+		protected AbstractFileToDelete()
+		{
+
+		}
 
 		public string small_thumb_path
 		{
@@ -344,7 +348,8 @@ namespace InfiniteStorage.REST
 
 		public void DeleteRecycleBinFile()
 		{
-			delete(new FileInfo(recycle_bin_path));
+			if (!string.IsNullOrEmpty(recycle_bin_path))
+				delete(new FileInfo(recycle_bin_path));
 		}
 
 		private void delete(FileInfo file)
@@ -359,6 +364,22 @@ namespace InfiniteStorage.REST
 				log4net.LogManager.GetLogger(GetType()).Warn("Unable to delete file: " + file.FullName, err);
 			}
 		}
+
+		public void Move(string dest)
+		{
+			File.Move(saved_full_path, dest);
+		}
+	}
+
+
+	internal class FileToDelete : AbstractFileToDelete
+	{
+		public override string saved_full_path
+		{
+			get { return Path.Combine(MyFileFolder.Photo, saved_path); }
+		}
+
+		
 	}
 
 
