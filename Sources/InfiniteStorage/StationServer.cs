@@ -13,6 +13,7 @@ using InfiniteStorage.REST;
 using System.IO;
 using Microsoft.Win32;
 using InfiniteStorage.Share;
+using InfiniteStorage.Data;
 
 namespace InfiniteStorage
 {
@@ -113,6 +114,8 @@ namespace InfiniteStorage
 			m_thumbnailCreator = new ThumbnailCreator();
 
 			m_shareMonitor = new ShareLabelMonitor();
+
+			postServiceLibrary.postServiceClass.serverBaseUrl = ProgramConfig.FromApiBase("v3");
 		}
 
 		

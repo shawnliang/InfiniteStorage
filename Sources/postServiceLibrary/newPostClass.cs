@@ -145,7 +145,7 @@ namespace postServiceLibrary
 						   "&password=" + password;
 
 
-			string uri =postServiceClass.serverBaseUrl+"/pio_auth/login"; // "https://develop.waveface.com:443/v3/pio_auth/login";
+			string uri =postServiceClass.serverBaseUrl+"/pio_auth/login";
 
 			var post = new WebPostHelper();
 			post.doPost(uri, postData, "");

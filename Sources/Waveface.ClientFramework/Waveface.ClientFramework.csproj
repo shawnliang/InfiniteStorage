@@ -91,6 +91,10 @@
     <Folder Include="Src\Interface\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\InfiniteStorage.Data\InfiniteStorage.Data.csproj">
+      <Project>{9C9BF6A4-A4C0-4C80-9608-C2F7D7AAAF72}</Project>
+      <Name>InfiniteStorage.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Waveface.Model\Waveface.Model.csproj">
       <Project>{5fdf66ea-3a88-45ac-a032-a2771e3afcc7}</Project>
       <Name>Waveface.Model</Name>

@@ -69,6 +69,7 @@
     
     
     <?include Product.Uninstaller.wxi ?>
+    <?include server.wxi ?>
     <DirectoryRef Id="TARGETDIR">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLLOCATION" Name="$(var.AppCode)">
@@ -337,8 +338,8 @@
       <ComponentRef Id="Microsoft.Expression.Controls.dll"/>
       <ComponentRef Id='Waveface.ClientFramework.dll'/>
       <ComponentRef Id='Waveface.Model.dll'/>
-
       
+
       <ComponentRef Id='Waveface.Client.exe.config'/>
 
       <ComponentRef Id="Mono.Zeroconf.dll" />
@@ -371,6 +372,7 @@
       <ComponentRef Id="nginx.temps.dir.empty"/>
       <ComponentRef Id="Empty.png"/>
       <ComponentRef Id="CultureSetting"/>
+      <ComponentRef Id='ServerSetting'/>
       <ComponentRef Id="InfiniteStorage.resources.zhtw" />
       <ComponentRef Id="ffmpeg.exe"/>
       <ComponentRef Id="postServiceLibrary.dll"/>

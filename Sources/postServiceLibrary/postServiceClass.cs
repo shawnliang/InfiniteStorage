@@ -303,7 +303,7 @@ namespace postServiceLibrary
 
 		public static void sendFavoriteEmail(string sessionToken, string apikey, ICollection<string> recipients, string shareCode, string sender, string title, string msg)
 		{
-			var _url = "https://develop.waveface.com:443/v3" + "/pio_posts/send_favorite_email";
+			var _url = serverBaseUrl + "/pio_posts/send_favorite_email";
 
 
 			var postData = string.Format("apikey={0}&session_token={1}&shared_email_list={2}&shared_code={3}&sender_name={4}&title={5}&content={6}",

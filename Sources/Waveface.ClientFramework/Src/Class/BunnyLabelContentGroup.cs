@@ -6,6 +6,8 @@ using Waveface.Model;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
 using System.IO;
+using Microsoft.Win32;
+using InfiniteStorage.Data;
 
 namespace Waveface.ClientFramework
 {
@@ -17,7 +19,7 @@ namespace Waveface.ClientFramework
 		{
 			get {
 				if (!string.IsNullOrWhiteSpace(m_shareCode))
-					return "https://devweb.waveface.com/favorite/" + m_shareCode; // TODO: remove hard code;
+					return ProgramConfig.FromWebBase("/favorite/" + m_shareCode);
 				else
 					return string.Empty;
 			}

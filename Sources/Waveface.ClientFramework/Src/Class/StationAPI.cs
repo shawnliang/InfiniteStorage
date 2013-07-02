@@ -34,34 +34,27 @@ namespace Waveface.ClientFramework
 
 		public static string Post(string uri, NameValueCollection parameters)
 		{
-			try
+			var queryString = ToQueryString(parameters);
+			var data = Encoding.Default.GetBytes(queryString);
+			var request = WebRequest.Create(uri) as HttpWebRequest;
+
+			request.Method = "POST";
+			request.ContentType = "application/x-www-form-urlencoded";
+			request.ContentLength = data.Length;
+			request.Timeout = 10000;
+
+			using (var requestStream = request.GetRequestStream())
 			{
-				var queryString = ToQueryString(parameters);
-				var data = Encoding.Default.GetBytes(queryString);
-				var request = WebRequest.Create(uri) as HttpWebRequest;
-
-				request.Method = "POST";
-				request.ContentType = "application/x-www-form-urlencoded";
-				request.ContentLength = data.Length;
-				request.Timeout = 1000;
-
-				using (var requestStream = request.GetRequestStream())
-				{
-					requestStream.Write(data, 0, data.Length);
-				}
-
-				var response = request.GetResponse();
-				// Get the stream containing content returned by the server.
-				var dataStream = response.GetResponseStream();
-				// Open the stream using a StreamReader for easy access.
-				using (var sr = new StreamReader(dataStream))
-				{
-					return sr.ReadToEnd();
-				}
+				requestStream.Write(data, 0, data.Length);
 			}
-			catch (Exception)
+
+			var response = request.GetResponse();
+			// Get the stream containing content returned by the server.
+			var dataStream = response.GetResponseStream();
+			// Open the stream using a StreamReader for easy access.
+			using (var sr = new StreamReader(dataStream))
 			{
-				return null;
+				return sr.ReadToEnd();
 			}
 		}
 		#endregion

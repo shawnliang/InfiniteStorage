@@ -23,9 +23,9 @@ namespace Waveface.Client
 			InitializeComponent();
 		}
 
-		public bool? ShowDialog(string msg)
+		public bool? ShowDialog(string resourceKey)
 		{
-			msgBox.Text = msg;
+			msgBox.SetResourceReference(TextBlock.TextProperty, resourceKey);
 			return ShowDialog();
 		}
 
@@ -41,11 +41,11 @@ namespace Waveface.Client
 			Close();
 		}
 
-		public static bool? Show(string msg, Window owner)
+		public static bool? ShowWithDynamicResource(string resourceKey, Window owner)
 		{
 			var dialog = new TakeTourDialog();
 			dialog.Owner = owner;
-			return dialog.ShowDialog(msg);
+			return dialog.ShowDialog(resourceKey);
 		}
 	}
 }
