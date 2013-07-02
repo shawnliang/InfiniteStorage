@@ -38,7 +38,7 @@ namespace InfiniteStorage.REST
 			deleteFiles(pendingDeleteFiles);
 		}
 
-		private void deleteFiles(List<AbstractFileToDelete> pendingDeleteFiles)
+		private void deleteFiles(List<AbstractFileToManipulate> pendingDeleteFiles)
 		{
 			foreach (var file in pendingDeleteFiles)
 			{
@@ -101,22 +101,22 @@ namespace InfiniteStorage.REST
 			return deleted;
 		}
 
-		private List<AbstractFileToDelete> getFilesFromFolders(List<string> folders)
+		private List<AbstractFileToManipulate> getFilesFromFolders(List<string> folders)
 		{
 			using (var db = new MyDbContext())
 			{
 				var files = from f in db.Object.Files
 							where folders.Contains(f.parent_folder)
-							select new FileToDelete
+							select new FileToManipulate
 							{
 								file_id = f.file_id,
 								saved_path = f.saved_path
 							};
-				return files.ToList().Cast<AbstractFileToDelete>().ToList();
+				return files.ToList().Cast<AbstractFileToManipulate>().ToList();
 			}
 		}
 
-		private void deleteLabelFiles(List<AbstractFileToDelete> pendingDeleteFiles)
+		private void deleteLabelFiles(List<AbstractFileToManipulate> pendingDeleteFiles)
 		{
 			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
 			{
@@ -165,7 +165,7 @@ namespace InfiniteStorage.REST
 			}
 		}
 
-		private ICollection<Guid> queryAffectedLabels(List<AbstractFileToDelete> pendingDeleteFiles)
+		private ICollection<Guid> queryAffectedLabels(List<AbstractFileToManipulate> pendingDeleteFiles)
 		{
 			var affectedLabels = new List<Guid>();
 
@@ -195,7 +195,7 @@ namespace InfiniteStorage.REST
 			return affectedLabels.Distinct().ToList();
 		}
 
-		private void markAsDeleted(List<AbstractFileToDelete> pendingDeleteFiles)
+		private void markAsDeleted(List<AbstractFileToManipulate> pendingDeleteFiles)
 		{
 			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
 			{
@@ -204,7 +204,7 @@ namespace InfiniteStorage.REST
 				using (var transaction = conn.BeginTransaction())
 				using (var cmd = conn.CreateCommand())
 				{
-					cmd.CommandText = "update Files set deleted = 1 where file_id = @file";
+					cmd.CommandText = "update Files set deleted = 1 where file_id = @file; update PendingFiles set deleted = 1 where file_id = @file";
 					cmd.Prepare();
 
 					foreach (var file in pendingDeleteFiles)
@@ -220,7 +220,7 @@ namespace InfiniteStorage.REST
 			}
 		}
 
-		private List<AbstractFileToDelete> moveFilesToRecycleBin(List<AbstractFileToDelete> filesToDelete)
+		private List<AbstractFileToManipulate> moveFilesToRecycleBin(List<AbstractFileToManipulate> filesToDelete)
 		{
 			var recycleBinPath = Path.Combine(MyFileFolder.Photo, ".recycleBin");
 			if (!Directory.Exists(recycleBinPath))
@@ -230,7 +230,7 @@ namespace InfiniteStorage.REST
 				dir.Attributes |= FileAttributes.Hidden;
 			}
 
-			var pendingDeleteItems = new List<AbstractFileToDelete>();
+			var pendingDeleteItems = new List<AbstractFileToManipulate>();
 
 			foreach (var file in filesToDelete)
 			{
@@ -266,16 +266,18 @@ namespace InfiniteStorage.REST
 		}
 
 
-		private List<AbstractFileToDelete> getFiles(List<Guid> file_ids)
+		private List<AbstractFileToManipulate> getFiles(List<Guid> file_ids)
 		{
-			var ret = new List<AbstractFileToDelete>();
+			var ret = new List<AbstractFileToManipulate>();
 
 			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
 			{
 				conn.Open();
 				using (var cmd = conn.CreateCommand())
 				{
-					cmd.CommandText = "select file_id, saved_path from files where file_id = @file";
+					cmd.CommandText = "select 0 as kind, saved_path from files where file_id = @file and deleted = 0 " +
+									  "union " +
+									  "select 1 as kind, saved_path from pendingfiles where file_id = @file and deleted = 0";
 					cmd.Prepare();
 
 					foreach (var file_id in file_ids)
@@ -286,7 +288,13 @@ namespace InfiniteStorage.REST
 						{
 							if (reader.Read())
 							{
-								ret.Add(new FileToDelete { file_id = (Guid)reader["file_id"], saved_path = reader["saved_path"].ToString() });
+								var saved_path = reader["saved_path"].ToString();
+								var kind = (long)reader["kind"];
+
+								if (kind == 0)
+									ret.Add(new FileToManipulate { file_id = file_id, saved_path = saved_path });
+								else
+									ret.Add(new PendingFileToManipulate { file_id = file_id, saved_path = saved_path });
 							}
 						}
 					}
@@ -298,7 +306,7 @@ namespace InfiniteStorage.REST
 	}
 
 
-	internal abstract class AbstractFileToDelete
+	internal abstract class AbstractFileToManipulate
 	{
 		public Guid file_id { get; set; }
 		public string saved_path { get; set; }
@@ -306,7 +314,7 @@ namespace InfiniteStorage.REST
 
 		public abstract string saved_full_path { get; }
 
-		protected AbstractFileToDelete()
+		protected AbstractFileToManipulate()
 		{
 
 		}
@@ -372,15 +380,20 @@ namespace InfiniteStorage.REST
 	}
 
 
-	internal class FileToDelete : AbstractFileToDelete
+	internal class FileToManipulate : AbstractFileToManipulate
 	{
 		public override string saved_full_path
 		{
 			get { return Path.Combine(MyFileFolder.Photo, saved_path); }
 		}
-
-		
 	}
 
+	internal class PendingFileToManipulate: AbstractFileToManipulate
+	{
+		public override string saved_full_path
+		{
+			get { return Path.Combine(MyFileFolder.Pending, saved_path); }
+		}
+	}
 
 }
