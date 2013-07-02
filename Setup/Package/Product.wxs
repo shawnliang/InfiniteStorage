@@ -269,8 +269,10 @@
           <Component Id="System.Reactive.PlatformServices.dll" Guid="*">
             <File Id="System.Reactive.PlatformServices.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Reactive.PlatformServices.dll" />
           </Component>
-          
 
+          <Component Id="System.Reactive.Windows.Threading.dll" Guid="*">
+            <File Id="System.Reactive.Windows.Threading.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\System.Reactive.Windows.Threading.dll" />
+          </Component>
 
           <Component Id="log4net.dll" Guid="*">
             <File Id="log4net.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\log4net.dll" />
@@ -381,6 +383,7 @@
       <ComponentRef Id="System.Reactive.Interfaces.dll" />
       <ComponentRef Id="System.Reactive.Linq.dll" />
       <ComponentRef Id="System.Reactive.PlatformServices.dll" />
+      <ComponentRef Id="System.Reactive.Windows.Threading.dll" />
       <ComponentRef Id="BonjourAgent.exe" />
       <ComponentRef Id="CommandLine.dll" />
       <ComponentRef Id="Microsoft.WindowsAPICodePack.dll" />
