@@ -17,597 +17,601 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Waveface.ClientFramework;
 using Waveface.Model;
+using Image = System.Drawing.Image;
 
 #endregion
 
 namespace Waveface.Client
 {
-    public partial class UnSortedFilesUC : UserControl
-    {
-        internal class MySliderTick
-        {
-            public string Name { get; set; }
-            public int Value { get; set; }
-        }
-
-        public static int BY_DAY = 24 * 60;
-        public static int BY_WEEK = 7 * 24 * 60;
-        public static int BY_MONTH = 30 * 24 * 60;
-
-        public static UnSortedFilesUC Current { get; set; }
-
-        private IService m_currentDevice;
-        private List<MySliderTick> m_sliderTicks = new List<MySliderTick>();
-        private List<string> m_defaultEventNameCache;
-        private ObservableCollection<EventUC> m_eventUCs;
-
-        public int VideosCount { get; set; }
-        public int PhotosCount { get; set; }
-        public RT Rt { get; set; }
-        public int GroupingEventInterval { get; set; }
-
-        private DispatcherTimer m_dispatcherTimer;
-        private bool m_humbDraging;
-        private int m_pendingFilesCount;
+	public partial class UnSortedFilesUC : UserControl
+	{
+		internal class MySliderTick
+		{
+			public string Name { get; set; }
+			public int Value { get; set; }
+		}
+
+		public static int BY_DAY = 24 * 60;
+		public static int BY_WEEK = 7 * 24 * 60;
+		public static int BY_MONTH = 30 * 24 * 60;
+
+		public static UnSortedFilesUC Current { get; set; }
+
+		private IService m_currentDevice;
+		private List<MySliderTick> m_sliderTicks = new List<MySliderTick>();
+		private List<string> m_defaultEventNameCache;
+		private ObservableCollection<EventUC> m_eventUCs;
+
+		public int VideosCount { get; set; }
+		public int PhotosCount { get; set; }
+		public RT Rt { get; set; }
+		public int GroupingEventInterval { get; set; }
+
+		private DispatcherTimer m_dispatcherTimer;
+		private bool m_humbDraging;
+		private int m_pendingFilesCount;
+		private MainWindow m_mainWindow;
 
-        public UnSortedFilesUC()
-        {
-            Current = this;
+		public UnSortedFilesUC()
+		{
+			Current = this;
 
-            InitializeComponent();
-
-            Cursor = Cursors.Wait;
-
-            InitSliderTicks();
-
-            InitTimer();
-        }
+			InitializeComponent();
 
-        private void InitTimer()
-        {
-            m_dispatcherTimer = new DispatcherTimer();
-            m_dispatcherTimer.Tick += dispatcherTimer_Tick;
-            m_dispatcherTimer.Interval = new TimeSpan(0, 0, 2);
-        }
-
-        private void InitSliderTicks()
-        {
-            m_sliderTicks.Add(new MySliderTick { Name = "30 Minutes", Value = 30 });
-            m_sliderTicks.Add(new MySliderTick { Name = "1 Hour", Value = 1 * 60 });
-            m_sliderTicks.Add(new MySliderTick { Name = "2 Hours", Value = 2 * 60 });
-            m_sliderTicks.Add(new MySliderTick { Name = "4 Hours", Value = 4 * 60 });
-            m_sliderTicks.Add(new MySliderTick { Name = "Day", Value = BY_DAY });
-            m_sliderTicks.Add(new MySliderTick { Name = "Week", Value = BY_WEEK });
-            m_sliderTicks.Add(new MySliderTick { Name = "Month", Value = BY_MONTH });
-
-            SetEventIntervalTypeText();
-        }
-
-        private void SetEventIntervalTypeText()
-        {
-            if (m_sliderTicks.Count > 0)
-            {
-                tbEventIntervalType.Text = m_sliderTicks[(int)sliderEvent.Value].Name;
-            }
-        }
+			Cursor = Cursors.Wait;
 
-        public bool Init(IService device)
-        {
-            m_dispatcherTimer.Stop();
-            btnRefresh.Visibility = Visibility.Collapsed;
+			InitSliderTicks();
+
+			InitTimer();
+		}
 
-            m_currentDevice = device;
+		private void InitTimer()
+		{
+			m_dispatcherTimer = new DispatcherTimer();
+			m_dispatcherTimer.Tick += dispatcherTimer_Tick;
+			m_dispatcherTimer.Interval = new TimeSpan(0, 0, 2);
+		}
+
+		private void InitSliderTicks()
+		{
+			m_sliderTicks.Add(new MySliderTick { Name = "30 Minutes", Value = 30 });
+			m_sliderTicks.Add(new MySliderTick { Name = "1 Hour", Value = 1 * 60 });
+			m_sliderTicks.Add(new MySliderTick { Name = "2 Hours", Value = 2 * 60 });
+			m_sliderTicks.Add(new MySliderTick { Name = "4 Hours", Value = 4 * 60 });
+			m_sliderTicks.Add(new MySliderTick { Name = "Day", Value = BY_DAY });
+			m_sliderTicks.Add(new MySliderTick { Name = "Week", Value = BY_WEEK });
+			m_sliderTicks.Add(new MySliderTick { Name = "Month", Value = BY_MONTH });
+
+			SetEventIntervalTypeText();
+		}
+
+		private void SetEventIntervalTypeText()
+		{
+			if (m_sliderTicks.Count > 0)
+			{
+				tbEventIntervalType.Text = m_sliderTicks[(int)sliderEvent.Value].Name;
+			}
+		}
+
+		public bool Init(IService device, MainWindow mainWindow)
+		{
+			m_mainWindow = mainWindow;
 
-            Rt = new RT();
-
-            List<FileAsset> _files;
-            List<PendingFile> _pendingFiles;
+			m_dispatcherTimer.Stop();
+			btnRefresh.Visibility = Visibility.Collapsed;
 
-            using (var db = new MyDbContext())
-            {
-                var q = from f in db.Object.Files
-                        where f.device_id == device.ID
-                        select f;
+			m_currentDevice = device;
 
-                _files = q.ToList();
+			Rt = new RT();
 
-                var q2 = from f in db.Object.PendingFiles
-                         where f.device_id == device.ID
-                         select f;
+			List<FileAsset> _files;
+			List<PendingFile> _pendingFiles;
 
-                _pendingFiles = q2.ToList();
-            }
+			using (var db = new MyDbContext())
+			{
+				var q = from f in db.Object.Files
+						where f.device_id == device.ID
+						select f;
 
-            m_pendingFilesCount = _pendingFiles.Count;
+				_files = q.ToList();
 
-            if (Rt.Init(_files, _pendingFiles, device))
-            {
-                gridEmptyPanel.Visibility = Visibility.Collapsed;
+				var q2 = from f in db.Object.PendingFiles
+						 where f.device_id == device.ID
+						 select f;
 
-                tbTitle0.Visibility = Visibility.Visible;
-                tbTitle.Visibility = Visibility.Visible;
-                tbTotalCount.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                gridEmptyPanel.Visibility = Visibility.Visible;
-                btnRefresh.Visibility = Visibility.Collapsed;
+				_pendingFiles = q2.ToList();
+			}
 
-                tbTitle0.Visibility = Visibility.Collapsed;
-                tbTitle.Visibility = Visibility.Collapsed;
-                tbTotalCount.Visibility = Visibility.Collapsed;
+			m_pendingFilesCount = _pendingFiles.Count;
 
-                return false;
-            }
+			if (Rt.Init(_files, _pendingFiles, device))
+			{
+				gridEmptyPanel.Visibility = Visibility.Collapsed;
 
-            ShowEvents();
+				tbTitle0.Visibility = Visibility.Visible;
+				tbTitle.Visibility = Visibility.Visible;
+				tbTotalCount.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				gridEmptyPanel.Visibility = Visibility.Visible;
+				btnRefresh.Visibility = Visibility.Collapsed;
 
-            ShowTitle();
+				tbTitle0.Visibility = Visibility.Collapsed;
+				tbTitle.Visibility = Visibility.Collapsed;
+				tbTotalCount.Visibility = Visibility.Collapsed;
 
-            m_dispatcherTimer.Start();
+				return false;
+			}
 
-            return true;
-        }
+			ShowEvents();
 
-        void dispatcherTimer_Tick(object sender, EventArgs e)
-        {
-            int _count = BunnyUnsortedContentGroup.countUnsortedItems(m_currentDevice.ID);
+			ShowTitle();
 
-            if (_count != Rt.RtData.file_changes.Count) //m_pendingFilesCount
-            {
-                btnRefresh.Visibility = Visibility.Visible;
-            }
+			m_dispatcherTimer.Start();
 
-            int _d = (_count - (VideosCount + PhotosCount));
+			return true;
+		}
 
-            if (_d > 0)
-            {
-                btnRefresh.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                btnRefresh.Visibility = Visibility.Collapsed;
-            }
+		void dispatcherTimer_Tick(object sender, EventArgs e)
+		{
+			int _count = BunnyUnsortedContentGroup.countUnsortedItems(m_currentDevice.ID);
 
-            btnRefresh.Content = "Refresh " + "(" + _d + ")";
-        }
+			if (_count != Rt.RtData.file_changes.Count) //m_pendingFilesCount
+			{
+				btnRefresh.Visibility = Visibility.Visible;
+			}
 
-        public void Stop()
-        {
-            if (m_dispatcherTimer != null)
-            {
-                m_dispatcherTimer.Stop();
-            }
-        }
+			int _d = (_count - (VideosCount + PhotosCount));
 
-        private void btnRefresh_Click(object sender, RoutedEventArgs e)
-        {
-            m_dispatcherTimer.Stop();
+			if (_d > 0)
+			{
+				btnRefresh.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				btnRefresh.Visibility = Visibility.Collapsed;
+			}
 
-            Cursor = Cursors.Wait;
+			btnRefresh.Content = "Refresh " + "(" + _d + ")";
+		}
 
-            DoEvents();
+		public void Stop()
+		{
+			if (m_dispatcherTimer != null)
+			{
+				m_dispatcherTimer.Stop();
+			}
+		}
 
-            Init(m_currentDevice);
+		private void btnRefresh_Click(object sender, RoutedEventArgs e)
+		{
+			m_dispatcherTimer.Stop();
 
-            Cursor = Cursors.Arrow;
+			Cursor = Cursors.Wait;
 
-            GC.Collect();
-        }
+			DoEvents();
 
-        private void ShowTitle()
-        {
-            tbTitle.Text = m_currentDevice.Name;
-        }
+			Init(m_currentDevice, m_mainWindow);
 
-        private void ShowEvents()
-        {
-            Cursor = Cursors.Wait;
+			Cursor = Cursors.Arrow;
 
-            m_defaultEventNameCache = new List<string>();
+			GC.Collect();
+		}
 
-            PhotosCount = 0;
-            VideosCount = 0;
+		private void ShowTitle()
+		{
+			tbTitle.Text = m_currentDevice.Name;
+		}
 
-            m_eventUCs = new ObservableCollection<EventUC>();
-            listBoxEvent.ItemsSource = m_eventUCs;
+		private void ShowEvents()
+		{
+			Cursor = Cursors.Wait;
 
-            GroupingEventInterval = m_sliderTicks.ToArray()[(int)sliderEvent.Value].Value;
-            Rt.GroupingByEvent(GroupingEventInterval);
+			m_defaultEventNameCache = new List<string>();
 
-            Rt.Events.Reverse();
+			PhotosCount = 0;
+			VideosCount = 0;
 
-            foreach (List<FileChange> _event in Rt.Events)
-            {
-                EventUC _ctl = new EventUC
-                                   {
-                                       Event = _event
-                                   };
+			m_eventUCs = new ObservableCollection<EventUC>();
+			listBoxEvent.ItemsSource = m_eventUCs;
 
-                _ctl.SetUI();
+			GroupingEventInterval = m_sliderTicks.ToArray()[(int)sliderEvent.Value].Value;
+			Rt.GroupingByEvent(GroupingEventInterval);
 
-                PhotosCount += _ctl.PhotosCount;
-                VideosCount += _ctl.VideosCount;
+			Rt.Events.Reverse();
 
-                _ctl.DescribeText = GetDefaultEventName(Rt.DateTimeCache[_event[0].taken_time]);
+			foreach (List<FileChange> _event in Rt.Events)
+			{
+				EventUC _ctl = new EventUC
+								   {
+									   Event = _event
+								   };
 
-                m_eventUCs.Add(_ctl);
-            }
+				_ctl.SetUI();
 
-            DoEvents();
+				PhotosCount += _ctl.PhotosCount;
+				VideosCount += _ctl.VideosCount;
 
-            DataTemplate _dataTemplate = FindResource("SbPreviewTemplate") as DataTemplate;
+				_ctl.DescribeText = GetDefaultEventName(Rt.DateTimeCache[_event[0].taken_time]);
 
-            listBoxEvent.SetValue(ScrollingPreviewService.VerticalScrollingPreviewTemplateProperty, _dataTemplate);
+				m_eventUCs.Add(_ctl);
+			}
 
-            ShowInfor();
+			DoEvents();
 
-            GC.Collect();
+			DataTemplate _dataTemplate = FindResource("SbPreviewTemplate") as DataTemplate;
 
-            SetEventIntervalTypeText();
-        }
+			listBoxEvent.SetValue(ScrollingPreviewService.VerticalScrollingPreviewTemplateProperty, _dataTemplate);
 
-        private void ShowInfor()
-        {
-            if (m_eventUCs.Count == 0)
-            {
-                gridEmptyPanel.Visibility = Visibility.Visible;
-                btnRefresh.Visibility = Visibility.Collapsed;
-                tbTotalCount.Text = "";
-            }
-            else
-            {
-                gridEmptyPanel.Visibility = Visibility.Collapsed;
-                tbTotalCount.Text = GetCountsString(PhotosCount, VideosCount) + " in " + m_eventUCs.Count + " event" + ((m_eventUCs.Count > 1) ? "s" : "");
-            }
-        }
+			ShowInfor();
 
-        public static string GetCountsString(int photosCount, int videosCount)
-        {
-            string _c = string.Empty;
+			GC.Collect();
 
-            if (photosCount > 0)
-            {
-                _c = photosCount + ((photosCount == 1) ? " photo" : " photos");
-            }
+			SetEventIntervalTypeText();
+		}
 
-            if (videosCount > 0)
-            {
-                if (photosCount > 0)
-                {
-                    _c = _c + ", ";
-                }
+		private void ShowInfor()
+		{
+			if (m_eventUCs.Count == 0)
+			{
+				gridEmptyPanel.Visibility = Visibility.Visible;
+				btnRefresh.Visibility = Visibility.Collapsed;
+				tbTotalCount.Text = "";
+			}
+			else
+			{
+				gridEmptyPanel.Visibility = Visibility.Collapsed;
+				tbTotalCount.Text = GetCountsString(PhotosCount, VideosCount) + " in " + m_eventUCs.Count + " event" + ((m_eventUCs.Count > 1) ? "s" : "");
+			}
+		}
 
-                _c = _c + videosCount + ((videosCount == 1) ? " video" : " videos");
-            }
+		public static string GetCountsString(int photosCount, int videosCount)
+		{
+			string _c = string.Empty;
 
-            return _c;
-        }
+			if (photosCount > 0)
+			{
+				_c = photosCount + ((photosCount == 1) ? " photo" : " photos");
+			}
 
-        #region Default Event Name
+			if (videosCount > 0)
+			{
+				if (photosCount > 0)
+				{
+					_c = _c + ", ";
+				}
 
-        private string GetDefaultEventName(DateTime dt)
-        {
-            if (GroupingEventInterval < 24 * 60)
-            {
-                return DefaultEventNameBy_Minutes(dt);
-            }
+				_c = _c + videosCount + ((videosCount == 1) ? " video" : " videos");
+			}
 
-            if (GroupingEventInterval == BY_DAY)
-            {
-                return DefaultEventNameBy_Day(dt);
-            }
+			return _c;
+		}
 
-            if (GroupingEventInterval == BY_WEEK)
-            {
-                return DefaultEventNameBy_Week(dt);
-            }
+		#region Default Event Name
 
-            if (GroupingEventInterval == BY_MONTH)
-            {
-                return DefaultEventNameBy_Month(dt);
-            }
+		private string GetDefaultEventName(DateTime dt)
+		{
+			if (GroupingEventInterval < 24 * 60)
+			{
+				return DefaultEventNameBy_Minutes(dt);
+			}
 
-            return string.Empty;
-        }
+			if (GroupingEventInterval == BY_DAY)
+			{
+				return DefaultEventNameBy_Day(dt);
+			}
 
-        private string DefaultEventNameBy_Month(DateTime dt)
-        {
-            return dt.ToString("yyyy.MM");
-        }
+			if (GroupingEventInterval == BY_WEEK)
+			{
+				return DefaultEventNameBy_Week(dt);
+			}
 
-        private string DefaultEventNameBy_Week(DateTime dt)
-        {
-            DateTime _startOfWeek = StartOfWeek(dt);
-            DateTime _endOfWeek = _startOfWeek.AddDays(6);
+			if (GroupingEventInterval == BY_MONTH)
+			{
+				return DefaultEventNameBy_Month(dt);
+			}
 
-            return _startOfWeek.ToString("yyyy.MM.dd") + "-" + ((_startOfWeek.Year != _endOfWeek.Year) ? _endOfWeek.ToString("yyyy.MM.dd") : _endOfWeek.ToString("MM.dd"));
-        }
+			return string.Empty;
+		}
 
-        private string DefaultEventNameBy_Day(DateTime dt)
-        {
-            return dt.ToString("yyyy.MM.dd");
-        }
+		private string DefaultEventNameBy_Month(DateTime dt)
+		{
+			return dt.ToString("yyyy.MM");
+		}
 
-        private string DefaultEventNameBy_Minutes(DateTime dt)
-        {
-            string _s = string.Empty;
+		private string DefaultEventNameBy_Week(DateTime dt)
+		{
+			DateTime _startOfWeek = StartOfWeek(dt);
+			DateTime _endOfWeek = _startOfWeek.AddDays(6);
 
-            string _date = dt.ToString("yyyy.MM.dd");
-            string _period = GetTimePeriod(dt.Hour, dt.Minute);
+			return _startOfWeek.ToString("yyyy.MM.dd") + "-" + ((_startOfWeek.Year != _endOfWeek.Year) ? _endOfWeek.ToString("yyyy.MM.dd") : _endOfWeek.ToString("MM.dd"));
+		}
 
-            _s = _date + " " + _period;
+		private string DefaultEventNameBy_Day(DateTime dt)
+		{
+			return dt.ToString("yyyy.MM.dd");
+		}
 
-            if (!m_defaultEventNameCache.Contains(_s))
-            {
-                m_defaultEventNameCache.Add(_s);
-                return _s;
-            }
+		private string DefaultEventNameBy_Minutes(DateTime dt)
+		{
+			string _s = string.Empty;
 
-            _s = _date + " " + dt.ToString("HH") + " " + (dt.Hour > 12 ? "PM" : "AM");
+			string _date = dt.ToString("yyyy.MM.dd");
+			string _period = GetTimePeriod(dt.Hour, dt.Minute);
 
-            if (!m_defaultEventNameCache.Contains(_s))
-            {
-                m_defaultEventNameCache.Add(_s);
-                return _s;
-            }
+			_s = _date + " " + _period;
 
-            _s = _date + " " + dt.ToString("HHmm");
+			if (!m_defaultEventNameCache.Contains(_s))
+			{
+				m_defaultEventNameCache.Add(_s);
+				return _s;
+			}
 
-            if (!m_defaultEventNameCache.Contains(_s))
-            {
-                m_defaultEventNameCache.Add(_s);
-                return _s;
-            }
+			_s = _date + " " + dt.ToString("HH") + " " + (dt.Hour > 12 ? "PM" : "AM");
 
-            _s = _date + " " + dt.ToString("HHmmss");
+			if (!m_defaultEventNameCache.Contains(_s))
+			{
+				m_defaultEventNameCache.Add(_s);
+				return _s;
+			}
 
-            return _s;
-        }
+			_s = _date + " " + dt.ToString("HHmm");
 
-        private string GetTimePeriod(int hour, int minute)
-        {
-            int _x = hour * 60 + minute;
+			if (!m_defaultEventNameCache.Contains(_s))
+			{
+				m_defaultEventNameCache.Add(_s);
+				return _s;
+			}
 
-            if (_x > (23 * 60 + 59))
-                return "Late Night";
+			_s = _date + " " + dt.ToString("HHmmss");
 
-            if (_x > (20 * 60 + 29))
-                return "Night";
+			return _s;
+		}
 
-            if (_x > (17 * 60 + 59))
-                return "Evening";
+		private string GetTimePeriod(int hour, int minute)
+		{
+			int _x = hour * 60 + minute;
 
-            if (_x > (12 * 60 + 59))
-                return "Afternoon";
+			if (_x > (23 * 60 + 59))
+				return "Late Night";
 
-            if (_x > (11 * 60 + 59))
-                return "Noon";
+			if (_x > (20 * 60 + 29))
+				return "Night";
 
-            if (_x > (7 * 60 + 59))
-                return "Morning";
+			if (_x > (17 * 60 + 59))
+				return "Evening";
 
-            return "Early Morning";
-        }
+			if (_x > (12 * 60 + 59))
+				return "Afternoon";
 
-        #endregion
+			if (_x > (11 * 60 + 59))
+				return "Noon";
 
-        private void sliderEvent_ThumbDragStarted(object sender, DragStartedEventArgs e)
-        {
-            m_humbDraging = true;
-        }
+			if (_x > (7 * 60 + 59))
+				return "Morning";
 
-        private void sliderEvent_ThumbDragCompleted(object sender, DragCompletedEventArgs e)
-        {
-            m_humbDraging = false;
+			return "Early Morning";
+		}
 
-            ShowEvents();
-        }
+		#endregion
 
-        private void sliderEvent_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (m_sliderTicks.Count == 0)
-            {
-                return;
-            }
+		private void sliderEvent_ThumbDragStarted(object sender, DragStartedEventArgs e)
+		{
+			m_humbDraging = true;
+		}
 
-            if (m_humbDraging)
-            {
-                return;
-            }
+		private void sliderEvent_ThumbDragCompleted(object sender, DragCompletedEventArgs e)
+		{
+			m_humbDraging = false;
 
-            ShowEvents();
-        }
+			ShowEvents();
+		}
 
-        private void listBoxEvent_LayoutUpdated(object sender, EventArgs e)
-        {
-            Cursor = Cursors.Arrow;
-        }
+		private void sliderEvent_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			if (m_sliderTicks.Count == 0)
+			{
+				return;
+			}
 
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            Cursor = Cursors.Wait;
-        }
+			if (m_humbDraging)
+			{
+				return;
+			}
 
-        public static DateTime StartOfWeek(DateTime dt, DayOfWeek startOfWeek = DayOfWeek.Sunday)
-        {
-            int _diff = dt.DayOfWeek - startOfWeek;
+			ShowEvents();
+		}
 
-            if (_diff < 0)
-            {
-                _diff += 7;
-            }
+		private void listBoxEvent_LayoutUpdated(object sender, EventArgs e)
+		{
+			Cursor = Cursors.Arrow;
+		}
 
-            return dt.AddDays(-1 * _diff).Date;
-        }
+		private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			Cursor = Cursors.Wait;
+		}
 
-        public int WeekOfYear(DateTime dt)
-        {
-            CultureInfo _cul = CultureInfo.CurrentCulture;
+		public static DateTime StartOfWeek(DateTime dt, DayOfWeek startOfWeek = DayOfWeek.Sunday)
+		{
+			int _diff = dt.DayOfWeek - startOfWeek;
 
-            int _weekNum = _cul.Calendar.GetWeekOfYear(
-                dt,
-                CalendarWeekRule.FirstFourDayWeek,
-                DayOfWeek.Monday);
+			if (_diff < 0)
+			{
+				_diff += 7;
+			}
 
-            return _weekNum;
-        }
+			return dt.AddDays(-1 * _diff).Date;
+		}
 
-        public void AddEventToFolder(EventUC eventUC)
-        {
-            Cursor = Cursors.Wait;
+		public int WeekOfYear(DateTime dt)
+		{
+			CultureInfo _cul = CultureInfo.CurrentCulture;
 
-            if (!DoImport(eventUC, false))
-            {
-                Cursor = Cursors.Arrow;
-                return;
-            }
+			int _weekNum = _cul.Calendar.GetWeekOfYear(
+				dt,
+				CalendarWeekRule.FirstFourDayWeek,
+				DayOfWeek.Monday);
 
-            double _h = eventUC.ActualHeight / 10;
+			return _weekNum;
+		}
 
-            for (int i = 10; i > 0; i--)
-            {
-                eventUC.Height = i * _h;
-                DoEvents();
-                Thread.Sleep(50);
-            }
+		public void AddEventToFolder(EventUC eventUC)
+		{
+			Cursor = Cursors.Wait;
 
-            VideosCount -= eventUC.VideosCount;
-            PhotosCount -= eventUC.PhotosCount;
+			if (!DoImport(eventUC, false))
+			{
+				Cursor = Cursors.Arrow;
+				return;
+			}
 
-            Rt.RemoveFileChanges(eventUC.Event);
+			double _h = eventUC.ActualHeight / 10;
 
-            m_eventUCs.Remove(eventUC);
+			for (int i = 10; i > 0; i--)
+			{
+				eventUC.Height = i * _h;
+				DoEvents();
+				Thread.Sleep(50);
+			}
 
-            ShowInfor();
+			VideosCount -= eventUC.VideosCount;
+			PhotosCount -= eventUC.PhotosCount;
 
-            m_currentDevice.Refresh();
+			Rt.RemoveFileChanges(eventUC.Event);
 
-            Cursor = Cursors.Arrow;
-        }
+			m_eventUCs.Remove(eventUC);
 
-        #region DoEvents
+			ShowInfor();
 
-        [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-        public void DoEvents()
-        {
-            var _frame = new DispatcherFrame();
+			m_currentDevice.Refresh();
 
-            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(ExitFrame), _frame);
+			Cursor = Cursors.Arrow;
+		}
 
-            Dispatcher.PushFrame(_frame);
-        }
+		#region DoEvents
 
-        public object ExitFrame(object f)
-        {
-            ((DispatcherFrame)f).Continue = false;
+		[SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+		public void DoEvents()
+		{
+			var _frame = new DispatcherFrame();
 
-            return null;
-        }
+			Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(ExitFrame), _frame);
 
-        #endregion
+			Dispatcher.PushFrame(_frame);
+		}
 
-        private void btnImportAll_Click(object sender, RoutedEventArgs e)
-        {
-            if (!DoImport(null, true))
-            {
-                return;
-            }
+		public object ExitFrame(object f)
+		{
+			((DispatcherFrame)f).Continue = false;
 
-            m_eventUCs.Clear();
+			return null;
+		}
 
-            ShowInfor();
+		#endregion
 
-            m_currentDevice.Refresh();
-        }
+		private void btnImportAll_Click(object sender, RoutedEventArgs e)
+		{
+			if (!DoImport(null, true))
+			{
+				return;
+			}
 
-        private bool DoImport(EventUC eventUC, bool all)
-        {
-            Cursor = Cursors.Wait;
+			m_eventUCs.Clear();
 
-            m_dispatcherTimer.Stop();
+			ShowInfor();
 
-            sliderEvent.IsEnabled = false;
+			m_currentDevice.Refresh();
+		}
 
-            PendingSort _pendingSort = new PendingSort
-            {
-                device_id = m_currentDevice.ID
-            };
+		private bool DoImport(EventUC eventUC, bool all)
+		{
+			Cursor = Cursors.Wait;
 
-            if (all)
-            {
-                foreach (EventUC _item in listBoxEvent.Items)
-                {
-                    Event _event = new Event
-                                       {
-                                           type = 1,
-                                           title = _item.DescribeText,
-                                           time_start = Rt.DateTimeCache[_item.Event[0].taken_time].ToString("yyyy-MM-dd HH:mm:ss"),
-                                           time_end = Rt.DateTimeCache[_item.Event[_item.Event.Count - 1].taken_time].ToString("yyyy-MM-dd HH:mm:ss")
-                                       };
+			m_dispatcherTimer.Stop();
 
-                    foreach (FileChange _fileChange in _item.Event)
-                    {
-                        _event.files.Add(_fileChange.id);
-                    }
+			sliderEvent.IsEnabled = false;
 
-                    _pendingSort.events.Add(_event);
-                }
-            }
-            else
-            {
-                Event _event = new Event
-                                   {
-                                       type = 1,
-                                       title = eventUC.DescribeText,
-                                       time_start = Rt.DateTimeCache[eventUC.Event[0].taken_time].ToString("yyyy-MM-dd HH:mm:ss"),
-                                       time_end = Rt.DateTimeCache[eventUC.Event[eventUC.Event.Count - 1].taken_time].ToString("yyyy-MM-dd HH:mm:ss")
-                                   };
+			PendingSort _pendingSort = new PendingSort
+			{
+				device_id = m_currentDevice.ID
+			};
 
-                foreach (FileChange _fileChange in eventUC.Event)
-                {
-                    _event.files.Add(_fileChange.id);
-                }
+			if (all)
+			{
+				foreach (EventUC _item in listBoxEvent.Items)
+				{
+					Event _event = new Event
+									   {
+										   type = 1,
+										   title = _item.DescribeText,
+										   time_start = Rt.DateTimeCache[_item.Event[0].taken_time].ToString("yyyy-MM-dd HH:mm:ss"),
+										   time_end = Rt.DateTimeCache[_item.Event[_item.Event.Count - 1].taken_time].ToString("yyyy-MM-dd HH:mm:ss")
+									   };
 
-                _pendingSort.events.Add(_event);
-            }
+					foreach (FileChange _fileChange in _item.Event)
+					{
+						_event.files.Add(_fileChange.id);
+					}
 
-            string _how = string.Empty;
+					_pendingSort.events.Add(_event);
+				}
+			}
+			else
+			{
+				Event _event = new Event
+								   {
+									   type = 1,
+									   title = eventUC.DescribeText,
+									   time_start = Rt.DateTimeCache[eventUC.Event[0].taken_time].ToString("yyyy-MM-dd HH:mm:ss"),
+									   time_end = Rt.DateTimeCache[eventUC.Event[eventUC.Event.Count - 1].taken_time].ToString("yyyy-MM-dd HH:mm:ss")
+								   };
 
-            try
-            {
-                _how = JsonConvert.SerializeObject(_pendingSort);
-            }
-            catch
-            {
-                return false;
-            }
+				foreach (FileChange _fileChange in eventUC.Event)
+				{
+					_event.files.Add(_fileChange.id);
+				}
 
-            try
-            {
-                string _url = "http://127.0.0.1:14005" + "/pending/sort";
+				_pendingSort.events.Add(_event);
+			}
 
-                string _parms = "how" + "=" + HttpUtility.UrlEncode(_how);
+			string _how = string.Empty;
 
-                WebPostHelper _webPos = new WebPostHelper();
-                bool _isOK = _webPos.doPost(_url, _parms, null, 10000);
+			try
+			{
+				_how = JsonConvert.SerializeObject(_pendingSort);
+			}
+			catch
+			{
+				return false;
+			}
 
-                if (!_isOK)
-                    return false;
+			try
+			{
+				string _url = "http://127.0.0.1:14005" + "/pending/sort";
 
-                _webPos.getContent();
-            }
-            catch
-            {
-            }
+				string _parms = "how" + "=" + HttpUtility.UrlEncode(_how);
 
-            sliderEvent.IsEnabled = true;
+				WebPostHelper _webPos = new WebPostHelper();
+				bool _isOK = _webPos.doPost(_url, _parms, null, 10000);
 
-            m_dispatcherTimer.Start();
+				if (!_isOK)
+					return false;
 
-            Cursor = Cursors.Arrow;
+				_webPos.getContent();
+			}
+			catch
+			{
+			}
 
-            return true;
+			sliderEvent.IsEnabled = true;
+
+			m_dispatcherTimer.Start();
+
+			Cursor = Cursors.Arrow;
+
+			return true;
 		}
 
 		#region Misc
@@ -620,6 +624,126 @@ namespace Waveface.Client
 			}
 		}
 
+		public bool SaveToFavorite()
+		{
+			List<FileChange> _allFileChanges = new List<FileChange>();
+			List<ContentEntity> _contentEntitys = new List<ContentEntity>();
+
+			foreach (EventUC _eventUc in listBoxEvent.Items)
+			{
+				_allFileChanges.AddRange(_eventUc.GetSelectedFiles());
+			}
+
+			foreach (FileChange _fc in _allFileChanges)
+			{
+				_contentEntitys.Add(new ContentEntity { ID = _fc.id });
+			}
+
+			return m_mainWindow.SaveToFavorite(_contentEntitys);
+		}
+
+		public bool MoveToFolder()
+		{
+			List<FileChange> _allFileChanges = new List<FileChange>();
+
+			foreach (EventUC _eventUc in listBoxEvent.Items)
+			{
+				_allFileChanges.AddRange(_eventUc.GetSelectedFiles());
+			}
+
+			if (_allFileChanges.Count == 0)
+				return false;
+
+			PendingSort _pendingSort = new PendingSort
+			{
+				device_id = m_currentDevice.ID
+			};
+
+			var _dialog = new CreateFolderDialog
+				              {
+					              Owner = m_mainWindow, 
+								  WindowStartupLocation = WindowStartupLocation.CenterOwner
+				              };
+
+			if (_dialog.ShowDialog() != true)
+				return false;
+
+			if (_dialog.FolderName == string.Empty)
+				return false;
+
+			_allFileChanges.Sort((x, y) => String.Compare(x.taken_time, y.taken_time, StringComparison.Ordinal));
+
+			Event _event = new Event
+			{
+				type = 1,
+				title = _dialog.FolderName,
+				time_start = _allFileChanges[0].taken_time ,
+				time_end = _allFileChanges[_allFileChanges.Count - 1].taken_time
+			};
+
+			foreach (FileChange _fileChange in _allFileChanges)
+			{
+				_event.files.Add(_fileChange.id);
+			}
+
+			_pendingSort.events.Add(_event);
+
+			string _how = string.Empty;
+
+			try
+			{
+				_how = JsonConvert.SerializeObject(_pendingSort);
+			}
+			catch
+			{
+				return false;
+			}
+
+			try
+			{
+				string _url = "http://127.0.0.1:14005" + "/pending/sort";
+
+				string _parms = "how" + "=" + HttpUtility.UrlEncode(_how);
+
+				WebPostHelper _webPos = new WebPostHelper();
+				bool _isOK = _webPos.doPost(_url, _parms, null, 10000);
+
+				if (!_isOK)
+					return false;
+
+				_webPos.getContent();
+			}
+			catch
+			{
+			}
+
+			m_currentDevice.Refresh();
+
+			return true;
+		}
+
 		#endregion
+
+		#region ContentEntity
+
+		public class ContentEntity : IContentEntity
+		{
+			public string ID { get; set; }
+			public string Name { get; set; }
+			public Uri Uri { get; set; }
+			public IContentEntity Parent { get; set; }
+			public string ContentPath { get; set; }
+			public Image Image { get; set; }
+			public Image Thumbnail { get; set; }
+			public long Size { get; set; }
+			public DateTime CreateTime { get; set; }
+			public DateTime ModifyTime { get; set; }
+			public string Description { get; set; }
+			public Dictionary<string, string> Memo { get; set; }
+		}
+
+		#endregion
+
+
 	}
 }

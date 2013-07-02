@@ -113,6 +113,9 @@
     <Compile Include="ContentItemInfo.xaml.cs">
       <DependentUpon>ContentItemInfo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Ren\CreateFolderDialog.xaml.cs">
+      <DependentUpon>CreateFolderDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Control\AddSourceTip.xaml.cs">
       <DependentUpon>AddSourceTip.xaml</DependentUpon>
     </Compile>
@@ -234,6 +237,10 @@
     <Page Include="ContentItemInfo.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Ren\CreateFolderDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Src\Control\AddSourceTip.xaml">
       <Generator>MSBuild:Compile</Generator>

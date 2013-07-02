@@ -78,25 +78,27 @@ namespace Waveface.Client
 		}
 
 
-		private void SaveToFavorite(IEnumerable<IContentEntity> contents)
+		public bool SaveToFavorite(IEnumerable<IContentEntity> contents)
 		{
 			if (!contents.Any())
 			{
 				string text = (string)Application.Current.FindResource("WithoutContentMessageText");
 
 				MessageBox.Show(text);
-				return;
+				return false;
 			}
 
 			var dialog = new CreateFavoriteDialog();
 			dialog.Owner = this;
-			dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+			dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
 			if (dialog.ShowDialog() != true)
-				return;
+				return false;
 
 			ClientFramework.Client.Default.SaveToFavorite(contents, dialog.FavoriteName);
 			lbxFavorites.SelectedIndex = lbxFavorites.Items.Count - 1;
+
+			return true;
 		}
 
 		private void RefreshFavorite(IContentGroup favorite)
@@ -412,7 +414,7 @@ namespace Waveface.Client
                 Cursor = Cursors.Wait;
 
                 unSortedFilesUC.Visibility = Visibility.Visible;
-                unSortedFilesUC.Init(service);
+                unSortedFilesUC.Init(service, this);
 
                 Cursor = Cursors.Arrow;
             }

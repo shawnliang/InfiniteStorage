@@ -70,7 +70,7 @@ namespace Waveface.Client
 
 			List<EventPhoto> _controls = new List<EventPhoto>();
 
-			foreach (var _file in Event)
+			foreach (FileChange _file in Event)
 			{
 				_smallFileExists = false;
 
@@ -495,6 +495,23 @@ namespace Waveface.Client
 			}
 		}
 
+		public List<FileChange> GetSelectedFiles()
+		{
+			List<FileChange> _fileChanges = new List<FileChange>();
+
+			for (int i = 0; i < lbEvent.Items.Count; i++)
+			{
+				ListBoxItem _lbi = lbEvent.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
+
+				if (_lbi.IsSelected)
+				{
+					_fileChanges.Add(Event[i]);
+				}
+			}
+
+			return _fileChanges;
+		}
+
 		private void miSelectAllInThisEvent_Click(object sender, RoutedEventArgs e)
 		{
 			SelectAll(true);
@@ -513,6 +530,26 @@ namespace Waveface.Client
 		private void miDeselectAll_Click(object sender, RoutedEventArgs e)
 		{
 			UnSortedFilesUC.Current.SelectAll(false);
+		}
+
+		private void miSaveToFavorite_Click(object sender, RoutedEventArgs e)
+		{
+			bool _ret = UnSortedFilesUC.Current.SaveToFavorite();
+
+			if (_ret)
+			{
+				UnSortedFilesUC.Current.SelectAll(false);
+			}
+		}
+
+		private void miMoveToFolder_Click(object sender, RoutedEventArgs e)
+		{
+			bool _ret = UnSortedFilesUC.Current.MoveToFolder();
+
+			if (_ret)
+			{
+				UnSortedFilesUC.Current.SelectAll(false);
+			}
 		}
 	}
 }
