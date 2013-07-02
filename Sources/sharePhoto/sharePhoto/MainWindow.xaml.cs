@@ -373,6 +373,9 @@ namespace Wpf_testHTTP
         bool shareButtonClick = false;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if(AutoCompleteBox.Text.Trim() =="")
+                AutoCompleteBox.Text = "";
+
             if (AutoCompleteBox.Text == "Invite more people...")
                 AutoCompleteBox.Text = "";
             char[] delimiterChars0 = { ';' };
@@ -383,19 +386,20 @@ namespace Wpf_testHTTP
                 bool result = checkAvailable(_emailStr);
                 if (result == false)
                 {
-                    // MessageBox.Show("email address ERROR!");
+                    if(_emailStr !="")
                     label_invalid.Visibility = Visibility.Visible;
                     return;
                 }
             }
             else if (AutoCompleteBox.Text != "")
-            {             
+            {      
+                if(AutoCompleteBox.Text.Trim() != "")
                 label_invalid.Visibility = Visibility.Visible;
                 return;
             }
             if (_emailStr == "")
             {              
-                label_invalid.Visibility = Visibility.Visible;
+               // label_invalid.Visibility = Visibility.Visible;
                 return;
             }
             arr = _emailStr.Split(delimiterChars0);
