@@ -378,7 +378,7 @@ namespace Wpf_testHTTP
             char[] delimiterChars0 = { ';' };
             // 0 get email setup
             string _emailStr = setup_emailList();
-            if (email_list.Items.Count <= 0)
+            if (email_list.Items.Count <= 0 && _emailStr !="")
             {
                 bool result = checkAvailable(_emailStr);
                 if (result == false)
@@ -389,13 +389,14 @@ namespace Wpf_testHTTP
                 }
             }
             else if (AutoCompleteBox.Text != "")
-            {             
+            {
+                if (AutoCompleteBox.Text.Trim() != "")
                 label_invalid.Visibility = Visibility.Visible;
                 return;
             }
             if (_emailStr == "")
             {              
-                label_invalid.Visibility = Visibility.Visible;
+                //label_invalid.Visibility = Visibility.Visible;
                 return;
             }
             arr = _emailStr.Split(delimiterChars0);
@@ -608,20 +609,24 @@ namespace Wpf_testHTTP
                 }
             }
             if (e.Key == Key.Return || e.Key == Key.Space || e.Key == Key.Tab)
-            { 
-                if (AutoCompleteBox.Text == "Invite more people...")
+            {
+                string tempStr = AutoCompleteBox.Text;
+                if(tempStr.Trim() =="")
                     AutoCompleteBox.Text = "";
 
-                if (IsValidEmail(AutoCompleteBox.Text) == false)
+                if (tempStr == "Invite more people...")
+                    AutoCompleteBox.Text = "";
+
+                if (IsValidEmail(tempStr) == false)
                     return;
-               
-                bool result = checkAvailable(AutoCompleteBox.Text);
+
+                bool result = checkAvailable(tempStr);
                 if (result == true)
                 {
                     result = checkAvailable_repeat();
                     if (result == true)
                     {
-                        email_list.Items.Add(AutoCompleteBox.Text);
+                        email_list.Items.Add(tempStr);
                     }
                 }
                 AutoCompleteBox.Text = "";
