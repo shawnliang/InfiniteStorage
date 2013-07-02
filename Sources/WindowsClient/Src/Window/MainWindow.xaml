@@ -40,12 +40,12 @@
                          Color="#888" />
 
         <ContextMenu x:Key="SourceContentContextMenu">
-            <MenuItem Header="Star"
-                      Click="StarMenuItem_Click"/>
-            <MenuItem Header="Create Favorite"
-                      Click="CreateFavoriteMenuItem_Click" />
-            <MenuItem Header="Add to Favorite"
-                      Click="AddToFavoriteMenuItem_Click" />
+            <MenuItem Click="StarMenuItem_Click"
+                      Header="Star" />
+            <MenuItem Click="CreateFavoriteMenuItem_Click"
+                      Header="Create Favorite..." />
+            <MenuItem Click="AddToFavoriteMenuItem_Click"
+                      Header="Add to Favorite..." />
             <Separator />
             <MenuItem Click="DeleteMenuItem_Click"
                       Header="Delete" />
