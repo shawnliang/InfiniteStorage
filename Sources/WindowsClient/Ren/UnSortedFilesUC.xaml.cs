@@ -1,12 +1,12 @@
 ﻿#region
 
+using System.Linq;
+using InfiniteStorage.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.IO;
-using System.Net;
 using System.Security.Permissions;
 using System.Threading;
 using System.Web;
@@ -17,6 +17,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Waveface.ClientFramework;
 using Waveface.Model;
+
 #endregion
 
 namespace Waveface.Client
@@ -46,6 +47,8 @@ namespace Waveface.Client
         public int GroupingEventInterval { get; set; }
 
         private DispatcherTimer m_dispatcherTimer;
+        private bool m_humbDraging;
+        private int m_pendingFilesCount;
 
         public UnSortedFilesUC()
         {
@@ -95,16 +98,29 @@ namespace Waveface.Client
 
             m_currentDevice = device;
 
-            string _allPendingFiles = processAllFile(m_currentDevice.ID);
-
-            if(_allPendingFiles == "")
-            {
-                return false;
-            }
-
             Rt = new RT();
 
-            if (Rt.Init(_allPendingFiles))
+            List<FileAsset> _files;
+            List<PendingFile> _pendingFiles;
+
+            using (var db = new MyDbContext())
+            {
+                var q = from f in db.Object.Files
+                        where f.device_id == device.ID
+                        select f;
+
+                _files = q.ToList();
+
+                var q2 = from f in db.Object.PendingFiles
+                         where f.device_id == device.ID
+                         select f;
+
+                _pendingFiles = q2.ToList();
+            }
+
+            m_pendingFilesCount = _pendingFiles.Count;
+
+            if (Rt.Init(_files, _pendingFiles, device))
             {
                 gridEmptyPanel.Visibility = Visibility.Collapsed;
 
@@ -137,7 +153,7 @@ namespace Waveface.Client
         {
             int _count = BunnyUnsortedContentGroup.countUnsortedItems(m_currentDevice.ID);
 
-            if (_count != Rt.RtData.file_changes.Count)
+            if (_count != Rt.RtData.file_changes.Count) //m_pendingFilesCount
             {
                 btnRefresh.Visibility = Visibility.Visible;
             }
@@ -179,130 +195,9 @@ namespace Waveface.Client
             GC.Collect();
         }
 
-        #region REST
-
-        private static string HostIP = "http://127.0.0.1:14005";
-        private string getPending_cmd0 = HostIP + "/pending/get?device_id=";
-        private string getPending_cmd1 = "&seq=";
-        private string getPending_cmd2 = "&limit=500";
-        private bool m_humbDraging;
-
-        #region ExtendedWebClient
-
-        public class ExtendedWebClient : WebClient
-        {
-            public int Timeout { get; set; }
-
-            public ExtendedWebClient(int timeOut)
-            {
-                Timeout = timeOut;
-            }
-
-            protected override WebRequest GetWebRequest(Uri address)
-            {
-                var _objWebRequest = base.GetWebRequest(address);
-
-                _objWebRequest.Timeout = Timeout;
-                return _objWebRequest;
-            }
-        }
-
-        #endregion
-
-        private string processAllFile(string device)
-        {
-            bool _firstTime = true;
-            RtData _rtData = new RtData();
-
-            try
-            {
-                int files_from_seq = 0;
-                int remaining_count = 1;
-
-                while (remaining_count != 0)
-                {
-                    string getPending_cmd = getPending_cmd0 + device + getPending_cmd1 + files_from_seq + getPending_cmd2;
-                    string _getData = HttpGet(getPending_cmd);
-
-                    if(_getData == "-1")
-                    {
-                        return "";
-                    }
-
-                    RtData _tempRTData = JsonConvert.DeserializeObject<RtData>(_getData);
-                    remaining_count = _tempRTData.remaining_count;
-
-                    FileChange _last = _tempRTData.file_changes[_tempRTData.file_changes.Count - 1];
-
-                    files_from_seq = _last.seq + 1;
-
-                    if (_firstTime)
-                    {
-                        _firstTime = false;
-
-                        _rtData = _tempRTData;
-                    }
-                    else
-                    {
-                        foreach (FileChange _fileChange in _tempRTData.file_changes)
-                        {
-                            _rtData.file_changes.Add(_fileChange);
-                        }
-                    }
-                }
-            }
-            catch
-            {
-            }
-
-            string _ret = JsonConvert.SerializeObject(_rtData);
-
-            return _ret;
-        }
-
-        private string HttpGet(string uri)
-        {
-            String _ret;
-            ExtendedWebClient _webClient = new ExtendedWebClient(5000);
-
-            using (_webClient)
-            {
-                try
-                {
-                    // open and read from the supplied URI
-                    Stream _stream = _webClient.OpenRead(uri);
-                    StreamReader _reader = new StreamReader(_stream);
-                    _ret = _reader.ReadToEnd();
-                }
-                catch (WebException _ex)
-                {
-                    if (_ex.Response is HttpWebResponse)
-                    {
-                        // Add you own error handling as required
-                        switch (((HttpWebResponse)_ex.Response).StatusCode)
-                        {
-                            case HttpStatusCode.NotFound:
-                            case HttpStatusCode.Unauthorized:
-                                _ret = null;
-                                break;
-
-                            default:
-                                throw _ex;
-                        }
-                    }
-
-                    _ret = "-1";
-                }
-            }
-
-            return _ret;
-        }
-
-        #endregion
-
         private void ShowTitle()
         {
-            tbTitle.Text = Rt.RtData.file_changes[0].dev_name;
+            tbTitle.Text = m_currentDevice.Name;
         }
 
         private void ShowEvents()
@@ -521,7 +416,7 @@ namespace Waveface.Client
                 return;
             }
 
-            ShowEvents();           
+            ShowEvents();
         }
 
         private void listBoxEvent_LayoutUpdated(object sender, EventArgs e)
@@ -562,7 +457,7 @@ namespace Waveface.Client
         {
             Cursor = Cursors.Wait;
 
-            if(!DoImport(eventUC, false))
+            if (!DoImport(eventUC, false))
             {
                 Cursor = Cursors.Arrow;
                 return;
@@ -614,7 +509,7 @@ namespace Waveface.Client
 
         private void btnImportAll_Click(object sender, RoutedEventArgs e)
         {
-            if(!DoImport(null, true))
+            if (!DoImport(null, true))
             {
                 return;
             }
@@ -713,6 +608,18 @@ namespace Waveface.Client
             Cursor = Cursors.Arrow;
 
             return true;
-        }
-    }
+		}
+
+		#region Misc
+
+		public void SelectAll(bool flag)
+		{
+			foreach (EventUC _eventUc in listBoxEvent.Items)
+			{
+				_eventUc.SelectAll(flag);
+			}
+		}
+
+		#endregion
+	}
 }
