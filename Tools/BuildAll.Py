@@ -16,10 +16,10 @@ build_num = sys.argv[2]
 def build_target(solution_dir, target, version, build_num) :
 	# target can be "production", "development", or "staging"
 	
-	# if target == "staging" or target == "production":
-	# 	target_cfg_file = os.path.join(solution_dir, r"Setup\InstallHelper\app.config.{0}.xml".format(target))
-	# 	cfg_file = os.path.join(solution_dir, r"Source\Setup\InstallHelper\app.config")
-	# 	shutil.copy(target_cfg_file, cfg_file)
+	if target == "production":
+		target_cfg_file = os.path.join(solution_dir, r"Setup\Package.server.wxi")
+		cfg_file = os.path.join(solution_dir, r"Setup\Package.server_production.wxi")
+		shutil.copy(target_cfg_file, cfg_file)
 	
 	ret = os.system(r'msbuild.exe "{0}" /t:Rebuild /p:Configuration=Release'.format(os.path.join(solution_dir, r"InfiniteStorage.sln")))
 	
@@ -55,4 +55,4 @@ if __name__ == "__main__":
 
 	# change log level to "INFO"
 	# changeLogLevel.dir_traverse(solution_dir, "INFO")
-	# build_target(solution_dir, "production", version, build_num)
+	build_target(solution_dir, "production", version, build_num)
