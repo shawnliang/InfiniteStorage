@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using System.Data.SQLite;
 using InfiniteStorage.Model;
 using InfiniteStorage.Properties;
+using postServiceLibrary;
 
 namespace InfiniteStorage.REST
 {
@@ -28,8 +29,37 @@ namespace InfiniteStorage.REST
 			var label = getLabel(label_id);
 
 			callCloudApiToSendEmail(label, sender, msg, recipients);
+			updateSender(label, sender);
 
 			respondSuccess();
+		}
+
+		private void updateSender(Label label, string sender)
+		{
+			var ws = new postServiceClass
+			{
+				session_token = Cloud.CloudService.SessionToken,
+				APIKEY = Cloud.CloudService.APIKey,
+				group_id = Settings.Default.GroupId
+			};
+
+			var attList = getAttachmentList(label);
+
+			ws.UpdatePost(ws.session_token, label.share_post_id, attList, DateTime.Now.AddDays(-1.0), new List<string>(), label.name, sender);
+		}
+
+		private List<string> getAttachmentList(Label label)
+		{
+			using (var db = new MyDbContext())
+			{
+				var q = from lf in db.Object.LabelFiles
+						join f in db.Object.Files on lf.file_id equals f.file_id
+						where lf.label_id == label.label_id
+						orderby f.event_time ascending
+						select f.file_id;
+
+				return q.ToList().Select(x => x.ToString()).ToList();
+			}
 		}
 
 		private void callCloudApiToSendEmail(Label label, string sender, string msg, ICollection<Recipient> recipients)

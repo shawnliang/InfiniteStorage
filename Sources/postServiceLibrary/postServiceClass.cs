@@ -146,7 +146,7 @@ namespace postServiceLibrary
 		#endregion
 
 		#region Update Post
-        public void UpdatePost(string session_token,String post_id, List<string> attachments_arr, DateTime lastUpdateTime, List<string> recipientEmailList)
+        public void UpdatePost(string session_token,String post_id, List<string> attachments_arr, DateTime lastUpdateTime, List<string> recipientEmailList, string title, string sender)
         {
             string result = null;
             // verify
@@ -171,7 +171,7 @@ namespace postServiceLibrary
             string event_type = "favorite_shared";
             string favorite = "0";
 
-			_ws.posts_update(session_token, group_id, post_id, attachment_id_array, type, event_type, favorite, lastUpdateTime, recipient_email_array);
+			_ws.posts_update(session_token, group_id, post_id, attachment_id_array, type, event_type, favorite, lastUpdateTime, recipient_email_array, title, sender);
         }
  
 
@@ -183,7 +183,7 @@ namespace postServiceLibrary
 		#endregion   
 
 		#region create New post
-        public string NewPost(string session_token,List<string> object_arr,List<string> email_arr, string post_id)
+        public string NewPost(string session_token,List<string> object_arr,List<string> email_arr, string post_id, string title)
         {
             string result = null;
             // verify
@@ -209,7 +209,7 @@ namespace postServiceLibrary
             string event_type = "favorite_shared";
             string favorite = "0";
 
-            string ret_post = _ws.posts_new(session_token, group_id, content, attachment_id_array, preview, type, coverAttach, share_email_list, event_type, favorite, post_id);
+            string ret_post = _ws.posts_new(session_token, group_id, content, attachment_id_array, preview, type, coverAttach, share_email_list, event_type, favorite, post_id, title);
 
 			if (ret_post == null)
 				throw new Exception("new post failed");

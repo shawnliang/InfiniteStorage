@@ -29,7 +29,7 @@ namespace postServiceLibrary
 
 
 		// last_update_time ???
-		public void posts_update(string session_token, string group_id, string post_id, string attachment_id_array, string type, string event_type, string favorite, DateTime last_update_time, string email_list)
+		public void posts_update(string session_token, string group_id, string post_id, string attachment_id_array, string type, string event_type, string favorite, DateTime last_update_time, string email_list, string title, string sender)
 		{
 			log.Info("start Post_update");
 			string _re = null;
@@ -43,6 +43,8 @@ namespace postServiceLibrary
 			favorite = System.Web.HttpUtility.UrlEncode(favorite);
 			var lastUpdateTime = last_update_time.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
 			var emailList = HttpUtility.UrlEncode(email_list);
+			sender = HttpUtility.UrlEncode(sender);
+			title = HttpUtility.UrlEncode(title);
 
             string _url = postServiceClass.serverBaseUrl + "/pio_posts/update";
 			DateTime _update = DateTime.UtcNow;
@@ -63,7 +65,11 @@ namespace postServiceLibrary
 			if (attachment_id_array != null)
 				_parms += "attachment_id_array" + "=" + attachment_id_array + "&";
 
-			_parms += "group_id" + "=" + group_id;
+			if (!string.IsNullOrEmpty(sender))
+				_parms += "sender_name=" + sender + "&";
+
+			if (!string.IsNullOrEmpty(title))
+				_parms += "title=" + title;
 
 
 			WebPostHelper _webPos = new WebPostHelper();
@@ -73,7 +79,7 @@ namespace postServiceLibrary
 		#region new post
 
 		public string posts_new(string session_token, string group_id, string content, string attachment_id_array,
-							   string preview, string type, string coverAttach, string share_email_list, string event_type, string favorite, string post_id)
+							   string preview, string type, string coverAttach, string share_email_list, string event_type, string favorite, string post_id, string title)
 		{
 			log.Info("start Post_new");
 			string _re = null;
@@ -87,6 +93,7 @@ namespace postServiceLibrary
 			share_email_list = System.Web.HttpUtility.UrlEncode(share_email_list);
 			event_type = System.Web.HttpUtility.UrlEncode(event_type);
 			favorite = System.Web.HttpUtility.UrlEncode(favorite);
+			title = System.Web.HttpUtility.UrlEncode(title);
 
             string _url = postServiceClass.serverBaseUrl + "/pio_posts/new";
 
@@ -106,6 +113,9 @@ namespace postServiceLibrary
 
 			if (preview != string.Empty)
 				_parms += "preview" + "=" + preview + "&";
+
+			if (!string.IsNullOrEmpty(title))
+				_parms += "title=" + title + "&";
 
 			if (type == "image")
 			{

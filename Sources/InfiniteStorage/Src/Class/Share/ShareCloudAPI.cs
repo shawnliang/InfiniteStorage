@@ -130,7 +130,9 @@ namespace InfiniteStorage.Share
 				label.share_post_id,
 				files.Select(x => x.file_id.ToString()).ToList(),
 				lastUpdateTime,
-				recipients.Select(x=>x.email).ToList()
+				recipients.Select(x=>x.email).ToList(),
+				label.name,
+				""
 				);
 		}
 	}

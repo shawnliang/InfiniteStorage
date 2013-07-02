@@ -42,7 +42,7 @@ namespace InfiniteStorage.REST
 					{
 						var post_id = Guid.NewGuid().ToString();
 						var api = Cloud.CloudService.CreateCloudAPI();
-						var shared_code = api.NewPost(api.session_token, new List<string>(), new List<string>(), post_id);
+						var shared_code = api.NewPost(api.session_token, new List<string>(), new List<string>(), post_id, label.name);
 
 						label.share_post_id = post_id;
 						label.share_code = shared_code;
