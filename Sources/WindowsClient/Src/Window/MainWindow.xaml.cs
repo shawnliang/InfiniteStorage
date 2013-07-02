@@ -79,6 +79,16 @@ namespace Waveface.Client
 		}
 
 
+		private void StarContent(IEnumerable<IContentEntity> contents)
+		{
+			var selectedContents = contents.OfType<IContent>();
+
+			ClientFramework.Client.Default.Tag(selectedContents);
+
+			RefreshContentArea();
+			RefreshStarFavorite();
+		}
+
 		private void SaveToFavorite(IEnumerable<IContentEntity> contents)
 		{
 			if (!contents.Any())
@@ -174,16 +184,30 @@ namespace Waveface.Client
 
 			ClientFramework.Client.Default.AddToFavorite(contents, favoriteID);
 
-			var index = 1;
+			SelectToFavorite(favoriteID);
+			RefreshSelectedFavorite();
+		}
+
+
+		private void SelectToStarFavorite()
+		{
+			SelectToFavorite("00000000-0000-0000-0000-000000000000");
+		}
+
+		private void SelectToFavorite(string favoriteID)
+		{
+			var favorites = Waveface.ClientFramework.Client.Default.Favorites;
+
+			var index = 0;
 			foreach (var favorite in favorites)
 			{
-				if (favorite.ID == favoriteID)
-					break;
-
-				++index;
+				if (favorite.ID != favoriteID)
+				{
+					++index;
+					continue;
+				}
+				lbxFavorites.SelectedIndex = index;
 			}
-			lbxFavorites.SelectedIndex = index;
-			RefreshSelectedFavorite();
 		}
 
 		private IContentGroup GetCurrentContentGroup()
@@ -652,13 +676,11 @@ namespace Waveface.Client
 
 		private void StarMenuItem_Click(object sender, RoutedEventArgs e)
         {
-			var selectedContents = GetSelectedContents().OfType<IContent>();
+			var selectedContents = GetSelectedContents();
 
-			ClientFramework.Client.Default.Tag(selectedContents);
-
-			RefreshContentArea();
-			RefreshStarFavorite();
+			StarContent(selectedContents);
         }
+
 
 		private void CreateFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -803,6 +825,14 @@ namespace Waveface.Client
 					FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
 
 				var favoriteGroup = item.DataContext as IContentGroup;
+
+				if (favoriteGroup.ID.Equals("00000000-0000-0000-0000-000000000000", StringComparison.CurrentCultureIgnoreCase))
+				{
+					StarContent(contents);
+					SelectToStarFavorite();
+					return;
+				}
+
 				AddToFavorite(favoriteGroup.ID, contents);
 			}
 		}
