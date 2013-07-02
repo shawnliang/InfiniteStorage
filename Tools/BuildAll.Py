@@ -17,8 +17,8 @@ def build_target(solution_dir, target, version, build_num) :
 	# target can be "production", "development", or "staging"
 	
 	if target == "production":
-		target_cfg_file = os.path.join(solution_dir, r"Setup\Package\server.wxi")
-		cfg_file = os.path.join(solution_dir, r"Setup\Package\server_production.wxi")
+		target_cfg_file = os.path.join(solution_dir, r"Setup\Package\server_production.wxi")
+		cfg_file = os.path.join(solution_dir, r"Setup\Package\server.wxi")
 		shutil.copy(target_cfg_file, cfg_file)
 	
 	ret = os.system(r'msbuild.exe "{0}" /t:Rebuild /p:Configuration=Release'.format(os.path.join(solution_dir, r"InfiniteStorage.sln")))
