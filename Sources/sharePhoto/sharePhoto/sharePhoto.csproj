@@ -245,6 +245,16 @@
     <Compile Include="watermarkClass.cs" />
     <Compile Include="Wdata.cs" />
     <Compile Include="WebPostHelper.cs" />
+    <Page Include="..\..\WindowsClient\StringTable.xaml">
+      <Link>StringTable.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\WindowsClient\StringTable.zh-TW.xaml">
+      <Link>StringTable.zh-TW.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

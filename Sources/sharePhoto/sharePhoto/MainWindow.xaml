@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  xmlns:PendingUI="clr-namespace:Wpf_testHTTP"
+        xmlns:PendingUI="clr-namespace:Wpf_testHTTP"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         Title="Sharing ..."
         Width="700"
         Height="620"
@@ -12,16 +13,32 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="ToolWindow">
     <Window.Resources>
-        <!-- Flat Button Style -->
-        <Color x:Key="DefaultColor" A="255" R="240" G ="240" B="240"/>
-        <Color x:Key="HighlightColor" A="255" R="229" G ="229" B="229"/>
-        <Color x:Key="PressedColor" A="255" R="215" G ="215" B="215"/>
+        <!--  Flat Button Style  -->
+        <Color x:Key="DefaultColor"
+               A="255"
+               B="240"
+               G="240"
+               R="240" />
+        <Color x:Key="HighlightColor"
+               A="255"
+               B="229"
+               G="229"
+               R="229" />
+        <Color x:Key="PressedColor"
+               A="255"
+               B="215"
+               G="215"
+               R="215" />
 
-        <SolidColorBrush x:Key="DefaultBrush" Color="#4F4F4F" />
-        <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource HighlightColor}" />
-        <SolidColorBrush x:Key="PressedBrush" Color="{StaticResource PressedColor}" />
+        <SolidColorBrush x:Key="DefaultBrush"
+                         Color="#4F4F4F" />
+        <SolidColorBrush x:Key="HighlightBrush"
+                         Color="{StaticResource HighlightColor}" />
+        <SolidColorBrush x:Key="PressedBrush"
+                         Color="{StaticResource PressedColor}" />
 
-        <Style TargetType="Button" x:Key="FlatButtonStyle">
+        <Style x:Key="FlatButtonStyle"
+               TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
             <Setter Property="BorderThickness" Value="2" />
@@ -29,14 +46,14 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border BorderThickness="{TemplateBinding BorderThickness}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    Background="{TemplateBinding Background}"
-                    Padding="{TemplateBinding Padding}"
-                                
-                    CornerRadius="0">
-                            <ContentControl Content="{TemplateBinding Content}" HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="0"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentControl HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Content="{TemplateBinding Content}" />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -98,56 +115,57 @@
           Background="#5a5a5a">
 
         <TabControl x:Name="myTabControl"
-                        Width="696"
-                        Background="#5a5a5a"
-                        BorderThickness="0">
+                    Width="696"
+                    Background="#5a5a5a"
+                    BorderThickness="0">
             <TabItem x:Name="tab1"
-                         Height="0"
-                         Margin="-2,0,-342,-3"
-                         Header="TabItem">
+                     Height="0"
+                     Margin="-2,0,-342,-3"
+                     Header="TabItem">
                 <Grid Margin="0,0,-4,-12"
-                          Background="#5a5a5a">
+                      Background="#5a5a5a">
                     <!--  <TextBox x:Name="AutoCompleteBox"  HorizontalAlignment="Left" Height="68" Margin="158,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="755" FontSize="18" Background="Black" Foreground="#FF64AEF9" BorderThickness="2,1"/>  -->
                     <Label x:Name="label_debug"
-                               Width="31"
-                               Height="19"
-                               Margin="10,327,0,0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               Background="#FFF9F9F9"
-                               Content="Debug"
-                               FontFamily="Monotype Corsiva"
-                               FontSize="8"
-                               Foreground="#FFF10707"
-                               MouseDown="Label_MouseDown"
-                               Opacity="0.5"
-                               Visibility="Collapsed" />
+                           Width="31"
+                           Height="19"
+                           Margin="10,327,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Background="#FFF9F9F9"
+                           Content="Debug"
+                           FontFamily="Monotype Corsiva"
+                           FontSize="8"
+                           Foreground="#FFF10707"
+                           MouseDown="Label_MouseDown"
+                           Opacity="0.5"
+                           Visibility="Collapsed" />
 
                     <Button x:Name="button1"
-                                Width="116"
-                                Height="32"
-                                Margin="365,527,0,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Click="Button_Click"
-                                Content="Send"
-                                Foreground="White" Style="{DynamicResource FlatButtonStyle}"/>
+                            Width="116"
+                            Height="32"
+                            Margin="365,527,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Click="Button_Click"
+                            Content="{DynamicResource SendButtonText}"
+                            Foreground="White"
+                            Style="{DynamicResource FlatButtonStyle}" />
                     <Label x:Name="label_title"
-                               Width="442"
-                               Height="61"
-                               Margin="86,26,0,0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               Content="Share  Favorite with:"
-                               FontSize="20"
-                               Foreground="#FFFDFDFD" />
+                           Width="442"
+                           Height="61"
+                           Margin="86,26,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="{DynamicResource ShareWithTitle}"
+                           FontSize="20"
+                           Foreground="#FFFDFDFD" />
                     <TextBox x:Name="textBox_return"
-                                 Height="279"
-                                 Margin="10,351,5,0"
-                                 VerticalAlignment="Top"
-                                 TextWrapping="Wrap"
-                                 VerticalScrollBarVisibility="Auto"
-                                 Visibility="Collapsed">
+                             Height="279"
+                             Margin="10,351,5,0"
+                             VerticalAlignment="Top"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto"
+                             Visibility="Collapsed">
                         <TextBox.OpacityMask>
                             <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                                 <GradientStop Offset="0" Color="Black" />
@@ -156,115 +174,134 @@
                         </TextBox.OpacityMask>
                     </TextBox>
                     <Button Width="103"
-                                Height="32"
-                                Margin="500,527,0,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Click="Button_Click_1"
-                                Foreground="White" 
-                                Content="Close" Style="{DynamicResource FlatButtonStyle}" />
+                            Height="32"
+                            Margin="500,527,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Click="Button_Click_1"
+                            Content="{DynamicResource CloseButtonText}"
+                            Foreground="White"
+                            Style="{DynamicResource FlatButtonStyle}" />
                     <Image x:Name="image_gmail"
-                               Width="30"
-                               Height="28"
-                               Margin="87,526,0,0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               Visibility="Collapsed"
-                               Source="images/gmail_64.png" />
+                           Width="30"
+                           Height="28"
+                           Margin="87,526,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Source="images/gmail_64.png"
+                           Visibility="Collapsed" />
                     <Label x:Name="connected_gmail"
-                               Width="154"
-                               Margin="126,526,0,0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               Content="Connected"
-                               FontSize="18"
-                               Foreground="White"
-                               Visibility="Collapsed"/>
+                           Width="154"
+                           Margin="126,526,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Connected"
+                           FontSize="18"
+                           Foreground="White"
+                           Visibility="Collapsed" />
                     <Label x:Name="label_invalid"
-                               Width="235"
-                               Margin="86,160,0,0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               Content="Invalid Email Format"
-                               FontSize="18"
-                               Foreground="White"
-                               Visibility="Collapsed"/>
+                           Width="235"
+                           Margin="86,160,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Invalid Email Format"
+                           FontSize="18"
+                           Foreground="White"
+                           Visibility="Collapsed" />
                     <Label x:Name="label_favorite"
-                               Width="294"
-                               Height="39"
-                               Margin="268,435,0,0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               Content="Favorite Shared!"
-                               FontSize="24"
-                               Foreground="#FFFBF8F8" RenderTransformOrigin="0.507,0.231" Visibility="Collapsed"
-                                />
+                           Width="294"
+                           Height="39"
+                           Margin="268,435,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Favorite Shared!"
+                           FontSize="24"
+                           Foreground="#FFFBF8F8"
+                           RenderTransformOrigin="0.507,0.231"
+                           Visibility="Collapsed" />
                     <Image x:Name="label_pass"
-                               Width="38"
-                               Height="30"
-                               Margin="230,440,0,0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               Source="images/OK_white (1).png" Visibility="Collapsed"
-                                />
+                           Width="38"
+                           Height="30"
+                           Margin="230,440,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Source="images/OK_white (1).png"
+                           Visibility="Collapsed" />
                     <Button x:Name="button_import"
-                                Width="201"
-                                Height="32"
-                                Margin="86,527,0,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Click="button_import_Click"
-                                Content="Import Google Contact"
-                                Foreground="White" Style="{DynamicResource FlatButtonStyle}"/>
+                            Width="201"
+                            Height="32"
+                            Margin="86,527,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Click="button_import_Click"
+                            Content="{DynamicResource ImportContactButtonText}"
+                            Foreground="White"
+                            Style="{DynamicResource FlatButtonStyle}" />
                     <Label x:Name="label_title_Copy"
-                        	Width="235"
-                        	Height="37"
-                        	Margin="86,206,0,0"
-                        	HorizontalAlignment="Left"
-                        	VerticalAlignment="Top"
-                        	Content="Your Name:"
-                        	FontSize="20"
-                        	Foreground="#FFFDFDFD" />
-                    <TextBox x:Name="textbox_name" HorizontalAlignment="Left" Height="37" Margin="86,242,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="523" FontSize="20"/>
+                           Width="235"
+                           Height="37"
+                           Margin="86,206,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="{DynamicResource SenderNameTitle}"
+                           FontSize="20"
+                           Foreground="#FFFDFDFD" />
+                    <TextBox x:Name="textbox_name"
+                             Width="523"
+                             Height="37"
+                             Margin="86,242,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             FontSize="20"
+                             TextWrapping="Wrap" />
                     <Label x:Name="label_title_Copy1"
-                        	Width="235"
-                        	Height="37"
-                        	Margin="86,287                                ,0,0"
-                        	HorizontalAlignment="Left"
-                        	VerticalAlignment="Top"
-                        	Content="Message:"
-                        	FontSize="20"
-                        	Foreground="#FFFDFDFD" />
-                    <TextBox  x:Name="textbox_message" HorizontalAlignment="Left" Height="60" Margin="86,325,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="523" FontSize="20"/>
+                           Width="235"
+                           Height="37"
+                           Margin="86,287                                ,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="{DynamicResource SendMessageTitle}"
+                           FontSize="20"
+                           Foreground="#FFFDFDFD" />
+                    <TextBox x:Name="textbox_message"
+                             Width="523"
+                             Height="60"
+                             Margin="86,325,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             FontSize="20"
+                             TextWrapping="Wrap" />
                     <ListBox x:Name="email_list"
-                                 Margin="86,58,80,463"
-                                 FontSize="20"
                              Height="69"
-                                 Foreground="Black"
-                                 MouseRightButtonDown="email_list_MouseRightButtonDown"
-                                 Opacity=".6"
-                                 ScrollViewer.VerticalScrollBarVisibility="Visible">
+                             Margin="86,58,80,463"
+                             FontSize="20"
+                             Foreground="Black"
+                             MouseRightButtonDown="email_list_MouseRightButtonDown"
+                             Opacity=".6"
+                             ScrollViewer.VerticalScrollBarVisibility="Visible">
                         <ListBox.ContextMenu>
                             <ContextMenu x:Name="cm">
                                 <MenuItem Click="MenuItem_Click"
-                                		Header="Delete"
-                                		IsCheckable="False"
-                                		Opacity="0.6" />
+                                          Header="Delete"
+                                          IsCheckable="False"
+                                          Opacity="0.6" />
                             </ContextMenu>
                         </ListBox.ContextMenu>
                     </ListBox>
                     <Controls:AutoCompleteBox x:Name="AutoCompleteBox"
-                                                  Height="30"
-                                                  
-                                                  Background="White"
-                                                  BorderThickness="2,1"
-                                                  FontSize="18"
-                                                  Foreground="Black"
-                                                  GotFocus="AutoCompleteBox_GotFocus"
-                                                  KeyUp="AutoCompleteBox_KeyDown"
-                                                  MouseLeftButtonUp="AutoCompleteBox_MouseLeftButtonUp"
-                                                  MouseUp="AutoCompleteBox_MouseUp"
-                                                  RenderTransformOrigin="0.5,0.5" Margin="86,128,80,0" VerticalAlignment="Top" PreviewMouseLeftButtonDown="AutoCompleteBox_PreviewMouseLeftButtonDown">
+                                              Height="30"
+                                              Margin="86,128,80,0"
+                                              VerticalAlignment="Top"
+                                              Background="White"
+                                              BorderThickness="2,1"
+                                              FontSize="18"
+                                              Foreground="Black"
+                                              GotFocus="AutoCompleteBox_GotFocus"
+                                              KeyUp="AutoCompleteBox_KeyDown"
+                                              MouseLeftButtonUp="AutoCompleteBox_MouseLeftButtonUp"
+                                              MouseUp="AutoCompleteBox_MouseUp"
+                                              PreviewMouseLeftButtonDown="AutoCompleteBox_PreviewMouseLeftButtonDown"
+                                              RenderTransformOrigin="0.5,0.5">
                         <Controls:AutoCompleteBox.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
@@ -274,7 +311,8 @@
                             </TransformGroup>
                         </Controls:AutoCompleteBox.RenderTransform>
                         <Controls:AutoCompleteBox.Style>
-                            <Style TargetType="Controls:AutoCompleteBox" BasedOn="{StaticResource {x:Type Controls:AutoCompleteBox}}">
+                            <Style BasedOn="{StaticResource {x:Type Controls:AutoCompleteBox}}"
+                                   TargetType="Controls:AutoCompleteBox">
                                 <Style.Triggers>
                                     <Trigger Property="PendingUI:WatermarkTextBehavior.IsWatermarked" Value="True">
                                         <Setter Property="Foreground" Value="White" />
@@ -290,20 +328,30 @@
                 </Grid>
             </TabItem>
             <TabItem x:Name="tab2"
-                         Height="0"
-                         VerticalAlignment="Top"
-                         BorderBrush="#FFB6B0B0"
-                         BorderThickness="0"
-                         Header="TabItem" Margin="0,-4,0,-2">
+                     Height="0"
+                     Margin="0,-4,0,-2"
+                     VerticalAlignment="Top"
+                     BorderBrush="#FFB6B0B0"
+                     BorderThickness="0"
+                     Header="TabItem">
 
                 <Grid Margin="-3,-10,-6,0"
-                          Background="#FFB6B0B0">
+                      Background="#FFB6B0B0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="38" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <WebBrowser x:Name="wb1" Margin="-2,0,14,-4"  Grid.Row="1" />
-                    <Image HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="34" Source="images/back.png" Grid.Row="0" Margin="1,2,0,0" MouseLeftButtonDown="Image_MouseLeftButtonDown" />
+                    <WebBrowser x:Name="wb1"
+                                Grid.Row="1"
+                                Margin="-2,0,14,-4" />
+                    <Image Grid.Row="0"
+                           Width="34"
+                           Height="34"
+                           Margin="1,2,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           MouseLeftButtonDown="Image_MouseLeftButtonDown"
+                           Source="images/back.png" />
                 </Grid>
 
             </TabItem>

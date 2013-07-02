@@ -58,6 +58,7 @@ namespace Waveface.Client
 				)
 				.Window(TimeSpan.FromMilliseconds(50))
 				.SelectMany(x => x.TakeLast(1))
+				.SubscribeOn(ThreadPoolScheduler.Instance)
 				.ObserveOn(DispatcherScheduler.Current)
 				.Subscribe(ex =>
 				{
@@ -71,11 +72,14 @@ namespace Waveface.Client
                 )
                 .Window(TimeSpan.FromMilliseconds(50))
                 .SelectMany(x => x.TakeLast(1))
+				.SubscribeOn(ThreadPoolScheduler.Instance)
 				.ObserveOn(DispatcherScheduler.Current)
                 .Subscribe(ex =>
                 {
 					lbxFavorites_SelectionChanged(lbxFavorites, ex);
                 });
+
+		
 
             uiDelayTimer = new DispatcherTimer();
             uiDelayTimer.Tick += uiDelayTimer_Tick;
@@ -252,8 +256,7 @@ namespace Waveface.Client
             group.Refresh();
 
 
-			string unSortedNodeText = (string)Application.Current.FindResource("UnsortedNodeText");
-			if (group.ID.Equals("unSortedNodeText", StringComparison.CurrentCultureIgnoreCase))
+			if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
             {
                 TryDisplayUnsortedTutorial();
 
@@ -282,11 +285,6 @@ namespace Waveface.Client
 
             lbxContentContainer.ContextMenu.Visibility = System.Windows.Visibility.Collapsed;
 
-            lblContentLocation.DataContext = group;
-            lbxContentContainer.DataContext = group.Contents;
-            SetContentTypeCount(group);
-
-
             Grid.SetColumnSpan(gdContentArea, 2);
 
             btnFavoriteAll.Visibility = Visibility.Visible;
@@ -296,6 +294,10 @@ namespace Waveface.Client
             rspRightSidePane2.Visibility = System.Windows.Visibility.Collapsed;
 
             lbxFavorites.SelectedItem = null;
+
+			lblContentLocation.DataContext = group;
+			lbxContentContainer.DataContext = group.Contents;
+			SetContentTypeCount(group);
         }
 
         private void TryDisplayUnsortedTutorial()
@@ -373,7 +375,7 @@ namespace Waveface.Client
 
 			SetContentTypeCount(group);
 
-            lbxContentContainer.DataContext = group.Contents;
+          
 
             var contextMenu = lbxContentContainer.ContextMenu;
             contextMenu.IsOpen = false;
@@ -392,6 +394,7 @@ namespace Waveface.Client
                 lbxDeviceContainer.ClearSelection();
             }
 
+			lbxContentContainer.DataContext = group.Contents;
 
             if (rspRightSidePanel.Visibility == Visibility.Visible)
             {
