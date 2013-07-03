@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Windows;
 using Microsoft.Win32;
 using System.Threading;
+using System.Windows.Media.Animation;
 
 namespace Waveface.Client
 {
@@ -43,6 +44,8 @@ namespace Waveface.Client
 				{
 				}
 			}
+
+			Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata { DefaultValue = 30 });
 		}
 	}
 }
