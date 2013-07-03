@@ -52,7 +52,9 @@ namespace InfiniteStorage
 				this.Enabled = false;
 
 				Station.Stop();
-				
+				NginxUtility.Instance.Stop();
+				Thread.Sleep(3000);
+
 				var bgworker = new BackgroundWorker();
 				bgworker.DoWork += new DoWorkEventHandler(bgworker_DoWork);
 				bgworker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bgworker_RunWorkerCompleted);
@@ -75,14 +77,7 @@ namespace InfiniteStorage
 
 			closeClientProgram();
 
-			NginxUtility.Instance.Stop();
-			Thread.Sleep(3000);
-
 			Station.MoveFolder(e.Argument as string);
-
-			NginxUtility.Instance.PrepareNginxConfig(12888, Settings.Default.SingleFolderLocation);
-			NginxUtility.Instance.Start();
-
 			e.Result = e.Argument;
 		}
 
@@ -106,6 +101,8 @@ namespace InfiniteStorage
 			}
 			
 			Station.Start();
+			NginxUtility.Instance.PrepareNginxConfig(12888, Settings.Default.SingleFolderLocation);
+			NginxUtility.Instance.Start();
 
 			Cursor.Current = Cursors.Default;
 			this.Enabled = true;		
