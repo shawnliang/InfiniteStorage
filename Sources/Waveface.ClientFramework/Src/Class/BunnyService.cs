@@ -12,6 +12,25 @@ namespace Waveface.ClientFramework
 		private BunnyUnsortedContentGroup unsorted;
 		private Timer timer;
 		private bool timerStarted;
+		private bool _isRecving;
+
+
+		public bool IsRecving
+		{
+			get
+			{
+				return _isRecving;
+			}
+
+			set
+			{
+				if (_isRecving != value)
+				{
+					_isRecving = value;
+					OnPropertyChanged("IsRecving");
+				}
+			}
+		}
 
 		public BunnyService(IServiceSupplier supplier, string devFolderName, string deviceId)
 			: base(deviceId, supplier, devFolderName)
