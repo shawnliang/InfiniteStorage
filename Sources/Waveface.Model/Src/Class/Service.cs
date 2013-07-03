@@ -177,6 +177,10 @@ namespace Waveface.Model
 			{
 				m_ObservableContents.Clear();
 				func(m_ObservableContents);
+
+				foreach (var content in m_ObservableContents)
+					(content as ContentEntity).Service = this;
+
 				return m_ObservableContents;
 			});
 

@@ -146,6 +146,11 @@ namespace Waveface.ClientFramework
 			m_Favorites.AddRange(GetFavorites());
 		}
 
+		public void Delete(IEnumerable<string> ids = null, IEnumerable<string> paths = null)
+		{
+			StationAPI.Delete(ids, paths);
+		}
+
 		public void UnTag(string contentID)
 		{
 			UnTag(StarredLabelId, contentID);

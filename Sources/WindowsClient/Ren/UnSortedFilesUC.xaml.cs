@@ -743,6 +743,7 @@ namespace Waveface.Client
 			public string ID { get; set; }
 			public string Name { get; set; }
 			public Uri Uri { get; set; }
+			public IService Service { get; set; }
 			public IContentEntity Parent { get; set; }
 			public string ContentPath { get; set; }
 			public Image Image { get; set; }

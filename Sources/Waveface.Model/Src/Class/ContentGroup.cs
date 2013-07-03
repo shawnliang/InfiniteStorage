@@ -120,6 +120,9 @@ namespace Waveface.Model
 			{
 				contents.Clear();
 				func(contents);
+
+				foreach (var content in contents)
+					(content as ContentEntity).Service = this.Service;
 			};
 		}
 

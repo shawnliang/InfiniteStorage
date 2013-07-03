@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
@@ -18,6 +20,7 @@ namespace Waveface.ClientFramework
 		private const string PORT = "14005";
 		private const string API_BASE_URL = @"http://127.0.0.1:" + PORT;
 		private const string LABEL_API_BASE_URL = API_BASE_URL + @"/label";
+		private const string MANIPULATION_API_BASE_URL = API_BASE_URL + @"/manipulation";
 		#endregion
 
 
@@ -157,6 +160,24 @@ namespace Waveface.ClientFramework
 				{"label_id", labelID},
 				{"enabled", isShared? "true": "false"}
 			});
+		}
+
+		public static string Delete(IEnumerable<string> ids = null, IEnumerable<string> paths = null)
+		{
+			var uri = MANIPULATION_API_BASE_URL + "/delete";
+
+			var parameters = new NameValueCollection();
+
+			if (ids != null && ids.Any())
+				parameters.Add("ids", string.Join(",", ids));
+
+			if (paths != null && paths.Any())
+				parameters.Add("paths", string.Join(",", paths));
+
+			if (parameters.Count == 0)
+				return null;
+
+			return Post(uri, parameters);
 		}
 		#endregion
 	}

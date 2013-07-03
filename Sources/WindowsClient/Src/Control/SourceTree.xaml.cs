@@ -13,6 +13,7 @@ namespace Waveface.Client
 	{
 		#region Event
 		public event EventHandler TreeViewItemClick;
+		public event EventHandler DeleteSourceInvoked;
 		#endregion
 
 		public SourceTree()
@@ -52,6 +53,9 @@ namespace Waveface.Client
 
 		private void UserControl_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
+			if (e.ChangedButton != System.Windows.Input.MouseButton.Left)
+				return;
+
 			var tv = sender as TreeView;
 
 			var item = tv.ItemContainerGenerator.ContainerFromItem(tv.SelectedItem) as TreeViewItem;
@@ -67,5 +71,17 @@ namespace Waveface.Client
 			e.Handled = true;
 		}
 
+		protected void OnDeleteSourceInvoked(EventArgs e)
+		{
+			if (DeleteSourceInvoked == null)
+				return;
+
+			DeleteSourceInvoked(this, e);
+		}
+
+		private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
+		{
+			OnDeleteSourceInvoked(EventArgs.Empty);
+		}
 	}
 }
