@@ -98,6 +98,8 @@ namespace InfiniteStorage
 				Microsoft.Win32.Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", e.Result);
 			}
 
+			NginxUtility.Instance.PrepareNginxConfig(12888, Settings.Default.SingleFolderLocation);
+			NginxUtility.Instance.Start();
 
 			Station.Start();
 
