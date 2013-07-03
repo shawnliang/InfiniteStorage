@@ -36,7 +36,8 @@ public class InitDownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected void onPostExecute(Void result) {
 		RuntimeState.isDownloadingLabel = false;
-		DownloadLogic.subscribe(mContext);
+		mContext.sendBroadcast(new Intent(
+				Constant.ACTION_LABEL_INIT_DOWNLOAD_DONE));
 		if(LabelDB.needToSyncLabel(mContext)){
 			mContext.sendBroadcast(new Intent(
 					Constant.ACTION_LABEL_CHANGE_NOTIFICATION));

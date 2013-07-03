@@ -122,6 +122,7 @@ public class PlayerService extends Service{
 		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_CONNECTED);
 		filter.addAction(Constant.ACTION_WEB_SOCKET_SERVER_DISCONNECTED);
 		filter.addAction(Constant.ACTION_LABEL_CHANGE_NOTIFICATION);
+		filter.addAction(Constant.ACTION_LABEL_INIT_DOWNLOAD_DONE);
 		registerReceiver(mReceiver, filter);
 		
 		connectPCWithPairedServer();
@@ -223,6 +224,9 @@ public class PlayerService extends Service{
 				else{
 					subcribeLabel();
 				}
+			}
+			else if (Constant.ACTION_LABEL_INIT_DOWNLOAD_DONE.equals(action)) {
+				subcribeLabel();
 			}
 			else if(Constant.ACTION_WEB_SOCKET_SERVER_DISCONNECTED.equals(action)){
 				RuntimeState.OnWebSocketOpened = false;
