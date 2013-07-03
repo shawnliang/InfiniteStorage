@@ -65,6 +65,8 @@ public class PlayerService extends Service{
 	private static final int MSG_SETUP_BONJOUR = 1;
 	private static final int MSG_RELEASE_BONJOUR = 2;	
 	private static final int MSG_WEBSOCKET_CONNECT = 3;	
+	private static final int MSG_WEBSOCKET_SUBSCRIBE = 4;	
+	
 
 	private ServerEntity mCandidateServer = null;
 	private SharedPreferences mPrefs ;
@@ -150,6 +152,17 @@ public class PlayerService extends Service{
 		}
 	}
 
+	
+	public void subcribeLabel(){
+		initServiceHandlerAndThread();
+		try {
+			Message.obtain(mServiceHandler, MSG_WEBSOCKET_SUBSCRIBE)
+					.sendToTarget();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void startupBonjourPaired(){
 		initServiceHandlerAndThread();
 		try {
@@ -208,7 +221,7 @@ public class PlayerService extends Service{
 					new InitDownloadLabelsTask(mContext).execute(new Void[]{});					
 				}
 				else{
-					DownloadLogic.subscribe(mContext);
+					subcribeLabel();
 				}
 			}
 			else if(Constant.ACTION_WEB_SOCKET_SERVER_DISCONNECTED.equals(action)){
@@ -449,6 +462,9 @@ public class PlayerService extends Service{
 							mCandidateServer.notifyPort,
 							mCandidateServer.restPort
 							,autoConnect==1?true:false);
+					break;
+				case MSG_WEBSOCKET_SUBSCRIBE:
+					DownloadLogic.subscribe(mContext);
 					break;
 			}
 		}
