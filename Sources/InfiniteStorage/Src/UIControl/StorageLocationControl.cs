@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using Microsoft.Win32;
 using System.Diagnostics;
+using System.Threading;
 
 namespace InfiniteStorage
 {
@@ -74,7 +75,13 @@ namespace InfiniteStorage
 
 			closeClientProgram();
 
+			NginxUtility.Instance.Stop();
+			Thread.Sleep(3000);
+
 			Station.MoveFolder(e.Argument as string);
+
+			NginxUtility.Instance.PrepareNginxConfig(12888, Settings.Default.SingleFolderLocation);
+			NginxUtility.Instance.Start();
 
 			e.Result = e.Argument;
 		}
@@ -97,10 +104,7 @@ namespace InfiniteStorage
 				Settings.Default.Save();
 				Microsoft.Win32.Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", e.Result);
 			}
-
-			NginxUtility.Instance.PrepareNginxConfig(12888, Settings.Default.SingleFolderLocation);
-			NginxUtility.Instance.Start();
-
+			
 			Station.Start();
 
 			Cursor.Current = Cursors.Default;
