@@ -159,34 +159,37 @@ namespace Wpf_testHTTP
 
             // get ini for refreshkey
             iniParser parser = new iniParser();
-           
-            parser.IniParser(iniPath);  //appStartPath + @"\sharefavorite.ini");
-            RefreshKey_saved = parser.GetSetting("Setup", "refreshkey");
-            //
-            RefreshKey_real = parser.GetSetting("Setup", "refreshkey_real");
-            if (RefreshKey_real != "")
-            {
-                bool result = get_accesstokenfromrefreshtoken();
-                if (result == true)              // exchange refresh token with refresh token
-                {
-                    RefreshKey_saved = access_token;
-                }
-            }
-            AutoCompleteBox.Focusable = true;
-            Keyboard.Focus(AutoCompleteBox);
-            //
-            if (RefreshKey_saved == "")
-            {
-                if (initialState == true)
-                {
-                    myTabControl.SelectedIndex = 0;
-                }
-                else
-                {
-                    myTabControl.SelectedIndex = 1;
-                }
-            } 
-            service_oauth();
+
+			if (File.Exists(iniPath))
+			{
+				parser.IniParser(iniPath);  //appStartPath + @"\sharefavorite.ini");
+				RefreshKey_saved = parser.GetSetting("Setup", "refreshkey");
+				//
+				RefreshKey_real = parser.GetSetting("Setup", "refreshkey_real");
+				if (RefreshKey_real != "")
+				{
+					bool result = get_accesstokenfromrefreshtoken();
+					if (result == true)              // exchange refresh token with refresh token
+					{
+						RefreshKey_saved = access_token;
+					}
+				}
+				AutoCompleteBox.Focusable = true;
+				Keyboard.Focus(AutoCompleteBox);
+				//
+				if (RefreshKey_saved == "")
+				{
+					if (initialState == true)
+					{
+						myTabControl.SelectedIndex = 0;
+					}
+					else
+					{
+						myTabControl.SelectedIndex = 1;
+					}
+				}
+				service_oauth();
+			}
         }
 
 
