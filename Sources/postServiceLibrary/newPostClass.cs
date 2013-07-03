@@ -54,6 +54,7 @@ namespace postServiceLibrary
 				"apikey" + "=" + APIKEY + "&" +
 				"session_token" + "=" + session_token + "&" +
 				"type" + "=" + type + "&" +
+				"group_id=" + group_id + "&" + 
 				"favorite" + "=" + favorite + "&" +
 				"update_time" + "=" + _dateStr + "&" +
 				"event_type" + "=" + event_type + "&" + 
