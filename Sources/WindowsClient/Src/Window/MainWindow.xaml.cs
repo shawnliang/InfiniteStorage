@@ -686,7 +686,7 @@ namespace Waveface.Client
         private void rspRightSidePanel_SaveToFavorite(object sender, System.EventArgs e)
         {
 			SaveToFavorite(lbxContentContainer.Items.OfType<IContentEntity>());
-            }
+        }
 
 
 
@@ -917,6 +917,21 @@ namespace Waveface.Client
 		private void lbxDeviceContainer_DeleteSourceInvoked(object sender, EventArgs e)
 		{
 			DelectSelectedFolder();
+		}
+
+		private void lbxDeviceContainer_CreateFavoriteInvoked(object sender, EventArgs e)
+		{
+			SaveToFavorite(lbxContentContainer.Items.OfType<IContentEntity>());
+		}
+
+		private void lbxDeviceContainer_AddToFavoriteInvoked(object sender, EventArgs e)
+		{
+			AddToFavorite(lbxContentContainer.Items.OfType<IContentEntity>());
+		}
+
+		private void lbxDeviceContainer_StarInvoked(object sender, EventArgs e)
+		{
+			StarContent(lbxContentContainer.Items.OfType<IContentEntity>());
 		}
     }
 }

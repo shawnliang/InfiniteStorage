@@ -425,7 +425,10 @@
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                       VirtualizingStackPanel.IsVirtualizing="True"
                                       VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                      DeleteSourceInvoked="lbxDeviceContainer_DeleteSourceInvoked" />
+                                      DeleteSourceInvoked="lbxDeviceContainer_DeleteSourceInvoked"
+                                      CreateFavoriteInvoked="lbxDeviceContainer_CreateFavoriteInvoked"
+                                      AddToFavoriteInvoked="lbxDeviceContainer_AddToFavoriteInvoked"
+                                      StarInvoked="lbxDeviceContainer_StarInvoked" />
                 </Grid>
                 <GridSplitter Grid.Column="0"
                               Height="5"

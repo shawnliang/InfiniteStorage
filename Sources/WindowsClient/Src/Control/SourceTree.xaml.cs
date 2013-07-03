@@ -13,6 +13,9 @@ namespace Waveface.Client
 	{
 		#region Event
 		public event EventHandler TreeViewItemClick;
+		public event EventHandler StarInvoked;
+		public event EventHandler CreateFavoriteInvoked;
+		public event EventHandler AddToFavoriteInvoked;
 		public event EventHandler DeleteSourceInvoked;
 		#endregion
 
@@ -76,6 +79,32 @@ namespace Waveface.Client
 			e.Handled = true;
 		}
 
+		protected void OnStarInvoked(EventArgs e)
+		{
+			if (StarInvoked == null)
+				return;
+
+			StarInvoked(this, e);
+		}
+
+
+		protected void OnCreateFavoriteInvoked(EventArgs e)
+		{
+			if (CreateFavoriteInvoked == null)
+				return;
+
+			CreateFavoriteInvoked(this, e);
+		}
+
+
+		protected void OnAddToFavoriteInvoked(EventArgs e)
+		{
+			if (AddToFavoriteInvoked == null)
+				return;
+
+			AddToFavoriteInvoked(this, e);
+		}
+
 		protected void OnDeleteSourceInvoked(EventArgs e)
 		{
 			if (DeleteSourceInvoked == null)
@@ -83,6 +112,23 @@ namespace Waveface.Client
 
 			DeleteSourceInvoked(this, e);
 		}
+
+		private void StarMenuItem_Click(object sender, RoutedEventArgs e)
+		{
+			OnStarInvoked(EventArgs.Empty);
+		}
+
+
+		private void CreateFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
+		{
+			OnCreateFavoriteInvoked(EventArgs.Empty);
+		}
+
+		private void AddToFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
+		{
+			OnAddToFavoriteInvoked(EventArgs.Empty);
+		}
+
 
 		private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
 		{
