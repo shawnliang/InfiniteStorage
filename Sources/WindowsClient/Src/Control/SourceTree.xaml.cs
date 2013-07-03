@@ -35,6 +35,8 @@ namespace Waveface.Client
 
 			if (recvIcon.Visibility == System.Windows.Visibility.Visible)
 			{
+				Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata { DefaultValue = 30 });
+
 				var da = new DoubleAnimation(0, 360, new Duration(TimeSpan.FromSeconds(1.0)));
 				var rotate = new RotateTransform();
 
@@ -45,7 +47,12 @@ namespace Waveface.Client
 			}
 			else
 			{
-				// QUESTION: need to stop animation????? CPU is a little bit high ....
+				var rotate = recvIcon.RenderTransform as RotateTransform;
+				if (rotate == null)
+					return;
+
+				rotate.BeginAnimation(RotateTransform.AngleProperty, null);
+			
 				recvIcon.RenderTransform = null;
 			}
 		}

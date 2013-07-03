@@ -16,7 +16,6 @@ namespace Waveface.Model
 		private string _name;
 		private IServiceSupplier _supplier;
 		private ObservableCollection<IContentEntity> _observableContents;
-		private bool _isRecving;
 		#endregion
 
 
@@ -50,23 +49,6 @@ namespace Waveface.Model
 
 
 		#region Public Property
-		public bool IsRecving
-		{
-			get
-			{
-				return _isRecving;
-			}
-
-			set
-			{
-				if (_isRecving != value)
-				{
-					_isRecving = value;
-					OnPropertyChanged("IsRecving");
-				}
-			}
-		}
-
 		public virtual string ID
 		{
 			get

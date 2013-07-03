@@ -26,8 +26,6 @@ namespace Waveface.Model
 		IEnumerable<IContentEntity> Contents { get; }
 
 		string Description { get; }
-
-		bool IsRecving { get; }
 		#endregion
 
 		#region Event
