@@ -220,18 +220,21 @@ namespace Waveface.Client
 			if (folder == null)
 				return;
 
+			var service = folder.Service;
 			Waveface.ClientFramework.Client.Default.Delete(null, new string[] { folder.Uri.LocalPath });
 			RefreshFavorites();
 
-			folder.Service.Refresh();
+			service.Refresh();
+
+			var contents = service.Contents;
 
 			EmptyContentArea();
 		}
 
 		private void EmptyContentArea()
 		{
-			lbxDeviceContainer.DataContext = null;
-			lbxFavorites.DataContext = null;
+			lbxContentContainer.DataContext = null;
+			lblContentLocation.DataContext = null;
 		}
 
 		private void DelectSelectedContents()
