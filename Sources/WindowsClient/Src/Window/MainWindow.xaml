@@ -293,14 +293,14 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="Selector.IsSelected" Value="True">
-                                <Setter Property="Background" Value="Blue" />
+                                <Setter Property="Background"
+                                        Value="#FF2E2E2E" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-
 
         <SolidColorBrush x:Key="TitleBarBackground"
                          Color="#FF2E2E2E" />
@@ -418,13 +418,14 @@
 
                     <local:SourceTree x:Name="lbxDeviceContainer"
                                       Grid.Row="1"
-                                      BorderBrush="{x:Null}"
-                                      Drop="Sources_Drop"
-                                      DragEnter="Sources_DragEnter"
                                       AllowDrop="True"
+                                      BorderBrush="{x:Null}"
+                                      DragEnter="Sources_DragEnter"
+                                      Drop="Sources_Drop"
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                       VirtualizingStackPanel.IsVirtualizing="True"
-                                      VirtualizingStackPanel.VirtualizationMode="Recycling" />
+                                      VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                      DeleteSourceInvoked="lbxDeviceContainer_DeleteSourceInvoked" />
                 </Grid>
                 <GridSplitter Grid.Column="0"
                               Height="5"
@@ -444,10 +445,11 @@
                            Foreground="#FFA8A8A8" />
                     <local:FavoriteListBox x:Name="lbxFavorites"
                                            Grid.Row="1"
-                                           Drop="Favorites_Drop"
-                                           DragEnter="Favorites_DragEnter"
                                            AllowDrop="True"
-                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                                           DragEnter="Favorites_DragEnter"
+                                           Drop="Favorites_Drop"
+                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                           DeleteFavoriteInvoked="lbxFavorites_DeleteFavoriteInvoked" />
                 </Grid>
 
                 <StackPanel x:Name="stackPanel"
@@ -527,12 +529,12 @@
                          ItemsSource="{Binding IsAsync=True}"
                          KeyDown="lbxContentContainer_KeyDown"
                          MouseDoubleClick="OnPhotoClick"
+                         PreviewMouseLeftButtonDown="List_PreviewMouseLeftButtonDown"
+                         PreviewMouseMove="List_MouseMove"
                          SelectedIndex="0"
                          SelectionMode="Extended"
                          VirtualizingStackPanel.IsVirtualizing="True"
-                         VirtualizingStackPanel.VirtualizationMode="Recycling"
-                         PreviewMouseLeftButtonDown="List_PreviewMouseLeftButtonDown"
-                         PreviewMouseMove="List_MouseMove">
+                         VirtualizingStackPanel.VirtualizationMode="Recycling">
                     <ListBox.Style>
                         <StaticResource ResourceKey="PhotoListBoxStyle" />
                     </ListBox.Style>

@@ -89,28 +89,15 @@ namespace Waveface.Client
 			RefreshStarFavorite();
 		}
 
-		public bool SaveToFavorite(IEnumerable<IContentEntity> contents)
+
+		private void RefreshFavorites()
 		{
-			if (!contents.Any())
+			foreach (var favorite in Waveface.ClientFramework.Client.Default.Favorites.OfType<IContentGroup>())
 			{
-				string text = (string)Application.Current.FindResource("WithoutContentMessageText");
-
-				MessageBox.Show(text);
-				return false;
+				favorite.Refresh();
 			}
-
-			var dialog = new CreateFavoriteDialog();
-			dialog.Owner = this;
-			dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-
-			if (dialog.ShowDialog() != true)
-				return false;
-
-			ClientFramework.Client.Default.SaveToFavorite(contents, dialog.FavoriteName);
-			lbxFavorites.SelectedIndex = lbxFavorites.Items.Count - 1;
-
-			return true;
 		}
+
 
 		private void RefreshFavorite(IContentGroup favorite)
 		{
@@ -222,9 +209,87 @@ namespace Waveface.Client
 			var group = GetCurrentContentGroup();
 			return lbxContentContainer.SelectedItems.OfType<IContentEntity>().ToArray();
 		}
+
+
+		private void DelectSelectedFolder()
+		{
+			var folder = lbxDeviceContainer.SelectedItem as IContentGroup;
+
+			if (folder == null)
+				return;
+
+			Waveface.ClientFramework.Client.Default.Delete(null, new string[] { folder.Uri.LocalPath });
+			RefreshFavorites();
+
+			folder.Service.Refresh();
+
+			EmptyContentArea();
+		}
+
+		private void EmptyContentArea()
+		{
+			lbxDeviceContainer.DataContext = null;
+			lbxFavorites.DataContext = null;
+		}
+
+		private void DelectSelectedContents()
+		{
+			var selectedContents = GetSelectedContents();
+
+			DelectContents(selectedContents);
+		}
+
+		private void DelectContents(IEnumerable<IContentEntity> contents)
+		{
+			var contentIDs = contents.Select(content => content.ID);
+
+			DeleteContents(contentIDs);
+		}
+
+		private void DeleteContents(IEnumerable<string> contentIDs)
+		{
+			Waveface.ClientFramework.Client.Default.Delete(contentIDs);
+			RefreshContentArea();
+			RefreshFavorites();
+		}
+
+		private void DeleteCurrentFavorite()
+		{
+			var group = GetCurrentContentGroup();
+			ClientFramework.Client.Default.RemoveFavorite(group.ID);
+
+			lbxFavorites.SelectedIndex = 0;
+		}
 		#endregion
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+
+		#region Public Method
+		public bool SaveToFavorite(IEnumerable<IContentEntity> contents)
+		{
+			if (!contents.Any())
+			{
+				string text = (string)Application.Current.FindResource("WithoutContentMessageText");
+
+				MessageBox.Show(text);
+				return false;
+			}
+
+			var dialog = new CreateFavoriteDialog();
+			dialog.Owner = this;
+			dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+
+			if (dialog.ShowDialog() != true)
+				return false;
+
+			ClientFramework.Client.Default.SaveToFavorite(contents, dialog.FavoriteName);
+			lbxFavorites.SelectedIndex = lbxFavorites.Items.Count - 1;
+
+			return true;
+		}
+		#endregion
+
+
+		private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.lbxDeviceContainer.DataContext = Waveface.ClientFramework.Client.Default.Services;
 
@@ -670,11 +735,10 @@ namespace Waveface.Client
 
         private void rspRightSidePane2_DeleteButtonClick(object sender, System.EventArgs e)
         {
-			var group = GetCurrentContentGroup();
-            ClientFramework.Client.Default.RemoveFavorite(group.ID);
-
-            lbxFavorites.SelectedIndex = 0;
+			DeleteCurrentFavorite();
         }
+
+
 
 		private void StarMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -700,8 +764,9 @@ namespace Waveface.Client
 
         private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
         {
-
+			DelectSelectedContents();
         }
+
 
 		private void UnTagMenuItem_Click(object sender, RoutedEventArgs e)
 		{
@@ -837,6 +902,16 @@ namespace Waveface.Client
 
 				AddToFavorite(favoriteGroup.ID, contents);
 			}
+		}
+
+		private void lbxFavorites_DeleteFavoriteInvoked(object sender, EventArgs e)
+		{
+			DeleteCurrentFavorite();
+		}
+
+		private void lbxDeviceContainer_DeleteSourceInvoked(object sender, EventArgs e)
+		{
+			DelectSelectedFolder();
 		}
     }
 }

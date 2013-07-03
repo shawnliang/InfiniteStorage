@@ -19,6 +19,12 @@
           mc:Ignorable="d">
 
     <TreeView.Resources>
+
+        <ContextMenu x:Key="SourceContextMenu">
+            <MenuItem Click="DeleteMenuItem_Click"
+                      Header="Delete" />
+        </ContextMenu>
+
         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
                          Color="Transparent" />
         <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
@@ -204,7 +210,14 @@
                             <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedIcon}" />
                             <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
                             <Setter TargetName="item" Property="Background" Value="#d5d5d5" />
+                            <Setter TargetName="item" Property="ContextMenu" Value="{StaticResource SourceContextMenu}" />
                             <Setter TargetName="sourceCount" Property="Foreground" Value="Black" />
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem},
+                                                       Path=DataContext.ID}"
+                                     Value="Unsorted">
+                            <Setter TargetName="item" Property="ContextMenu" Value="{x:Null}" />
                         </DataTrigger>
 
                         <MultiDataTrigger>

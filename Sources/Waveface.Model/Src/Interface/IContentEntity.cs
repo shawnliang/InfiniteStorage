@@ -32,6 +32,9 @@ namespace Waveface.Model
 		Uri Uri { get; }
 
 
+		IService Service { get; }
+
+
 		/// <summary>
 		/// Gets the parent.
 		/// </summary>
