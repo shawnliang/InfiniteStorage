@@ -464,6 +464,7 @@ namespace Waveface.Client
 		private void lbEvent_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			startPoint = e.GetPosition(null);
+
 			/*
 			if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
 			{
@@ -482,7 +483,6 @@ namespace Waveface.Client
 
 		private void lbEvent_MouseMove(object sender, MouseEventArgs e)
 		{
-			/*
 			// Get the current mouse position
 			Point _mousePos = e.GetPosition(null);
 			Vector _diff = startPoint - _mousePos;
@@ -491,16 +491,21 @@ namespace Waveface.Client
 				(Math.Abs(_diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
 				Math.Abs(_diff.Y) > SystemParameters.MinimumVerticalDragDistance))
 			{
-				//ListBox list = sender as ListBox;
-				//ListBoxItem item = FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
+				Point _clickPoint = e.GetPosition(lbEvent);
 
-				List<ContentEntity> _contents = UnSortedFilesUC.Current.Sub_GetAllSelectedFiles_ContentEntitys(); 
+				object _htElement = lbEvent.InputHitTest(_clickPoint);
 
-				// Initialize the drag & drop operation
+				if (_htElement != null)
+				{
+					ListBoxItem _clickedListBoxItem = GetVisualParent<ListBoxItem>(_htElement, 6);
+					_clickedListBoxItem.IsSelected = true;
+				}
+
+				List<ContentEntity> _contents = UnSortedFilesUC.Current.Sub_GetAllSelectedFiles_ContentEntitys();
+
 				DataObject _dragData = new DataObject(typeof(IEnumerable<IContentEntity>), _contents);
 				DragDrop.DoDragDrop(this, _dragData, DragDropEffects.Move);
 			}
-			*/
 		}
 
 		#endregion
