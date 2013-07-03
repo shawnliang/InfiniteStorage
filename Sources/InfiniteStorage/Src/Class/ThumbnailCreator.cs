@@ -81,6 +81,11 @@ namespace InfiniteStorage
 					file.height = height;
 					successFiles.Add(file);
 				}
+				catch (BadBitmapException e)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn(file.file_path + "is a bad image. delete it", e);
+					deleteFile(file);
+				}
 				catch (Exception e)
 				{
 					log4net.LogManager.GetLogger(GetType()).Warn("Unable to generate thumbnail: " + file.saved_path, e);
@@ -91,6 +96,38 @@ namespace InfiniteStorage
 
 			if (successFiles.Any())
 				from = successFiles.Max(x => x.seq);
+		}
+
+		private void deleteFile(PendingFile file)
+		{
+			try{
+				var file_path = Path.Combine(MyFileFolder.Pending, file.saved_path);
+				File.Delete(file_path);
+			}
+			catch(Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("Unable to delete a file", err);
+			}
+
+			try
+			{
+				using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
+				{
+					conn.Open();
+
+					using (var cmd = conn.CreateCommand())
+					{
+						cmd.CommandText = "update PendingFiles set deleted = 1 where file_id = @file";
+						cmd.Prepare();
+						cmd.Parameters.Add(new SQLiteParameter("@file", file.file_id));
+						cmd.ExecuteNonQuery();
+					}
+				}
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("Unable to mark pending file record deleted", err);
+			}
 		}
 
 		private void extractStillImage(PendingFile file)
@@ -166,7 +203,7 @@ namespace InfiniteStorage
 			var file_path = Path.Combine(MyFileFolder.Pending, file.saved_path);
 
 			using (var m = readFilesToMemory(file_path))
-			using (var fullImage = new Bitmap(m))
+			using (var fullImage = createBitmap(m))
 			{
 				width = fullImage.Width;
 				height = fullImage.Height;
@@ -230,6 +267,18 @@ namespace InfiniteStorage
 				{
 					fullImage.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".tiny.thumb"), ImageFormat.Jpeg);
 				}
+			}
+		}
+
+		private Bitmap createBitmap(Stream m)
+		{
+			try
+			{
+				return new Bitmap(m);
+			}
+			catch (Exception err)
+			{
+				throw new BadBitmapException("Bad image", err);
 			}
 		}
 
