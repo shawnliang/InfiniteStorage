@@ -84,11 +84,13 @@ public class InitDownloadLabelsTask extends AsyncTask<Void, Void, Void> {
 						LabelImportedEvent.STATUS_SETTING);
 				int fileCount = 0;
 				for(Label label : entity.labels) {
-					fileCount += label.files.length;
+					if(TextUtils.isEmpty(label.on_air) == false 
+							&& label.on_air.equals("true")){
+						fileCount += label.files.length;
+					}
 				}
 				syncingEvent.totalFile = fileCount;
 				EventBus.getDefault().post(syncingEvent);
-				
 				
 				mEditor.putString(Constant.PREF_HOME_SHARING_STATUS, entity.home_sharing);
 				mEditor.commit();
