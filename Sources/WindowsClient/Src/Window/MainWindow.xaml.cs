@@ -126,14 +126,14 @@ namespace Waveface.Client
 			SetContentTypeCount(group);
 		}
 
-		private void AddToFavorite(IEnumerable<IContentEntity> contents)
+		public bool AddToFavorite(IEnumerable<IContentEntity> contents)
 		{
 			if (!contents.Any())
 			{
 				string text = (string)Application.Current.FindResource("WithoutContentMessageText");
 
 				MessageBox.Show(text);
-				return;
+				return false;
 			}
 
 			var favorites = Waveface.ClientFramework.Client.Default.Favorites.Skip(1);
@@ -143,7 +143,7 @@ namespace Waveface.Client
 				string text = (string)Application.Current.FindResource("NoExistingFavoriteMessageText");
 
 				MessageBox.Show(text);
-				return;
+				return false;
 			}
 
 			var dialog = new AddToFavoriteDialog();
@@ -153,10 +153,12 @@ namespace Waveface.Client
 			dialog.FavoriteItemSource = favorites;
 
 			if (dialog.ShowDialog() != true)
-				return;
+				return false;
 
 			var selectedFavorite = (dialog.SelectedFavorite as IContentGroup);
 			AddToFavorite(selectedFavorite.ID, contents);
+
+			return true;
 		}
 
 		private void AddToFavorite(string favoriteID, IEnumerable<IContentEntity> contents)

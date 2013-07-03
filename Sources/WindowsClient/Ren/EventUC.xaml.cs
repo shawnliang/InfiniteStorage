@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Waveface.Model;
 
 #endregion
 
@@ -35,6 +36,8 @@ namespace Waveface.Client
 
 		private string m_defaultEventName;
 		private bool m_doSelectAll;
+
+		Point startPoint;
 
 		public string DescribeText
 		{
@@ -350,6 +353,16 @@ namespace Waveface.Client
 			}
 		}
 
+		private void miAddToFavorite_Click(object sender, RoutedEventArgs e)
+		{
+			bool _ret = UnSortedFilesUC.Current.Sub_AddToFavorite();
+
+			if (_ret)
+			{
+				UnSortedFilesUC.Current.Sub_SelectAll(false);
+			}
+		}
+
 		private void miMoveToFolder_Click(object sender, RoutedEventArgs e)
 		{
 			bool _ret = UnSortedFilesUC.Current.Sub_MoveToFolder();
@@ -450,6 +463,7 @@ namespace Waveface.Client
 
 		private void lbEvent_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
+			startPoint = e.GetPosition(null);
 			/*
 			if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
 			{
@@ -464,6 +478,29 @@ namespace Waveface.Client
 			{
 				UnSortedFilesUC.Current.Sub_SelectionChanged();
 			}
+		}
+
+		private void lbEvent_MouseMove(object sender, MouseEventArgs e)
+		{
+			/*
+			// Get the current mouse position
+			Point _mousePos = e.GetPosition(null);
+			Vector _diff = startPoint - _mousePos;
+
+			if (e.LeftButton == MouseButtonState.Pressed &&
+				(Math.Abs(_diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+				Math.Abs(_diff.Y) > SystemParameters.MinimumVerticalDragDistance))
+			{
+				//ListBox list = sender as ListBox;
+				//ListBoxItem item = FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
+
+				List<ContentEntity> _contents = UnSortedFilesUC.Current.Sub_GetAllSelectedFiles_ContentEntitys(); 
+
+				// Initialize the drag & drop operation
+				DataObject _dragData = new DataObject(typeof(IEnumerable<IContentEntity>), _contents);
+				DragDrop.DoDragDrop(this, _dragData, DragDropEffects.Move);
+			}
+			*/
 		}
 
 		#endregion

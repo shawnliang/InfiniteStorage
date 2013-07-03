@@ -129,6 +129,7 @@
                      PreviewMouseRightButtonUp="lbEvent_PreviewMouseRightButtonUp"
                      PreviewMouseRightButtonDown="lbEvent_PreviewMouseRightButtonDown"
                      PreviewMouseLeftButtonDown="lbEvent_PreviewMouseLeftButtonDown"
+                     MouseMove="lbEvent_MouseMove"
                      SelectionChanged="lbEvent_SelectionChanged">
                 >
                 <ListBox.ContextMenu>
@@ -138,6 +139,7 @@
                         <Separator />
                         <MenuItem x:Name="miMoveToFolder" Header="Move to Folder" Click="miMoveToFolder_Click" />
                         <MenuItem x:Name="miSaveToFavorite" Header="Save To Favorite" Click="miSaveToFavorite_Click"/>
+                        <MenuItem x:Name="miAddToFavorite" Header="Add To Favorite" Click="miAddToFavorite_Click"/>
                         <MenuItem x:Name="miSelectAllInThisEvent" Header="Select All Items in this event" Click="miSelectAllInThisEvent_Click"/>
                         <MenuItem x:Name="miDeselectAllInThisEvent" Header="Deselect All Items in this event" Click="miDeselectAllInThisEvent_Click" />
                     </ContextMenu>

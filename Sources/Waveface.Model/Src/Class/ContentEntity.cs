@@ -34,7 +34,7 @@ namespace Waveface.Model
 			{
 				return _id ?? string.Empty;
 			}
-			protected set
+			set
 			{
 				if (_id == value)
 					return;
