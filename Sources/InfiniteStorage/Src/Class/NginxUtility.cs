@@ -49,6 +49,9 @@ namespace InfiniteStorage
 				}
 			}
 
+			var escaped_log_dir = log_dir.Replace("\'", @"\'");
+			var escaped_temp_dir = temp_dir.Replace("\'", @"\'");
+			var escaped_orig_file_dir = origFileDir.Replace("\'", @"\'");
 			using (var template = new StreamReader(Path.Combine(nginx_dir, @"conf\nginx.conf.template")))
 			using (var target_cfg = new StreamWriter(Path.Combine(MyFileFolder.AppData, "nginx.cfg")))
 			{
@@ -57,16 +60,16 @@ namespace InfiniteStorage
 					var line = template.ReadLine();
 
 					line = line.Replace("${listen}", port.ToString());
-					line = line.Replace("${root}", origFileDir);
-					line = line.Replace("${access_log}", Path.Combine(log_dir, "access.log"));
-					line = line.Replace("${error_log}", Path.Combine(log_dir, "error.log"));
-					line = line.Replace("${pid}", Path.Combine(log_dir, "pid.file"));
+					line = line.Replace("${root}", escaped_orig_file_dir);
+					line = line.Replace("${access_log}", Path.Combine(escaped_log_dir, "access.log"));
+					line = line.Replace("${error_log}", Path.Combine(escaped_log_dir, "error.log"));
+					line = line.Replace("${pid}", Path.Combine(escaped_log_dir, "pid.file"));
 
-					line = line.Replace("${client_body_temp_path}", temp_dir);
-					line = line.Replace("${proxy_temp_path}", temp_dir);
-					line = line.Replace("${fastcgi_temp_path}", temp_dir);
-					line = line.Replace("${uwsgi_temp_path}", temp_dir);
-					line = line.Replace("${scgi_temp_path}", temp_dir);
+					line = line.Replace("${client_body_temp_path}", escaped_temp_dir);
+					line = line.Replace("${proxy_temp_path}", escaped_temp_dir);
+					line = line.Replace("${fastcgi_temp_path}", escaped_temp_dir);
+					line = line.Replace("${uwsgi_temp_path}", escaped_temp_dir);
+					line = line.Replace("${scgi_temp_path}", escaped_temp_dir);
 
 					if (Settings.Default.HomeSharingPasswordRequired)
 					{

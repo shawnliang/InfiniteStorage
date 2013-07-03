@@ -216,6 +216,10 @@ namespace InfiniteStorage
 			m_autoUpdate.Stop();
 			m_ReRegBonjourTimer.Stop();
 			m_shareMonitor.Stop();
+			
+			backup_server.Stop();
+			notify_server.Stop();
+			pair_server.Stop();
 		}
 
 		private void reregisterBonjour(object nil)
@@ -330,13 +334,12 @@ namespace InfiniteStorage
 
 			if (Directory.Exists(target))
 			{
-				var dir = new DirectoryInfo(target);
-				var isEmpty = dir.GetFileSystemInfos().Any();
+				var hasContent = Directory.GetFileSystemEntries(target).Any();
 
-				if (isEmpty)
-					dir.Delete();
-				else
+				if (hasContent)
 					throw new Exception(string.Format(Resources.MoveFolder_TargetAlreadyExist, target));
+				else
+					Directory.Delete(target);
 			}
 
 			if (Path.GetPathRoot(source) == Path.GetPathRoot(target))

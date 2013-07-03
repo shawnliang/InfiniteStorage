@@ -87,8 +87,14 @@ namespace InfiniteStorage
 
 				if (!Directory.Exists(Settings.Default.SingleFolderLocation))
 					Directory.CreateDirectory(Settings.Default.SingleFolderLocation);
-
+			}
+			try
+			{
 				NginxUtility.Instance.PrepareNginxConfig(12888, Settings.Default.SingleFolderLocation);
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger("main").Warn("Unable to write nginx config", err);
 			}
 
 			if (string.IsNullOrEmpty(Settings.Default.LibraryName))
