@@ -66,7 +66,7 @@ namespace Waveface.ClientFramework
 			{
 				cmd.CommandText =
 				   "select file_id, file_name, type from Files " +
-				   "where parent_folder = @parent and device_id = @dev " +
+				   "where parent_folder = @parent and device_id = @dev and deleted = 0 " +
 				   "order by event_time";
 
 				cmd.Parameters.Add(new SQLiteParameter("@parent", Path.Combine(this.parentFolder, this.Name)));
