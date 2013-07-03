@@ -616,7 +616,7 @@ namespace Waveface.Client
 
 		#region Misc
 
-		public void SelectAll(bool flag)
+		public void Sub_SelectAll(bool flag)
 		{
 			foreach (EventUC _eventUc in listBoxEvent.Items)
 			{
@@ -624,7 +624,19 @@ namespace Waveface.Client
 			}
 		}
 
-		public bool SaveToFavorite()
+		public void Sub_SelectionChanged()
+		{
+			int _sum = 0;
+
+			foreach (EventUC _eventUc in listBoxEvent.Items)
+			{
+				_sum += _eventUc.GetSelectedFiles().Count;
+			}
+			
+			Console.WriteLine("Sub_SelectionChanged: " + _sum);
+		}
+
+		public bool Sub_SaveToFavorite()
 		{
 			List<FileChange> _allFileChanges = new List<FileChange>();
 			List<ContentEntity> _contentEntitys = new List<ContentEntity>();
@@ -642,7 +654,7 @@ namespace Waveface.Client
 			return m_mainWindow.SaveToFavorite(_contentEntitys);
 		}
 
-		public bool MoveToFolder()
+		public bool Sub_MoveToFolder()
 		{
 			List<FileChange> _allFileChanges = new List<FileChange>();
 

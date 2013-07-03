@@ -59,7 +59,7 @@
         <PendingUI:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
     </UserControl.Resources>
 
-    <Grid x:Name="gridMain" Background="#3F3F3F" MouseEnter="gridMain_MouseEnter" MouseLeave="gridMain_MouseLeave">
+    <Grid x:Name="gridMain" Background="#3F3F3F" MouseEnter="gridMain_MouseEnter" MouseLeave="gridMain_MouseLeave" MouseDown="gridMain_MouseDown" >
         <i:Interaction.Behaviors>
             <PendingUI:IgnoreMouseWheelBehavior />
         </i:Interaction.Behaviors>
@@ -126,8 +126,10 @@
                      ItemContainerStyle="{StaticResource SimpleListBoxItem}" 
                      SelectionMode="Multiple"
                      Loaded="lbEvent_Loaded"
-                     PreviewMouseRightButtonUp="ListBox_PreviewMouseRightButtonUp"
-                     PreviewMouseRightButtonDown="ListBox_PreviewMouseRightButtonDown">
+                     PreviewMouseRightButtonUp="lbEvent_PreviewMouseRightButtonUp"
+                     PreviewMouseRightButtonDown="lbEvent_PreviewMouseRightButtonDown"
+                     PreviewMouseLeftButtonDown="lbEvent_PreviewMouseLeftButtonDown"
+                     SelectionChanged="lbEvent_SelectionChanged">
                 >
                 <ListBox.ContextMenu>
                     <ContextMenu x:Name="contextMenu">
@@ -156,10 +158,10 @@
                                     <Image Source="{Binding Path=BitmapImage}" Width="48" Margin="3" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                     Height="36" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" />
 
-                                    <Image Source="pack://application:,,,/Ren/Images/checkmark.png" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=IsSelected}"
-                                        Stretch="Uniform" Width="40" Height="40" Margin="-8"  HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                    <!--Image Source="pack://application:,,,/Ren/Images/checkmark.png" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=IsSelected}"
+                                        Stretch="Uniform" Width="40" Height="40" Margin="-8"  HorizontalAlignment="Right" VerticalAlignment="Top"/-->
 
-                                    <Rectangle Fill="#44000000" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/>
+                                    <Border BorderBrush="#aa0094FF" Padding="2"  BorderThickness="6" CornerRadius="0.5" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/>
                                 </Grid>
                             </Border>
                         </StackPanel>

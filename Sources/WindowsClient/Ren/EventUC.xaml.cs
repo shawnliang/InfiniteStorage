@@ -34,6 +34,7 @@ namespace Waveface.Client
 		public int PhotosCount { get; set; }
 
 		private string m_defaultEventName;
+		private bool m_doSelectAll;
 
 		public string DescribeText
 		{
@@ -58,6 +59,11 @@ namespace Waveface.Client
 		public EventUC()
 		{
 			InitializeComponent();
+		}
+
+		private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			ChangeSize();
 		}
 
 		public void SetUI()
@@ -217,16 +223,6 @@ namespace Waveface.Client
 			}
 		}
 
-		private void lbEvent_Loaded(object sender, RoutedEventArgs e)
-		{
-			ChangeSize();
-		}
-
-		private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
-		{
-			ChangeSize();
-		}
-
 		private void ChangeSize()
 		{
 			List<Size> _sizes = new List<Size>();
@@ -317,93 +313,56 @@ namespace Waveface.Client
 			}
 		}
 
-		#region Utility
+		#region btn/ mi
 
-		public string GetPrettyDate(DateTime date)
+		private void btnImport_Click(object sender, RoutedEventArgs e)
 		{
-			// 1. Get time span elapsed since the date.
-			TimeSpan _s = DateTime.Now.Subtract(date);
+			UnSortedFilesUC.Current.AddEventToFolder(this);
+		}
 
-			// 2. Get total number of days elapsed.
-			Int32 _dayDiff = (Int32)_s.TotalDays;
+		private void miSelectAllInThisEvent_Click(object sender, RoutedEventArgs e)
+		{
+			SelectAll(true);
+		}
 
-			// 3. Get total number of seconds elapsed.
-			Int32 _secDiff = (Int32)_s.TotalSeconds;
+		private void miDeselectAllInThisEvent_Click(object sender, RoutedEventArgs e)
+		{
+			SelectAll(false);
+		}
 
-			// 4. Handle same-day times.
-			if (_dayDiff == 0)
+		private void miSelectAll_Click(object sender, RoutedEventArgs e)
+		{
+			UnSortedFilesUC.Current.Sub_SelectAll(true);
+		}
+
+		private void miDeselectAll_Click(object sender, RoutedEventArgs e)
+		{
+			UnSortedFilesUC.Current.Sub_SelectAll(false);
+		}
+
+		private void miSaveToFavorite_Click(object sender, RoutedEventArgs e)
+		{
+			bool _ret = UnSortedFilesUC.Current.Sub_SaveToFavorite();
+
+			if (_ret)
 			{
-				// A. Less than one minute ago.
-				if (_secDiff < 60)
-				{
-					return "just now";
-				}
-
-				// B. Less than 2 minutes ago.
-				if (_secDiff < 120)
-				{
-					return "1 minute ago";
-				}
-
-				// C.Less than one hour ago.
-				if (_secDiff < 3600)
-				{
-					return String.Format("{0} minutes ago", Math.Floor((double)_secDiff / 60));
-				}
-
-				// D. Less than 2 hours ago.
-				if (_secDiff < 7200)
-				{
-					return "1 hour ago";
-				}
-
-				// E. Less than one day ago.
-				if (_secDiff < 86400)
-				{
-					return String.Format("{0} hours ago", Math.Floor((double)_secDiff / 3600));
-				}
+				UnSortedFilesUC.Current.Sub_SelectAll(false);
 			}
+		}
 
-			// 6. Handle previous days.
-			if (_dayDiff == 1)
+		private void miMoveToFolder_Click(object sender, RoutedEventArgs e)
+		{
+			bool _ret = UnSortedFilesUC.Current.Sub_MoveToFolder();
+
+			if (_ret)
 			{
-				return "yesterday";
+				UnSortedFilesUC.Current.Sub_SelectAll(false);
 			}
-
-			if (_dayDiff == 2)
-			{
-				return "2 days ago";
-			}
-
-			if (_dayDiff < 7)
-			{
-				return String.Format("{0} days ago", _dayDiff);
-			}
-
-			if (_dayDiff < 14)
-			{
-				return "last week";
-			}
-
-			if (_dayDiff < 21)
-			{
-				return "2 weeks ago";
-			}
-
-			return "over 2 weeks ago";
 		}
 
 		#endregion
 
-		private void tbDescribe_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			TextBox _textbox = sender as TextBox;
-			string _invalid = new string(Path.GetInvalidFileNameChars());
-			Regex _rex = new Regex("[" + Regex.Escape(_invalid) + "]");
-			_textbox.Text = _rex.Replace(_textbox.Text, "");
-
-			_textbox.CaretIndex = _textbox.Text.Length;
-		}
+		#region gridMain
 
 		private void gridMain_MouseEnter(object sender, MouseEventArgs e)
 		{
@@ -424,10 +383,14 @@ namespace Waveface.Client
 			lbEvent.Background = new SolidColorBrush(Color.FromRgb(63, 63, 63)); //3F3F3F
 		}
 
-		private void btnImport_Click(object sender, RoutedEventArgs e)
+		private void gridMain_MouseDown(object sender, MouseButtonEventArgs e)
 		{
-			UnSortedFilesUC.Current.AddEventToFolder(this);
+			UnSortedFilesUC.Current.Sub_SelectAll(false);
 		}
+
+		#endregion
+
+		#region tbDescribe
 
 		private void tbDescribe_MouseEnter(object sender, MouseEventArgs e)
 		{
@@ -440,7 +403,26 @@ namespace Waveface.Client
 			tbDescribe.Background = new SolidColorBrush(Color.FromRgb(74, 74, 74));
 		}
 
-		private void ListBox_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+		private void tbDescribe_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			TextBox _textbox = sender as TextBox;
+			string _invalid = new string(Path.GetInvalidFileNameChars());
+			Regex _rex = new Regex("[" + Regex.Escape(_invalid) + "]");
+			_textbox.Text = _rex.Replace(_textbox.Text, "");
+
+			_textbox.CaretIndex = _textbox.Text.Length;
+		}
+
+		#endregion
+
+		#region lbEvent
+
+		private void lbEvent_Loaded(object sender, RoutedEventArgs e)
+		{
+			ChangeSize();
+		}
+
+		private void lbEvent_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
 		{
 			Point _clickPoint = e.GetPosition(lbEvent);
 
@@ -454,7 +436,6 @@ namespace Waveface.Client
 				{
 					if (_clickedListBoxItem.IsSelected)
 					{
-						//contextMenu.Visibility = Visibility.Visible;
 						contextMenu.PlacementTarget = _clickedListBoxItem;
 					}
 				}
@@ -462,37 +443,44 @@ namespace Waveface.Client
 
 		}
 
-		private void ListBox_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+		private void lbEvent_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			//contextMenu.Visibility = Visibility.Collapsed;
-
 			e.Handled = true;
 		}
 
-		public T GetVisualParent<T>(object childObject, int level) where T : Visual
+		private void lbEvent_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			DependencyObject _child = childObject as DependencyObject;
-
-			int k = 0;
-
-			while ((_child != null) && !(_child is T))
+			/*
+			if (!(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
 			{
-				_child = VisualTreeHelper.GetParent(_child);
-
-				if (++k == level)
-					break;
+				UnSortedFilesUC.Current.Sub_SelectAll(false);
 			}
-
-			return _child as T;
+			*/
 		}
+
+		private void lbEvent_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (!m_doSelectAll)
+			{
+				UnSortedFilesUC.Current.Sub_SelectionChanged();
+			}
+		}
+
+		#endregion
 
 		public void SelectAll(bool flag)
 		{
+			m_doSelectAll = true;
+
 			for (int i = 0; i < lbEvent.Items.Count; i++)
 			{
 				ListBoxItem _lbi = lbEvent.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
 				_lbi.IsSelected = flag;
 			}
+
+			m_doSelectAll = false;
+
+			UnSortedFilesUC.Current.Sub_SelectionChanged();
 		}
 
 		public List<FileChange> GetSelectedFiles()
@@ -512,44 +500,25 @@ namespace Waveface.Client
 			return _fileChanges;
 		}
 
-		private void miSelectAllInThisEvent_Click(object sender, RoutedEventArgs e)
-		{
-			SelectAll(true);
-		}
+		#region Misc
 
-		private void miDeselectAllInThisEvent_Click(object sender, RoutedEventArgs e)
+		public T GetVisualParent<T>(object childObject, int level) where T : Visual
 		{
-			SelectAll(false);
-		}
+			DependencyObject _child = childObject as DependencyObject;
 
-		private void miSelectAll_Click(object sender, RoutedEventArgs e)
-		{
-			UnSortedFilesUC.Current.SelectAll(true);
-		}
+			int k = 0;
 
-		private void miDeselectAll_Click(object sender, RoutedEventArgs e)
-		{
-			UnSortedFilesUC.Current.SelectAll(false);
-		}
-
-		private void miSaveToFavorite_Click(object sender, RoutedEventArgs e)
-		{
-			bool _ret = UnSortedFilesUC.Current.SaveToFavorite();
-
-			if (_ret)
+			while ((_child != null) && !(_child is T))
 			{
-				UnSortedFilesUC.Current.SelectAll(false);
+				_child = VisualTreeHelper.GetParent(_child);
+
+				if (++k == level)
+					break;
 			}
+
+			return _child as T;
 		}
 
-		private void miMoveToFolder_Click(object sender, RoutedEventArgs e)
-		{
-			bool _ret = UnSortedFilesUC.Current.MoveToFolder();
-
-			if (_ret)
-			{
-				UnSortedFilesUC.Current.SelectAll(false);
-			}
-		}
+		#endregion
 	}
 }

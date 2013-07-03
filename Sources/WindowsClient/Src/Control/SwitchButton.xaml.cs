@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿#region
+
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
+#endregion
 
 namespace Waveface.Client
 {
@@ -19,16 +15,28 @@ namespace Waveface.Client
 	public partial class SwitchButton : UserControl
 	{
 		#region Var
-		public static readonly DependencyProperty _isOn = DependencyProperty.Register("IsOn", typeof(bool), typeof(SwitchButton), new UIPropertyMetadata(false, new PropertyChangedCallback(OnIsOnChanged)));
+
+		public static readonly DependencyProperty _isOn = DependencyProperty.Register("IsOn", typeof (bool), typeof (SwitchButton), new UIPropertyMetadata(false, OnIsOnChanged));
+
 		#endregion
 
 		#region Property
+
+		public string OffText
+		{
+			set { lblOffText.Content = value; }
+			get { return lblOffText.Content.ToString(); }
+		}
+
+		public string OnText
+		{
+			set { lblOnText.Content = value; }
+			get { return lblOnText.Content.ToString(); }
+		}
+
 		public bool IsOn
 		{
-			get
-			{
-				return (bool)GetValue(_isOn);
-			}
+			get { return (bool) GetValue(_isOn); }
 			set
 			{
 				if (IsOn == value)
@@ -44,23 +52,26 @@ namespace Waveface.Client
 				OnIsOnStatusChanged(EventArgs.Empty);
 			}
 		}
-		#endregion
 
+		#endregion
 
 		#region Event
-		public event EventHandler IsOnStatusChanged;
-		#endregion
 
+		public event EventHandler IsOnStatusChanged;
+
+		#endregion
 
 		#region Constructor
+
 		public SwitchButton()
 		{
-			this.InitializeComponent();
-		} 
+			InitializeComponent();
+		}
+
 		#endregion
 
-
 		#region Protected Method
+
 		protected void OnIsOnStatusChanged(EventArgs e)
 		{
 			if (IsOnStatusChanged == null)
@@ -68,50 +79,53 @@ namespace Waveface.Client
 
 			IsOnStatusChanged(this, e);
 		}
-		#endregion
 
+		#endregion
 
 		#region Public Method
+
 		public void Toggle()
 		{
-			this.IsOn = !this.IsOn;
+			IsOn = !IsOn;
 		}
+
 		#endregion
 
-
 		#region Event Process
+
 		private static void OnIsOnChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (o == null)
 				return;
 			var obj = o as SwitchButton;
-			obj.IsOn = (bool)e.NewValue;
+			obj.IsOn = (bool) e.NewValue;
 		}
 
-		private void epOffButton_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void epOffButton_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			Toggle();
 		}
 
-		private void epOnButton_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void epOnButton_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			Toggle();
 		}
 
-		private void Rectangle_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void Rectangle_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			Toggle();
 		}
 
-		private void lblOffText_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void lblOffText_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			Toggle();
 		}
 
-		private void lblOnText_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void lblOnText_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			Toggle();
-		} 
+		}
+
 		#endregion
 	}
 }
