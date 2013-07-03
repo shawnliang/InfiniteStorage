@@ -20,7 +20,8 @@ namespace InfiniteStorage.REST
 			var filesToDelete = getFiles(file_ids);
 			filesToDelete.AddRange(getFilesFromFolders(folders));
 
-			var pendingDeleteFiles = moveFilesToRecycleBin(filesToDelete);
+			List<AbstractFileToManipulate> notDeletedFiles;
+			var pendingDeleteFiles = moveFilesToRecycleBin(filesToDelete, out notDeletedFiles);
 
 			markAsDeleted(pendingDeleteFiles);
 
@@ -33,7 +34,18 @@ namespace InfiniteStorage.REST
 			var deletedFolders = deleteFoldersIfEmpty(folders);
 			deleteFolderRecords(deletedFolders);
 
-			respondSuccess();
+			respondSuccess(new
+			{
+				api_ret_code = 0,
+				api_ret_message = "success",
+				status = 200,
+
+				deleted_files = pendingDeleteFiles.Select(x => x.file_id).ToList(),
+				not_deleted_files = notDeletedFiles.Select(x => x.file_id).ToList(),
+				deleted_folders = deletedFolders.Select(x => Path.Combine(MyFileFolder.Photo, x)).ToList(),
+				not_deleted_folders = folders.Except(deletedFolders).Select(x => Path.Combine(MyFileFolder.Photo, x)).ToList(),
+				affected_labels = affectedLabels
+			});
 
 			deleteFiles(pendingDeleteFiles);
 		}
@@ -220,7 +232,7 @@ namespace InfiniteStorage.REST
 			}
 		}
 
-		private List<AbstractFileToManipulate> moveFilesToRecycleBin(List<AbstractFileToManipulate> filesToDelete)
+		private List<AbstractFileToManipulate> moveFilesToRecycleBin(List<AbstractFileToManipulate> filesToDelete, out List<AbstractFileToManipulate> notDeletedFiles)
 		{
 			var recycleBinPath = Path.Combine(MyFileFolder.Photo, ".recycleBin");
 			if (!Directory.Exists(recycleBinPath))
@@ -230,6 +242,7 @@ namespace InfiniteStorage.REST
 				dir.Attributes |= FileAttributes.Hidden;
 			}
 
+			notDeletedFiles = new List<AbstractFileToManipulate>();
 			var pendingDeleteItems = new List<AbstractFileToManipulate>();
 
 			foreach (var file in filesToDelete)
@@ -252,6 +265,7 @@ namespace InfiniteStorage.REST
 				catch (Exception err)
 				{
 					log4net.LogManager.GetLogger(GetType()).Warn("Unable to move file: " + file.saved_full_path, err);
+					notDeletedFiles.Add(file);
 				}
 			}
 			return pendingDeleteItems;
