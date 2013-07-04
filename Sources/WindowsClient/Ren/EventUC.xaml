@@ -144,13 +144,6 @@
                      MouseMove="lbEvent_MouseMove"
                      SelectionChanged="lbEvent_SelectionChanged">
                 >
-                <ListBox.ContextMenu>
-                    <ContextMenu x:Name="contextMenu">
-                        <MenuItem x:Name="miSelectAllInThisEvent" Header="Select All Items in this event" Click="miSelectAllInThisEvent_Click"/>
-                        <MenuItem x:Name="miDeselectAllInThisEvent" Header="Deselect All Items in this event" Click="miDeselectAllInThisEvent_Click" />
-                    </ContextMenu>
-                </ListBox.ContextMenu>
-
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>

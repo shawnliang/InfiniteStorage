@@ -316,20 +316,6 @@ namespace Waveface.Client
 			}
 		}
 
-		#region btn/ mi
-
-		private void miSelectAllInThisEvent_Click(object sender, RoutedEventArgs e)
-		{
-			SelectAll(true);
-		}
-
-		private void miDeselectAllInThisEvent_Click(object sender, RoutedEventArgs e)
-		{
-			SelectAll(false);
-		}
-
-		#endregion
-
 		#region gridMain
 
 		private void gridMain_MouseEnter(object sender, MouseEventArgs e)
@@ -408,11 +394,9 @@ namespace Waveface.Client
 				{
 					if (_clickedListBoxItem.IsSelected)
 					{
-						contextMenu.PlacementTarget = _clickedListBoxItem;
 					}
 				}
 			}
-
 		}
 
 		private void lbEvent_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
