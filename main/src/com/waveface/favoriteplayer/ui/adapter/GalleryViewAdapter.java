@@ -16,6 +16,8 @@ import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.SyncApplication;
 import com.waveface.favoriteplayer.entity.PlaybackData;
+import com.waveface.favoriteplayer.entity.ServerEntity;
+import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.ui.widget.SquareImageView;
 import com.waveface.favoriteplayer.util.Log;
 
@@ -25,8 +27,9 @@ public class GalleryViewAdapter extends BaseAdapter{
 	private ArrayList<PlaybackData> mDatas;
 	private ImageManager mImageManager;
 	private int mImageSize;
-	
+	private Context mContext;
 	public GalleryViewAdapter(Context context, ArrayList<PlaybackData> datas) {
+		mContext =context;
 		mInflater = LayoutInflater.from(context);
 		mDatas = datas;
 		mImageManager = SyncApplication.getWavefacePlayerApplication(context).getImageManager();
@@ -61,7 +64,14 @@ public class GalleryViewAdapter extends BaseAdapter{
 		
 		//Display Image
 		if(Constant.FILE_TYPE_VIDEO.equals(mDatas.get(position).type)) {
-			mImageManager.getLocalVideoThumbnail(mDatas.get(position).url, attr);
+			String fileId =mDatas.get(position).fileId;
+			ArrayList<ServerEntity> servers = ServersLogic.getPairedServer(mContext);
+			ServerEntity pairedServer = servers.get(0);
+			String restfulAPIURL = "http://" + pairedServer.ip + ":"
+					+ pairedServer.restPort;
+			String url = restfulAPIURL + Constant.URL_IMAGE
+					+ "/" + fileId + Constant.URL_IMAGE_MEDIUM;	
+			mImageManager.getImage(url, attr);
 			root.findViewById(R.id.image_play).setVisibility(View.VISIBLE);
 		} else {
 			Log.d(TAG, "get image:" + mDatas.get(position).url);

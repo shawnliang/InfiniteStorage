@@ -19,6 +19,8 @@ import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.SyncApplication;
 import com.waveface.favoriteplayer.entity.OverviewData;
+import com.waveface.favoriteplayer.entity.ServerEntity;
+import com.waveface.favoriteplayer.logic.ServersLogic;
 import com.waveface.favoriteplayer.util.FileUtil;
 
 public class OverviewAdapter extends BaseAdapter{
@@ -161,8 +163,13 @@ public class OverviewAdapter extends BaseAdapter{
 		
 		if(Constant.FILE_TYPE_VIDEO.equals(data.fileType)) {
 			holder.placeholder.setVisibility(View.VISIBLE);
-			coverUrl = mFilePath + data.filename;
+			
+			coverUrl =data.url;
+			mImageManager.getImage(coverUrl, attr);
+			attr.setResizeSize(mChildWidth, mChildHeight);
+//			coverUrl = mFilePath + data.filename;
 			mImageManager.getLocalVideoThumbnail(coverUrl, attr);
+			
 		}
 		else{
 			holder.placeholder.setVisibility(View.INVISIBLE);

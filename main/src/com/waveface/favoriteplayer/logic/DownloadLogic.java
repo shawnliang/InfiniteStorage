@@ -119,9 +119,12 @@ public class DownloadLogic {
 					if (StringUtil.isAvaiableSpace(context,
 							Constant.AVAIABLE_SPACE)) {
 						if (type.equals(Constant.FILE_TYPE_VIDEO)) {
+//							String url = restfulAPIURL + Constant.URL_IMAGE
+//									+ "/" + fileId + "/"
+//									+ Constant.URL_IMAGE_ORIGIN;
 							String url = restfulAPIURL + Constant.URL_IMAGE
-									+ "/" + fileId + "/"
-									+ Constant.URL_IMAGE_ORIGIN;
+							+ "/" + fileId + Constant.URL_IMAGE_MEDIUM;							
+							
 							String fullFilename = root.getAbsolutePath()
 									+ Constant.VIDEO_FOLDER + "/" + fileName;
 							if (!FileUtil.isFileExisted(fullFilename)) {
@@ -136,6 +139,7 @@ public class DownloadLogic {
 							if(!FileUtil.isFileExisted(fullFilename)){
 								LabelDB.updateFileStatus(context, fileId, Constant.FILE_STATUS_DELETE);
 							}
+
 						} else {
 							String url = restfulAPIURL + Constant.URL_IMAGE
 									+ "/" + fileId + Constant.URL_IMAGE_LARGE;

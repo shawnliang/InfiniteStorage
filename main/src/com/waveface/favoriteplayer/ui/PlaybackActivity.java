@@ -229,6 +229,8 @@ public class PlaybackActivity extends SherlockFragmentActivity {
 			for(int i=0; i<c.getCount(); ++i) {
 				c.moveToPosition(i);
 				String type = c.getString(c.getColumnIndex(LabelFileView.COLUMN_TYPE));
+				String fileId = c.getString(c.getColumnIndex(LabelFileView.COLUMN_FILE_ID));
+				
 				PlaybackData pd = new PlaybackData();
 				if(Constant.FILE_TYPE_IMAGE.equals(type)) {
 					pd.url = serverUrl + Constant.URL_IMAGE + "/" +
@@ -239,6 +241,7 @@ public class PlaybackActivity extends SherlockFragmentActivity {
 					pd.url = localPath + c.getString(c.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
 				}
 				pd.type = type;
+				pd.fileId=fileId;
 				datas.add(pd);
 			}
 			c.close();

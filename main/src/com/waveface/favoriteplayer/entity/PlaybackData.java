@@ -7,6 +7,7 @@ public class PlaybackData implements Parcelable{
 	public String url;
 	public String type;
 	public String orientation;
+	public String fileId;
 	
 	public static final Parcelable.Creator<PlaybackData> CREATOR = new Creator<PlaybackData>() {
 
@@ -25,12 +26,14 @@ public class PlaybackData implements Parcelable{
 		url = null;
 		type = "";
 		orientation = "";
+		fileId="";
 	}
 	
 	public PlaybackData(Parcel in) {
 		url = in.readString();
 		type = in.readString();
 		orientation = in.readString();
+		fileId=in.readString();
 	}
 
 	@Override
@@ -42,6 +45,7 @@ public class PlaybackData implements Parcelable{
 	public void writeToParcel(Parcel out, int flags) {
 		out.writeString(url);
 		out.writeString(type);
-		out.writeString(orientation);		
+		out.writeString(orientation);	
+		out.writeString(fileId);
 	}
 }
