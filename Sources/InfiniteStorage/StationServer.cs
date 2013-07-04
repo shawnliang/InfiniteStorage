@@ -92,6 +92,7 @@ namespace InfiniteStorage
 			rest_server.AddHandler("/pending/sort", new PendingSortApiHandler());
 			rest_server.AddHandler("/label_cover", new LabelCoverApiHandler());
 			rest_server.AddHandler("/manipulation/delete", new ManipulationDeleteApiHAndler());
+			rest_server.AddHandler("/manipulation/move", new ManipulationMoveApiHandler());
 
 			m_ReRegBonjourTimer = new NoReentrantTimer(reregisterBonjour, null, 60 * 1000, 60 * 1000);
 

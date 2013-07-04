@@ -111,7 +111,9 @@
     <Compile Include="Src\Class\REST\LabelOnAirApiHandler.cs" />
     <Compile Include="Src\Class\REST\LabelInviteApiHandler.cs" />
     <Compile Include="Src\Class\REST\LabelShareApiHandler.cs" />
+    <Compile Include="Src\Class\REST\ManipulationApiHandlerBase.cs" />
     <Compile Include="Src\Class\REST\ManipulationDeleteApiHAndler.cs" />
+    <Compile Include="Src\Class\REST\ManipulationMoveApiHandler.cs" />
     <Compile Include="Src\Class\Share\IShareCloudAPI.cs" />
     <Compile Include="Src\Class\Share\IShareEnableTaskDB.cs" />
     <Compile Include="Src\Class\Share\IShareLabelMonitorDB.cs" />
