@@ -293,8 +293,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="Selector.IsSelected" Value="True">
-                                <Setter Property="Background"
-                                        Value="#FF2E2E2E" />
+                                <Setter Property="Background" Value="#FF427FED" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -418,17 +417,17 @@
 
                     <local:SourceTree x:Name="lbxDeviceContainer"
                                       Grid.Row="1"
+                                      AddToFavoriteInvoked="lbxDeviceContainer_AddToFavoriteInvoked"
                                       AllowDrop="True"
                                       BorderBrush="{x:Null}"
+                                      CreateFavoriteInvoked="lbxDeviceContainer_CreateFavoriteInvoked"
+                                      DeleteSourceInvoked="lbxDeviceContainer_DeleteSourceInvoked"
                                       DragEnter="Sources_DragEnter"
                                       Drop="Sources_Drop"
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                      StarInvoked="lbxDeviceContainer_StarInvoked"
                                       VirtualizingStackPanel.IsVirtualizing="True"
-                                      VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                      DeleteSourceInvoked="lbxDeviceContainer_DeleteSourceInvoked"
-                                      CreateFavoriteInvoked="lbxDeviceContainer_CreateFavoriteInvoked"
-                                      AddToFavoriteInvoked="lbxDeviceContainer_AddToFavoriteInvoked"
-                                      StarInvoked="lbxDeviceContainer_StarInvoked" />
+                                      VirtualizingStackPanel.VirtualizationMode="Recycling" />
                 </Grid>
                 <GridSplitter Grid.Column="0"
                               Height="5"
@@ -449,10 +448,10 @@
                     <local:FavoriteListBox x:Name="lbxFavorites"
                                            Grid.Row="1"
                                            AllowDrop="True"
+                                           DeleteFavoriteInvoked="lbxFavorites_DeleteFavoriteInvoked"
                                            DragEnter="Favorites_DragEnter"
                                            Drop="Favorites_Drop"
-                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                           DeleteFavoriteInvoked="lbxFavorites_DeleteFavoriteInvoked" />
+                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
                 </Grid>
 
                 <StackPanel x:Name="stackPanel"
