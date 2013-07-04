@@ -229,6 +229,8 @@
     <Compile Include="Src\Control\ZoomSlider.xaml.cs">
       <DependentUpon>ZoomSlider.xaml</DependentUpon>
     </Compile>
+    <Resource Include="Ren\Images\selectAll.png" />
+    <Resource Include="Ren\Images\unselectAll.png" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

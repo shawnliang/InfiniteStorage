@@ -12,11 +12,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Threading;
 using InfiniteStorage.Model;
 using Newtonsoft.Json;
 using Waveface.ClientFramework;
 using Waveface.Model;
+using Screen = System.Windows.Forms.Screen;
 
 #endregion
 
@@ -707,10 +709,7 @@ namespace Waveface.Client
 				}
 				else
 				{
-					_contentEntitys.Add(new BunnyContent(new Uri(_fc.saved_path), _fc.id, (_fc.type == 0 ? ContentType.Photo : ContentType.Video))
-											{
-												EnableTag = true
-											});
+					_contentEntitys.Add(new BunnyContent(new Uri(_fc.saved_path), _fc.id, (_fc.type == 0 ? ContentType.Photo : ContentType.Video)));
 				}
 			}
 
@@ -793,5 +792,64 @@ namespace Waveface.Client
 		}
 
 		#endregion
+
+		private void btnFun1_Click(object sender, RoutedEventArgs e)
+		{
+			ShowContextMenu(sender as Button);
+		}
+
+		private static void ShowContextMenu(Button btn)
+		{
+			btn.ContextMenu.IsEnabled = true;
+			btn.ContextMenu.PlacementTarget = btn;
+			btn.ContextMenu.Placement = PlacementMode.Bottom;
+			btn.ContextMenu.IsOpen = true;
+			btn.ContextMenu.VerticalOffset = -2;
+		}
+
+		private void miSelectAll_Click(object sender, RoutedEventArgs e)
+		{
+			Sub_SelectAll(true);
+		}
+
+		private void miDeselectAll_Click(object sender, RoutedEventArgs e)
+		{
+			Sub_SelectAll(false);
+		}
+
+		private void miSlideShow_Click(object sender, RoutedEventArgs e)
+		{
+			Sub_SlideShow();
+		}
+
+		private void miMoveToFolder_Click(object sender, RoutedEventArgs e)
+		{
+			bool _ret = Current.Sub_MoveToFolder();
+
+			if (_ret)
+			{
+				Current.Sub_SelectAll(false);
+			}
+		}
+
+		private void miSaveToFavorite_Click(object sender, RoutedEventArgs e)
+		{
+			bool _ret = Sub_SaveToFavorite();
+
+			if (_ret)
+			{
+				Sub_SelectAll(false);
+			}
+		}
+
+		private void miAddToFavorite_Click(object sender, RoutedEventArgs e)
+		{
+			bool _ret = Sub_AddToFavorite();
+
+			if (_ret)
+			{
+				Sub_SelectAll(false);
+			}
+		}
 	}
 }

@@ -70,6 +70,20 @@
                            Text="{Binding Path=FirstItem.DescribeText}" />
             </Grid>
         </DataTemplate>
+
+        <Style x:Key="contextMenuStyle1" TargetType="{x:Type ContextMenu}">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContextMenu}">
+                        <Border Background="#CD222120" CornerRadius="4" BorderBrush="White" BorderThickness="1.5" Opacity="0.96">
+                            <StackPanel ClipToBounds="True" Orientation="Vertical" IsItemsHost="True" Margin="5,4,5,4"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <Grid Background="#303032">
@@ -134,31 +148,21 @@
                 </ListBox>
             </Grid>
 
-            <Grid Grid.Row="2"
-                  Margin="1"
-                  Background="#333333">
-                <StackPanel HorizontalAlignment="Right"
-                            Orientation="Horizontal">
-
-                    <Grid>
+            <Grid Grid.Row="2" Margin="1" Background="#333333">
+                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="8, 0, 0, 0">
+                    <Grid Grid.Column="0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="180" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <Grid Grid.Column="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="180" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="30" />
+                        </Grid.RowDefinitions>
 
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="20" />
-                                <RowDefinition Height="30" />
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Grid.Row="1"
+                        <TextBlock Grid.Row="1"
                                        Grid.Column="0"
                                        Margin="6,0"
                                        HorizontalAlignment="Left"
@@ -167,7 +171,7 @@
                                        FontWeight="Bold"
                                        Foreground="#929292"
                                        Text="SHORTER" />
-                            <TextBlock Grid.Row="1"
+                        <TextBlock Grid.Row="1"
                                        Grid.Column="2"
                                        Margin="6,0"
                                        HorizontalAlignment="Right"
@@ -177,21 +181,21 @@
                                        Foreground="#929292"
                                        Text="LONGER" />
 
-                            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                                <TextBlock                                                                                                            
+                        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                            <TextBlock                                                                                                            
                                        FontSize="11"
                                        Foreground="#DDDDDD"
                                        Text="Event Interval: " />
 
-                                <TextBlock
+                            <TextBlock
                                        x:Name="tbEventIntervalType"
                                        FontSize="11"
                                        FontWeight="Bold"
                                        Foreground="#DDDDDD"
                                        Text="" />
-                            </StackPanel>
+                        </StackPanel>
 
-                            <Waveface:SliderWithDraggingEvents x:Name="sliderEvent"
+                        <Waveface:SliderWithDraggingEvents x:Name="sliderEvent"
                                                                Grid.Row="1"
                                                                Grid.Column="1"
                                                                Height="18"
@@ -210,27 +214,33 @@
                                                                SmallChange="1"
                                                                TickFrequency="1"
                                                                Value="4">
-                                <Waveface:SliderWithDraggingEvents.Effect>
-                                    <DropShadowEffect ShadowDepth="0.1" />
-                                </Waveface:SliderWithDraggingEvents.Effect>
-                            </Waveface:SliderWithDraggingEvents>
-                        </Grid>
-
-                        <Button x:Name="btnImport"
-                                Grid.Column="1"
-                                Margin="18,0,24,0"
-                                Click="btnImportAll_Click"
-                                Foreground="White" Background="#4F4F4F" 
-                                FontSize="14"
-                                Padding="8, 4"
-                                Style="{StaticResource FlatButtonStyle}"
-                                Content="Move All Files" VerticalAlignment="Center">
-                            <Button.Effect>
-                                <DropShadowEffect ShadowDepth="0.25"/>
-                            </Button.Effect>
-                        </Button>
-
+                            <Waveface:SliderWithDraggingEvents.Effect>
+                                <DropShadowEffect ShadowDepth="0.1" />
+                            </Waveface:SliderWithDraggingEvents.Effect>
+                        </Waveface:SliderWithDraggingEvents>
                     </Grid>
+                </StackPanel>
+
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0, 0, 16, 0"  >
+                    <Button x:Name="btnFun1" Content="..." BorderThickness="1" BorderBrush="#9B9B9B" Style="{StaticResource FlatButtonStyle}" Padding="8, 0" Foreground="White" Background="#4F4F4F" FontSize="14" Height="32"
+                            ContextMenuService.IsEnabled="False"
+                            Click="btnFun1_Click">
+                        <Button.ContextMenu>
+                            <ContextMenu x:Name="contextMenu1" Style="{StaticResource contextMenuStyle1}">
+                                <MenuItem x:Name="miSelectAll" Header="Select All Items" Click="miSelectAll_Click"/>
+                                <MenuItem x:Name="miDeselectAll" Header="Deselect All Items" Click="miDeselectAll_Click"/>
+                                <Separator />
+                                <MenuItem x:Name="miSlideShow" Header="Slide Show" Click="miSlideShow_Click" />
+                                <MenuItem x:Name="miMoveToFolder" Header="Move to Folder" Click="miMoveToFolder_Click"/>
+                                <MenuItem x:Name="miSaveToFavorite" Header="Save To Favorite" Click="miSaveToFavorite_Click"/>
+                                <MenuItem x:Name="miAddToFavorite" Header="Add To Favorite" Click="miAddToFavorite_Click"/>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                        <Button.Effect>
+                            <DropShadowEffect ShadowDepth="0.25"/>
+                        </Button.Effect>
+                    </Button>
+                                                      
                 </StackPanel>
             </Grid>
 

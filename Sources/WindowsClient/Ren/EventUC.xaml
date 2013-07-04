@@ -101,10 +101,22 @@
                         </TextBox>
                     </StackPanel>
 
-                    <StackPanel Margin="0,8,2,0" Grid.Row="0" Cursor="Hand"  HorizontalAlignment="Right" Orientation="Horizontal" >
-                        <Button Visibility="Collapsed" x:Name="btnImport" BorderThickness="1" BorderBrush="#9B9B9B" Style="{StaticResource FlatButtonStyle}" Foreground="White" Background="#4F4F4F" FontSize="14" Margin="16, 2, 4, 2" Content="Move to Folder" Padding="8, 0" Click="btnImport_Click" >
+                    <StackPanel x:Name="spToolBar" Visibility="Collapsed" Margin="0,8,16,0" Grid.Row="0" Cursor="Hand"  HorizontalAlignment="Right" Orientation="Horizontal" >
+                        <Button x:Name="btnUnselectAll" Width="20" Height="20" BorderThickness="2" BorderBrush="#9B9B9B" Style="{StaticResource FlatButtonStyle}" Foreground="White" Background="White" Margin="0, 2" Click="btnUnselectAll_Click" >
+                            <Button.Content>
+                                <Image  Width="14" Height="14" Source="pack://application:,,,/Ren/Images/unselectAll.png" />
+                            </Button.Content>
                             <Button.Effect>
-                                <DropShadowEffect ShadowDepth="0.25"/>
+                                <DropShadowEffect ShadowDepth="1"/>
+                            </Button.Effect>
+                        </Button>
+
+                        <Button x:Name="btnSelectAll" Width="20" Height="20" BorderThickness="2" BorderBrush="#9B9B9B" Style="{StaticResource FlatButtonStyle}" Foreground="White" Background="#aa0094FF" Margin="6, 2, 0, 2" Click="btnSelectAll_Click" >
+                            <Button.Content>
+                                <Image Width="15" Height="15" Source="pack://application:,,,/Ren/Images/selectAll.png" />
+                            </Button.Content>
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="1"/>
                             </Button.Effect>
                         </Button>
                     </StackPanel>
@@ -134,13 +146,6 @@
                 >
                 <ListBox.ContextMenu>
                     <ContextMenu x:Name="contextMenu">
-                        <MenuItem x:Name="miSelectAll" Header="Select All Items" Click="miSelectAll_Click"/>
-                        <MenuItem x:Name="miDeselectAll" Header="Deselect All Items" Click="miDeselectAll_Click" />
-                        <Separator />
-                        <MenuItem x:Name="miSlideShow" Header="Slide Show" Click="miSlideShow_Click" />
-                        <MenuItem x:Name="miMoveToFolder" Header="Move to Folder" Click="miMoveToFolder_Click" />
-                        <MenuItem x:Name="miSaveToFavorite" Header="Save To Favorite" Click="miSaveToFavorite_Click"/>
-                        <MenuItem x:Name="miAddToFavorite" Header="Add To Favorite" Click="miAddToFavorite_Click"/>
                         <MenuItem x:Name="miSelectAllInThisEvent" Header="Select All Items in this event" Click="miSelectAllInThisEvent_Click"/>
                         <MenuItem x:Name="miDeselectAllInThisEvent" Header="Deselect All Items in this event" Click="miDeselectAllInThisEvent_Click" />
                     </ContextMenu>
