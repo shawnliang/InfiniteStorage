@@ -813,10 +813,42 @@ namespace Waveface.Client
 		}
 
 		Point startPoint;
+		Boolean needSpecialMulitSelectProcess;
 		private void List_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			// Store the mouse position
+			ListBox list = sender as ListBox;
+			ListBoxItem item =
+				FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
+
+			var dataContext = item.DataContext;
+
+			if (((Keyboard.Modifiers & ModifierKeys.Control) == 0) && lbxContentContainer.SelectedItems.Contains(dataContext))
+			{
+				needSpecialMulitSelectProcess = true;
+				e.Handled = true;
+			}
 			startPoint = e.GetPosition(null);
+		}
+
+		private void lbxContentContainer_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			if (!needSpecialMulitSelectProcess)
+				return;
+
+			ListBox list = sender as ListBox;
+			ListBoxItem item =
+				FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
+
+			var dataContext = item.DataContext;
+
+			if (!(lbxContentContainer.SelectedItems.Count == 1 && lbxContentContainer.SelectedItem == dataContext))
+			{
+				lbxContentContainer.SelectedItems.Clear();
+				lbxContentContainer.SelectedItems.Add(dataContext);
+			};
+
+			needSpecialMulitSelectProcess = false;
+			e.Handled = true;
 		}
 
 		private void List_MouseMove(object sender, MouseEventArgs e)
@@ -832,7 +864,7 @@ namespace Waveface.Client
 				ListBox list = sender as ListBox;
 				ListBoxItem item =
 					FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
-
+				
 				var contents = GetSelectedContents();
 
 				// Initialize the drag & drop operation
@@ -933,5 +965,7 @@ namespace Waveface.Client
 		{
 			StarContent(lbxContentContainer.Items.OfType<IContentEntity>());
 		}
+
+
     }
 }

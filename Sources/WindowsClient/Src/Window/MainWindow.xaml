@@ -295,6 +295,16 @@
                             <Trigger Property="Selector.IsSelected" Value="True">
                                 <Setter Property="Background" Value="#FF427FED" />
                             </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver"
+                                               Value="True" />
+                                    <Condition Property="IsSelected"
+                                               Value="False" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background"
+                                        Value="#5FB0E0E6" />
+                            </MultiTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -536,7 +546,8 @@
                          SelectedIndex="0"
                          SelectionMode="Extended"
                          VirtualizingStackPanel.IsVirtualizing="True"
-                         VirtualizingStackPanel.VirtualizationMode="Recycling">
+                         VirtualizingStackPanel.VirtualizationMode="Recycling"
+                         PreviewMouseLeftButtonUp="lbxContentContainer_PreviewMouseLeftButtonUp">
                     <ListBox.Style>
                         <StaticResource ResourceKey="PhotoListBoxStyle" />
                     </ListBox.Style>
