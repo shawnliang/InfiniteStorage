@@ -1,12 +1,10 @@
 ﻿#region
 
-using System.Linq;
-using InfiniteStorage.Model;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
 using System.Security.Permissions;
 using System.Threading;
 using System.Web;
@@ -15,9 +13,10 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Threading;
+using InfiniteStorage.Model;
+using Newtonsoft.Json;
 using Waveface.ClientFramework;
 using Waveface.Model;
-using Image = System.Drawing.Image;
 
 #endregion
 
@@ -104,8 +103,8 @@ namespace Waveface.Client
 
 			Rt = new RT();
 
-			List<FileAsset> _files;
-			List<PendingFile> _pendingFiles;
+			List<FileAsset> m_files;
+			List<PendingFile> m_pendingFiles;
 
 			using (var db = new MyDbContext())
 			{
@@ -113,18 +112,18 @@ namespace Waveface.Client
 						where f.device_id == device.ID && !f.deleted
 						select f;
 
-				_files = q.ToList();
+				m_files = q.ToList();
 
 				var q2 = from f in db.Object.PendingFiles
 						 where f.device_id == device.ID && !f.deleted
 						 select f;
 
-				_pendingFiles = q2.ToList();
+				m_pendingFiles = q2.ToList();
 			}
 
-			m_pendingFilesCount = _pendingFiles.Count;
+			m_pendingFilesCount = m_pendingFiles.Count;
 
-			if (Rt.Init(_files, _pendingFiles, device))
+			if (Rt.Init(m_files, m_pendingFiles, device))
 			{
 				gridEmptyPanel.Visibility = Visibility.Collapsed;
 
@@ -153,7 +152,7 @@ namespace Waveface.Client
 			return true;
 		}
 
-		void dispatcherTimer_Tick(object sender, EventArgs e)
+		private void dispatcherTimer_Tick(object sender, EventArgs e)
 		{
 			int _count = BunnyUnsortedContentGroup.countUnsortedItems(m_currentDevice.ID);
 
@@ -534,9 +533,9 @@ namespace Waveface.Client
 			sliderEvent.IsEnabled = false;
 
 			PendingSort _pendingSort = new PendingSort
-			{
-				device_id = m_currentDevice.ID
-			};
+										   {
+											   device_id = m_currentDevice.ID
+										   };
 
 			if (all)
 			{
@@ -650,7 +649,7 @@ namespace Waveface.Client
 
 		public bool Sub_SaveToFavorite()
 		{
-			List<ContentEntity> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys();
+			List<ContentEntity> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys(true);
 
 			if (_contentEntitys.Count == 0)
 			{
@@ -660,10 +659,28 @@ namespace Waveface.Client
 			return m_mainWindow.SaveToFavorite(_contentEntitys);
 		}
 
+		public void Sub_SlideShow()
+		{
+			List<ContentEntity> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys(false);
+
+			if (_contentEntitys.Count == 0)
+			{
+				return;
+			}
+
+			var _viewer = new PhotoViewer
+							  {
+								  Owner = m_mainWindow,
+								  Source = _contentEntitys,
+								  SelectedIndex = 0
+							  };
+
+			_viewer.ShowDialog();
+		}
 
 		public bool Sub_AddToFavorite()
 		{
-			List<ContentEntity> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys();
+			List<ContentEntity> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys(true);
 
 			if (_contentEntitys.Count == 0)
 			{
@@ -673,7 +690,7 @@ namespace Waveface.Client
 			return m_mainWindow.AddToFavorite(_contentEntitys);
 		}
 
-		public List<ContentEntity> Sub_GetAllSelectedFiles_ContentEntitys()
+		public List<ContentEntity> Sub_GetAllSelectedFiles_ContentEntitys(bool simple)
 		{
 			List<ContentEntity> _contentEntitys = new List<ContentEntity>();
 
@@ -681,7 +698,20 @@ namespace Waveface.Client
 
 			foreach (FileChange _fc in _allSelectedFiles)
 			{
-				_contentEntitys.Add(new ContentEntity { ID = _fc.id });
+				if (simple)
+				{
+					_contentEntitys.Add(new ContentEntity
+											{
+												ID = _fc.id,
+											});
+				}
+				else
+				{
+					_contentEntitys.Add(new BunnyContent(new Uri(_fc.saved_path), _fc.id, (_fc.type == 0 ? ContentType.Photo : ContentType.Video))
+											{
+												EnableTag = true
+											});
+				}
 			}
 
 			return _contentEntitys;
@@ -695,9 +725,9 @@ namespace Waveface.Client
 				return false;
 
 			PendingSort _pendingSort = new PendingSort
-			{
-				device_id = m_currentDevice.ID
-			};
+										   {
+											   device_id = m_currentDevice.ID
+										   };
 
 			var _dialog = new CreateFolderDialog
 							  {
@@ -714,12 +744,12 @@ namespace Waveface.Client
 			_allSelectedFiles.Sort((x, y) => String.Compare(x.taken_time, y.taken_time, StringComparison.Ordinal));
 
 			Event _event = new Event
-			{
-				type = 1,
-				title = _dialog.FolderName,
-				time_start = _allSelectedFiles[0].taken_time,
-				time_end = _allSelectedFiles[_allSelectedFiles.Count - 1].taken_time
-			};
+							   {
+								   type = 1,
+								   title = _dialog.FolderName,
+								   time_start = _allSelectedFiles[0].taken_time,
+								   time_end = _allSelectedFiles[_allSelectedFiles.Count - 1].taken_time
+							   };
 
 			foreach (FileChange _fileChange in _allSelectedFiles)
 			{
@@ -761,29 +791,6 @@ namespace Waveface.Client
 
 			return true;
 		}
-
-		#endregion
-
-		#region ContentEntity
-
-		/*
-		public class ContentEntity : IContentEntity
-		{
-			public string ID { get; set; }
-			public string Name { get; set; }
-			public Uri Uri { get; set; }
-			public IService Service { get; set; }
-			public IContentEntity Parent { get; set; }
-			public string ContentPath { get; set; }
-			public Image Image { get; set; }
-			public Image Thumbnail { get; set; }
-			public long Size { get; set; }
-			public DateTime CreateTime { get; set; }
-			public DateTime ModifyTime { get; set; }
-			public string Description { get; set; }
-			public Dictionary<string, string> Memo { get; set; }
-		}
-		*/
 
 		#endregion
 	}

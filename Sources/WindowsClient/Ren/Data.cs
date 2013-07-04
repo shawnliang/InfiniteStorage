@@ -16,6 +16,7 @@ namespace Waveface.Client
 		public int height { get; set; }
 		public long size { get; set; }
 		public int type { get; set; }
+		public string saved_path { get; set; }
 	}
 
 	public class RtData

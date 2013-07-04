@@ -343,6 +343,11 @@ namespace Waveface.Client
 			UnSortedFilesUC.Current.Sub_SelectAll(false);
 		}
 
+		private void miSlideShow_Click(object sender, RoutedEventArgs e)
+		{
+			UnSortedFilesUC.Current.Sub_SlideShow();
+		}
+
 		private void miSaveToFavorite_Click(object sender, RoutedEventArgs e)
 		{
 			bool _ret = UnSortedFilesUC.Current.Sub_SaveToFavorite();
@@ -498,10 +503,14 @@ namespace Waveface.Client
 				if (_htElement != null)
 				{
 					ListBoxItem _clickedListBoxItem = GetVisualParent<ListBoxItem>(_htElement, 6);
-					_clickedListBoxItem.IsSelected = true;
+
+					if (_clickedListBoxItem != null)
+					{
+						_clickedListBoxItem.IsSelected = true;
+					}
 				}
 
-				List<ContentEntity> _contents = UnSortedFilesUC.Current.Sub_GetAllSelectedFiles_ContentEntitys();
+				List<ContentEntity> _contents = UnSortedFilesUC.Current.Sub_GetAllSelectedFiles_ContentEntitys(true);
 
 				DataObject _dragData = new DataObject(typeof(IEnumerable<IContentEntity>), _contents);
 				DragDrop.DoDragDrop(this, _dragData, DragDropEffects.Move);

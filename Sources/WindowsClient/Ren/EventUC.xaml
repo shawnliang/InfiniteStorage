@@ -137,6 +137,7 @@
                         <MenuItem x:Name="miSelectAll" Header="Select All Items" Click="miSelectAll_Click"/>
                         <MenuItem x:Name="miDeselectAll" Header="Deselect All Items" Click="miDeselectAll_Click" />
                         <Separator />
+                        <MenuItem x:Name="miSlideShow" Header="Slide Show" Click="miSlideShow_Click" />
                         <MenuItem x:Name="miMoveToFolder" Header="Move to Folder" Click="miMoveToFolder_Click" />
                         <MenuItem x:Name="miSaveToFavorite" Header="Save To Favorite" Click="miSaveToFavorite_Click"/>
                         <MenuItem x:Name="miAddToFavorite" Header="Add To Favorite" Click="miAddToFavorite_Click"/>
