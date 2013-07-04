@@ -128,12 +128,7 @@ public class DownloadLogic {
 							String fullFilename = root.getAbsolutePath()
 									+ Constant.VIDEO_FOLDER + "/" + fileName;
 							if (!FileUtil.isFileExisted(fullFilename)) {
-								downloadVideo(fileId, fullFilename, url);
-								imageManager.getLocalVideoThumbnailWithoutThread(fullFilename, null, false);
-								ImageAttribute attr = new ImageAttribute();
-								attr.setReflection(true);
-								attr.setHighQuality(true);
-								imageManager.getLocalVideoThumbnailWithoutThread(fullFilename, attr, false);
+								imageManager.getImageWithoutThread(url, null, false);
 							}
 							//check file in storage
 							if(!FileUtil.isFileExisted(fullFilename)){

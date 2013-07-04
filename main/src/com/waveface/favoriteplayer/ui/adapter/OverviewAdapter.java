@@ -165,10 +165,11 @@ public class OverviewAdapter extends BaseAdapter{
 			holder.placeholder.setVisibility(View.VISIBLE);
 			
 			coverUrl =data.url;
-			mImageManager.getImage(coverUrl, attr);
+			
 			attr.setResizeSize(mChildWidth, mChildHeight);
+			mImageManager.getImage(coverUrl, attr);
 //			coverUrl = mFilePath + data.filename;
-			mImageManager.getLocalVideoThumbnail(coverUrl, attr);
+//			mImageManager.getLocalVideoThumbnail(coverUrl, attr);
 			
 		}
 		else{
