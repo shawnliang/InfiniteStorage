@@ -119,7 +119,7 @@ namespace InfiniteStorage
 			if (!Environment.GetCommandLineArgs().Contains("--minimized"))
 				ImportUIPresenter.Instance.StartViewer();
 
-            SimpleDetector.cameraForm _fm1 = new cameraForm();
+            SimpleDetector.cameraForm _fm1 = new cameraForm();            // register cameratype device  plugin/remove event
 
 			Application.Run();
 		}
