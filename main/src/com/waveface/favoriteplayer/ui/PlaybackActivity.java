@@ -237,8 +237,11 @@ public class PlaybackActivity extends SherlockFragmentActivity {
 							c.getString(c.getColumnIndex(LabelFileView.COLUMN_FILE_ID)) +
 							Constant.URL_IMAGE_LARGE;
 					pd.orientation = c.getString(c.getColumnIndex(LabelFileView.COLUMN_ORIENTATION));
-				} else {
+				}
+				else {
+
 					pd.url = localPath + c.getString(c.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
+
 				}
 				pd.type = type;
 				pd.fileId=fileId;

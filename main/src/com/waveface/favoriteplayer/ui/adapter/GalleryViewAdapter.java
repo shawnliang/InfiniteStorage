@@ -64,13 +64,14 @@ public class GalleryViewAdapter extends BaseAdapter{
 		
 		//Display Image
 		if(Constant.FILE_TYPE_VIDEO.equals(mDatas.get(position).type)) {
+
 			String fileId =mDatas.get(position).fileId;
 			ArrayList<ServerEntity> servers = ServersLogic.getPairedServer(mContext);
 			ServerEntity pairedServer = servers.get(0);
 			String restfulAPIURL = "http://" + pairedServer.ip + ":"
 					+ pairedServer.restPort;
 			String url = restfulAPIURL + Constant.URL_IMAGE
-					+ "/" + fileId + Constant.URL_IMAGE_MEDIUM;	
+					+ "/" + fileId + Constant.URL_IMAGE_LARGE;	
 			mImageManager.getImage(url, attr);
 			root.findViewById(R.id.image_play).setVisibility(View.VISIBLE);
 		} else {

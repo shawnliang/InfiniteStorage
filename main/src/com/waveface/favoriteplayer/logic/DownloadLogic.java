@@ -119,16 +119,19 @@ public class DownloadLogic {
 					if (StringUtil.isAvaiableSpace(context,
 							Constant.AVAIABLE_SPACE)) {
 						if (type.equals(Constant.FILE_TYPE_VIDEO)) {
-//							String url = restfulAPIURL + Constant.URL_IMAGE
-//									+ "/" + fileId + "/"
-//									+ Constant.URL_IMAGE_ORIGIN;
 							String url = restfulAPIURL + Constant.URL_IMAGE
-							+ "/" + fileId + Constant.URL_IMAGE_MEDIUM;							
-							
+									+ "/" + fileId + "/"
+									+ Constant.URL_IMAGE_ORIGIN;
+
 							String fullFilename = root.getAbsolutePath()
 									+ Constant.VIDEO_FOLDER + "/" + fileName;
 							if (!FileUtil.isFileExisted(fullFilename)) {
-								imageManager.getImageWithoutThread(url, null, false);
+								downloadVideo(fileId, fullFilename, url);
+								imageManager.getLocalVideoThumbnailWithoutThread(fullFilename, null, false);
+								ImageAttribute attr = new ImageAttribute();
+								attr.setReflection(true);
+								attr.setHighQuality(true);
+								imageManager.getLocalVideoThumbnailWithoutThread(fullFilename, attr, false);
 							}
 							//check file in storage
 							if(!FileUtil.isFileExisted(fullFilename)){
