@@ -61,9 +61,9 @@ namespace InfiniteStorage
 
 		private void generateThumbnails()
 		{
-			List<PendingFile> files = getNoThumbnailFiles(from);
+			var files = getNoThumbnailFiles(from);
 
-			var successFiles = new List<PendingFile>();
+			var successFiles = new List<FileAsset>();
 			foreach (var file in files)
 			{
 				try
@@ -98,10 +98,10 @@ namespace InfiniteStorage
 				from = successFiles.Max(x => x.seq);
 		}
 
-		private void deleteFile(PendingFile file)
+		private void deleteFile(FileAsset file)
 		{
 			try{
-				var file_path = Path.Combine(MyFileFolder.Pending, file.saved_path);
+				var file_path = Path.Combine(MyFileFolder.Photo, file.saved_path);
 				File.Delete(file_path);
 			}
 			catch(Exception err)
@@ -117,7 +117,7 @@ namespace InfiniteStorage
 
 					using (var cmd = conn.CreateCommand())
 					{
-						cmd.CommandText = "update PendingFiles set deleted = 1 where file_id = @file";
+						cmd.CommandText = "update files set deleted = 1 where file_id = @file";
 						cmd.Prepare();
 						cmd.Parameters.Add(new SQLiteParameter("@file", file.file_id));
 						cmd.ExecuteNonQuery();
@@ -126,13 +126,13 @@ namespace InfiniteStorage
 			}
 			catch (Exception err)
 			{
-				log4net.LogManager.GetLogger(GetType()).Warn("Unable to mark pending file record deleted", err);
+				log4net.LogManager.GetLogger(GetType()).Warn("Unable to mark file record deleted", err);
 			}
 		}
 
-		private void extractStillImage(PendingFile file)
+		private void extractStillImage(FileAsset file)
 		{
-			var file_path = Path.Combine(MyFileFolder.Pending, file.saved_path);
+			var file_path = Path.Combine(MyFileFolder.Photo, file.saved_path);
 
 			var thumb_path = Path.Combine(MyFileFolder.Thumbs, file.file_id.ToString() + ".medium.thumb");
 
@@ -158,7 +158,7 @@ namespace InfiniteStorage
 			}
 		}
 
-		private void markFilesHavingThumbnail(List<PendingFile> successFiles)
+		private void markFilesHavingThumbnail(List<FileAsset> successFiles)
 		{
 			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
 			{
@@ -169,7 +169,7 @@ namespace InfiniteStorage
 				{
 
 					cmd.Connection = conn;
-					cmd.CommandText = "update [PendingFiles] set thumb_ready = 1, width = @width, height = @height, orientation = @ori where file_id = @fid";
+					cmd.CommandText = "update [Files] set thumb_ready = 1, width = @width, height = @height, orientation = @ori where file_id = @fid";
 					cmd.CommandType = System.Data.CommandType.Text;
 
 					var fid = new SQLiteParameter("@fid");
@@ -198,9 +198,9 @@ namespace InfiniteStorage
 			}
 		}
 
-		private void generateThumbnail(PendingFile file, out int width, out int height)
+		private void generateThumbnail(FileAsset file, out int width, out int height)
 		{
-			var file_path = Path.Combine(MyFileFolder.Pending, file.saved_path);
+			var file_path = Path.Combine(MyFileFolder.Photo, file.saved_path);
 
 			using (var m = readFilesToMemory(file_path))
 			using (var fullImage = createBitmap(m))
@@ -295,11 +295,11 @@ namespace InfiniteStorage
 			return m;
 		}
 
-		private List<PendingFile> getNoThumbnailFiles(long fromSeq)
+		private List<FileAsset> getNoThumbnailFiles(long fromSeq)
 		{
 			using (var db = new MyDbContext())
 			{
-				var query = from f in db.Object.PendingFiles
+				var query = from f in db.Object.Files
 							where f.seq >= fromSeq && !f.deleted && !f.thumb_ready
 							orderby f.seq ascending
 							select f;

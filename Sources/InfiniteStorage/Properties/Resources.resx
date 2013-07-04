@@ -214,4 +214,7 @@
   <data name="WaitForPair_SearchAgainTitle" xml:space="preserve">
     <value>No device found</value>
   </data>
+  <data name="UnsortedFolderName" xml:space="preserve">
+    <value>Unsorted</value>
+  </data>
 </root>

@@ -27,7 +27,7 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			if (!Util.HasDuplicateFile(ctx.fileCtx, ctx.device_id))
 			{
-				SavedPath saved = null;
+				string saved;
 				try
 				{
 					saved = ctx.storage.MoveToStorage(ctx.temp_file.Path, ctx.fileCtx);
@@ -36,6 +36,8 @@ namespace InfiniteStorage.WebsocketProtocol
 				{
 					throw new IOException("Unable to move temp file to storage. temp_file:" + ctx.temp_file.Path + ", file_name: " + ctx.fileCtx.file_name, e);
 				}
+
+				var partial_path = PathUtil.MakeRelative(saved, MyFileFolder.Photo);
 
 				var fileAsset = new FileAsset
 				{
@@ -46,9 +48,9 @@ namespace InfiniteStorage.WebsocketProtocol
 					file_path = Path.Combine(ctx.fileCtx.folder, ctx.fileCtx.file_name),
 					file_size = ctx.fileCtx.file_size,
 					type = (int)ctx.fileCtx.type,
-					saved_path = saved.relative_file_path,
-					parent_folder = Path.GetDirectoryName(saved.relative_file_path),
-					seq = Util.GetNextSeq()
+					saved_path = partial_path,
+					parent_folder = Path.GetDirectoryName(partial_path),
+					seq = Util.GetNextSeq(), 
 				};
 				Util.SaveFileRecord(fileAsset);
 

@@ -311,6 +311,15 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unsorted.
+        /// </summary>
+        internal static string UnsortedFolderName {
+            get {
+                return ResourceManager.GetString("UnsortedFolderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Version：{0}.
         /// </summary>
         internal static string VersionLable {
