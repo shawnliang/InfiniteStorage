@@ -132,7 +132,7 @@ namespace Waveface.Client
 			{
 				string text = (string)Application.Current.FindResource("WithoutContentMessageText");
 
-				MessageBox.Show(text);
+				MessageBox.Show(Application.Current.MainWindow, text);
 				return false;
 			}
 
@@ -142,7 +142,7 @@ namespace Waveface.Client
 			{
 				string text = (string)Application.Current.FindResource("NoExistingFavoriteMessageText");
 
-				MessageBox.Show(text);
+				MessageBox.Show(Application.Current.MainWindow, text);
 				return false;
 			}
 
@@ -169,7 +169,7 @@ namespace Waveface.Client
 			{
 				string text = (string)Application.Current.FindResource("NoExistingFavoriteMessageText");
 
-				MessageBox.Show(text);
+				MessageBox.Show(Application.Current.MainWindow, text);
 				return;
 			}
 
@@ -220,6 +220,9 @@ namespace Waveface.Client
 			if (folder == null)
 				return;
 
+			if (MessageBox.Show(Application.Current.MainWindow, "Are you sure you want to delete?", "Confirm", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
+				return;
+
 			var service = folder.Service;
 			Waveface.ClientFramework.Client.Default.Delete(null, new string[] { folder.Uri.LocalPath });
 			RefreshFavorites();
@@ -253,6 +256,9 @@ namespace Waveface.Client
 
 		private void DeleteContents(IEnumerable<string> contentIDs)
 		{
+			if (MessageBox.Show(Application.Current.MainWindow, "Are you sure you want to delete?", "Confirm", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
+				return;
+
 			Waveface.ClientFramework.Client.Default.Delete(contentIDs);
 			RefreshContentArea();
 			RefreshFavorites();
@@ -275,7 +281,7 @@ namespace Waveface.Client
 			{
 				string text = (string)Application.Current.FindResource("WithoutContentMessageText");
 
-				MessageBox.Show(text);
+				MessageBox.Show(Application.Current.MainWindow, text);
 				return false;
 			}
 
@@ -362,7 +368,7 @@ namespace Waveface.Client
 
             if (Properties.Settings.Default.IsFirstUse)
             {
-                MessageBoxResult _messageBoxResult = MessageBox.Show("See a quick tour ?", "Favorite*", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
+				MessageBoxResult _messageBoxResult = MessageBox.Show(Application.Current.MainWindow, "See a quick tour ?", "Favorite*", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
 
                 if (_messageBoxResult == MessageBoxResult.Yes)
                 {
