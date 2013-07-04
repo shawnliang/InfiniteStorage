@@ -433,15 +433,6 @@ namespace Waveface.Client
             }
         }
 
-
-        private void OnPhotoClick(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton != MouseButton.Left)
-                return;
-
-            Enter();
-        }
-
         private void Enter()
         {
             var group = (lbxContentContainer.SelectedItem as IContentGroup);
@@ -820,20 +811,27 @@ namespace Waveface.Client
 
 		Point startPoint;
 		Boolean needSpecialMulitSelectProcess;
+		DateTime lastMouseLeftButtonDown;
 		private void List_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
+			var now = DateTime.Now;
 			ListBox list = sender as ListBox;
 			ListBoxItem item =
 				FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
-
+			
 			var dataContext = item.DataContext;
 
 			if (((Keyboard.Modifiers & ModifierKeys.Control) == 0) && lbxContentContainer.SelectedItems.Contains(dataContext))
 			{
 				needSpecialMulitSelectProcess = true;
 				e.Handled = true;
+
+				if (now.Subtract(lastMouseLeftButtonDown).Milliseconds <= 500)
+					Enter();
 			}
 			startPoint = e.GetPosition(null);
+
+			lastMouseLeftButtonDown = now;
 		}
 
 		private void lbxContentContainer_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)

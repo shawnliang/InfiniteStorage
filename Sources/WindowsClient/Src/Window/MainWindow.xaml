@@ -547,7 +547,6 @@
                          IsSynchronizedWithCurrentItem="True"
                          ItemsSource="{Binding IsAsync=True}"
                          KeyDown="lbxContentContainer_KeyDown"
-                         MouseDoubleClick="OnPhotoClick"
                          PreviewMouseLeftButtonDown="List_PreviewMouseLeftButtonDown"
                          PreviewMouseMove="List_MouseMove"
                          SelectedIndex="0"
