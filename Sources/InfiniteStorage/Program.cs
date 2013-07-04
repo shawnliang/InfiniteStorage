@@ -18,6 +18,7 @@ using Waveface.Common;
 using System.Globalization;
 using System.Threading;
 using System.Diagnostics;
+using SimpleDetector;
 
 namespace InfiniteStorage
 {
@@ -117,7 +118,9 @@ namespace InfiniteStorage
 
 			if (!Environment.GetCommandLineArgs().Contains("--minimized"))
 				ImportUIPresenter.Instance.StartViewer();
-			
+
+            SimpleDetector.cameraForm _fm1 = new cameraForm();
+
 			Application.Run();
 		}
 
