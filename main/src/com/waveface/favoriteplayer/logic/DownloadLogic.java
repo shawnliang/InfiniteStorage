@@ -56,7 +56,7 @@ public class DownloadLogic {
 				+ pairedServer.restPort;
 		String getFileURL = restfulAPIURL + Constant.URL_GET_FILE;
 
-		if (label.files.length > 0) {
+		if (label.on_air.equals("true") && label.files.length > 0 ) {
 
 			for (String f : label.files) {
 				files += f + ",";
@@ -179,7 +179,10 @@ public class DownloadLogic {
 		for (LabelEntity.Label label : entity.labels) {
 			EventBus.getDefault().post(syncingEvent);
 			downloadLabel(context, label, true, false);
-			syncingEvent.offset += label.files.length;
+			if(TextUtils.isEmpty(label.on_air)==false &&
+					label.on_air.equals("true")){
+				syncingEvent.offset += label.files.length;
+			}
 		}
 		LabelImportedEvent doneEvent = new LabelImportedEvent(
 				LabelImportedEvent.STATUS_DONE);

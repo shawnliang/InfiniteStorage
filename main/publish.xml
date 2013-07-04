@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Bunny" default="help">
+<project name="Favorite TV" default="help">
 <target name="help">
 	<echo message="ant -f publish.xml product -- change develop mode to product mode"/>
 	<echo message="The build home path is: ${basedir}"/>
 </target>		
 <target name="product">
 	<echo><![CDATA[remove Log debug flag]]></echo>
-    <replace file="${basedir}/src/com/waveface/sync/util/Log.java">
+    <replace file="${basedir}/src/com/waveface/favoriteplayer/util/Log.java">
         <replacetoken><![CDATA[static final boolean LOG = true;]]></replacetoken>
         <replacevalue><![CDATA[static final boolean LOG = false;]]></replacevalue>
     </replace>
@@ -18,7 +18,7 @@
 </target>
 <target name="develop">
 	<echo><![CDATA[reset Log debug flag]]></echo>
-    <replace file="${basedir}/src/com/waveface/sync/util/Log.java">
+    <replace file="${basedir}/src/com/waveface/favoriteplayer/util/Log.java">
         <replacetoken><![CDATA[static final boolean LOG = false;]]></replacetoken>
         <replacevalue><![CDATA[static final boolean LOG = true;]]></replacevalue>
     </replace>

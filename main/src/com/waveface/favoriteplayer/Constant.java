@@ -28,6 +28,8 @@ public class Constant {
 	public final static String ACTION_RELEASE_PAIRED_SERVER_BY_CLIENT = "com.waveface.favoriteplayer.action.RELEASE_PAIRED_SERVER_BY_CLIENT";	
     public final static String ACTION_NOT_ENOUGH_SPACE="com.waveface.favoriteplayer.action.NOT_ENOUGH_SPACE";
     public final static String ACTION_LABEL_CHANGE_NOTIFICATION = "com.waveface.favoriteplayer.action.LABEL_CHANGE_NOTIFICATION";
+    public final static String ACTION_LABEL_INIT_DOWNLOAD_DONE = "com.waveface.favoriteplayer.action.LABEL_INIT_DOWNLOAD_DONE";
+    
 
 	//BUNDLE DATA
 	public static final String BUNDLE_FILE_TYPE = "FILE_TYPE";	
