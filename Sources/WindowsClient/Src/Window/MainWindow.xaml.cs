@@ -872,7 +872,25 @@ namespace Waveface.Client
 		{
 			if (e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)))
 			{
+				var control = sender as TreeView;
+				var controlItem =
+					FindAnchestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+
+				if (controlItem == null)
+					return;
+
+				var sourceGroup = controlItem.DataContext as IContentGroup;
 				var contents = e.Data.GetData(typeof(IEnumerable<IContentEntity>)) as IEnumerable<IContentEntity>;
+				var contentIDs = contents.Select(content => content.ID);
+
+				Waveface.ClientFramework.Client.Default.Move(contentIDs, sourceGroup.Uri.LocalPath);
+
+				RefreshContentArea();
+
+				var service = sourceGroup.Service;
+				service.Refresh();
+
+				var tempcontents = service.Contents;
 			}
 		}
 
@@ -891,12 +909,15 @@ namespace Waveface.Client
 		{
 			if (e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)))
 			{
-				var contents = e.Data.GetData(typeof(IEnumerable<IContentEntity>)) as IEnumerable<IContentEntity>;
-				ListBox list = sender as ListBox;
-				ListBoxItem item =
+				var list = sender as ListBox;
+				var controlItem =
 					FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
 
-				var favoriteGroup = item.DataContext as IContentGroup;
+				if (controlItem == null)
+					return;
+
+				var contents = e.Data.GetData(typeof(IEnumerable<IContentEntity>)) as IEnumerable<IContentEntity>;
+				var favoriteGroup = controlItem.DataContext as IContentGroup;
 
 				if (favoriteGroup.ID.Equals("00000000-0000-0000-0000-000000000000", StringComparison.CurrentCultureIgnoreCase))
 				{
