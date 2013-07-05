@@ -124,6 +124,20 @@ namespace InfiniteStorage
 		{
 			var subscribers = Pair.PairWebSocketService.GetAllSubscribers();
 
+			if (!BonjourServiceRegistrator.Instance.IsAccepting || subscribers.Count == 0)
+			{
+				try
+				{
+					log4net.LogManager.GetLogger("pairing").Debug("Not in pairing mode or subscriber is not ready. Reject this connection: " + e.ctx.device_name);
+					e.ctx.handleDisapprove();
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger("pairing").Warn("Unable to reject a pairing request", err);
+				}
+				return;
+			}
+
 			foreach (var subscriber in subscribers)
 			{
 				subscriber.NewPairingRequestComing(e.ctx.device_id, e.ctx.device_name);
@@ -134,7 +148,6 @@ namespace InfiniteStorage
 				if (!waitForUserAccept.Contains(e.ctx))
 					waitForUserAccept.Add(e.ctx);
 			}
-
 		}
 
 		void PairWebSocketService_NewDeviceAccepting(object sender, Pair.NewDeviceRespondingEventArgs e)
@@ -149,7 +162,14 @@ namespace InfiniteStorage
 				foreach (var ctx in devices)
 				{
 					log4net.LogManager.GetLogger("pairing").Debug("call handleApprove()");
-					ctx.handleApprove();
+					try
+					{
+						ctx.handleApprove();
+					}
+					catch (Exception err)
+					{
+						log4net.LogManager.GetLogger("pairing").Warn("Unable to approve. Connection already closed? " + ctx.device_name, err);
+					}
 					toRemove.Add(ctx);
 				}
 
@@ -167,7 +187,14 @@ namespace InfiniteStorage
 				var devices = waitForUserAccept.Where(x => x.device_id == e.device_id);
 				foreach (var ctx in devices)
 				{
-					ctx.handleDisapprove();
+					try
+					{
+						ctx.handleDisapprove();
+					}
+					catch (Exception err)
+					{
+						log4net.LogManager.GetLogger("pairing").Warn("Unable to disapprove. Connection already closed? " + ctx.device_name, err);
+					}
 					toRemove.Add(ctx);
 				}
 
