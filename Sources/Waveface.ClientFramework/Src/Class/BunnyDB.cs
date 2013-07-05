@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Waveface.ClientFramework
 {
-	static class BunnyDB
+	public static class BunnyDB
 	{
 		private static string connString;
 		private static string resourceFolder;
