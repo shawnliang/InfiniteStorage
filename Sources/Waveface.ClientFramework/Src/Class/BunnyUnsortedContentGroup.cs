@@ -37,8 +37,8 @@ namespace Waveface.ClientFramework
 				{
 					cmd.CommandText = //"select count(*) from [Files] where device_id = @dev";
 						"select sum(num) from ( " +
-							"select count(*) as num from files where device_id = @dev union " +
-							"select count(*) as num from PendingFiles where device_id = @dev)";
+							"select count(*) as num from files where device_id = @dev and deleted = 0 union " +
+							"select count(*) as num from PendingFiles where device_id = @dev and deleted = 0)";
 					cmd.Parameters.Add(new System.Data.SQLite.SQLiteParameter("@dev", deviceID));
 					return (int)(long)cmd.ExecuteScalar();
 				}
