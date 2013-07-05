@@ -104,6 +104,8 @@
     <Compile Include="Src\Class\Common\NoReentrantTimer.cs" />
     <Compile Include="Src\Class\DefaultFolderFileStorage.cs" />
     <Compile Include="Src\Class\HomeSharing.cs" />
+    <Compile Include="Src\Class\Manipulation\FileToManipulate.cs" />
+    <Compile Include="Src\Class\Manipulation\Manipulation.cs" />
     <Compile Include="Src\Class\Notify\ActiveDeviceNotifyMsg.cs" />
     <Compile Include="Src\Class\Pair\IPairingSubscriber.cs" />
     <Compile Include="Src\Class\Pair\NewDeviceAcceptingEventArgs.cs" />
@@ -126,6 +128,7 @@
     <Compile Include="Src\Class\Share\ShareLabelMonitor.cs" />
     <Compile Include="Src\Class\Share\ShareLabelMonitorDB.cs" />
     <Compile Include="Src\Class\Share\ShareTaskFactory.cs" />
+    <Compile Include="Src\DB\FileAndDevFolder.cs" />
     <Compile Include="Src\Dialog\BackToPhoneDialog.cs">
       <SubType>Form</SubType>
     </Compile>
