@@ -57,6 +57,7 @@
     <Compile Include="cameraForm.Designer.cs">
       <DependentUpon>cameraForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImportService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="DriveDetector.resx">

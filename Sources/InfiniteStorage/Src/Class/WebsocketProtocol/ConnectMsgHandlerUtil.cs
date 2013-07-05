@@ -69,43 +69,11 @@ namespace InfiniteStorage.WebsocketProtocol
 			}
 		}
 
-
 		public string GetUniqueDeviceFolder(string device_name)
 		{
-			var sanitizedName = sanitize(ref device_name);
-			var allNames = getAllDevFolderNames();
-			var newName = sanitizedName;
-			var n = 1;
-
-			while (allNames.Contains(newName))
-			{
-				newName = sanitizedName + string.Format("({0})", n);
-				n++;
-			}
-
-			return newName;
+			return DeviceUtility.GetUniqueDeviceFolder(device_name);
+			
 		}
-
-		private static List<string> getAllDevFolderNames()
-		{
-			using (var db = new MyDbContext())
-			{
-				return db.Object.Devices.Select(x => x.device_name).ToList();
-			}
-
-		}
-
-		private static string sanitize(ref string device_name)
-		{
-			foreach (var illege_char in Path.GetInvalidFileNameChars())
-			{
-				device_name = device_name.Replace(illege_char, '-');
-			}
-
-			var sanitizedName = device_name;
-			return sanitizedName;
-		}
-
 
 		public bool RejectUnpairedDevices
 		{

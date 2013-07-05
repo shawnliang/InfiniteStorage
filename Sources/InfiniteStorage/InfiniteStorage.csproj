@@ -97,6 +97,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\Class\Camera\ImportService.cs" />
     <Compile Include="Src\Class\BadBitmapException.cs" />
     <Compile Include="Src\Class\Cloud\CloudService.cs" />
     <Compile Include="Src\Class\Common\FFmpegHelper.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Src\Class\Share\ShareLabelMonitor.cs" />
     <Compile Include="Src\Class\Share\ShareLabelMonitorDB.cs" />
     <Compile Include="Src\Class\Share\ShareTaskFactory.cs" />
+    <Compile Include="Src\Class\WebsocketProtocol\DeviceUtility.cs" />
     <Compile Include="Src\Dialog\BackToPhoneDialog.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -122,6 +122,7 @@ namespace InfiniteStorage
             readCamera.readCameraForm _fm1 = new readCamera.readCameraForm();            // register cameratype device  plugin/remove event
             _fm1.startListen();
             _fm1.setWhere(@"C:\00000000");
+
 			Application.Run();
 		}
 
