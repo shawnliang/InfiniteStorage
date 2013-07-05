@@ -104,7 +104,18 @@ namespace InfiniteStorage
 			}
 
 			SynchronizationContextHelper.SetMainSyncContext();
-			DBInitializer.InitialzeDatabaseSchema();
+			try
+			{
+				DBInitializer.InitialzeDatabaseSchema();
+			}
+			catch (DBDowngradeException err)
+			{
+				log4net.LogManager.GetLogger("main").Error(err.Message, err);
+
+				MessageBox.Show(Resources.DBVersionIncompatible, Resources.IncompatibleVersionDetected, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+
 			SeqNum.InitFromDB();
 
 			if (HomeSharing.Enabled)
