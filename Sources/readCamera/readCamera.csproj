@@ -34,11 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="caller">
-      <HintPath>..\caller\bin\Debug\caller.exe</HintPath>
-    </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\..\Separate\NewPost\newPost\bin\Debug\log4net.dll</HintPath>
+      <HintPath>..\..\Libs\log4net-1.2.11\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,6 +51,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImportService.cs" />
+    <Compile Include="NullImportService.cs" />
     <Compile Include="readCameraForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +97,9 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

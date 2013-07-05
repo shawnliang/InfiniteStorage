@@ -8,7 +8,7 @@ using InfiniteStorage.WebsocketProtocol;
 
 namespace InfiniteStorage.Camera
 {
-	class ImportService : SimpleDetector.ImportService
+	class ImportService : readCamera.ImportService
 	{
 		public bool device_exist(string device_id)
 		{
@@ -50,7 +50,7 @@ namespace InfiniteStorage.Camera
 			}
 		}
 
-		public void copy_file(System.IO.Stream input, string file_path, SimpleDetector.FileType type, DateTime time, string device_id)
+		public void copy_file(System.IO.Stream input, string file_path, readCamera.FileType type, DateTime time, string device_id)
 		{
 			var temp = Path.Combine(MyFileFolder.Temp, Guid.NewGuid().ToString() + Path.GetExtension(file_path));
 
@@ -73,7 +73,7 @@ namespace InfiniteStorage.Camera
 				file_name = file_name,
 				file_path = file_path,
 				file_size = file_size,
-				type = (type == SimpleDetector.FileType.Image)? (int)FileAssetType.image : (int)FileAssetType.video,
+				type = (type == readCamera.FileType.Image) ? (int)FileAssetType.image : (int)FileAssetType.video,
 				saved_path = saved.relative_file_path,
 				parent_folder = Path.GetDirectoryName(saved.relative_file_path),
 				seq = SeqNum.GetNextSeq()

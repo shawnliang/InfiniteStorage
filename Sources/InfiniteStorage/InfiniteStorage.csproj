@@ -66,9 +66,6 @@
       <HintPath>..\..\Libs\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
-    <Reference Include="readCamera">
-      <HintPath>..\readCamera\bin\Debug\readCamera.exe</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -445,8 +442,14 @@
       <Project>{74cf7e76-3f40-4fa1-942f-bcdbcd6e6b15}</Project>
       <Name>postServiceLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\readCamera\readCamera.csproj">
+      <Project>{E129F475-F7E2-436A-9C44-B54956DA8034}</Project>
+      <Name>readCamera</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release signtool.exe sign /f "$(SolutionDir)Tools\WavefaceCert.pfx" /p waveface /t http://timestamp.verisign.com/scripts/timstamp.dll /v "$(TargetPath)"</PostBuildEvent>
