@@ -102,6 +102,7 @@
     <Compile Include="Src\Class\Common\HttpHelper.cs" />
     <Compile Include="Src\Class\Common\MultipartFormDataPostHelper.cs" />
     <Compile Include="Src\Class\Common\NoReentrantTimer.cs" />
+    <Compile Include="Src\Class\DefaultFolderFileStorage.cs" />
     <Compile Include="Src\Class\HomeSharing.cs" />
     <Compile Include="Src\Class\Notify\ActiveDeviceNotifyMsg.cs" />
     <Compile Include="Src\Class\Pair\IPairingSubscriber.cs" />

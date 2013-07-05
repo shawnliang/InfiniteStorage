@@ -9,24 +9,9 @@ namespace InfiniteStorage.WebsocketProtocol
 	{
 		public void SaveFileRecord(Model.FileAsset file)
 		{
-			var pendingFile = new PendingFile
-			{
-				file_id = file.file_id,
-				file_name = file.file_name,
-				file_path = file.file_path,
-				file_size = file.file_size,
-				deleted = file.deleted,
-				device_id = file.device_id,
-				event_time = file.event_time,
-				saved_path = file.saved_path,
-				seq = file.seq,
-				thumb_ready = file.thumb_ready,
-				type = file.type
-			};
-
 			using (var db = new MyDbContext())
 			{
-				db.Object.PendingFiles.Add(pendingFile);
+				db.Object.Files.Add(file);
 				db.Object.SaveChanges();
 			}
 		}
