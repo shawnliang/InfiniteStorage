@@ -66,6 +66,9 @@
       <HintPath>..\..\Libs\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="readCamera">
+      <HintPath>..\readCamera\bin\Debug\readCamera.exe</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -439,10 +442,6 @@
     <ProjectReference Include="..\postServiceLibrary\postServiceLibrary.csproj">
       <Project>{74cf7e76-3f40-4fa1-942f-bcdbcd6e6b15}</Project>
       <Name>postServiceLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SimpleDetector\SimpleDetector\SimpleDetector.csproj">
-      <Project>{1D241650-C7B8-4BBC-8657-1089DF45FA9E}</Project>
-      <Name>SimpleDetector</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
