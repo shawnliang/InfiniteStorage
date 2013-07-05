@@ -79,7 +79,7 @@ namespace Waveface.Client
 			labelTag.Tagged = (bool)e.NewValue;
 		}
 
-		private void UserControl_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void UserControl_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			this.Tagged = !this.Tagged;
 		}

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -175,8 +176,9 @@ namespace Waveface.Client
 
 			ClientFramework.Client.Default.AddToFavorite(contents, favoriteID);
 
-			SelectToFavorite(favoriteID);
-			RefreshSelectedFavorite();
+            (GetFavorite(favoriteID) as IContentGroup).Refresh();
+            //SelectToFavorite(favoriteID);
+            //RefreshSelectedFavorite();
 		}
 
 
@@ -200,6 +202,19 @@ namespace Waveface.Client
 				lbxFavorites.SelectedIndex = index;
 			}
 		}
+
+
+        private IContentEntity GetFavorite(string favoriteID)
+        {
+            var favorites = Waveface.ClientFramework.Client.Default.Favorites;
+
+            foreach (IContentEntity favorite in favorites)
+            {
+                if (favorite.ID == favoriteID)
+                    return favorite;
+            }
+            return null;
+        }
 
 		private IContentGroup GetCurrentContentGroup()
 		{
@@ -439,10 +454,11 @@ namespace Waveface.Client
 
             if (group == null)
             {
+                //TODO: 待重構
                 var viewer = new PhotoViewer();
                 viewer.Owner = this;
-                viewer.Source = lbxContentContainer.DataContext;
-                viewer.SelectedIndex = lbxContentContainer.SelectedIndex;
+                viewer.Source = (lbxContentContainer.SelectedItems.Count > 1) ? lbxContentContainer.SelectedItems.OfType<IContentEntity>() : lbxContentContainer.DataContext;
+                viewer.SelectedIndex = (lbxContentContainer.SelectedItems.Count > 1) ? 0 : lbxContentContainer.SelectedIndex;
 
                 viewer.ShowDialog();
                 return;
@@ -818,17 +834,18 @@ namespace Waveface.Client
 			ListBox list = sender as ListBox;
 			ListBoxItem item =
 				FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
-			
-			var dataContext = item.DataContext;
 
-			if (((Keyboard.Modifiers & ModifierKeys.Control) == 0) && lbxContentContainer.SelectedItems.Contains(dataContext))
-			{
-				needSpecialMulitSelectProcess = true;
-				e.Handled = true;
+            var dataContext = item.DataContext;
 
-				if (now.Subtract(lastMouseLeftButtonDown).Milliseconds <= 500)
-					Enter();
-			}
+            if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Control) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) && lbxContentContainer.SelectedItems.Contains(dataContext))
+            {
+                needSpecialMulitSelectProcess = true;
+
+                e.Handled = lbxContentContainer.SelectedItems.Count > 1;
+
+                if (now.Subtract(lastMouseLeftButtonDown).TotalMilliseconds <= 500)
+                    Enter();
+            }
 			startPoint = e.GetPosition(null);
 
 			lastMouseLeftButtonDown = now;
@@ -847,8 +864,14 @@ namespace Waveface.Client
 
 			if (!(lbxContentContainer.SelectedItems.Count == 1 && lbxContentContainer.SelectedItem == dataContext))
 			{
-				lbxContentContainer.SelectedItems.Clear();
-				lbxContentContainer.SelectedItems.Add(dataContext);
+                lbxContentContainer.UnselectAll();
+                lbxContentContainer.SelectedItem = dataContext;
+
+                PropertyInfo pi = typeof(ListBox).GetProperty("AnchorItem", BindingFlags.NonPublic | BindingFlags.Instance);
+                if (pi != null)
+                {
+                    pi.SetValue(lbxContentContainer, dataContext, null);
+                }
 			};
 
 			needSpecialMulitSelectProcess = false;
