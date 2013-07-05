@@ -62,8 +62,12 @@ namespace InfiniteStorage.Camera
 			var file_size = new FileInfo(temp).Length;
 			var file_name = Path.GetFileName(file_path);
 
-			var storage = new PendingFileStorage();
-			var saved = storage.MoveToStorage(temp, new FileContext { file_name = file_name });
+			var storage = new DefaultFolderFileStorage();
+			storage.setDeviceName(device_id); // TODO: use DEVICE NAME instead after refine readCamera.ImportService interface
+
+
+			var full_path = storage.MoveToStorage(temp, new FileContext { file_name = file_name });
+			var partial_path = PathUtil.MakeRelative(full_path, MyFileFolder.Photo);
 
 			var fileAsset = new FileAsset
 			{
@@ -74,8 +78,8 @@ namespace InfiniteStorage.Camera
 				file_path = file_path,
 				file_size = file_size,
 				type = (type == readCamera.FileType.Image) ? (int)FileAssetType.image : (int)FileAssetType.video,
-				saved_path = saved.relative_file_path,
-				parent_folder = Path.GetDirectoryName(saved.relative_file_path),
+				saved_path = partial_path,
+				parent_folder = Path.GetDirectoryName(partial_path),
 				seq = SeqNum.GetNextSeq()
 			};
 
