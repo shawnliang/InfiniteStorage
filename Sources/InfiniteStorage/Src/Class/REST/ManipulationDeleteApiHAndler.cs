@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Wammer.Station;
-using InfiniteStorage.Model;
-using System.IO;
 using System.Data.SQLite;
+using System.IO;
+using System.Linq;
+using InfiniteStorage.Manipulation;
+using InfiniteStorage.Model;
 
 namespace InfiniteStorage.REST
 {
@@ -17,8 +16,8 @@ namespace InfiniteStorage.REST
 			var folders = GetPaths();
 
 
-			var filesToDelete = GetFilesById(file_ids);
-			filesToDelete.AddRange(GetFilesFromFolder(folders));
+			var filesToDelete = Manipulation.Manipulation.GetFilesById(file_ids);
+			filesToDelete.AddRange(Manipulation.Manipulation.GetFilesFromFolder(folders));
 
 			List<AbstractFileToManipulate> notDeletedFiles;
 			var pendingDeleteFiles = moveFilesToRecycleBin(filesToDelete, out notDeletedFiles);

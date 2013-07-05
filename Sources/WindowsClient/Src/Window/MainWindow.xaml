@@ -52,6 +52,13 @@
         </ContextMenu>
 
         <ContextMenu x:Key="cm">
+            <MenuItem Click="StarMenuItem_Click"
+                      Header="Star" />
+            <MenuItem Click="CreateFavoriteMenuItem_Click"
+                      Header="Create Favorite..." />
+            <MenuItem Click="AddToFavoriteMenuItem_Click"
+                      Header="Add to Favorite..." />
+            <Separator />
             <MenuItem Click="UnTagMenuItem_Click"
                       Header="Delete" />
         </ContextMenu>
@@ -293,9 +300,18 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="Selector.IsSelected" Value="True">
-                                <Setter Property="Background"
-                                        Value="#FF2E2E2E" />
+                                <Setter Property="Background" Value="#FF427FED" />
                             </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver"
+                                               Value="True" />
+                                    <Condition Property="IsSelected"
+                                               Value="False" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background"
+                                        Value="#5FB0E0E6" />
+                            </MultiTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -418,17 +434,17 @@
 
                     <local:SourceTree x:Name="lbxDeviceContainer"
                                       Grid.Row="1"
+                                      AddToFavoriteInvoked="lbxDeviceContainer_AddToFavoriteInvoked"
                                       AllowDrop="True"
                                       BorderBrush="{x:Null}"
+                                      CreateFavoriteInvoked="lbxDeviceContainer_CreateFavoriteInvoked"
+                                      DeleteSourceInvoked="lbxDeviceContainer_DeleteSourceInvoked"
                                       DragEnter="Sources_DragEnter"
                                       Drop="Sources_Drop"
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                      StarInvoked="lbxDeviceContainer_StarInvoked"
                                       VirtualizingStackPanel.IsVirtualizing="True"
-                                      VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                      DeleteSourceInvoked="lbxDeviceContainer_DeleteSourceInvoked"
-                                      CreateFavoriteInvoked="lbxDeviceContainer_CreateFavoriteInvoked"
-                                      AddToFavoriteInvoked="lbxDeviceContainer_AddToFavoriteInvoked"
-                                      StarInvoked="lbxDeviceContainer_StarInvoked" />
+                                      VirtualizingStackPanel.VirtualizationMode="Recycling" />
                 </Grid>
                 <GridSplitter Grid.Column="0"
                               Height="5"
@@ -449,10 +465,10 @@
                     <local:FavoriteListBox x:Name="lbxFavorites"
                                            Grid.Row="1"
                                            AllowDrop="True"
+                                           DeleteFavoriteInvoked="lbxFavorites_DeleteFavoriteInvoked"
                                            DragEnter="Favorites_DragEnter"
                                            Drop="Favorites_Drop"
-                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                           DeleteFavoriteInvoked="lbxFavorites_DeleteFavoriteInvoked" />
+                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
                 </Grid>
 
                 <StackPanel x:Name="stackPanel"
@@ -531,13 +547,13 @@
                          IsSynchronizedWithCurrentItem="True"
                          ItemsSource="{Binding IsAsync=True}"
                          KeyDown="lbxContentContainer_KeyDown"
-                         MouseDoubleClick="OnPhotoClick"
                          PreviewMouseLeftButtonDown="List_PreviewMouseLeftButtonDown"
                          PreviewMouseMove="List_MouseMove"
                          SelectedIndex="0"
                          SelectionMode="Extended"
                          VirtualizingStackPanel.IsVirtualizing="True"
-                         VirtualizingStackPanel.VirtualizationMode="Recycling">
+                         VirtualizingStackPanel.VirtualizationMode="Recycling"
+                         PreviewMouseLeftButtonUp="lbxContentContainer_PreviewMouseLeftButtonUp">
                     <ListBox.Style>
                         <StaticResource ResourceKey="PhotoListBoxStyle" />
                     </ListBox.Style>

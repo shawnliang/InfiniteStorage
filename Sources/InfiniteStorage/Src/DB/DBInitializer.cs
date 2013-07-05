@@ -1,8 +1,10 @@
 ﻿using InfiniteStorage.Properties;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Data.SQLite;
 using System.IO;
+using InfiniteStorage.DB;
 
 namespace InfiniteStorage.Model
 {
@@ -12,6 +14,9 @@ namespace InfiniteStorage.Model
 		{
 			if (connString == null)
 				connString = MyDbContext.ConnectionString;
+
+
+			var migratePendingFilesToFiles = new List<FileAndDevFolder>();
 
 			using (var conn = new SQLiteConnection(connString))
 			{
@@ -360,9 +365,61 @@ update [Labels] set share_enabled = 0, share_proc_seq = seq;
 						}
 					}
 
+					if (schemaVersion == 11L)
+					{
+						using (var cmd = conn.CreateCommand())
+						{
+							cmd.CommandText =
+								@"select f.file_id, d.folder_name from pendingFiles f, devices d where f.deleted = 0 and d.device_id = f.device_id";
+
+							using (var reader = cmd.ExecuteReader())
+							{
+								while (reader.Read())
+								{
+									var file_id = (Guid)reader["file_id"];
+									var dev_folder = reader["folder_name"].ToString();
+
+									migratePendingFilesToFiles.Add(new FileAndDevFolder(file_id, dev_folder));
+								}
+							}
+						}
+					}
+
 					transaction.Commit();
 				}
+			}
 
+
+			if (migratePendingFilesToFiles.Any())
+			{
+				var deviceFolders = migratePendingFilesToFiles.Select(x => x.dev_folder).Distinct().ToList();
+
+				foreach (var devFolder in deviceFolders)
+				{
+					var files = migratePendingFilesToFiles.Where(x => x.dev_folder == devFolder).Select(x => x.file_id).ToList();
+
+					Manipulation.Manipulation.Move(files, Path.Combine(MyFileFolder.Photo, devFolder, Resources.UnsortedFolderName));
+				}
+
+				using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
+				{
+					conn.Open();
+					updateDbSchemaVersion(conn, 12);
+				}
+			}
+
+
+
+
+
+			using (var conn = new SQLiteConnection(connString))
+			{
+				conn.Open();
+
+				var curSchema = getDbSchemaVersion(conn);
+
+				if (curSchema > 12L)
+					throw new DBDowngradeException(string.Format("Existing db version {0} is newer than the installed version", curSchema));
 			}
 		}
 
@@ -386,4 +443,15 @@ update [Labels] set share_enabled = 0, share_proc_seq = seq;
 		}
 
 	}
+
+
+	class DBDowngradeException : Exception
+	{
+		public DBDowngradeException(string err)
+			:base(err)
+		{
+		}
+	}
+
+
 }

@@ -214,4 +214,13 @@
   <data name="WaitForPair_SearchAgainTitle" xml:space="preserve">
     <value>No device found</value>
   </data>
+  <data name="UnsortedFolderName" xml:space="preserve">
+    <value>Unsorted</value>
+  </data>
+  <data name="DBVersionIncompatible" xml:space="preserve">
+    <value>Database is imcompatible because you have installed a newer version of this product and now downgrade to an older version. Please upgrade to the latest version of Favorite Home to proceed.</value>
+  </data>
+  <data name="IncompatibleVersionDetected" xml:space="preserve">
+    <value>Incompatible version detected</value>
+  </data>
 </root>

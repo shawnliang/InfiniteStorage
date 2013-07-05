@@ -14,7 +14,6 @@
                 <ResourceDictionary Source="StringTable.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-
             <SolidColorBrush x:Key="DefaultBrush"
                              Color="#4F4F4F" />
             <Color x:Key="HighlightColor"

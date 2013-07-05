@@ -13,12 +13,11 @@ namespace Waveface.Client
 		{
 			get
 			{
-				return false;
-				//return ltTag.Tagged;
+				return ltTag.Tagged;
 			}
 			set
 			{
-				//ltTag.Tagged = value;
+				ltTag.Tagged = value;
 			}
 		}
 		#endregion
@@ -34,8 +33,8 @@ namespace Waveface.Client
 		public ContentItem()
 		{
 			this.InitializeComponent();
-			//this.ltTag.TagStatusChanging += ltTag_TagStatusChanging;
-			//this.ltTag.TagStatusChanged += ltTag_TagStatusChanged;
+			this.ltTag.TagStatusChanging += ltTag_TagStatusChanging;
+			this.ltTag.TagStatusChanged += ltTag_TagStatusChanged;
 		}
 		#endregion
 

@@ -145,6 +145,15 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Database is imcompatible because you have installed a newer version of this product and now downgrade to an older version. Please upgrade to the latest version of Favorite Home to proceed..
+        /// </summary>
+        internal static string DBVersionIncompatible {
+            get {
+                return ResourceManager.GetString("DBVersionIncompatible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0}&apos;s Favorite Home.
         /// </summary>
         internal static string DefLibraryName {
@@ -178,6 +187,15 @@ namespace InfiniteStorage.Properties {
             get {
                 object obj = ResourceManager.GetObject("google_play", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incompatible version detected.
+        /// </summary>
+        internal static string IncompatibleVersionDetected {
+            get {
+                return ResourceManager.GetString("IncompatibleVersionDetected", resourceCulture);
             }
         }
         
@@ -307,6 +325,15 @@ namespace InfiniteStorage.Properties {
         internal static string TrayMenuItem_Quit {
             get {
                 return ResourceManager.GetString("TrayMenuItem_Quit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsorted.
+        /// </summary>
+        internal static string UnsortedFolderName {
+            get {
+                return ResourceManager.GetString("UnsortedFolderName", resourceCulture);
             }
         }
         

@@ -42,7 +42,7 @@ namespace InfiniteStorage
 
 	public interface IFileStorage
 	{
-		SavedPath MoveToStorage(string tempfile, FileContext file);
+		string MoveToStorage(string tempfile, FileContext file);
 		void setDeviceName(string name);
 	}
 }

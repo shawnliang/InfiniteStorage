@@ -12,11 +12,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Threading;
 using InfiniteStorage.Model;
 using Newtonsoft.Json;
 using Waveface.ClientFramework;
 using Waveface.Model;
+using Screen = System.Windows.Forms.Screen;
 
 #endregion
 
@@ -37,6 +39,7 @@ namespace Waveface.Client
 		public static UnSortedFilesUC Current { get; set; }
 
 		private IService m_currentDevice;
+		private IContentGroup m_unsortedGroup;
 		private List<MySliderTick> m_sliderTicks = new List<MySliderTick>();
 		private List<string> m_defaultEventNameCache;
 		private ObservableCollection<EventUC> m_eventUCs;
@@ -92,7 +95,7 @@ namespace Waveface.Client
 			}
 		}
 
-		public bool Init(IService device, MainWindow mainWindow)
+		public bool Init(IService device, IContentGroup unsortedGroup, MainWindow mainWindow)
 		{
 			m_mainWindow = mainWindow;
 
@@ -100,6 +103,7 @@ namespace Waveface.Client
 			btnRefresh.Visibility = Visibility.Collapsed;
 
 			m_currentDevice = device;
+			m_unsortedGroup = unsortedGroup;
 
 			Rt = new RT();
 
@@ -154,7 +158,7 @@ namespace Waveface.Client
 
 		private void dispatcherTimer_Tick(object sender, EventArgs e)
 		{
-			int _count = BunnyUnsortedContentGroup.countUnsortedItems(m_currentDevice.ID);
+			int _count = m_unsortedGroup.ContentCount; //BunnyDeviceTimelineContentGroup.countWholeTimeline(m_currentDevice.ID);
 
 			if (_count != Rt.RtData.file_changes.Count) //m_pendingFilesCount
 			{
@@ -191,7 +195,7 @@ namespace Waveface.Client
 
 			DoEvents();
 
-			Init(m_currentDevice, m_mainWindow);
+			Init(m_currentDevice, m_unsortedGroup, m_mainWindow);
 
 			Cursor = Cursors.Arrow;
 
@@ -707,10 +711,7 @@ namespace Waveface.Client
 				}
 				else
 				{
-					_contentEntitys.Add(new BunnyContent(new Uri(_fc.saved_path), _fc.id, (_fc.type == 0 ? ContentType.Photo : ContentType.Video))
-											{
-												EnableTag = true
-											});
+					_contentEntitys.Add(new BunnyContent(new Uri(_fc.saved_path), _fc.id, (_fc.type == 0 ? ContentType.Photo : ContentType.Video)));
 				}
 			}
 
@@ -793,5 +794,64 @@ namespace Waveface.Client
 		}
 
 		#endregion
+
+		private void btnFun1_Click(object sender, RoutedEventArgs e)
+		{
+			ShowContextMenu(sender as Button);
+		}
+
+		private static void ShowContextMenu(Button btn)
+		{
+			btn.ContextMenu.IsEnabled = true;
+			btn.ContextMenu.PlacementTarget = btn;
+			btn.ContextMenu.Placement = PlacementMode.Bottom;
+			btn.ContextMenu.IsOpen = true;
+			btn.ContextMenu.VerticalOffset = -2;
+		}
+
+		private void miSelectAll_Click(object sender, RoutedEventArgs e)
+		{
+			Sub_SelectAll(true);
+		}
+
+		private void miDeselectAll_Click(object sender, RoutedEventArgs e)
+		{
+			Sub_SelectAll(false);
+		}
+
+		private void miSlideShow_Click(object sender, RoutedEventArgs e)
+		{
+			Sub_SlideShow();
+		}
+
+		private void miMoveToFolder_Click(object sender, RoutedEventArgs e)
+		{
+			bool _ret = Current.Sub_MoveToFolder();
+
+			if (_ret)
+			{
+				Current.Sub_SelectAll(false);
+			}
+		}
+
+		private void miSaveToFavorite_Click(object sender, RoutedEventArgs e)
+		{
+			bool _ret = Sub_SaveToFavorite();
+
+			if (_ret)
+			{
+				Sub_SelectAll(false);
+			}
+		}
+
+		private void miAddToFavorite_Click(object sender, RoutedEventArgs e)
+		{
+			bool _ret = Sub_AddToFavorite();
+
+			if (_ret)
+			{
+				Sub_SelectAll(false);
+			}
+		}
 	}
 }

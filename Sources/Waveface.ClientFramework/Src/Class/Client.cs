@@ -151,6 +151,11 @@ namespace Waveface.ClientFramework
 			StationAPI.Delete(ids, paths);
 		}
 
+		public void Move(IEnumerable<string> ids, string targetPath)
+		{
+			StationAPI.Move(ids, targetPath);
+		}
+
 		public void UnTag(string contentID)
 		{
 			UnTag(StarredLabelId, contentID);

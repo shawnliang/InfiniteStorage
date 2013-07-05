@@ -179,6 +179,24 @@ namespace Waveface.ClientFramework
 
 			return Post(uri, parameters);
 		}
+
+		public static string Move(IEnumerable<string> ids, string targetPath)
+		{
+			if (ids == null || !ids.Any())
+				throw new ArgumentNullException("ids");
+
+			if (string.IsNullOrWhiteSpace(targetPath))
+				throw new ArgumentNullException("targetPath");
+
+			var uri = MANIPULATION_API_BASE_URL + "/move";
+
+			var parameters = new NameValueCollection();
+
+			parameters.Add("ids", string.Join(",", ids));
+			parameters.Add("targetPath", targetPath);
+
+			return Post(uri, parameters);
+		}
 		#endregion
 	}
 }

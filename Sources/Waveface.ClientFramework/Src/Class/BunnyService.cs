@@ -9,7 +9,7 @@ namespace Waveface.ClientFramework
 {
 	class BunnyService : Service
 	{
-		private BunnyUnsortedContentGroup unsorted;
+		private BunnyDeviceTimelineContentGroup unsorted;
 		private Timer timer;
 		private bool timerStarted;
 		private bool _isRecving;
@@ -41,7 +41,7 @@ namespace Waveface.ClientFramework
 
 		private void PopulateContent(ObservableCollection<IContentEntity> content)
 		{
-			unsorted = new BunnyUnsortedContentGroup(this.ID);
+			unsorted = new BunnyDeviceTimelineContentGroup(this.ID);
 			content.Add(unsorted);
 
 			using (var conn = BunnyDB.CreateConnection())

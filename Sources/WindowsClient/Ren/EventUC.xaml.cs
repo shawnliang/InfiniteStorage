@@ -316,74 +316,12 @@ namespace Waveface.Client
 			}
 		}
 
-		#region btn/ mi
-
-		private void btnImport_Click(object sender, RoutedEventArgs e)
-		{
-			UnSortedFilesUC.Current.AddEventToFolder(this);
-		}
-
-		private void miSelectAllInThisEvent_Click(object sender, RoutedEventArgs e)
-		{
-			SelectAll(true);
-		}
-
-		private void miDeselectAllInThisEvent_Click(object sender, RoutedEventArgs e)
-		{
-			SelectAll(false);
-		}
-
-		private void miSelectAll_Click(object sender, RoutedEventArgs e)
-		{
-			UnSortedFilesUC.Current.Sub_SelectAll(true);
-		}
-
-		private void miDeselectAll_Click(object sender, RoutedEventArgs e)
-		{
-			UnSortedFilesUC.Current.Sub_SelectAll(false);
-		}
-
-		private void miSlideShow_Click(object sender, RoutedEventArgs e)
-		{
-			UnSortedFilesUC.Current.Sub_SlideShow();
-		}
-
-		private void miSaveToFavorite_Click(object sender, RoutedEventArgs e)
-		{
-			bool _ret = UnSortedFilesUC.Current.Sub_SaveToFavorite();
-
-			if (_ret)
-			{
-				UnSortedFilesUC.Current.Sub_SelectAll(false);
-			}
-		}
-
-		private void miAddToFavorite_Click(object sender, RoutedEventArgs e)
-		{
-			bool _ret = UnSortedFilesUC.Current.Sub_AddToFavorite();
-
-			if (_ret)
-			{
-				UnSortedFilesUC.Current.Sub_SelectAll(false);
-			}
-		}
-
-		private void miMoveToFolder_Click(object sender, RoutedEventArgs e)
-		{
-			bool _ret = UnSortedFilesUC.Current.Sub_MoveToFolder();
-
-			if (_ret)
-			{
-				UnSortedFilesUC.Current.Sub_SelectAll(false);
-			}
-		}
-
-		#endregion
-
 		#region gridMain
 
 		private void gridMain_MouseEnter(object sender, MouseEventArgs e)
 		{
+			spToolBar.Visibility = Visibility.Visible;
+
 			tbDescribe.BorderThickness = new Thickness(1);
 			tbDescribe.BorderBrush = new SolidColorBrush(Color.FromRgb(64, 64, 64)); //404040
 			tbDescribe.Background = new SolidColorBrush(Color.FromRgb(74, 74, 74));
@@ -394,6 +332,8 @@ namespace Waveface.Client
 
 		private void gridMain_MouseLeave(object sender, MouseEventArgs e)
 		{
+			spToolBar.Visibility = Visibility.Collapsed;
+
 			tbDescribe.BorderThickness = new Thickness(0);
 			tbDescribe.Background = new SolidColorBrush(Color.FromRgb(63, 63, 63)); //3F3F3F
 
@@ -454,11 +394,9 @@ namespace Waveface.Client
 				{
 					if (_clickedListBoxItem.IsSelected)
 					{
-						contextMenu.PlacementTarget = _clickedListBoxItem;
 					}
 				}
 			}
-
 		}
 
 		private void lbEvent_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -571,5 +509,15 @@ namespace Waveface.Client
 		}
 
 		#endregion
+
+		private void btnSelectAll_Click(object sender, RoutedEventArgs e)
+		{
+			SelectAll(true);
+		}
+
+		private void btnUnselectAll_Click(object sender, RoutedEventArgs e)
+		{
+			SelectAll(false);
+		}
 	}
 }
