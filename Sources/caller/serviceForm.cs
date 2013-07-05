@@ -48,7 +48,7 @@ namespace caller
 
         public void copy_file(Stream input, string file_path)
         {
-
+            return;
             int bufferSize = 1024 * 64;
             try
             {
