@@ -25,7 +25,7 @@ namespace readCamera
 		const string wiaFormatBMP = "{B96B3CAB-0728-11D3-9D7B-0000F81EF32E}";
 		const string wiaFormatJPEG = "{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}";
 		const string wiaFormatTIFF = "{B96B3CB1-0728-11D3-9D7B-0000F81EF32E}";
-
+        
 		[DllImport("user32.dll", EntryPoint = "FindWindow", CharSet = CharSet.Auto)]
 		private extern static IntPtr FindWindow(string lpClassName, string lpWindowName);
 
@@ -35,7 +35,7 @@ namespace readCamera
 		public const int WM_CLOSE = 0x10;
 		_deviceInfo _dev = new _deviceInfo();
 		System.Management.ManagementEventWatcher watcher;
-		ImportService _svr;
+        NullImportService _svr;
 
 		public readCameraForm()
 		{
@@ -103,109 +103,124 @@ namespace readCamera
 			}
 		}
 
-		Device wiaDevice = null;
-		List<string> NewNames = new List<string>();
+		
+		
 		public string where = @"C:\00000000";
-	   
-		private  void GetPictures()
-		{
-			string getUID = doService();            // get _dev: UID/...
-			// device exist
-			bool isdevice_exist = _svr.device_exist(_dev.UID);
-			if (isdevice_exist == false)
-			{
-				//   create_device            
-				_svr.create_device(_dev.UID, _dev.Name);
-			}
-			//
-			WIA.ImageFile wiaImageFile = null;
-			try
-			{
+        WIA.Device _Acamera;
+        private void GetPictures()
+        {
+            List<string> NewNames = new List<string>();
+            Device wiaDevice = null;
+            _svr = new NullImportService();
+            WIA.ImageFile wiaImageFile = null;
+            try
+            {
 
-				WIA.CommonDialog dialog = new WIA.CommonDialog();
-				WIA.Device _camera = dialog.ShowSelectDevice(WIA.WiaDeviceType.CameraDeviceType,true, true);
-				wiaDevice = _camera;
+                string getUID = doService();
+                // device exist
+                bool isdevice_exist = _svr.device_exist(_dev.UID);
+                if (isdevice_exist == false)
+                {
+                    //   create_device            
+                    _svr.create_device(_dev.UID, _dev.Name);
+                }
 
-				if (MessageBox.Show("Copy to Favorite?", "Confirm Yes/No", MessageBoxButtons.YesNo) == DialogResult.No)
-				{
-					log.Warn("Yes/No " + DialogResult.No);
-					return;
-				}
-				log.Warn("Yes/No " + DialogResult.Yes);
-				int no = 0;
-				//return;
-				string _tempName = "";
-				//  List<MyPicture> pictureList = new List<MyPicture>();
-				foreach (Item i in _camera.Items)
-				{   
-					bool gotName = false;
-					// Get created date property
-					foreach (Property p in i.Properties)
-					{
-						System.Diagnostics.Debug.WriteLine(p.Name);
-						
-						dynamic propertyData = p.get_Value();
-					   // richTextBox1.Text = richTextBox1.Text + p.Name + "\n" + p.get_Value(); ;
-						switch (p.Name)
-						{
-							case "Item Name":
-								_tempName = propertyData;
-								NewNames.Add(_tempName);
-								log.Warn("pic name= " + _tempName);
-								gotName = true;
-								break;
-					   
-						}
-						if (gotName == true) break;
-					}
-			  
-					log.Warn("File no= " + NewNames.Count);
-					//if (NewNames.Count == 0)
-					//    MessageBox.Show("empty");
-					// check if file exist
-					bool isfileexist =_svr.is_file_exist(_dev.UID, _tempName);
-					DateTime dateTime = new DateTime();
-					if (isfileexist == false)
-					{
-						wiaImageFile = (WIA.ImageFile)i.Transfer(wiaFormatJPEG);
-						
-						foreach (IProperty prop in wiaImageFile.Properties)
-						{
-							//Camera datetime format is a little strange:
-							//DateTime : 2008:10:28 22:20:45
-							if (prop.Name == "DateTime")
-							{
-								// replace the colons in the date by dashes
-								StringBuilder sdate = new StringBuilder(prop.get_Value().ToString());
-								sdate[4] = '-';
-								sdate[7] = '-';
-								dateTime = DateTime.Parse(sdate.ToString());
-								break;
-							}
-						}
-					}
-					log.Warn("SaveFile");
-					// save & read & transfer
-					wiaImageFile.SaveFile(where + @"\" + NewNames[no] + ".jpg");
+                // if(wai == null) check!!!
+                WIA.Device _camera = _Acamera;  // dialog.ShowSelectDevice(WIA.WiaDeviceType.CameraDeviceType, false, true);
+                wiaDevice = _camera;
 
-					Stream _sr = File.OpenRead(where + @"\" + NewNames[no] + ".jpg");
+                if (MessageBox.Show("Copy to Favorite?", "Confirm Yes/No", MessageBoxButtons.YesNo) == DialogResult.No)
+                {
+                    return;
+                }                
+               
+                string _tempName = "";
+                string fullitempath = _dev.Root;
 
+                findImageItem(_camera.Items, fullitempath);
+            }
+            catch (Exception err)
+            {
+                string error = err.Message;
+            }
+            StartKiller();
+            MessageBox.Show("Done!", "Favorite Message");
+            //Thread thread = new Thread(worker_DoWork);          // work in another thread
+            //thread.IsBackground = true;
+            //thread.Start();
+        }
 
-					// TODO: file could be FileType.Video!
-					_svr.copy_file(_sr, _tempName, FileType.Image, dateTime, _dev.UID);
-				}
-			}
-			catch( Exception err)
-			{
-				log.Warn("Exception: " + err.Message);
-				string error = err.Message;
-			}
-			StartKiller();
-			MessageBox.Show("Done!", "Favorite Message");
-			Thread thread = new Thread(worker_DoWork);          // work in another thread
-			thread.IsBackground = true;
-			thread.Start();
-		}
+        static List<string> imageName = new List<string>();
+        void findImageItem(Items items, string _fullitempath)
+        {
+            WIA.ImageFile wiaImageFile = null;
+            string trueName = "";
+            foreach (Item item in items)
+            {
+                var flag = item.Properties["Item Flags"];
+
+                if (flag != null)
+                {
+                    var val = flag.get_Value();
+                    try
+                    {
+                        if ((val & (int)WiaItemFlag.FolderItemFlag) != 0)
+                        {
+                            Console.WriteLine("Folder: " + item.Properties["Item Name"].get_Value());
+                            _fullitempath = _fullitempath + @"\" + item.Properties["Full Item Name"].get_Value();
+
+                            findImageItem(item.Items, _fullitempath);
+
+                            continue;
+                        }
+                    }
+                    catch (Exception err)
+                    {
+                        log.Error("findImageItem:  flag.get_Value(), error: " + err.Message);
+                        continue;
+                    }
+                    if ((val & (int)WiaItemFlag.ImageItemFlag) != 0)
+                    {
+                        foreach (Property itemProp in item.Properties)
+                        {
+                            //Console.WriteLine(itemProp.Name + ":" + itemProp.get_Value());
+                            trueName = item.Properties["Item Name"].get_Value();
+                            imageName.Add(_fullitempath + @"\" + trueName + ".jpg");
+
+                            //}
+
+                            wiaImageFile = (WIA.ImageFile)item.Transfer(wiaFormatJPEG);
+
+                            DateTime dateTime = new DateTime();
+                            foreach (IProperty prop in wiaImageFile.Properties)
+                            {
+                                // Camera datetime format is a little strange:
+                                // DateTime : 2008:10:28 22:20:45
+                                if (prop.Name == "DateTime")
+                                {
+                                    // replace the colons in the date by dashes
+                                    StringBuilder sdate = new StringBuilder(prop.get_Value().ToString());
+                                    sdate[4] = '-';
+                                    sdate[7] = '-';
+                                    dateTime = DateTime.Parse(sdate.ToString());
+                                    break;
+                                }
+                            }
+                            bool isfileexist = _svr.is_file_exist(_dev.UID, _fullitempath + @"\" + trueName + ".jpg");
+                            if (isfileexist == false)
+                            {
+                                _svr.copy_file(null, _fullitempath + @"\" + trueName + ".jpg",FileType.Image, dateTime, _dev.UID);
+                                wiaImageFile.SaveFile(@"C:\00000000\" + trueName + ".jpg");
+                                log.Info("copy file: " + _fullitempath + @"\" + trueName + ".jpg"+" / " + FileType.Image + "/ "+ dateTime.ToString() + " / "+ _dev.UID);
+                            }
+                            break;
+                        }
+                        continue;
+                    }
+
+                }
+            }
+        }
 		private void worker_DoWork(object obj)
 		{
 			startListen();
@@ -252,7 +267,7 @@ namespace readCamera
 
 				 // show user the WIA device dialog
 				 Device d = dlg.ShowSelectDevice(WiaDeviceType.CameraDeviceType, false, false);
-
+                 _Acamera = d;
 				 // check if a device was selected
 				 if (d != null)
 				 {
@@ -261,6 +276,10 @@ namespace readCamera
 					 foreach (Property p in d.Properties)
 					 {
 						 _r = _r + p.Name + ": " + p.get_Value() + "  (" + p.PropertyID + ":" + p.IsReadOnly + ") \n";
+                         if (p.Name == "Full Item Name")
+                         {
+                             _dev.Root = p.get_Value();
+                         }
 						 if (p.Name == "Unique Device ID")
 						 {
 							 UniqueDeviceID = p.get_Value();
@@ -353,8 +372,9 @@ namespace readCamera
 		public string Name { get; set; }
 		public string UID { get; set; }
 		public string Manufacturer { get; set; }
-		public string Description { get; set; }
-		//public string
+        public string Description { get; set; }
+        public string Root { get; set; }
+        //public string
 	}
 	}
 
