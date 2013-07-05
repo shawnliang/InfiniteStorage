@@ -41,7 +41,7 @@ namespace Waveface.ClientFramework
 
 		private void PopulateContent(ObservableCollection<IContentEntity> content)
 		{
-			unsorted = new BunnyDeviceTimelineContentGroup(this.ID);
+			unsorted = new BunnyDeviceTimelineContentGroup(this.ID, Path.Combine(BunnyDB.ResourceFolder, Name));
 			content.Add(unsorted);
 
 			using (var conn = BunnyDB.CreateConnection())

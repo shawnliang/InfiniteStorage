@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Waveface.Model;
+using System.IO;
 
 namespace Waveface.ClientFramework
 {
@@ -11,8 +12,8 @@ namespace Waveface.ClientFramework
 		private string deviceId;
 		private int _contentCount = -1;
 
-		public BunnyDeviceTimelineContentGroup(string deviceId)
-			: base("Unsorted", "Timeline", new Uri(@"c:\"), (x) => { })
+		public BunnyDeviceTimelineContentGroup(string deviceId, string deviceFolder)
+			: base("Unsorted", "Timeline", new Uri(Path.Combine(deviceFolder, "vTimeline")), (x) => { })
 		{
 			this.deviceId = deviceId;
 		}

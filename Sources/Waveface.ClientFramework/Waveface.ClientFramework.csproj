@@ -81,7 +81,7 @@
     <Compile Include="Src\Class\BunnyRecipient.cs" />
     <Compile Include="Src\Class\BunnyService.cs" />
     <Compile Include="Src\Class\BunnyServiceSupplier.cs" />
-    <Compile Include="Src\Class\BunnyUnsortedContentGroup.cs" />
+    <Compile Include="Src\Class\BunnyDeviceTimelineContentGroup.cs" />
     <Compile Include="Src\Class\Client.cs" />
     <Compile Include="Src\Class\StationAPI.cs" />
   </ItemGroup>
