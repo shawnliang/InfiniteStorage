@@ -403,6 +403,14 @@ public class LabelDB {
 				new String[] { labelId }, LabelFileTable.DEFAULT_SORT_ORDER);
 		return cursor;
 	}
+	
+	public static Cursor getLabelFilesByFileId(Context context, String fileId) {
+		Cursor cursor = context.getContentResolver().query(
+				LabelFileTable.CONTENT_URI, null,
+				LabelFileTable.COLUMN_FILE_ID + " = ?",
+				new String[] { fileId }, LabelFileTable.DEFAULT_SORT_ORDER);
+		return cursor;
+	}
 
 	public static String getVideoLabelId(Context context) {
 		String labelId = null;
@@ -497,5 +505,10 @@ public class LabelDB {
 			}
 		}
 	}
+	public static void removeFileByFileId(Context context, String fileId) {
+		ContentResolver cr = context.getContentResolver();
+		cr.delete(FileTable.CONTENT_URI, FileTable.COLUMN_FILE_ID
+				+ "=?", new String[] { fileId });
+	}		
 
 }

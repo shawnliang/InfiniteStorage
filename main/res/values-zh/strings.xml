@@ -120,6 +120,7 @@
     <string name="setting_title">設定</string>
     <string name="setting_change_pc">更換備份電腦</string>
     <string name="setting_current">目前 PC : </string>
+    <string name="delete_label">刪除標籤</string>
     <!-- ABOUT -->
     <string name="about">關於</string>
     <string name="support">聯絡我們</string>

@@ -1,8 +1,10 @@
 package com.waveface.favoriteplayer.ui;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.waveface.favoriteplayer.Constant;
 import com.waveface.favoriteplayer.R;
 import com.waveface.favoriteplayer.db.LabelDB;
+import com.waveface.favoriteplayer.db.LabelFileTable;
 import com.waveface.favoriteplayer.db.LabelFileView;
 import com.waveface.favoriteplayer.entity.PlaybackData;
 import com.waveface.favoriteplayer.entity.ServerEntity;
@@ -41,7 +44,7 @@ public class PlaybackActivity extends SherlockFragmentActivity {
 	private String mLabelTitle;
 	private ProgressBar mProgress;
 	private boolean mTV = false;
-	
+	private String mLableId; 
 	private AsyncTask<Void, Void, ArrayList<PlaybackData>> mTask;
 	
 	@Override
@@ -65,25 +68,28 @@ public class PlaybackActivity extends SherlockFragmentActivity {
 			data = savedInstance;
 		}
 		
-		String labelId = data.getString(Constant.ARGUMENT1);
+		mLableId = data.getString(Constant.ARGUMENT1);
 		mLabelTitle = data.getString(Constant.ARGUMENT3);
 		
 	    getSupportActionBar().setTitle(mLabelTitle);
 	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
-	    mTask = new LoadPlaybackData(this,labelId).execute(null, null, null);
+	    mTask = new LoadPlaybackData(this,mLableId).execute(null, null, null);
 	}
 	
-    @Override
+    
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	if(mTV) {
 	        menu.add(0, 0, 0, R.string.previous_page)
 	            .setIcon(R.drawable.ic_back_normal)
 	            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
     	}
-    	menu.add(0, 1, 0, R.string.setting_title);
-        return super.onCreateOptionsMenu(menu);
+    	menu.add(0, 1, 0, R.string.delete_label);
+    	return super.onCreateOptionsMenu(menu);
     }
+    
+
     
     @Override
     protected void onDestroy() {
@@ -99,6 +105,47 @@ public class PlaybackActivity extends SherlockFragmentActivity {
     		onBackPressed();
     		break;
     	case 1:
+    		
+    		ArrayList<String> deletFileArray = new ArrayList<String>();
+    		//1.delete label table
+    		LabelDB.deleteLabel(this, mLableId);
+    		
+    		Cursor labelFileViewCursor = LabelDB.getLabelFileViewByLabelId(this, mLableId);
+    		
+    		labelFileViewCursor.moveToFirst();
+    		
+    		//2.delete file table
+    		int deleteFileCounts =labelFileViewCursor.getCount();
+    		for(int i=0;i<deleteFileCounts;i++){
+    			String fileId =  labelFileViewCursor.getString(labelFileViewCursor
+    					.getColumnIndex(LabelFileView.COLUMN_FILE_ID));
+    			Log.d(TAG, " delete label file ="+fileId);
+    			String type =  labelFileViewCursor.getString(labelFileViewCursor
+    					.getColumnIndex(LabelFileView.COLUMN_TYPE));
+    			String fileName =  labelFileViewCursor.getString(labelFileViewCursor
+    					.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
+    			Cursor labelFileCursor = LabelDB.getLabelFilesByFileId(this, fileId);
+    			if(labelFileCursor.getCount()==1){
+    				LabelDB.removeFileByFileId(this, fileId);
+    				//remove storge file
+    				if(type.trim().equals("1")){
+    					String filePath =FileUtil.getDownloadFolder(this) + Constant.VIDEO_FOLDER + "/";
+    					if(FileUtil.isFileExisted(filePath+fileName)){
+    						File file = new File(filePath+fileName);
+    						file.delete();
+    					}
+    					
+    				}else{
+    				deletFileArray.add(fileId);
+    				}
+    			}
+    			labelFileCursor.moveToNext();
+    		}
+    		labelFileViewCursor.close();
+    		
+    		//3.delete labelfile tabel
+    		LabelDB.removeLabelFileByLabelId(this, mLableId);
+    		onBackPressed();
     		break;
     	}
     	return true;

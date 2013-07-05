@@ -121,6 +121,7 @@
     <string name="setting_title">Settings</string>
     <string name="setting_change_pc">Change PC to Back up</string>
     <string name="setting_current">Current Paired PC : </string>
+    <string name="delete_label">Delete Label</string>
     <!-- ABOUT -->
     <string name="support_email">supportd@waveface.com</string>   
     <string name="about">About us</string>
