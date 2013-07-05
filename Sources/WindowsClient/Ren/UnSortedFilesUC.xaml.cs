@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using Waveface.ClientFramework;
 using Waveface.Model;
 using Screen = System.Windows.Forms.Screen;
+using System.IO;
 
 #endregion
 
@@ -720,15 +721,8 @@ namespace Waveface.Client
 
 		public bool Sub_MoveToFolder()
 		{
-			List<FileChange> _allSelectedFiles = GetAllSelectedFiles();
+			
 
-			if (_allSelectedFiles.Count == 0)
-				return false;
-
-			PendingSort _pendingSort = new PendingSort
-										   {
-											   device_id = m_currentDevice.ID
-										   };
 
 			var _dialog = new CreateFolderDialog
 							  {
@@ -739,56 +733,22 @@ namespace Waveface.Client
 			if (_dialog.ShowDialog() != true)
 				return false;
 
-			if (_dialog.FolderName == string.Empty)
+			if (string.IsNullOrEmpty(_dialog.FolderName))
 				return false;
 
-			_allSelectedFiles.Sort((x, y) => String.Compare(x.taken_time, y.taken_time, StringComparison.Ordinal));
+			try {
+				List<FileChange> _allSelectedFiles = GetAllSelectedFiles();
 
-			Event _event = new Event
-							   {
-								   type = 1,
-								   title = _dialog.FolderName,
-								   time_start = _allSelectedFiles[0].taken_time,
-								   time_end = _allSelectedFiles[_allSelectedFiles.Count - 1].taken_time
-							   };
+				var targetPath = Path.Combine(Path.GetDirectoryName(m_unsortedGroup.Uri.LocalPath), _dialog.FolderName);
 
-			foreach (FileChange _fileChange in _allSelectedFiles)
-			{
-				_event.files.Add(_fileChange.id);
-			}
-
-			_pendingSort.events.Add(_event);
-
-			string _how = string.Empty;
-
-			try
-			{
-				_how = JsonConvert.SerializeObject(_pendingSort);
-			}
-			catch
-			{
-				return false;
-			}
-
-			try
-			{
-				string _url = "http://127.0.0.1:14005" + "/pending/sort";
-
-				string _parms = "how" + "=" + HttpUtility.UrlEncode(_how);
-
-				WebPostHelper _webPos = new WebPostHelper();
-				bool _isOK = _webPos.doPost(_url, _parms, null, 10000);
-
-				if (!_isOK)
-					return false;
-
-				_webPos.getContent();
+				StationAPI.Move(GetAllSelectedFiles().Select(x => x.id), targetPath);
 			}
 			catch
 			{
 			}
 
 			m_currentDevice.Refresh();
+			var forceReload = m_currentDevice.Contents;
 
 			return true;
 		}
