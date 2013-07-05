@@ -6,7 +6,7 @@
   <?define AppCode = "FavoriteHome" ?>
   <?define AppProductCode = "{BD5E16BF-C2F1-4FAC-AD89-98CF3E8845D4}" ?>
   <?define AppVersionMajor = "1" ?>
-  <?define AppVersionMinor = "0" ?>
+  <?define AppVersionMinor = "1" ?>
   <?define AppVersionPatch = "0" ?>
   <?define AppVersionBuild = "0" ?>
   <?define AppVersion = "$(var.AppVersionMajor).$(var.AppVersionMinor).$(var.AppVersionPatch).$(var.AppVersionBuild)" ?>

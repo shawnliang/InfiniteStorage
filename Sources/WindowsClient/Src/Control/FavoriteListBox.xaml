@@ -12,6 +12,8 @@
          UseLayoutRounding="True"
          d:DesignHeight="109"
          d:DesignWidth="400"
+         VirtualizingStackPanel.IsVirtualizing="True"
+         VirtualizingStackPanel.VirtualizationMode="Recycling"
          mc:Ignorable="d">
 
     <ListBox.Resources>
