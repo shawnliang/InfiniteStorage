@@ -535,7 +535,7 @@ namespace Waveface.Client
                 Cursor = Cursors.Wait;
 
                 unSortedFilesUC.Visibility = Visibility.Visible;
-                unSortedFilesUC.Init(service, this);
+                unSortedFilesUC.Init(service, group, this);
 
                 Cursor = Cursors.Arrow;
             }

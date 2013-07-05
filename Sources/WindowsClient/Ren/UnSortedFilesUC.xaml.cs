@@ -39,6 +39,7 @@ namespace Waveface.Client
 		public static UnSortedFilesUC Current { get; set; }
 
 		private IService m_currentDevice;
+		private IContentGroup m_unsortedGroup;
 		private List<MySliderTick> m_sliderTicks = new List<MySliderTick>();
 		private List<string> m_defaultEventNameCache;
 		private ObservableCollection<EventUC> m_eventUCs;
@@ -94,7 +95,7 @@ namespace Waveface.Client
 			}
 		}
 
-		public bool Init(IService device, MainWindow mainWindow)
+		public bool Init(IService device, IContentGroup unsortedGroup, MainWindow mainWindow)
 		{
 			m_mainWindow = mainWindow;
 
@@ -102,6 +103,7 @@ namespace Waveface.Client
 			btnRefresh.Visibility = Visibility.Collapsed;
 
 			m_currentDevice = device;
+			m_unsortedGroup = unsortedGroup;
 
 			Rt = new RT();
 
@@ -156,7 +158,7 @@ namespace Waveface.Client
 
 		private void dispatcherTimer_Tick(object sender, EventArgs e)
 		{
-			int _count = BunnyUnsortedContentGroup.countUnsortedItems(m_currentDevice.ID);
+			int _count = m_unsortedGroup.ContentCount; //BunnyDeviceTimelineContentGroup.countWholeTimeline(m_currentDevice.ID);
 
 			if (_count != Rt.RtData.file_changes.Count) //m_pendingFilesCount
 			{
@@ -193,7 +195,7 @@ namespace Waveface.Client
 
 			DoEvents();
 
-			Init(m_currentDevice, m_mainWindow);
+			Init(m_currentDevice, m_unsortedGroup, m_mainWindow);
 
 			Cursor = Cursors.Arrow;
 
