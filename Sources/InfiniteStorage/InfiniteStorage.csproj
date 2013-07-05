@@ -381,7 +381,9 @@
       <Link>nginx\conf\nginx.conf.template</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="NBug.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
