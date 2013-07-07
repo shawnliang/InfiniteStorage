@@ -105,100 +105,60 @@ namespace readCamera
 
 
         public string where = @"C:\00000000";
+        WIA.Device _Acamera;
         private void GetPictures()
-        {
+       { 
             List<string> NewNames = new List<string>();
-            Device _camera = null;
 
+            _svr = new NullImportService();
+            //WIA.ImageFile wiaImageFile = null;
             try
             {
-                string _r = "";
-                try
+
+                string getUID=doService();
+                if (getUID == "")
                 {
-                    // create a new WIA common dialog box for the user to select a device from
-                    WIA.CommonDialog dlg = new WIA.CommonDialog();
-
-                    // show user the WIA device dialog
-                    _camera = dlg.ShowSelectDevice(WiaDeviceType.CameraDeviceType, false, false);
-
-                    // check if a device was selected
-                    if (_camera != null)
-                    {
-                        // Print camera properties               
-                        foreach (Property p in _camera.Properties)
-                        {
-                            switch (p.Name)
-                            {
-                                case "Full Item Name":
-                                    _dev.Root = p.get_Value();
-                                    break;
-                                case "Unique Device ID":
-                                    _dev.UID = p.get_Value();
-                                    int i0 = _dev.UID.IndexOf("}");
-                                    if (i0 >= 0)
-                                    {
-                                        _dev.UID = _dev.UID.Substring(1, i0 - 2);
-                                    }
-                                    break;
-                                case "Manufacturer":
-                                    _dev.Manufacturer = p.get_Value();
-                                    break;
-                                case "Description":
-                                    _dev.Description = p.get_Value();
-                                    break;
-                                case "Name":
-                                    Name = p.get_Value();
-                                    _dev.Name = Name;
-                                    break;
-                                case "Pictures Taken":
-                                    int imageNo = p.get_Value();
-                                    _dev.PictureTaken = imageNo.ToString();
-                                    break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        _r = "";
-                        // log.error("doService() return error!");
-                        return;
-                    }
+                    // log.error("doService() return error!");
+                    return;
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "WIA Error: doService()", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    _r = "";
-                }
-
-                //API> device exist
-                bool isdevice_exist = _svr.device_exist(_dev.UID);
+                    // device exist
+                bool isdevice_exist=_svr.device_exist(_dev.UID);
                 if (isdevice_exist == false)
                 {
-                    //API>   create_device            
+                    //   create_device            
                     _svr.create_device(_dev.UID, _dev.Name);
                 }
+
+                // if(wai == null)
+                WIA.Device _camera = _Acamera;  // dialog.ShowSelectDevice(WIA.WiaDeviceType.CameraDeviceType, false, true);             
 
                 if (MessageBox.Show("Copy to Favorite?", "Confirm Yes/No", MessageBoxButtons.YesNo) == DialogResult.No)
                 {
                     return;
                 }
-
-                string fullitempath = _dev.Root;
-                findImageItem(_camera.Items, fullitempath);
+                int no = 0;
+                //return;
+                string _tempName="";
+                string fullitempath=_dev.Root;
+                findImageItem(_camera.Items,fullitempath);
             }
-            catch (Exception err)
+            catch( Exception err)
             {
                 string error = err.Message;
                 MessageBox.Show("error: GetPictures(): " + err.Message);
             }
             StartKiller();
             MessageBox.Show("Done!", "Favorite Message");
-
-            _camera = null;
+            //Thread thread = new Thread(worker_DoWork);          // work in another thread
+            //thread.IsBackground = true;
+            //thread.Start();
+           
+            _Acamera = null;
             _dev = null;
             _dev = new _deviceInfo();
 
         }
+
        // static List<string> imageName = new List<string>();
         void findImageItem(Items items, string _fullitempath)
         {
@@ -217,7 +177,7 @@ namespace readCamera
                         {
                             if ((val & (int)WiaItemFlag.FolderItemFlag) != 0)
                             {
-                                
+                                //  Console.WriteLine("Folder: " + item.Properties["Item Name"].get_Value());
                                 _fullitempath = _fullitempath + @"\" + item.Properties["Full Item Name"].get_Value();
 
                                 findImageItem(item.Items, _fullitempath);
@@ -227,8 +187,8 @@ namespace readCamera
                         }
                         catch (Exception err)
                         {
-                            log.Error("FindImageItem: WiaItemFlagflag error "+err.Message);
-                           // MessageBox.Show("FindImageItem: WiaItemFlagflag error " + err.Message);
+                            //log.error("FindImageItem: WiaItemFlagflag error "+err.Message);
+                            MessageBox.Show("FindImageItem: WiaItemFlagflag error " + err.Message);
                             continue;
                         }
 
@@ -239,6 +199,8 @@ namespace readCamera
                             {
                                 Console.WriteLine(itemProp.Name + ":" + itemProp.get_Value());
                                 trueName = item.Properties["Item Name"].get_Value();
+                                //imageName.Add(_fullitempath + @"\" + trueName + ".jpg");
+
                                 wiaImageFile = (WIA.ImageFile)item.Transfer(wiaFormatJPEG);
 
                                 DateTime dateTime = new DateTime();
@@ -259,6 +221,7 @@ namespace readCamera
                                 bool isfileexist = _svr.is_file_exist(_dev.UID, _fullitempath + @"\" + trueName + ".jpg");
                                 if (isfileexist == false)
                                 {
+                                    // _svr.copy_file(null, _fullitempath + @"\" + trueName + ".jpg", FileType.Image, dateTime.ToString() , _dev.UID);
                                     wiaImageFile.SaveFile(@"C:\00000000\" + trueName + ".jpg");
                                 }
                                 break;
@@ -307,9 +270,71 @@ namespace readCamera
             startListen();
         }
 
+        string UniqueDeviceID = "";
+        string Manufacturer = "";
+        string Name = "";
+        string Description = "";
 
+        public string doService()
+        {
+            string _r = "";
+            try
+            {
+                // create a new WIA common dialog box for the user to select a device from
+                WIA.CommonDialog dlg = new WIA.CommonDialog();
+
+                // show user the WIA device dialog
+                Device d = dlg.ShowSelectDevice(WiaDeviceType.CameraDeviceType, false, false);
+                _Acamera = d;
+                // check if a device was selected
+                if (d != null)
+                {
+                    // Print camera properties               
+                    foreach (Property p in d.Properties)
+                    {
+                        switch (p.Name)
+                        {
+                            case "Full Item Name":
+                                _dev.Root = p.get_Value();
+                                break;
+                            case "Unique Device ID":
+                                UniqueDeviceID = p.get_Value();
+                                int i0 = UniqueDeviceID.IndexOf("}");
+                                if (i0 >= 0)
+                                {
+                                    UniqueDeviceID = UniqueDeviceID.Substring(1, i0 - 2);
+                                }
+                                _dev.UID = UniqueDeviceID;
+                                break;
+                            case "Manufacturer":
+                                Manufacturer = p.get_Value();
+                                _dev.Manufacturer = Manufacturer;
+                                break;
+                            case "Description":
+                                Description = p.get_Value();
+                                _dev.Description = Description;
+                                break;
+                            case "Name":
+                                Name = p.get_Value();
+                                _dev.Name = Name;
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                    d = null;
+                }
+                _r = _dev.UID + "~" + _dev.Manufacturer + "~" + _dev.Name + "~" + _dev.Description;
+            }
+            catch (Exception ex)
+            {
+                log.Error( "WIA Error: doService(): " + MessageBoxIcon.Error);
+                _r = "";
+            }
+            return _r;
+        }
     }
-
 	public class _deviceInfo
 	{
 		public string Name { get; set; }
@@ -317,7 +342,6 @@ namespace readCamera
 		public string Manufacturer { get; set; }
         public string Description { get; set; }
         public string Root { get; set; }
-        public string PictureTaken { get; set; }
         //public string
 	}
 	}
