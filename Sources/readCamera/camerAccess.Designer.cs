@@ -1,6 +1,6 @@
 ﻿namespace readCamera
 {
-    partial class readCameraForm
+    partial class camerAccess
     {
         /// <summary>
         /// Required designer variable.
@@ -29,17 +29,23 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
-            // readCameraForm
+            // timer1
+            // 
+            this.timer1.Interval = 3000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // camerAccess
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(267, 42);
-            this.Name = "readCameraForm";
-            this.Text = "readCamerfForm";
+            this.ClientSize = new System.Drawing.Size(238, 67);
+            this.Name = "camerAccess";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.Text = "camerAccess";
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             this.ResumeLayout(false);
 
@@ -47,6 +53,6 @@
 
         #endregion
 
+        private System.Windows.Forms.Timer timer1;
     }
 }
-
