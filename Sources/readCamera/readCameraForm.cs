@@ -34,8 +34,7 @@ namespace readCamera
 
         public const int WM_CLOSE = 0x10;
         _deviceInfo _dev = new _deviceInfo();
-
-        System.Management.ManagementEventWatcher watcher;
+    
         NullImportService _svr;
 
         public readCameraForm()
@@ -53,24 +52,12 @@ namespace readCamera
             {
                 readCameraServiceStart();
                 i = 0;
-                //if (watcher != null)
-                //{
-                //    watcher.Stop();
-                //    watcher.Dispose();
-                //    watcher = null;
-                //}
             }
         }
 
         public void startListen()
-        {
-            if (watcher != null)
-            {
-                watcher.Dispose();
-                watcher = null;
-                Thread.Sleep(1000);
-            }
-            watcher = new System.Management.ManagementEventWatcher();
+        {           
+            System.Management.ManagementEventWatcher watcher = new System.Management.ManagementEventWatcher();
             var query = new WqlEventQuery("SELECT * FROM Win32_DeviceChangeEvent WHERE EventType = 2");
             watcher.EventArrived += new EventArrivedEventHandler(watcher_EventArrived);
             watcher.Query = query;
@@ -124,6 +111,7 @@ namespace readCamera
                     // check if a device was selected
                     if (_camera != null)
                     {
+                        bool breakflag = false;
                         // Print camera properties               
                         foreach (Property p in _camera.Properties)
                         {
@@ -154,20 +142,34 @@ namespace readCamera
                                     int imageNo = p.get_Value();
                                     _dev.PictureTaken = imageNo.ToString();
                                     break;
+                                default:
+                                    break;
                             }
+                            if (breakflag == true)
+                                break;
                         }
+                        dlg = null;
                     }
                     else
                     {
                         _r = "";
-                        // log.error("doService() return error!");
-                        return;
+                        log.Error("doService() return error!");
+                        // exit later
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "WIA Error: doService()", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     _r = "";
+                }
+
+                // user press Cancel
+                if (_camera == null)
+                {
+                    _camera = null;
+                    _dev = null;
+                    _dev = new _deviceInfo();
+                    return;
                 }
 
                 //API> device exist
@@ -191,19 +193,21 @@ namespace readCamera
                 string error = err.Message;
                 MessageBox.Show("error: GetPictures(): " + err.Message);
             }
+
             StartKiller();
             MessageBox.Show("Done!", "Favorite Message");
 
             _camera = null;
             _dev = null;
             _dev = new _deviceInfo();
-
         }
-       // static List<string> imageName = new List<string>();
+
+       // static List<string> imageName = new List<string>(); for debug
         void findImageItem(Items items, string _fullitempath)
         {
             WIA.ImageFile wiaImageFile = null;
             string trueName = "";
+
             foreach (Item item in items)
             {
                 var flag = item.Properties["Item Flags"];
@@ -211,59 +215,69 @@ namespace readCamera
                 {
                     if (flag != null)
                     {
-
                         var val = flag.get_Value();
                         try
                         {
-                            if ((val & (int)WiaItemFlag.FolderItemFlag) != 0)
+                            if (item.Properties.Exists(WiaItemFlag.FolderItemFlag))
                             {
-                                
-                                _fullitempath = _fullitempath + @"\" + item.Properties["Full Item Name"].get_Value();
+                                if ((val & (int)WiaItemFlag.FolderItemFlag) != 0)
+                                {
 
-                                findImageItem(item.Items, _fullitempath);
+                                    _fullitempath = _fullitempath + @"\" + item.Properties["Full Item Name"].get_Value();
+                                    findImageItem(item.Items, _fullitempath);
 
-                                continue;
+                                    continue;
+                                }
                             }
                         }
                         catch (Exception err)
                         {
-                            log.Error("FindImageItem: WiaItemFlagflag error "+err.Message);
-                           // MessageBox.Show("FindImageItem: WiaItemFlagflag error " + err.Message);
+                            log.Error("FindImageItem: WiaItemFlagflag error " + err.Message);
+                            // MessageBox.Show("FindImageItem: WiaItemFlagflag error " + err.Message);
                             continue;
                         }
 
-
-                        if ((val & (int)WiaItemFlag.ImageItemFlag) != 0)
+                        if (item.Properties.Exists(WiaItemFlag.ImageItemFlag))
                         {
-                            foreach (Property itemProp in item.Properties)
-                            {
-                                Console.WriteLine(itemProp.Name + ":" + itemProp.get_Value());
-                                trueName = item.Properties["Item Name"].get_Value();
-                                wiaImageFile = (WIA.ImageFile)item.Transfer(wiaFormatJPEG);
 
-                                DateTime dateTime = new DateTime();
-                                foreach (IProperty prop in wiaImageFile.Properties)
+                            if ((val & (int)WiaItemFlag.ImageItemFlag) != 0)
+                            {
+                                foreach (Property itemProp in item.Properties)
                                 {
-                                    // Camera datetime format is a little strange:
-                                    // DateTime : 2008:10:28 22:20:45
-                                    if (prop.Name == "DateTime")
+                                    if (item.Properties.Exists("Item Name"))
                                     {
-                                        // replace the colons in the date by dashes
-                                        StringBuilder sdate = new StringBuilder(prop.get_Value().ToString());
-                                        sdate[4] = '-';
-                                        sdate[7] = '-';
-                                        dateTime = DateTime.Parse(sdate.ToString());
+                                        trueName = item.Properties["Item Name"].get_Value();
+                                        wiaImageFile = (WIA.ImageFile)item.Transfer(wiaFormatJPEG);
+
+                                        DateTime dateTime = new DateTime();
+                                        foreach (IProperty prop in wiaImageFile.Properties)
+                                        {
+                                            // Camera datetime format is a little strange:
+                                            // DateTime : 2008:10:28 22:20:45
+                                            if (prop.Name == "DateTime")
+                                            {
+                                                // replace the colons in the date by dashes
+                                                StringBuilder sdate = new StringBuilder(prop.get_Value().ToString());
+                                                sdate[4] = '-';
+                                                sdate[7] = '-';
+                                                dateTime = DateTime.Parse(sdate.ToString());
+                                                break;
+                                            }
+                                        }
+                                        bool isfileexist = _svr.is_file_exist(_dev.UID, _fullitempath + @"\" + trueName + ".jpg");
+                                        if (isfileexist == false)
+                                        {
+                                            wiaImageFile.SaveFile(where + @"\" + trueName + ".jpg");
+                                        }
+                                        else
+                                        {
+                                            log.Warn("Image alread exist:(" + where + @"\" + trueName + ".jpg)");
+                                        }
                                         break;
                                     }
                                 }
-                                bool isfileexist = _svr.is_file_exist(_dev.UID, _fullitempath + @"\" + trueName + ".jpg");
-                                if (isfileexist == false)
-                                {
-                                    wiaImageFile.SaveFile(@"C:\00000000\" + trueName + ".jpg");
-                                }
-                                break;
+                                continue;
                             }
-                            continue;
                         }
                     }
                 }
@@ -306,7 +320,6 @@ namespace readCamera
         {
             startListen();
         }
-
 
     }
 
