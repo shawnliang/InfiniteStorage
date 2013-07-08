@@ -918,18 +918,35 @@ namespace Waveface.Client
 
 		private void Sources_DragEnter(object sender, DragEventArgs e)
 		{
-			if (!e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) ||
-				sender == e.Source)
+			if (!e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) || lbxFavorites.SelectedItem != null)
 			{
 				e.Effects = DragDropEffects.None;
+                e.Handled = true;
 			}
 		}
 
 
+        private void lbxDeviceContainer_DragLeave(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) || lbxFavorites.SelectedItem != null)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
+
+        private void lbxDeviceContainer_DragOver(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) || lbxFavorites.SelectedItem != null)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
 
 		private void Sources_Drop(object sender, DragEventArgs e)
 		{
-			if (e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)))
+			if (e.Effects == DragDropEffects.Move && e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)))
 			{
 				var control = sender as TreeView;
 				var controlItem =
@@ -1013,7 +1030,6 @@ namespace Waveface.Client
 		{
 			StarContent(lbxContentContainer.Items.OfType<IContentEntity>());
 		}
-
 
     }
 }

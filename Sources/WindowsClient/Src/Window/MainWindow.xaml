@@ -444,7 +444,7 @@
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                       StarInvoked="lbxDeviceContainer_StarInvoked"
                                       VirtualizingStackPanel.IsVirtualizing="True"
-                                      VirtualizingStackPanel.VirtualizationMode="Recycling" />
+                                      VirtualizingStackPanel.VirtualizationMode="Recycling" DragLeave="lbxDeviceContainer_DragLeave" DragOver="lbxDeviceContainer_DragOver" />
                 </Grid>
                 <GridSplitter Grid.Column="0"
                               Height="5"
