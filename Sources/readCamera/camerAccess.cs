@@ -110,12 +110,10 @@ namespace readCamera
                                     int imageNo = p.get_Value();
                                     _dev.PictureTaken = imageNo.ToString();
                                     break;
-                                default:
-                                    breakflag = true;
+                                default:                                  
                                     break;
                             }
-                            if (breakflag == true)
-                                break;
+                         
                         }
                         dlg = null;
                     }
