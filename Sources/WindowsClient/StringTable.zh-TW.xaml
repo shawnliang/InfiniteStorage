@@ -20,11 +20,11 @@
     <system:String x:Key="CopyButtonText">複製</system:String>
     <system:String x:Key="EmailButtonText">Email...</system:String>
     <system:String x:Key="ExitButtonText">離開</system:String>
-    <system:String x:Key="AddStarredItemTitle">Add starred items to:</system:String>
+    <system:String x:Key="AddStarredItemTitle">Add items to:</system:String>
     <system:String x:Key="OkButtonText">確定</system:String>
     <system:String x:Key="CancelButtonText">取消</system:String>
-    <system:String x:Key="CreateFavoriteDialogTitle">Create Favorite</system:String>
-    <system:String x:Key="GetNewFavoriteName">Please give this new Favorite a name:</system:String>
+    <system:String x:Key="CreateDialogTitle">Create</system:String>
+    <system:String x:Key="CreateDialogDescription">Please give a new name:</system:String>
     <system:String x:Key="DefaultFavoriteName">未命名</system:String>
     <system:String x:Key="TakeTourDialogTitle">Take A Tour?</system:String>
     <system:String x:Key="TakeTourButtonText">Take a Tour</system:String>

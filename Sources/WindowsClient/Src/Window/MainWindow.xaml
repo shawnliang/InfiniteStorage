@@ -323,7 +323,7 @@
         <SolidColorBrush x:Key="ContentAreaBackground"
                          Color="#FF4F4F4F" />
         <SolidColorBrush x:Key="SidePanelBackground"
-                         Color="#FF333333" />
+                         Color="#434343" />
 
 
         <Style TargetType="local:AddSourceTip">
@@ -337,6 +337,20 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="contextMenuStyle1" TargetType="{x:Type ContextMenu}">
+        	<Setter Property="Foreground" Value="#FFA8A8A8"/>
+        	<Setter Property="OverridesDefaultStyle" Value="True"/>
+        	<Setter Property="SnapsToDevicePixels" Value="True"/>
+        	<Setter Property="Template">
+        		<Setter.Value>
+        			<ControlTemplate TargetType="{x:Type ContextMenu}">
+        				<Border Background="#FF181818" CornerRadius="4">
+        					<StackPanel ClipToBounds="True" Orientation="Vertical" IsItemsHost="True" Margin="5,5,5,5"/>
+        				</Border>
+        			</ControlTemplate>
+        		</Setter.Value>
+        	</Setter>
+        </Style>
 
     </Window.Resources>
 
@@ -345,7 +359,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="302*" />
-            <!--  <RowDefinition Height="25"/>  -->
+            <RowDefinition Height="54"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="215"
@@ -418,7 +432,6 @@
                                    MinHeight="100" />
                     <RowDefinition Height="*"
                                    MinHeight="100" />
-                    <RowDefinition Height="45" />
                 </Grid.RowDefinitions>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -471,26 +484,6 @@
                                            ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
                 </Grid>
 
-                <StackPanel x:Name="stackPanel"
-                            Grid.Row="2"
-                            Height="45"
-                            Background="Black"
-                            Orientation="Horizontal">
-                    <Image Width="22"
-                           Height="22"
-                           Margin="10,0,0,0"
-                           MouseDown="btnAddNewSource_Click"
-                           Source="{DynamicResource AddDeviceIcon}" />
-                    <Label Height="{Binding ActualHeight,
-                                            ElementName=stackPanel}"
-                           VerticalContentAlignment="Center"
-                           Content="{DynamicResource AddDeviceIconText}"
-                           FontFamily="Segoe UI"
-                           FontSize="18"
-                           Foreground="#FFA8A8A8"
-                           MouseDown="Label_MouseDown" />
-                </StackPanel>
-
             </Grid>
         </Grid>
         <GridSplitter Grid.Row="1"
@@ -503,11 +496,6 @@
               Grid.Column="2"
               Background="{DynamicResource SidePanelBackground}"
               Visibility="Collapsed">
-            <Grid.Effect>
-                <DropShadowEffect BlurRadius="1"
-                                  Direction="180"
-                                  ShadowDepth="1" />
-            </Grid.Effect>
             <local:RightSidePanel1 x:Name="rspRightSidePanel"
                                    Margin="10,10,10,5"
                                    AddToFavorite="rspRightSidePanel_AddToFavorite"
@@ -526,13 +514,11 @@
         </Grid>
         <Grid x:Name="gdContentArea"
               Grid.Row="1"
-              Grid.RowSpan="2"
               Grid.Column="1"
               Grid.ColumnSpan="2"
               Margin="1,0,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="45" />
             </Grid.RowDefinitions>
 
             <ScrollViewer x:Name="svContentContainer"
@@ -562,24 +548,6 @@
             <local:AddSourceTip Grid.Row="0"
                                 Width="Auto"
                                 Height="Auto" />
-            <Grid Grid.Row="1"
-                  Margin="0"
-                  Background="#FF333333">
-                <local:ZoomSlider x:Name="zoomSlider"
-                                  Margin="10,0,0,0"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Center"
-                                  Maximum="400"
-                                  Minimum="150"
-                                  Value="200" />
-                <local:FavoriteAllButton x:Name="btnFavoriteAll"
-                                         Width="100"
-                                         Margin="0,0,10,0"
-                                         HorizontalAlignment="Right"
-                                         VerticalAlignment="Center"
-                                         Click="FavoriteAllButton_Click"
-                                         Cursor="Hand" />
-            </Grid>
         </Grid>
         <local:UnSortedFilesUC x:Name="unSortedFilesUC"
                                Grid.Row="0"
@@ -588,7 +556,52 @@
                                Grid.ColumnSpan="2"
                                Width="Auto"
                                Height="Auto"
-                               Margin="1"
-                               Visibility="Collapsed" />
+                               Visibility="Collapsed" Margin="1,0,0,0" />
+        <StackPanel x:Name="stackPanel"
+        	Grid.Row="2"
+        	Background="Black"
+        	Orientation="Horizontal">
+        	<StackPanel.Effect>
+        		<DropShadowEffect BlurRadius="1"
+        			Direction="45"
+        			ShadowDepth="1" />
+        	</StackPanel.Effect>
+        	<Image Width="22"
+        		Height="22"
+        		Margin="10,0,0,0"
+        		MouseDown="btnAddNewSource_Click"
+        		Source="{DynamicResource AddDeviceIcon}" />
+        	<Label Height="{Binding ActualHeight, ElementName=stackPanel}"
+        		VerticalContentAlignment="Center"
+        		Content="{DynamicResource AddDeviceIconText}"
+        		FontFamily="Segoe UI"
+        		FontSize="18"
+        		Foreground="#FFA8A8A8"
+        		MouseDown="Label_MouseDown" />
+        </StackPanel>
+        <Grid x:Name="ContentAreaToolBar" Grid.Row="2"
+        	Background="#FF333333" Grid.ColumnSpan="2" Grid.Column="1" Margin="1,0,0,0">
+        	<Grid.Effect>
+        		<DropShadowEffect BlurRadius="1"
+        			Direction="90"
+        			ShadowDepth="1" />
+        	</Grid.Effect>
+        	<Grid Margin="0">
+        		<local:ContentActionBar x:Name="cabContentActionBar" HorizontalAlignment="Right" AddToFavorite="ContentActionBar_AddToFavorite" AddToStarred="ContentActionBar_AddToStarred" CreateFavorite="ContentActionBar_CreateFavorite" EnableMoveTo="True" MoveToNewFolder="ContentActionBar_MoveToNewFolder" MoveToExistingFolder="ContentActionBar_MoveToExistingFolder" Padding="0" Width="135"/>
+        		<local:ZoomSlider x:Name="zoomSlider"
+        			HorizontalAlignment="Left"
+        			VerticalAlignment="Center"
+        			Maximum="400"
+        			Minimum="150"
+        			Value="200" Margin="10,0,0,0" />
+        		<local:FavoriteAllButton x:Name="btnFavoriteAll"
+        			Width="100"
+        			Margin="0,27,10,27"
+        			HorizontalAlignment="Right"
+        			VerticalAlignment="Center"
+        			Click="FavoriteAllButton_Click"
+        			Cursor="Hand" Visibility="Collapsed" />
+        	</Grid>
+        </Grid>
     </Grid>
 </Window>

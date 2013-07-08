@@ -71,19 +71,6 @@
             </Grid>
         </DataTemplate>
 
-        <Style x:Key="contextMenuStyle1" TargetType="{x:Type ContextMenu}">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ContextMenu}">
-                        <Border Background="#CD222120" CornerRadius="4" BorderBrush="White" BorderThickness="1.5" Opacity="0.96">
-                            <StackPanel ClipToBounds="True" Orientation="Vertical" IsItemsHost="True" Margin="5,4,5,4"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </UserControl.Resources>
 
     <Grid Background="#303032">
@@ -92,18 +79,13 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Image Margin="4, 10"
-               VerticalAlignment="Top"
-               Source="pack://application:,,,/Ren/Images/android.png"
-               Visibility="Collapsed" />
-
         <Grid x:Name="gridContent"
               Grid.Column="1"
               Margin="0,0,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="48" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="56" />
+                <RowDefinition Height="54" />
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0"
@@ -148,100 +130,83 @@
                 </ListBox>
             </Grid>
 
-            <Grid Grid.Row="2" Margin="1" Background="#333333">
-                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="8, 0, 0, 0">
-                    <Grid Grid.Column="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="180" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+            <Grid Grid.Row="2" Background="#333333">
+            	<Grid.Effect>
+            		<DropShadowEffect BlurRadius="1"
+            			Direction="90"
+            			ShadowDepth="1" />
+            	</Grid.Effect>
+				<Label Content="n selected" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="#FFA8A8A8" FontSize="16"/>
+                <Grid Grid.Column="0" HorizontalAlignment="Center" Margin="0">
+            		<Grid.ColumnDefinitions>
+            			<ColumnDefinition Width="Auto" />
+            			<ColumnDefinition Width="180" />
+            			<ColumnDefinition Width="Auto" />
+            		</Grid.ColumnDefinitions>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="20" />
-                            <RowDefinition Height="30" />
-                        </Grid.RowDefinitions>
+            		<Grid.RowDefinitions>
+            			<RowDefinition Height="20" />
+            			<RowDefinition Height="30" />
+            		</Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="1"
-                                       Grid.Column="0"
-                                       Margin="6,0"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center"
-                                       FontSize="11"
-                                       FontWeight="Bold"
-                                       Foreground="#929292"
-                                       Text="SHORTER" />
-                        <TextBlock Grid.Row="1"
-                                       Grid.Column="2"
-                                       Margin="6,0"
-                                       HorizontalAlignment="Right"
-                                       VerticalAlignment="Center"
-                                       FontSize="11"
-                                       FontWeight="Bold"
-                                       Foreground="#929292"
-                                       Text="LONGER" />
+            		<TextBlock Grid.Row="1"
+            			Grid.Column="0"
+            			Margin="6,0"
+            			HorizontalAlignment="Left"
+            			VerticalAlignment="Center"
+            			FontSize="11"
+            			FontWeight="Bold"
+            			Foreground="#929292"
+            			Text="SHORTER" />
+            		<TextBlock Grid.Row="1"
+            			Grid.Column="2"
+            			Margin="6,0"
+            			HorizontalAlignment="Right"
+            			VerticalAlignment="Center"
+            			FontSize="11"
+            			FontWeight="Bold"
+            			Foreground="#929292"
+            			Text="LONGER" />
 
-                        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                            <TextBlock                                                                                                            
-                                       FontSize="11"
-                                       Foreground="#DDDDDD"
-                                       Text="Event Interval: " />
+            		<StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            			<TextBlock                                                                                                            
+            				FontSize="11"
+            				Foreground="#DDDDDD"
+            				Text="Event Interval: " />
 
-                            <TextBlock
-                                       x:Name="tbEventIntervalType"
-                                       FontSize="11"
-                                       FontWeight="Bold"
-                                       Foreground="#DDDDDD"
-                                       Text="" />
-                        </StackPanel>
+            			<TextBlock
+            				x:Name="tbEventIntervalType"
+            				FontSize="11"
+            				FontWeight="Bold"
+            				Foreground="#DDDDDD"
+            				Text="" />
+            		</StackPanel>
 
-                        <Waveface:SliderWithDraggingEvents x:Name="sliderEvent"
-                                                               Grid.Row="1"
-                                                               Grid.Column="1"
-                                                               Height="18"
-                                                               HorizontalAlignment="Stretch"
-                                                               BorderThickness="0"
-                                                               Foreground="#B4B4B4"
-                                                               IsSnapToTickEnabled="True"
-                                                               Maximum="6"
-                                                               Minimum="0"
-                                                               ThumbDragStarted="sliderEvent_ThumbDragStarted"
-                                                               ThumbDragCompleted="sliderEvent_ThumbDragCompleted"
-                                                               ValueChanged="sliderEvent_ValueChanged"
-                                                               Delay ="1500"
-                                                               Interval="1500"
-                                                               LargeChange="1"
-                                                               SmallChange="1"
-                                                               TickFrequency="1"
-                                                               Value="4">
-                            <Waveface:SliderWithDraggingEvents.Effect>
-                                <DropShadowEffect ShadowDepth="0.1" />
-                            </Waveface:SliderWithDraggingEvents.Effect>
-                        </Waveface:SliderWithDraggingEvents>
-                    </Grid>
-                </StackPanel>
-
-                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0, 0, 16, 0"  >
-                    <Button x:Name="btnFun1" Content="..." BorderThickness="1" BorderBrush="#9B9B9B" Style="{StaticResource FlatButtonStyle}" Padding="8, 0" Foreground="White" Background="#4F4F4F" FontSize="14" Height="32"
-                            ContextMenuService.IsEnabled="False"
-                            Click="btnFun1_Click">
-                        <Button.ContextMenu>
-                            <ContextMenu x:Name="contextMenu1" Style="{StaticResource contextMenuStyle1}">
-                                <MenuItem x:Name="miSelectAll" Header="Select All Items" Click="miSelectAll_Click"/>
-                                <MenuItem x:Name="miDeselectAll" Header="Deselect All Items" Click="miDeselectAll_Click"/>
-                                <Separator />
-                                <MenuItem x:Name="miSlideShow" Header="Slide Show" Click="miSlideShow_Click" />
-                                <MenuItem x:Name="miMoveToFolder" Header="Move to Folder" Click="miMoveToFolder_Click"/>
-                                <MenuItem x:Name="miSaveToFavorite" Header="Save To Favorite" Click="miSaveToFavorite_Click"/>
-                                <MenuItem x:Name="miAddToFavorite" Header="Add To Favorite" Click="miAddToFavorite_Click"/>
-                            </ContextMenu>
-                        </Button.ContextMenu>
-                        <Button.Effect>
-                            <DropShadowEffect ShadowDepth="0.25"/>
-                        </Button.Effect>
-                    </Button>
-                                                      
-                </StackPanel>
+            		<Waveface:SliderWithDraggingEvents x:Name="sliderEvent"
+            			Grid.Row="1"
+            			Grid.Column="1"
+            			Height="18"
+            			HorizontalAlignment="Stretch"
+            			BorderThickness="0"
+            			Foreground="#B4B4B4"
+            			IsSnapToTickEnabled="True"
+            			Maximum="6"
+            			Minimum="0"
+            			ThumbDragStarted="sliderEvent_ThumbDragStarted"
+            			ThumbDragCompleted="sliderEvent_ThumbDragCompleted"
+            			ValueChanged="sliderEvent_ValueChanged"
+            			Delay ="1500"
+            			Interval="1500"
+            			LargeChange="1"
+            			SmallChange="1"
+            			TickFrequency="1"
+            			Value="4">
+            			<Waveface:SliderWithDraggingEvents.Effect>
+            				<DropShadowEffect ShadowDepth="0.1" />
+            			</Waveface:SliderWithDraggingEvents.Effect>
+            		</Waveface:SliderWithDraggingEvents>
+            	</Grid>
+                <Waveface:ContentActionBar HorizontalAlignment="Right" AddToFavorite="ContentActionBar_AddToFavorite" AddToStarred="ContentActionBar_AddToStarred" CreateFavorite="ContentActionBar_CreateFavorite" EnableMoveTo="True" MoveToNewFolder="ContentActionBar_MoveToNewFolder" MoveToExistingFolder="ContentActionBar_MoveToExistingFolder" Padding="0" Margin="0"/>
             </Grid>
 
             <Grid x:Name="gridEmptyPanel"

@@ -695,6 +695,7 @@ namespace Waveface.Client
 			return m_mainWindow.AddToFavorite(_contentEntitys);
 		}
 
+		
 		public List<ContentEntity> Sub_GetAllSelectedFiles_ContentEntitys(bool simple)
 		{
 			List<ContentEntity> _contentEntitys = new List<ContentEntity>();
@@ -724,7 +725,7 @@ namespace Waveface.Client
 			
 
 
-			var _dialog = new CreateFolderDialog
+			var _dialog = new CreateDialog
 							  {
 								  Owner = m_mainWindow,
 								  WindowStartupLocation = WindowStartupLocation.CenterOwner
@@ -733,13 +734,13 @@ namespace Waveface.Client
 			if (_dialog.ShowDialog() != true)
 				return false;
 
-			if (string.IsNullOrEmpty(_dialog.FolderName))
+			if (string.IsNullOrEmpty(_dialog.CreateName))
 				return false;
 
 			try {
 				List<FileChange> _allSelectedFiles = GetAllSelectedFiles();
 
-				var targetPath = Path.Combine(Path.GetDirectoryName(m_unsortedGroup.Uri.LocalPath), _dialog.FolderName);
+                var targetPath = Path.Combine(Path.GetDirectoryName(m_unsortedGroup.Uri.LocalPath), _dialog.CreateName);
 
 				StationAPI.Move(GetAllSelectedFiles().Select(x => x.id), targetPath);
 			}
@@ -755,19 +756,6 @@ namespace Waveface.Client
 
 		#endregion
 
-		private void btnFun1_Click(object sender, RoutedEventArgs e)
-		{
-			ShowContextMenu(sender as Button);
-		}
-
-		private static void ShowContextMenu(Button btn)
-		{
-			btn.ContextMenu.IsEnabled = true;
-			btn.ContextMenu.PlacementTarget = btn;
-			btn.ContextMenu.Placement = PlacementMode.Bottom;
-			btn.ContextMenu.IsOpen = true;
-			btn.ContextMenu.VerticalOffset = -2;
-		}
 
 		private void miSelectAll_Click(object sender, RoutedEventArgs e)
 		{
@@ -813,5 +801,43 @@ namespace Waveface.Client
 				Sub_SelectAll(false);
 			}
 		}
+		
+		private void miAddToStarredFavorite_Click(object sender, RoutedEventArgs e)
+		{
+			List<ContentEntity> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys(true);
+
+			if (_contentEntitys.Count == 0)
+			{
+				return;
+			}
+
+		m_mainWindow.StarContent(_contentEntitys);
+		}
+
+
+        private void ContentActionBar_AddToFavorite(object sender, EventArgs e)
+        {
+            Sub_AddToFavorite();
+        }
+
+        private void ContentActionBar_AddToStarred(object sender, EventArgs e)
+        {
+            //StarSelectedContents();
+        }
+
+        private void ContentActionBar_CreateFavorite(object sender, EventArgs e)
+        {
+            Sub_SaveToFavorite();
+        }
+
+        private void ContentActionBar_MoveToNewFolder(object sender, EventArgs e)
+        {
+            Sub_MoveToFolder();
+        }
+
+        private void ContentActionBar_MoveToExistingFolder(object sender, EventArgs e)
+        {
+            Sub_MoveToFolder();
+        }
 	}
 }
