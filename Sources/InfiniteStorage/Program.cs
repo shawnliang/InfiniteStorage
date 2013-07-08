@@ -27,7 +27,7 @@ namespace InfiniteStorage
 		static StationServer server;
 
 		private static System.Threading.Mutex m_InstanceMutex { get; set; }
-
+		private static readCamera.readCameraForm _fm1;
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -130,11 +130,23 @@ namespace InfiniteStorage
 			if (!Environment.GetCommandLineArgs().Contains("--minimized"))
 				ImportUIPresenter.Instance.StartViewer();
 
-            readCamera.readCameraForm _fm1 = new readCamera.readCameraForm();            // register cameratype device  plugin/remove event
+            _fm1 = new readCamera.readCameraForm();            // register cameratype device  plugin/remove event
+			_fm1.CameraDetected += new EventHandler<CameraDetectedEventArgs>(_fm1_CameraDetected);
             _fm1.startListen();
-            _fm1.setWhere(@"C:\00000000");
+            
 
 			Application.Run();
+		}
+
+		static void _fm1_CameraDetected(object sender, CameraDetectedEventArgs e)
+		{
+			SynchronizationContextHelper.SendMainSyncContext(() => {
+				var dialog = new AskCameraImportDialog(e.Cameras);
+				if (dialog.ShowDialog() != DialogResult.OK)
+					return;
+
+				e.SelectedCamera = dialog.SelectedCamera;
+			});
 		}
 
 		private static bool hasAnyRegisteredDevice()
@@ -201,6 +213,15 @@ namespace InfiniteStorage
 			try
 			{
 				ImportUIPresenter.Instance.StopViewer();
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger("main").Debug("stop error", err);
+			}
+
+			try
+			{
+				_fm1.StopListen();
 			}
 			catch (Exception err)
 			{
