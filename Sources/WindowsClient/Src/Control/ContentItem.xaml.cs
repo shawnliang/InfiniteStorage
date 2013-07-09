@@ -64,6 +64,7 @@ namespace Waveface.Client
 		#endregion
 
 
+
 		#region Event Process
 		void ltTag_TagStatusChanged(object sender, EventArgs e)
 		{
