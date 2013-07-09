@@ -21,6 +21,18 @@ namespace Waveface.Client
 			}
 		}
 
+        public object SelectedItem
+        {
+            get
+            {
+                return pvcViewer.SelectedItem;
+            }
+            set
+            {
+                pvcViewer.SelectedItem = value;
+            }
+        }
+
 		public Object Source
 		{
 			get

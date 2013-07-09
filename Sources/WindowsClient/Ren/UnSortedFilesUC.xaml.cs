@@ -243,6 +243,7 @@ namespace Waveface.Client
 
                 _ctl.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
                 _ctl.lbEvent.PreviewMouseDown += lbEvent_PreviewMouseDown;
+                _ctl.lbEvent.MouseDoubleClick += lbEvent_MouseDoubleClick;
 
 				m_eventUCs.Add(_ctl);
 			}
@@ -259,6 +260,11 @@ namespace Waveface.Client
 
 			SetEventIntervalTypeText();
 		}
+
+        void lbEvent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Sub_SlideShow();
+        }
 
         private static T FindAnchestor<T>(DependencyObject current)
         where T : DependencyObject
@@ -815,16 +821,31 @@ namespace Waveface.Client
 		{
 			List<ContentEntity> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys(false);
 
-			if (_contentEntitys.Count == 0)
+            var index = 0;
+			if (_contentEntitys.Count == 1)
 			{
-				return;
+
+                var allContents =listBoxEvent.Items.OfType<EventUC>().SelectMany(item => item.Event).ToList();
+                _contentEntitys = ConvertToContentEntities(false, allContents).ToList();
+
+                foreach (var euc in listBoxEvent.Items.OfType<EventUC>())
+                {
+                    if (euc.IsMouseCaptureWithin)
+                    {
+                        index += euc.lbEvent.SelectedIndex + 1;
+                        break;
+                    }
+
+                    index += euc.lbEvent.Items.Count;
+                }
 			}
 
+            index -= 1;
 			var _viewer = new PhotoViewer
 							  {
 								  Owner = m_mainWindow,
 								  Source = _contentEntitys,
-								  SelectedIndex = 0
+                                  SelectedIndex = index
 							  };
 
 			_viewer.ShowDialog();
@@ -845,27 +866,30 @@ namespace Waveface.Client
 		
 		public List<ContentEntity> Sub_GetAllSelectedFiles_ContentEntitys(bool simple)
 		{
-			List<ContentEntity> _contentEntitys = new List<ContentEntity>();
-
 			List<FileChange> _allSelectedFiles = GetAllSelectedFiles();
 
-			foreach (FileChange _fc in _allSelectedFiles)
-			{
-				if (simple)
-				{
-					_contentEntitys.Add(new ContentEntity
-											{
-												ID = _fc.id,
-											});
-				}
-				else
-				{
-					_contentEntitys.Add(new BunnyContent(new Uri(_fc.saved_path), _fc.id, (_fc.type == 0 ? ContentType.Photo : ContentType.Video)));
-				}
-			}
-
-			return _contentEntitys;
+            return ConvertToContentEntities(simple, _allSelectedFiles);
 		}
+
+        private  List<ContentEntity> ConvertToContentEntities(bool simple, IEnumerable<FileChange> _allSelectedFiles)
+        {
+            List<ContentEntity> _contentEntitys = new List<ContentEntity>();
+            foreach (FileChange _fc in _allSelectedFiles)
+            {
+                if (simple)
+                {
+                    _contentEntitys.Add(new ContentEntity
+                    {
+                        ID = _fc.id,
+                    });
+                }
+                else
+                {
+                    _contentEntitys.Add(new BunnyContent(new Uri(_fc.saved_path), _fc.id, (_fc.type == 0 ? ContentType.Photo : ContentType.Video)));
+                }
+            }
+            return _contentEntitys;
+        }
 
 		public bool Sub_MoveToFolder()
 		{
