@@ -904,11 +904,17 @@ namespace Waveface.Client
 			{
                 lbxContentContainer.UnselectAll();
                 lbxContentContainer.SelectedItem = dataContext;
-
-                PropertyInfo pi = typeof(ListBox).GetProperty("AnchorItem", BindingFlags.NonPublic | BindingFlags.Instance);
-                if (pi != null)
+                try
                 {
-                    pi.SetValue(lbxContentContainer, dataContext, null);
+
+                    PropertyInfo pi = typeof(ListBox).GetProperty("AnchorItem", BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (pi != null)
+                    {
+                        pi.SetValue(lbxContentContainer, dataContext, null);
+                    }
+                }
+                catch (Exception)
+                {
                 }
 			};
 

@@ -35,7 +35,7 @@ namespace Waveface.Client
 		public int PhotosCount { get; set; }
 
 		private string m_defaultEventName;
-		private bool m_doSelectAll;
+		public bool m_doSelectAll;
 
 		Point startPoint;
 
