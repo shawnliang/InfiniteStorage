@@ -223,7 +223,7 @@ namespace readCamera
 						var tranferItem = (WIA.ImageFile)item.Transfer(f);
 
 
-						var tempFile = Path.Combine(storage.TempFolder, Guid.NewGuid().ToString());
+						var tempFile = Path.Combine(storage.TempFolder, name+".jpg");
 						tranferItem.SaveFile(tempFile);
 
 

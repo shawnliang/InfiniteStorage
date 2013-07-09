@@ -33,7 +33,7 @@ namespace readCamera
 		void _acc_CameraDetected(object sender, CameraDetectedEventArgs e)
 		{
 			if (e.Cameras.Any())
-				e.SelectedCamera = e.Cameras.First();
+				e.SelectedCamera = e.Cameras.Last();
 		}
 
 		private void button1_Click(object sender, EventArgs e)
