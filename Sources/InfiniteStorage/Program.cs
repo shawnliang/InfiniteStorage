@@ -27,7 +27,7 @@ namespace InfiniteStorage
 		static StationServer server;
 
 		private static System.Threading.Mutex m_InstanceMutex { get; set; }
-		private static readCamera.readCameraForm _fm1;
+		private static readCamera.camerAccess cameraImport;
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -130,11 +130,11 @@ namespace InfiniteStorage
 			if (!Environment.GetCommandLineArgs().Contains("--minimized"))
 				ImportUIPresenter.Instance.StartViewer();
 
-            _fm1 = new readCamera.readCameraForm();            // register cameratype device  plugin/remove event
-			_fm1.CameraDetected += new EventHandler<CameraDetectedEventArgs>(_fm1_CameraDetected);
-			_fm1.ImportService = new Camera.ImportService();
-            _fm1.startListen();
-            
+
+			cameraImport = new camerAccess();
+			cameraImport.CameraDetected += _fm1_CameraDetected;
+			cameraImport.ImportService = new Camera.ImportService();
+			cameraImport.startListen();
 
 			Application.Run();
 		}
@@ -222,7 +222,7 @@ namespace InfiniteStorage
 
 			try
 			{
-				_fm1.StopListen();
+				cameraImport.StopListen();
 			}
 			catch (Exception err)
 			{

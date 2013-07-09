@@ -51,6 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="camerAccess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="camerAccess.Designer.cs">
+      <DependentUpon>camerAccess.cs</DependentUpon>
+    </Compile>
     <Compile Include="ImportService.cs" />
     <Compile Include="NullImportService.cs" />
     <Compile Include="readCameraForm.cs">
@@ -61,6 +67,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="camerAccess.resx">
+      <DependentUpon>camerAccess.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="readCameraForm.resx">
       <DependentUpon>readCameraForm.cs</DependentUpon>
     </EmbeddedResource>
