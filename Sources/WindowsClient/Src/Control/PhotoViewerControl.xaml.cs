@@ -57,6 +57,18 @@ namespace Waveface.Client
             }
         }
 
+        public object SelectedItem
+        {
+            get
+            {
+                return lbImages.SelectedItem;
+            }
+            set
+            {
+                lbImages.SelectedItem = value;
+            }
+        }
+
         public Object Source
         {
             get { return lbImages.DataContext; }

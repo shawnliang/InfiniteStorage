@@ -142,12 +142,13 @@
                                     Visibility="{Binding Path=IsPhoto, Converter={StaticResource BoolToHiddenConverter}}"/>
 
                                     <Image Source="{Binding Path=BitmapImage}" Width="48" Margin="3" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                    Height="36" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" />
+                                    Height="36" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" Stretch="UniformToFill" />
 
                                     <!--Image Source="pack://application:,,,/Ren/Images/checkmark.png" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=IsSelected}"
                                         Stretch="Uniform" Width="40" Height="40" Margin="-8"  HorizontalAlignment="Right" VerticalAlignment="Top"/-->
 
-                                    <Border BorderBrush="#aa0094FF" Padding="2"  BorderThickness="6" CornerRadius="0.5" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/>
+                                    <Border BorderBrush="#5FB0E0E6" Padding="2"  BorderThickness="6" CornerRadius="0.5" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsMouseOver}"/>
+                                    <Border BorderBrush="#FF427FED" Padding="2"  BorderThickness="6" CornerRadius="0.5" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/>
                                 </Grid>
                             </Border>
                         </StackPanel>
