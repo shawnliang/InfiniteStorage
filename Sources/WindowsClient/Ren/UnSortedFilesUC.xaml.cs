@@ -20,6 +20,8 @@ using Waveface.ClientFramework;
 using Waveface.Model;
 using Screen = System.Windows.Forms.Screen;
 using System.IO;
+using System.Reflection;
+using System.Windows.Media;
 
 #endregion
 
@@ -239,6 +241,9 @@ namespace Waveface.Client
 
 				_ctl.DescribeText = GetDefaultEventName(Rt.DateTimeCache[_event[0].taken_time]);
 
+                _ctl.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
+                _ctl.lbEvent.PreviewMouseDown += lbEvent_PreviewMouseDown;
+
 				m_eventUCs.Add(_ctl);
 			}
 
@@ -254,6 +259,142 @@ namespace Waveface.Client
 
 			SetEventIntervalTypeText();
 		}
+
+        private static T FindAnchestor<T>(DependencyObject current)
+        where T : DependencyObject
+        {
+            do
+            {
+                if (current is T)
+                {
+                    return (T)current;
+                }
+                current = VisualTreeHelper.GetParent(current);
+            }
+            while (current != null);
+            return null;
+        }
+
+        void lbEvent_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ListBox list = sender as ListBox;
+            ListBoxItem item =
+                FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
+
+            PropertyInfo pi = typeof(ListBox).GetProperty("AnchorItem", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (pi != null)
+            {
+                pi.SetValue(list, item.DataContext, null);
+            }
+        }
+
+        EventUC startEventUC = null;
+        EventUC endEventUC = null;
+        int startIndex = 0;
+
+        void lbEvent_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (e.AddedItems.Count > 0 && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)))
+                {
+                    var firstEventUCFound = false;
+                    endEventUC = listBoxEvent.Items.OfType<EventUC>().Where(item => item.lbEvent == sender as ListBox).Single();
+                    List<EventUC> middleEventUCs = new List<EventUC>();
+                    foreach (var eventUC in listBoxEvent.Items.OfType<EventUC>())
+                    {
+                        if (!firstEventUCFound && (startEventUC == eventUC || endEventUC == eventUC))
+                        {
+                            firstEventUCFound = true;
+
+                            if (endEventUC == eventUC)
+                            {
+                                var temp = endEventUC;
+                                endEventUC = startEventUC;
+                                startEventUC = temp;
+                            }
+                            continue;
+                        }
+
+                        if (firstEventUCFound && (startEventUC == eventUC || endEventUC == eventUC))
+                            break;
+
+                        if (!firstEventUCFound)
+                            continue;
+
+                        middleEventUCs.Add(eventUC);
+                    }
+
+                    if (startEventUC == endEventUC)
+                    {
+                        var endIndex = startEventUC.lbEvent.SelectedIndex;
+
+                        if (startIndex > endIndex)
+                        {
+                            var temp = startIndex;
+                            startIndex = endIndex;
+                            endIndex = temp;
+                        }
+
+                        for (var index = startIndex; index <= endIndex; ++index)
+                        {
+                            var item = startEventUC.lbEvent.ItemContainerGenerator.ContainerFromIndex(index) as ListBoxItem;
+                            item.IsSelected = true;
+                        }
+                        return;
+                    }
+
+                    foreach (var eventUC in middleEventUCs)
+                    {
+                        eventUC.lbEvent.SelectionChanged -= lbEvent_SelectionChanged;
+                        eventUC.lbEvent.SelectAll();
+                        eventUC.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
+                    }
+
+                    startEventUC.Focus();
+                    startEventUC.lbEvent.SelectionChanged -= lbEvent_SelectionChanged;
+                    var starEventSelectedIndex = startEventUC.lbEvent.SelectedIndex;
+                    for (var index = 0; index < startEventUC.lbEvent.Items.Count; ++index)
+                    {
+                        var item = startEventUC.lbEvent.ItemContainerGenerator.ContainerFromIndex(index) as ListBoxItem;
+                        item.IsSelected = index >= starEventSelectedIndex;
+                    }
+                    startEventUC.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
+
+                    endEventUC.Focus();
+                    endEventUC.lbEvent.SelectionChanged -= lbEvent_SelectionChanged;
+                    var endEventSelectedIndex = endEventUC.lbEvent.SelectedIndex;
+                    for (var index = 0; index < endEventUC.lbEvent.Items.Count; ++index)
+                    {
+                        var item = endEventUC.lbEvent.ItemContainerGenerator.ContainerFromIndex(index) as ListBoxItem;
+                        item.IsSelected = index <= endEventSelectedIndex;
+                    }
+                    endEventUC.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
+                }
+                else if (e.AddedItems.Count > 0 || e.RemovedItems.Count > 0)
+                {
+                    if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
+                    {
+                        foreach (ListBox lbEvent in listBoxEvent.Items.OfType<EventUC>().Select(item => item.lbEvent).Except(new ListBox[] { sender as ListBox }))
+                            lbEvent.UnselectAll();
+
+                        startEventUC = null;
+                        endEventUC = null;
+                        startIndex = 0;
+                    }
+
+                    if (startEventUC == null)
+                    {
+                        startEventUC = listBoxEvent.Items.OfType<EventUC>().Where(item => item.lbEvent == sender as ListBox).Single();
+                        startIndex = startEventUC.lbEvent.SelectedIndex;
+                    }
+                }
+            }
+            finally
+            {
+                lblSelectedCount.Content = listBoxEvent.Items.OfType<EventUC>().Select(item => item.lbEvent).Sum(item => item.SelectedItems.Count);
+            }
+        }
 
 		private void ShowInfor()
 		{

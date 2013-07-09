@@ -136,7 +136,7 @@
             			Direction="90"
             			ShadowDepth="1" />
             	</Grid.Effect>
-				<Label Content="n selected" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="#FFA8A8A8" FontSize="16"/>
+                <Label x:Name="lblSelectedCount" Content="0"  ContentStringFormat="{}{0} selected" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="#FFA8A8A8" FontSize="16"/>
                 <Grid Grid.Column="0" HorizontalAlignment="Center" Margin="0">
             		<Grid.ColumnDefinitions>
             			<ColumnDefinition Width="Auto" />

@@ -587,7 +587,7 @@
         			ShadowDepth="1" />
         	</Grid.Effect>
         	<Grid Margin="0">
-        		<local:ContentActionBar x:Name="cabContentActionBar" HorizontalAlignment="Right" AddToFavorite="ContentActionBar_AddToFavorite" AddToStarred="ContentActionBar_AddToStarred" CreateFavorite="ContentActionBar_CreateFavorite" EnableMoveTo="True" MoveToNewFolder="ContentActionBar_MoveToNewFolder" MoveToExistingFolder="ContentActionBar_MoveToExistingFolder" Padding="0" Width="135"/>
+        		<local:ContentActionBar x:Name="cabContentActionBar" HorizontalAlignment="Right" AddToFavorite="ContentActionBar_AddToFavorite" AddToStarred="ContentActionBar_AddToStarred" CreateFavorite="ContentActionBar_CreateFavorite" EnableMoveTo="True" MoveToNewFolder="ContentActionBar_MoveToNewFolder" MoveToExistingFolder="ContentActionBar_MoveToExistingFolder" Padding="0" Width="135" HorizontalContentAlignment="Right"/>
         		<local:ZoomSlider x:Name="zoomSlider"
         			HorizontalAlignment="Left"
         			VerticalAlignment="Center"
