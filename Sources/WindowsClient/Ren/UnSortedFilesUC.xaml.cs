@@ -277,14 +277,20 @@ namespace Waveface.Client
 
         void lbEvent_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ListBox list = sender as ListBox;
-            ListBoxItem item =
-                FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
-
-            PropertyInfo pi = typeof(ListBox).GetProperty("AnchorItem", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (pi != null)
+            try
             {
-                pi.SetValue(list, item.DataContext, null);
+                ListBox list = sender as ListBox;
+                ListBoxItem item =
+                    FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
+
+                PropertyInfo pi = typeof(ListBox).GetProperty("AnchorItem", BindingFlags.NonPublic | BindingFlags.Instance);
+                if (pi != null)
+                {
+                    pi.SetValue(list, item.DataContext, null);
+                }
+            }
+            catch (Exception)
+            {
             }
         }
 
@@ -375,8 +381,8 @@ namespace Waveface.Client
                 {
                     if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
                     {
-                        foreach (ListBox lbEvent in listBoxEvent.Items.OfType<EventUC>().Select(item => item.lbEvent).Except(new ListBox[] { sender as ListBox }))
-                            lbEvent.UnselectAll();
+                        foreach (EventUC eventUC in listBoxEvent.Items.OfType<EventUC>().Where(item=> !item.lbEvent.IsMouseCaptureWithin && !item.m_doSelectAll))
+                            eventUC.lbEvent.UnselectAll();
 
                         startEventUC = null;
                         endEventUC = null;
