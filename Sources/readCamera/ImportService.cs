@@ -14,12 +14,16 @@ namespace readCamera
 
 	public interface ImportService
 	{
-		bool device_exist(string device_id);
+		IStorage GetStorage(string deviceId, string deviceName);
+	}
 
-		void create_device(string device_id, string device_name);
 
-		bool is_file_exist(string device_id, string file_path);
+	public interface IStorage
+	{
+		bool IsFileExist(string path);
 
-		void copy_file(System.IO.Stream input, string file_path, FileType type, DateTime time, string device_id);
+		void AddToStorage(string filename, FileType type, DateTime time, string path);
+
+		string TempFolder { get; }
 	}
 }

@@ -35,9 +35,9 @@ namespace readCamera
 		public const int WM_CLOSE = 0x10;
 
 		System.Management.ManagementEventWatcher watcher;
-		NullImportService _svr = new NullImportService();
-
-
+		IStorage storage = null;
+		
+		public ImportService ImportService { get; set; }
 		public event EventHandler<CameraDetectedEventArgs> CameraDetected;
 
 
@@ -45,6 +45,7 @@ namespace readCamera
 		{
 			InitializeComponent();
 			log.Warn("readCameraForm: start");
+			ImportService = new NullImportService();
 		}
 
 		int i = 0;
@@ -109,93 +110,133 @@ namespace readCamera
 
 		private void GetPictures(_deviceInfo dev)
 		{
-			
+			storage = ImportService.GetStorage(dev.UID, dev.Name);
+
+			var device = dev.DeviceInfo.Connect();
+
+			findImageVideoItems(device.Items, itemFound);
+		}
+
+		private delegate void ItemCallback(Item item, string path);
+
+
+		static void findImageVideoItems(Items items, ItemCallback cb)
+		{
+			var queue = new Queue<QueueItem>();
+			var curPath = @"";
+
+			foreach (Item item in items)
+			{
+				procItem(queue, item, curPath, cb);
+			}
+
+
+			while (queue.Count > 0)
+			{
+				var item = queue.Dequeue();
+				foreach (Item subIten in item.item.Items)
+					procItem(queue, subIten, item.parent, cb);
+			}
+		}
+
+		private static void procItem(Queue<QueueItem> queue, Item item, string parent, ItemCallback cb)
+		{
+			Property flag;
 			try
 			{
-				if (!_svr.device_exist(dev.UID))
-					_svr.create_device(dev.UID, dev.Name);
+				flag = item.Properties["Item Flags"];
+			}
+			catch (Exception err)
+			{
+				return;
+			}
 
-				findImageItem(_camera.Items, fullitempath);
+			if (flag != null)
+			{
+				var val = flag.get_Value();
+
+				if ((val & (int)WiaItemFlag.FolderItemFlag) != 0)
+				{
+					string itemName;
+					try
+					{
+						itemName = item.Properties["Item Name"].get_Value().ToString();
+					}
+					catch (Exception err)
+					{
+						return;
+					}
+
+					queue.Enqueue(new QueueItem { item = item, parent = Path.Combine(parent, itemName) });
+				}
+				else if ((val & (int)WiaItemFlag.ImageItemFlag) != 0)
+				{
+					cb(item, parent);
+				}
+				else if ((val & (int)WiaItemFlag.VideoItemFlag) != 0)
+				{
+					cb(item, parent);
+				}
+			}
+		}
+
+		void itemFound(Item item, string parent)
+		{
+			try
+			{
+				string name;
+				string path;
+				if (!item.Properties.Exists("Item Name"))
+					return;
+
+				name = item.Properties["Item Name"].get_Value().ToString();
+				path = Path.Combine(parent, name);
+
+
+				if (storage.IsFileExist(path))
+					return;
+
+
+				foreach (Property pro in item.Properties)
+				{
+					Console.WriteLine(pro.Name + " => " + pro.get_Value().ToString());
+				}
+
+
+				var flags = item.Properties["Item Flags"].get_Value();
+
+				if ((flags & (int)WiaItemFlag.ImageItemFlag) != 0)
+				{
+					var formats = item.Formats;
+
+					int i = 0;
+					foreach (string f in formats)
+					{
+						if (f != wiaFormatJPEG)
+							continue;
+
+						var tranferItem = (WIA.ImageFile)item.Transfer(f);
+
+
+						var tempFile = Path.Combine(storage.TempFolder, Guid.NewGuid().ToString());
+						tranferItem.SaveFile(tempFile);
+
+
+
+						storage.AddToStorage(tempFile, FileType.Image, DateTime.Now, Path.Combine(parent, item.Properties["Item Name"].get_Value().ToString() + ".jpg"));
+
+						break;
+					}
+				}
+				
 
 			}
 			catch (Exception err)
 			{
-				string error = err.Message;
+				Console.WriteLine(err);
 			}
 		}
 
-		static List<string> imageName = new List<string>();
-		//void findImageItem(Items items, string _fullitempath)
-		//{
-		//    WIA.ImageFile wiaImageFile = null;
-		//    string trueName = "";
-		//    foreach (Item item in items)
-		//    {
-		//        var flag = item.Properties["Item Flags"];
-
-		//        if (flag != null)
-		//        {
-		//            var val = flag.get_Value();
-		//            try
-		//            {
-		//                if ((val & (int)WiaItemFlag.FolderItemFlag) != 0)
-		//                {
-		//                    Console.WriteLine("Folder: " + item.Properties["Item Name"].get_Value());
-		//                    _fullitempath = _fullitempath + @"\" + item.Properties["Full Item Name"].get_Value();
-
-		//                    findImageItem(item.Items, _fullitempath);
-
-		//                    continue;
-		//                }
-		//            }
-		//            catch (Exception err)
-		//            {
-		//                log.Error("findImageItem:  flag.get_Value(), error: " + err.Message);
-		//                continue;
-		//            }
-		//            if ((val & (int)WiaItemFlag.ImageItemFlag) != 0)
-		//            {
-		//                foreach (Property itemProp in item.Properties)
-		//                {
-		//                    //Console.WriteLine(itemProp.Name + ":" + itemProp.get_Value());
-		//                    trueName = item.Properties["Item Name"].get_Value();
-		//                    imageName.Add(_fullitempath + @"\" + trueName + ".jpg");
-
-		//                    //}
-
-		//                    wiaImageFile = (WIA.ImageFile)item.Transfer(wiaFormatJPEG);
-
-		//                    DateTime dateTime = new DateTime();
-		//                    foreach (IProperty prop in wiaImageFile.Properties)
-		//                    {
-		//                        // Camera datetime format is a little strange:
-		//                        // DateTime : 2008:10:28 22:20:45
-		//                        if (prop.Name == "DateTime")
-		//                        {
-		//                            // replace the colons in the date by dashes
-		//                            StringBuilder sdate = new StringBuilder(prop.get_Value().ToString());
-		//                            sdate[4] = '-';
-		//                            sdate[7] = '-';
-		//                            dateTime = DateTime.Parse(sdate.ToString());
-		//                            break;
-		//                        }
-		//                    }
-		//                    bool isfileexist = _svr.is_file_exist(_dev.UID, _fullitempath + @"\" + trueName + ".jpg");
-		//                    if (isfileexist == false)
-		//                    {
-		//                        _svr.copy_file(null, _fullitempath + @"\" + trueName + ".jpg", FileType.Image, dateTime, _dev.UID);
-		//                        wiaImageFile.SaveFile(@"C:\00000000\" + trueName + ".jpg");
-		//                        log.Info("copy file: " + _fullitempath + @"\" + trueName + ".jpg" + " / " + FileType.Image + "/ " + dateTime.ToString() + " / " + _dev.UID);
-		//                    }
-		//                    break;
-		//                }
-		//                continue;
-		//            }
-
-		//        }
-		//    }
-		//}
-	
 		private void button2_Click_1(object sender, EventArgs e)
 		{
 			startListen();
@@ -219,7 +260,7 @@ namespace readCamera
 					var description = dev.Properties.Exists("Description") ? dev.Properties["Description"].get_Value().ToString() : "";
 					var manufacrurer = dev.Properties.Exists("Manufacturer") ? dev.Properties["Manufacturer"].get_Value().ToString() : "";
 
-					allCameras.Add(new _deviceInfo { UID = devId, Name = devName, Description = description, Manufacturer = manufacrurer });
+					allCameras.Add(new _deviceInfo { UID = devId, Name = devName, Description = description, Manufacturer = manufacrurer, DeviceInfo = dev });
 				}
 			}
 
@@ -247,6 +288,7 @@ namespace readCamera
 		public string Manufacturer { get; set; }
 		public string Description { get; set; }
 		public string Root { get; set; }
+		public IDeviceInfo DeviceInfo { get; set; }
 
 		public override string ToString()
 		{
@@ -268,6 +310,12 @@ namespace readCamera
 		{
 			Cameras = devices;
 		}
+	}
+
+	class QueueItem
+	{
+		public string parent { get; set; }
+		public Item item { get; set; }
 	}
 
 }

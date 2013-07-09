@@ -132,6 +132,7 @@ namespace InfiniteStorage
 
             _fm1 = new readCamera.readCameraForm();            // register cameratype device  plugin/remove event
 			_fm1.CameraDetected += new EventHandler<CameraDetectedEventArgs>(_fm1_CameraDetected);
+			_fm1.ImportService = new Camera.ImportService();
             _fm1.startListen();
             
 

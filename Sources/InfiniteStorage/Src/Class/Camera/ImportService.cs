@@ -10,60 +10,62 @@ namespace InfiniteStorage.Camera
 {
 	class ImportService : readCamera.ImportService
 	{
-		public bool device_exist(string device_id)
+
+		public readCamera.IStorage GetStorage(string deviceId, string deviceName)
 		{
+			var folder = "";
+
 			using (var db = new MyDbContext())
 			{
 				var query = from dev in db.Object.Devices
-							where dev.device_id == device_id
+							where dev.device_id == deviceId
 							select dev;
 
-				return query.Any();
+				if (!query.Any())
+				{
+					folder = DeviceUtility.GetUniqueDeviceFolder(deviceName);
+					db.Object.Devices.Add(
+						new Device {
+							device_id = deviceId,
+							device_name = deviceName,
+							folder_name = folder
+						});
+					db.Object.SaveChanges();
+				}
+				else
+				{
+					folder = query.First().folder_name;
+				}
 			}
+
+			return new ImportStorage { device_id = deviceId, device_folder = folder };
 		}
+	}
 
-		public void create_device(string device_id, string device_name)
-		{
-			var dev = new Device
-			{
-				device_id = device_id,
-				folder_name = DeviceUtility.GetUniqueDeviceFolder(device_name),
-				device_name = device_name
-			};
+	class ImportStorage : readCamera.IStorage
+	{
+		public string device_id { get; set; }
+		public string device_folder { get; set; }
 
-			using (var db = new MyDbContext())
-			{
-				db.Object.Devices.Add(dev);
-				db.Object.SaveChanges();
-			}
-		}
-
-		public bool is_file_exist(string device_id, string file_path)
+		public bool IsFileExist(string path)
 		{
 			using (var db = new MyDbContext())
 			{
 				var query = from f in db.Object.Files
-							where f.file_path == file_path && f.device_id == device_id
+							where f.file_path == path && f.device_id == device_id
 							select 1;
 
 				return query.Any();
 			}
 		}
 
-		public void copy_file(System.IO.Stream input, string file_path, readCamera.FileType type, DateTime time, string device_id)
+		public void AddToStorage(string temp, readCamera.FileType type, DateTime time, string file_path)
 		{
-			var temp = Path.Combine(MyFileFolder.Temp, Guid.NewGuid().ToString() + Path.GetExtension(file_path));
-
-			using (var fs = File.OpenWrite(temp))
-			{
-				input.CopyTo(fs);
-			}
-
 			var file_size = new FileInfo(temp).Length;
 			var file_name = Path.GetFileName(file_path);
 
 			var storage = new DefaultFolderFileStorage();
-			storage.setDeviceName(device_id); // TODO: use DEVICE NAME instead after refine readCamera.ImportService interface
+			storage.setDeviceName(device_folder);
 
 
 			var full_path = storage.MoveToStorage(temp, new FileContext { file_name = file_name });
@@ -87,7 +89,9 @@ namespace InfiniteStorage.Camera
 			util.SaveFileRecord(fileAsset);
 		}
 
+		public string TempFolder
+		{
+			get { return MyFileFolder.Temp; }
+		}
 	}
-
-
 }
