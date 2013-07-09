@@ -222,7 +222,7 @@ namespace InfiniteStorage
 
 			try
 			{
-				cameraImport.StopListen();
+				cameraImport.stopListen();
 			}
 			catch (Exception err)
 			{
