@@ -31,18 +31,20 @@ namespace readCamera
 
 		private IStorage storage = null;
 		private System.Management.ManagementEventWatcher watcher;
-
+		private List<_deviceInfo> prevDevList;
 
 		public camerAccess()
 		{
 			InitializeComponent();
 			ImportService = new NullImportService();
+
+			prevDevList = populateCameraDevice();
 		}
 
 		public void startListen()
 		{
 			watcher = new System.Management.ManagementEventWatcher();
-			var query = new WqlEventQuery("SELECT * FROM Win32_DeviceChangeEvent WHERE EventType = 2");
+			var query = new WqlEventQuery("SELECT * FROM Win32_DeviceChangeEvent WHERE EventType = 2 or EventType = 3");
 			watcher.EventArrived += new EventArrivedEventHandler(watcher_EventArrived);
 			watcher.Query = query;
 			watcher.Start();
@@ -58,15 +60,31 @@ namespace readCamera
 			}
 		}
 
-		int i = 0;
 		private void watcher_EventArrived(object sender, EventArrivedEventArgs e)
 		{
-			i++;
-			if (i == 3)
+			var curDeviceList = populateCameraDevice();
+
+			if (isNewCameraFound(curDeviceList, prevDevList))
 			{
 				readCameraServiceStart();
-				i = 0;
 			}
+
+			prevDevList = curDeviceList;
+		}
+
+		private bool isNewCameraFound(List<_deviceInfo> curDeviceList, List<_deviceInfo> prevDevList)
+		{
+			foreach (var dev in curDeviceList)
+			{
+				var query = from prevDev in prevDevList
+							where prevDev.UID == dev.UID
+							select prevDev;
+
+				if (!query.Any())
+					return true;
+			}
+
+			return false;
 		}
 
 
