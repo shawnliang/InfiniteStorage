@@ -189,6 +189,11 @@ namespace readCamera
 					try
 					{
 						itemName = item.Properties["Item Name"].get_Value().ToString();
+
+						// on some device, thumbnails are located on a hidden folder, e.g. .thumbnails, which
+						// provides empty name by WIA
+						if (string.IsNullOrEmpty(itemName))
+							return;
 					}
 					catch (Exception err)
 					{
@@ -212,6 +217,8 @@ namespace readCamera
 		{
 			try
 			{
+				if (!parent.Contains("DCIM"))
+					return;
 				
 				if (!item.Properties.Exists("Item Name"))
 					return;
