@@ -90,7 +90,7 @@ namespace InfiniteStorage.Camera
 			if (!dir.Exists)
 			{
 				dir.Create();
-				dir.Attributes |= FileAttributes.Hidden;
+				dir.Attributes = FileAttributes.Hidden;
 			}
 		}
 

@@ -210,9 +210,6 @@ namespace InfiniteStorage
 
 				var longSide = Math.Max(fullImage.Width, fullImage.Height);
 
-				if (longSide < 256)
-					return;
-
 				var orientation = ImageHelper.ImageOrientation(fullImage);
 				file.orientation = (int)orientation;
 

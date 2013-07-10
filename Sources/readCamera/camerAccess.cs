@@ -74,15 +74,18 @@ namespace readCamera
 		{
 			var cameras = populateCameraDevice();
 
-			var handler = CameraDetected;
-			if (handler == null)
-				return;
+			if (cameras.Any())
+			{
+				var handler = CameraDetected;
+				if (handler == null)
+					return;
 
-			var args = new CameraDetectedEventArgs(cameras);
-			handler(this, args);
+				var args = new CameraDetectedEventArgs(cameras);
+				handler(this, args);
 
-			if (args.SelectedCamera != null)
-				GetPictures(args.SelectedCamera);
+				if (args.SelectedCamera != null)
+					GetPictures(args.SelectedCamera);
+			}
 		}
 
 		private List<_deviceInfo> populateCameraDevice()
