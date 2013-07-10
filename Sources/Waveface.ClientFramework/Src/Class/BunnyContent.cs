@@ -100,7 +100,7 @@ namespace Waveface.ClientFramework
 						if(imageFrame == null)
 							return null;
 
-						return imageFrame.Thumbnail ?? imageFrame;
+                        return imageFrame.Thumbnail ?? imageFrame ?? ImageSource;
 					}
 					_thumbnailSource = BitmapFrame.Create(new Uri(file));
 				}

@@ -28,6 +28,17 @@
                    G="215"
                    R="215" />
 
+            <BitmapImage x:Key="AddToIcon"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_bar_addto.png" />
+            
+            <BitmapImage x:Key="CreateIcon"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_bar_create.png" />
+            
+            <BitmapImage x:Key="MoveToIcon"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_bar_moveto.png" />
 
             <BitmapImage x:Key="AddDeviceArrowIcon"
                          CacheOption="OnDemand"
@@ -99,6 +110,7 @@
                 -->
                 <Setter Property="SnapsToDevicePixels" Value="True" />
             </Style>
+
 
 
             <Style TargetType="{x:Type Button}">

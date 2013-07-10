@@ -101,24 +101,9 @@
                         </TextBox>
                     </StackPanel>
 
-                    <StackPanel x:Name="spToolBar" Visibility="Collapsed" Margin="0,8,16,0" Grid.Row="0" Cursor="Hand"  HorizontalAlignment="Right" Orientation="Horizontal" >
-                        <Button x:Name="btnUnselectAll" Width="20" Height="20" BorderThickness="2" BorderBrush="#9B9B9B" Style="{StaticResource FlatButtonStyle}" Foreground="White" Background="White" Margin="0, 2" Click="btnUnselectAll_Click" >
-                            <Button.Content>
-                                <Image  Width="14" Height="14" Source="pack://application:,,,/Ren/Images/unselectAll.png" />
-                            </Button.Content>
-                            <Button.Effect>
-                                <DropShadowEffect ShadowDepth="1"/>
-                            </Button.Effect>
-                        </Button>
-
-                        <Button x:Name="btnSelectAll" Width="20" Height="20" BorderThickness="2" BorderBrush="#9B9B9B" Style="{StaticResource FlatButtonStyle}" Foreground="White" Background="#aa0094FF" Margin="6, 2, 0, 2" Click="btnSelectAll_Click" >
-                            <Button.Content>
-                                <Image Width="15" Height="15" Source="pack://application:,,,/Ren/Images/selectAll.png" />
-                            </Button.Content>
-                            <Button.Effect>
-                                <DropShadowEffect ShadowDepth="1"/>
-                            </Button.Effect>
-                        </Button>
+                    <StackPanel x:Name="spToolBar" Margin="0,8,16,0" Grid.Row="0" Cursor="Hand"  HorizontalAlignment="Right" Orientation="Horizontal" Visibility="Collapsed" >
+                        <Button x:Name="btnUnselectAll" Style="{StaticResource FlatButtonStyle}" Foreground="White"  Click="btnUnselectAll_Click" Content="UnSelect All" Padding="5,0" />
+                        <Button x:Name="btnSelectAll" Style="{StaticResource FlatButtonStyle}" Foreground="White"   Click="btnSelectAll_Click" Content="Select All" Margin="10,0,0,0" Padding="5,0" />
                     </StackPanel>
 
                     <StackPanel Margin="2,0,0,0" Grid.Row="1" Orientation="Horizontal">
@@ -136,7 +121,7 @@
                      x:Name="lbEvent" 
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                      ItemContainerStyle="{StaticResource SimpleListBoxItem}" 
-                     SelectionMode="Multiple"
+                     SelectionMode="Extended"
                      Loaded="lbEvent_Loaded"
                      PreviewMouseRightButtonUp="lbEvent_PreviewMouseRightButtonUp"
                      PreviewMouseRightButtonDown="lbEvent_PreviewMouseRightButtonDown"
@@ -157,12 +142,13 @@
                                     Visibility="{Binding Path=IsPhoto, Converter={StaticResource BoolToHiddenConverter}}"/>
 
                                     <Image Source="{Binding Path=BitmapImage}" Width="48" Margin="3" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                    Height="36" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" />
+                                    Height="36" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" Stretch="UniformToFill" />
 
                                     <!--Image Source="pack://application:,,,/Ren/Images/checkmark.png" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=IsSelected}"
                                         Stretch="Uniform" Width="40" Height="40" Margin="-8"  HorizontalAlignment="Right" VerticalAlignment="Top"/-->
 
-                                    <Border BorderBrush="#aa0094FF" Padding="2"  BorderThickness="6" CornerRadius="0.5" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/>
+                                    <Border BorderBrush="#5FB0E0E6" Padding="2"  BorderThickness="6" CornerRadius="0.5" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsMouseOver}"/>
+                                    <Border BorderBrush="#FF427FED" Padding="2"  BorderThickness="6" CornerRadius="0.5" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/>
                                 </Grid>
                             </Border>
                         </StackPanel>

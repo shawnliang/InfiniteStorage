@@ -130,9 +130,6 @@ namespace InfiniteStorage
 			if (!Environment.GetCommandLineArgs().Contains("--minimized"))
 				ImportUIPresenter.Instance.StartViewer();
 
-
-			
-
 			Application.Run();
 		}
 

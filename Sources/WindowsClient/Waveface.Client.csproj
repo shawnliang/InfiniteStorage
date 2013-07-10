@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <ExpressionBlendVersion>5.0.40110.0</ExpressionBlendVersion>
+    <ExpressionBlendVersion>12.0.40612.10</ExpressionBlendVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -110,16 +110,18 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="ContentActionBar.xaml.cs">
+      <DependentUpon>ContentActionBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ContentItemInfo.xaml.cs">
       <DependentUpon>ContentItemInfo.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Ren\CreateFolderDialog.xaml.cs">
-      <DependentUpon>CreateFolderDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Control\AddSourceTip.xaml.cs">
       <DependentUpon>AddSourceTip.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Ren\WaitForPairingDialog.xaml.cs" />
+    <Compile Include="Ren\WaitForPairingDialog.xaml.cs">
+      <DependentUpon>WaitForPairingDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Ren\WpfAnimatedGif\Decoding\GifApplicationExtension.cs" />
     <Compile Include="Ren\WpfAnimatedGif\Decoding\GifBlock.cs" />
     <Compile Include="Ren\WpfAnimatedGif\Decoding\GifBlockKind.cs" />
@@ -139,8 +141,8 @@
     <Compile Include="Ren\WpfAnimatedGif\Decoding\GifTrailer.cs" />
     <Compile Include="Ren\WpfAnimatedGif\ImageAnimationController.cs" />
     <Compile Include="Ren\WpfAnimatedGif\ImageBehavior.cs" />
-    <Compile Include="Src\Dialog\AddToFavoriteDialog.xaml.cs">
-      <DependentUpon>AddToFavoriteDialog.xaml</DependentUpon>
+    <Compile Include="Src\Dialog\AddToDialog.xaml.cs">
+      <DependentUpon>AddToDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Control\BackButton.xaml.cs">
       <DependentUpon>BackButton.xaml</DependentUpon>
@@ -151,8 +153,8 @@
     <Compile Include="Src\Control\ContentItem.xaml.cs">
       <DependentUpon>ContentItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Src\Dialog\CreateFavoriteDialog.xaml.cs">
-      <DependentUpon>CreateFavoriteDialog.xaml</DependentUpon>
+    <Compile Include="Src\Dialog\CreateDialog.xaml.cs">
+      <DependentUpon>CreateDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Control\FavoriteAllButton.xaml.cs">
       <DependentUpon>FavoriteAllButton.xaml</DependentUpon>
@@ -188,8 +190,12 @@
       <DependentUpon>PreviousButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Ren\Data.cs" />
-    <Compile Include="Ren\EventUC.xaml.cs" />
-    <Compile Include="Ren\UnSortedFilesUC.xaml.cs" />
+    <Compile Include="Ren\EventUC.xaml.cs">
+      <DependentUpon>EventUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ren\UnSortedFilesUC.xaml.cs">
+      <DependentUpon>UnSortedFilesUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Ren\RT.cs" />
     <Compile Include="Ren\Utility\BoolToVisibilityConverter.cs" />
     <Compile Include="Ren\Utility\IgnoreMouseWheelBehavior .cs" />
@@ -231,18 +237,23 @@
     </Compile>
     <Resource Include="Ren\Images\selectAll.png" />
     <Resource Include="Ren\Images\unselectAll.png" />
+    <Resource Include="Resource\ico_bar_addto.png" />
+    <Resource Include="Resource\ico_bar_create.png" />
+    <Resource Include="Resource\ico_bar_moveto.png" />
+    <Resource Include="Resource\ico_bar_play.png" />
+    <Resource Include="Resource\ico_bar_share.png" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Page Include="ContentItemInfo.xaml">
+    <Page Include="ContentActionBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Ren\CreateFolderDialog.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="ContentItemInfo.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Src\Control\AddSourceTip.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -255,7 +266,7 @@
     <Compile Include="Src\Control\SwitchButton.xaml.cs">
       <DependentUpon>SwitchButton.xaml</DependentUpon>
     </Compile>
-    <Page Include="Src\Dialog\AddToFavoriteDialog.xaml">
+    <Page Include="Src\Dialog\AddToDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -271,7 +282,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Src\Dialog\CreateFavoriteDialog.xaml">
+    <Page Include="Src\Dialog\CreateDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

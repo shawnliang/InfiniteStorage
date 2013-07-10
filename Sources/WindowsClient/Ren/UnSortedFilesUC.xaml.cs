@@ -20,6 +20,8 @@ using Waveface.ClientFramework;
 using Waveface.Model;
 using Screen = System.Windows.Forms.Screen;
 using System.IO;
+using System.Reflection;
+using System.Windows.Media;
 
 #endregion
 
@@ -239,6 +241,10 @@ namespace Waveface.Client
 
 				_ctl.DescribeText = GetDefaultEventName(Rt.DateTimeCache[_event[0].taken_time]);
 
+                _ctl.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
+                _ctl.lbEvent.PreviewMouseDown += lbEvent_PreviewMouseDown;
+                _ctl.lbEvent.MouseDoubleClick += lbEvent_MouseDoubleClick;
+
 				m_eventUCs.Add(_ctl);
 			}
 
@@ -254,6 +260,153 @@ namespace Waveface.Client
 
 			SetEventIntervalTypeText();
 		}
+
+        void lbEvent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Sub_SlideShow();
+        }
+
+        private static T FindAnchestor<T>(DependencyObject current)
+        where T : DependencyObject
+        {
+            do
+            {
+                if (current is T)
+                {
+                    return (T)current;
+                }
+                current = VisualTreeHelper.GetParent(current);
+            }
+            while (current != null);
+            return null;
+        }
+
+        void lbEvent_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                ListBox list = sender as ListBox;
+                ListBoxItem item =
+                    FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
+
+                PropertyInfo pi = typeof(ListBox).GetProperty("AnchorItem", BindingFlags.NonPublic | BindingFlags.Instance);
+                if (pi != null)
+                {
+                    pi.SetValue(list, item.DataContext, null);
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        EventUC startEventUC = null;
+        EventUC endEventUC = null;
+        int startIndex = 0;
+
+        void lbEvent_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (e.AddedItems.Count > 0 && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)))
+                {
+                    var firstEventUCFound = false;
+                    endEventUC = listBoxEvent.Items.OfType<EventUC>().Where(item => item.lbEvent == sender as ListBox).Single();
+                    List<EventUC> middleEventUCs = new List<EventUC>();
+                    foreach (var eventUC in listBoxEvent.Items.OfType<EventUC>())
+                    {
+                        if (!firstEventUCFound && (startEventUC == eventUC || endEventUC == eventUC))
+                        {
+                            firstEventUCFound = true;
+
+                            if (endEventUC == eventUC)
+                            {
+                                var temp = endEventUC;
+                                endEventUC = startEventUC;
+                                startEventUC = temp;
+                            }
+                            continue;
+                        }
+
+                        if (firstEventUCFound && (startEventUC == eventUC || endEventUC == eventUC))
+                            break;
+
+                        if (!firstEventUCFound)
+                            continue;
+
+                        middleEventUCs.Add(eventUC);
+                    }
+
+                    if (startEventUC == endEventUC)
+                    {
+                        var endIndex = startEventUC.lbEvent.SelectedIndex;
+
+                        if (startIndex > endIndex)
+                        {
+                            var temp = startIndex;
+                            startIndex = endIndex;
+                            endIndex = temp;
+                        }
+
+                        for (var index = startIndex; index <= endIndex; ++index)
+                        {
+                            var item = startEventUC.lbEvent.ItemContainerGenerator.ContainerFromIndex(index) as ListBoxItem;
+                            item.IsSelected = true;
+                        }
+                        return;
+                    }
+
+                    foreach (var eventUC in middleEventUCs)
+                    {
+                        eventUC.lbEvent.SelectionChanged -= lbEvent_SelectionChanged;
+                        eventUC.lbEvent.SelectAll();
+                        eventUC.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
+                    }
+
+                    startEventUC.Focus();
+                    startEventUC.lbEvent.SelectionChanged -= lbEvent_SelectionChanged;
+                    var starEventSelectedIndex = startEventUC.lbEvent.SelectedIndex;
+                    for (var index = 0; index < startEventUC.lbEvent.Items.Count; ++index)
+                    {
+                        var item = startEventUC.lbEvent.ItemContainerGenerator.ContainerFromIndex(index) as ListBoxItem;
+                        item.IsSelected = index >= starEventSelectedIndex;
+                    }
+                    startEventUC.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
+
+                    endEventUC.Focus();
+                    endEventUC.lbEvent.SelectionChanged -= lbEvent_SelectionChanged;
+                    var endEventSelectedIndex = endEventUC.lbEvent.SelectedIndex;
+                    for (var index = 0; index < endEventUC.lbEvent.Items.Count; ++index)
+                    {
+                        var item = endEventUC.lbEvent.ItemContainerGenerator.ContainerFromIndex(index) as ListBoxItem;
+                        item.IsSelected = index <= endEventSelectedIndex;
+                    }
+                    endEventUC.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
+                }
+                else if (e.AddedItems.Count > 0 || e.RemovedItems.Count > 0)
+                {
+                    if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
+                    {
+                        foreach (EventUC eventUC in listBoxEvent.Items.OfType<EventUC>().Where(item=> !item.lbEvent.IsMouseCaptureWithin && !item.m_doSelectAll))
+                            eventUC.lbEvent.UnselectAll();
+
+                        startEventUC = null;
+                        endEventUC = null;
+                        startIndex = 0;
+                    }
+
+                    if (startEventUC == null)
+                    {
+                        startEventUC = listBoxEvent.Items.OfType<EventUC>().Where(item => item.lbEvent == sender as ListBox).Single();
+                        startIndex = startEventUC.lbEvent.SelectedIndex;
+                    }
+                }
+            }
+            finally
+            {
+                lblSelectedCount.Content = listBoxEvent.Items.OfType<EventUC>().Select(item => item.lbEvent).Sum(item => item.SelectedItems.Count);
+            }
+        }
 
 		private void ShowInfor()
 		{
@@ -668,16 +821,31 @@ namespace Waveface.Client
 		{
 			List<ContentEntity> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys(false);
 
-			if (_contentEntitys.Count == 0)
+            var index = 0;
+			if (_contentEntitys.Count == 1)
 			{
-				return;
+
+                var allContents =listBoxEvent.Items.OfType<EventUC>().SelectMany(item => item.Event).ToList();
+                _contentEntitys = ConvertToContentEntities(false, allContents).ToList();
+
+                foreach (var euc in listBoxEvent.Items.OfType<EventUC>())
+                {
+                    if (euc.IsMouseCaptureWithin)
+                    {
+                        index += euc.lbEvent.SelectedIndex + 1;
+                        break;
+                    }
+
+                    index += euc.lbEvent.Items.Count;
+                }
 			}
 
+            index -= 1;
 			var _viewer = new PhotoViewer
 							  {
 								  Owner = m_mainWindow,
 								  Source = _contentEntitys,
-								  SelectedIndex = 0
+                                  SelectedIndex = index
 							  };
 
 			_viewer.ShowDialog();
@@ -695,36 +863,40 @@ namespace Waveface.Client
 			return m_mainWindow.AddToFavorite(_contentEntitys);
 		}
 
+		
 		public List<ContentEntity> Sub_GetAllSelectedFiles_ContentEntitys(bool simple)
 		{
-			List<ContentEntity> _contentEntitys = new List<ContentEntity>();
-
 			List<FileChange> _allSelectedFiles = GetAllSelectedFiles();
 
-			foreach (FileChange _fc in _allSelectedFiles)
-			{
-				if (simple)
-				{
-					_contentEntitys.Add(new ContentEntity
-											{
-												ID = _fc.id,
-											});
-				}
-				else
-				{
-					_contentEntitys.Add(new BunnyContent(new Uri(_fc.saved_path), _fc.id, (_fc.type == 0 ? ContentType.Photo : ContentType.Video)));
-				}
-			}
-
-			return _contentEntitys;
+            return ConvertToContentEntities(simple, _allSelectedFiles);
 		}
+
+        private  List<ContentEntity> ConvertToContentEntities(bool simple, IEnumerable<FileChange> _allSelectedFiles)
+        {
+            List<ContentEntity> _contentEntitys = new List<ContentEntity>();
+            foreach (FileChange _fc in _allSelectedFiles)
+            {
+                if (simple)
+                {
+                    _contentEntitys.Add(new ContentEntity
+                    {
+                        ID = _fc.id,
+                    });
+                }
+                else
+                {
+                    _contentEntitys.Add(new BunnyContent(new Uri(_fc.saved_path), _fc.id, (_fc.type == 0 ? ContentType.Photo : ContentType.Video)));
+                }
+            }
+            return _contentEntitys;
+        }
 
 		public bool Sub_MoveToFolder()
 		{
 			
 
 
-			var _dialog = new CreateFolderDialog
+			var _dialog = new CreateDialog
 							  {
 								  Owner = m_mainWindow,
 								  WindowStartupLocation = WindowStartupLocation.CenterOwner
@@ -733,13 +905,13 @@ namespace Waveface.Client
 			if (_dialog.ShowDialog() != true)
 				return false;
 
-			if (string.IsNullOrEmpty(_dialog.FolderName))
+			if (string.IsNullOrEmpty(_dialog.CreateName))
 				return false;
 
 			try {
 				List<FileChange> _allSelectedFiles = GetAllSelectedFiles();
 
-				var targetPath = Path.Combine(Path.GetDirectoryName(m_unsortedGroup.Uri.LocalPath), _dialog.FolderName);
+                var targetPath = Path.Combine(Path.GetDirectoryName(m_unsortedGroup.Uri.LocalPath), _dialog.CreateName);
 
 				StationAPI.Move(GetAllSelectedFiles().Select(x => x.id), targetPath);
 			}
@@ -755,19 +927,6 @@ namespace Waveface.Client
 
 		#endregion
 
-		private void btnFun1_Click(object sender, RoutedEventArgs e)
-		{
-			ShowContextMenu(sender as Button);
-		}
-
-		private static void ShowContextMenu(Button btn)
-		{
-			btn.ContextMenu.IsEnabled = true;
-			btn.ContextMenu.PlacementTarget = btn;
-			btn.ContextMenu.Placement = PlacementMode.Bottom;
-			btn.ContextMenu.IsOpen = true;
-			btn.ContextMenu.VerticalOffset = -2;
-		}
 
 		private void miSelectAll_Click(object sender, RoutedEventArgs e)
 		{
@@ -813,5 +972,43 @@ namespace Waveface.Client
 				Sub_SelectAll(false);
 			}
 		}
+		
+		private void miAddToStarredFavorite_Click(object sender, RoutedEventArgs e)
+		{
+			List<ContentEntity> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys(true);
+
+			if (_contentEntitys.Count == 0)
+			{
+				return;
+			}
+
+		m_mainWindow.StarContent(_contentEntitys);
+		}
+
+
+        private void ContentActionBar_AddToFavorite(object sender, EventArgs e)
+        {
+            Sub_AddToFavorite();
+        }
+
+        private void ContentActionBar_AddToStarred(object sender, EventArgs e)
+        {
+            //StarSelectedContents();
+        }
+
+        private void ContentActionBar_CreateFavorite(object sender, EventArgs e)
+        {
+            Sub_SaveToFavorite();
+        }
+
+        private void ContentActionBar_MoveToNewFolder(object sender, EventArgs e)
+        {
+            Sub_MoveToFolder();
+        }
+
+        private void ContentActionBar_MoveToExistingFolder(object sender, EventArgs e)
+        {
+            Sub_MoveToFolder();
+        }
 	}
 }

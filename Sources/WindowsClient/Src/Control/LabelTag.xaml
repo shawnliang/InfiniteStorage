@@ -4,7 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Name="UserControl"
-             MouseLeftButtonDown="UserControl_MouseLeftButtonDown"
+             PreviewMouseLeftButtonDown="UserControl_PreviewMouseLeftButtonDown"
              d:DesignHeight="44"
              d:DesignWidth="44"
              mc:Ignorable="d">

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -79,11 +80,11 @@ namespace Waveface.Client
 		}
 
 
-		private void StarContent(IEnumerable<IContentEntity> contents)
+		public void StarContent(IEnumerable<IContentEntity> contentEntities)
 		{
-			var selectedContents = contents.OfType<IContent>();
+            var contents = contentEntities.OfType<IContent>();
 
-			ClientFramework.Client.Default.Tag(selectedContents);
+            ClientFramework.Client.Default.Tag(contents);
 
 			RefreshContentArea();
 			RefreshStarFavorite();
@@ -146,16 +147,17 @@ namespace Waveface.Client
 				return false;
 			}
 
-			var dialog = new AddToFavoriteDialog();
+
+			var dialog = new AddToDialog();
 			dialog.Owner = this;
 			dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
 
-			dialog.FavoriteItemSource = favorites;
+			dialog.ItemSource = favorites;
 
 			if (dialog.ShowDialog() != true)
 				return false;
 
-			var selectedFavorite = (dialog.SelectedFavorite as IContentGroup);
+			var selectedFavorite = (dialog.SelectedItem as IContentGroup);
 			AddToFavorite(selectedFavorite.ID, contents);
 
 			return true;
@@ -175,8 +177,9 @@ namespace Waveface.Client
 
 			ClientFramework.Client.Default.AddToFavorite(contents, favoriteID);
 
-			SelectToFavorite(favoriteID);
-			RefreshSelectedFavorite();
+            (GetFavorite(favoriteID) as IContentGroup).Refresh();
+            //SelectToFavorite(favoriteID);
+            //RefreshSelectedFavorite();
 		}
 
 
@@ -200,6 +203,19 @@ namespace Waveface.Client
 				lbxFavorites.SelectedIndex = index;
 			}
 		}
+
+
+        private IContentEntity GetFavorite(string favoriteID)
+        {
+            var favorites = Waveface.ClientFramework.Client.Default.Favorites;
+
+            foreach (IContentEntity favorite in favorites)
+            {
+                if (favorite.ID == favoriteID)
+                    return favorite;
+            }
+            return null;
+        }
 
 		private IContentGroup GetCurrentContentGroup()
 		{
@@ -271,6 +287,28 @@ namespace Waveface.Client
 
 			lbxFavorites.SelectedIndex = 0;
 		}
+
+        private void AddSelectedToFavorite()
+        {
+            var selectedContents = GetSelectedContents();
+
+            AddToFavorite(selectedContents);
+        }
+
+        private void StarSelectedContents()
+        {
+            var selectedContents = GetSelectedContents();
+
+            StarContent(selectedContents);
+        }
+
+        private void SaveSelectedContentsToFavorite()
+        {
+            var selectedContents = GetSelectedContents();
+
+            SaveToFavorite(selectedContents);
+        }
+
 		#endregion
 
 
@@ -285,14 +323,18 @@ namespace Waveface.Client
 				return false;
 			}
 
-			var dialog = new CreateFavoriteDialog();
+
+            string defaultName = (string)Application.Current.FindResource("DefaultFavoriteName");
+
+			var dialog = new CreateDialog();
+            dialog.DefaultName = defaultName;
 			dialog.Owner = this;
 			dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
 			if (dialog.ShowDialog() != true)
 				return false;
 
-			ClientFramework.Client.Default.SaveToFavorite(contents, dialog.FavoriteName);
+			ClientFramework.Client.Default.SaveToFavorite(contents, dialog.CreateName);
 			lbxFavorites.SelectedIndex = lbxFavorites.Items.Count - 1;
 
 			return true;
@@ -439,10 +481,11 @@ namespace Waveface.Client
 
             if (group == null)
             {
+                //TODO: 待重構
                 var viewer = new PhotoViewer();
                 viewer.Owner = this;
-                viewer.Source = lbxContentContainer.DataContext;
-                viewer.SelectedIndex = lbxContentContainer.SelectedIndex;
+                viewer.Source = (lbxContentContainer.SelectedItems.Count > 1) ? lbxContentContainer.SelectedItems.OfType<IContentEntity>() : lbxContentContainer.DataContext;
+                viewer.SelectedIndex = (lbxContentContainer.SelectedItems.Count > 1) ? 0 : lbxContentContainer.SelectedIndex;
 
                 viewer.ShowDialog();
                 return;
@@ -534,6 +577,9 @@ namespace Waveface.Client
 
                 Cursor = Cursors.Wait;
 
+                ContentAreaToolBar.Visibility = System.Windows.Visibility.Collapsed;
+                lbxContentContainer.Visibility = System.Windows.Visibility.Collapsed;
+
                 unSortedFilesUC.Visibility = Visibility.Visible;
                 unSortedFilesUC.Init(service, group, this);
 
@@ -543,17 +589,22 @@ namespace Waveface.Client
             {
                 unSortedFilesUC.Stop();
                 unSortedFilesUC.Visibility = Visibility.Collapsed;
+                ContentAreaToolBar.Visibility = System.Windows.Visibility.Visible;
+                lbxContentContainer.Visibility = System.Windows.Visibility.Visible;
             }
 
 			lbxContentContainer.ContextMenu = this.Resources["SourceContentContextMenu"] as ContextMenu;
 
             Grid.SetColumnSpan(gdContentArea, 2);
 
-            btnFavoriteAll.Visibility = Visibility.Visible;
+            cabContentActionBar.EnableMoveTo = true;
+
+            //btnFavoriteAll.Visibility = Visibility.Visible;
             gdRightSide.Visibility = System.Windows.Visibility.Collapsed;
 
             rspRightSidePanel.Visibility = System.Windows.Visibility.Collapsed;
             rspRightSidePane2.Visibility = System.Windows.Visibility.Collapsed;
+
 
             lbxFavorites.SelectedItem = null;
 
@@ -630,7 +681,11 @@ namespace Waveface.Client
             gdRightSide.Visibility = Visibility.Visible;
             Grid.SetColumnSpan(gdContentArea, 1);
 
-            btnFavoriteAll.Visibility = Visibility.Collapsed;
+            cabContentActionBar.EnableMoveTo = false;
+
+            ContentAreaToolBar.Visibility = System.Windows.Visibility.Visible;
+            lbxContentContainer.Visibility = System.Windows.Visibility.Visible;
+            //btnFavoriteAll.Visibility = Visibility.Collapsed;
             unSortedFilesUC.Visibility = Visibility.Collapsed;
             rspRightSidePane2.Visibility = (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
             rspRightSidePanel.Visibility = (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase)) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
@@ -744,25 +799,24 @@ namespace Waveface.Client
 
 		private void StarMenuItem_Click(object sender, RoutedEventArgs e)
         {
-			var selectedContents = GetSelectedContents();
-
-			StarContent(selectedContents);
+            StarSelectedContents();
         }
+
+
 
 
 		private void CreateFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
         {
-			var selectedContents = GetSelectedContents();
-
-			SaveToFavorite(selectedContents);
+            SaveSelectedContentsToFavorite();
         }
+
 
 		private void AddToFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
         {
-			var selectedContents = GetSelectedContents();
-
-			AddToFavorite(selectedContents);
+            AddSelectedToFavorite();
         }
+
+
 
         private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -818,17 +872,18 @@ namespace Waveface.Client
 			ListBox list = sender as ListBox;
 			ListBoxItem item =
 				FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
-			
-			var dataContext = item.DataContext;
 
-			if (((Keyboard.Modifiers & ModifierKeys.Control) == 0) && lbxContentContainer.SelectedItems.Contains(dataContext))
-			{
-				needSpecialMulitSelectProcess = true;
-				e.Handled = true;
+            var dataContext = item.DataContext;
 
-				if (now.Subtract(lastMouseLeftButtonDown).Milliseconds <= 500)
-					Enter();
-			}
+            if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Control) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) && lbxContentContainer.SelectedItems.Contains(dataContext))
+            {
+                needSpecialMulitSelectProcess = true;
+
+                e.Handled = lbxContentContainer.SelectedItems.Count > 1;
+
+                if (now.Subtract(lastMouseLeftButtonDown).TotalMilliseconds <= 500)
+                    Enter();
+            }
 			startPoint = e.GetPosition(null);
 
 			lastMouseLeftButtonDown = now;
@@ -847,8 +902,20 @@ namespace Waveface.Client
 
 			if (!(lbxContentContainer.SelectedItems.Count == 1 && lbxContentContainer.SelectedItem == dataContext))
 			{
-				lbxContentContainer.SelectedItems.Clear();
-				lbxContentContainer.SelectedItems.Add(dataContext);
+                lbxContentContainer.UnselectAll();
+                lbxContentContainer.SelectedItem = dataContext;
+                try
+                {
+
+                    PropertyInfo pi = typeof(ListBox).GetProperty("AnchorItem", BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (pi != null)
+                    {
+                        pi.SetValue(lbxContentContainer, dataContext, null);
+                    }
+                }
+                catch (Exception)
+                {
+                }
 			};
 
 			needSpecialMulitSelectProcess = false;
@@ -895,18 +962,35 @@ namespace Waveface.Client
 
 		private void Sources_DragEnter(object sender, DragEventArgs e)
 		{
-			if (!e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) ||
-				sender == e.Source)
+			if (!e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) || lbxFavorites.SelectedItem != null)
 			{
 				e.Effects = DragDropEffects.None;
+                e.Handled = true;
 			}
 		}
 
 
+        private void lbxDeviceContainer_DragLeave(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) || lbxFavorites.SelectedItem != null)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
+
+        private void lbxDeviceContainer_DragOver(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) || lbxFavorites.SelectedItem != null)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
 
 		private void Sources_Drop(object sender, DragEventArgs e)
 		{
-			if (e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)))
+			if (e.Effects == DragDropEffects.Move && e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)))
 			{
 				var control = sender as TreeView;
 				var controlItem =
@@ -917,18 +1001,30 @@ namespace Waveface.Client
 
 				var sourceGroup = controlItem.DataContext as IContentGroup;
 				var contents = e.Data.GetData(typeof(IEnumerable<IContentEntity>)) as IEnumerable<IContentEntity>;
-				var contentIDs = contents.Select(content => content.ID);
-
-				Waveface.ClientFramework.Client.Default.Move(contentIDs, sourceGroup.Uri.LocalPath);
-
-				RefreshContentArea();
-
-				var service = sourceGroup.Service;
-				service.Refresh();
-
-				var tempcontents = service.Contents;
+				
+                MoveToFolder(sourceGroup, contents);
 			}
 		}
+
+        private void MoveToFolder(IContentGroup targetGroup, IEnumerable<IContentEntity> contents)
+        {
+            var contentIDs = contents.Select(content => content.ID);
+
+            MoveToFolder(targetGroup, contentIDs);
+        }
+
+        private void MoveToFolder(IContentGroup targetGroup, IEnumerable<string> contentIDs)
+        {
+
+            Waveface.ClientFramework.Client.Default.Move(contentIDs, targetGroup.Uri.LocalPath);
+
+            RefreshContentArea();
+
+            var service = targetGroup.Service;
+            service.Refresh();
+
+            var tempcontents = service.Contents;
+        }
 
 		private void Favorites_DragEnter(object sender, DragEventArgs e)
 		{
@@ -991,6 +1087,41 @@ namespace Waveface.Client
 			StarContent(lbxContentContainer.Items.OfType<IContentEntity>());
 		}
 
+        private void ContentActionBar_AddToFavorite(object sender, EventArgs e)
+        {
+            AddSelectedToFavorite();
+        }
+
+        private void ContentActionBar_AddToStarred(object sender, EventArgs e)
+        {
+            StarSelectedContents();
+        }
+
+        private void ContentActionBar_CreateFavorite(object sender, EventArgs e)
+        {
+            SaveSelectedContentsToFavorite();
+        }
+
+        private void ContentActionBar_MoveToNewFolder(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ContentActionBar_MoveToExistingFolder(object sender, EventArgs e)
+        {
+            var dialog = new AddToDialog();
+            dialog.Owner = this;
+            dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+
+            var currentGroup = GetCurrentContentGroup();
+            dialog.ItemSource = currentGroup.Service.Contents.Skip(1).Except(new IContentEntity[] { currentGroup });
+
+            if (dialog.ShowDialog() != true)
+                return;
+
+            var selectedGroup = (dialog.SelectedItem as IContentGroup);
+            MoveToFolder(selectedGroup, GetSelectedContents());
+        }
 
     }
 }
