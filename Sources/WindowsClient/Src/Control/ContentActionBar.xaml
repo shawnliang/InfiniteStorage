@@ -1,0 +1,138 @@
+﻿<UserControl x:Class="Waveface.Client.ContentActionBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Waveface.Client"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="UserControl"
+             UseLayoutRounding="True"
+             d:DesignHeight="54"
+             d:DesignWidth="130"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <Style x:Key="contextMenuStyle1"
+               TargetType="{x:Type ContextMenu}">
+            <Setter Property="Foreground" Value="#FFA8A8A8" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContextMenu}">
+                        <Border Background="#FF181818"
+                                CornerRadius="4">
+                            <StackPanel Margin="5,5,5,5"
+                                        ClipToBounds="True"
+                                        IsItemsHost="True"
+                                        Orientation="Vertical" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="MoveToStyle"
+               TargetType="Image">
+            <Setter Property="Source" Value="{StaticResource MoveToIcon}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Source" Value="{StaticResource MoveToIcon_MouseOver}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Source" Value="{StaticResource MoveToIcon_Off}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CreateStyle"
+               TargetType="Image">
+            <Setter Property="Source" Value="{StaticResource CreateIcon}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Source" Value="{StaticResource CreateIcon_MouseOver}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Source" Value="{StaticResource CreateIcon_Off}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="AddToStyle"
+               TargetType="Image">
+            <Setter Property="Source" Value="{StaticResource AddToIcon}" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Source" Value="{StaticResource AddToIcon_MouseOver}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Source" Value="{StaticResource AddToIcon_Off}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <StackPanel x:Name="LayoutRoot"
+                Margin="10,0,0,0"
+                Orientation="Horizontal">
+        <Image HorizontalAlignment="Left"
+               VerticalAlignment="Center"
+               IsEnabled="{Binding EnableMoveTo,
+                                   ElementName=UserControl,
+                                   IsAsync=True}"
+               MouseDown="Image_MouseDown"
+               Stretch="None"
+               Style="{StaticResource MoveToStyle}"
+               Visibility="{Binding HideMoveTo,
+                                    Converter={StaticResource BoolToVisibilityConverter},
+                                    ElementName=UserControl,
+                                    IsAsync=True}">
+            <Image.ContextMenu>
+                <ContextMenu x:Name="contextMenu1"
+                             IsEnabled="False"
+                             Style="{StaticResource contextMenuStyle1}">
+                    <MenuItem Click="MenuItem_Click"
+                              Header="New Folder" />
+                    <MenuItem Click="MenuItem_Click_1"
+                              Header="Existing Folder" />
+                </ContextMenu>
+            </Image.ContextMenu>
+        </Image>
+        <Image Margin="10,0,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Center"
+               IsEnabled="{Binding EnableCreate,
+                                   ElementName=UserControl,
+                                   IsAsync=True}"
+               MouseDown="Image_MouseDown_1"
+               Stretch="None"
+               Style="{StaticResource CreateStyle}">
+            <Image.ContextMenu>
+                <ContextMenu x:Name="contextMenu2"
+                             Style="{StaticResource contextMenuStyle1}">
+                    <MenuItem Click="MenuItem_Click_2"
+                              Header="Favorite" />
+                </ContextMenu>
+            </Image.ContextMenu>
+        </Image>
+        <Image Margin="10,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Center"
+               IsEnabled="{Binding EnableAddTo,
+                                   ElementName=UserControl,
+                                   IsAsync=True}"
+               MouseDown="Image_MouseDown_2"
+               Stretch="None"
+               Style="{StaticResource AddToStyle}">
+            <Image.ContextMenu>
+                <ContextMenu x:Name="contextMenu3"
+                             Style="{StaticResource contextMenuStyle1}">
+                    <MenuItem Click="MenuItem_Click_3"
+                              Header="Favorite" />
+                    <MenuItem x:Name="AddToStarredMenuItem"
+                              Click="MenuItem_Click_4"
+                              Header="Starred" />
+                </ContextMenu>
+            </Image.ContextMenu>
+        </Image>
+    </StackPanel>
+</UserControl>

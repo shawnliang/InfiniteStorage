@@ -5,8 +5,8 @@
              xmlns:local="clr-namespace:Waveface.Client"
              xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
              ShutdownMode="OnMainWindowClose"
-             StartupUri="Src\Window\MainWindow.xaml"
-             Startup="Application_Startup">
+             Startup="Application_Startup"
+             StartupUri="Src\Window\MainWindow.xaml">
     <Application.Resources>
 
         <ResourceDictionary>
@@ -30,15 +30,42 @@
 
             <BitmapImage x:Key="AddToIcon"
                          CacheOption="OnDemand"
-                         UriSource="pack://application:,,,/Resource/ico_bar_addto.png" />
-            
+                         UriSource="pack://application:,,,/Resource/ico_bar_addto_on.png" />
+
+            <BitmapImage x:Key="AddToIcon_MouseOver"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_bar_addto_mo.png" />
+
+            <BitmapImage x:Key="AddToIcon_Off"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_bar_addto_off.png" />
+
+
             <BitmapImage x:Key="CreateIcon"
                          CacheOption="OnDemand"
-                         UriSource="pack://application:,,,/Resource/ico_bar_create.png" />
-            
+                         UriSource="pack://application:,,,/Resource/ico_bar_create_on.png" />
+
+            <BitmapImage x:Key="CreateIcon_MouseOver"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_bar_create_mo.png" />
+
+
+            <BitmapImage x:Key="CreateIcon_Off"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_bar_create_off.png" />
+
+
             <BitmapImage x:Key="MoveToIcon"
                          CacheOption="OnDemand"
-                         UriSource="pack://application:,,,/Resource/ico_bar_moveto.png" />
+                         UriSource="pack://application:,,,/Resource/ico_bar_moveto_on.png" />
+
+            <BitmapImage x:Key="MoveToIcon_MouseOver"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_bar_moveto_mo.png" />
+
+            <BitmapImage x:Key="MoveToIcon_Off"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_bar_moveto_off.png" />
 
             <BitmapImage x:Key="AddDeviceArrowIcon"
                          CacheOption="OnDemand"
