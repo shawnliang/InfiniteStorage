@@ -131,23 +131,9 @@ namespace InfiniteStorage
 				ImportUIPresenter.Instance.StartViewer();
 
 
-			cameraImport = new camerAccess();
-			cameraImport.CameraDetected += _fm1_CameraDetected;
-			cameraImport.ImportService = new Camera.ImportService();
-			cameraImport.startListen();
+			
 
 			Application.Run();
-		}
-
-		static void _fm1_CameraDetected(object sender, CameraDetectedEventArgs e)
-		{
-			SynchronizationContextHelper.SendMainSyncContext(() => {
-				var dialog = new AskCameraImportDialog(e.Cameras);
-				if (dialog.ShowDialog() != DialogResult.OK)
-					return;
-
-				e.SelectedCamera = dialog.SelectedCamera;
-			});
 		}
 
 		private static bool hasAnyRegisteredDevice()

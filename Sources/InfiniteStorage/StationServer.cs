@@ -14,6 +14,7 @@ using System.IO;
 using Microsoft.Win32;
 using InfiniteStorage.Share;
 using InfiniteStorage.Data;
+using InfiniteStorage.Win32;
 
 namespace InfiniteStorage
 {
@@ -34,7 +35,7 @@ namespace InfiniteStorage
 		private AutoUpdate m_autoUpdate;
 		private ThumbnailCreator m_thumbnailCreator;
 		private ShareLabelMonitor m_shareMonitor;
-
+		private readCamera.camerAccess cameraImport;
 		private List<WebsocketProtocol.ProtocolContext> waitForUserAccept = new List<WebsocketProtocol.ProtocolContext>();
 		private object userAcceptCS = new object();
 
@@ -117,6 +118,12 @@ namespace InfiniteStorage
 			m_shareMonitor = new ShareLabelMonitor();
 
 			postServiceLibrary.postServiceClass.serverBaseUrl = ProgramConfig.FromApiBase("v3");
+
+
+			cameraImport = new readCamera.camerAccess();
+			cameraImport.CameraDetected += _fm1_CameraDetected;
+			cameraImport.ImportService = new Camera.ImportService();
+			
 		}
 
 		
@@ -209,6 +216,18 @@ namespace InfiniteStorage
 			BonjourServiceRegistrator.Instance.Register(e.enabled);
 		}
 
+		static void _fm1_CameraDetected(object sender, readCamera.CameraDetectedEventArgs e)
+		{
+			SynchronizationContextHelper.SendMainSyncContext(() =>
+			{
+				var dialog = new AskCameraImportDialog(e.Cameras);
+				if (dialog.ShowDialog() != DialogResult.OK)
+					return;
+
+				e.SelectedCamera = dialog.SelectedCamera;
+			});
+		}
+
 		public void Start()
 		{
 			m_NotifyTimer.Start();
@@ -230,6 +249,7 @@ namespace InfiniteStorage
 
 			m_thumbnailCreator.Start();
 			m_shareMonitor.Start();
+			cameraImport.startListen();
 		}
 
 
@@ -248,6 +268,7 @@ namespace InfiniteStorage
 			backup_server.Stop();
 			notify_server.Stop();
 			pair_server.Stop();
+			cameraImport.stopListen();
 		}
 
 		private void reregisterBonjour(object nil)
@@ -274,6 +295,8 @@ namespace InfiniteStorage
 			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_OpenBackupFolder, null, m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked);
 
 			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Preferences, null, m_notifyIconController.OnPreferencesMenuItemClicked);
+
+			m_notifyIcon.ContextMenuStrip.Items.Add("Import from Digital Camera", null, (s, e) => { cameraImport.readCameraServiceStart(); });
 			m_notifyIcon.ContextMenuStrip.Items.Add("-");
 
 			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Quit, null, m_notifyIconController.OnQuitMenuItemClicked);
