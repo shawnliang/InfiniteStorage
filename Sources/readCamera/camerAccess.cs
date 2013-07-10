@@ -70,7 +70,7 @@ namespace readCamera
 		}
 
 
-		private void readCameraServiceStart()
+		public void readCameraServiceStart()
 		{
 			var cameras = populateCameraDevice();
 
@@ -197,49 +197,43 @@ namespace readCamera
 		{
 			try
 			{
-				string name;
-				string path;
+				
 				if (!item.Properties.Exists("Item Name"))
 					return;
 
-				name = item.Properties["Item Name"].get_Value().ToString();
-				path = Path.Combine(parent, name);
-
+				var name = item.Properties["Item Name"].get_Value().ToString();
+				var format = item.Properties["Format"].get_Value().ToString();
+				var extension = item.Properties["Filename extension"].get_Value().ToString();
+				var path = Path.Combine(parent, name);
 
 				if (storage.IsFileExist(path))
 					return;
 
 				var flags = item.Properties["Item Flags"].get_Value();
 
-				if ((flags & (int)WiaItemFlag.ImageItemFlag) != 0)
-				{
-					var formats = item.Formats;
+				FileType type = getFileTypeFromItemFlags(flags);
 
-					foreach (string f in formats)
-					{
-						if (f != wiaFormatJPEG)
-							continue;
+				var tranferItem = (WIA.ImageFile)item.Transfer(format);
 
-						var tranferItem = (WIA.ImageFile)item.Transfer(f);
+				var tempFile = Path.Combine(storage.TempFolder, Guid.NewGuid().ToString() + "." + extension);
+				tranferItem.SaveFile(tempFile);
 
-
-						var tempFile = Path.Combine(storage.TempFolder, name+".jpg");
-						tranferItem.SaveFile(tempFile);
-
-
-
-						storage.AddToStorage(tempFile, FileType.Image, DateTime.Now, Path.Combine(parent, item.Properties["Item Name"].get_Value().ToString() + ".jpg"));
-
-						break;
-					}
-				}
-
-
+				storage.AddToStorage(tempFile, type, DateTime.Now, Path.Combine(parent, name + "." + extension));
 			}
 			catch (Exception err)
 			{
 				Console.WriteLine(err);
 			}
+		}
+
+		private static FileType getFileTypeFromItemFlags(dynamic flags)
+		{
+			if ((flags & (int)WiaItemFlag.ImageItemFlag) != 0)
+				return FileType.Image;
+			else if ((flags & (int)WiaItemFlag.VideoItemFlag) != 0)
+				return FileType.Video;
+			else
+				throw new ArgumentException("Nither image nor video flags: " + flags.ToString());
 		}
 
 	}
