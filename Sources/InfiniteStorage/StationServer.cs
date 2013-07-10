@@ -295,8 +295,6 @@ namespace InfiniteStorage
 			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_OpenBackupFolder, null, m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked);
 
 			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Preferences, null, m_notifyIconController.OnPreferencesMenuItemClicked);
-
-			m_notifyIcon.ContextMenuStrip.Items.Add("Import from Digital Camera", null, (s, e) => { cameraImport.readCameraServiceStart(); });
 			m_notifyIcon.ContextMenuStrip.Items.Add("-");
 
 			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Quit, null, m_notifyIconController.OnQuitMenuItemClicked);

@@ -84,8 +84,8 @@
             <File Id="EntityFramework.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\EntityFramework.dll" />
           </Component>
 
-          <Component Id="readCamera.dll" Guid="*">
-            <File Id="readCamera.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\readCamera.dll" />
+          <Component Id="readCamera.exe" Guid="*">
+            <File Id="readCamera.exe" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\readCamera.exe" />
           </Component>
 
           <Component Id="InfiniteStorage.exe.config" Guid="*">
@@ -396,7 +396,7 @@
 
       <ComponentRef Id="StringTable.xaml"/>
       <ComponentRef Id="StringTable.zh_TW.xaml"/>
-      <ComponentRef Id="readCamera.dll" />
+      <ComponentRef Id="readCamera.exe" />
     </Feature>
 
     <!--
