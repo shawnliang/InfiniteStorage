@@ -9,9 +9,41 @@ using InfiniteStorage.Win32;
 
 namespace InfiniteStorage.Camera
 {
+	static class ImportingCameraCollection
+	{
+		static List<string> devices = new List<string>();
+		static object cs = new object();
+
+		public static void Add(string device_id)
+		{
+			lock (cs)
+			{
+				if (!devices.Contains(device_id))
+					devices.Add(device_id);
+			}
+		}
+
+		public static void Remove(string device_id)
+		{
+			lock (cs)
+			{
+				if (devices.Contains(device_id))
+					devices.Remove(device_id);
+			}
+		}
+
+		public static ICollection<string> GetAllCameras()
+		{
+			lock (cs)
+			{
+				return devices.ToList();
+			}
+		}
+	}
+
+
 	class ImportService : readCamera.ImportService
 	{
-
 		public readCamera.IStorage GetStorage(string deviceId, string deviceName)
 		{
 			var folder = "";
@@ -126,6 +158,8 @@ namespace InfiniteStorage.Camera
 			SynchronizationContextHelper.SendMainSyncContext(() => {
 				ProgressTooltip.Instance.ShowWaitingDevice(device_folder);
 			});
+
+			ImportingCameraCollection.Add(device_id);
 		}
 
 		public void Connected()
@@ -135,6 +169,8 @@ namespace InfiniteStorage.Camera
 		public void Completed()
 		{
 			ProgressTooltip.Instance.ShowCompleted(device_folder);
+
+			ImportingCameraCollection.Remove(device_id);
 		}
 	}
 }

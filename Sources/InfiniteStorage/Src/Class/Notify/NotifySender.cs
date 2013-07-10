@@ -46,6 +46,8 @@ namespace InfiniteStorage.Notify
 									  where c.IsRecving
 									  select c.device_id).ToList();
 
+				active_devices.AddRange(Camera.ImportingCameraCollection.GetAllCameras());
+
 				ctx.Send(
 					JsonConvert.SerializeObject(new ActiveDeviceNotifyMsg { active_devices = active_devices }));
 			}
