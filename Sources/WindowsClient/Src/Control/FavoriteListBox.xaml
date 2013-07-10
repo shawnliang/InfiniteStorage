@@ -10,10 +10,10 @@
          ItemsSource="{Binding IsAsync=True}"
          PreviewKeyDown="UserControl_PreviewKeyDown"
          UseLayoutRounding="True"
-         d:DesignHeight="109"
-         d:DesignWidth="400"
          VirtualizingStackPanel.IsVirtualizing="True"
          VirtualizingStackPanel.VirtualizationMode="Recycling"
+         d:DesignHeight="109"
+         d:DesignWidth="400"
          mc:Ignorable="d">
 
     <ListBox.Resources>

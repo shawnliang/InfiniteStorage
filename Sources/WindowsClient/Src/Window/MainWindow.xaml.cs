@@ -493,6 +493,7 @@ namespace Waveface.Client
 
             lblContentLocation.DataContext = group;
             lbxContentContainer.DataContext = group.Contents;
+			lbxContentContainer.SelectedIndex = - 1;
             SetContentTypeCount(group);
         }
 
@@ -537,11 +538,14 @@ namespace Waveface.Client
                     return;
                 lblContentLocation.DataContext = null;
                 lbxContentContainer.DataContext = service.Contents;
+				lbxContentContainer.SelectedIndex = -1;
                 return;
             }
 
             lblContentLocation.DataContext = group;
-            lbxContentContainer.DataContext = (group as IContentGroup).Contents;
+			lbxContentContainer.DataContext = (group as IContentGroup).Contents;
+			lbxContentContainer.SelectedIndex = - 1;
+
             SetContentTypeCount(group as IContentGroup);
             return;
         }
@@ -597,7 +601,9 @@ namespace Waveface.Client
 
             Grid.SetColumnSpan(gdContentArea, 2);
 
-            cabContentActionBar.EnableMoveTo = true;
+            cabContentActionBar.HideMoveTo = true;
+			cabContentActionBar.HideStarredMenuItem = false;
+
 
             //btnFavoriteAll.Visibility = Visibility.Visible;
             gdRightSide.Visibility = System.Windows.Visibility.Collapsed;
@@ -610,6 +616,8 @@ namespace Waveface.Client
 
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = group.Contents;
+			lbxContentContainer.SelectedIndex = -1;
+
 			SetContentTypeCount(group);
         }
 
@@ -662,12 +670,18 @@ namespace Waveface.Client
             if (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase))
             {
                 TryDisplayStarredTutorial();
+
+				cabContentActionBar.HideStarredMenuItem = true;
+
             }
             else
             {
                 TryDisplayFavoriteTutorial();
 
                 updateRightSidePanel2(group);
+
+				cabContentActionBar.HideStarredMenuItem = false;
+
             }
 
 			SetContentTypeCount(group);
@@ -681,7 +695,7 @@ namespace Waveface.Client
             gdRightSide.Visibility = Visibility.Visible;
             Grid.SetColumnSpan(gdContentArea, 1);
 
-            cabContentActionBar.EnableMoveTo = false;
+            cabContentActionBar.HideMoveTo = false;
 
             ContentAreaToolBar.Visibility = System.Windows.Visibility.Visible;
             lbxContentContainer.Visibility = System.Windows.Visibility.Visible;
@@ -696,6 +710,8 @@ namespace Waveface.Client
             }
 
 			lbxContentContainer.DataContext = group.Contents;
+			lbxContentContainer.SelectedIndex = -1;
+
 
 			TryUpdateRightSidePanelContentCount();
         }

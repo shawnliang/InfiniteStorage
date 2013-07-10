@@ -20,22 +20,77 @@ namespace Waveface.Client
 	public partial class ContentActionBar : UserControl
 	{
         #region Var
-        public static readonly DependencyProperty _enableMoveTo = DependencyProperty.Register("EnableMoveTo", typeof(bool), typeof(ContentActionBar), new UIPropertyMetadata(false, new PropertyChangedCallback(OnEnableMoveToChanged)));
-        #endregion
+        public static readonly DependencyProperty _hideMoveTo = DependencyProperty.Register("HideMoveTo", typeof(bool), typeof(ContentActionBar), new UIPropertyMetadata(false, new PropertyChangedCallback(OnHideMoveToChanged)));
+		public static readonly DependencyProperty _enableMoveTo = DependencyProperty.Register("EnableMoveTo", typeof(bool), typeof(ContentActionBar), new UIPropertyMetadata(true, new PropertyChangedCallback(OnEnableMoveToChanged)));
+		public static readonly DependencyProperty _enableCreate = DependencyProperty.Register("EnableCreate", typeof(bool), typeof(ContentActionBar), new UIPropertyMetadata(true, new PropertyChangedCallback(OnEnableCreateChanged)));
+		public static readonly DependencyProperty _enableAddTo = DependencyProperty.Register("EnableAddTo", typeof(bool), typeof(ContentActionBar), new UIPropertyMetadata(true, new PropertyChangedCallback(OnEnableAddToChanged)));
+		public static readonly DependencyProperty _hideStarredMenuItem = DependencyProperty.Register("HideStarredMenuItem", typeof(bool), typeof(ContentActionBar), new UIPropertyMetadata(false, new PropertyChangedCallback(OnHideStarredMenuItemChanged)));
+	
+		#endregion
 
         #region Property
-        public bool EnableMoveTo
+        public bool HideMoveTo
         {
             get
             {
-                return (bool)GetValue(_enableMoveTo);
+                return (bool)GetValue(_hideMoveTo);
             }
             set
             {
-                SetValue(_enableMoveTo, value);
+                SetValue(_hideMoveTo, value);
             }
         }
-        #endregion
+
+		public bool EnableMoveTo
+		{
+			get
+			{
+				return (bool)GetValue(_enableMoveTo);
+			}
+			set
+			{
+				SetValue(_enableMoveTo, value);
+			}
+		}
+
+		public bool EnableCreate
+		{
+			get
+			{
+				return (bool)GetValue(_enableMoveTo);
+			}
+			set
+			{
+				SetValue(_enableMoveTo, value);
+			}
+		}
+
+		public bool EnableAddTo
+		{
+			get
+			{
+				return (bool)GetValue(_enableMoveTo);
+			}
+			set
+			{
+				SetValue(_enableMoveTo, value);
+			}
+		}
+
+		public bool HideStarredMenuItem
+		{
+			get
+			{
+				return (bool)GetValue(_hideStarredMenuItem);
+			}
+			set
+			{
+				SetValue(_hideStarredMenuItem, value);
+
+				AddToStarredMenuItem.Visibility = value ? Visibility.Collapsed : Visibility.Visible;
+			}
+		}     
+		#endregion
 
 
         #region Event
@@ -124,14 +179,45 @@ namespace Waveface.Client
             ShowContextMenu((sender as Image), (sender as Image).ContextMenu);
         }
 
-        private static void OnEnableMoveToChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        private static void OnHideMoveToChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
             if (o == null)
                 return;
             var obj = o as ContentActionBar;
-            obj.EnableMoveTo = (bool)e.NewValue;
+            obj.HideMoveTo = (bool)e.NewValue;
         }
 
+		private static void OnEnableMoveToChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+		{
+			if (o == null)
+				return;
+			var obj = o as ContentActionBar;
+			obj.EnableMoveTo = (bool)e.NewValue;
+		}
+
+		private static void OnEnableCreateChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+		{
+			if (o == null)
+				return;
+			var obj = o as ContentActionBar;
+			obj.EnableCreate = (bool)e.NewValue;
+		}
+
+		private static void OnEnableAddToChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+		{
+			if (o == null)
+				return;
+			var obj = o as ContentActionBar;
+			obj.EnableAddTo = (bool)e.NewValue;
+		}
+
+		private static void OnHideStarredMenuItemChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+		{
+			if (o == null)
+				return;
+			var obj = o as ContentActionBar;
+			obj.HideStarredMenuItem = (bool)e.NewValue;
+		}
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             OnMoverToNewFolder(EventArgs.Empty);

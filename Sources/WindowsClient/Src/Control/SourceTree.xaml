@@ -32,10 +32,12 @@
                       Header="Delete" />
         </ContextMenu>
 
-        <!--<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                         Color="Transparent" />
-        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
-                         Color="Transparent" />-->
+        <!--
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+            Color="Transparent" />
+            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
+            Color="Transparent" />
+        -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <BitmapImage x:Key="SelectedIcon"
                      CacheOption="OnDemand"
@@ -161,12 +163,14 @@
                         <Condition Property="IsExpanded" Value="False" />
                         <Condition Property="HasItems" Value="False" />
                     </MultiTrigger.Conditions>
-                    <Setter Property="Background" TargetName="Bd" Value="#5FB0E0E6" />
+                    <Setter TargetName="Bd" Property="Background" Value="#5FB0E0E6" />
                 </MultiTrigger>
-                <!--<Trigger Property="IsSelected" Value="True">
+                <!--
+                    <Trigger Property="IsSelected" Value="True">
                     <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
                     <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
-                </Trigger>-->
+                    </Trigger>
+                -->
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                 </Trigger>
