@@ -360,14 +360,16 @@ public class OverviewFragment extends Fragment implements OnItemClickListener, O
 			data.autoType = labelCursor.getInt(3);
 			data.fileType = viewCursor.getString(viewCursor.getColumnIndex(LabelFileView.COLUMN_TYPE));
 			data.filename = viewCursor.getString(viewCursor.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));	
-		
+		   
 			if(mType == OVERVIEW_VIEW_TYPE_FAVORITE) {
 				data.title = labelCursor.getString(1);
-			} else if(mType == OVERVIEW_VIEW_TYPE_RECENT_VIDEO) {
-				String fileName =  realDownloadFolder + Constant.VIDEO_FOLDER+ "/"  +viewCursor
-						.getString(viewCursor.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
-				data.url = fileName;
-			}
+			} 
+//			else if(mType == OVERVIEW_VIEW_TYPE_RECENT_VIDEO) {
+//				String fileName =  realDownloadFolder + Constant.VIDEO_FOLDER+ "/"  +viewCursor
+//						.getString(viewCursor.getColumnIndex(LabelFileView.COLUMN_FILE_NAME));
+//				
+//				data.url = fileName;
+//			}
 		}
 		viewCursor.close();
 		labelCursor.close();

@@ -119,12 +119,10 @@ public class DownloadLogic {
 					if (StringUtil.isAvaiableSpace(context,
 							Constant.AVAIABLE_SPACE)) {
 						if (type.equals(Constant.FILE_TYPE_VIDEO)) {
-//							String url = restfulAPIURL + Constant.URL_IMAGE
-//									+ "/" + fileId + "/"
-//									+ Constant.URL_IMAGE_ORIGIN;
 							String url = restfulAPIURL + Constant.URL_IMAGE
-							+ "/" + fileId + Constant.URL_IMAGE_MEDIUM;							
-							
+									+ "/" + fileId + "/"
+									+ Constant.URL_IMAGE_ORIGIN;
+
 							String fullFilename = root.getAbsolutePath()
 									+ Constant.VIDEO_FOLDER + "/" + fileName;
 							if (!FileUtil.isFileExisted(fullFilename)) {
