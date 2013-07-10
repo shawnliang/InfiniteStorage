@@ -204,7 +204,9 @@ namespace readCamera
 				var name = item.Properties["Item Name"].get_Value().ToString();
 				var format = item.Properties["Format"].get_Value().ToString();
 				var extension = item.Properties["Filename extension"].get_Value().ToString();
-				var path = Path.Combine(parent, name);
+				var path = Path.Combine(parent, name + "." + extension);
+				var timestamp = (Vector)item.Properties["Item Time Stamp"].get_Value();
+
 
 				if (storage.IsFileExist(path))
 					return;
@@ -218,7 +220,7 @@ namespace readCamera
 				var tempFile = Path.Combine(storage.TempFolder, Guid.NewGuid().ToString() + "." + extension);
 				tranferItem.SaveFile(tempFile);
 
-				storage.AddToStorage(tempFile, type, DateTime.Now, Path.Combine(parent, name + "." + extension));
+				storage.AddToStorage(tempFile, type, timestamp.Date, path);
 			}
 			catch (Exception err)
 			{

@@ -47,6 +47,16 @@ namespace InfiniteStorage.Camera
 		public string device_id { get; set; }
 		public string device_folder { get; set; }
 
+		public ImportStorage()
+		{
+			var dir = new DirectoryInfo(MyFileFolder.Temp);
+			if (!dir.Exists)
+			{
+				dir.Create();
+				dir.Attributes |= FileAttributes.Hidden;
+			}
+		}
+
 		public bool IsFileExist(string path)
 		{
 			using (var db = new MyDbContext())
@@ -71,6 +81,12 @@ namespace InfiniteStorage.Camera
 			var full_path = storage.MoveToStorage(temp, new FileContext { file_name = file_name });
 			var partial_path = PathUtil.MakeRelative(full_path, MyFileFolder.Photo);
 
+
+			if (time.Kind == DateTimeKind.Unspecified)
+				time = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second, time.Millisecond, DateTimeKind.Local).ToUniversalTime();
+			else if (time.Kind == DateTimeKind.Local)
+				time = time.ToUniversalTime();
+
 			var fileAsset = new FileAsset
 			{
 				device_id = device_id,
@@ -91,7 +107,9 @@ namespace InfiniteStorage.Camera
 
 		public string TempFolder
 		{
-			get { return MyFileFolder.Temp; }
+			get {
+				return MyFileFolder.Temp;
+			}
 		}
 	}
 }
