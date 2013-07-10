@@ -110,10 +110,10 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Compile Include="ContentActionBar.xaml.cs">
+    <Compile Include="Src\Control\ContentActionBar.xaml.cs">
       <DependentUpon>ContentActionBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ContentItemInfo.xaml.cs">
+    <Compile Include="Src\Control\ContentItemInfo.xaml.cs">
       <DependentUpon>ContentItemInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Control\AddSourceTip.xaml.cs">
@@ -238,20 +238,31 @@
     <Resource Include="Ren\Images\selectAll.png" />
     <Resource Include="Ren\Images\unselectAll.png" />
     <Resource Include="Resource\ico_bar_addto.png" />
-    <Resource Include="Resource\ico_bar_create.png" />
-    <Resource Include="Resource\ico_bar_moveto.png" />
-    <Resource Include="Resource\ico_bar_play.png" />
-    <Resource Include="Resource\ico_bar_share.png" />
+    <Resource Include="Resource\ico_bar_addto_mo.png" />
+    <Resource Include="Resource\ico_bar_addto_off.png" />
+    <Resource Include="Resource\ico_bar_addto_on.png" />
+    <Resource Include="Resource\ico_bar_create_mo.png" />
+    <Resource Include="Resource\ico_bar_create_off.png" />
+    <Resource Include="Resource\ico_bar_create_on.png" />
+    <Resource Include="Resource\ico_bar_moveto_mo.png" />
+    <Resource Include="Resource\ico_bar_moveto_off.png" />
+    <Resource Include="Resource\ico_bar_moveto_on.png" />
+    <Resource Include="Resource\ico_bar_play_mo.png" />
+    <Resource Include="Resource\ico_bar_play_off.png" />
+    <Resource Include="Resource\ico_bar_play_on.png" />
+    <Resource Include="Resource\ico_bar_share_mo.png" />
+    <Resource Include="Resource\ico_bar_share_off.png" />
+    <Resource Include="Resource\ico_bar_share_on.png" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Page Include="ContentActionBar.xaml">
+    <Page Include="Src\Control\ContentActionBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ContentItemInfo.xaml">
+    <Page Include="Src\Control\ContentItemInfo.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
