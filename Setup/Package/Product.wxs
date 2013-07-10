@@ -84,6 +84,10 @@
             <File Id="EntityFramework.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\EntityFramework.dll" />
           </Component>
 
+          <Component Id="readCamera.dll" Guid="*">
+            <File Id="readCamera.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\readCamera.dll" />
+          </Component>
+
           <Component Id="InfiniteStorage.exe.config" Guid="*">
             <File Id="InfiniteStorage.exe.config" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\InfiniteStorage.exe.config"/>
             <fire:FirewallException Id="fwrule1" Name="Bunny" IgnoreFailure="yes" Scope="localSubnet" Program="[INSTALLLOCATION]InfiniteStorage.exe"/>
@@ -392,6 +396,7 @@
 
       <ComponentRef Id="StringTable.xaml"/>
       <ComponentRef Id="StringTable.zh_TW.xaml"/>
+      <ComponentRef Id="readCamera.dll" />
     </Feature>
 
     <!--
