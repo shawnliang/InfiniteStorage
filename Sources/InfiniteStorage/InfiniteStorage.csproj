@@ -437,6 +437,7 @@
     <None Include="Resources\ajax-loader.gif" />
     <None Include="Resources\380.gif" />
     <None Include="Resources\back.png" />
+    <None Include="Resources\check.png" />
     <Content Include="Resources\Empty.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

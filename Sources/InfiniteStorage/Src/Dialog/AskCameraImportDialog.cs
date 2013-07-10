@@ -42,5 +42,12 @@ namespace InfiniteStorage
 			DialogResult = DialogResult.OK;
 			Close();
 		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			SelectedCamera = null;
+			DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			Close();
+		}
 	}
 }

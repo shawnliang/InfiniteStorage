@@ -5,6 +5,7 @@ using System.Text;
 using InfiniteStorage.Model;
 using System.IO;
 using InfiniteStorage.WebsocketProtocol;
+using InfiniteStorage.Win32;
 
 namespace InfiniteStorage.Camera
 {
@@ -46,6 +47,10 @@ namespace InfiniteStorage.Camera
 	{
 		public string device_id { get; set; }
 		public string device_folder { get; set; }
+
+
+		ProgressTooltip progressDialog;
+
 
 		public ImportStorage()
 		{
@@ -103,6 +108,9 @@ namespace InfiniteStorage.Camera
 
 			var util = new TransmitUtility();
 			util.SaveFileRecord(fileAsset);
+
+
+			ProgressTooltip.Instance.ShowFile(fileAsset.file_id, fileAsset.file_name, (FileAssetType)fileAsset.type, device_folder, device_id);
 		}
 
 		public string TempFolder
@@ -110,6 +118,23 @@ namespace InfiniteStorage.Camera
 			get {
 				return MyFileFolder.Temp;
 			}
+		}
+
+
+		public void Connecting()
+		{
+			SynchronizationContextHelper.SendMainSyncContext(() => {
+				ProgressTooltip.Instance.ShowWaitingDevice(device_folder);
+			});
+		}
+
+		public void Connected()
+		{
+		}
+
+		public void Completed()
+		{
+			ProgressTooltip.Instance.ShowCompleted(device_folder);
 		}
 	}
 }

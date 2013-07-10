@@ -25,5 +25,11 @@ namespace readCamera
 		void AddToStorage(string filename, FileType type, DateTime time, string path);
 
 		string TempFolder { get; }
+
+		void Connecting();
+
+		void Connected();
+
+		void Completed();
 	}
 }

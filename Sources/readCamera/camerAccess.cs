@@ -124,10 +124,22 @@ namespace readCamera
 		private void GetPictures(_deviceInfo dev)
 		{
 			storage = ImportService.GetStorage(dev.UID, dev.Name);
+			try
+			{
+				storage.Connecting();
+				var device = dev.DeviceInfo.Connect();
+				storage.Connected();
 
-			var device = dev.DeviceInfo.Connect();
-
-			findImageVideoItems(device.Items, itemFound);
+				findImageVideoItems(device.Items, itemFound);
+			}
+			catch (Exception err)
+			{
+				log.Warn("get picture failed", err);
+			}
+			finally
+			{
+				storage.Completed();
+			}
 		}
 
 		private delegate void ItemCallback(Item item, string path);

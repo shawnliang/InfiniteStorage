@@ -30,5 +30,18 @@ namespace readCamera
 		{
 			get { return @"C:\00000000"; }
 		}
+
+
+		public void Connecting()
+		{
+		}
+
+		public void Connected()
+		{
+		}
+
+		public void Completed()
+		{
+		}
 	}
 }

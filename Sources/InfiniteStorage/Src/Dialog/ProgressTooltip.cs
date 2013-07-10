@@ -32,9 +32,22 @@ namespace InfiniteStorage
 			var file_name = args.ctx.fileCtx.file_name;
 			var file_type = args.ctx.fileCtx.type;
 
+			ShowFile(file_id, file_name, file_type, args.ctx.device_name, args.ctx.device_id);
+		}
+
+		public void ShowFile(Guid file_id, string file_name, FileAssetType type, string dev, string dev_id)
+		{
 			SynchronizationContextHelper.SendMainSyncContext(() =>
 			{
-				showFile(file_id, file_name, file_type, args.ctx.device_name, args.ctx.device_id);
+				showFile(file_id, file_name, type, dev, dev_id);
+			});
+		}
+
+		public void ShowCompleted(string dev_name)
+		{
+			SynchronizationContextHelper.SendMainSyncContext(() =>
+			{
+				showCompleted(dev_name);
 			});
 		}
 
@@ -46,10 +59,10 @@ namespace InfiniteStorage
 				this.Text = string.Format(Resources.ProgressTooltip, dev);
 				this.currDeviceId = dev_id;
 
-				PendingFile file = null;
+				FileAsset file = null;
 				using (var db = new MyDbContext())
 				{
-					var q = from f in db.Object.PendingFiles
+					var q = from f in db.Object.Files
 							where f.file_id == file_id
 							select f;
 
@@ -62,7 +75,7 @@ namespace InfiniteStorage
 
 				if (type == FileAssetType.image)
 				{
-					pictureBox1.ImageLocation = Path.Combine(MyFileFolder.Photo, ".pending", file.saved_path);
+					pictureBox1.ImageLocation = Path.Combine(MyFileFolder.Photo, file.saved_path);
 				}
 				else
 				{
@@ -87,6 +100,14 @@ namespace InfiniteStorage
 			{
 				showWaiting(dev);
 			}
+		}
+
+
+		private void showCompleted(string dev)
+		{
+			pictureBox1.Image = Resources.check;
+			filename.Text = dev + "- sync completed";
+			Show();
 		}
 
 		private void showWaiting(string dev)
