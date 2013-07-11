@@ -26,6 +26,8 @@ namespace Waveface.Model
 		IEnumerable<IContentEntity> Contents { get; }
 
 		string Description { get; }
+
+		Uri Uri { get; }
 		#endregion
 
 		#region Event

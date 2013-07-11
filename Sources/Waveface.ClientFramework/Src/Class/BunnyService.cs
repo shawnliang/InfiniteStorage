@@ -36,6 +36,7 @@ namespace Waveface.ClientFramework
 			: base(deviceId, supplier, devFolderName)
 		{
 			timer = new Timer(refresh, null, Timeout.Infinite, Timeout.Infinite);
+			Uri = new System.Uri(Path.Combine(BunnyDB.ResourceFolder, devFolderName));
 			SetContents(PopulateContent);
 		}
 

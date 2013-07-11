@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using Waveface.ClientFramework;
 using Waveface.Model;
+using System.IO;
 
 namespace Waveface.Client
 {
@@ -1039,23 +1040,23 @@ namespace Waveface.Client
 
         private void MoveToFolder(IContentGroup targetGroup, IEnumerable<IContentEntity> contents)
         {
-            var contentIDs = contents.Select(content => content.ID);
-
-            MoveToFolder(targetGroup, contentIDs);
+			MoveToFolder(targetGroup.Uri.LocalPath, contents);
         }
 
-        private void MoveToFolder(IContentGroup targetGroup, IEnumerable<string> contentIDs)
+		private void MoveToFolder(string targetFullPath, IEnumerable<IContentEntity> contents)
+		{
+			if (contents.Any())
         {
+				var service = contents.First().Service;
 
-            Waveface.ClientFramework.Client.Default.Move(contentIDs, targetGroup.Uri.LocalPath);
+				Waveface.ClientFramework.Client.Default.Move(contents.Select(x => x.ID), targetFullPath);
 
             RefreshContentArea();
 
-            var service = targetGroup.Service;
             service.Refresh();
-
             var tempcontents = service.Contents;
         }
+		}
 
 		private void Favorites_DragEnter(object sender, DragEventArgs e)
 		{
@@ -1135,8 +1136,22 @@ namespace Waveface.Client
 
         private void ContentActionBar_MoveToNewFolder(object sender, EventArgs e)
         {
+			var dialog = new CreateDialog();
+			dialog.Owner = this;
+			dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
 
+			if (dialog.ShowDialog()!=true)
+				return;
+
+			var contents = GetSelectedContents();
+
+			if (contents.Any())
+			{
+				var targetFullPath = Path.Combine(contents.First().Service.Uri.LocalPath, dialog.CreateName);
+
+				MoveToFolder(targetFullPath, contents);
         }
+		}
 
         private void ContentActionBar_MoveToExistingFolder(object sender, EventArgs e)
         {
