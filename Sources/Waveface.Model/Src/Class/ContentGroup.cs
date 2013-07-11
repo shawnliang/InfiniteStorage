@@ -19,6 +19,8 @@ namespace Waveface.Model
 
 
 		#region Private Property
+		private bool m_NeedRefresh { get; set; }
+
 		/// <summary>
 		/// Gets the m_ observable contents.
 		/// </summary>
@@ -45,8 +47,16 @@ namespace Waveface.Model
 			{
 				if (_readOnlyObservableContents == null)
 				{
-					_setContentAction(m_ObservableContents);
 					_readOnlyObservableContents = new ReadOnlyObservableCollection<IContentEntity>(m_ObservableContents);
+				}
+
+				if (m_NeedRefresh)
+				{
+					var newContents = new ObservableCollection<IContentEntity>();
+					_setContentAction(newContents);
+
+					m_ObservableContents.RefreshTo(newContents);
+					m_NeedRefresh = false;
 				}
 				return _readOnlyObservableContents;
 			}
@@ -74,29 +84,37 @@ namespace Waveface.Model
 		#region Constructor
 		public ContentGroup()
 		{
-
+			m_NeedRefresh = true;
 		}
 
 		public ContentGroup(string id, string name, Uri uri)
 			: this(id, name, uri, (contents) => { })
 		{
+			m_NeedRefresh = true;
+
 		}
 
 		public ContentGroup(string id, string name, Uri uri, IEnumerable<IContentEntity> value)
 			: this(id, name, uri)
 		{
+			m_NeedRefresh = true;
+
 			SetContents(value);
 		}
 
 		public ContentGroup(string id, string name, Uri uri, Action<ObservableCollection<IContentEntity>> func)
 			: base(id, name, uri)
 		{
+			m_NeedRefresh = true;
+
 			SetContents(func);
 		}
 
 		public ContentGroup(string id, string name, Uri uri, Action<IContentGroup, ObservableCollection<IContentEntity>> func)
 			: base(id, name, uri)
 		{
+			m_NeedRefresh = true;
+
 			SetContents((contents) => func(this, contents));
 		}
 		#endregion
@@ -139,8 +157,10 @@ namespace Waveface.Model
 		#region Public Method
 		public virtual void Refresh()
 		{
-			Contents = null;
-			m_ObservableContents.Clear();
+			//Contents = null;
+			//m_ObservableContents.Clear();
+
+			m_NeedRefresh = true;
 			OnPropertyChanged("ContentCount");
 		}
 		#endregion

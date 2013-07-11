@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Collections.ObjectModel;
 
 
@@ -15,6 +16,24 @@ namespace Waveface.Model
 		{
 			foreach (var value in values)
 				obj.Add(value);
+		}
+
+		public static void RemoveRange<T>(this Collection<T> obj, IEnumerable<T> values)
+		{
+			foreach (var value in values)
+				obj.Remove(value);
+		}
+
+		public static void RefreshTo<T>(this Collection<T> obj, IEnumerable<T> values)
+		{
+			var newValues = values.Except(obj);
+			var expiredValues = obj.Except(values).ToArray();
+
+			if (!newValues.Any() && !expiredValues.Any())
+				return;
+
+			obj.RemoveRange(expiredValues);
+			obj.AddRange(newValues);
 		}
 	}
 }

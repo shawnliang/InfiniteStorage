@@ -1041,6 +1041,7 @@ namespace Waveface.Client
         private void MoveToFolder(IContentGroup targetGroup, IEnumerable<IContentEntity> contents)
         {
 			MoveToFolder(targetGroup.Uri.LocalPath, contents);
+			targetGroup.Refresh();
         }
 
 		private void MoveToFolder(string targetFullPath, IEnumerable<IContentEntity> contents)
