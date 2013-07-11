@@ -64,46 +64,27 @@ namespace readCamera
 		{
 			var curDeviceList = populateCameraDevice();
 
-			if (isNewCameraFound(curDeviceList, prevDevList))
+			var added = curDeviceList.Except(prevDevList);
+
+			if (added.Any())
 			{
-				readCameraServiceStart();
+				readCameraServiceStart(added.First());
 			}
 
 			prevDevList = curDeviceList;
 		}
 
-		private bool isNewCameraFound(List<_deviceInfo> curDeviceList, List<_deviceInfo> prevDevList)
+		public void readCameraServiceStart(_deviceInfo device)
 		{
-			foreach (var dev in curDeviceList)
-			{
-				var query = from prevDev in prevDevList
-							where prevDev.UID == dev.UID
-							select prevDev;
+			var handler = CameraDetected;
+			if (handler == null)
+				return;
 
-				if (!query.Any())
-					return true;
-			}
+			var args = new CameraDetectedEventArgs(device.Name);
+			handler(this, args);
 
-			return false;
-		}
-
-
-		public void readCameraServiceStart()
-		{
-			var cameras = populateCameraDevice();
-
-			if (cameras.Any())
-			{
-				var handler = CameraDetected;
-				if (handler == null)
-					return;
-
-				var args = new CameraDetectedEventArgs(cameras);
-				handler(this, args);
-
-				if (args.SelectedCamera != null)
-					GetPictures(args.SelectedCamera);
-			}
+			if(args.DoImport)
+				GetPictures(device);
 		}
 
 		private List<_deviceInfo> populateCameraDevice()
@@ -298,18 +279,30 @@ namespace readCamera
 
 		public override int GetHashCode()
 		{
-			return Name.GetHashCode();
+			return UID.GetHashCode();
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (object.ReferenceEquals(obj,this))
+				return true;
+
+			var rhs = obj as _deviceInfo;
+			if (rhs == null)
+				return false;
+
+			return UID.Equals(rhs.UID);
 		}
 	}
 
 	public class CameraDetectedEventArgs : EventArgs
 	{
-		public List<_deviceInfo> Cameras { get; set; }
-		public _deviceInfo SelectedCamera { get; set; }
+		public string Camera { get; set; }
+		public bool DoImport { get; set; }
 
-		public CameraDetectedEventArgs(List<_deviceInfo> devices)
+		public CameraDetectedEventArgs(string cameraName)
 		{
-			Cameras = devices;
+			Camera = cameraName;
 		}
 	}
 

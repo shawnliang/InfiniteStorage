@@ -7,45 +7,41 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using readCamera;
+using InfiniteStorage.Properties;
 
 namespace InfiniteStorage
 {
 	public partial class AskCameraImportDialog : Form
 	{
-		private List<_deviceInfo> devices;
-		public _deviceInfo SelectedCamera { get; set; }
+		public string DeviceName
+		{
+			set { devName.Text = value; }
+		}
 
 		public AskCameraImportDialog()
 		{
 			InitializeComponent();
+			Icon = Resources.ProductIcon;
 		}
 
-		public AskCameraImportDialog(List<_deviceInfo> devices)
+		public AskCameraImportDialog(string deviceName)
 		{
 			InitializeComponent();
-			this.devices = devices;
+			this.DeviceName = deviceName;
 		}
 
 		private void AskCameraImportDialog_Load(object sender, EventArgs e)
 		{
-			listBox1.DataSource = devices;
-		}
-
-		private void AskCameraImportDialog_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			
 		}
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			SelectedCamera = (_deviceInfo)listBox1.SelectedItem;
 			DialogResult = DialogResult.OK;
 			Close();
 		}
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			SelectedCamera = null;
 			DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			Close();
 		}

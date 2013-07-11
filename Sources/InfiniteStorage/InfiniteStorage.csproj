@@ -431,6 +431,7 @@
       <Link>x86\SQLite.Interop.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\photography_camera.png" />
     <None Include="Resources\Bunnydesktop.ico" />
     <None Include="Resources\For Shawn - Copy - Copy.png" />
     <None Include="Resources\video %281%29.png" />

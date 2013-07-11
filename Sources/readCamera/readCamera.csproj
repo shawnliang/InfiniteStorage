@@ -1,11 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E129F475-F7E2-436A-9C44-B54956DA8034}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>readCamera</RootNamespace>
     <AssemblyName>readCamera</AssemblyName>
@@ -59,19 +62,9 @@
     </Compile>
     <Compile Include="ImportService.cs" />
     <Compile Include="NullImportService.cs" />
-    <Compile Include="readCameraForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="readCameraForm.Designer.cs">
-      <DependentUpon>readCameraForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="camerAccess.resx">
       <DependentUpon>camerAccess.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="readCameraForm.resx">
-      <DependentUpon>readCameraForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

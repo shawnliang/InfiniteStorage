@@ -27,7 +27,6 @@ namespace InfiniteStorage
 		static StationServer server;
 
 		private static System.Threading.Mutex m_InstanceMutex { get; set; }
-		private static readCamera.camerAccess cameraImport;
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -197,15 +196,6 @@ namespace InfiniteStorage
 			try
 			{
 				ImportUIPresenter.Instance.StopViewer();
-			}
-			catch (Exception err)
-			{
-				log4net.LogManager.GetLogger("main").Debug("stop error", err);
-			}
-
-			try
-			{
-				cameraImport.stopListen();
 			}
 			catch (Exception err)
 			{
