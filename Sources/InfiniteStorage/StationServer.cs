@@ -220,7 +220,19 @@ namespace InfiniteStorage
 		{
 			SynchronizationContextHelper.SendMainSyncContext(() =>
 			{
-				var dialog = new AskCameraImportDialog(e.Camera);
+				if (Settings.Default.AlwaysImportDevices.Contains(e.DeviceId))
+				{
+					e.DoImport = true;
+					return;
+				}
+
+				if (Settings.Default.AlwaysNotImportDevices.Contains(e.DeviceId))
+				{
+					e.DoImport = false;
+					return;
+				}
+
+				var dialog = new AskCameraImportDialog(e.Camera, e.DeviceId);
 				
 				e.DoImport = dialog.ShowDialog() == DialogResult.OK;
 			});

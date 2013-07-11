@@ -80,7 +80,7 @@ namespace readCamera
 			if (handler == null)
 				return;
 
-			var args = new CameraDetectedEventArgs(device.Name);
+			var args = new CameraDetectedEventArgs(device.Name, device.UID);
 			handler(this, args);
 
 			if(args.DoImport)
@@ -298,11 +298,13 @@ namespace readCamera
 	public class CameraDetectedEventArgs : EventArgs
 	{
 		public string Camera { get; set; }
+		public string DeviceId { get; set; }
 		public bool DoImport { get; set; }
 
-		public CameraDetectedEventArgs(string cameraName)
+		public CameraDetectedEventArgs(string cameraName, string deviceId)
 		{
 			Camera = cameraName;
+			DeviceId = deviceId;
 		}
 	}
 
