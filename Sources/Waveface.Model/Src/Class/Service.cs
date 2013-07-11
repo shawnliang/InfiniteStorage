@@ -20,6 +20,8 @@ namespace Waveface.Model
 
 
 		#region Private Property
+		private bool m_NeedRefresh { get; set; }
+
 		/// <summary>
 		/// Gets the m_ observable contents.
 		/// </summary>
@@ -127,11 +129,13 @@ namespace Waveface.Model
 		#region Constructor
 		public Service()
 		{
-
+			m_NeedRefresh = true;
 		}
 
 		public Service(string id, IServiceSupplier supplier, string name)
 		{
+			m_NeedRefresh = true;
+
 			this.ID = id;
 			this.Supplier = supplier;
 			this.Name = name;
@@ -139,6 +143,8 @@ namespace Waveface.Model
 
 		public Service(string id, IServiceSupplier supplier, string name, IEnumerable<IContentEntity> value)
 		{
+			m_NeedRefresh = true;
+
 			this.ID = id;
 			this.Supplier = supplier;
 			this.Name = name;
@@ -147,6 +153,8 @@ namespace Waveface.Model
 
 		public Service(string id, IServiceSupplier supplier, string name, Action<ObservableCollection<IContentEntity>> func)
 		{
+			m_NeedRefresh = true;
+
 			this.ID = id;
 			this.Supplier = supplier;
 			this.Name = name;
@@ -163,8 +171,17 @@ namespace Waveface.Model
 
 			m_Contents = new Lazy<IEnumerable<IContentEntity>>(() =>
 			{
-				m_ObservableContents.Clear();
-				func(m_ObservableContents);
+				//m_ObservableContents.Clear();
+
+				if (m_NeedRefresh)
+				{
+					var newContents = new ObservableCollection<IContentEntity>();
+					func(newContents);
+
+					m_ObservableContents.RefreshTo(newContents);
+
+					m_NeedRefresh = false;
+				}
 
 				foreach (var content in m_ObservableContents)
 					(content as ContentEntity).Service = this;
@@ -218,7 +235,9 @@ namespace Waveface.Model
 		public void Refresh()
 		{
 			m_Contents.ClearValue();
-			m_ObservableContents.Clear();
+
+			m_NeedRefresh = true;
+			//m_ObservableContents.Clear();
 			m_populateFunc(m_ObservableContents);
 		}
 

@@ -57,7 +57,7 @@ namespace Waveface.ClientFramework
 				var services = GetServices();
 
 				var newServices = services.Except(this.Services);
-				var expiredServices = this.Services.Except(services);
+				var expiredServices = this.Services.Except(services).ToArray();
 
 				if (!newServices.Any() && !expiredServices.Any())
 					return;
