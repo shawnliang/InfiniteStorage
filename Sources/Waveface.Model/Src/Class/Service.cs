@@ -111,6 +111,12 @@ namespace Waveface.Model
 			get;
 			private set;
 		}
+
+		public Uri Uri
+		{
+			get;
+			protected set;
+		}
 		#endregion
 
 		#region Event
