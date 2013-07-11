@@ -35,8 +35,8 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.devName = new System.Windows.Forms.Label();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.radioImport = new System.Windows.Forms.RadioButton();
 			this.radioDoNothing = new System.Windows.Forms.RadioButton();
+			this.radioImport = new System.Windows.Forms.RadioButton();
 			this.checkBoxRemember = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.groupBox1.SuspendLayout();
@@ -118,17 +118,6 @@
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "What action do you want to take?";
 			// 
-			// radioImport
-			// 
-			this.radioImport.AutoSize = true;
-			this.radioImport.Location = new System.Drawing.Point(14, 27);
-			this.radioImport.Name = "radioImport";
-			this.radioImport.Size = new System.Drawing.Size(107, 17);
-			this.radioImport.TabIndex = 0;
-			this.radioImport.TabStop = true;
-			this.radioImport.Text = "Import to Favorite";
-			this.radioImport.UseVisualStyleBackColor = true;
-			// 
 			// radioDoNothing
 			// 
 			this.radioDoNothing.AutoSize = true;
@@ -139,6 +128,17 @@
 			this.radioDoNothing.TabStop = true;
 			this.radioDoNothing.Text = "Do nothing";
 			this.radioDoNothing.UseVisualStyleBackColor = true;
+			// 
+			// radioImport
+			// 
+			this.radioImport.AutoSize = true;
+			this.radioImport.Location = new System.Drawing.Point(14, 27);
+			this.radioImport.Name = "radioImport";
+			this.radioImport.Size = new System.Drawing.Size(107, 17);
+			this.radioImport.TabIndex = 0;
+			this.radioImport.TabStop = true;
+			this.radioImport.Text = "Import to Favorite";
+			this.radioImport.UseVisualStyleBackColor = true;
 			// 
 			// checkBoxRemember
 			// 
@@ -168,7 +168,9 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "AskCameraImportDialog";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Favorite Auto Import";
+			this.TopMost = true;
 			this.Load += new System.EventHandler(this.AskCameraImportDialog_Load);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.groupBox1.ResumeLayout(false);

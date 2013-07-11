@@ -44,11 +44,6 @@ namespace InfiniteStorage
 
 		public void OnFileReceiving(object sender, WebsocketEventArgs arg)
 		{
-			if (!arg.ctx.BackToPhoneDialogClosed)
-			{
-				BackToPhoneDialog.CloseOpenedWindow(arg.ctx);
-				arg.ctx.BackToPhoneDialogClosed = true;
-			}
 		}
 
 		private static void openFolderInExplorer(string folder)

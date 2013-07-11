@@ -137,12 +137,6 @@
     <Compile Include="Src\Class\Share\ShareTaskFactory.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\DeviceUtility.cs" />
     <Compile Include="Src\DB\FileAndDevFolder.cs" />
-    <Compile Include="Src\Dialog\BackToPhoneDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Src\Dialog\BackToPhoneDialog.Designer.cs">
-      <DependentUpon>BackToPhoneDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Src\Dialog\ProgressTooltip.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -244,12 +238,6 @@
     <Compile Include="Src\Class\WebsocketProtocol\UnconnectedState.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\WaitForPairingState.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\WebsocketEventArgs.cs" />
-    <Compile Include="Src\Dialog\PairingRequestDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Src\Dialog\PairingRequestDialog.Designer.cs">
-      <DependentUpon>PairingRequestDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Src\Class\OrganizeMethod.cs" />
     <Compile Include="Src\UIControl\GeneralPreferenceControl.cs">
       <SubType>UserControl</SubType>
@@ -294,27 +282,12 @@
     <Compile Include="Src\UIControl\StartPairingUserControl.Designer.cs">
       <DependentUpon>StartPairingUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Src\Dialog\WaitForPairingDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Src\Dialog\WaitForPairingDialog.Designer.cs">
-      <DependentUpon>WaitForPairingDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="StationServer.cs" />
     <EmbeddedResource Include="Src\Dialog\AskCameraImportDialog.resx">
       <DependentUpon>AskCameraImportDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.zh-TW.resx">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Src\Dialog\BackToPhoneDialog.resx">
-      <DependentUpon>BackToPhoneDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Src\Dialog\BackToPhoneDialog.zh-TW.resx">
-      <DependentUpon>BackToPhoneDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Src\Dialog\PairingRequestDialog.zh-TW.resx">
-      <DependentUpon>PairingRequestDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\PreferenceDialog.zh-TW.resx">
       <DependentUpon>PreferenceDialog.cs</DependentUpon>
@@ -346,9 +319,6 @@
     <EmbeddedResource Include="Src\UIControl\OrganizeSelectionControl.resx">
       <DependentUpon>OrganizeSelectionControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Src\Dialog\PairingRequestDialog.resx">
-      <DependentUpon>PairingRequestDialog.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\PreferenceDialog.resx">
       <DependentUpon>PreferenceDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -376,9 +346,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\StartPairingUserControl.resx">
       <DependentUpon>StartPairingUserControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Src\Dialog\WaitForPairingDialog.resx">
-      <DependentUpon>WaitForPairingDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\StorageLocationControl.zh-TW.resx">
       <DependentUpon>StorageLocationControl.cs</DependentUpon>
