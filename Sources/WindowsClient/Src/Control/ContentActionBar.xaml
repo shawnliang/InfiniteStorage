@@ -6,8 +6,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Name="UserControl"
              UseLayoutRounding="True"
-             d:DesignHeight="54"
-             d:DesignWidth="130"
              mc:Ignorable="d">
     <UserControl.Resources>
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
@@ -72,67 +70,55 @@
     </UserControl.Resources>
 
     <StackPanel x:Name="LayoutRoot"
-                Margin="10,0,0,0"
                 Orientation="Horizontal">
-        <Image HorizontalAlignment="Left"
-               VerticalAlignment="Center"
-               IsEnabled="{Binding EnableMoveTo,
-                                   ElementName=UserControl,
-                                   IsAsync=True}"
-               MouseDown="Image_MouseDown"
-               Stretch="None"
-               Style="{StaticResource MoveToStyle}"
-               Visibility="{Binding HideMoveTo,
-                                    Converter={StaticResource BoolToVisibilityConverter},
-                                    ElementName=UserControl,
-                                    IsAsync=True}">
-            <Image.ContextMenu>
-                <ContextMenu x:Name="contextMenu1"
-                             IsEnabled="False"
+        <local:MoveToButton VerticalAlignment="Center"
+                            IsEnabled="{Binding EnableMoveTo,
+                                                ElementName=UserControl,
+                                                IsAsync=True}"
+                            MouseDown="Image_MouseDown"
+                            Visibility="{Binding HideMoveTo,
+                                                 Converter={StaticResource BoolToVisibilityConverter},
+                                                 ElementName=UserControl,
+                                                 IsAsync=True}">
+            <local:MoveToButton.ContextMenu>
+                <ContextMenu IsEnabled="False"
                              Style="{StaticResource contextMenuStyle1}">
                     <MenuItem Click="MenuItem_Click"
                               Header="New Folder" />
                     <MenuItem Click="MenuItem_Click_1"
                               Header="Existing Folder" />
                 </ContextMenu>
-            </Image.ContextMenu>
-        </Image>
-        <Image Margin="10,0,0,0"
-               HorizontalAlignment="Left"
-               VerticalAlignment="Center"
-               IsEnabled="{Binding EnableCreate,
-                                   ElementName=UserControl,
-                                   IsAsync=True}"
-               MouseDown="Image_MouseDown_1"
-               Stretch="None"
-               Style="{StaticResource CreateStyle}">
-            <Image.ContextMenu>
-                <ContextMenu x:Name="contextMenu2"
-                             Style="{StaticResource contextMenuStyle1}">
+            </local:MoveToButton.ContextMenu>
+        </local:MoveToButton>
+        <local:CreateButton VerticalAlignment="Center"
+                            IsEnabled="{Binding EnableCreate,
+                                                ElementName=UserControl,
+                                                IsAsync=True}"
+                            MouseDown="Image_MouseDown_1">
+            <local:CreateButton.ContextMenu>
+                <ContextMenu Style="{StaticResource contextMenuStyle1}">
                     <MenuItem Click="MenuItem_Click_2"
                               Header="Favorite" />
                 </ContextMenu>
-            </Image.ContextMenu>
-        </Image>
-        <Image Margin="10,0"
-               HorizontalAlignment="Left"
-               VerticalAlignment="Center"
-               IsEnabled="{Binding EnableAddTo,
-                                   ElementName=UserControl,
-                                   IsAsync=True}"
-               MouseDown="Image_MouseDown_2"
-               Stretch="None"
-               Style="{StaticResource AddToStyle}">
-            <Image.ContextMenu>
-                <ContextMenu x:Name="contextMenu3"
-                             Style="{StaticResource contextMenuStyle1}">
+            </local:CreateButton.ContextMenu>
+        </local:CreateButton>
+        <local:AddToButton x:Name="atbAddTo"
+                           VerticalAlignment="Center"
+                           IsEnabled="{Binding EnableAddTo,
+                                               ElementName=UserControl,
+                                               IsAsync=True}"
+                           MouseDown="Image_MouseDown_2">
+            <local:AddToButton.ContextMenu>
+                <ContextMenu Style="{StaticResource contextMenuStyle1}">
                     <MenuItem Click="MenuItem_Click_3"
                               Header="Favorite" />
-                    <MenuItem x:Name="AddToStarredMenuItem"
-                              Click="MenuItem_Click_4"
-                              Header="Starred" />
+                    <MenuItem Click="MenuItem_Click_4"
+                              Header="Starred"
+                              Visibility="{Binding HideStarredMenuItem,
+                                                   Converter={StaticResource BoolToVisibilityConverter},
+                                                   ElementName=UserControl}" />
                 </ContextMenu>
-            </Image.ContextMenu>
-        </Image>
+            </local:AddToButton.ContextMenu>
+        </local:AddToButton>
     </StackPanel>
 </UserControl>

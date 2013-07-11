@@ -327,17 +327,13 @@
 
         <Style x:Key="ContentActionBarStyle"
                TargetType="local:ContentActionBar">
-            <Setter Property="EnableMoveTo" Value="True" />
-            <Setter Property="EnableCreate" Value="True" />
-            <Setter Property="EnableAddTo" Value="True" />
+            <Setter Property="IsEnabled" Value="True" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding SelectedItem,
                                                ElementName=lbxContentContainer,
                                                IsAsync=True}"
                              Value="{x:Null}">
-                    <Setter Property="EnableMoveTo" Value="False" />
-                    <Setter Property="EnableCreate" Value="False" />
-                    <Setter Property="EnableAddTo" Value="False" />
+                    <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -614,7 +610,6 @@
             </Grid.Effect>
             <Grid Margin="0">
                 <local:ContentActionBar x:Name="cabContentActionBar"
-                                        Width="135"
                                         HorizontalAlignment="Right"
                                         HorizontalContentAlignment="Right"
                                         AddToFavorite="ContentActionBar_AddToFavorite"
@@ -623,7 +618,7 @@
                                         HideMoveTo="True"
                                         MoveToExistingFolder="ContentActionBar_MoveToExistingFolder"
                                         MoveToNewFolder="ContentActionBar_MoveToNewFolder"
-                                        Padding="0"
+                                        Padding="0,0,5,0"
                                         Style="{StaticResource ContentActionBarStyle}" />
                 <local:ZoomSlider x:Name="zoomSlider"
                                   Margin="10,0,0,0"
