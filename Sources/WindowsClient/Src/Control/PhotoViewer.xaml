@@ -8,7 +8,7 @@
         AllowsTransparency="True"
         Background="{x:Null}"
         KeyDown="Window_KeyDown"
-        MouseRightButtonDown="Window_MouseRightButtonDown"
+        MouseRightButtonUp="Window_MouseRightButtonUp"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
         WindowState="Maximized"

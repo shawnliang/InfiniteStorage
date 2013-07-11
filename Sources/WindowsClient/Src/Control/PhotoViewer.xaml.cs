@@ -75,7 +75,7 @@ namespace Waveface.Client
 			}
 		}
 
-		private void Window_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+		private void Window_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
 		{
 			this.Close();
 		}
