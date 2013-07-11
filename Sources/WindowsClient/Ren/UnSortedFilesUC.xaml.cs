@@ -102,7 +102,7 @@ namespace Waveface.Client
 		{
 			if (m_sliderTicks.Count > 0)
 			{
-				tbEventIntervalType.Text = m_sliderTicks[(int)sliderEvent.Value].Name;
+				tbEventIntervalType.Text = " " + m_sliderTicks[(int)sliderEvent.Value].Name;
 			}
 		}
 
@@ -421,7 +421,8 @@ namespace Waveface.Client
 			{
 				int _count = listBoxEvent.Items.OfType<EventUC>().Select(item => item.lbEvent).Sum(item => item.SelectedItems.Count);
 
-				lblSelectedCount.Content = _count.ToString();
+				string _format = (string)Application.Current.FindResource("TimelineSelectedCountText");
+				lblSelectedCount.Content = string.Format(_format, _count);
 
 				contentActionBar.IsEnabled = _count > 0;
 			}

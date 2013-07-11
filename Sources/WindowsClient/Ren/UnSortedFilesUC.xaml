@@ -97,7 +97,7 @@
                            FontSize="18.667"
                            FontWeight="Bold"
                            Foreground="White"
-                           Text="Unsorted Media from " />
+                           Text="" />
                 <TextBlock x:Name="tbTitle"
                            Margin="2,14,0,0"
                            FontFamily="Segoe UI Light"
@@ -136,7 +136,7 @@
             			Direction="90"
             			ShadowDepth="1" />
             	</Grid.Effect>
-                <Label x:Name="lblSelectedCount" Content="0"  ContentStringFormat="{}{0} selected" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="#FFA8A8A8" FontSize="16"/>
+                <Label x:Name="lblSelectedCount" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="#FFA8A8A8" FontSize="16"/>
                 <Grid Grid.Column="0" HorizontalAlignment="Center" Margin="0">
             		<Grid.ColumnDefinitions>
             			<ColumnDefinition Width="Auto" />
@@ -157,7 +157,7 @@
             			FontSize="11"
             			FontWeight="Bold"
             			Foreground="#929292"
-            			Text="SHORTER" />
+            			Text="{DynamicResource SHORTER}" />
             		<TextBlock Grid.Row="1"
             			Grid.Column="2"
             			Margin="6,0"
@@ -166,13 +166,13 @@
             			FontSize="11"
             			FontWeight="Bold"
             			Foreground="#929292"
-            			Text="LONGER" />
+            			Text="{DynamicResource LONGER}" />
 
             		<StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
             			<TextBlock                                                                                                            
             				FontSize="11"
             				Foreground="#DDDDDD"
-            				Text="Event Interval: " />
+            				Text="{DynamicResource EventInterval}" />
 
             			<TextBlock
             				x:Name="tbEventIntervalType"

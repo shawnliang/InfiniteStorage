@@ -52,7 +52,10 @@ namespace Waveface.Client
 		{
 			m_uiDelayTimer.Stop();
 
-			MessageBoxResult _messageBoxResult = MessageBox.Show("Allow auto sync from \"" + m_pairingRequest.device_name + "\"?", "Android Device Found", MessageBoxButton.YesNo);
+			string _AndroidDeviceFound = (string)Application.Current.FindResource("AndroidDeviceFound");
+			string _AllowAutoSync = (string)Application.Current.FindResource("AllowAutoSync");
+
+			MessageBoxResult _messageBoxResult = MessageBox.Show(string.Format(_AllowAutoSync, m_pairingRequest.device_name), _AndroidDeviceFound, MessageBoxButton.YesNo);
 
 			if (_messageBoxResult == MessageBoxResult.Yes)
 			{
