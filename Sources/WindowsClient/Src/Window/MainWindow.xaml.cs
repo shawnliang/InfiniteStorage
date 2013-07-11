@@ -492,6 +492,9 @@ namespace Waveface.Client
             }
 
             lblContentLocation.DataContext = group;
+
+			lbxContentContainer.DataContext = null;
+			System.Windows.Forms.Application.DoEvents();
             lbxContentContainer.DataContext = group.Contents;
 			lbxContentContainer.SelectedIndex = - 1;
             SetContentTypeCount(group);
@@ -537,12 +540,18 @@ namespace Waveface.Client
                 if (service == null)
                     return;
                 lblContentLocation.DataContext = null;
+				lbxContentContainer.DataContext = null;
+				System.Windows.Forms.Application.DoEvents();
+
                 lbxContentContainer.DataContext = service.Contents;
 				lbxContentContainer.SelectedIndex = -1;
                 return;
             }
 
             lblContentLocation.DataContext = group;
+			lbxContentContainer.DataContext = null;
+			System.Windows.Forms.Application.DoEvents();
+
 			lbxContentContainer.DataContext = (group as IContentGroup).Contents;
 			lbxContentContainer.SelectedIndex = - 1;
 
@@ -615,6 +624,9 @@ namespace Waveface.Client
             lbxFavorites.SelectedItem = null;
 
 			lblContentLocation.DataContext = group;
+			lbxContentContainer.DataContext = null;
+			System.Windows.Forms.Application.DoEvents();
+
 			lbxContentContainer.DataContext = group.Contents;
 			lbxContentContainer.SelectedIndex = -1;
 
@@ -708,6 +720,9 @@ namespace Waveface.Client
             {
                 lbxDeviceContainer.ClearSelection();
             }
+
+			lbxContentContainer.DataContext = null;
+			System.Windows.Forms.Application.DoEvents();
 
 			lbxContentContainer.DataContext = group.Contents;
 			lbxContentContainer.SelectedIndex = -1;
@@ -1138,6 +1153,92 @@ namespace Waveface.Client
             var selectedGroup = (dialog.SelectedItem as IContentGroup);
             MoveToFolder(selectedGroup, GetSelectedContents());
         }
+
+		private void svContentContainer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+		{
+			var scrollViewer = (FrameworkElement)sender;
+			var visibleAreaEntered = false;
+			var visibleAreaLeft = false;
+			var invisibleItemDisplayed = 0;
+			foreach (var item in lbxContentContainer.Items)
+			{
+				var listBoxItem =
+				  (FrameworkElement)lbxContentContainer.ItemContainerGenerator.ContainerFromItem(item);
+
+				if (visibleAreaLeft == false &&
+					IsFullyOrPartiallyVisible(listBoxItem, scrollViewer))
+				{
+					visibleAreaEntered = true;
+				}
+				else if (visibleAreaEntered)
+				{
+					visibleAreaLeft = true;
+				}
+				if (visibleAreaEntered)
+				{
+					if (visibleAreaLeft && ++invisibleItemDisplayed > 10)
+						break;
+
+					ContentPresenter contentPresenter = FindVisualChild<ContentPresenter>(listBoxItem);
+
+					var control = GetVisualChild<WrapperControl>(contentPresenter);
+					control.Display();
+				}
+			}
+		}
+
+		protected bool IsFullyOrPartiallyVisible(FrameworkElement child, FrameworkElement scrollViewer)
+		{
+			var childTransform = child.TransformToAncestor(scrollViewer);
+			var childRectangle = childTransform.TransformBounds(
+									  new Rect(new Point(0, 0), child.RenderSize));
+			var ownerRectangle = new Rect(new Point(0, 0), scrollViewer.RenderSize);
+			return ownerRectangle.IntersectsWith(childRectangle);
+		}
+
+		private T GetVisualChild<T>(DependencyObject parent) where T : Visual
+		{
+			T child = default(T);
+			int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
+			for (int i = 0; i < numVisuals; i++)
+			{
+				Visual v = (Visual)VisualTreeHelper.GetChild(parent, i);
+				child = v as T;
+				if (child == null)
+				{
+					child = GetVisualChild<T>(v);
+				}
+				if (child != null)
+				{
+					break;
+				}
+			}
+			return child;
+		}
+
+		private ChildControl FindVisualChild<ChildControl>(DependencyObject DependencyObj)
+	  where ChildControl : DependencyObject
+		{
+			for (int i = 0; i < VisualTreeHelper.GetChildrenCount(DependencyObj); i++)
+			{
+				DependencyObject Child = VisualTreeHelper.GetChild(DependencyObj, i);
+
+				if (Child != null && Child is ChildControl)
+				{
+					return (ChildControl)Child;
+				}
+				else
+				{
+					ChildControl ChildOfChild = FindVisualChild<ChildControl>(Child);
+
+					if (ChildOfChild != null)
+					{
+						return ChildOfChild;
+					}
+				}
+			}
+			return null;
+		}
 
     }
 }
