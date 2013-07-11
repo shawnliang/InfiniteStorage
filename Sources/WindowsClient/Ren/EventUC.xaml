@@ -96,7 +96,7 @@
                                 </Style>
                             </TextBox.Style>
                             <i:Interaction.Behaviors>
-                                <PendingUI:WatermarkTextBehavior Text="Describe the event..." />
+                                <PendingUI:WatermarkTextBehavior Text="{DynamicResource DescribeTheEvent}" />
                             </i:Interaction.Behaviors>
                         </TextBox>
                     </StackPanel>

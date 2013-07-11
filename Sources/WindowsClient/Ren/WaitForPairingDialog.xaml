@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:gif="clr-namespace:WpfAnimatedGif" 
       Height="416" 
       Width="760"
-	  Title="Add a New Source" 
+	  Title="{DynamicResource AddNewSource}" 
       WindowStartupLocation="CenterScreen" 
       ResizeMode="NoResize"
       Closing="Window_Closing" 
@@ -104,21 +104,21 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Margin="28,0">
-            <TextBlock Grid.Column="1" Text="Sync photos &amp; videos back to your PC" VerticalAlignment="Center" FontSize="18" FontWeight="Black"/>
+            <TextBlock Grid.Column="1" Text="{DynamicResource ANS_1}" VerticalAlignment="Center" FontSize="18" FontWeight="Black"/>
         </Grid>
 
         <Grid Grid.Row="1" Margin="28,0">
-            <TextBlock Text="The Favorite Uploader automatically transfers all your photos and videos from your phone back to your PC." VerticalAlignment="Center" TextWrapping="Wrap" FontSize="14"/>
+            <TextBlock Text="{DynamicResource ANS_2}" VerticalAlignment="Center" TextWrapping="Wrap" FontSize="14"/>
         </Grid>
 
         <Grid Grid.Row="3" Margin="20,0">
-            <Button x:Name="btnHelp" Style="{StaticResource LinkButton}" Content="How does it work?" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12" FontWeight="Bold" Click="btnHelp_Click"/>
-            <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Right" Padding="16,4" VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Click="btnClose_Click"/>
+            <Button x:Name="btnHelp" Style="{StaticResource LinkButton}" Content="{DynamicResource ANS_9}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12" FontWeight="Bold" Click="btnHelp_Click"/>
+            <Button x:Name="btnClose" Content="{DynamicResource CloseButtonText}" HorizontalAlignment="Right" Padding="16,4" VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Click="btnClose_Click"/>
         </Grid>
 
         <GroupBox Grid.Row="2" Margin="14, 8, 20, 0" BorderThickness="1.5" BorderBrush="Gray">
             <GroupBox.Header>
-                <TextBlock Text="Add a Phone" Margin="8,0" FontSize="14" FontWeight="Bold"/>
+                <TextBlock Text="{DynamicResource ANS_3}" Margin="8,0" FontSize="14" FontWeight="Bold"/>
             </GroupBox.Header>
 
             <Grid>
@@ -144,7 +144,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Ellipse Grid.Column="0" Fill="Black" Width="6" Height="6" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="1" Text="Download and run Favorite* Uploader on your Android device." TextWrapping="Wrap"  VerticalAlignment="Center" FontSize="13"/>
+                        <TextBlock Grid.Column="1" Text="{DynamicResource ANS_4}" TextWrapping="Wrap"  VerticalAlignment="Center" FontSize="13"/>
                     </Grid>
 
                     <Grid Grid.Row="1" Margin="0,6">
@@ -153,7 +153,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Ellipse Grid.Column="0" Fill="Black" Width="6" Height="6" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="1" Text="Make sure your WiFi is on." TextWrapping="Wrap"  VerticalAlignment="Center" FontSize="13"/>
+                        <TextBlock Grid.Column="1" Text="{DynamicResource ANS_5}" TextWrapping="Wrap"  VerticalAlignment="Center" FontSize="13"/>
                     </Grid>
 
                     <Grid Grid.Row="2" Margin="0,6">
@@ -162,7 +162,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Ellipse Grid.Column="0" Fill="Black" Width="6" Height="6" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="1" Text="Click &quot;Yes&quot; when your device is connected." TextWrapping="Wrap"  VerticalAlignment="Center" FontSize="13"/>
+                        <TextBlock Grid.Column="1" Text="{DynamicResource ANS_6}"  TextWrapping="Wrap"  VerticalAlignment="Center" FontSize="13"/>
                     </Grid>
 
                     <Grid Grid.Row="3" Margin="0,6">
@@ -172,7 +172,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Image Grid.Column="0" Width="59.666" Height="59.666" Margin="0, 8" gif:ImageBehavior.AnimatedSource="/Waveface.Client;component/Resource/mf_progress_radar.gif" />
-                        <TextBlock Grid.Column="1" Text="Searching for mobile devices..." Margin="8,0,0,0" VerticalAlignment="Center" FontSize="13" FontWeight="Bold"/>
+                        <TextBlock Grid.Column="1" Text="{DynamicResource ANS_7}" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="13" FontWeight="Bold"/>
                     </Grid>
                 </Grid>
 
@@ -188,7 +188,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="Search for &quot;Favorite&quot; on Google Play" TextWrapping="Wrap"  VerticalAlignment="Center" FontSize="13"/>
+                        <TextBlock Grid.Row="0" Text="{DynamicResource ANS_8}" TextWrapping="Wrap"  VerticalAlignment="Center" FontSize="13"/>
 
                         <StackPanel Grid.Row="1" x:Name="spGooglePlay" Width="137.6" Height="48" Cursor="Hand" HorizontalAlignment="Left" MouseDown="spGooglePlay_MouseDown">
                             <Image Source="/Waveface.Client;component/Resource/en_generic_rgb_wo_60.png"/>

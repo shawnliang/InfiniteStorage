@@ -40,4 +40,44 @@
     <system:String x:Key="ImportContactButtonText">Import Google Contact</system:String>
     <system:String x:Key="SendButtonText">Send</system:String>
     <system:String x:Key="CloseButtonText">Close</system:String>
+
+    <system:String x:Key="plural">s</system:String>    
+    <system:String x:Key="DescribeTheEvent">Describe the event...</system:String>
+    <system:String x:Key="Minutes_30">30 Minutes</system:String>
+    <system:String x:Key="Hour_1">1 Hour</system:String>
+    <system:String x:Key="Hours_2">2 Hours</system:String>
+    <system:String x:Key="Hours_4">4 Hours</system:String>
+    <system:String x:Key="Day">Day</system:String>
+    <system:String x:Key="Week">Week</system:String>
+    <system:String x:Key="Month">Month</system:String>
+    <system:String x:Key="Refresh">Refresh</system:String>
+    <system:String x:Key="photo">photo</system:String>
+    <system:String x:Key="photos">photos</system:String>
+    <system:String x:Key="video">video</system:String>
+    <system:String x:Key="videos">videos</system:String>
+    <system:String x:Key="TimeLineInformation">{0} in {1} event{2}</system:String>
+    <system:String x:Key="LateNight">Late Night</system:String>
+    <system:String x:Key="Night">Night</system:String>
+    <system:String x:Key="Evening">Evening</system:String>
+    <system:String x:Key="Afternoon">Afternoon</system:String>
+    <system:String x:Key="Noon">Noon</system:String>
+    <system:String x:Key="Morning">Morning</system:String>
+    <system:String x:Key="EarlyMorning">Early Morning</system:String>
+    <system:String x:Key="TimelineSelectedCountText">{0} selected</system:String>
+    <system:String x:Key="EventInterval">Event Interval:</system:String>
+    <system:String x:Key="SHORTER">SHORTER</system:String>
+    <system:String x:Key="LONGER">LONGER</system:String>
+    <system:String x:Key="AllowAutoSync">Allow auto sync from {0}?</system:String>
+    <system:String x:Key="AndroidDeviceFound">Android Device Found</system:String>
+    <system:String x:Key="AddNewSource">Add a New Source</system:String>
+    <system:String x:Key="ANS_1">Sync photos &amp; videos back to your PC</system:String>
+    <system:String x:Key="ANS_2">The Favorite Uploader automatically transfers all your photos and videos from your phone back to your PC.</system:String>
+    <system:String x:Key="ANS_3">Add a Phone</system:String>
+    <system:String x:Key="ANS_4">Download and run Favorite* Uploader on your Android device.</system:String>
+    <system:String x:Key="ANS_5">Make sure your WiFi is on.</system:String>
+    <system:String x:Key="ANS_6">Click "Yes" when your device is connected.</system:String>
+    <system:String x:Key="ANS_7">Searching for mobile devices...</system:String>
+    <system:String x:Key="ANS_8">Search for "Favorite" on Google Play</system:String>
+    <system:String x:Key="ANS_9">How does it work?</system:String>
+    
 </ResourceDictionary>

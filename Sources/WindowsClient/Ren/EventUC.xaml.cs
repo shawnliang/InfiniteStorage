@@ -48,7 +48,9 @@ namespace Waveface.Client
 			}
 			get
 			{
-				if ((tbDescribe.Text == string.Empty) || (tbDescribe.Text == "Describe the event..."))
+				string _dteText = (string)Application.Current.FindResource("DescribeTheEvent");
+
+				if ((tbDescribe.Text == string.Empty) || (tbDescribe.Text == _dteText))
 				{
 					return m_defaultEventName;
 				}
