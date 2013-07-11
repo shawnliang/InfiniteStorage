@@ -141,6 +141,9 @@
     <Compile Include="Ren\WpfAnimatedGif\Decoding\GifTrailer.cs" />
     <Compile Include="Ren\WpfAnimatedGif\ImageAnimationController.cs" />
     <Compile Include="Ren\WpfAnimatedGif\ImageBehavior.cs" />
+    <Compile Include="Src\Control\WrapperControl.xaml.cs">
+      <DependentUpon>WrapperControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Dialog\AddToDialog.xaml.cs">
       <DependentUpon>AddToDialog.xaml</DependentUpon>
     </Compile>
@@ -277,6 +280,10 @@
     <Compile Include="Src\Control\SwitchButton.xaml.cs">
       <DependentUpon>SwitchButton.xaml</DependentUpon>
     </Compile>
+    <Page Include="Src\Control\WrapperControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Src\Dialog\AddToDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

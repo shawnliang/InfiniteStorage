@@ -259,8 +259,11 @@
         -->
 
         <DataTemplate DataType="{x:Type wvmodel:Content}">
-            <local:ContentItem x:Name="content"
-                               Padding="10" />
+            <local:WrapperControl Name="wc"
+                                  Padding="10"
+                                  Type="{x:Type local:ContentItem}">
+                <!--  <local:ContentItem Visibility="Collapsed"/>  -->
+            </local:WrapperControl>
         </DataTemplate>
 
 
@@ -545,6 +548,7 @@
                           Grid.Row="0"
                           HorizontalScrollBarVisibility="Disabled"
                           IsDeferredScrollingEnabled="True"
+                          ScrollChanged="svContentContainer_ScrollChanged"
                           VerticalScrollBarVisibility="Auto">
                 <ListBox x:Name="lbxContentContainer"
                          Background="{x:Null}"
