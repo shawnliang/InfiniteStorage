@@ -31,11 +31,33 @@
     <system:String x:Key="LaterButtonText">晚點</system:String>
     <system:String x:Key="WithoutContentMessageText">Without any content</system:String>
     <system:String x:Key="NoExistingFavoriteMessageText">No existing favorite</system:String>
-
     <system:String x:Key="ShareWithTitle">Share  Favorite with:</system:String>
     <system:String x:Key="SenderNameTitle">Your Name:</system:String>
     <system:String x:Key="SendMessageTitle">Message:</system:String>
     <system:String x:Key="ImportContactButtonText">Import Google Contact</system:String>
     <system:String x:Key="SendButtonText">Send</system:String>
     <system:String x:Key="CloseButtonText">關閉</system:String>
+
+    <system:String x:Key="plural">.</system:String>
+    <system:String x:Key="DescribeTheEvent">描述事件...</system:String>
+    <system:String x:Key="Minutes_30">30分鐘</system:String>
+    <system:String x:Key="Hour_1">1小時</system:String>
+    <system:String x:Key="Hours_2">2小時</system:String>
+    <system:String x:Key="Hours_4">4小時</system:String>
+    <system:String x:Key="Day">天</system:String>
+    <system:String x:Key="Week">週</system:String>
+    <system:String x:Key="Month">月</system:String>
+    <system:String x:Key="Refresh">重新整理</system:String>
+    <system:String x:Key="photo">張照片</system:String>
+    <system:String x:Key="photos">張照片</system:String>
+    <system:String x:Key="video">部影片</system:String>
+    <system:String x:Key="videos">部影片</system:String>
+    <system:String x:Key="TimeLineInformation">{0} 在 {1}個事件中</system:String>
+    <system:String x:Key="LateNight">深夜</system:String>
+    <system:String x:Key="Night">晚上</system:String>
+    <system:String x:Key="Evening">黃昏</system:String>
+    <system:String x:Key="Afternoon">下午</system:String>
+    <system:String x:Key="Noon">中午</system:String>
+    <system:String x:Key="Morning">上午</system:String>
+    <system:String x:Key="EarlyMorning">清晨</system:String>
 </ResourceDictionary>

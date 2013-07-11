@@ -24,41 +24,41 @@ namespace Waveface.Client
 		{
 			RtData = new RtData();
 
-			string _basePath = (string) Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", "");
+			string _basePath = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", "");
 			string _ThumbsPath = Path.Combine(_basePath, ".thumbs");
 			string _pendingPath = Path.Combine(_basePath, ".pending");
 
 			List<FileChange> _pFCs = pendingFiles.Select(x => new FileChange
-				                                                  {
-					                                                  id = x.file_id.ToString(),
-					                                                  file_name = x.file_name,
-					                                                  tiny_path =
-						                                                  (x.type == (int) FileAssetType.image)
-							                                                  ? Path.Combine(_ThumbsPath, x.file_id + ".tiny.thumb")
-							                                                  : Path.Combine(_ThumbsPath, x.file_id + ".medium.thumb"),
-					                                                  taken_time = x.event_time.ToString("yyyy-MM-dd HH:mm:ss"),
-					                                                  width = x.width,
-					                                                  height = x.height,
-					                                                  size = x.file_size,
-					                                                  type = x.type,
-					                                                  saved_path = Path.Combine(_pendingPath, x.saved_path)
-				                                                  }).ToList();
+																  {
+																	  id = x.file_id.ToString(),
+																	  file_name = x.file_name,
+																	  tiny_path =
+																		  (x.type == (int)FileAssetType.image)
+																			  ? Path.Combine(_ThumbsPath, x.file_id + ".tiny.thumb")
+																			  : Path.Combine(_ThumbsPath, x.file_id + ".medium.thumb"),
+																	  taken_time = x.event_time.ToString("yyyy-MM-dd HH:mm:ss"),
+																	  width = x.width,
+																	  height = x.height,
+																	  size = x.file_size,
+																	  type = x.type,
+																	  saved_path = Path.Combine(_pendingPath, x.saved_path)
+																  }).ToList();
 
 			List<FileChange> _fCs = files.Select(x => new FileChange
-				                                          {
-					                                          id = x.file_id.ToString(),
-					                                          file_name = x.file_name,
-					                                          tiny_path =
-						                                          (x.type == (int) FileAssetType.image)
-							                                          ? Path.Combine(_ThumbsPath, x.file_id + ".tiny.thumb")
-							                                          : Path.Combine(_ThumbsPath, x.file_id + ".medium.thumb"),
-					                                          taken_time = x.event_time.ToString("yyyy-MM-dd HH:mm:ss"),
-					                                          width = x.width,
-					                                          height = x.height,
-					                                          size = x.file_size,
-					                                          type = x.type,
-					                                          saved_path = Path.Combine(_basePath, x.saved_path)
-				                                          }).ToList();
+														  {
+															  id = x.file_id.ToString(),
+															  file_name = x.file_name,
+															  tiny_path =
+																  (x.type == (int)FileAssetType.image)
+																	  ? Path.Combine(_ThumbsPath, x.file_id + ".tiny.thumb")
+																	  : Path.Combine(_ThumbsPath, x.file_id + ".medium.thumb"),
+															  taken_time = x.event_time.ToString("yyyy-MM-dd HH:mm:ss"),
+															  width = x.width,
+															  height = x.height,
+															  size = x.file_size,
+															  type = x.type,
+															  saved_path = Path.Combine(_basePath, x.saved_path)
+														  }).ToList();
 
 			RtData.file_changes = _fCs;
 			RtData.file_changes.AddRange(_pFCs);
@@ -101,7 +101,7 @@ namespace Waveface.Client
 
 		public void GroupingByEvent(int minutes)
 		{
-			if (minutes < 24*60)
+			if (minutes < 24 * 60)
 			{
 				ByMinutes(minutes);
 			}

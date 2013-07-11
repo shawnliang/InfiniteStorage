@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Permissions;
 using System.Threading;
 using System.Web;
@@ -12,16 +14,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Threading;
 using InfiniteStorage.Model;
 using Newtonsoft.Json;
 using Waveface.ClientFramework;
 using Waveface.Model;
-using Screen = System.Windows.Forms.Screen;
-using System.IO;
-using System.Reflection;
-using System.Windows.Media;
 
 #endregion
 
@@ -29,6 +27,8 @@ namespace Waveface.Client
 {
 	public partial class UnSortedFilesUC : UserControl
 	{
+		public static UnSortedFilesUC Current { get; set; }
+
 		internal class MySliderTick
 		{
 			public string Name { get; set; }
@@ -39,23 +39,23 @@ namespace Waveface.Client
 		public static int BY_WEEK = 7 * 24 * 60;
 		public static int BY_MONTH = 30 * 24 * 60;
 
-		public static UnSortedFilesUC Current { get; set; }
-
 		private IService m_currentDevice;
 		private IContentGroup m_unsortedGroup;
 		private List<MySliderTick> m_sliderTicks = new List<MySliderTick>();
 		private List<string> m_defaultEventNameCache;
 		private ObservableCollection<EventUC> m_eventUCs;
+		private DispatcherTimer m_dispatcherTimer;
+		private bool m_humbDraging;
+		private int m_pendingFilesCount;
+		private MainWindow m_mainWindow;
+		private EventUC m_startEventUc;
+		private EventUC m_endEventUc;
+		private int m_startIndex;
 
 		public int VideosCount { get; set; }
 		public int PhotosCount { get; set; }
 		public RT Rt { get; set; }
 		public int GroupingEventInterval { get; set; }
-
-		private DispatcherTimer m_dispatcherTimer;
-		private bool m_humbDraging;
-		private int m_pendingFilesCount;
-		private MainWindow m_mainWindow;
 
 		public UnSortedFilesUC()
 		{
@@ -79,13 +79,21 @@ namespace Waveface.Client
 
 		private void InitSliderTicks()
 		{
-			m_sliderTicks.Add(new MySliderTick { Name = "30 Minutes", Value = 30 });
-			m_sliderTicks.Add(new MySliderTick { Name = "1 Hour", Value = 1 * 60 });
-			m_sliderTicks.Add(new MySliderTick { Name = "2 Hours", Value = 2 * 60 });
-			m_sliderTicks.Add(new MySliderTick { Name = "4 Hours", Value = 4 * 60 });
-			m_sliderTicks.Add(new MySliderTick { Name = "Day", Value = BY_DAY });
-			m_sliderTicks.Add(new MySliderTick { Name = "Week", Value = BY_WEEK });
-			m_sliderTicks.Add(new MySliderTick { Name = "Month", Value = BY_MONTH });
+			string _Minutes_30 = (string)Application.Current.FindResource("Minutes_30");
+			string _Hour_1 = (string)Application.Current.FindResource("Hour_1");
+			string _Hours_2 = (string)Application.Current.FindResource("Hours_2");
+			string _Hours_4 = (string)Application.Current.FindResource("Hours_4");
+			string _Day = (string)Application.Current.FindResource("Day");
+			string _Week = (string)Application.Current.FindResource("Week");
+			string _Month = (string)Application.Current.FindResource("Month");
+
+			m_sliderTicks.Add(new MySliderTick { Name = _Minutes_30, Value = 30 });
+			m_sliderTicks.Add(new MySliderTick { Name = _Hour_1, Value = 1 * 60 });
+			m_sliderTicks.Add(new MySliderTick { Name = _Hours_2, Value = 2 * 60 });
+			m_sliderTicks.Add(new MySliderTick { Name = _Hours_4, Value = 4 * 60 });
+			m_sliderTicks.Add(new MySliderTick { Name = _Day, Value = BY_DAY });
+			m_sliderTicks.Add(new MySliderTick { Name = _Week, Value = BY_WEEK });
+			m_sliderTicks.Add(new MySliderTick { Name = _Month, Value = BY_MONTH });
 
 			SetEventIntervalTypeText();
 		}
@@ -113,19 +121,19 @@ namespace Waveface.Client
 			List<FileAsset> m_files;
 			List<PendingFile> m_pendingFiles;
 
-			using (var db = new MyDbContext())
+			using (var _db = new MyDbContext())
 			{
-				var q = from f in db.Object.Files
-						where f.device_id == device.ID && !f.deleted
-						select f;
+				var _q = from _f in _db.Object.Files
+						 where _f.device_id == device.ID && !_f.deleted
+						 select _f;
 
-				m_files = q.ToList();
+				m_files = _q.ToList();
 
-				var q2 = from f in db.Object.PendingFiles
-						 where f.device_id == device.ID && !f.deleted
-						 select f;
+				var _q2 = from _f in _db.Object.PendingFiles
+						  where _f.device_id == device.ID && !_f.deleted
+						  select _f;
 
-				m_pendingFiles = q2.ToList();
+				m_pendingFiles = _q2.ToList();
 			}
 
 			m_pendingFilesCount = m_pendingFiles.Count;
@@ -161,9 +169,9 @@ namespace Waveface.Client
 
 		private void dispatcherTimer_Tick(object sender, EventArgs e)
 		{
-			int _count = m_unsortedGroup.ContentCount; //BunnyDeviceTimelineContentGroup.countWholeTimeline(m_currentDevice.ID);
+			int _count = m_unsortedGroup.ContentCount;
 
-			if (_count != Rt.RtData.file_changes.Count) //m_pendingFilesCount
+			if (_count != Rt.RtData.file_changes.Count)
 			{
 				btnRefresh.Visibility = Visibility.Visible;
 			}
@@ -179,7 +187,8 @@ namespace Waveface.Client
 				btnRefresh.Visibility = Visibility.Collapsed;
 			}
 
-			btnRefresh.Content = "Refresh " + "(" + _d + ")";
+			string _Refresh = (string)Application.Current.FindResource("Refresh");
+			btnRefresh.Content = _Refresh + " (" + _d + ")";
 		}
 
 		public void Stop()
@@ -241,9 +250,9 @@ namespace Waveface.Client
 
 				_ctl.DescribeText = GetDefaultEventName(Rt.DateTimeCache[_event[0].taken_time]);
 
-                _ctl.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
-                _ctl.lbEvent.PreviewMouseDown += lbEvent_PreviewMouseDown;
-                _ctl.lbEvent.MouseDoubleClick += lbEvent_MouseDoubleClick;
+				_ctl.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
+				_ctl.lbEvent.PreviewMouseDown += lbEvent_PreviewMouseDown;
+				_ctl.lbEvent.MouseDoubleClick += lbEvent_MouseDoubleClick;
 
 				m_eventUCs.Add(_ctl);
 			}
@@ -261,152 +270,162 @@ namespace Waveface.Client
 			SetEventIntervalTypeText();
 		}
 
-        void lbEvent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            Sub_SlideShow();
-        }
+		private void lbEvent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			Sub_SlideShow();
+		}
 
-        private static T FindAnchestor<T>(DependencyObject current)
-        where T : DependencyObject
-        {
-            do
-            {
-                if (current is T)
-                {
-                    return (T)current;
-                }
-                current = VisualTreeHelper.GetParent(current);
-            }
-            while (current != null);
-            return null;
-        }
+		private static T FindAnchestor<T>(DependencyObject current)
+			where T : DependencyObject
+		{
+			do
+			{
+				if (current is T)
+				{
+					return (T)current;
+				}
 
-        void lbEvent_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                ListBox list = sender as ListBox;
-                ListBoxItem item =
-                    FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
+				current = VisualTreeHelper.GetParent(current);
+			} while (current != null);
 
-                PropertyInfo pi = typeof(ListBox).GetProperty("AnchorItem", BindingFlags.NonPublic | BindingFlags.Instance);
-                if (pi != null)
-                {
-                    pi.SetValue(list, item.DataContext, null);
-                }
-            }
-            catch (Exception)
-            {
-            }
-        }
+			return null;
+		}
 
-        EventUC startEventUC = null;
-        EventUC endEventUC = null;
-        int startIndex = 0;
+		private void lbEvent_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+		{
+			try
+			{
+				ListBox _listBox = sender as ListBox;
+				ListBoxItem _listBoxItem = FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
 
-        void lbEvent_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (e.AddedItems.Count > 0 && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)))
-                {
-                    var firstEventUCFound = false;
-                    endEventUC = listBoxEvent.Items.OfType<EventUC>().Where(item => item.lbEvent == sender as ListBox).Single();
-                    List<EventUC> middleEventUCs = new List<EventUC>();
-                    foreach (var eventUC in listBoxEvent.Items.OfType<EventUC>())
-                    {
-                        if (!firstEventUCFound && (startEventUC == eventUC || endEventUC == eventUC))
-                        {
-                            firstEventUCFound = true;
+				PropertyInfo _pi = typeof(ListBox).GetProperty("AnchorItem", BindingFlags.NonPublic | BindingFlags.Instance);
 
-                            if (endEventUC == eventUC)
-                            {
-                                var temp = endEventUC;
-                                endEventUC = startEventUC;
-                                startEventUC = temp;
-                            }
-                            continue;
-                        }
+				if (_pi != null)
+				{
+					_pi.SetValue(_listBox, _listBoxItem.DataContext, null);
+				}
+			}
+			catch (Exception)
+			{
+			}
+		}
 
-                        if (firstEventUCFound && (startEventUC == eventUC || endEventUC == eventUC))
-                            break;
+		private void lbEvent_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			try
+			{
+				if (e.AddedItems.Count > 0 && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)))
+				{
+					var _firstEventUcFound = false;
+					m_endEventUc = listBoxEvent.Items.OfType<EventUC>().Single(item => item.lbEvent == sender as ListBox);
+					List<EventUC> middleEventUCs = new List<EventUC>();
 
-                        if (!firstEventUCFound)
-                            continue;
+					foreach (EventUC _eventUc in listBoxEvent.Items.OfType<EventUC>())
+					{
+						if (!_firstEventUcFound && (m_startEventUc == _eventUc || m_endEventUc == _eventUc))
+						{
+							_firstEventUcFound = true;
 
-                        middleEventUCs.Add(eventUC);
-                    }
+							if (m_endEventUc == _eventUc)
+							{
+								var temp = m_endEventUc;
+								m_endEventUc = m_startEventUc;
+								m_startEventUc = temp;
+							}
 
-                    if (startEventUC == endEventUC)
-                    {
-                        var endIndex = startEventUC.lbEvent.SelectedIndex;
+							continue;
+						}
 
-                        if (startIndex > endIndex)
-                        {
-                            var temp = startIndex;
-                            startIndex = endIndex;
-                            endIndex = temp;
-                        }
+						if (_firstEventUcFound && (m_startEventUc == _eventUc || m_endEventUc == _eventUc))
+							break;
 
-                        for (var index = startIndex; index <= endIndex; ++index)
-                        {
-                            var item = startEventUC.lbEvent.ItemContainerGenerator.ContainerFromIndex(index) as ListBoxItem;
-                            item.IsSelected = true;
-                        }
-                        return;
-                    }
+						if (!_firstEventUcFound)
+							continue;
 
-                    foreach (var eventUC in middleEventUCs)
-                    {
-                        eventUC.lbEvent.SelectionChanged -= lbEvent_SelectionChanged;
-                        eventUC.lbEvent.SelectAll();
-                        eventUC.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
-                    }
+						middleEventUCs.Add(_eventUc);
+					}
 
-                    startEventUC.Focus();
-                    startEventUC.lbEvent.SelectionChanged -= lbEvent_SelectionChanged;
-                    var starEventSelectedIndex = startEventUC.lbEvent.SelectedIndex;
-                    for (var index = 0; index < startEventUC.lbEvent.Items.Count; ++index)
-                    {
-                        var item = startEventUC.lbEvent.ItemContainerGenerator.ContainerFromIndex(index) as ListBoxItem;
-                        item.IsSelected = index >= starEventSelectedIndex;
-                    }
-                    startEventUC.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
+					if (m_startEventUc == m_endEventUc)
+					{
+						int endIndex = m_startEventUc.lbEvent.SelectedIndex;
 
-                    endEventUC.Focus();
-                    endEventUC.lbEvent.SelectionChanged -= lbEvent_SelectionChanged;
-                    var endEventSelectedIndex = endEventUC.lbEvent.SelectedIndex;
-                    for (var index = 0; index < endEventUC.lbEvent.Items.Count; ++index)
-                    {
-                        var item = endEventUC.lbEvent.ItemContainerGenerator.ContainerFromIndex(index) as ListBoxItem;
-                        item.IsSelected = index <= endEventSelectedIndex;
-                    }
-                    endEventUC.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
-                }
-                else if (e.AddedItems.Count > 0 || e.RemovedItems.Count > 0)
-                {
-                    if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
-                    {
-                        foreach (EventUC eventUC in listBoxEvent.Items.OfType<EventUC>().Where(item=> !item.lbEvent.IsMouseCaptureWithin && !item.m_doSelectAll))
-                            eventUC.lbEvent.UnselectAll();
+						if (m_startIndex > endIndex)
+						{
+							int _temp = m_startIndex;
+							m_startIndex = endIndex;
+							endIndex = _temp;
+						}
 
-                        startEventUC = null;
-                        endEventUC = null;
-                        startIndex = 0;
-                    }
+						for (int _index = m_startIndex; _index <= endIndex; ++_index)
+						{
+							ListBoxItem _item = m_startEventUc.lbEvent.ItemContainerGenerator.ContainerFromIndex(_index) as ListBoxItem;
+							_item.IsSelected = true;
+						}
 
-                    if (startEventUC == null)
-                    {
-                        startEventUC = listBoxEvent.Items.OfType<EventUC>().Where(item => item.lbEvent == sender as ListBox).Single();
-                        startIndex = startEventUC.lbEvent.SelectedIndex;
-                    }
-                }
-            }
-            finally
-            {
-                lblSelectedCount.Content = listBoxEvent.Items.OfType<EventUC>().Select(item => item.lbEvent).Sum(item => item.SelectedItems.Count);
-            }
-        }
+						return;
+					}
+
+					foreach (var _eventUc in middleEventUCs)
+					{
+						_eventUc.lbEvent.SelectionChanged -= lbEvent_SelectionChanged;
+						_eventUc.lbEvent.SelectAll();
+						_eventUc.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
+					}
+
+					m_startEventUc.Focus();
+					m_startEventUc.lbEvent.SelectionChanged -= lbEvent_SelectionChanged;
+
+					int _starEventSelectedIndex = m_startEventUc.lbEvent.SelectedIndex;
+
+					for (int _index = 0; _index < m_startEventUc.lbEvent.Items.Count; ++_index)
+					{
+						ListBoxItem _item = m_startEventUc.lbEvent.ItemContainerGenerator.ContainerFromIndex(_index) as ListBoxItem;
+						_item.IsSelected = _index >= _starEventSelectedIndex;
+					}
+
+					m_startEventUc.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
+
+					m_endEventUc.Focus();
+					m_endEventUc.lbEvent.SelectionChanged -= lbEvent_SelectionChanged;
+
+					var _endEventSelectedIndex = m_endEventUc.lbEvent.SelectedIndex;
+
+					for (var _index = 0; _index < m_endEventUc.lbEvent.Items.Count; ++_index)
+					{
+						var _item = m_endEventUc.lbEvent.ItemContainerGenerator.ContainerFromIndex(_index) as ListBoxItem;
+						_item.IsSelected = _index <= _endEventSelectedIndex;
+					}
+
+					m_endEventUc.lbEvent.SelectionChanged += lbEvent_SelectionChanged;
+				}
+				else if (e.AddedItems.Count > 0 || e.RemovedItems.Count > 0)
+				{
+					if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
+					{
+						foreach (EventUC _eventUc in listBoxEvent.Items.OfType<EventUC>().Where(item => !item.lbEvent.IsMouseCaptureWithin && !item.m_doSelectAll))
+							_eventUc.lbEvent.UnselectAll();
+
+						m_startEventUc = null;
+						m_endEventUc = null;
+						m_startIndex = 0;
+					}
+
+					if (m_startEventUc == null)
+					{
+						m_startEventUc = listBoxEvent.Items.OfType<EventUC>().Single(item => item.lbEvent == sender as ListBox);
+						m_startIndex = m_startEventUc.lbEvent.SelectedIndex;
+					}
+				}
+			}
+			finally
+			{
+				int _count = listBoxEvent.Items.OfType<EventUC>().Select(item => item.lbEvent).Sum(item => item.SelectedItems.Count);
+
+				lblSelectedCount.Content = _count.ToString();
+
+				contentActionBar.IsEnabled = _count > 0;
+			}
+		}
 
 		private void ShowInfor()
 		{
@@ -418,8 +437,13 @@ namespace Waveface.Client
 			}
 			else
 			{
+				string _timeLineInformation = (string)Application.Current.FindResource("TimeLineInformation");
+				string _plural = (string)Application.Current.FindResource("plural");
+
+				string _tbTotalCount = string.Format(_timeLineInformation, GetCountsString(PhotosCount, VideosCount), m_eventUCs.Count, ((m_eventUCs.Count > 1) ? _plural : ""));
+
 				gridEmptyPanel.Visibility = Visibility.Collapsed;
-				tbTotalCount.Text = GetCountsString(PhotosCount, VideosCount) + " in " + m_eventUCs.Count + " event" + ((m_eventUCs.Count > 1) ? "s" : "");
+				tbTotalCount.Text = _tbTotalCount;
 			}
 		}
 
@@ -427,9 +451,14 @@ namespace Waveface.Client
 		{
 			string _c = string.Empty;
 
+			string _photo = " " + (string)Application.Current.FindResource("photo");
+			string _photos = " " + (string)Application.Current.FindResource("photos");
+			string _video = " " + (string)Application.Current.FindResource("video");
+			string _videos = " " + (string)Application.Current.FindResource("videos");
+
 			if (photosCount > 0)
 			{
-				_c = photosCount + ((photosCount == 1) ? " photo" : " photos");
+				_c = photosCount + ((photosCount == 1) ? _photo : _photos);
 			}
 
 			if (videosCount > 0)
@@ -439,7 +468,7 @@ namespace Waveface.Client
 					_c = _c + ", ";
 				}
 
-				_c = _c + videosCount + ((videosCount == 1) ? " video" : " videos");
+				_c = _c + videosCount + ((videosCount == 1) ? _video : _videos);
 			}
 
 			return _c;
@@ -505,7 +534,7 @@ namespace Waveface.Client
 				return _s;
 			}
 
-			_s = _date + " " + dt.ToString("HH") + " " + (dt.Hour > 12 ? "PM" : "AM");
+			_s = _date + " " + dt.ToString("HH") + " " + dt.ToString("tt");
 
 			if (!m_defaultEventNameCache.Contains(_s))
 			{
@@ -528,27 +557,35 @@ namespace Waveface.Client
 
 		private string GetTimePeriod(int hour, int minute)
 		{
+			string _LateNight = (string)Application.Current.FindResource("LateNight");
+			string _Night = (string)Application.Current.FindResource("Night");
+			string _Evening = (string)Application.Current.FindResource("Evening");
+			string _Afternoon = (string)Application.Current.FindResource("Afternoon");
+			string _Noon = (string)Application.Current.FindResource("Noon");
+			string _Morning = (string)Application.Current.FindResource("Morning");
+			string _EarlyMorning = (string)Application.Current.FindResource("EarlyMorning");
+
 			int _x = hour * 60 + minute;
 
 			if (_x > (23 * 60 + 59))
-				return "Late Night";
+				return _LateNight;
 
 			if (_x > (20 * 60 + 29))
-				return "Night";
+				return _Night;
 
 			if (_x > (17 * 60 + 59))
-				return "Evening";
+				return _Evening;
 
 			if (_x > (12 * 60 + 59))
-				return "Afternoon";
+				return _Afternoon;
 
 			if (_x > (11 * 60 + 59))
-				return "Noon";
+				return _Noon;
 
 			if (_x > (7 * 60 + 59))
-				return "Morning";
+				return _Morning;
 
-			return "Early Morning";
+			return _EarlyMorning;
 		}
 
 		#endregion
@@ -667,20 +704,6 @@ namespace Waveface.Client
 		}
 
 		#endregion
-
-		private void btnImportAll_Click(object sender, RoutedEventArgs e)
-		{
-			if (!DoImport(null, true))
-			{
-				return;
-			}
-
-			m_eventUCs.Clear();
-
-			ShowInfor();
-
-			m_currentDevice.Refresh();
-		}
 
 		private bool DoImport(EventUC eventUC, bool all)
 		{
@@ -821,31 +844,32 @@ namespace Waveface.Client
 		{
 			List<ContentEntity> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys(false);
 
-            var index = 0;
+			int _index = 0;
+
 			if (_contentEntitys.Count == 1)
 			{
+				List<FileChange> _allContents = listBoxEvent.Items.OfType<EventUC>().SelectMany(item => item.Event).ToList();
+				_contentEntitys = ConvertToContentEntities(false, _allContents).ToList();
 
-                var allContents =listBoxEvent.Items.OfType<EventUC>().SelectMany(item => item.Event).ToList();
-                _contentEntitys = ConvertToContentEntities(false, allContents).ToList();
+				foreach (EventUC _euc in listBoxEvent.Items.OfType<EventUC>())
+				{
+					if (_euc.IsMouseCaptureWithin)
+					{
+						_index += _euc.lbEvent.SelectedIndex + 1;
+						break;
+					}
 
-                foreach (var euc in listBoxEvent.Items.OfType<EventUC>())
-                {
-                    if (euc.IsMouseCaptureWithin)
-                    {
-                        index += euc.lbEvent.SelectedIndex + 1;
-                        break;
-                    }
-
-                    index += euc.lbEvent.Items.Count;
-                }
+					_index += _euc.lbEvent.Items.Count;
+				}
 			}
 
-            index -= 1;
-			var _viewer = new PhotoViewer
+			_index -= 1;
+
+			PhotoViewer _viewer = new PhotoViewer
 							  {
 								  Owner = m_mainWindow,
 								  Source = _contentEntitys,
-                                  SelectedIndex = index
+								  SelectedIndex = _index
 							  };
 
 			_viewer.ShowDialog();
@@ -863,39 +887,38 @@ namespace Waveface.Client
 			return m_mainWindow.AddToFavorite(_contentEntitys);
 		}
 
-		
+
 		public List<ContentEntity> Sub_GetAllSelectedFiles_ContentEntitys(bool simple)
 		{
 			List<FileChange> _allSelectedFiles = GetAllSelectedFiles();
 
-            return ConvertToContentEntities(simple, _allSelectedFiles);
+			return ConvertToContentEntities(simple, _allSelectedFiles);
 		}
 
-        private  List<ContentEntity> ConvertToContentEntities(bool simple, IEnumerable<FileChange> _allSelectedFiles)
-        {
-            List<ContentEntity> _contentEntitys = new List<ContentEntity>();
-            foreach (FileChange _fc in _allSelectedFiles)
-            {
-                if (simple)
-                {
-                    _contentEntitys.Add(new ContentEntity
-                    {
-                        ID = _fc.id,
-                    });
-                }
-                else
-                {
-                    _contentEntitys.Add(new BunnyContent(new Uri(_fc.saved_path), _fc.id, (_fc.type == 0 ? ContentType.Photo : ContentType.Video)));
-                }
-            }
-            return _contentEntitys;
-        }
+		private List<ContentEntity> ConvertToContentEntities(bool simple, IEnumerable<FileChange> _allSelectedFiles)
+		{
+			List<ContentEntity> _contentEntitys = new List<ContentEntity>();
+
+			foreach (FileChange _fc in _allSelectedFiles)
+			{
+				if (simple)
+				{
+					_contentEntitys.Add(new ContentEntity
+											{
+												ID = _fc.id,
+											});
+				}
+				else
+				{
+					_contentEntitys.Add(new BunnyContent(new Uri(_fc.saved_path), _fc.id, (_fc.type == 0 ? ContentType.Photo : ContentType.Video)));
+				}
+			}
+
+			return _contentEntitys;
+		}
 
 		public bool Sub_MoveToFolder()
 		{
-			
-
-
 			var _dialog = new CreateDialog
 							  {
 								  Owner = m_mainWindow,
@@ -908,107 +931,46 @@ namespace Waveface.Client
 			if (string.IsNullOrEmpty(_dialog.CreateName))
 				return false;
 
-			try {
-				List<FileChange> _allSelectedFiles = GetAllSelectedFiles();
+			try
+			{
+				var _targetPath = Path.Combine(Path.GetDirectoryName(m_unsortedGroup.Uri.LocalPath), _dialog.CreateName);
 
-                var targetPath = Path.Combine(Path.GetDirectoryName(m_unsortedGroup.Uri.LocalPath), _dialog.CreateName);
-
-				StationAPI.Move(GetAllSelectedFiles().Select(x => x.id), targetPath);
+				StationAPI.Move(GetAllSelectedFiles().Select(x => x.id), _targetPath);
 			}
 			catch
 			{
 			}
 
 			m_currentDevice.Refresh();
-			var forceReload = m_currentDevice.Contents;
 
 			return true;
 		}
 
 		#endregion
 
-
-		private void miSelectAll_Click(object sender, RoutedEventArgs e)
+		private void ContentActionBar_AddToFavorite(object sender, EventArgs e)
 		{
-			Sub_SelectAll(true);
+			Sub_AddToFavorite();
 		}
 
-		private void miDeselectAll_Click(object sender, RoutedEventArgs e)
+		private void ContentActionBar_AddToStarred(object sender, EventArgs e)
 		{
-			Sub_SelectAll(false);
+			//StarSelectedContents();
 		}
 
-		private void miSlideShow_Click(object sender, RoutedEventArgs e)
+		private void ContentActionBar_CreateFavorite(object sender, EventArgs e)
 		{
-			Sub_SlideShow();
+			Sub_SaveToFavorite();
 		}
 
-		private void miMoveToFolder_Click(object sender, RoutedEventArgs e)
+		private void ContentActionBar_MoveToNewFolder(object sender, EventArgs e)
 		{
-			bool _ret = Current.Sub_MoveToFolder();
-
-			if (_ret)
-			{
-				Current.Sub_SelectAll(false);
-			}
+			Sub_MoveToFolder();
 		}
 
-		private void miSaveToFavorite_Click(object sender, RoutedEventArgs e)
+		private void ContentActionBar_MoveToExistingFolder(object sender, EventArgs e)
 		{
-			bool _ret = Sub_SaveToFavorite();
-
-			if (_ret)
-			{
-				Sub_SelectAll(false);
-			}
+			Sub_MoveToFolder();
 		}
-
-		private void miAddToFavorite_Click(object sender, RoutedEventArgs e)
-		{
-			bool _ret = Sub_AddToFavorite();
-
-			if (_ret)
-			{
-				Sub_SelectAll(false);
-			}
-		}
-		
-		private void miAddToStarredFavorite_Click(object sender, RoutedEventArgs e)
-		{
-			List<ContentEntity> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys(true);
-
-			if (_contentEntitys.Count == 0)
-			{
-				return;
-			}
-
-		m_mainWindow.StarContent(_contentEntitys);
-		}
-
-
-        private void ContentActionBar_AddToFavorite(object sender, EventArgs e)
-        {
-            Sub_AddToFavorite();
-        }
-
-        private void ContentActionBar_AddToStarred(object sender, EventArgs e)
-        {
-            //StarSelectedContents();
-        }
-
-        private void ContentActionBar_CreateFavorite(object sender, EventArgs e)
-        {
-            Sub_SaveToFavorite();
-        }
-
-        private void ContentActionBar_MoveToNewFolder(object sender, EventArgs e)
-        {
-            Sub_MoveToFolder();
-        }
-
-        private void ContentActionBar_MoveToExistingFolder(object sender, EventArgs e)
-        {
-            Sub_MoveToFolder();
-        }
 	}
 }

@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Threading;
 using InfiniteStorage.Data.Pairing;
 using Microsoft.Win32;
@@ -91,7 +92,7 @@ namespace Waveface.Client
 
 				m_pairingRequest = _msgs.pairing_request;
 
-				Application.Current.Dispatcher.Invoke((Action)(() => m_uiDelayTimer.Start()));
+				Application.Current.Dispatcher.Invoke((Action) (() => m_uiDelayTimer.Start()));
 			}
 			catch
 			{
@@ -101,10 +102,10 @@ namespace Waveface.Client
 		private void WS_subscribe_start()
 		{
 			PairingClientMsgs _msgs = new PairingClientMsgs
-										  {
-											  subscribe = new subscribe { pairing = true },
-											  pairing_mode = new pairing_mode { enabled = true }
-										  };
+				                          {
+					                          subscribe = new subscribe {pairing = true},
+					                          pairing_mode = new pairing_mode {enabled = true}
+				                          };
 
 
 			string _json = JsonConvert.SerializeObject(_msgs);
@@ -115,17 +116,17 @@ namespace Waveface.Client
 		private void WS_accept_reject(bool accept)
 		{
 			PairingClientMsgs _msgs = new PairingClientMsgs
-										  {
-											  pairing_mode = new pairing_mode { enabled = false }
-										  };
+				                          {
+					                          pairing_mode = new pairing_mode {enabled = false}
+				                          };
 
 			if (accept)
 			{
-				_msgs.accept = new accept_reject { device_id = m_pairingRequest.device_id };
+				_msgs.accept = new accept_reject {device_id = m_pairingRequest.device_id};
 			}
 			else
 			{
-				_msgs.reject = new accept_reject { device_id = m_pairingRequest.device_id };
+				_msgs.reject = new accept_reject {device_id = m_pairingRequest.device_id};
 			}
 
 			string _json = JsonConvert.SerializeObject(_msgs);
@@ -136,9 +137,9 @@ namespace Waveface.Client
 		private void WS_close_byUser()
 		{
 			PairingClientMsgs _msgs = new PairingClientMsgs
-										  {
-											  pairing_mode = new pairing_mode { enabled = false }
-										  };
+				                          {
+					                          pairing_mode = new pairing_mode {enabled = false}
+				                          };
 
 			string _json = JsonConvert.SerializeObject(_msgs);
 
@@ -150,7 +151,7 @@ namespace Waveface.Client
 			Close();
 		}
 
-		private void spGooglePlay_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void spGooglePlay_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			Process.Start("https://play.google.com/store/apps/details?id=com.waveface.uploader");
 		}
