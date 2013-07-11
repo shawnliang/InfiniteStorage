@@ -110,6 +110,15 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="AddToButton.xaml.cs">
+      <DependentUpon>AddToButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CreateButton.xaml.cs">
+      <DependentUpon>CreateButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MoveToButton.xaml.cs">
+      <DependentUpon>MoveToButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Control\ContentActionBar.xaml.cs">
       <DependentUpon>ContentActionBar.xaml</DependentUpon>
     </Compile>
@@ -261,6 +270,18 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Page Include="AddToButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CreateButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MoveToButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Src\Control\ContentActionBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

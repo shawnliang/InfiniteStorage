@@ -87,7 +87,7 @@ namespace Waveface.Client
 			{
 				SetValue(_hideStarredMenuItem, value);
 
-				AddToStarredMenuItem.Visibility = value ? Visibility.Collapsed : Visibility.Visible;
+				(atbAddTo.ContextMenu.Items[1] as MenuItem).Visibility = value ? Visibility.Collapsed : Visibility.Visible;
 			}
 		}     
 		#endregion
@@ -156,7 +156,7 @@ namespace Waveface.Client
             cm.IsOpen = true;
             cm.PlacementTarget = source;
             cm.Placement = PlacementMode.Top;
-            cm.VerticalOffset = -15;
+            cm.VerticalOffset = -3;
 
             var horizontalOffset = (source.TransformToAncestor(this).Transform(new Point(0d, 0d)).X + cm.ActualWidth > this.ActualWidth) ? (this.ActualWidth - cm.ActualWidth) - source.TransformToAncestor(this).Transform(new Point(0d, 0d)).X : 0;
             cm.HorizontalOffset = horizontalOffset;
@@ -164,19 +164,19 @@ namespace Waveface.Client
 
         private void Image_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            ShowContextMenu((sender as Image), (sender as Image).ContextMenu);
+			ShowContextMenu((sender as UIElement), (sender as UserControl).ContextMenu);
 
         }
 
         private void Image_MouseDown_1(object sender, MouseButtonEventArgs e)
         {
-            ShowContextMenu((sender as Image), (sender as Image).ContextMenu);
+			ShowContextMenu((sender as UIElement), (sender as UserControl).ContextMenu);
 
         }
 
         private void Image_MouseDown_2(object sender, MouseButtonEventArgs e)
         {
-            ShowContextMenu((sender as Image), (sender as Image).ContextMenu);
+			ShowContextMenu((sender as UIElement), (sender as UserControl).ContextMenu);
         }
 
         private static void OnHideMoveToChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
