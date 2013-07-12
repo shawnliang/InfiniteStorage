@@ -383,6 +383,8 @@ update [Labels] set share_enabled = 0, share_proc_seq = seq;
 								}
 							}
 						}
+
+						updateDbSchemaVersion(conn, 12);
 					}
 
 					transaction.Commit();
@@ -400,25 +402,34 @@ update [Labels] set share_enabled = 0, share_proc_seq = seq;
 
 					Manipulation.Manipulation.Move(files, Path.Combine(MyFileFolder.Photo, devFolder, Resources.UnsortedFolderName));
 				}
-
-				using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
-				{
-					conn.Open();
-					updateDbSchemaVersion(conn, 12);
-				}
 			}
-
-
-
 
 
 			using (var conn = new SQLiteConnection(connString))
 			{
 				conn.Open();
 
+				var schemaVersion = getDbSchemaVersion(conn);
+
+				if (schemaVersion == 12)
+				{
+					using (var cmd = conn.CreateCommand())
+					{
+						cmd.CommandText = @"
+ALTER TABLE [Devices] Add Column [deleted] BOOLEAN NULL;
+UPDATE [Devices] SET deleted = 0;
+";
+						cmd.ExecuteNonQuery();
+					}
+
+					updateDbSchemaVersion(conn, 13);
+					schemaVersion = 13;
+				}
+
+
 				var curSchema = getDbSchemaVersion(conn);
 
-				if (curSchema > 12L)
+				if (curSchema > 13L)
 					throw new DBDowngradeException(string.Format("Existing db version {0} is newer than the installed version", curSchema));
 			}
 		}

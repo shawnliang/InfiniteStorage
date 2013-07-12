@@ -22,7 +22,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			var clientInfo = Util.GetClientInfo(cmd.device_id);
 
-			if (clientInfo == null)
+			if (clientInfo == null || clientInfo.deleted)
 			{
 				if (Util.RejectUnpairedDevices)
 				{

@@ -40,7 +40,20 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			using (var db = new MyDbContext())
 			{
-				db.Object.Devices.Add(clientInfo);
+				var existingDev = (from dev in db.Object.Devices
+							 where dev.device_id == clientInfo.device_id
+							 select dev).FirstOrDefault();
+
+				if (existingDev != null)
+				{
+					clientInfo.folder_name = existingDev.folder_name;
+					existingDev.deleted = false;
+				}
+				else
+				{
+					db.Object.Devices.Add(clientInfo);
+				}
+
 				db.Object.SaveChanges();
 			}
 		}

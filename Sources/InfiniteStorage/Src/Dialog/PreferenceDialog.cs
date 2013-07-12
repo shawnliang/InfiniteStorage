@@ -151,13 +151,17 @@ namespace InfiniteStorage
 			if (!deviceListControl.DeletedDevices.Any())
 				return;
 
+			var deviceIds = deviceListControl.DeletedDevices.Select(x=>x.device_id).ToList();
 			using (var db = new MyDbContext())
 			{
+				var query = from dev in db.Object.Devices
+							where deviceIds.Contains(dev.device_id)
+							select dev;
 
-				foreach (var dev in deviceListControl.DeletedDevices)
-				{
-					db.Object.Database.ExecuteSqlCommand("delete from Devices where device_id=?", dev.device_id);
-				}
+				foreach (var dev in query)
+					dev.deleted = true;
+
+				db.Object.SaveChanges();
 			}
 
 			var conns = ConnectedClientCollection.Instance.GetAllConnections();

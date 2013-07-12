@@ -132,15 +132,6 @@ namespace InfiniteStorage
 			Application.Run();
 		}
 
-		private static bool hasAnyRegisteredDevice()
-		{
-			using (var db = new MyDbContext())
-			{
-				return (from d in db.Object.Devices
-						select d).Any();
-			}
-		}
-
 		private static string generateSameServerIdForSameUserOnSamePC()
 		{
 			string serialNum = getMachineSerialNo();

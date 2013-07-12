@@ -17,6 +17,8 @@ namespace InfiniteStorage.Model
 
 		public string folder_name { get; set; }
 
+		public bool deleted { get; set; }
+
 		public virtual IEnumerable<FileAsset> files { get; set; }
 	}
 
