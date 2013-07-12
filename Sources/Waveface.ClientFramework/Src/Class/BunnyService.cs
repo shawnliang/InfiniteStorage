@@ -4,12 +4,13 @@ using System.Data.SQLite;
 using System.IO;
 using Waveface.Model;
 using System.Threading;
+using System.Linq;
 
 namespace Waveface.ClientFramework
 {
 	class BunnyService : Service
 	{
-		private BunnyDeviceTimelineContentGroup unsorted;
+		private BunnyDeviceTimelineContentGroup timeline;
 		private Timer timer;
 		private bool timerStarted;
 		private bool _isRecving;
@@ -42,8 +43,8 @@ namespace Waveface.ClientFramework
 
 		private void PopulateContent(ObservableCollection<IContentEntity> content)
 		{
-			unsorted = new BunnyDeviceTimelineContentGroup(this.ID, Path.Combine(BunnyDB.ResourceFolder, Name));
-			content.Add(unsorted);
+			timeline = new BunnyDeviceTimelineContentGroup(this.ID, Path.Combine(BunnyDB.ResourceFolder, Name));
+			content.Add(timeline);
 
 			using (var conn = BunnyDB.CreateConnection())
 			{
@@ -81,11 +82,19 @@ namespace Waveface.ClientFramework
 		{
 			try
 			{
-				if (unsorted != null)
+				if (IsRecving)
 				{
-					unsorted.Refresh();
+					if (timeline != null)
+					{
+						timeline.Refresh();
+					}
+					
+					var unsorteds = this.Contents.Where(x => x.Name == "Unsorted").ToList();
+					foreach (BunnyContentGroup unsorted in unsorteds)
+					{
+						unsorted.Refresh();
+					}
 				}
-
 			}
 			catch
 			{
