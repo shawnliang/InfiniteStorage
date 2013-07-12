@@ -62,10 +62,13 @@
     <system:String x:Key="EarlyMorning">清晨</system:String>
     <system:String x:Key="TimelineSelectedCountText">已選取 {0}個</system:String>
     <system:String x:Key="EventInterval">事件時間區間:</system:String>
+    
     <system:String x:Key="SHORTER">長</system:String>
     <system:String x:Key="LONGER">短</system:String>
+    
     <system:String x:Key="AllowAutoSync">允許與 [{0}] 自動同步?</system:String>
     <system:String x:Key="AndroidDeviceFound">發現 Android 裝置</system:String>
+    
     <system:String x:Key="AddNewSource">Add a New Source</system:String>
     <system:String x:Key="ANS_1">Sync photos &amp; videos back to your PC</system:String>
     <system:String x:Key="ANS_2">The Favorite Uploader automatically transfers all your photos and videos from your phone back to your PC.</system:String>
@@ -76,4 +79,15 @@
     <system:String x:Key="ANS_7">Searching for mobile devices...</system:String>
     <system:String x:Key="ANS_8">Search for "Favorite" on Google Play</system:String>
     <system:String x:Key="ANS_9">How does it work?</system:String>
+    
+    <system:String x:Key="SelectAll">全選</system:String>
+    <system:String x:Key="UnselectAll">全部不選</system:String>
+    <system:String x:Key="AddTo">加至</system:String>
+    <system:String x:Key="MoveTo">移至</system:String>
+    <system:String x:Key="Create">新增</system:String>
+
+    <system:String x:Key="NewFolder">新目錄</system:String>
+    <system:String x:Key="ExistingFolder">已存在目錄</system:String>
+    <system:String x:Key="Favorite">Favorite</system:String>
+    <system:String x:Key="Starred">Starred</system:String>
 </ResourceDictionary>

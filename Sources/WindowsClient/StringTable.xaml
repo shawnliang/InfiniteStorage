@@ -67,8 +67,10 @@
     <system:String x:Key="EventInterval">Event Interval:</system:String>
     <system:String x:Key="SHORTER">SHORTER</system:String>
     <system:String x:Key="LONGER">LONGER</system:String>
+    
     <system:String x:Key="AllowAutoSync">Allow auto sync from {0}?</system:String>
     <system:String x:Key="AndroidDeviceFound">Android Device Found</system:String>
+    
     <system:String x:Key="AddNewSource">Add a New Source</system:String>
     <system:String x:Key="ANS_1">Sync photos &amp; videos back to your PC</system:String>
     <system:String x:Key="ANS_2">The Favorite Uploader automatically transfers all your photos and videos from your phone back to your PC.</system:String>
@@ -80,4 +82,14 @@
     <system:String x:Key="ANS_8">Search for "Favorite" on Google Play</system:String>
     <system:String x:Key="ANS_9">How does it work?</system:String>
     
+    <system:String x:Key="SelectAll">Select All</system:String>
+    <system:String x:Key="UnselectAll">Unselect All</system:String>
+    <system:String x:Key="AddTo">Add To</system:String>
+    <system:String x:Key="MoveTo">Move To</system:String>
+    <system:String x:Key="Create">Create</system:String>
+
+    <system:String x:Key="NewFolder">New Folder</system:String>
+    <system:String x:Key="ExistingFolder">Existing Folder</system:String>
+    <system:String x:Key="Favorite">Favorite</system:String>
+    <system:String x:Key="Starred">Starred</system:String>
 </ResourceDictionary>

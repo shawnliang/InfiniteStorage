@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿#region
+
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
+#endregion
 
 namespace Waveface.Client
 {
@@ -19,228 +15,221 @@ namespace Waveface.Client
 	/// </summary>
 	public partial class ContentActionBar : UserControl
 	{
-        #region Var
-        public static readonly DependencyProperty _hideMoveTo = DependencyProperty.Register("HideMoveTo", typeof(bool), typeof(ContentActionBar), new UIPropertyMetadata(false, new PropertyChangedCallback(OnHideMoveToChanged)));
-		public static readonly DependencyProperty _enableMoveTo = DependencyProperty.Register("EnableMoveTo", typeof(bool), typeof(ContentActionBar), new UIPropertyMetadata(true, new PropertyChangedCallback(OnEnableMoveToChanged)));
-		public static readonly DependencyProperty _enableCreate = DependencyProperty.Register("EnableCreate", typeof(bool), typeof(ContentActionBar), new UIPropertyMetadata(true, new PropertyChangedCallback(OnEnableCreateChanged)));
-		public static readonly DependencyProperty _enableAddTo = DependencyProperty.Register("EnableAddTo", typeof(bool), typeof(ContentActionBar), new UIPropertyMetadata(true, new PropertyChangedCallback(OnEnableAddToChanged)));
-		public static readonly DependencyProperty _hideStarredMenuItem = DependencyProperty.Register("HideStarredMenuItem", typeof(bool), typeof(ContentActionBar), new UIPropertyMetadata(false, new PropertyChangedCallback(OnHideStarredMenuItemChanged)));
-	
+		#region Var
+
+		public static readonly DependencyProperty _hideMoveTo = DependencyProperty.Register("HideMoveTo", typeof (bool), typeof (ContentActionBar),
+		                                                                                    new UIPropertyMetadata(false, OnHideMoveToChanged));
+
+		public static readonly DependencyProperty _enableMoveTo = DependencyProperty.Register("EnableMoveTo", typeof (bool), typeof (ContentActionBar),
+		                                                                                      new UIPropertyMetadata(true, OnEnableMoveToChanged));
+
+		public static readonly DependencyProperty _enableCreate = DependencyProperty.Register("EnableCreate", typeof (bool), typeof (ContentActionBar),
+		                                                                                      new UIPropertyMetadata(true, OnEnableCreateChanged));
+
+		public static readonly DependencyProperty _enableAddTo = DependencyProperty.Register("EnableAddTo", typeof (bool), typeof (ContentActionBar),
+		                                                                                     new UIPropertyMetadata(true, OnEnableAddToChanged));
+
+		public static readonly DependencyProperty _hideStarredMenuItem = DependencyProperty.Register("HideStarredMenuItem", typeof (bool), typeof (ContentActionBar),
+		                                                                                             new UIPropertyMetadata(false, OnHideStarredMenuItemChanged));
+
 		#endregion
 
-        #region Property
-        public bool HideMoveTo
-        {
-            get
-            {
-                return (bool)GetValue(_hideMoveTo);
-            }
-            set
-            {
-                SetValue(_hideMoveTo, value);
-            }
-        }
+		#region Property
+
+		public bool HideMoveTo
+		{
+			get { return (bool) GetValue(_hideMoveTo); }
+			set { SetValue(_hideMoveTo, value); }
+		}
 
 		public bool EnableMoveTo
 		{
-			get
-			{
-				return (bool)GetValue(_enableMoveTo);
-			}
-			set
-			{
-				SetValue(_enableMoveTo, value);
-			}
+			get { return (bool) GetValue(_enableMoveTo); }
+			set { SetValue(_enableMoveTo, value); }
 		}
 
 		public bool EnableCreate
 		{
-			get
-			{
-				return (bool)GetValue(_enableMoveTo);
-			}
-			set
-			{
-				SetValue(_enableMoveTo, value);
-			}
+			get { return (bool) GetValue(_enableMoveTo); }
+			set { SetValue(_enableMoveTo, value); }
 		}
 
 		public bool EnableAddTo
 		{
-			get
-			{
-				return (bool)GetValue(_enableMoveTo);
-			}
-			set
-			{
-				SetValue(_enableMoveTo, value);
-			}
+			get { return (bool) GetValue(_enableMoveTo); }
+			set { SetValue(_enableMoveTo, value); }
 		}
 
 		public bool HideStarredMenuItem
 		{
-			get
-			{
-				return (bool)GetValue(_hideStarredMenuItem);
-			}
+			get { return (bool) GetValue(_hideStarredMenuItem); }
 			set
 			{
 				SetValue(_hideStarredMenuItem, value);
 
 				(atbAddTo.ContextMenu.Items[1] as MenuItem).Visibility = value ? Visibility.Collapsed : Visibility.Visible;
 			}
-		}     
-		#endregion
-
-
-        #region Event
-        public event EventHandler MoveToNewFolder;
-        public event EventHandler MoveToExistingFolder;
-        public event EventHandler CreateFavorite;
-        public event EventHandler AddToFavorite;
-        public event EventHandler AddToStarred;
-        #endregion
-
-
-        public ContentActionBar()
-		{
-			this.InitializeComponent();
 		}
 
+		#endregion
 
-        #region Protected Method
-        protected void OnMoverToNewFolder(EventArgs e)
-        {
-            if (MoveToNewFolder == null)
-                return;
+		#region Event
 
-            MoveToNewFolder(this, e);
-        }
+		public event EventHandler MoveToNewFolder;
+		public event EventHandler MoveToExistingFolder;
+		public event EventHandler CreateFavorite;
+		public event EventHandler AddToFavorite;
+		public event EventHandler AddToStarred;
 
-        protected void OnMoveToExistingFolder(EventArgs e)
-        {
-            if (MoveToExistingFolder == null)
-                return;
+		#endregion
 
-            MoveToExistingFolder(this, e);
-        }
+		public ContentActionBar()
+		{
+			InitializeComponent();
+		}
 
-        protected void OnCreateFavorite(EventArgs e)
-        {
-            if (CreateFavorite == null)
-                return;
+		#region Protected Method
 
-            CreateFavorite(this, e);
-        }
+		protected void OnMoverToNewFolder(EventArgs e)
+		{
+			if (MoveToNewFolder == null)
+				return;
 
-        protected void OnAddToFavorite(EventArgs e)
-        {
-            if (AddToFavorite == null)
-                return;
+			MoveToNewFolder(this, e);
+		}
 
-            AddToFavorite(this, e);
-        }
+		protected void OnMoveToExistingFolder(EventArgs e)
+		{
+			if (MoveToExistingFolder == null)
+				return;
 
-        protected void OnAddToStarred(EventArgs e)
-        {
-            if (AddToStarred == null)
-                return;
+			MoveToExistingFolder(this, e);
+		}
 
-            AddToStarred(this, e);
-        }
-        #endregion
+		protected void OnCreateFavorite(EventArgs e)
+		{
+			if (CreateFavorite == null)
+				return;
 
-        private void ShowContextMenu(UIElement source, ContextMenu cm)
-        {
-            cm.IsEnabled = true;
-            cm.IsOpen = true;
-            cm.PlacementTarget = source;
-            cm.Placement = PlacementMode.Top;
-            cm.VerticalOffset = -3;
+			CreateFavorite(this, e);
+		}
 
-            var horizontalOffset = (source.TransformToAncestor(this).Transform(new Point(0d, 0d)).X + cm.ActualWidth > this.ActualWidth) ? (this.ActualWidth - cm.ActualWidth) - source.TransformToAncestor(this).Transform(new Point(0d, 0d)).X : 0;
-            cm.HorizontalOffset = horizontalOffset;
-        }
+		protected void OnAddToFavorite(EventArgs e)
+		{
+			if (AddToFavorite == null)
+				return;
 
-        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
-        {
+			AddToFavorite(this, e);
+		}
+
+		protected void OnAddToStarred(EventArgs e)
+		{
+			if (AddToStarred == null)
+				return;
+
+			AddToStarred(this, e);
+		}
+
+		#endregion
+
+		private void ShowContextMenu(UIElement source, ContextMenu cm)
+		{
+			cm.IsEnabled = true;
+			cm.IsOpen = true;
+			cm.PlacementTarget = source;
+			cm.Placement = PlacementMode.Top;
+			cm.VerticalOffset = -3;
+
+			var horizontalOffset = (source.TransformToAncestor(this).Transform(new Point(0d, 0d)).X + cm.ActualWidth > ActualWidth)
+				                       ? (ActualWidth - cm.ActualWidth) - source.TransformToAncestor(this).Transform(new Point(0d, 0d)).X
+				                       : 0;
+
+			cm.HorizontalOffset = horizontalOffset;
+		}
+
+		private void Image_MouseDown(object sender, MouseButtonEventArgs e)
+		{
 			ShowContextMenu((sender as UIElement), (sender as UserControl).ContextMenu);
+		}
 
-        }
-
-        private void Image_MouseDown_1(object sender, MouseButtonEventArgs e)
-        {
+		private void Image_MouseDown_1(object sender, MouseButtonEventArgs e)
+		{
 			ShowContextMenu((sender as UIElement), (sender as UserControl).ContextMenu);
+		}
 
-        }
-
-        private void Image_MouseDown_2(object sender, MouseButtonEventArgs e)
-        {
+		private void Image_MouseDown_2(object sender, MouseButtonEventArgs e)
+		{
 			ShowContextMenu((sender as UIElement), (sender as UserControl).ContextMenu);
-        }
+		}
 
-        private static void OnHideMoveToChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-        {
-            if (o == null)
-                return;
-            var obj = o as ContentActionBar;
-            obj.HideMoveTo = (bool)e.NewValue;
-        }
+		private static void OnHideMoveToChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+		{
+			if (o == null)
+				return;
+
+			var obj = o as ContentActionBar;
+			obj.HideMoveTo = (bool) e.NewValue;
+		}
 
 		private static void OnEnableMoveToChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (o == null)
 				return;
+
 			var obj = o as ContentActionBar;
-			obj.EnableMoveTo = (bool)e.NewValue;
+			obj.EnableMoveTo = (bool) e.NewValue;
 		}
 
 		private static void OnEnableCreateChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (o == null)
 				return;
+
 			var obj = o as ContentActionBar;
-			obj.EnableCreate = (bool)e.NewValue;
+			obj.EnableCreate = (bool) e.NewValue;
 		}
 
 		private static void OnEnableAddToChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (o == null)
 				return;
+
 			var obj = o as ContentActionBar;
-			obj.EnableAddTo = (bool)e.NewValue;
+			obj.EnableAddTo = (bool) e.NewValue;
 		}
 
 		private static void OnHideStarredMenuItemChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (o == null)
 				return;
+
 			var obj = o as ContentActionBar;
-			obj.HideStarredMenuItem = (bool)e.NewValue;
+			obj.HideStarredMenuItem = (bool) e.NewValue;
 		}
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            OnMoverToNewFolder(EventArgs.Empty);
-        }
 
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
-        {
-            OnMoveToExistingFolder(EventArgs.Empty);
-        }
+		private void MenuItem_Click(object sender, RoutedEventArgs e)
+		{
+			OnMoverToNewFolder(EventArgs.Empty);
+		}
 
-        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
-        {
-            OnCreateFavorite(EventArgs.Empty);
-        }
+		private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+		{
+			OnMoveToExistingFolder(EventArgs.Empty);
+		}
 
-        private void MenuItem_Click_3(object sender, RoutedEventArgs e)
-        {
-            OnAddToFavorite(EventArgs.Empty);
-        }
+		private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+		{
+			OnCreateFavorite(EventArgs.Empty);
+		}
 
-        private void MenuItem_Click_4(object sender, RoutedEventArgs e)
-        {
-            OnAddToStarred(EventArgs.Empty);
-        }
+		private void MenuItem_Click_3(object sender, RoutedEventArgs e)
+		{
+			OnAddToFavorite(EventArgs.Empty);
+		}
+
+		private void MenuItem_Click_4(object sender, RoutedEventArgs e)
+		{
+			OnAddToStarred(EventArgs.Empty);
+		}
 	}
 }
