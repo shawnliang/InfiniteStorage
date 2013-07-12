@@ -140,7 +140,7 @@ namespace Waveface.Model
 			{
 				return _description ?? string.Empty;
 			}
-			set
+			private set
 			{
 				if (_description == null)
 					return;
@@ -157,7 +157,7 @@ namespace Waveface.Model
 					_memo = new Dictionary<string, string>();
 				return _memo;
 			}
-			set
+			private set
 			{
 				_memo = value;
 			}
@@ -221,6 +221,10 @@ namespace Waveface.Model
 
 
 		#region Public Method
+		public virtual void Refresh()
+		{ 
+		}
+
 		public override string ToString()
 		{
 			return this.Name;

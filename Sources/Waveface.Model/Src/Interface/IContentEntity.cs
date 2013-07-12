@@ -99,7 +99,7 @@ namespace Waveface.Model
 		/// <value>
 		/// The description.
 		/// </value>
-		String Description { get; set; }
+		String Description { get; }
 
 		/// <summary>
 		/// Gets or sets the memo.
@@ -107,7 +107,11 @@ namespace Waveface.Model
 		/// <value>
 		/// The memo.
 		/// </value>
-		Dictionary<String, String> Memo { get; set; }
+		Dictionary<String, String> Memo { get; }
+		#endregion
+
+		#region Method
+		void Refresh();
 		#endregion
 	}
 }
