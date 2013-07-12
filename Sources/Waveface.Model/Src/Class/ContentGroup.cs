@@ -56,6 +56,10 @@ namespace Waveface.Model
 					_setContentAction(newContents);
 
 					m_ObservableContents.RefreshTo(newContents);
+
+					foreach (var content in m_ObservableContents)
+						content.Refresh();
+
 					m_NeedRefresh = false;
 				}
 				return _readOnlyObservableContents;
@@ -155,7 +159,7 @@ namespace Waveface.Model
 
 
 		#region Public Method
-		public virtual void Refresh()
+		public override void Refresh()
 		{
 			//Contents = null;
 			//m_ObservableContents.Clear();

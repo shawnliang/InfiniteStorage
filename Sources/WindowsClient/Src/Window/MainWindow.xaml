@@ -52,8 +52,10 @@
         </ContextMenu>
 
         <ContextMenu x:Key="cm">
-            <MenuItem Click="StarMenuItem_Click"
-                      Header="Star" />
+            <!--
+                <MenuItem Click="StarMenuItem_Click"
+                Header="Star" />
+            -->
             <MenuItem Click="CreateFavoriteMenuItem_Click"
                       Header="Create Favorite..." />
             <MenuItem Click="AddToFavoriteMenuItem_Click"
@@ -62,6 +64,8 @@
             <MenuItem Click="UnTagMenuItem_Click"
                       Header="Delete" />
         </ContextMenu>
+
+
 
 
         <LinearGradientBrush x:Key="PressedBrush" StartPoint="0,0" EndPoint="0,1">

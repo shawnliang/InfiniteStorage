@@ -125,6 +125,7 @@ namespace Waveface.ClientFramework
 					_likedInited = true;
 					base._liked = GetLiked();
 				}
+
 				return base.Liked;
 			}
 			set
@@ -190,6 +191,13 @@ namespace Waveface.ClientFramework
 
 
 		#region Public Method
+
+		public override void Refresh()
+		{
+			base.Refresh();
+			this.Liked =GetLiked();
+		}
+
 		public override bool Equals(object obj)
 		{
 			//檢查參數是否為null

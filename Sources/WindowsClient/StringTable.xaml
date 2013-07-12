@@ -41,7 +41,7 @@
     <system:String x:Key="SendButtonText">Send</system:String>
     <system:String x:Key="CloseButtonText">Close</system:String>
 
-    <system:String x:Key="plural">s</system:String>    
+    <system:String x:Key="plural">s</system:String>
     <system:String x:Key="DescribeTheEvent">Describe the event...</system:String>
     <system:String x:Key="Minutes_30">30 Minutes</system:String>
     <system:String x:Key="Hour_1">1 Hour</system:String>
@@ -75,9 +75,9 @@
     <system:String x:Key="ANS_3">Add a Phone</system:String>
     <system:String x:Key="ANS_4">Download and run Favorite* Uploader on your Android device.</system:String>
     <system:String x:Key="ANS_5">Make sure your WiFi is on.</system:String>
-    <system:String x:Key="ANS_6">Click "Yes" when your device is connected.</system:String>
+    <system:String x:Key="ANS_6">Click &quot;Yes&quot; when your device is connected.</system:String>
     <system:String x:Key="ANS_7">Searching for mobile devices...</system:String>
-    <system:String x:Key="ANS_8">Search for "Favorite" on Google Play</system:String>
+    <system:String x:Key="ANS_8">Search for &quot;Favorite&quot; on Google Play</system:String>
     <system:String x:Key="ANS_9">How does it work?</system:String>
-    
+
 </ResourceDictionary>
