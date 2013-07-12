@@ -84,9 +84,9 @@
                 <ContextMenu IsEnabled="False"
                              Style="{StaticResource contextMenuStyle1}">
                     <MenuItem Click="MenuItem_Click"
-                              Header="New Folder" />
+                              Header="{DynamicResource NewFolder}" />
                     <MenuItem Click="MenuItem_Click_1"
-                              Header="Existing Folder" />
+                              Header="{DynamicResource ExistingFolder}" />
                 </ContextMenu>
             </local:MoveToButton.ContextMenu>
         </local:MoveToButton>
@@ -98,7 +98,7 @@
             <local:CreateButton.ContextMenu>
                 <ContextMenu Style="{StaticResource contextMenuStyle1}">
                     <MenuItem Click="MenuItem_Click_2"
-                              Header="Favorite" />
+                              Header="{DynamicResource Favorite}" />
                 </ContextMenu>
             </local:CreateButton.ContextMenu>
         </local:CreateButton>
@@ -111,9 +111,9 @@
             <local:AddToButton.ContextMenu>
                 <ContextMenu Style="{StaticResource contextMenuStyle1}">
                     <MenuItem Click="MenuItem_Click_3"
-                              Header="Favorite" />
+                              Header="{DynamicResource Favorite}" />
                     <MenuItem Click="MenuItem_Click_4"
-                              Header="Starred"
+                              Header="{DynamicResource Starred}"
                               Visibility="{Binding HideStarredMenuItem,
                                                    Converter={StaticResource BoolToVisibilityConverter},
                                                    ElementName=UserControl}" />

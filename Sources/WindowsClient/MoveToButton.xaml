@@ -39,6 +39,6 @@
 
 	<StackPanel x:Name="LayoutRoot" Orientation="Vertical">
 		<Image Stretch="None" Style="{StaticResource MoveToStyle}" Margin="0,5,0,0"/>
-		<Label Content="Move To" Style="{StaticResource LabelStyle}" FontSize="10.667"/>
+        <Label Content="{DynamicResource MoveTo}" Style="{StaticResource LabelStyle}" FontSize="10.667"/>
 	</StackPanel>
 </UserControl>

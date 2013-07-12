@@ -102,8 +102,8 @@
                     </StackPanel>
 
                     <StackPanel x:Name="spToolBar" Margin="0,8,16,0" Grid.Row="0" Cursor="Hand"  HorizontalAlignment="Right" Orientation="Horizontal" Visibility="Collapsed" >
-                        <Button x:Name="btnUnselectAll" Style="{StaticResource FlatButtonStyle}" Foreground="White"  Click="btnUnselectAll_Click" Content="UnSelect All" Padding="5,0" />
-                        <Button x:Name="btnSelectAll" Style="{StaticResource FlatButtonStyle}" Foreground="White"   Click="btnSelectAll_Click" Content="Select All" Margin="10,0,0,0" Padding="5,0" />
+                        <Button x:Name="btnUnselectAll" Style="{StaticResource FlatButtonStyle}" Foreground="White"  Click="btnUnselectAll_Click" Content="{DynamicResource UnselectAll}" Padding="5,0" />
+                        <Button x:Name="btnSelectAll" Style="{StaticResource FlatButtonStyle}" Foreground="White"   Click="btnSelectAll_Click" Content="{DynamicResource SelectAll}" Margin="10,0,0,0" Padding="5,0" />
                     </StackPanel>
 
                     <StackPanel Margin="2,0,0,0" Grid.Row="1" Orientation="Horizontal">

@@ -39,6 +39,6 @@
 		<Image
 			Stretch="None"
 			Style="{StaticResource CreateStyle}" Margin="0,5,0,0"/>
-		<Label Content="Create" Style="{StaticResource LabelStyle}" FontSize="10.667"/>
+        <Label Content="{DynamicResource Create}" Style="{StaticResource LabelStyle}" FontSize="10.667"/>
 	</StackPanel>
 </UserControl>
