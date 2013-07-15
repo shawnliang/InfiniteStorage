@@ -918,9 +918,9 @@ namespace Waveface.Client
 			return _contentEntitys;
 		}
 
-		public bool Sub_MoveToFolder()
+		public bool Sub_MoveToNewFolder()
 		{
-			var _dialog = new CreateDialog
+			var _dialog = new CreateFolderDialog
 							  {
 								  Owner = m_mainWindow,
 								  WindowStartupLocation = WindowStartupLocation.CenterOwner
@@ -935,6 +935,46 @@ namespace Waveface.Client
 			try
 			{
 				var _targetPath = Path.Combine(Path.GetDirectoryName(m_unsortedGroup.Uri.LocalPath), _dialog.CreateName);
+
+				StationAPI.Move(GetAllSelectedFiles().Select(x => x.id), _targetPath);
+			}
+			catch
+			{
+			}
+
+			m_currentDevice.Refresh();
+
+			return true;
+		}
+
+		private bool Sub_MoveToExistingFolder()
+		{
+			var _dialog = new MoveToFolderDialog
+							 {
+								 Owner = m_mainWindow,
+								 WindowStartupLocation = WindowStartupLocation.CenterOwner
+							 };
+
+			List<IContentEntity> _folders = new List<IContentEntity>();
+
+			foreach (IContentEntity _entity in m_currentDevice.Contents)
+			{
+				if ((_entity.Name == "Timeline") || (_entity.Name == "Unsorted"))
+				{
+					continue;
+				}
+
+				_folders.Add(_entity);
+			}
+
+			_dialog.ItemSource = _folders;
+
+			if (_dialog.ShowDialog() != true)
+				return false;
+
+			try
+			{
+				string _targetPath = Path.Combine(Path.GetDirectoryName(m_unsortedGroup.Uri.LocalPath), _dialog.SelectedItem.ToString());
 
 				StationAPI.Move(GetAllSelectedFiles().Select(x => x.id), _targetPath);
 			}
@@ -966,12 +1006,12 @@ namespace Waveface.Client
 
 		private void ContentActionBar_MoveToNewFolder(object sender, EventArgs e)
 		{
-			Sub_MoveToFolder();
+			Sub_MoveToNewFolder();
 		}
 
 		private void ContentActionBar_MoveToExistingFolder(object sender, EventArgs e)
 		{
-			Sub_MoveToFolder();
+			Sub_MoveToExistingFolder();
 		}
 	}
 }

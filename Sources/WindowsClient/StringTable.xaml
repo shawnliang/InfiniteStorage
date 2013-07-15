@@ -21,11 +21,15 @@
     <system:String x:Key="EmailButtonText">Email Link...</system:String>
     <system:String x:Key="ExitButtonText">EXIT</system:String>
     <system:String x:Key="AddStarredItemTitle">Add selected items to the following album:</system:String>
+    <system:String x:Key="MoveToExistFolderTitle">Move selected items to the following folder:</system:String>
     <system:String x:Key="OkButtonText">OK</system:String>
     <system:String x:Key="CancelButtonText">Cancel</system:String>
-    <system:String x:Key="CreateDialogTitle">Create New Album</system:String>
-    <system:String x:Key="CreateDialogDescription">Your album name is:</system:String>
+    <system:String x:Key="CreateNewAlbumDialogTitle">Create New Album</system:String>
+    <system:String x:Key="CreateNewAlbumDialogDescription">Your album name is:</system:String>
     <system:String x:Key="DefaultFavoriteName">Untitled Album</system:String>
+    <system:String x:Key="CreateNewFolderDialogTitle">Create New Folder</system:String>
+    <system:String x:Key="CreateNewFolderDialogDescription">Your folder name is:</system:String>
+    <system:String x:Key="DefaultFolderName">Untitled Folder</system:String>
     <system:String x:Key="TakeTourDialogTitle">Take A Quick Tour?</system:String>
     <system:String x:Key="TakeTourButtonText">Yes</system:String>
     <system:String x:Key="LaterButtonText">Ask Me Later</system:String>
