@@ -22,20 +22,20 @@ using Settings = Waveface.Client.Properties.Settings;
 
 namespace Waveface.Client
 {
-    public partial class MainWindow : Window
-    {
-        public static string HELP_URL = "http://waveface.uservoice.com/knowledgebase/articles/214932-step1-import-photos-videos-from-your-phone";
-        
-        private DispatcherTimer uiDelayTimer;
+	public partial class MainWindow : Window
+	{
+		public static string HELP_URL = "http://waveface.uservoice.com/knowledgebase/articles/214932-step1-import-photos-videos-from-your-phone";
 
-        public MainWindow()
-        {
-            InitializeComponent();
+		private DispatcherTimer uiDelayTimer;
+
+		public MainWindow()
+		{
+			InitializeComponent();
 
 			AppDomain.CurrentDomain.UnhandledException += Handler.UnhandledException;
-        }
+		}
 
-		#region Private Method 
+		#region Private Method
 
 		private void RefreshStarFavorite()
 		{
@@ -61,7 +61,7 @@ namespace Waveface.Client
 			if (!Settings.Default.IsFirstSelectFavorite)
 			{
 				var result = TakeTourDialog.ShowWithDynamicResource("TakeTourMsgShare", this);
-				
+
 				if (result.HasValue && result.Value)
 					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215523-step4-share-favorites-with-your-favorite-people");
 
@@ -75,7 +75,7 @@ namespace Waveface.Client
 			if (!Settings.Default.IsFirstSelectStarred)
 			{
 				var result = TakeTourDialog.ShowWithDynamicResource("TakeTourMSgHomeShare", this);
-				
+
 				if (result.HasValue && result.Value)
 					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215522-step3-view-favorite-memories-on-tablets-and-tvs-");
 
@@ -87,9 +87,9 @@ namespace Waveface.Client
 
 		public void StarContent(IEnumerable<IContentEntity> contentEntities)
 		{
-            var contents = contentEntities.OfType<IContent>();
+			var contents = contentEntities.OfType<IContent>();
 
-            ClientFramework.Client.Default.Tag(contents);
+			ClientFramework.Client.Default.Tag(contents);
 
 			RefreshContentArea();
 			RefreshStarFavorite();
@@ -123,7 +123,7 @@ namespace Waveface.Client
 		private void RefreshContentArea()
 		{
 			var group = GetCurrentContentGroup();
-			
+
 			if (group == null)
 				return;
 
@@ -180,9 +180,9 @@ namespace Waveface.Client
 
 			ClientFramework.Client.Default.AddToFavorite(contents, favoriteID);
 
-            (GetFavorite(favoriteID) as IContentGroup).Refresh();
-            //SelectToFavorite(favoriteID);
-            //RefreshSelectedFavorite();
+			(GetFavorite(favoriteID) as IContentGroup).Refresh();
+			//SelectToFavorite(favoriteID);
+			//RefreshSelectedFavorite();
 		}
 
 
@@ -207,17 +207,17 @@ namespace Waveface.Client
 			}
 		}
 
-        private IContentEntity GetFavorite(string favoriteID)
-        {
+		private IContentEntity GetFavorite(string favoriteID)
+		{
 			var favorites = ClientFramework.Client.Default.Favorites;
 
-            foreach (IContentEntity favorite in favorites)
-            {
-                if (favorite.ID == favoriteID)
-                    return favorite;
-            }
-            return null;
-        }
+			foreach (IContentEntity favorite in favorites)
+			{
+				if (favorite.ID == favoriteID)
+					return favorite;
+			}
+			return null;
+		}
 
 		private IContentGroup GetCurrentContentGroup()
 		{
@@ -240,7 +240,7 @@ namespace Waveface.Client
 				return;
 
 			var service = folder.Service;
-			ClientFramework.Client.Default.Delete(null, new[] {folder.Uri.LocalPath});
+			ClientFramework.Client.Default.Delete(null, new[] { folder.Uri.LocalPath });
 			RefreshFavorites();
 
 			service.Refresh();
@@ -286,26 +286,26 @@ namespace Waveface.Client
 			lbxFavorites.SelectedIndex = 0;
 		}
 
-        private void AddSelectedToFavorite()
-        {
-            var selectedContents = GetSelectedContents();
+		private void AddSelectedToFavorite()
+		{
+			var selectedContents = GetSelectedContents();
 
-            AddToFavorite(selectedContents);
-        }
+			AddToFavorite(selectedContents);
+		}
 
-        private void StarSelectedContents()
-        {
-            var selectedContents = GetSelectedContents();
+		private void StarSelectedContents()
+		{
+			var selectedContents = GetSelectedContents();
 
-            StarContent(selectedContents);
-        }
+			StarContent(selectedContents);
+		}
 
-        private void SaveSelectedContentsToFavorite()
-        {
-            var selectedContents = GetSelectedContents();
+		private void SaveSelectedContentsToFavorite()
+		{
+			var selectedContents = GetSelectedContents();
 
-            SaveToFavorite(selectedContents);
-        }
+			SaveToFavorite(selectedContents);
+		}
 
 		#endregion
 
@@ -321,14 +321,14 @@ namespace Waveface.Client
 				return false;
 			}
 
-            string defaultName = (string)Application.Current.FindResource("DefaultFavoriteName");
+			string defaultName = (string)Application.Current.FindResource("DefaultFavoriteName");
 
 			var dialog = new CreateAlbumDialog
-				             {
-					             DefaultName = defaultName, 
-								 Owner = this, 
+							 {
+								 DefaultName = defaultName,
+								 Owner = this,
 								 WindowStartupLocation = WindowStartupLocation.CenterOwner
-				             };
+							 };
 
 			if (dialog.ShowDialog() != true)
 				return false;
@@ -342,26 +342,26 @@ namespace Waveface.Client
 		#endregion
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+		{
 			lbxDeviceContainer.DataContext = ClientFramework.Client.Default.Services;
 
 			lbxFavorites.DataContext = ClientFramework.Client.Default.Favorites;
 
-            rspRightSidePane2.tbxName.KeyDown += tbxName_KeyDown;
-            rspRightSidePane2.tbxName.LostFocus += tbxName_LostFocus;
+			rspRightSidePane2.tbxName.KeyDown += tbxName_KeyDown;
+			rspRightSidePane2.tbxName.LostFocus += tbxName_LostFocus;
 
 			rspRightSidePane2.tbtnHomeSharing.Checked += rspRightSidePane2_OnAirClick;
 			rspRightSidePane2.tbtnHomeSharing.Unchecked += rspRightSidePane2_OnAirClick;
 
 			rspRightSidePane2.tbtnCloudSharing.Checked += tbtnCloudSharing_Checked;
 			rspRightSidePane2.tbtnCloudSharing.Unchecked += tbtnCloudSharing_Checked;
-            rspRightSidePane2.btnCopyShareLink.Click += btnCopyShareLink_Click;
+			rspRightSidePane2.btnCopyShareLink.Click += btnCopyShareLink_Click;
 
 			rspRightSidePanel.btnClearAll.Click += btnClearAll_Click;
 
 			rspRightSidePane2.lblHomeSharingTutorialTip.MouseDown += lblHomeSharingTutorialTip_MouseDown;
 
-            lblContentTypeCount.Content = string.Format("0 photos 0 videos");
+			lblContentTypeCount.Content = string.Format("0 photos 0 videos");
 
 			Observable.FromEventPattern(
 				h => lbxDeviceContainer.TreeViewItemClick += h,
@@ -373,23 +373,23 @@ namespace Waveface.Client
 				.ObserveOn(DispatcherScheduler.Current)
 				.Subscribe(ex => { TreeViewItem_PreviewMouseLeftButtonDown(ex.Sender, ex.EventArgs); });
 
-            Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
-                handler => (s, ex) => handler(ex),
-                h => lbxFavorites.SelectionChanged += h,
-                h => lbxFavorites.SelectionChanged -= h
-                )
-                .Window(TimeSpan.FromMilliseconds(50))
-                .SelectMany(x => x.TakeLast(1))
+			Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
+				handler => (s, ex) => handler(ex),
+				h => lbxFavorites.SelectionChanged += h,
+				h => lbxFavorites.SelectionChanged -= h
+				)
+				.Window(TimeSpan.FromMilliseconds(50))
+				.SelectMany(x => x.TakeLast(1))
 				.SubscribeOn(ThreadPoolScheduler.Instance)
 				.ObserveOn(DispatcherScheduler.Current)
 				.Subscribe(ex => { lbxFavorites_SelectionChanged(lbxFavorites, ex); });
 
-		
-            uiDelayTimer = new DispatcherTimer();
-            uiDelayTimer.Tick += uiDelayTimer_Tick;
-            uiDelayTimer.Interval = new TimeSpan(0, 0, 1);
-            uiDelayTimer.Start();
-        }
+
+			uiDelayTimer = new DispatcherTimer();
+			uiDelayTimer.Tick += uiDelayTimer_Tick;
+			uiDelayTimer.Interval = new TimeSpan(0, 0, 1);
+			uiDelayTimer.Start();
+		}
 
 		private void lblHomeSharingTutorialTip_MouseDown(object sender, MouseButtonEventArgs e)
 		{
@@ -397,222 +397,222 @@ namespace Waveface.Client
 		}
 
 		private void uiDelayTimer_Tick(object sender, EventArgs e)
-        {
-            uiDelayTimer.Stop();
+		{
+			uiDelayTimer.Stop();
 
 			if (Settings.Default.IsFirstUse)
-            {
+			{
 				MessageBoxResult _messageBoxResult = MessageBox.Show(Application.Current.MainWindow, "See a quick tour ?", "Favorite*", MessageBoxButton.YesNo, MessageBoxImage.Question,
-				                                                     MessageBoxResult.Yes);
+																	 MessageBoxResult.Yes);
 
-                if (_messageBoxResult == MessageBoxResult.Yes)
-                {
-                    Process.Start(HELP_URL);
-                }
+				if (_messageBoxResult == MessageBoxResult.Yes)
+				{
+					Process.Start(HELP_URL);
+				}
 
-                WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog();
-                _waitForPairingDialog.Owner = this;
-                _waitForPairingDialog.ShowDialog();
+				WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog();
+				_waitForPairingDialog.Owner = this;
+				_waitForPairingDialog.ShowDialog();
 
 				Settings.Default.IsFirstUse = false;
 				Settings.Default.Save();
-            }
-        }
+			}
+		}
 
 		private void btnCopyShareLink_Click(object sender, RoutedEventArgs e)
-        {
-            Clipboard.SetText((lblContentLocation.DataContext as BunnyLabelContentGroup).ShareURL);
-        }
+		{
+			Clipboard.SetText((lblContentLocation.DataContext as BunnyLabelContentGroup).ShareURL);
+		}
 
 		private void tbtnCloudSharing_Checked(object sender, EventArgs e)
-        {
-            var labelGroup = lblContentLocation.DataContext as BunnyLabelContentGroup;
+		{
+			var labelGroup = lblContentLocation.DataContext as BunnyLabelContentGroup;
 
-            //Waveface.ClientFramework.Client.Default.ShareLabel(labelGroup.ID, rspRightSidePane2.swbCloudSharing.IsOn);
+			//Waveface.ClientFramework.Client.Default.ShareLabel(labelGroup.ID, rspRightSidePane2.swbCloudSharing.IsOn);
 			ClientFramework.Client.Default.ShareLabel(labelGroup.ID, rspRightSidePane2.tbtnCloudSharing.IsChecked.Value);
 
-            labelGroup.RefreshShareProperties();
+			labelGroup.RefreshShareProperties();
 
 			rspRightSidePane2.tbxShareLink.Text = labelGroup.ShareURL;
-        }
+		}
 
 		private void btnClearAll_Click(object sender, RoutedEventArgs e)
-        {
-            ClientFramework.Client.Default.ClearTaggedContents();
-            RefreshContentArea();
-            RefreshSelectedFavorite();
+		{
+			ClientFramework.Client.Default.ClearTaggedContents();
+			RefreshContentArea();
+			RefreshSelectedFavorite();
 			TryUpdateRightSidePanelContentCount();
-        }
+		}
 
 		private void tbxName_LostFocus(object sender, RoutedEventArgs e)
-        {
-            RenameFavorite();
-        }
+		{
+			RenameFavorite();
+		}
 
 		private void tbxName_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key != Key.Enter)
-                return;
-            RenameFavorite();
-        }
+		{
+			if (e.Key != Key.Enter)
+				return;
+			RenameFavorite();
+		}
 
-        private void RenameFavorite()
-        {
-            try
-            {
-                StationAPI.RenameLabel(GetSelectedFavoriteGroup().ID, rspRightSidePane2.tbxName.Text);
-            }
-            catch (Exception)
-            {
-            }
-        }
+		private void RenameFavorite()
+		{
+			try
+			{
+				StationAPI.RenameLabel(GetSelectedFavoriteGroup().ID, rspRightSidePane2.tbxName.Text);
+			}
+			catch (Exception)
+			{
+			}
+		}
 
-        private void Enter()
-        {
-            var group = (lbxContentContainer.SelectedItem as IContentGroup);
+		private void Enter()
+		{
+			var group = (lbxContentContainer.SelectedItem as IContentGroup);
 
-            if (group == null)
-            {
-                //TODO: 待重構
-                var viewer = new PhotoViewer();
-                viewer.Owner = this;
-                viewer.Source = (lbxContentContainer.SelectedItems.Count > 1) ? lbxContentContainer.SelectedItems.OfType<IContentEntity>() : lbxContentContainer.DataContext;
-                viewer.SelectedIndex = (lbxContentContainer.SelectedItems.Count > 1) ? 0 : lbxContentContainer.SelectedIndex;
+			if (group == null)
+			{
+				//TODO: 待重構
+				var viewer = new PhotoViewer();
+				viewer.Owner = this;
+				viewer.Source = (lbxContentContainer.SelectedItems.Count > 1) ? lbxContentContainer.SelectedItems.OfType<IContentEntity>() : lbxContentContainer.DataContext;
+				viewer.SelectedIndex = (lbxContentContainer.SelectedItems.Count > 1) ? 0 : lbxContentContainer.SelectedIndex;
 
-                viewer.ShowDialog();
-                return;
-            }
+				viewer.ShowDialog();
+				return;
+			}
 
-            lblContentLocation.DataContext = group;
+			lblContentLocation.DataContext = group;
 
 			lbxContentContainer.DataContext = null;
 			System.Windows.Forms.Application.DoEvents();
-            lbxContentContainer.DataContext = group.Contents;
-			lbxContentContainer.SelectedIndex = - 1;
-            SetContentTypeCount(group);
-        }
+			lbxContentContainer.DataContext = group.Contents;
+			lbxContentContainer.SelectedIndex = -1;
+			SetContentTypeCount(group);
+		}
 
-        private void SetContentTypeCount(IContentGroup group)
-        {
-            lblContentTypeCount.Content = string.Format("{0} photos {1} videos",
-                        group.Contents.Count(item =>
-                        {
-                            var content = item as IContent;
-                            if (content == null)
-                                return false;
+		private void SetContentTypeCount(IContentGroup group)
+		{
+			lblContentTypeCount.Content = string.Format("{0} photos {1} videos",
+						group.Contents.Count(item =>
+						{
+							var content = item as IContent;
+							if (content == null)
+								return false;
 
-                            return content.Type == ContentType.Photo;
-                        }),
-                        group.Contents.Count(item =>
-                        {
-                            var content = item as IContent;
-                            if (content == null)
-                                return false;
+							return content.Type == ContentType.Photo;
+						}),
+						group.Contents.Count(item =>
+						{
+							var content = item as IContent;
+							if (content == null)
+								return false;
 
-                            return content.Type == ContentType.Video;
-                        }));
-        }
+							return content.Type == ContentType.Video;
+						}));
+		}
 
 		private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            Back();
-        }
+		{
+			Back();
+		}
 
-        private void Back()
-        {
-            var group = lblContentLocation.DataContext as IContentEntity;
-            if (group == null)
-                return;
+		private void Back()
+		{
+			var group = lblContentLocation.DataContext as IContentEntity;
+			if (group == null)
+				return;
 
-            group = group.Parent;
+			group = group.Parent;
 
-            if (group == null)
-            {
-                var service = lbxDeviceContainer.SelectedItem as IService;
-                if (service == null)
-                    return;
-                lblContentLocation.DataContext = null;
+			if (group == null)
+			{
+				var service = lbxDeviceContainer.SelectedItem as IService;
+				if (service == null)
+					return;
+				lblContentLocation.DataContext = null;
 				lbxContentContainer.DataContext = null;
 				System.Windows.Forms.Application.DoEvents();
 
-                lbxContentContainer.DataContext = service.Contents;
+				lbxContentContainer.DataContext = service.Contents;
 				lbxContentContainer.SelectedIndex = -1;
-                return;
-            }
+				return;
+			}
 
-            lblContentLocation.DataContext = group;
+			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = null;
 			System.Windows.Forms.Application.DoEvents();
 
 			lbxContentContainer.DataContext = (group as IContentGroup).Contents;
-			lbxContentContainer.SelectedIndex = - 1;
+			lbxContentContainer.SelectedIndex = -1;
 
-            SetContentTypeCount(group as IContentGroup);
-        }
+			SetContentTypeCount(group as IContentGroup);
+		}
 
-        private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, EventArgs e)
-        {
-            var ti = sender as TreeViewItem;
+		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, EventArgs e)
+		{
+			var ti = sender as TreeViewItem;
 
-            if (ti == null)
-                return;
+			if (ti == null)
+				return;
 
-            var group = ti.DataContext as IContentGroup;
+			var group = ti.DataContext as IContentGroup;
 
-            if (group == null)
-                return;
+			if (group == null)
+				return;
 
-            group.Refresh();
+			group.Refresh();
 
 
 			if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
-            {
-                TryDisplayUnsortedTutorial();
+			{
+				TryDisplayUnsortedTutorial();
 
-                ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(ti) as TreeViewItem;
+				ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(ti) as TreeViewItem;
 
-                if (parent == null)
-                    return;
+				if (parent == null)
+					return;
 
-                var service = parent.DataContext as IService;
+				var service = parent.DataContext as IService;
 
-                if (service == null)
-                    return;
+				if (service == null)
+					return;
 
-                Cursor = Cursors.Wait;
+				Cursor = Cursors.Wait;
 
 				ContentAreaToolBar.Visibility = Visibility.Collapsed;
 				lbxContentContainer.Visibility = Visibility.Collapsed;
 
-                unSortedFilesUC.Visibility = Visibility.Visible;
-                unSortedFilesUC.Init(service, group, this);
+				unSortedFilesUC.Visibility = Visibility.Visible;
+				unSortedFilesUC.Init(service, group, this);
 
-                Cursor = Cursors.Arrow;
-            }
-            else
-            {
-                unSortedFilesUC.Stop();
-                unSortedFilesUC.Visibility = Visibility.Collapsed;
+				Cursor = Cursors.Arrow;
+			}
+			else
+			{
+				unSortedFilesUC.Stop();
+				unSortedFilesUC.Visibility = Visibility.Collapsed;
 				ContentAreaToolBar.Visibility = Visibility.Visible;
 				lbxContentContainer.Visibility = Visibility.Visible;
-            }
+			}
 
 			lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
 
-            Grid.SetColumnSpan(gdContentArea, 2);
+			Grid.SetColumnSpan(gdContentArea, 2);
 
-            cabContentActionBar.HideMoveTo = true;
+			cabContentActionBar.HideMoveTo = true;
 			cabContentActionBar.HideStarredMenuItem = false;
 
 
-            //btnFavoriteAll.Visibility = Visibility.Visible;
+			//btnFavoriteAll.Visibility = Visibility.Visible;
 			gdRightSide.Visibility = Visibility.Collapsed;
 
 			rspRightSidePanel.Visibility = Visibility.Collapsed;
 			rspRightSidePane2.Visibility = Visibility.Collapsed;
 
 
-            lbxFavorites.SelectedItem = null;
+			lbxFavorites.SelectedItem = null;
 
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = null;
@@ -622,89 +622,89 @@ namespace Waveface.Client
 			lbxContentContainer.SelectedIndex = -1;
 
 			SetContentTypeCount(group);
-        }
+		}
 
-				
-        private void lbxContentContainer_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Key.Back:
-                    Back();
-                    break;
-                case Key.Enter:
-                    if (lbxContentContainer.SelectedItem == null)
-                        return;
-                    Enter();
-                    break;
-            }
-        }
 
-        private void FavoriteAllButton_Click(object sender, RoutedEventArgs e)
-        {
-            ClientFramework.Client.Default.Tag(lbxContentContainer.Items.OfType<IContent>());
-            RefreshContentArea();
-            RefreshStarFavorite();
-        }
+		private void lbxContentContainer_KeyDown(object sender, KeyEventArgs e)
+		{
+			switch (e.Key)
+			{
+				case Key.Back:
+					Back();
+					break;
+				case Key.Enter:
+					if (lbxContentContainer.SelectedItem == null)
+						return;
+					Enter();
+					break;
+			}
+		}
+
+		private void FavoriteAllButton_Click(object sender, RoutedEventArgs e)
+		{
+			ClientFramework.Client.Default.Tag(lbxContentContainer.Items.OfType<IContent>());
+			RefreshContentArea();
+			RefreshStarFavorite();
+		}
 
 
 		private void lbxFavorites_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ShowSelectedFavoriteContents(sender);
-        }
+		{
+			ShowSelectedFavoriteContents(sender);
+		}
 
-        private void ShowSelectedFavoriteContents(object sender)
-        {
-            var listBox = sender as ListBox;
+		private void ShowSelectedFavoriteContents(object sender)
+		{
+			var listBox = sender as ListBox;
 
-            if (listBox == null)
-                return;
+			if (listBox == null)
+				return;
 
-            var group = listBox.SelectedItem as IContentGroup;
+			var group = listBox.SelectedItem as IContentGroup;
 
-            if (group == null)
-                return;
+			if (group == null)
+				return;
 
-            lblContentLocation.DataContext = group;
+			lblContentLocation.DataContext = group;
 
-            if (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase))
-            {
-                TryDisplayStarredTutorial();
+			if (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase))
+			{
+				TryDisplayStarredTutorial();
 
 				cabContentActionBar.HideStarredMenuItem = true;
-            }
-            else
-            {
-                TryDisplayFavoriteTutorial();
+			}
+			else
+			{
+				TryDisplayFavoriteTutorial();
 
-                updateRightSidePanel2(group);
+				updateRightSidePanel2(group);
 
 				cabContentActionBar.HideStarredMenuItem = false;
-            }
+			}
 
 			SetContentTypeCount(group);
 
-          
+
 			lbxContentContainer.ContextMenu = Resources["cm"] as ContextMenu;
 			lbxContentContainer.ContextMenu.IsOpen = false;
 			lbxContentContainer.ContextMenu.Visibility = Visibility.Visible;
 
-            gdRightSide.Visibility = Visibility.Visible;
-            Grid.SetColumnSpan(gdContentArea, 1);
+			gdRightSide.Visibility = Visibility.Visible;
+			Grid.SetColumnSpan(gdContentArea, 1);
 
-            cabContentActionBar.HideMoveTo = false;
+			cabContentActionBar.HideMoveTo = false;
 
 			ContentAreaToolBar.Visibility = Visibility.Visible;
 			lbxContentContainer.Visibility = Visibility.Visible;
-            //btnFavoriteAll.Visibility = Visibility.Collapsed;
-            unSortedFilesUC.Visibility = Visibility.Collapsed;
+			//btnFavoriteAll.Visibility = Visibility.Collapsed;
+			unSortedFilesUC.Visibility = Visibility.Collapsed;
 			rspRightSidePane2.Visibility = (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase)) ? Visibility.Collapsed : Visibility.Visible;
 			rspRightSidePanel.Visibility = (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase)) ? Visibility.Visible : Visibility.Collapsed;
 
-            if (lbxDeviceContainer.SelectedItem != null)
-            {
-                lbxDeviceContainer.ClearSelection();
-            }
+			if (lbxDeviceContainer.SelectedItem != null)
+			{
+				lbxDeviceContainer.ClearSelection();
+			}
 
 			lbxContentContainer.DataContext = null;
 			System.Windows.Forms.Application.DoEvents();
@@ -714,115 +714,115 @@ namespace Waveface.Client
 
 
 			TryUpdateRightSidePanelContentCount();
-        }
+		}
 
 		private void TryUpdateRightSidePanelContentCount()
 		{
-            if (rspRightSidePanel.Visibility == Visibility.Visible)
-            {
-                var contentEntities = lbxContentContainer.DataContext as IEnumerable<IContentEntity>;
+			if (rspRightSidePanel.Visibility == Visibility.Visible)
+			{
+				var contentEntities = lbxContentContainer.DataContext as IEnumerable<IContentEntity>;
 
-                if (contentEntities != null)
-                {
-                    rspRightSidePanel.PhotoCount = contentEntities.Count(item =>
-                    {
-                        var content = item as IContent;
-                        if (content == null)
-                            return false;
+				if (contentEntities != null)
+				{
+					rspRightSidePanel.PhotoCount = contentEntities.Count(item =>
+					{
+						var content = item as IContent;
+						if (content == null)
+							return false;
 
-                        return content.Type == ContentType.Photo;
-                    });
+						return content.Type == ContentType.Photo;
+					});
 
-                    rspRightSidePanel.VideoCount = contentEntities.Count(item =>
-                    {
-                        var content = item as IContent;
-                        if (content == null)
-                            return false;
+					rspRightSidePanel.VideoCount = contentEntities.Count(item =>
+					{
+						var content = item as IContent;
+						if (content == null)
+							return false;
 
-                        return content.Type == ContentType.Video;
-                    });
-                }
-            }
-        }
+						return content.Type == ContentType.Video;
+					});
+				}
+			}
+		}
 
 
 		private void rspRightSidePanel_SaveToFavorite(object sender, EventArgs e)
-        {
+		{
 			SaveToFavorite(lbxContentContainer.Items.OfType<IContentEntity>());
-        }
+		}
 
 
-        private void rspRightSidePane2_OnAirClick(object sender, EventArgs e)
-        {
-            ClientFramework.Client.Default.OnAir((lblContentLocation.DataContext as IContentEntity).ID, rspRightSidePane2.tbtnHomeSharing.IsChecked.Value);
-        }
+		private void rspRightSidePane2_OnAirClick(object sender, EventArgs e)
+		{
+			ClientFramework.Client.Default.OnAir((lblContentLocation.DataContext as IContentEntity).ID, rspRightSidePane2.tbtnHomeSharing.IsChecked.Value);
+		}
 
-        private void updateRightSidePanel2(IContentGroup group)
-        {
-            var isOnAir = ClientFramework.Client.Default.IsOnAir(group);
+		private void updateRightSidePanel2(IContentGroup group)
+		{
+			var isOnAir = ClientFramework.Client.Default.IsOnAir(group);
 
 			rspRightSidePane2.tbtnHomeSharing.IsEnabled = ClientFramework.Client.Default.HomeSharingEnabled;
-            rspRightSidePane2.tbtnHomeSharing.IsChecked = isOnAir;
+			rspRightSidePane2.tbtnHomeSharing.IsChecked = isOnAir;
 
-            rspRightSidePane2.tbtnCloudSharing.IsChecked = (group as BunnyLabelContentGroup).ShareEnabled;
+			rspRightSidePane2.tbtnCloudSharing.IsChecked = (group as BunnyLabelContentGroup).ShareEnabled;
 
 			rspRightSidePane2.tbxShareLink.Text = (lblContentLocation.DataContext as BunnyLabelContentGroup).ShareURL;
 		}
 
 		private void rspRightSidePanel_AddToFavorite(object sender, EventArgs e)
-        {
+		{
 			AddToFavorite(lbxContentContainer.Items.OfType<IContentEntity>());
-            }
+		}
 
 
 		private void rspRightSidePane2_CloudSharingClick(object sender, EventArgs e)
-        {
-            Wpf_testHTTP.MainWindow _w = new Wpf_testHTTP.MainWindow();
+		{
+			Wpf_testHTTP.MainWindow _w = new Wpf_testHTTP.MainWindow();
 			var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
 
 			var iniFile = Path.Combine(path, @"sharefavorite.ini");
 
 			var group = GetCurrentContentGroup();
 			_w.setTitle(group.Name);
-            _w.setiniPath(iniFile);
+			_w.setiniPath(iniFile);
 
-            var files = string.Join("~", (lbxContentContainer.DataContext as IEnumerable<IContentEntity>).Select(content => content.Uri.LocalPath).ToArray());
+			var files = string.Join("~", (lbxContentContainer.DataContext as IEnumerable<IContentEntity>).Select(content => content.Uri.LocalPath).ToArray());
 
-            _w.setFilename(files);
+			_w.setFilename(files);
 			_w.setLabelId(group.ID);
-            _w.setRun();
-            _w.ShowDialog();
-        }
+			_w.setRun();
+			_w.ShowDialog();
+		}
 
 
 		private void rspRightSidePane2_DeleteButtonClick(object sender, EventArgs e)
-        {
+		{
 			DeleteCurrentFavorite();
-        }
+		}
 
 
 		private void StarMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            StarSelectedContents();
-        }
+		{
+			StarSelectedContents();
+		}
 
 
 		private void CreateFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            SaveSelectedContentsToFavorite();
-        }
+		{
+			SaveSelectedContentsToFavorite();
+		}
 
 
 		private void AddToFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            AddSelectedToFavorite();
-        }
+		{
+			AddSelectedToFavorite();
+		}
 
 
-        private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
-        {
+		private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
+		{
 			DelectSelectedContents();
-        }
+		}
 
 
 		private void UnTagMenuItem_Click(object sender, RoutedEventArgs e)
@@ -831,37 +831,37 @@ namespace Waveface.Client
 			var selectedContents = GetSelectedContents();
 
 			foreach (var content in selectedContents)
-            ClientFramework.Client.Default.UnTag(group.ID, content.ID);
+				ClientFramework.Client.Default.UnTag(group.ID, content.ID);
 
-            RefreshContentArea();
-        }
+			RefreshContentArea();
+		}
 
 		private void lblContentLocation_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (lblContentLocation.DataContext == null)
-            {
+		{
+			if (lblContentLocation.DataContext == null)
+			{
 				btnBack.Visibility = Visibility.Collapsed;
-                return;
-            }
+				return;
+			}
 
 			btnBack.Visibility = GetCurrentContentGroup().Parent == null
-				                     ? Visibility.Collapsed
-				                     : Visibility.Visible;
-        }
+									 ? Visibility.Collapsed
+									 : Visibility.Visible;
+		}
 
 		private void btnAddNewSource_Click(object sender, MouseButtonEventArgs e)
-        {
+		{
 			WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog();
 			_waitForPairingDialog.Show();
-        }
+		}
 
 		private void Label_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog
-			                                                 {
-			                                                     Owner = this
-			                                                 };
-		    _waitForPairingDialog.ShowDialog();
+															 {
+																 Owner = this
+															 };
+			_waitForPairingDialog.ShowDialog();
 		}
 
 		private Point startPoint;
@@ -871,19 +871,19 @@ namespace Waveface.Client
 		private void List_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			var now = DateTime.Now;
-			ListBoxItem item = FindAnchestor<ListBoxItem>((DependencyObject) e.OriginalSource);
+			ListBoxItem item = FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
 
-            var dataContext = item.DataContext;
+			var dataContext = item.DataContext;
 
-            if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Control) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) && lbxContentContainer.SelectedItems.Contains(dataContext))
-            {
-                needSpecialMulitSelectProcess = true;
+			if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Control) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) && lbxContentContainer.SelectedItems.Contains(dataContext))
+			{
+				needSpecialMulitSelectProcess = true;
 
-                e.Handled = lbxContentContainer.SelectedItems.Count > 1;
+				e.Handled = lbxContentContainer.SelectedItems.Count > 1;
 
-                if (now.Subtract(lastMouseLeftButtonDown).TotalMilliseconds <= 500)
-                    Enter();
-            }
+				if (now.Subtract(lastMouseLeftButtonDown).TotalMilliseconds <= 500)
+					Enter();
+			}
 			startPoint = e.GetPosition(null);
 
 			lastMouseLeftButtonDown = now;
@@ -894,25 +894,25 @@ namespace Waveface.Client
 			if (!needSpecialMulitSelectProcess)
 				return;
 
-			ListBoxItem item = FindAnchestor<ListBoxItem>((DependencyObject) e.OriginalSource);
+			ListBoxItem item = FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
 
 			var dataContext = item.DataContext;
 
 			if (!(lbxContentContainer.SelectedItems.Count == 1 && lbxContentContainer.SelectedItem == dataContext))
 			{
-                lbxContentContainer.UnselectAll();
-                lbxContentContainer.SelectedItem = dataContext;
-                try
-                {
-                    PropertyInfo pi = typeof(ListBox).GetProperty("AnchorItem", BindingFlags.NonPublic | BindingFlags.Instance);
-                    if (pi != null)
-                    {
-                        pi.SetValue(lbxContentContainer, dataContext, null);
-                    }
-                }
-                catch (Exception)
-                {
-                }
+				lbxContentContainer.UnselectAll();
+				lbxContentContainer.SelectedItem = dataContext;
+				try
+				{
+					PropertyInfo pi = typeof(ListBox).GetProperty("AnchorItem", BindingFlags.NonPublic | BindingFlags.Instance);
+					if (pi != null)
+					{
+						pi.SetValue(lbxContentContainer, dataContext, null);
+					}
+				}
+				catch (Exception)
+				{
+				}
 			}
 			;
 
@@ -933,7 +933,7 @@ namespace Waveface.Client
 				ListBox list = sender as ListBox;
 				ListBoxItem item =
 					FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
-				
+
 				var contents = GetSelectedContents();
 
 				// Initialize the drag & drop operation
@@ -962,7 +962,7 @@ namespace Waveface.Client
 			if (!e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) || lbxFavorites.SelectedItem != null)
 			{
 				e.Effects = DragDropEffects.None;
-                e.Handled = true;
+				e.Handled = true;
 				return;
 			}
 
@@ -974,49 +974,49 @@ namespace Waveface.Client
 
 			var ctx = controlItem.DataContext as IContentGroup;
 			if (ctx != null && ctx.ID == "Unsorted")
-        {
-                e.Effects = DragDropEffects.None;
-            }
+			{
+				e.Effects = DragDropEffects.None;
+			}
 			else
 				e.Effects = DragDropEffects.Move;
 
-                e.Handled = true;
-            }
+			e.Handled = true;
+		}
 
 		private void Sources_Drop(object sender, DragEventArgs e)
 		{
 			if (e.Effects == DragDropEffects.Move && e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)))
 			{
-				var controlItem = FindAnchestor<TreeViewItem>((DependencyObject) e.OriginalSource);
+				var controlItem = FindAnchestor<TreeViewItem>((DependencyObject)e.OriginalSource);
 
 				if (controlItem == null)
 					return;
 
 				var sourceGroup = controlItem.DataContext as IContentGroup;
 				var contents = e.Data.GetData(typeof(IEnumerable<IContentEntity>)) as IEnumerable<IContentEntity>;
-				
-                MoveToFolder(sourceGroup, contents);
+
+				MoveToFolder(sourceGroup, contents);
 			}
 		}
 
-        private void MoveToFolder(IContentGroup targetGroup, IEnumerable<IContentEntity> contents)
-        {
+		private void MoveToFolder(IContentGroup targetGroup, IEnumerable<IContentEntity> contents)
+		{
 			MoveToFolder(targetGroup.Uri.LocalPath, contents);
 			targetGroup.Refresh();
-        }
+		}
 
 		private void MoveToFolder(string targetFullPath, IEnumerable<IContentEntity> contents)
 		{
 			if (contents.Any())
-        {
+			{
 				var service = contents.First().Service;
 
 				ClientFramework.Client.Default.Move(contents.Select(x => x.ID), targetFullPath);
 
-            RefreshContentArea();
+				RefreshContentArea();
 
-            service.Refresh();
-        }
+				service.Refresh();
+			}
 		}
 
 		private void Favorites_DragEnter(object sender, DragEventArgs e)
@@ -1033,7 +1033,7 @@ namespace Waveface.Client
 		{
 			if (e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)))
 			{
-				var controlItem = FindAnchestor<ListBoxItem>((DependencyObject) e.OriginalSource);
+				var controlItem = FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
 
 				if (controlItem == null)
 					return;
@@ -1077,30 +1077,30 @@ namespace Waveface.Client
 			StarContent(lbxContentContainer.Items.OfType<IContentEntity>());
 		}
 
-        private void ContentActionBar_AddToFavorite(object sender, EventArgs e)
-        {
-            AddSelectedToFavorite();
-        }
+		private void ContentActionBar_AddToFavorite(object sender, EventArgs e)
+		{
+			AddSelectedToFavorite();
+		}
 
-        private void ContentActionBar_AddToStarred(object sender, EventArgs e)
-        {
-            StarSelectedContents();
-        }
+		private void ContentActionBar_AddToStarred(object sender, EventArgs e)
+		{
+			StarSelectedContents();
+		}
 
-        private void ContentActionBar_CreateFavorite(object sender, EventArgs e)
-        {
-            SaveSelectedContentsToFavorite();
-        }
+		private void ContentActionBar_CreateFavorite(object sender, EventArgs e)
+		{
+			SaveSelectedContentsToFavorite();
+		}
 
-        private void ContentActionBar_MoveToNewFolder(object sender, EventArgs e)
-        {
+		private void ContentActionBar_MoveToNewFolder(object sender, EventArgs e)
+		{
 			var dialog = new CreateFolderDialog
-				             {
-					             Owner = this, 
+							 {
+								 Owner = this,
 								 WindowStartupLocation = WindowStartupLocation.CenterOwner
-				             };
+							 };
 
-			if (dialog.ShowDialog()!=true)
+			if (dialog.ShowDialog() != true)
 				return;
 
 			var contents = GetSelectedContents();
@@ -1110,32 +1110,32 @@ namespace Waveface.Client
 				var targetFullPath = Path.Combine(contents.First().Service.Uri.LocalPath, dialog.CreateName);
 
 				MoveToFolder(targetFullPath, contents);
-        }
+			}
 		}
 
-        private void ContentActionBar_MoveToExistingFolder(object sender, EventArgs e)
-        {
+		private void ContentActionBar_MoveToExistingFolder(object sender, EventArgs e)
+		{
 			MoveToExistingFolder(GetSelectedContents());
 		}
 
 		public void MoveToExistingFolder(IEnumerable<IContentEntity> contents)
 		{
 			var _dialog = new MoveToFolderDialog
-				             {
-					             Owner = this,
-					             WindowStartupLocation = WindowStartupLocation.CenterOwner
-				             };
+							 {
+								 Owner = this,
+								 WindowStartupLocation = WindowStartupLocation.CenterOwner
+							 };
 
 			var _currentGroup = GetCurrentContentGroup();
 
-			_dialog.ItemSource = _currentGroup.Service.Contents.Skip(1).Except(new IContentEntity[] {_currentGroup});
+			_dialog.ItemSource = _currentGroup.Service.Contents.Skip(1).Except(new IContentEntity[] { _currentGroup });
 
 			if (_dialog.ShowDialog() != true)
-                return;
+				return;
 
 			var _selectedGroup = (_dialog.SelectedItem as IContentGroup);
 			MoveToFolder(_selectedGroup, contents);
-        }
+		}
 
 		private void svContentContainer_ScrollChanged(object sender, ScrollChangedEventArgs e)
 		{
@@ -1222,5 +1222,5 @@ namespace Waveface.Client
 			}
 			return null;
 		}
-    }
+	}
 }
