@@ -153,8 +153,8 @@
     <Compile Include="Src\Control\WrapperControl.xaml.cs">
       <DependentUpon>WrapperControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Src\Dialog\AddToDialog.xaml.cs">
-      <DependentUpon>AddToDialog.xaml</DependentUpon>
+    <Compile Include="Src\Dialog\AddToAlbumDialog.xaml.cs">
+      <DependentUpon>AddToAlbumDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Control\BackButton.xaml.cs">
       <DependentUpon>BackButton.xaml</DependentUpon>
@@ -165,8 +165,11 @@
     <Compile Include="Src\Control\ContentItem.xaml.cs">
       <DependentUpon>ContentItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Src\Dialog\CreateDialog.xaml.cs">
-      <DependentUpon>CreateDialog.xaml</DependentUpon>
+    <Compile Include="Src\Dialog\CreateFolderDialog.xaml.cs">
+      <DependentUpon>CreateFolderDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Src\Dialog\CreateAlbumDialog.xaml.cs">
+      <DependentUpon>CreateAlbumDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Control\FavoriteAllButton.xaml.cs">
       <DependentUpon>FavoriteAllButton.xaml</DependentUpon>
@@ -305,7 +308,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Src\Dialog\AddToDialog.xaml">
+    <Page Include="Src\Dialog\AddToAlbumDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -321,7 +324,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Src\Dialog\CreateDialog.xaml">
+    <Page Include="Src\Dialog\CreateFolderDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Src\Dialog\CreateAlbumDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

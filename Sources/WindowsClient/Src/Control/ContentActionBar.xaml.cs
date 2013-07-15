@@ -10,26 +10,23 @@ using System.Windows.Input;
 
 namespace Waveface.Client
 {
-	/// <summary>
-	/// ContentActionBar.xaml 的互動邏輯
-	/// </summary>
 	public partial class ContentActionBar : UserControl
 	{
 		#region Var
 
-		public static readonly DependencyProperty _hideMoveTo = DependencyProperty.Register("HideMoveTo", typeof (bool), typeof (ContentActionBar),
+		public static readonly DependencyProperty s_hideMoveTo = DependencyProperty.Register("HideMoveTo", typeof (bool), typeof (ContentActionBar),
 		                                                                                    new UIPropertyMetadata(false, OnHideMoveToChanged));
 
-		public static readonly DependencyProperty _enableMoveTo = DependencyProperty.Register("EnableMoveTo", typeof (bool), typeof (ContentActionBar),
+		public static readonly DependencyProperty s_enableMoveTo = DependencyProperty.Register("EnableMoveTo", typeof (bool), typeof (ContentActionBar),
 		                                                                                      new UIPropertyMetadata(true, OnEnableMoveToChanged));
 
-		public static readonly DependencyProperty _enableCreate = DependencyProperty.Register("EnableCreate", typeof (bool), typeof (ContentActionBar),
+		public static readonly DependencyProperty s_enableCreate = DependencyProperty.Register("EnableCreate", typeof (bool), typeof (ContentActionBar),
 		                                                                                      new UIPropertyMetadata(true, OnEnableCreateChanged));
 
-		public static readonly DependencyProperty _enableAddTo = DependencyProperty.Register("EnableAddTo", typeof (bool), typeof (ContentActionBar),
+		public static readonly DependencyProperty s_enableAddTo = DependencyProperty.Register("EnableAddTo", typeof (bool), typeof (ContentActionBar),
 		                                                                                     new UIPropertyMetadata(true, OnEnableAddToChanged));
 
-		public static readonly DependencyProperty _hideStarredMenuItem = DependencyProperty.Register("HideStarredMenuItem", typeof (bool), typeof (ContentActionBar),
+		public static readonly DependencyProperty s_hideStarredMenuItem = DependencyProperty.Register("HideStarredMenuItem", typeof (bool), typeof (ContentActionBar),
 		                                                                                             new UIPropertyMetadata(false, OnHideStarredMenuItemChanged));
 
 		#endregion
@@ -38,34 +35,34 @@ namespace Waveface.Client
 
 		public bool HideMoveTo
 		{
-			get { return (bool) GetValue(_hideMoveTo); }
-			set { SetValue(_hideMoveTo, value); }
+			get { return (bool) GetValue(s_hideMoveTo); }
+			set { SetValue(s_hideMoveTo, value); }
 		}
 
 		public bool EnableMoveTo
 		{
-			get { return (bool) GetValue(_enableMoveTo); }
-			set { SetValue(_enableMoveTo, value); }
+			get { return (bool) GetValue(s_enableMoveTo); }
+			set { SetValue(s_enableMoveTo, value); }
 		}
 
 		public bool EnableCreate
 		{
-			get { return (bool) GetValue(_enableMoveTo); }
-			set { SetValue(_enableMoveTo, value); }
+			get { return (bool) GetValue(s_enableMoveTo); }
+			set { SetValue(s_enableMoveTo, value); }
 		}
 
 		public bool EnableAddTo
 		{
-			get { return (bool) GetValue(_enableMoveTo); }
-			set { SetValue(_enableMoveTo, value); }
+			get { return (bool) GetValue(s_enableMoveTo); }
+			set { SetValue(s_enableMoveTo, value); }
 		}
 
 		public bool HideStarredMenuItem
 		{
-			get { return (bool) GetValue(_hideStarredMenuItem); }
+			get { return (bool) GetValue(s_hideStarredMenuItem); }
 			set
 			{
-				SetValue(_hideStarredMenuItem, value);
+				SetValue(s_hideStarredMenuItem, value);
 
 				(atbAddTo.ContextMenu.Items[1] as MenuItem).Visibility = value ? Visibility.Collapsed : Visibility.Visible;
 			}
@@ -152,12 +149,12 @@ namespace Waveface.Client
 			ShowContextMenu((sender as UIElement), (sender as UserControl).ContextMenu);
 		}
 
-		private void Image_MouseDown_1(object sender, MouseButtonEventArgs e)
+		private void Create_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			ShowContextMenu((sender as UIElement), (sender as UserControl).ContextMenu);
 		}
 
-		private void Image_MouseDown_2(object sender, MouseButtonEventArgs e)
+		private void AddTo_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			ShowContextMenu((sender as UIElement), (sender as UserControl).ContextMenu);
 		}
@@ -207,27 +204,27 @@ namespace Waveface.Client
 			obj.HideStarredMenuItem = (bool) e.NewValue;
 		}
 
-		private void MenuItem_Click(object sender, RoutedEventArgs e)
+		private void miMoveToNewFolder_Click(object sender, RoutedEventArgs e)
 		{
 			OnMoverToNewFolder(EventArgs.Empty);
 		}
 
-		private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+		private void miMoveToExistingFolder_Click(object sender, RoutedEventArgs e)
 		{
 			OnMoveToExistingFolder(EventArgs.Empty);
 		}
 
-		private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+		private void miCreate_Click(object sender, RoutedEventArgs e)
 		{
 			OnCreateFavorite(EventArgs.Empty);
 		}
 
-		private void MenuItem_Click_3(object sender, RoutedEventArgs e)
+		private void miAddToFavorite_Click(object sender, RoutedEventArgs e)
 		{
 			OnAddToFavorite(EventArgs.Empty);
 		}
 
-		private void MenuItem_Click_4(object sender, RoutedEventArgs e)
+		private void miAddToStarred_Click(object sender, RoutedEventArgs e)
 		{
 			OnAddToStarred(EventArgs.Empty);
 		}

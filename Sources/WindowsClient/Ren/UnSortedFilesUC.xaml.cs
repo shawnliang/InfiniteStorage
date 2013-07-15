@@ -920,7 +920,7 @@ namespace Waveface.Client
 
 		public bool Sub_MoveToFolder()
 		{
-			var _dialog = new CreateDialog
+			var _dialog = new CreateFolderDialog
 							  {
 								  Owner = m_mainWindow,
 								  WindowStartupLocation = WindowStartupLocation.CenterOwner

@@ -83,9 +83,9 @@
             <local:MoveToButton.ContextMenu>
                 <ContextMenu IsEnabled="False"
                              Style="{StaticResource contextMenuStyle1}">
-                    <MenuItem Click="MenuItem_Click"
+                    <MenuItem Click="miMoveToNewFolder_Click"
                               Header="{DynamicResource NewFolder}" />
-                    <MenuItem Click="MenuItem_Click_1"
+                    <MenuItem Click="miMoveToExistingFolder_Click"
                               Header="{DynamicResource ExistingFolder}" />
                 </ContextMenu>
             </local:MoveToButton.ContextMenu>
@@ -94,10 +94,10 @@
                             IsEnabled="{Binding EnableCreate,
                                                 ElementName=UserControl,
                                                 IsAsync=True}"
-                            MouseDown="Image_MouseDown_1">
+                            MouseDown="Create_MouseDown">
             <local:CreateButton.ContextMenu>
                 <ContextMenu Style="{StaticResource contextMenuStyle1}">
-                    <MenuItem Click="MenuItem_Click_2"
+                    <MenuItem Click="miCreate_Click"
                               Header="{DynamicResource Favorite}" />
                 </ContextMenu>
             </local:CreateButton.ContextMenu>
@@ -107,12 +107,12 @@
                            IsEnabled="{Binding EnableAddTo,
                                                ElementName=UserControl,
                                                IsAsync=True}"
-                           MouseDown="Image_MouseDown_2">
+                           MouseDown="AddTo_MouseDown">
             <local:AddToButton.ContextMenu>
                 <ContextMenu Style="{StaticResource contextMenuStyle1}">
-                    <MenuItem Click="MenuItem_Click_3"
+                    <MenuItem Click="miAddToFavorite_Click"
                               Header="{DynamicResource Favorite}" />
-                    <MenuItem Click="MenuItem_Click_4"
+                    <MenuItem Click="miAddToStarred_Click"
                               Header="{DynamicResource Starred}"
                               Visibility="{Binding HideStarredMenuItem,
                                                    Converter={StaticResource BoolToVisibilityConverter},

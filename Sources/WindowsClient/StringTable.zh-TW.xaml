@@ -23,9 +23,12 @@
     <system:String x:Key="AddStarredItemTitle">將選擇之項目加到下面的相簿:</system:String>
     <system:String x:Key="OkButtonText">確定</system:String>
     <system:String x:Key="CancelButtonText">取消</system:String>
-    <system:String x:Key="CreateDialogTitle">新增相簿</system:String>
-    <system:String x:Key="CreateDialogDescription">請輸入相簿名稱:</system:String>
+    <system:String x:Key="CreateNewAlbumDialogTitle">新增相簿</system:String>
+    <system:String x:Key="CreateNewAlbumDialogDescription">請輸入相簿名稱:</system:String>
     <system:String x:Key="DefaultFavoriteName">未命名的相簿</system:String>
+    <system:String x:Key="CreateNewFolderDialogTitle">新增目錄</system:String>
+    <system:String x:Key="CreateNewFolderDialogDescription">請輸入目錄名稱:</system:String>
+    <system:String x:Key="DefaultFolderName">未命名的目錄</system:String>
     <system:String x:Key="TakeTourDialogTitle">觀看快速導覽?</system:String>
     <system:String x:Key="TakeTourButtonText">觀看</system:String>
     <system:String x:Key="LaterButtonText">下次再說</system:String>
