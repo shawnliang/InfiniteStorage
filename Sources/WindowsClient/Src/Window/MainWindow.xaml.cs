@@ -976,11 +976,17 @@ namespace Waveface.Client
 			if (ctx != null && ctx.ID == "Unsorted")
 			{
 				e.Effects = DragDropEffects.None;
+				e.Handled = true;
+				return;
 			}
-			else
-				e.Effects = DragDropEffects.Move;
 
-			e.Handled = true;
+			var contents = e.Data.GetData(typeof(IEnumerable<IContentEntity>)) as IEnumerable<IContentEntity>;
+			if (contents.Any() && contents.First().Service != ctx.Service)
+			{
+				e.Effects = DragDropEffects.None;
+				e.Handled = true;
+				return;
+			}
 		}
 
 		private void Sources_Drop(object sender, DragEventArgs e)
@@ -1200,7 +1206,7 @@ namespace Waveface.Client
 		}
 
 		private ChildControl FindVisualChild<ChildControl>(DependencyObject DependencyObj)
-	  where ChildControl : DependencyObject
+			where ChildControl : DependencyObject
 		{
 			for (int i = 0; i < VisualTreeHelper.GetChildrenCount(DependencyObj); i++)
 			{
