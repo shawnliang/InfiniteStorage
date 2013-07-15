@@ -165,6 +165,9 @@
     <Compile Include="Src\Control\ContentItem.xaml.cs">
       <DependentUpon>ContentItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Src\Dialog\MoveToFolderDialog.xaml.cs">
+      <DependentUpon>MoveToFolderDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Dialog\CreateFolderDialog.xaml.cs">
       <DependentUpon>CreateFolderDialog.xaml</DependentUpon>
     </Compile>
@@ -321,6 +324,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Src\Control\ContentItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Src\Dialog\MoveToFolderDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

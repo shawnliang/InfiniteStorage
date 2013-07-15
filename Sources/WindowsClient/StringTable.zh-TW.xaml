@@ -21,6 +21,7 @@
     <system:String x:Key="EmailButtonText">Email給...</system:String>
     <system:String x:Key="ExitButtonText">離開</system:String>
     <system:String x:Key="AddStarredItemTitle">將選擇之項目加到下面的相簿:</system:String>
+    <system:String x:Key="MoveToExistFolderTitle">將選擇之項目移至下面的目錄:</system:String>
     <system:String x:Key="OkButtonText">確定</system:String>
     <system:String x:Key="CancelButtonText">取消</system:String>
     <system:String x:Key="CreateNewAlbumDialogTitle">新增相簿</system:String>

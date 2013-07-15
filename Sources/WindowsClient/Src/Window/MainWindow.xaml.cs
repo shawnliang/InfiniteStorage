@@ -226,7 +226,6 @@ namespace Waveface.Client
 
 		private IEnumerable<IContentEntity> GetSelectedContents()
 		{
-			var group = GetCurrentContentGroup();
 			return lbxContentContainer.SelectedItems.OfType<IContentEntity>().ToArray();
 		}
 
@@ -245,8 +244,6 @@ namespace Waveface.Client
 			RefreshFavorites();
 
 			service.Refresh();
-
-			var contents = service.Contents;
 
 			EmptyContentArea();
 		}
@@ -326,10 +323,12 @@ namespace Waveface.Client
 
 			string defaultName = (string) Application.Current.FindResource("DefaultFavoriteName");
 
-			var dialog = new CreateAlbumDialog();
-			dialog.DefaultName = defaultName;
-			dialog.Owner = this;
-			dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+			var dialog = new CreateAlbumDialog
+				             {
+					             DefaultName = defaultName, 
+								 Owner = this, 
+								 WindowStartupLocation = WindowStartupLocation.CenterOwner
+				             };
 
 			if (dialog.ShowDialog() != true)
 				return false;
@@ -549,7 +548,6 @@ namespace Waveface.Client
 			lbxContentContainer.SelectedIndex = - 1;
 
 			SetContentTypeCount(group as IContentGroup);
-			return;
 		}
 
 		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, EventArgs e)
@@ -873,9 +871,7 @@ namespace Waveface.Client
 		private void List_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			var now = DateTime.Now;
-			ListBox list = sender as ListBox;
-			ListBoxItem item =
-				FindAnchestor<ListBoxItem>((DependencyObject) e.OriginalSource);
+			ListBoxItem item = FindAnchestor<ListBoxItem>((DependencyObject) e.OriginalSource);
 
 			var dataContext = item.DataContext;
 
@@ -898,9 +894,7 @@ namespace Waveface.Client
 			if (!needSpecialMulitSelectProcess)
 				return;
 
-			ListBox list = sender as ListBox;
-			ListBoxItem item =
-				FindAnchestor<ListBoxItem>((DependencyObject) e.OriginalSource);
+			ListBoxItem item = FindAnchestor<ListBoxItem>((DependencyObject) e.OriginalSource);
 
 			var dataContext = item.DataContext;
 
@@ -995,9 +989,7 @@ namespace Waveface.Client
 		{
 			if (e.Effects == DragDropEffects.Move && e.Data.GetDataPresent(typeof (IEnumerable<IContentEntity>)))
 			{
-				var control = sender as TreeView;
-				var controlItem =
-					FindAnchestor<TreeViewItem>((DependencyObject) e.OriginalSource);
+				var controlItem = FindAnchestor<TreeViewItem>((DependencyObject) e.OriginalSource);
 
 				if (controlItem == null)
 					return;
@@ -1026,7 +1018,6 @@ namespace Waveface.Client
 				RefreshContentArea();
 
 				service.Refresh();
-				var tempcontents = service.Contents;
 			}
 		}
 
@@ -1044,9 +1035,7 @@ namespace Waveface.Client
 		{
 			if (e.Data.GetDataPresent(typeof (IEnumerable<IContentEntity>)))
 			{
-				var list = sender as ListBox;
-				var controlItem =
-					FindAnchestor<ListBoxItem>((DependencyObject) e.OriginalSource);
+				var controlItem = FindAnchestor<ListBoxItem>((DependencyObject) e.OriginalSource);
 
 				if (controlItem == null)
 					return;
@@ -1107,9 +1096,11 @@ namespace Waveface.Client
 
 		private void ContentActionBar_MoveToNewFolder(object sender, EventArgs e)
 		{
-			var dialog = new CreateAlbumDialog();
-			dialog.Owner = this;
-			dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+			var dialog = new CreateFolderDialog
+				             {
+					             Owner = this, 
+								 WindowStartupLocation = WindowStartupLocation.CenterOwner
+				             };
 
 			if (dialog.ShowDialog() != true)
 				return;
@@ -1126,18 +1117,26 @@ namespace Waveface.Client
 
 		private void ContentActionBar_MoveToExistingFolder(object sender, EventArgs e)
 		{
-			var dialog = new AddToAlbumDialog();
-			dialog.Owner = this;
-			dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+			MoveToExistingFolder(GetSelectedContents());
+		}
 
-			var currentGroup = GetCurrentContentGroup();
-			dialog.ItemSource = currentGroup.Service.Contents.Skip(1).Except(new IContentEntity[] {currentGroup});
+		public void MoveToExistingFolder(IEnumerable<IContentEntity> contents)
+		{
+			var _dialog = new MoveToFolderDialog
+				             {
+					             Owner = this,
+					             WindowStartupLocation = WindowStartupLocation.CenterOwner
+				             };
 
-			if (dialog.ShowDialog() != true)
+			var _currentGroup = GetCurrentContentGroup();
+
+			_dialog.ItemSource = _currentGroup.Service.Contents.Skip(1).Except(new IContentEntity[] {_currentGroup});
+
+			if (_dialog.ShowDialog() != true)
 				return;
 
-			var selectedGroup = (dialog.SelectedItem as IContentGroup);
-			MoveToFolder(selectedGroup, GetSelectedContents());
+			var _selectedGroup = (_dialog.SelectedItem as IContentGroup);
+			MoveToFolder(_selectedGroup, contents);
 		}
 
 		private void svContentContainer_ScrollChanged(object sender, ScrollChangedEventArgs e)

@@ -43,8 +43,6 @@ namespace Waveface.ClientFramework
 
 		private void PopulateContent(ObservableCollection<IContentEntity> content)
 		{
-			content.Clear();
-
 			timeline = new BunnyDeviceTimelineContentGroup(ID, Path.Combine(BunnyDB.ResourceFolder, Name));
 			content.Add(timeline);
 
