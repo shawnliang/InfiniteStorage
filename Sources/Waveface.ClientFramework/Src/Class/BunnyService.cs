@@ -76,6 +76,16 @@ namespace Waveface.ClientFramework
 			}
 		}
 
+		public override void Refresh()
+		{
+			base.Refresh();
+
+			timeline = new BunnyDeviceTimelineContentGroup(ID, Path.Combine(BunnyDB.ResourceFolder, Name));
+
+			m_ObservableContents.Remove(timeline);
+			m_ObservableContents.Insert(0, timeline);
+		}
+
 		private void refresh(object nil)
 		{
 			try

@@ -22,11 +22,24 @@ namespace Waveface.Model
 		#region Private Property
 		private bool m_NeedRefresh { get; set; }
 
+
+		Lazy<IEnumerable<IContentEntity>> m_Contents
+		{
+			get;
+			set;
+		}
+
+		//private Action<ObservableCollection<IContentEntity>> m_populateFunc;
+		#endregion
+
+
+		#region Protected Property
+		
 		/// <summary>
 		/// Gets the m_ observable contents.
 		/// </summary>
 		/// <value>The m_ observable contents.</value>
-		private ObservableCollection<IContentEntity> m_ObservableContents
+		protected ObservableCollection<IContentEntity> m_ObservableContents
 		{
 			get
 			{
@@ -38,16 +51,7 @@ namespace Waveface.Model
 				return _observableContents;
 			}
 		}
-
-		Lazy<IEnumerable<IContentEntity>> m_Contents
-		{
-			get;
-			set;
-		}
-
-		private Action<ObservableCollection<IContentEntity>> m_populateFunc;
 		#endregion
-
 
 
 		#region Public Property
@@ -167,7 +171,7 @@ namespace Waveface.Model
 		#region Private Method
 		protected void SetContents(Action<ObservableCollection<IContentEntity>> func)
 		{
-			m_populateFunc = func;
+			//m_populateFunc = func;
 
 			m_Contents = new Lazy<IEnumerable<IContentEntity>>(() =>
 			{
@@ -232,13 +236,15 @@ namespace Waveface.Model
 			OnContentPropertyChanged(e);
 		}
 
-		public void Refresh()
+		public virtual void Refresh()
 		{
 			m_Contents.ClearValue();
 
 			m_NeedRefresh = true;
 			//m_ObservableContents.Clear();
-			m_populateFunc(m_ObservableContents);
+			//m_populateFunc(m_ObservableContents);
+
+			OnPropertyChanged("Contents");
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
