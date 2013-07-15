@@ -180,7 +180,7 @@
 
     <TreeView.ItemTemplate>
         <HierarchicalDataTemplate ItemsSource="{Binding Contents}">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" AllowDrop="False">
                 <Label Content="{Binding Name}"
                        FontSize="18"
                        Foreground="#a8a8a8" />
