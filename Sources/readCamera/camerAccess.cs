@@ -216,9 +216,6 @@ namespace readCamera
 		{
 			try
 			{
-				if (!parent.Contains("DCIM"))
-					return;
-				
 				if (!item.Properties.Exists("Item Name"))
 					return;
 
