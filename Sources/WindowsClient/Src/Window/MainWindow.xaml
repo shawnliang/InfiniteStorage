@@ -263,7 +263,7 @@
         -->
 
         <DataTemplate DataType="{x:Type wvmodel:Content}">
-            <local:WrapperControl Name="wc"
+            <local:WrapperControl x:Name="wc"
                                   Padding="10"
                                   Type="{x:Type local:ContentItem}">
                 <!--  <local:ContentItem Visibility="Collapsed"/>  -->
@@ -473,9 +473,7 @@
                                       BorderBrush="{x:Null}"
                                       CreateFavoriteInvoked="lbxDeviceContainer_CreateFavoriteInvoked"
                                       DeleteSourceInvoked="lbxDeviceContainer_DeleteSourceInvoked"
-                                      DragEnter="Sources_DragEnter"
-                                      DragLeave="lbxDeviceContainer_DragLeave"
-                                      DragOver="lbxDeviceContainer_DragOver"
+                                      DragOver="Sources_DragOver"
                                       Drop="Sources_Drop"
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                       StarInvoked="lbxDeviceContainer_StarInvoked"

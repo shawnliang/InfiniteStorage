@@ -992,33 +992,31 @@ namespace Waveface.Client
 			return null;
 		}
 
-		private void Sources_DragEnter(object sender, DragEventArgs e)
+		private void Sources_DragOver(object sender, DragEventArgs e)
 		{
 			if (!e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) || lbxFavorites.SelectedItem != null)
 			{
 				e.Effects = DragDropEffects.None;
                 e.Handled = true;
+				return;
 			}
+
+			var controlItem =
+					FindAnchestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+
+			if (controlItem == null)
+				return;
+
+			var ctx = controlItem.DataContext as IContentGroup;
+			if (ctx != null && ctx.ID == "Unsorted")
+			{
+				e.Effects = DragDropEffects.None;
+			}
+			else
+				e.Effects = DragDropEffects.Move;
+
+			e.Handled = true;
 		}
-
-
-        private void lbxDeviceContainer_DragLeave(object sender, DragEventArgs e)
-        {
-            if (!e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) || lbxFavorites.SelectedItem != null)
-            {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
-            }
-        }
-
-        private void lbxDeviceContainer_DragOver(object sender, DragEventArgs e)
-        {
-            if (!e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) || lbxFavorites.SelectedItem != null)
-            {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
-            }
-        }
 
 		private void Sources_Drop(object sender, DragEventArgs e)
 		{
