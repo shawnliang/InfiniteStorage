@@ -516,10 +516,5 @@ namespace Waveface.Client
 		{
 			SelectAll(true);
 		}
-
-		private void btnUnselectAll_Click(object sender, RoutedEventArgs e)
-		{
-			SelectAll(false);
-		}
 	}
 }
