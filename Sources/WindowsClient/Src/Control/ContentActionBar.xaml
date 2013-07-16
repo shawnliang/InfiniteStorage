@@ -76,7 +76,7 @@
                                                 ElementName=UserControl,
                                                 IsAsync=True}"
                             MouseDown="Image_MouseDown"
-                            Visibility="{Binding HideMoveTo,
+                            Visibility="{Binding ShowMoveTo,
                                                  Converter={StaticResource BoolToVisibilityConverter},
                                                  ElementName=UserControl,
                                                  IsAsync=True}">
@@ -99,6 +99,8 @@
                 <ContextMenu Style="{StaticResource contextMenuStyle1}">
                     <MenuItem Click="miCreate_Click"
                               Header="{DynamicResource Favorite}" />
+                    <MenuItem Click="miMoveToNewFolder_Click"
+                              Header="{DynamicResource NewFolder}" />
                 </ContextMenu>
             </local:CreateButton.ContextMenu>
         </local:CreateButton>
@@ -117,6 +119,8 @@
                               Visibility="{Binding HideStarredMenuItem,
                                                    Converter={StaticResource BoolToVisibilityConverter},
                                                    ElementName=UserControl}" />
+                    <MenuItem Click="miMoveToExistingFolder_Click"
+                              Header="{DynamicResource ExistingFolder}" />
                 </ContextMenu>
             </local:AddToButton.ContextMenu>
         </local:AddToButton>

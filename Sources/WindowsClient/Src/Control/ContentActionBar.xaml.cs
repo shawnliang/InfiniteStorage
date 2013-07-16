@@ -14,11 +14,11 @@ namespace Waveface.Client
 	{
 		#region Var
 
-		public static readonly DependencyProperty s_hideMoveTo = DependencyProperty.Register("HideMoveTo", typeof (bool), typeof (ContentActionBar),
-		                                                                                    new UIPropertyMetadata(false, OnHideMoveToChanged));
+		public static readonly DependencyProperty s_showMoveTo = DependencyProperty.Register("ShowMoveTo", typeof (bool), typeof (ContentActionBar),
+		                                                                                    new UIPropertyMetadata(false, OnShowMoveToChanged));
 
 		public static readonly DependencyProperty s_enableMoveTo = DependencyProperty.Register("EnableMoveTo", typeof (bool), typeof (ContentActionBar),
-		                                                                                      new UIPropertyMetadata(true, OnEnableMoveToChanged));
+		                                                                                      new UIPropertyMetadata(false, OnEnableMoveToChanged));
 
 		public static readonly DependencyProperty s_enableCreate = DependencyProperty.Register("EnableCreate", typeof (bool), typeof (ContentActionBar),
 		                                                                                      new UIPropertyMetadata(true, OnEnableCreateChanged));
@@ -33,10 +33,10 @@ namespace Waveface.Client
 
 		#region Property
 
-		public bool HideMoveTo
+		public bool ShowMoveTo
 		{
-			get { return (bool) GetValue(s_hideMoveTo); }
-			set { SetValue(s_hideMoveTo, value); }
+			get { return (bool) GetValue(s_showMoveTo); }
+			set { SetValue(s_showMoveTo, value); }
 		}
 
 		public bool EnableMoveTo
@@ -159,13 +159,13 @@ namespace Waveface.Client
 			ShowContextMenu((sender as UIElement), (sender as UserControl).ContextMenu);
 		}
 
-		private static void OnHideMoveToChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+		private static void OnShowMoveToChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (o == null)
 				return;
 
 			var obj = o as ContentActionBar;
-			obj.HideMoveTo = (bool) e.NewValue;
+			obj.ShowMoveTo = (bool) e.NewValue;
 		}
 
 		private static void OnEnableMoveToChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)

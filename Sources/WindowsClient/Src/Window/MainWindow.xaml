@@ -617,7 +617,7 @@
                                         AddToFavorite="ContentActionBar_AddToFavorite"
                                         AddToStarred="ContentActionBar_AddToStarred"
                                         CreateFavorite="ContentActionBar_CreateFavorite"
-                                        HideMoveTo="True"
+                                        ShowMoveTo="False"
                                         MoveToExistingFolder="ContentActionBar_MoveToExistingFolder"
                                         MoveToNewFolder="ContentActionBar_MoveToNewFolder"
                                         Padding="0,0,5,0"

@@ -601,7 +601,6 @@ namespace Waveface.Client
 
 			Grid.SetColumnSpan(gdContentArea, 2);
 
-			cabContentActionBar.HideMoveTo = true;
 			cabContentActionBar.HideStarredMenuItem = false;
 
 
@@ -691,8 +690,6 @@ namespace Waveface.Client
 
 			gdRightSide.Visibility = Visibility.Visible;
 			Grid.SetColumnSpan(gdContentArea, 1);
-
-			cabContentActionBar.HideMoveTo = false;
 
 			ContentAreaToolBar.Visibility = Visibility.Visible;
 			lbxContentContainer.Visibility = Visibility.Visible;
