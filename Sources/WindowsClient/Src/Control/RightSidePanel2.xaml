@@ -76,6 +76,11 @@
                     <Setter TargetName="border" Property="Background" Value="#FFA0A0A0" />
                     <Setter TargetName="border" Property="BorderBrush" Value="Black" />
                 </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="border" Property="Background" Value="#E5E5E5" />
+                    <Setter TargetName="border" Property="BorderBrush" Value="#FFADB2B5" />
+                    <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="#FF838383" />
+                </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter TargetName="border" Property="Background" Value="#FFF4F4F4" />
                     <Setter TargetName="border" Property="BorderBrush" Value="#FFADB2B5" />
@@ -104,13 +109,15 @@
                  Text="[Favorite Name]"
                  TextChanged="tbxName_TextChanged" />
 
+
         <ToggleButton x:Name="tbtnHomeSharing"
                       Height="34"
                       Margin="10,20,10,0"
                       Background="#FF4F4F4F"
                       Foreground="White"
                       Style="{DynamicResource HomeSharingButtonStyle}"
-                      Template="{DynamicResource ButtonBaseControlTemplate1}" />
+                      Template="{DynamicResource ButtonBaseControlTemplate1}"
+                      Cursor="Hand"/>
         <Label x:Name="lblHomeSharingTutorialTip"
                Margin="10,0"
                HorizontalAlignment="Center"
@@ -123,7 +130,8 @@
                       Background="#FF4F4F4F"
                       Foreground="White"
                       Style="{DynamicResource ShareLinkButtonStyle}"
-                      Template="{DynamicResource ButtonBaseControlTemplate1}" />
+                      Template="{DynamicResource ButtonBaseControlTemplate1}"
+                      Cursor="Hand"/>
         <TextBlock Margin="10,5,10,0"
                    HorizontalAlignment="Center"
                    Foreground="#FFA8A8A8"
