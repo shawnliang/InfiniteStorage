@@ -6,7 +6,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         Title="Sharing ..."
         Width="700"
-        Height="620"
+        Height="499"
         Background="#FFB4B4B4"
         Icon="images/FAV_064.png"
         ResizeMode="NoResize"
@@ -30,15 +30,11 @@
                G="215"
                R="215" />
 
-        <SolidColorBrush x:Key="DefaultBrush"
-                         Color="#4F4F4F" />
-        <SolidColorBrush x:Key="HighlightBrush"
-                         Color="{StaticResource HighlightColor}" />
-        <SolidColorBrush x:Key="PressedBrush"
-                         Color="{StaticResource PressedColor}" />
+        <SolidColorBrush x:Key="DefaultBrush" Color="#4F4F4F" />
+        <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource HighlightColor}" />
+        <SolidColorBrush x:Key="PressedBrush" Color="{StaticResource PressedColor}" />
 
-        <Style x:Key="FlatButtonStyle"
-               TargetType="Button">
+        <Style x:Key="FlatButtonStyle" TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
             <Setter Property="BorderThickness" Value="2" />
@@ -111,19 +107,157 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="0,0,0,0"
-          Background="#5a5a5a">
+    <Grid Margin="0,0,0,0" Background="#5a5a5a">
 
         <TabControl x:Name="myTabControl"
-                    Width="696"
                     Background="#5a5a5a"
                     BorderThickness="0">
             <TabItem x:Name="tab1"
-                     Height="0"
-                     Margin="-2,0,-342,-3"
-                     Header="TabItem">
-                <Grid Margin="0,0,-4,-12"
-                      Background="#5a5a5a">
+                     Header="TabItem"
+                     Visibility="Collapsed">
+                <Grid Margin="-4,5,0,-17" Background="#5a5a5a">
+
+                    <StackPanel Margin="40,15" Orientation="Vertical">
+                        <Label x:Name="label_title"
+                               Content="{DynamicResource ShareWithTitle}"
+                               FontSize="18"
+                               Foreground="#FFFDFDFD" />
+                        <ListBox x:Name="email_list"
+                                 MinHeight="80"
+                                 FontSize="18"
+                                 Foreground="Black"
+                                 MouseRightButtonDown="email_list_MouseRightButtonDown"
+                                 Opacity=".6"
+                                 ScrollViewer.VerticalScrollBarVisibility="Visible">
+                            <ListBox.ContextMenu>
+                                <ContextMenu x:Name="cm">
+                                    <MenuItem Click="MenuItem_Click"
+                                              Header="Delete"
+                                              IsCheckable="False"
+                                              Opacity="0.6" />
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
+                        </ListBox>
+
+                        <Controls:AutoCompleteBox x:Name="AutoCompleteBox"
+                                                  MinHeight="30"
+                                                  VerticalAlignment="Top"
+                                                  Background="White"
+                                                  FontSize="18"
+                                                  Foreground="Black"
+                                                  GotFocus="AutoCompleteBox_GotFocus"
+                                                  KeyUp="AutoCompleteBox_KeyDown"
+                                                  MouseLeftButtonUp="AutoCompleteBox_MouseLeftButtonUp"
+                                                  MouseUp="AutoCompleteBox_MouseUp"
+                                                  PreviewMouseLeftButtonDown="AutoCompleteBox_PreviewMouseLeftButtonDown"
+                                                  RenderTransformOrigin="0.5,0.5">
+                            <Controls:AutoCompleteBox.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform Angle="0.161" />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </Controls:AutoCompleteBox.RenderTransform>
+                            <Controls:AutoCompleteBox.Style>
+                                <Style BasedOn="{StaticResource {x:Type Controls:AutoCompleteBox}}" TargetType="Controls:AutoCompleteBox">
+                                    <Style.Triggers>
+                                        <Trigger Property="PendingUI:WatermarkTextBehavior.IsWatermarked" Value="True">
+                                            <Setter Property="Foreground" Value="White" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Controls:AutoCompleteBox.Style>
+                            <i:Interaction.Behaviors>
+                                <PendingUI:WatermarkTextBehavior Text="Invite more people..." />
+                            </i:Interaction.Behaviors>
+                        </Controls:AutoCompleteBox>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Button x:Name="button_import"
+                                    Grid.Column="1"
+                                    MinWidth="201"
+                                    MinHeight="32"
+                                    Margin="15"
+                                    HorizontalAlignment="Right"
+                                    Click="button_import_Click"
+                                    Content="{DynamicResource ImportContactButtonText}"
+                                    Foreground="White"
+                                    Style="{DynamicResource FlatButtonStyle}" />
+
+                            <StackPanel x:Name="connectedPanel"
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        Orientation="Horizontal">
+                                <Image Width="30"
+                                       Height="30"
+                                       HorizontalAlignment="Left"
+                                       RenderTransformOrigin="0.6,-1.036"
+                                       Source="images/gmail_64.png" />
+                                <Label Margin="5,15"
+                                       VerticalAlignment="Top"
+                                       Content="Connected"
+                                       FontSize="18"
+                                       Foreground="White" />
+                            </StackPanel>
+
+                            <Label x:Name="label_invalid"
+                                   Grid.Column="0"
+                                   Margin="0,5"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   Content="Invalid email format"
+                                   FontSize="18"
+                                   Foreground="White" />
+
+                        </Grid>
+
+                        <Label x:Name="label_title_Copy"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Content="{DynamicResource SenderNameTitle}"
+                               FontSize="18"
+                               Foreground="#FFFDFDFD" />
+
+                        <TextBox x:Name="textbox_name"
+                                 VerticalAlignment="Top"
+                                 FontSize="18" />
+                        <Label x:Name="label_title_Copy1"
+                               Content="{DynamicResource SendMessageTitle}"
+                               FontSize="18"
+                               Foreground="#FFFDFDFD" />
+                        <TextBox x:Name="textbox_message"
+                                 MinHeight="60"
+                                 FontSize="18"
+                                 TextWrapping="Wrap" />
+
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                            <Button x:Name="button1"
+                                    MinWidth="90"
+                                    MinHeight="32"
+                                    Margin="20"
+                                    VerticalAlignment="Top"
+                                    Click="Button_Click"
+                                    Content="{DynamicResource SendButtonText}"
+                                    Foreground="White"
+                                    Style="{DynamicResource FlatButtonStyle}" />
+
+                            <Button MinWidth="90"
+                                    MinHeight="32"
+                                    Margin="20"
+                                    VerticalAlignment="Top"
+                                    Click="Button_Click_1"
+                                    Content="{DynamicResource CloseButtonText}"
+                                    Foreground="White"
+                                    Style="{DynamicResource FlatButtonStyle}" />
+                        </StackPanel>
+                    </StackPanel>
+
                     <!--  <TextBox x:Name="AutoCompleteBox"  HorizontalAlignment="Left" Height="68" Margin="158,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="755" FontSize="18" Background="Black" Foreground="#FF64AEF9" BorderThickness="2,1"/>  -->
                     <Label x:Name="label_debug"
                            Width="31"
@@ -140,25 +274,8 @@
                            Opacity="0.5"
                            Visibility="Collapsed" />
 
-                    <Button x:Name="button1"
-                            Width="116"
-                            Height="32"
-                            Margin="365,527,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Click="Button_Click"
-                            Content="{DynamicResource SendButtonText}"
-                            Foreground="White"
-                            Style="{DynamicResource FlatButtonStyle}" />
-                    <Label x:Name="label_title"
-                           Width="442"
-                           Height="61"
-                           Margin="86,26,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="{DynamicResource ShareWithTitle}"
-                           FontSize="20"
-                           Foreground="#FFFDFDFD" />
+
+
                     <TextBox x:Name="textBox_return"
                              Height="279"
                              Margin="10,351,5,0"
@@ -173,170 +290,16 @@
                             </LinearGradientBrush>
                         </TextBox.OpacityMask>
                     </TextBox>
-                    <Button Width="103"
-                            Height="32"
-                            Margin="500,527,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Click="Button_Click_1"
-                            Content="{DynamicResource CloseButtonText}"
-                            Foreground="White"
-                            Style="{DynamicResource FlatButtonStyle}" />
-                    <Image x:Name="image_gmail"
-                           Width="30"
-                           Height="28"
-                           Margin="87,526,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Source="images/gmail_64.png"
-                           Visibility="Collapsed" />
-                    <Label x:Name="connected_gmail"
-                           Width="154"
-                           Margin="126,526,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="Connected"
-                           FontSize="18"
-                           Foreground="White"
-                           Visibility="Collapsed" />
-                    <Label x:Name="label_invalid"
-                           Width="235"
-                           Margin="86,160,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="Invalid Email Format"
-                           FontSize="18"
-                           Foreground="White"
-                           Visibility="Collapsed" />
-                    <Label x:Name="label_favorite"
-                           Width="294"
-                           Height="39"
-                           Margin="268,435,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="Favorite Shared!"
-                           FontSize="24"
-                           Foreground="#FFFBF8F8"
-                           RenderTransformOrigin="0.507,0.231"
-                           Visibility="Collapsed" />
-                    <Image x:Name="label_pass"
-                           Width="38"
-                           Height="30"
-                           Margin="230,440,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Source="images/OK_white (1).png"
-                           Visibility="Collapsed" />
-                    <Button x:Name="button_import"
-                            Width="201"
-                            Height="32"
-                            Margin="86,527,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Click="button_import_Click"
-                            Content="{DynamicResource ImportContactButtonText}"
-                            Foreground="White"
-                            Style="{DynamicResource FlatButtonStyle}" />
-                    <Label x:Name="label_title_Copy"
-                           Width="235"
-                           Height="37"
-                           Margin="86,206,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="{DynamicResource SenderNameTitle}"
-                           FontSize="20"
-                           Foreground="#FFFDFDFD" />
-                    <TextBox x:Name="textbox_name"
-                             Width="523"
-                             Height="37"
-                             Margin="86,242,0,0"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             FontSize="20"
-                             TextWrapping="Wrap" />
-                    <Label x:Name="label_title_Copy1"
-                           Width="235"
-                           Height="37"
-                           Margin="86,287                                ,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="{DynamicResource SendMessageTitle}"
-                           FontSize="20"
-                           Foreground="#FFFDFDFD" />
-                    <TextBox x:Name="textbox_message"
-                             Width="523"
-                             Height="60"
-                             Margin="86,325,0,0"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             FontSize="20"
-                             TextWrapping="Wrap" />
-                    <ListBox x:Name="email_list"
-                             Height="69"
-                             Margin="86,58,80,463"
-                             FontSize="20"
-                             Foreground="Black"
-                             MouseRightButtonDown="email_list_MouseRightButtonDown"
-                             Opacity=".6"
-                             ScrollViewer.VerticalScrollBarVisibility="Visible">
-                        <ListBox.ContextMenu>
-                            <ContextMenu x:Name="cm">
-                                <MenuItem Click="MenuItem_Click"
-                                          Header="Delete"
-                                          IsCheckable="False"
-                                          Opacity="0.6" />
-                            </ContextMenu>
-                        </ListBox.ContextMenu>
-                    </ListBox>
-                    <Controls:AutoCompleteBox x:Name="AutoCompleteBox"
-                                              Height="30"
-                                              Margin="86,128,80,0"
-                                              VerticalAlignment="Top"
-                                              Background="White"
-                                              BorderThickness="2,1"
-                                              FontSize="18"
-                                              Foreground="Black"
-                                              GotFocus="AutoCompleteBox_GotFocus"
-                                              KeyUp="AutoCompleteBox_KeyDown"
-                                              MouseLeftButtonUp="AutoCompleteBox_MouseLeftButtonUp"
-                                              MouseUp="AutoCompleteBox_MouseUp"
-                                              PreviewMouseLeftButtonDown="AutoCompleteBox_PreviewMouseLeftButtonDown"
-                                              RenderTransformOrigin="0.5,0.5">
-                        <Controls:AutoCompleteBox.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform />
-                                <SkewTransform />
-                                <RotateTransform Angle="0.161" />
-                                <TranslateTransform />
-                            </TransformGroup>
-                        </Controls:AutoCompleteBox.RenderTransform>
-                        <Controls:AutoCompleteBox.Style>
-                            <Style BasedOn="{StaticResource {x:Type Controls:AutoCompleteBox}}"
-                                   TargetType="Controls:AutoCompleteBox">
-                                <Style.Triggers>
-                                    <Trigger Property="PendingUI:WatermarkTextBehavior.IsWatermarked" Value="True">
-                                        <Setter Property="Foreground" Value="White" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Controls:AutoCompleteBox.Style>
-                        <i:Interaction.Behaviors>
-                            <PendingUI:WatermarkTextBehavior Text="Invite more people..." />
-                        </i:Interaction.Behaviors>
-                    </Controls:AutoCompleteBox>
-
                 </Grid>
             </TabItem>
             <TabItem x:Name="tab2"
-                     Height="0"
-                     Margin="0,-4,0,-2"
                      VerticalAlignment="Top"
                      BorderBrush="#FFB6B0B0"
                      BorderThickness="0"
-                     Header="TabItem">
+                     Header="TabItem"
+                     Visibility="Collapsed">
 
-                <Grid Margin="-3,-10,-6,0"
-                      Background="#FFB6B0B0">
+                <Grid Margin="-3,-10,-6,0" Background="#FFB6B0B0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="38" />
                         <RowDefinition Height="*" />

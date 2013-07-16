@@ -314,6 +314,9 @@ namespace Wpf_testHTTP
             }
             InitializeComponent();
 
+			connectedPanel.Visibility = System.Windows.Visibility.Collapsed;
+			label_invalid.Visibility = System.Windows.Visibility.Collapsed;
+
             if (email.Length != 0)
             {
                 AutoCompleteBox.Text = email;
@@ -412,19 +415,21 @@ namespace Wpf_testHTTP
             }
             shareButtonClick = true;
 
-            sendEmailList();
-
-            label_favorite.Visibility = Visibility.Visible;
-            label_pass.Visibility = Visibility.Visible;
-
+			if (sendEmailList())
+			{
+				this.Close();
+			}
+			else
+			{
+				MessageBox.Show("Unable to send invitation. Please check your network connectivity");
+			}
+			
             return;
         }
 
         private void service_run()
         {
             shareButtonClick = false;
-            label_favorite.Visibility = Visibility.Visible;
-            label_pass.Visibility = Visibility.Visible;
             log.Info("end of create new Post ");
 
            // sendEmailList();            // send email list to server
@@ -563,9 +568,6 @@ namespace Wpf_testHTTP
 
         private void busy_flag_MouseEnter(object sender, MouseEventArgs e)
         {
-            // busy_flag.Visibility = Visibility.Collapsed;
-            label_favorite.Visibility = Visibility.Collapsed;
-            label_pass.Visibility = Visibility.Collapsed;
             this.Close();
         }
 
@@ -732,8 +734,7 @@ namespace Wpf_testHTTP
                 if (i0 >= 0)
                 {
                     myTabControl.SelectedIndex = 0;
-                    image_gmail.Visibility = System.Windows.Visibility.Collapsed;
-                    connected_gmail.Visibility = image_gmail.Visibility;
+					connectedPanel.Visibility = System.Windows.Visibility.Collapsed;
                     button_import.Visibility = Visibility.Visible;
                     // user say no, just return to input page
                     // myTabControl.SelectedIndex = 0;
@@ -748,8 +749,7 @@ namespace Wpf_testHTTP
             bool result = getAccessToken(token);
             if (result == false)
             {
-                connected_gmail.Visibility = Visibility.Collapsed;
-                image_gmail.Visibility = Visibility.Collapsed;
+                connectedPanel.Visibility = Visibility.Collapsed;
                 // clear Setup refresh key 
                 iniParser parser = new iniParser();
                 // String appStartPath = System.IO.Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
@@ -760,8 +760,7 @@ namespace Wpf_testHTTP
             }
             else
             {
-                connected_gmail.Visibility = Visibility.Visible;
-                image_gmail.Visibility = Visibility.Visible;
+				connectedPanel.Visibility = Visibility.Visible;
             }
 
         }
@@ -835,8 +834,7 @@ namespace Wpf_testHTTP
                 }
                 getSuccess = true;
                 button_import.Visibility = Visibility.Collapsed;
-                image_gmail.Visibility = System.Windows.Visibility.Visible;
-                connected_gmail.Visibility = image_gmail.Visibility;
+				connectedPanel.Visibility = System.Windows.Visibility.Visible;
                 myTabControl.SelectedIndex = 0;
             }
             catch (Exception err)
@@ -891,15 +889,11 @@ namespace Wpf_testHTTP
 
         private void AutoCompleteBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            label_favorite.Visibility = Visibility.Collapsed;
-            label_pass.Visibility = Visibility.Collapsed;
             label_invalid.Visibility = Visibility.Collapsed;
         }
 
         private void AutoCompleteBox_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            label_favorite.Visibility = Visibility.Collapsed;
-            label_pass.Visibility = Visibility.Collapsed;
             if (IsValidEmail(AutoCompleteBox.Text) == false)
                 return;
             bool result = checkAvailable(AutoCompleteBox.Text);
@@ -923,8 +917,6 @@ namespace Wpf_testHTTP
 
         private void AutoCompleteBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            label_favorite.Visibility = Visibility.Collapsed;
-            label_pass.Visibility = Visibility.Collapsed;
         }
 
         private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
