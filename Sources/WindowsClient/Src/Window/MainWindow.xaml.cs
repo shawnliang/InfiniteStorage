@@ -973,7 +973,8 @@ namespace Waveface.Client
 				return;
 
 			var ctx = controlItem.DataContext as IContentGroup;
-			if (ctx != null && ctx.ID == "Unsorted")
+
+			if (ctx == null || ctx.ID == "Unsorted")
 			{
 				e.Effects = DragDropEffects.None;
 				e.Handled = true;
