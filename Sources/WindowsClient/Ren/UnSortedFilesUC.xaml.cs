@@ -907,11 +907,12 @@ namespace Waveface.Client
 					_contentEntitys.Add(new ContentEntity
 											{
 												ID = _fc.id,
+												Service = this.m_currentDevice
 											});
 				}
 				else
 				{
-					_contentEntitys.Add(new BunnyContent(new Uri(_fc.saved_path), _fc.id, (_fc.type == 0 ? ContentType.Photo : ContentType.Video)));
+					_contentEntitys.Add(new BunnyContent(new Uri(_fc.saved_path), _fc.id, (_fc.type == 0 ? ContentType.Photo : ContentType.Video)) { Service = m_currentDevice });
 				}
 			}
 

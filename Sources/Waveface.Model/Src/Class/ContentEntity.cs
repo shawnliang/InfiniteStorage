@@ -77,7 +77,7 @@ namespace Waveface.Model
 		}
 
 
-		public virtual IService Service { get; internal set; }
+		public virtual IService Service { get; set; }
 
 		/// <summary>
 		/// Gets or sets the parent.
