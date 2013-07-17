@@ -101,9 +101,22 @@ namespace Waveface.ClientFramework
 
 					var unsorteds = Contents.Where(x => x.Name == "Unsorted").ToList();
 
-					foreach (BunnyContentGroup unsorted in unsorteds)
+					if (unsorteds.Any())
 					{
-						unsorted.Refresh();
+						foreach (BunnyContentGroup unsorted in unsorteds)
+						{
+							unsorted.Refresh();
+						}
+					}
+					else
+					{
+						ObservableCollection<IContentEntity> newContents = new ObservableCollection<IContentEntity>();
+						PopulateContent(newContents);
+						if (newContents.Where(x => x.Name == "Unsorted").Any())
+						{
+							base.Refresh();
+						}
+
 					}
 				}
 			}
