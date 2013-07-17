@@ -47,7 +47,11 @@ namespace InfiniteStorage
 		{
 			using (var db = new MyDbContext())
 			{
-				return db.Object.Devices.ToList();
+				var query = from dev in db.Object.Devices
+							where !dev.deleted
+							select dev;
+
+				return query.ToList();
 			}
 		}
 
