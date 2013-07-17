@@ -87,7 +87,7 @@ namespace Waveface.Client
 
 		public void StarContent(IEnumerable<IContentEntity> contentEntities)
 		{
-			var contents = contentEntities.OfType<IContent>();
+			IEnumerable<IContent> contents = contentEntities.OfType<IContent>();
 
 			ClientFramework.Client.Default.Tag(contents);
 

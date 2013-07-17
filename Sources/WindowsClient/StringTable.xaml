@@ -96,4 +96,9 @@
     <system:String x:Key="Favorite">Album</system:String>
     <system:String x:Key="Starred">Starred</system:String>
 
+    <system:String x:Key="CreateFavorite">Create Album</system:String>
+    <system:String x:Key="CreateNewFolder">Create New Folder</system:String>
+    <system:String x:Key="AddToFavorite">Add To Album</system:String>
+    <system:String x:Key="AddToStarred">Add To Starred</system:String>
+    <system:String x:Key="AddToExistingFolder">Add To Existing Folder</system:String>
 </ResourceDictionary>

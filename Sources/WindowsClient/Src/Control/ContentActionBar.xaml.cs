@@ -87,7 +87,7 @@ namespace Waveface.Client
 
 		#region Protected Method
 
-		protected void OnMoverToNewFolder(EventArgs e)
+		public void OnMoverToNewFolder(EventArgs e)
 		{
 			if (MoveToNewFolder == null)
 				return;
@@ -95,7 +95,7 @@ namespace Waveface.Client
 			MoveToNewFolder(this, e);
 		}
 
-		protected void OnMoveToExistingFolder(EventArgs e)
+		public void OnMoveToExistingFolder(EventArgs e)
 		{
 			if (MoveToExistingFolder == null)
 				return;
@@ -103,7 +103,7 @@ namespace Waveface.Client
 			MoveToExistingFolder(this, e);
 		}
 
-		protected void OnCreateFavorite(EventArgs e)
+		public void OnCreateFavorite(EventArgs e)
 		{
 			if (CreateFavorite == null)
 				return;
@@ -111,7 +111,7 @@ namespace Waveface.Client
 			CreateFavorite(this, e);
 		}
 
-		protected void OnAddToFavorite(EventArgs e)
+		public void OnAddToFavorite(EventArgs e)
 		{
 			if (AddToFavorite == null)
 				return;
@@ -119,7 +119,7 @@ namespace Waveface.Client
 			AddToFavorite(this, e);
 		}
 
-		protected void OnAddToStarred(EventArgs e)
+		public void OnAddToStarred(EventArgs e)
 		{
 			if (AddToStarred == null)
 				return;

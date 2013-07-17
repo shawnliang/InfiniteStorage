@@ -221,6 +221,10 @@ namespace Waveface.Client
 
 		private void ShowEvents()
 		{
+			BunnyLabelContentGroup _contentEntity = (BunnyLabelContentGroup)ClientFramework.Client.Default.Favorites[0];
+
+			List<string> _starredIDs = GetStarredIDs(_contentEntity);
+
 			Cursor = Cursors.Wait;
 
 			m_defaultEventNameCache = new List<string>();
@@ -243,7 +247,7 @@ namespace Waveface.Client
 									   Event = _event
 								   };
 
-				_ctl.SetUI();
+				_ctl.SetUI(_starredIDs);
 
 				PhotosCount += _ctl.PhotosCount;
 				VideosCount += _ctl.VideosCount;
@@ -268,6 +272,18 @@ namespace Waveface.Client
 			GC.Collect();
 
 			SetEventIntervalTypeText();
+		}
+
+		private List<string> GetStarredIDs(BunnyLabelContentGroup contentEntity)
+		{
+			List<string> _starredIDs = new List<string>();
+
+			foreach (IContentEntity _contentEntity in contentEntity.Contents)
+			{
+				_starredIDs.Add(_contentEntity.ID);
+			}
+
+			return _starredIDs;
 		}
 
 		private void lbEvent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -817,7 +833,7 @@ namespace Waveface.Client
 			Console.WriteLine("Sub_SelectionChanged: " + _sum);
 		}
 
-		private List<FileChange> GetAllSelectedFiles()
+		public List<FileChange> GetAllSelectedFiles()
 		{
 			List<FileChange> _allFileChanges = new List<FileChange>();
 
@@ -831,7 +847,7 @@ namespace Waveface.Client
 
 		public bool Sub_SaveToFavorite()
 		{
-			List<ContentEntity> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys(true);
+			List<Content> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys(true);
 
 			if (_contentEntitys.Count == 0)
 			{
@@ -843,7 +859,7 @@ namespace Waveface.Client
 
 		public void Sub_SlideShow()
 		{
-			List<ContentEntity> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys(false);
+			List<Content> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys(false);
 
 			int _index = 0;
 
@@ -878,7 +894,7 @@ namespace Waveface.Client
 
 		public bool Sub_AddToFavorite()
 		{
-			List<ContentEntity> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys(true);
+			List<Content> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys(true);
 
 			if (_contentEntitys.Count == 0)
 			{
@@ -888,26 +904,42 @@ namespace Waveface.Client
 			return m_mainWindow.AddToFavorite(_contentEntitys);
 		}
 
+		private void StarSelectedContents()
+		{
+			List<Content> _contentEntitys = Sub_GetAllSelectedFiles_ContentEntitys(true);
 
-		public List<ContentEntity> Sub_GetAllSelectedFiles_ContentEntitys(bool simple)
+			if (_contentEntitys.Count == 0)
+			{
+				return;
+			}
+
+			m_mainWindow.StarContent(_contentEntitys);
+
+			foreach (EventUC _eventUc in listBoxEvent.Items)
+			{
+				_eventUc.DoAutoStarUI();
+			}
+		}
+
+		public List<Content> Sub_GetAllSelectedFiles_ContentEntitys(bool simple)
 		{
 			List<FileChange> _allSelectedFiles = GetAllSelectedFiles();
 
 			return ConvertToContentEntities(simple, _allSelectedFiles);
 		}
 
-		private List<ContentEntity> ConvertToContentEntities(bool simple, IEnumerable<FileChange> _allSelectedFiles)
+		private List<Content> ConvertToContentEntities(bool simple, IEnumerable<FileChange> _allSelectedFiles)
 		{
-			List<ContentEntity> _contentEntitys = new List<ContentEntity>();
+			List<Content> _contentEntitys = new List<Content>();
 
 			foreach (FileChange _fc in _allSelectedFiles)
 			{
 				if (simple)
 				{
-					_contentEntitys.Add(new ContentEntity
+					_contentEntitys.Add(new Content
 											{
 												ID = _fc.id,
-												Service = this.m_currentDevice
+												Service = m_currentDevice
 											});
 				}
 				else
@@ -997,7 +1029,7 @@ namespace Waveface.Client
 
 		private void ContentActionBar_AddToStarred(object sender, EventArgs e)
 		{
-			//StarSelectedContents();
+			StarSelectedContents();
 		}
 
 		private void ContentActionBar_CreateFavorite(object sender, EventArgs e)
@@ -1013,6 +1045,51 @@ namespace Waveface.Client
 		private void ContentActionBar_MoveToExistingFolder(object sender, EventArgs e)
 		{
 			Sub_MoveToExistingFolder();
+		}
+
+		public void ContextMenuItemAction(string name)
+		{
+			switch (name)
+			{
+				case "CreateFavorite":
+					Sub_SaveToFavorite();
+					break;
+
+				case "CreateNewFolder":
+					Sub_MoveToNewFolder();
+					break;
+
+				case "AddToFavorite":
+					Sub_AddToFavorite();
+					break;
+
+				case "AddToStarred":
+					StarSelectedContents();
+					break;
+
+				case "AddToExistingFolder":
+					Sub_MoveToExistingFolder();
+					break;
+			}
+		}
+
+		public void DoStar(string fileID, bool tagged)
+		{
+			if (tagged)
+			{
+				List<Content> _contentEntitys = new List<Content>();
+
+				_contentEntitys.Add(new Content
+				{
+					ID = fileID,
+				});
+
+				ClientFramework.Client.Default.Tag(_contentEntitys);
+			}
+			else
+			{
+				ClientFramework.Client.Default.UnTag(fileID);
+			}
 		}
 	}
 }

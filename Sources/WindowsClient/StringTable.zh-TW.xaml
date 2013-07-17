@@ -94,4 +94,10 @@
     <system:String x:Key="ExistingFolder">現有目錄</system:String>
     <system:String x:Key="Favorite">最愛相簿</system:String>
     <system:String x:Key="Starred">星號標記</system:String>
+    
+    <system:String x:Key="CreateFavorite">新增至最愛相簿</system:String>
+    <system:String x:Key="CreateNewFolder">新增至新建目錄</system:String>
+    <system:String x:Key="AddToFavorite">加入至最愛相簿</system:String>
+    <system:String x:Key="AddToStarred">加入至星號標記</system:String>
+    <system:String x:Key="AddToExistingFolder">加入至現有目錄</system:String>
 </ResourceDictionary>
