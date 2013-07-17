@@ -71,7 +71,7 @@ namespace InfiniteStorage.Camera
 				}
 			}
 
-			return new ImportStorage { device_id = deviceId, device_folder = folder };
+			return new ImportStorage(deviceId, folder);
 		}
 	}
 
@@ -80,11 +80,11 @@ namespace InfiniteStorage.Camera
 		public string device_id { get; set; }
 		public string device_folder { get; set; }
 
-
+		private DefaultFolderFileStorage storage = new DefaultFolderFileStorage();
 		ProgressTooltip progressDialog;
 
 
-		public ImportStorage()
+		public ImportStorage(string device_id, string device_folder)
 		{
 			var dir = new DirectoryInfo(MyFileFolder.Temp);
 			if (!dir.Exists)
@@ -92,6 +92,11 @@ namespace InfiniteStorage.Camera
 				dir.Create();
 				dir.Attributes = FileAttributes.Hidden;
 			}
+
+			this.device_folder = device_folder;
+			this.device_id = device_id;
+
+			storage.setDeviceName(device_folder);
 		}
 
 		public bool IsFileExist(string path)
@@ -110,10 +115,6 @@ namespace InfiniteStorage.Camera
 		{
 			var file_size = new FileInfo(temp).Length;
 			var file_name = Path.GetFileName(file_path);
-
-			var storage = new DefaultFolderFileStorage();
-			storage.setDeviceName(device_folder);
-
 
 			var full_path = storage.MoveToStorage(temp, new FileContext { file_name = file_name });
 			var partial_path = PathUtil.MakeRelative(full_path, MyFileFolder.Photo);
