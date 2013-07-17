@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -15,14 +16,41 @@ using Waveface.Model;
 
 namespace Waveface.Client
 {
-	public class EventPhoto
+	public class EventItem : FrameworkElement, INotifyPropertyChanged
 	{
+		private bool m_isStarred;
+
 		public BitmapImage BitmapImage { get; set; }
 		public double MyWidth { get; set; }
 		public double MyHeight { get; set; }
 		public bool IsVideo { get; set; }
 		public bool IsPhoto { get; set; }
 		public BitmapImage MediaSource { get; set; }
+		public string FileID { get; set; }
+
+		public bool IsStarred
+		{
+			get { return m_isStarred; }
+			set
+			{
+				m_isStarred = value;
+				OnPropertyChanged("IsStarred");
+			}
+		}
+
+		#region INotifyPropertyChanged Members
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		protected void OnPropertyChanged(string name)
+		{
+			if (PropertyChanged != null)
+			{
+				PropertyChanged(this, new PropertyChangedEventArgs(name));
+			}
+		}
+
+		#endregion
 	}
 
 	public partial class EventUC : UserControl
@@ -38,6 +66,7 @@ namespace Waveface.Client
 		public bool m_doSelectAll;
 
 		Point startPoint;
+		private bool m_doAutoStarUI;
 
 		public string DescribeText
 		{
@@ -71,7 +100,7 @@ namespace Waveface.Client
 			ChangeSize();
 		}
 
-		public void SetUI()
+		public void SetUI(List<string> starredIDs)
 		{
 			bool _smallFileExists;
 
@@ -79,7 +108,7 @@ namespace Waveface.Client
 
 			SetInfor();
 
-			List<EventPhoto> _controls = new List<EventPhoto>();
+			List<EventItem> _controls = new List<EventItem>();
 
 			foreach (FileChange _file in Event)
 			{
@@ -100,36 +129,48 @@ namespace Waveface.Client
 
 					if (_smallFileExists || File.Exists(_path))
 					{
-						EventPhoto _eventPhoto = new EventPhoto
+						EventItem _eventItem = new EventItem
 													 {
+														 FileID = _file.id,
 														 IsVideo = false,
 														 IsPhoto = true
 													 };
+
+						if (starredIDs.Contains(_file.id))
+						{
+							_eventItem.IsStarred = true;
+						}
 
 						BitmapImage _bi = new BitmapImage();
 						_bi.BeginInit();
 						_bi.UriSource = new Uri(_path, UriKind.Absolute);
 						_bi.EndInit();
 
-						_eventPhoto.BitmapImage = _bi;
+						_eventItem.BitmapImage = _bi;
 
-						_controls.Add(_eventPhoto);
+						_controls.Add(_eventItem);
 					}
 				}
 				else
 				{
-					EventPhoto _eventPhoto = new EventPhoto
+					EventItem _eventItem = new EventItem
 												 {
+													 FileID = _file.id,
 													 IsVideo = true,
 													 IsPhoto = false
 												 };
+
+					if (starredIDs.Contains(_file.id))
+					{
+						_eventItem.IsStarred = true;
+					}
 
 					BitmapImage _bi = new BitmapImage();
 					_bi.BeginInit();
 					_bi.UriSource = new Uri("pack://application:,,,/Resource/video_ph.png");
 					_bi.EndInit();
 
-					_eventPhoto.BitmapImage = _bi;
+					_eventItem.BitmapImage = _bi;
 
 
 					BitmapImage _vidoeThumb = new BitmapImage();
@@ -142,9 +183,9 @@ namespace Waveface.Client
 
 					_vidoeThumb.EndInit();
 
-					_eventPhoto.MediaSource = _vidoeThumb;
+					_eventItem.MediaSource = _vidoeThumb;
 
-					_controls.Add(_eventPhoto);
+					_controls.Add(_eventItem);
 				}
 			}
 
@@ -450,7 +491,7 @@ namespace Waveface.Client
 					}
 				}
 
-				List<ContentEntity> _contents = UnSortedFilesUC.Current.Sub_GetAllSelectedFiles_ContentEntitys(true);
+				List<Content> _contents = UnSortedFilesUC.Current.Sub_GetAllSelectedFiles_ContentEntitys(true);
 
 				DataObject _dragData = new DataObject(typeof(IEnumerable<IContentEntity>), _contents);
 				DragDrop.DoDragDrop(this, _dragData, DragDropEffects.Move);
@@ -491,6 +532,24 @@ namespace Waveface.Client
 			return _fileChanges;
 		}
 
+		public void DoAutoStarUI()
+		{
+			m_doAutoStarUI = true;
+
+			for (int i = 0; i < lbEvent.Items.Count; i++)
+			{
+				ListBoxItem _lbi = lbEvent.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
+
+				if (_lbi.IsSelected)
+				{
+					EventItem _eventItem = (EventItem)_lbi.Content;
+					_eventItem.IsStarred = true;
+				}
+			}
+
+			m_doAutoStarUI = false;
+		}
+
 		#region Misc
 
 		public T GetVisualParent<T>(object childObject, int level) where T : Visual
@@ -515,6 +574,34 @@ namespace Waveface.Client
 		private void btnSelectAll_Click(object sender, RoutedEventArgs e)
 		{
 			SelectAll(true);
+		}
+
+		private void contextMenu_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+		{
+			if (UnSortedFilesUC.Current.GetAllSelectedFiles().Count == 0)
+			{
+				e.Handled = true;
+			}
+		}
+
+		private void ContextMenuItem_Click(object sender, RoutedEventArgs e)
+		{
+			MenuItem _mi = (MenuItem)sender;
+
+			UnSortedFilesUC.Current.ContextMenuItemAction(_mi.Name);
+		}
+
+		private void ltTag_TagStatusChanged(object sender, EventArgs e)
+		{
+			if (m_doAutoStarUI)
+			{
+				return;
+			}
+
+			LabelTag _labelTag = (LabelTag)sender;
+			string _fileID = _labelTag.Tag.ToString();
+
+			UnSortedFilesUC.Current.DoStar(_fileID, _labelTag.Tagged);
 		}
 	}
 }
