@@ -63,7 +63,7 @@ namespace Waveface.ClientFramework
 						while (reader.Read())
 						{
 							var dir = reader.GetString(0);
-							content.Add(new BunnyContentGroup(Name, dir, ID));
+							content.Add(new BunnyContentGroup(Name, dir, ID) { Service = this });
 						}
 					}
 				}
@@ -78,12 +78,14 @@ namespace Waveface.ClientFramework
 
 		public override void Refresh()
 		{
-			base.Refresh();
-
-			timeline = new BunnyDeviceTimelineContentGroup(ID, Path.Combine(BunnyDB.ResourceFolder, Name));
-
-			m_ObservableContents.Remove(timeline);
-			m_ObservableContents.Insert(0, timeline);
+			// Truely refresh underlying contents because there is no good way to determine if a 
+			// content group really "eqauls" to another content group.
+			//
+			// (Comparing name and id is insufficient because the contained items can be different.
+			// Unless comparing the contained contents, but which indicates recursively enumerating contained contents,
+			// no way to truly comparing content groups.)
+			m_ObservableContents.Clear();
+			PopulateContent(m_ObservableContents);
 		}
 
 		private void refresh(object nil)
