@@ -90,6 +90,9 @@
     <system:String x:Key="AddTo">Add To</system:String>
     <system:String x:Key="MoveTo">Move To</system:String>
     <system:String x:Key="Create">Create</system:String>
+    
+    <system:String x:Key="Share">Share</system:String>
+    <system:String x:Key="ShareEvent">Share This Event</system:String>
 
     <system:String x:Key="NewFolder">New Folder</system:String>
     <system:String x:Key="ExistingFolder">Existing Folder</system:String>

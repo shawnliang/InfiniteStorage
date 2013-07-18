@@ -603,5 +603,10 @@ namespace Waveface.Client
 
 			UnSortedFilesUC.Current.DoStar(_fileID, _labelTag.Tagged);
 		}
+
+		private void btnShare_Click(object sender, RoutedEventArgs e)
+		{
+			UnSortedFilesUC.Current.ShareEvent(this, DescribeText);
+		}
 	}
 }

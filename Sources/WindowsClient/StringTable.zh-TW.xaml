@@ -89,7 +89,10 @@
     <system:String x:Key="AddTo">加入至</system:String>
     <system:String x:Key="MoveTo">移動至</system:String>
     <system:String x:Key="Create">新增至</system:String>
-
+    
+    <system:String x:Key="Share">分享</system:String>
+    <system:String x:Key="ShareEvent">分享事件</system:String>
+    
     <system:String x:Key="NewFolder">新建目錄</system:String>
     <system:String x:Key="ExistingFolder">現有目錄</system:String>
     <system:String x:Key="Favorite">最愛相簿</system:String>

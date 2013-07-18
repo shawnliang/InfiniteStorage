@@ -8,7 +8,11 @@ using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reflection;
+using System.Security.Permissions;
+using System.Threading;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -27,6 +31,7 @@ namespace Waveface.Client
 		public static string HELP_URL = "http://waveface.uservoice.com/knowledgebase/articles/214932-step1-import-photos-videos-from-your-phone";
 
 		private DispatcherTimer uiDelayTimer;
+		DispatcherTimer m_timelineShareToDelayTimer;
 
 		public MainWindow()
 		{
@@ -333,10 +338,36 @@ namespace Waveface.Client
 			if (dialog.ShowDialog() != true)
 				return false;
 
-			ClientFramework.Client.Default.SaveToFavorite(contents, dialog.CreateName);
-			lbxFavorites.SelectedIndex = lbxFavorites.Items.Count - 1;
+			SaveToFavorite(contents, dialog.CreateName);
 
 			return true;
+		}
+
+		public void SaveToFavorite(IEnumerable<IContentEntity> contents, string name)
+		{
+			ClientFramework.Client.Default.SaveToFavorite(contents, name);
+			lbxFavorites.SelectedIndex = lbxFavorites.Items.Count - 1;
+		}
+
+		public void TimelineShareTo(IEnumerable<IContentEntity> contents, string name)
+		{
+			SaveToFavorite(contents, name);
+
+			m_timelineShareToDelayTimer = new DispatcherTimer();
+			m_timelineShareToDelayTimer.Interval = new TimeSpan(0, 0, 1);
+			m_timelineShareToDelayTimer.Tick += timelineShareToTimer_Tick;
+			m_timelineShareToDelayTimer.Start();
+		}
+
+		void timelineShareToTimer_Tick(object sender, EventArgs e)
+		{
+			m_timelineShareToDelayTimer.Stop();
+
+			ToggleButtonAutomationPeer _peer = new ToggleButtonAutomationPeer(rspRightSidePane2.tbtnCloudSharing);
+			IToggleProvider _toggleProvider = _peer.GetPattern(PatternInterface.Toggle) as IToggleProvider;
+			_toggleProvider.Toggle();
+
+			EmailCloudSharing();
 		}
 
 		#endregion
@@ -426,14 +457,7 @@ namespace Waveface.Client
 
 		private void tbtnCloudSharing_Checked(object sender, EventArgs e)
 		{
-			var labelGroup = lblContentLocation.DataContext as BunnyLabelContentGroup;
-
-			//Waveface.ClientFramework.Client.Default.ShareLabel(labelGroup.ID, rspRightSidePane2.swbCloudSharing.IsOn);
-			ClientFramework.Client.Default.ShareLabel(labelGroup.ID, rspRightSidePane2.tbtnCloudSharing.IsChecked.Value);
-
-			labelGroup.RefreshShareProperties();
-
-			rspRightSidePane2.tbxShareLink.Text = labelGroup.ShareURL;
+			CloudSharing(rspRightSidePane2.tbtnCloudSharing.IsChecked.Value);
 		}
 
 		private void btnClearAll_Click(object sender, RoutedEventArgs e)
@@ -623,7 +647,6 @@ namespace Waveface.Client
 			SetContentTypeCount(group);
 		}
 
-
 		private void lbxContentContainer_KeyDown(object sender, KeyEventArgs e)
 		{
 			switch (e.Key)
@@ -645,7 +668,6 @@ namespace Waveface.Client
 			RefreshContentArea();
 			RefreshStarFavorite();
 		}
-
 
 		private void lbxFavorites_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
@@ -683,7 +705,6 @@ namespace Waveface.Client
 
 			SetContentTypeCount(group);
 
-
 			lbxContentContainer.ContextMenu = Resources["cm"] as ContextMenu;
 			lbxContentContainer.ContextMenu.IsOpen = false;
 			lbxContentContainer.ContextMenu.Visibility = Visibility.Visible;
@@ -708,7 +729,6 @@ namespace Waveface.Client
 
 			lbxContentContainer.DataContext = group.Contents;
 			lbxContentContainer.SelectedIndex = -1;
-
 
 			TryUpdateRightSidePanelContentCount();
 		}
@@ -742,12 +762,10 @@ namespace Waveface.Client
 			}
 		}
 
-
 		private void rspRightSidePanel_SaveToFavorite(object sender, EventArgs e)
 		{
 			SaveToFavorite(lbxContentContainer.Items.OfType<IContentEntity>());
 		}
-
 
 		private void rspRightSidePane2_OnAirClick(object sender, EventArgs e)
 		{
@@ -771,8 +789,18 @@ namespace Waveface.Client
 			AddToFavorite(lbxContentContainer.Items.OfType<IContentEntity>());
 		}
 
+		public void CloudSharing(bool isShared)
+		{
+			var labelGroup = lblContentLocation.DataContext as BunnyLabelContentGroup;
 
-		private void rspRightSidePane2_CloudSharingClick(object sender, EventArgs e)
+			ClientFramework.Client.Default.ShareLabel(labelGroup.ID, isShared);
+
+			labelGroup.RefreshShareProperties();
+
+			rspRightSidePane2.tbxShareLink.Text = labelGroup.ShareURL;
+		}
+
+		public void EmailCloudSharing()
 		{
 			Wpf_testHTTP.MainWindow _w = new Wpf_testHTTP.MainWindow();
 			var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
@@ -780,47 +808,46 @@ namespace Waveface.Client
 			var iniFile = Path.Combine(path, @"sharefavorite.ini");
 
 			var group = GetCurrentContentGroup();
-			_w.setTitle(group.Name);
+			_w.setTitle(@group.Name);
 			_w.setiniPath(iniFile);
 
 			var files = string.Join("~", (lbxContentContainer.DataContext as IEnumerable<IContentEntity>).Select(content => content.Uri.LocalPath).ToArray());
 
 			_w.setFilename(files);
-			_w.setLabelId(group.ID);
+			_w.setLabelId(@group.ID);
 			_w.setRun();
 			_w.ShowDialog();
 		}
 
+		private void rspRightSidePane2_CloudSharingClick(object sender, EventArgs e)
+		{
+			EmailCloudSharing();
+		}
 
 		private void rspRightSidePane2_DeleteButtonClick(object sender, EventArgs e)
 		{
 			DeleteCurrentFavorite();
 		}
 
-
 		private void StarMenuItem_Click(object sender, RoutedEventArgs e)
 		{
 			StarSelectedContents();
 		}
-
 
 		private void CreateFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
 		{
 			SaveSelectedContentsToFavorite();
 		}
 
-
 		private void AddToFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
 		{
 			AddSelectedToFavorite();
 		}
 
-
 		private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
 		{
 			DelectSelectedContents();
 		}
-
 
 		private void UnTagMenuItem_Click(object sender, RoutedEventArgs e)
 		{

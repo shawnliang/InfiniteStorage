@@ -1091,5 +1091,29 @@ namespace Waveface.Client
 				ClientFramework.Client.Default.UnTag(fileID);
 			}
 		}
+
+		public void ShareEvent(EventUC eventUc, string describeText)
+		{
+			ShareEventDialog _dialog = new ShareEventDialog(eventUc, describeText);
+			_dialog.Owner = m_mainWindow;
+			_dialog.ShowDialog();
+
+			List<string> _fileIDs = _dialog.FileIDs;
+			string _name = _dialog.TitleName;
+
+			_dialog = null;
+
+			if ((_fileIDs != null) && (_name != string.Empty))
+			{
+				List<Content> _contents = new List<Content>();
+
+				foreach (string _fileID in _fileIDs)
+				{
+					_contents.Add(new Content{ID = _fileID,});
+				}			
+
+				m_mainWindow.TimelineShareTo(_contents, _name);				
+			}
+		}
 	}
 }
