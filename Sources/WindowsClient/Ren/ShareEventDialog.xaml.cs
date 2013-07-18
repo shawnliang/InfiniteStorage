@@ -27,11 +27,11 @@ namespace Waveface.Client
 			{
 				if (tbName.Text == string.Empty)
 				{
-					return tbName.Text;
+					return m_describeText;
 				}
 				else
 				{
-					return m_describeText;
+					return tbName.Text;
 				}
 			}
 		}
