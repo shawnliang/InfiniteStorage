@@ -169,11 +169,6 @@
             			Text="{DynamicResource LONGER}" />
 
             		<StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-            			<TextBlock                                                                                                            
-            				FontSize="11"
-            				Foreground="#DDDDDD"
-            				Text="{DynamicResource EventInterval}" />
-
             			<TextBlock
             				x:Name="tbEventIntervalType"
             				FontSize="11"

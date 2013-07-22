@@ -4,6 +4,7 @@
     <system:String x:Key="AddDeviceIconText">新增裝置</system:String>
     <system:String x:Key="SourceGroupTitle">裝置來源</system:String>
     <system:String x:Key="FavoritesGroupTitle">我的最愛</system:String>
+    <system:String x:Key="RecentGroupTitle">最近</system:String>
     <system:String x:Key="StarAllButtonText">全部標記</system:String>
     <system:String x:Key="AddSourceTipTitle">歡迎使用Favorite管理您最寶貴的記憶.</system:String>
     <system:String x:Key="AddSourceTipText">請先點選&quot;Add Source&quot;按鈕開始使用本產品。</system:String>

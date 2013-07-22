@@ -112,6 +112,7 @@ namespace Waveface.Client
 		{
 			if (favorite == null)
 				return;
+
 			favorite.Refresh();
 		}
 
@@ -133,6 +134,7 @@ namespace Waveface.Client
 				return;
 
 			group.Refresh();
+
 			SetContentTypeCount(group);
 		}
 
@@ -190,7 +192,6 @@ namespace Waveface.Client
 			//RefreshSelectedFavorite();
 		}
 
-
 		private void SelectToStarFavorite()
 		{
 			SelectToFavorite("00000000-0000-0000-0000-000000000000");
@@ -201,14 +202,23 @@ namespace Waveface.Client
 			var favorites = ClientFramework.Client.Default.Favorites;
 
 			var index = 0;
-			foreach (var favorite in favorites)
+
+			if (favoriteID == "00000000-0000-0000-0000-000000000000")
 			{
-				if (favorite.ID != favoriteID)
+				lbxRecent.SelectedIndex = 0;
+			}
+			else
+			{
+				foreach (var favorite in favorites)
 				{
-					++index;
-					continue;
+					if (favorite.ID != favoriteID)
+					{
+						++index;
+						continue;
+					}
+
+					lbxFavorites.SelectedIndex = index;
 				}
-				lbxFavorites.SelectedIndex = index;
 			}
 		}
 
@@ -221,6 +231,7 @@ namespace Waveface.Client
 				if (favorite.ID == favoriteID)
 					return favorite;
 			}
+
 			return null;
 		}
 
@@ -377,6 +388,7 @@ namespace Waveface.Client
 			lbxDeviceContainer.DataContext = ClientFramework.Client.Default.Services;
 
 			lbxFavorites.DataContext = ClientFramework.Client.Default.Favorites;
+			lbxRecent.DataContext = ClientFramework.Client.Default.Recent;
 
 			rspRightSidePane2.tbxName.KeyDown += tbxName_KeyDown;
 			rspRightSidePane2.tbxName.LostFocus += tbxName_LostFocus;
@@ -671,10 +683,15 @@ namespace Waveface.Client
 
 		private void lbxFavorites_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			ShowSelectedFavoriteContents(sender);
+			ShowSelectedFavoriteContents(sender, false);
 		}
 
-		private void ShowSelectedFavoriteContents(object sender)
+		private void lbxRecent_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ShowSelectedFavoriteContents(sender, true);
+		}
+
+		private void ShowSelectedFavoriteContents(object sender, bool isRecent)
 		{
 			var listBox = sender as ListBox;
 
@@ -716,8 +733,17 @@ namespace Waveface.Client
 			lbxContentContainer.Visibility = Visibility.Visible;
 			//btnFavoriteAll.Visibility = Visibility.Collapsed;
 			unSortedFilesUC.Visibility = Visibility.Collapsed;
-			rspRightSidePane2.Visibility = (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase)) ? Visibility.Collapsed : Visibility.Visible;
-			rspRightSidePanel.Visibility = (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase)) ? Visibility.Visible : Visibility.Collapsed;
+
+			bool _isStarredLabel = group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase);
+
+			rspRightSidePane2.Visibility = _isStarredLabel ? Visibility.Collapsed : Visibility.Visible;
+			rspRightSidePanel.Visibility = _isStarredLabel ? Visibility.Visible : Visibility.Collapsed;
+
+			if (isRecent && !_isStarredLabel)
+			{
+				gdRightSide.Visibility = Visibility.Collapsed;
+				Grid.SetColumnSpan(gdContentArea, 3);
+			}
 
 			if (lbxDeviceContainer.SelectedItem != null)
 			{
@@ -1052,15 +1078,32 @@ namespace Waveface.Client
 
 		private void Favorites_DragEnter(object sender, DragEventArgs e)
 		{
-			if (!e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) ||
-				sender == e.Source)
+			if (!e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) || sender == e.Source)
 			{
 				e.Effects = DragDropEffects.None;
 			}
 		}
 
-
 		private void Favorites_Drop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)))
+			{
+				var controlItem = FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
+
+				if (controlItem == null)
+					return;
+
+				var contents = e.Data.GetData(typeof(IEnumerable<IContentEntity>)) as IEnumerable<IContentEntity>;
+				var favoriteGroup = controlItem.DataContext as IContentGroup;
+
+				if (!favoriteGroup.ID.Equals("00000000-0000-0000-0000-000000000000", StringComparison.CurrentCultureIgnoreCase))
+				{
+					AddToFavorite(favoriteGroup.ID, contents);
+				}
+			}
+		}
+
+		private void Recent_Drop(object sender, DragEventArgs e)
 		{
 			if (e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)))
 			{
@@ -1076,10 +1119,7 @@ namespace Waveface.Client
 				{
 					StarContent(contents);
 					SelectToStarFavorite();
-					return;
 				}
-
-				AddToFavorite(favoriteGroup.ID, contents);
 			}
 		}
 

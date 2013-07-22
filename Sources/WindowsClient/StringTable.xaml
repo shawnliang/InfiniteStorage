@@ -3,7 +3,8 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="AddDeviceIconText">Add Device</system:String>
     <system:String x:Key="SourceGroupTitle">SOURCES</system:String>
-    <system:String x:Key="FavoritesGroupTitle">FAVORITES</system:String>
+    <system:String x:Key="FavoritesGroupTitle">ALBUMS</system:String>
+    <system:String x:Key="RecentGroupTitle">RECENT</system:String>
     <system:String x:Key="StarAllButtonText">Star All</system:String>
     <system:String x:Key="AddSourceTipTitle">Thank you for choosing Favorite* to manage your favorite memories.</system:String>
     <system:String x:Key="AddSourceTipText">To get started, click &quot;Add Device&quot;.</system:String>
@@ -68,7 +69,6 @@
     <system:String x:Key="Morning">Morning</system:String>
     <system:String x:Key="EarlyMorning">Early Morning</system:String>
     <system:String x:Key="TimelineSelectedCountText">{0} selected</system:String>
-    <system:String x:Key="EventInterval"></system:String>
     <system:String x:Key="SHORTER">PRECISE</system:String>
     <system:String x:Key="LONGER">GENERAL</system:String>
     
