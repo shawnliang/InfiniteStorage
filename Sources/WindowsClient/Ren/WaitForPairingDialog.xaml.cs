@@ -83,8 +83,13 @@ namespace Waveface.Client
 						}
 						else
 						{
-							selectionPanel.Visibility = System.Windows.Visibility.Visible;
-							findingDevicePanel.Visibility = System.Windows.Visibility.Collapsed;
+							if (findingDevicePanel.Visibility == System.Windows.Visibility.Visible)
+							{
+								selectionPanel.Visibility = System.Windows.Visibility.Visible;
+								findingDevicePanel.Visibility = System.Windows.Visibility.Collapsed;
+
+								deviceList.SelectAll();
+							}
 						}
 					}
 
