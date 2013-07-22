@@ -4,16 +4,13 @@ using System.Windows.Controls;
 
 namespace Waveface.Client
 {
-	/// <summary>
-	/// Interaction logic for FavoriteListBox.xaml
-	/// </summary>
 	public partial class FavoriteListBox : ListBox
 	{
 		public event EventHandler DeleteFavoriteInvoked;
 
 		public FavoriteListBox()
 		{
-			this.InitializeComponent();
+			InitializeComponent();
 		}
 
 		protected void OnDeleteFavoriteInvoked(EventArgs e)

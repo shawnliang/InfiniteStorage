@@ -112,6 +112,7 @@ namespace Waveface.ClientFramework
 					{
 						ObservableCollection<IContentEntity> newContents = new ObservableCollection<IContentEntity>();
 						PopulateContent(newContents);
+
 						if (newContents.Where(x => x.Name == "Unsorted").Any())
 						{
 							base.Refresh();

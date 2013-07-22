@@ -1,31 +1,34 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
+#endregion
+
 namespace Waveface.Client
 {
-	/// <summary>
-	/// Interaction logic for SourceTree.xaml
-	/// </summary>
 	public partial class SourceTree : TreeView
 	{
 		#region Event
+
 		public event EventHandler TreeViewItemClick;
 		public event EventHandler StarInvoked;
 		public event EventHandler CreateFavoriteInvoked;
 		public event EventHandler AddToFavoriteInvoked;
 		public event EventHandler DeleteSourceInvoked;
+
 		#endregion
 
 		public SourceTree()
 		{
-			this.InitializeComponent();
+			InitializeComponent();
 		}
 
-
-		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			if (TreeViewItemClick == null)
 				return;
@@ -35,9 +38,9 @@ namespace Waveface.Client
 
 		private void recvingIcon_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			var recvIcon = (Image)sender;
+			var recvIcon = (Image) sender;
 
-			if (recvIcon.Visibility == System.Windows.Visibility.Visible)
+			if (recvIcon.Visibility == Visibility.Visible)
 			{
 				var da = new DoubleAnimation(0, 360, new Duration(TimeSpan.FromSeconds(1.0)));
 				var rotate = new RotateTransform();
@@ -50,18 +53,19 @@ namespace Waveface.Client
 			else
 			{
 				var rotate = recvIcon.RenderTransform as RotateTransform;
+
 				if (rotate == null)
 					return;
 
 				rotate.BeginAnimation(RotateTransform.AngleProperty, null);
-			
+
 				recvIcon.RenderTransform = null;
 			}
 		}
 
-		private void UserControl_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
 		{
-			if (e.ChangedButton != System.Windows.Input.MouseButton.Left)
+			if (e.ChangedButton != MouseButton.Left)
 				return;
 
 			var tv = sender as TreeView;
@@ -74,7 +78,7 @@ namespace Waveface.Client
 			e.Handled = true;
 		}
 
-		private void UserControl_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+		private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
 			e.Handled = true;
 		}
@@ -87,7 +91,6 @@ namespace Waveface.Client
 			StarInvoked(this, e);
 		}
 
-
 		protected void OnCreateFavoriteInvoked(EventArgs e)
 		{
 			if (CreateFavoriteInvoked == null)
@@ -95,7 +98,6 @@ namespace Waveface.Client
 
 			CreateFavoriteInvoked(this, e);
 		}
-
 
 		protected void OnAddToFavoriteInvoked(EventArgs e)
 		{
@@ -118,7 +120,6 @@ namespace Waveface.Client
 			OnStarInvoked(EventArgs.Empty);
 		}
 
-
 		private void CreateFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
 		{
 			OnCreateFavoriteInvoked(EventArgs.Empty);
@@ -128,7 +129,6 @@ namespace Waveface.Client
 		{
 			OnAddToFavoriteInvoked(EventArgs.Empty);
 		}
-
 
 		private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
 		{

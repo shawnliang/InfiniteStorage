@@ -17,7 +17,6 @@
           d:DesignHeight="392.26"
           d:DesignWidth="200"
           mc:Ignorable="d">
-
     <TreeView.Resources>
 
         <ContextMenu x:Key="SourceContextMenu">
@@ -38,6 +37,7 @@
             <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
             Color="Transparent" />
         -->
+        
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <BitmapImage x:Key="SelectedIcon"
                      CacheOption="OnDemand"
@@ -184,11 +184,11 @@
                 <Label Content="{Binding Name}"
                        FontSize="18"
                        Foreground="#a8a8a8" />
+                
                 <Image x:Name="recvingIcon"
                        IsVisibleChanged="recvingIcon_IsVisibleChanged"
                        Source="{StaticResource CycleIcon}"
-                       Visibility="{Binding IsRecving,
-                                            Converter={StaticResource BooleanToVisibilityConverter}}" />
+                       Visibility="{Binding IsRecving, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
             <HierarchicalDataTemplate.ItemTemplate>
                 <DataTemplate>

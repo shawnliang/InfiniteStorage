@@ -1,4 +1,4 @@
-﻿<ListBox x:Class="Waveface.Client.FavoriteListBox"
+﻿<ListBox x:Class="Waveface.Client.RecentListBox"
          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -17,10 +17,6 @@
          mc:Ignorable="d">
 
     <ListBox.Resources>
-        <ContextMenu x:Key="FavoriteContextMenu">
-            <MenuItem Click="DeleteMenuItem_Click"
-                      Header="Delete" />
-        </ContextMenu>
     </ListBox.Resources>
 
     <ListBox.ItemTemplate>
@@ -56,19 +52,15 @@
                        Foreground="#a8a8a8" />
             </Grid>
             <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}"
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem},
+                                               Path=IsSelected}"
                              Value="True">
                     <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedFav}" />
                     <Setter TargetName="item" Property="Background" Value="#d5d5d5" />
                     <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
                     <Setter TargetName="sourceCount" Property="Foreground" Value="Black" />
-                    <Setter TargetName="item" Property="ContextMenu" Value="{StaticResource FavoriteContextMenu}" />
                 </DataTrigger>
 
-                <DataTrigger Binding="{Binding ShareEnabled}" Value="true">
-                    <Setter TargetName="sourceName" Property="Foreground" Value="Red" />
-                </DataTrigger>                
-                
                 <DataTrigger Binding="{Binding ID}"
                              Value="00000000-0000-0000-0000-000000000000">
                     <Setter TargetName="item" Property="ContextMenu" Value="{x:Null}" />
