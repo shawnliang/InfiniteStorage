@@ -134,8 +134,8 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <StackPanel>
-        <Grid Margin="15,15,15,50">
+    <StackPanel Margin="30,10">
+        <Grid Margin="0,0,0,30">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="5*" />
@@ -163,7 +163,7 @@
 
             <TextBlock Grid.Column="1"
                        MaxWidth="200"
-                       Margin="10,20,10,10"
+                       Margin="0,20,10,10"
                        FontSize="22"
                        TextWrapping="WrapWithOverflow">
                 <Hyperlink NavigateUri="http://waveface.com/" RequestNavigate="Hyperlink_RequestNavigate_1">Install Favorite on your mobile device</Hyperlink>
@@ -171,34 +171,41 @@
             </TextBlock>
             <TextBlock Grid.Column="3"
                        MaxWidth="200"
-                       Margin="10,20,10,10"
+                       Margin="0,20,0,10"
                        FontSize="22"
                        TextWrapping="WrapWithOverflow">
                 Make sure your device and this PC are on the same Wifi network.
             </TextBlock>
             <TextBlock Grid.Column="5"
                        MaxWidth="200"
-                       Margin="10,20,10,10"
+                       Margin="10,20,0,10"
                        FontSize="22"
                        TextWrapping="WrapWithOverflow">
                 Follow the instruction on you device
             </TextBlock>
         </Grid>
+        <Button x:Name="btnHelp"
+                HorizontalAlignment="Right"
+                Click="btnHelp_Click"
+                Content="{DynamicResource ANS_9}"
+                FontSize="12"
+                FontWeight="Bold"
+                Style="{StaticResource LinkButton}" />
         <StackPanel x:Name="findingDevicePanel">
-            <Label Margin="15, 15, 0, 5" FontSize="16">Finding device...</Label>
+            <Label Margin="0, 15, 0, 5" FontSize="16">Finding device...</Label>
             <ProgressBar x:Name="progressBar"
                          Height="20"
-                         Margin="15, 0, 15, 15"
+                         Margin="0, 0, 0, 15"
                          Maximum="150"
                          Minimum="0"
                          Value="0" />
         </StackPanel>
         <StackPanel x:Name="selectionPanel">
-            <Label Margin="15,0" FontSize="16">Do you want to allow following devices to auto import their photos and videos to this PC?</Label>
+            <Label FontSize="16">Do you want to allow following devices to auto import their photos and videos to this PC?</Label>
             <ListBox x:Name="deviceList"
                      MinHeight="50"
                      MaxHeight="100"
-                     Margin="15,5"
+                     Margin="0,5"
                      ItemsSource="{Binding IsAsync=True}"
                      SelectionMode="Multiple">
                 <ListBox.ItemTemplate>
@@ -216,7 +223,7 @@
                 </Button>
                 <Button MinWidth="100"
                         MinHeight="32"
-                        Margin="10,10,15,10"
+                        Margin="10,10,0,10"
                         Click="DisallowAllButton_Clicked">
                     Disallow all
                 </Button>
