@@ -68,13 +68,13 @@
     <system:String x:Key="Morning">Morning</system:String>
     <system:String x:Key="EarlyMorning">Early Morning</system:String>
     <system:String x:Key="TimelineSelectedCountText">{0} selected</system:String>
-    <system:String x:Key="EventInterval"></system:String>
+    <system:String x:Key="EventInterval">Event interval</system:String>
     <system:String x:Key="SHORTER">PRECISE</system:String>
     <system:String x:Key="LONGER">GENERAL</system:String>
-    
+
     <system:String x:Key="AllowAutoSync">Auto import photos from from {0}?</system:String>
     <system:String x:Key="AndroidDeviceFound">Android Device Connected</system:String>
-    
+
     <system:String x:Key="AddNewSource">Add a Phone</system:String>
     <system:String x:Key="ANS_1">Auto import photos &amp; videos</system:String>
     <system:String x:Key="ANS_2">You need to install Favorite* app on your phone.</system:String>
@@ -90,7 +90,7 @@
     <system:String x:Key="AddTo">Add To</system:String>
     <system:String x:Key="MoveTo">Move To</system:String>
     <system:String x:Key="Create">Create</system:String>
-    
+
     <system:String x:Key="Share">Share</system:String>
     <system:String x:Key="ShareEvent">Share This Event</system:String>
 
