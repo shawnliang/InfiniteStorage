@@ -187,12 +187,7 @@ namespace Waveface.Client
 		{
 			foreach (var req in requests)
 			{
-				var acceptMsg = new PairingClientMsgs
-				{
-					accept = new accept_reject { device_id = req.device_id }
-				};
-
-				m_webSocket.Send(JsonConvert.SerializeObject(acceptMsg));
+				WS_send_accept(req);
 			}
 
 			PairingClientMsgs closeMsg = new PairingClientMsgs
@@ -202,16 +197,21 @@ namespace Waveface.Client
 			m_webSocket.Send(JsonConvert.SerializeObject(closeMsg));
 		}
 
+		private void WS_send_accept(pairing_request req)
+		{
+			var acceptMsg = new PairingClientMsgs
+			{
+				accept = new accept_reject { device_id = req.device_id }
+			};
+
+			m_webSocket.Send(JsonConvert.SerializeObject(acceptMsg));
+		}
+
 		private void WS_reject_multi(IEnumerable<pairing_request> requests)
 		{
 			foreach (var req in requests)
 			{
-				var rejectMsg = new PairingClientMsgs
-				{
-					reject = new accept_reject { device_id = req.device_id }
-				};
-
-				m_webSocket.Send(JsonConvert.SerializeObject(rejectMsg));
+				WS_send_reject(req);
 			}
 
 			PairingClientMsgs closeMsg = new PairingClientMsgs
@@ -219,6 +219,16 @@ namespace Waveface.Client
 				pairing_mode = new pairing_mode { enabled = false }
 			};
 			m_webSocket.Send(JsonConvert.SerializeObject(closeMsg));
+		}
+
+		private void WS_send_reject(pairing_request req)
+		{
+			var rejectMsg = new PairingClientMsgs
+			{
+				reject = new accept_reject { device_id = req.device_id }
+			};
+
+			m_webSocket.Send(JsonConvert.SerializeObject(rejectMsg));
 		}
 
 		private void WS_close_byUser()
@@ -246,12 +256,25 @@ namespace Waveface.Client
 		private void AllowSelectedButton_Clicked(object sender, RoutedEventArgs e)
 		{
 			var selected = deviceList.SelectedItems.OfType<pairing_request>();
+			var all = deviceList.Items.OfType<pairing_request>();
+			var unselected = all.Except(selected);
+
 			if (selected != null)
 			{
-				WS_accept_multi(selected);
+				foreach (var item in selected)
+					WS_send_accept(item);
 			}
 
+			if (unselected != null)
+			{
+				foreach (var item in unselected)
+					WS_send_reject(item);
+			}
+
+			WS_close_byUser();
+
 			m_closeByApp = true;
+
 			Close();
 		}
 
