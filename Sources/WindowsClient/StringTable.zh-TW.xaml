@@ -66,38 +66,46 @@
     <system:String x:Key="EarlyMorning">清晨</system:String>
     <system:String x:Key="TimelineSelectedCountText">已選取 {0}個</system:String>
     <system:String x:Key="EventInterval">事件區分:</system:String>
-    
+
     <system:String x:Key="SHORTER">細分</system:String>
     <system:String x:Key="LONGER">粗分</system:String>
-    
-    <system:String x:Key="AllowAutoSync">連線時自動同步 [{0}] 的內容?</system:String>
-    <system:String x:Key="AndroidDeviceFound">發現 Android 裝置</system:String>
-    
-    <system:String x:Key="AddNewSource">新增裝置來源</system:String>
-    <system:String x:Key="ANS_1">自動同步拍攝的照片和影片</system:String>
-    <system:String x:Key="ANS_2">Favorite*手機App讓你一回到家，就自動傳送所有新增的內容到電腦裡</system:String>
-    <system:String x:Key="ANS_3">如何安裝</system:String>
-    <system:String x:Key="ANS_4">利用右邊的資訊，找到Favorite*手機App並安裝在您的裝置上.</system:String>
-    <system:String x:Key="ANS_5">手機打開Wi-Fi並連上家用網路</system:String>
-    <system:String x:Key="ANS_6">依照電腦與手機螢幕上顯示操作即可。</system:String>
-    <system:String x:Key="ANS_7">尋找可用裝置...</system:String>
-    <system:String x:Key="ANS_8">在Google Play商店搜尋"Waveface"</system:String>
-    <system:String x:Key="ANS_9">我需要知道更多資訊</system:String>
-    
+
+    <system:String x:Key="AddNewSource">Add a Phone</system:String>
+    <system:String x:Key="ANS_9">I need more information?</system:String>
+    <system:String x:Key="ANS_step1_1">Install Favorite on your mobile device</system:String>
+    <system:String x:Key="ANS_step1_2">and turn it on.</system:String>
+    <system:String x:Key="ANS_step2">Make sure your device and this PC are on the same Wifi network.</system:String>
+    <system:String x:Key="ANS_step3">Follow the instruction on you device</system:String>
+    <system:String x:Key="ANS_findDev">Finding device...</system:String>
+    <system:String x:Key="ANS_importQuestion">Do you want to allow following devices to auto import their photos and videos to this PC?</system:String>
+    <system:String x:Key="ANS_allowSelected">Allow selected</system:String>
+    <system:String x:Key="ANS_disallowAll">Disallow all</system:String>
+    <system:String x:Key="ANS_deviceAdded">Device {0} is successfully added to this PC.</system:String>
+    <system:String x:Key="ANS_deviveNotFound" xml:space="preserve">
+Favorite is unable to find a connectable device. Please make sure Favorite is running on your device and the device and this PC are on the same WIFI.
+
+Do you want to search for available device again?
+Press 'Yes' to search again. Press 'No' to quit pairing mode.
+    </system:String>
+    <system:String x:Key="ANS_deviveNotFound_title">Device Not Found</system:String>
+
+
+
+
     <system:String x:Key="SelectAll">全選</system:String>
     <system:String x:Key="UnselectAll">全不選</system:String>
     <system:String x:Key="AddTo">加入至</system:String>
     <system:String x:Key="MoveTo">移動至</system:String>
     <system:String x:Key="Create">新增至</system:String>
-    
+
     <system:String x:Key="Share">分享</system:String>
     <system:String x:Key="ShareEvent">分享事件</system:String>
-    
+
     <system:String x:Key="NewFolder">新建目錄</system:String>
     <system:String x:Key="ExistingFolder">現有目錄</system:String>
     <system:String x:Key="Favorite">最愛相簿</system:String>
     <system:String x:Key="Starred">星號標記</system:String>
-    
+
     <system:String x:Key="CreateFavorite">新增至最愛相簿</system:String>
     <system:String x:Key="CreateNewFolder">新增至新建目錄</system:String>
     <system:String x:Key="AddToFavorite">加入至最愛相簿</system:String>

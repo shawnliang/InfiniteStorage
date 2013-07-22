@@ -151,11 +151,13 @@
                 1.
             </Label>
             <Label Grid.Column="2"
+                   Margin="10,0, 0,0"
                    HorizontalAlignment="Center"
                    FontSize="30">
                 2.
             </Label>
             <Label Grid.Column="4"
+                   Margin="10,0,0,0"
                    HorizontalAlignment="Center"
                    FontSize="30">
                 3.
@@ -163,26 +165,26 @@
 
             <TextBlock Grid.Column="1"
                        MaxWidth="200"
-                       Margin="0,20,10,10"
+                       Margin="10,20,0,10"
                        FontSize="22"
                        TextWrapping="WrapWithOverflow">
-                <Hyperlink NavigateUri="http://waveface.com/" RequestNavigate="Hyperlink_RequestNavigate_1">Install Favorite on your mobile device</Hyperlink>
-                and turn it on.
+                <Hyperlink NavigateUri="http://waveface.com/" RequestNavigate="Hyperlink_RequestNavigate_1">
+                    <Run Text="{DynamicResource ANS_step1_1}" />
+                </Hyperlink>
+                <Run Text="{DynamicResource ANS_step1_2}" />
             </TextBlock>
             <TextBlock Grid.Column="3"
                        MaxWidth="200"
-                       Margin="0,20,0,10"
+                       Margin="10,20,0,10"
                        FontSize="22"
-                       TextWrapping="WrapWithOverflow">
-                Make sure your device and this PC are on the same Wifi network.
-            </TextBlock>
+                       Text="{DynamicResource ANS_step2}"
+                       TextWrapping="WrapWithOverflow" />
             <TextBlock Grid.Column="5"
                        MaxWidth="200"
                        Margin="10,20,0,10"
                        FontSize="22"
-                       TextWrapping="WrapWithOverflow">
-                Follow the instruction on you device
-            </TextBlock>
+                       Text="{DynamicResource ANS_step3}"
+                       TextWrapping="WrapWithOverflow" />
         </Grid>
         <Button x:Name="btnHelp"
                 HorizontalAlignment="Right"
@@ -192,7 +194,9 @@
                 FontWeight="Bold"
                 Style="{StaticResource LinkButton}" />
         <StackPanel x:Name="findingDevicePanel">
-            <Label Margin="0, 15, 0, 5" FontSize="16">Finding device...</Label>
+            <Label Margin="0, 15, 0, 5"
+                   Content="{DynamicResource ANS_findDev}"
+                   FontSize="16" />
             <ProgressBar x:Name="progressBar"
                          Height="20"
                          Margin="0, 0, 0, 15"
@@ -201,7 +205,7 @@
                          Value="0" />
         </StackPanel>
         <StackPanel x:Name="selectionPanel">
-            <Label FontSize="16">Do you want to allow following devices to auto import their photos and videos to this PC?</Label>
+            <Label Content="{DynamicResource ANS_importQuestion}" FontSize="16" />
             <ListBox x:Name="deviceList"
                      MinHeight="50"
                      MaxHeight="100"
@@ -218,225 +222,15 @@
                 <Button MinWidth="100"
                         MinHeight="32"
                         Margin="10"
-                        Click="AllowSelectedButton_Clicked">
-                    Allow selected
-                </Button>
+                        Click="AllowSelectedButton_Clicked"
+                        Content="{DynamicResource ANS_allowSelected}" />
                 <Button MinWidth="100"
                         MinHeight="32"
                         Margin="10,10,0,10"
-                        Click="DisallowAllButton_Clicked">
-                    Disallow all
-                </Button>
+                        Click="DisallowAllButton_Clicked"
+                        Content="{DynamicResource ANS_disallowAll}" />
             </StackPanel>
         </StackPanel>
     </StackPanel>
-    <!--
-        <Grid Visibility="Collapsed">
-        <Grid.RowDefinitions>
-        <RowDefinition Height="40" />
-        <RowDefinition Height="48" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="48" />
-        </Grid.RowDefinitions>
-        
-        <Grid Grid.Row="0" Margin="28,0">
-        <TextBlock Grid.Column="1"
-        VerticalAlignment="Center"
-        FontSize="18"
-        FontWeight="Black"
-        Text="{DynamicResource ANS_1}" />
-        </Grid>
-        
-        <Grid Grid.Row="1" Margin="28,0">
-        <TextBlock VerticalAlignment="Center"
-        FontSize="14"
-        Text="{DynamicResource ANS_2}"
-        TextWrapping="Wrap" />
-        </Grid>
-        
-        <Grid Grid.Row="3" Margin="20,0">
-        <Button x:Name="btnHelp"
-        HorizontalAlignment="Left"
-        VerticalAlignment="Center"
-        Click="btnHelp_Click"
-        Content="{DynamicResource ANS_9}"
-        FontSize="12"
-        FontWeight="Bold"
-        Style="{StaticResource LinkButton}" />
-        <Button x:Name="btnClose"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Center"
-        Click="btnClose_Click"
-        Content="{DynamicResource CloseButtonText}"
-        FontSize="14"
-        FontWeight="Bold"
-        Padding="16,4" />
-        </Grid>
-        
-        <GroupBox Grid.Row="2"
-        Margin="14, 8, 20, 0"
-        BorderBrush="Gray"
-        BorderThickness="1.5">
-        <GroupBox.Header>
-        <TextBlock Margin="8,0"
-        FontSize="14"
-        FontWeight="Bold"
-        Text="{DynamicResource ANS_3}" />
-        </GroupBox.Header>
-        
-        <Grid>
-        <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="7*" />
-        <ColumnDefinition Width="8" />
-        <ColumnDefinition Width="9*" />
-        </Grid.ColumnDefinitions>
-        
-        <Rectangle Grid.Column="1"
-        Width="2"
-        Margin="0, 6"
-        Fill="Gray" />
-        
-        <Grid Grid.Column="0"
-        Margin="16,12,8,12"
-        VerticalAlignment="Center">
-        <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        
-        <Grid Grid.Row="0" Margin="0,6">
-        <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="16" />
-        <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Ellipse Grid.Column="0"
-        Width="6"
-        Height="6"
-        VerticalAlignment="Center"
-        Fill="Black" />
-        <TextBlock Grid.Column="1"
-        VerticalAlignment="Center"
-        FontSize="13"
-        Text="{DynamicResource ANS_4}"
-        TextWrapping="Wrap" />
-        </Grid>
-        
-        <Grid Grid.Row="1" Margin="0,6">
-        <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="16" />
-        <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Ellipse Grid.Column="0"
-        Width="6"
-        Height="6"
-        VerticalAlignment="Center"
-        Fill="Black" />
-        <TextBlock Grid.Column="1"
-        VerticalAlignment="Center"
-        FontSize="13"
-        Text="{DynamicResource ANS_5}"
-        TextWrapping="Wrap" />
-        </Grid>
-        
-        <Grid Grid.Row="2" Margin="0,6">
-        <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="16" />
-        <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Ellipse Grid.Column="0"
-        Width="6"
-        Height="6"
-        VerticalAlignment="Center"
-        Fill="Black" />
-        <TextBlock Grid.Column="1"
-        VerticalAlignment="Center"
-        FontSize="13"
-        Text="{DynamicResource ANS_6}"
-        TextWrapping="Wrap" />
-        </Grid>
-        
-        <Grid Grid.Row="3" Margin="0,6">
-        <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="66" />
-        <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        
-        <Image Grid.Column="0"
-        Width="59.666"
-        Height="59.666"
-        Margin="0, 8"
-        gif:ImageBehavior.AnimatedSource="/Waveface.Client;component/Resource/mf_progress_radar.gif" />
-        <TextBlock Grid.Column="1"
-        Margin="8,0,0,0"
-        VerticalAlignment="Center"
-        FontSize="13"
-        FontWeight="Bold"
-        Text="{DynamicResource ANS_7}" />
-        </Grid>
-        </Grid>
-        
-        <Grid Grid.Column="2" Margin="16,8">
-        <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="6*" />
-        <ColumnDefinition Width="7*" />
-        </Grid.ColumnDefinitions>
-        
-        <Grid Grid.Column="0">
-        <Grid.RowDefinitions>
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0"
-        VerticalAlignment="Center"
-        FontSize="13"
-        Text="{DynamicResource ANS_8}"
-        TextWrapping="Wrap" />
-        
-        <StackPanel x:Name="spGooglePlay"
-        Grid.Row="1"
-        Width="137.6"
-        Height="48"
-        HorizontalAlignment="Left"
-        Cursor="Hand"
-        MouseDown="spGooglePlay_MouseDown">
-        <Image Source="/Waveface.Client;component/Resource/en_generic_rgb_wo_60.png" />
-        </StackPanel>
-        </Grid>
-        
-        <Image x:Name="imgQrCode"
-        Grid.Column="1"
-        Width="180"
-        Height="180"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center"
-        Source="pack://application:,,,/Ren/Images/qrcode.png">
-        <Image.Effect>
-        <DropShadowEffect ShadowDepth="1" />
-        </Image.Effect>
-        <Image.Style>
-        <Style TargetType="Image">
-        <Style.Triggers>
-        <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="RenderTransform">
-        <Setter.Value>
-        <ScaleTransform CenterX="130"
-        CenterY="130"
-        ScaleX="1.8"
-        ScaleY="1.8" />
-        </Setter.Value>
-        </Setter>
-        </Trigger>
-        </Style.Triggers>
-        </Style>
-        </Image.Style>
-        </Image>
-        </Grid>
-        
-        </Grid>
-        </GroupBox>
-        </Grid>
-    -->
+
 </Window>

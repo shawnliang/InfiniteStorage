@@ -73,7 +73,9 @@ namespace Waveface.Client
 						{
 							var device = m_requests.First();
 							WS_accept_reject(device, true);
-							MessageBox.Show("Device " + device.device_name + " is successfully added to this PC.");
+							
+							var msgTemplate = Application.Current.FindResource("ANS_deviceAdded") as string;
+							MessageBox.Show(string.Format(msgTemplate, device.device_name));
 
 							m_closeByApp = true;
 
@@ -89,7 +91,9 @@ namespace Waveface.Client
 				}
 				else if (progressBar.Value == progressBar.Maximum)
 				{
-					var result = MessageBox.Show("Favorite is unable to find a connectable device. Please make sure Favorite is running on your device and the device and this PC are on the same WIFI.\r\n\r\nDo you want to search for available device again?\r\n\r\nPress 'Yes' to search again. Press 'No' to quit pairing mode.", "Unable to find available devices", MessageBoxButton.YesNo);
+					var msg = Application.Current.FindResource("ANS_deviveNotFound") as string;
+					var title = Application.Current.FindResource("ANS_deviveNotFound_title") as string;
+					var result = MessageBox.Show(msg, title, MessageBoxButton.YesNo);
 
 					if (result == MessageBoxResult.Yes)
 					{
@@ -100,26 +104,6 @@ namespace Waveface.Client
 				}
 
 			}
-			
-
-
-			//string _AndroidDeviceFound = (string)Application.Current.FindResource("AndroidDeviceFound");
-			//string _AllowAutoSync = (string)Application.Current.FindResource("AllowAutoSync");
-
-			//MessageBoxResult _messageBoxResult = MessageBox.Show(string.Format(_AllowAutoSync, m_pairingRequest.device_name), _AndroidDeviceFound, MessageBoxButton.YesNo);
-
-			//if (_messageBoxResult == MessageBoxResult.Yes)
-			//{
-			//	WS_accept_reject(true);
-			//}
-			//else
-			//{
-			//	WS_accept_reject(false);
-			//}
-
-			//m_closeByApp = true;
-
-			//Close();
 		}
 
 		private void Window_Closing(object sender, CancelEventArgs e)
@@ -242,16 +226,6 @@ namespace Waveface.Client
 			string _json = JsonConvert.SerializeObject(_msgs);
 
 			m_webSocket.Send(_json);
-		}
-
-		private void btnClose_Click(object sender, RoutedEventArgs e)
-		{
-			Close();
-		}
-
-		private void spGooglePlay_MouseDown(object sender, MouseButtonEventArgs e)
-		{
-			Process.Start("https://play.google.com/store/apps/details?id=com.waveface.uploader");
 		}
 
 		private void btnHelp_Click(object sender, RoutedEventArgs e)

@@ -72,19 +72,27 @@
     <system:String x:Key="SHORTER">PRECISE</system:String>
     <system:String x:Key="LONGER">GENERAL</system:String>
 
-    <system:String x:Key="AllowAutoSync">Auto import photos from from {0}?</system:String>
-    <system:String x:Key="AndroidDeviceFound">Android Device Connected</system:String>
-
+    <!--  begin of need review  -->
     <system:String x:Key="AddNewSource">Add a Phone</system:String>
-    <system:String x:Key="ANS_1">Auto import photos &amp; videos</system:String>
-    <system:String x:Key="ANS_2">You need to install Favorite* app on your phone.</system:String>
-    <system:String x:Key="ANS_3">How To</system:String>
-    <system:String x:Key="ANS_4">Download and install Favorite* app from Google Play.</system:String>
-    <system:String x:Key="ANS_5">Connect your phone to the same WiFi network with this PC.</system:String>
-    <system:String x:Key="ANS_6">Follow instruction on screen.</system:String>
-    <system:String x:Key="ANS_7">Looking for available devices...</system:String>
-    <system:String x:Key="ANS_8">Search for &quot;Waveface&quot; on Google Play</system:String>
     <system:String x:Key="ANS_9">I need more information?</system:String>
+    <system:String x:Key="ANS_step1_1">Install Favorite on your mobile device</system:String>
+    <system:String x:Key="ANS_step1_2">and turn it on.</system:String>
+    <system:String x:Key="ANS_step2">Make sure your device and this PC are on the same Wifi network.</system:String>
+    <system:String x:Key="ANS_step3">Follow the instruction on you device</system:String>
+    <system:String x:Key="ANS_findDev">Finding device...</system:String>
+    <system:String x:Key="ANS_importQuestion">Do you want to allow following devices to auto import their photos and videos to this PC?</system:String>
+    <system:String x:Key="ANS_allowSelected">Allow selected</system:String>
+    <system:String x:Key="ANS_disallowAll">Disallow all</system:String>
+    <system:String x:Key="ANS_deviceAdded">Device {0} is successfully added to this PC.</system:String>
+    <system:String x:Key="ANS_deviveNotFound" xml:space="preserve">
+Favorite is unable to find a connectable device. Please make sure Favorite is running on your device and the device and this PC are on the same WIFI.
+
+Do you want to search for available device again?
+Press 'Yes' to search again. Press 'No' to quit pairing mode.
+    </system:String>
+    <system:String x:Key="ANS_deviveNotFound_title">Device Not Found</system:String>
+    <!--  end of need review  -->
+
     <system:String x:Key="SelectAll">Select All</system:String>
     <system:String x:Key="UnselectAll">Unselect All</system:String>
     <system:String x:Key="AddTo">Add To</system:String>
