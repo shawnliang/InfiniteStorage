@@ -1,12 +1,15 @@
-﻿using Newtonsoft.Json.Linq;
+﻿#region
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Data.SQLite;
-using System.IO;
 using System.Linq;
-using Waveface.Model;
 using Microsoft.Win32;
+using Waveface.Model;
+
+#endregion
 
 namespace Waveface.ClientFramework
 {
@@ -19,6 +22,7 @@ namespace Waveface.ClientFramework
 		#endregion
 
 		#region Var
+
 		private static string _labelID = Guid.Empty.ToString();
 
 		private ObservableCollection<IContentEntity> _favorites;
@@ -33,10 +37,7 @@ namespace Waveface.ClientFramework
 
 		public static Client Default
 		{
-			get
-			{
-				return _default ?? (_default = new Client());
-			}
+			get { return _default ?? (_default = new Client()); }
 		}
 
 		#endregion
@@ -45,10 +46,7 @@ namespace Waveface.ClientFramework
 
 		public static string StarredLabelId
 		{
-			get
-			{
-				return _labelID;
-			}
+			get { return _labelID; }
 		}
 
 		private ObservableCollection<IContentEntity> m_Favorites
@@ -83,30 +81,20 @@ namespace Waveface.ClientFramework
 
 		public IEnumerable<IService> Services
 		{
-			get
-			{
-				return BunnyServiceSupplier.Default.Services;
-			}
+			get { return BunnyServiceSupplier.Default.Services; }
 		}
 
 		public ReadOnlyObservableCollection<IContentEntity> Favorites
 		{
-			get
-			{
-				return _readonlyFavorites ?? (_readonlyFavorites = new ReadOnlyObservableCollection<IContentEntity>(m_Favorites));
-			}
+			get { return _readonlyFavorites ?? (_readonlyFavorites = new ReadOnlyObservableCollection<IContentEntity>(m_Favorites)); }
 		}
 
 		public ReadOnlyObservableCollection<IContentEntity> Recent
 		{
-			get
-			{
-				return _readonlyRecent ?? (_readonlyRecent = new ReadOnlyObservableCollection<IContentEntity>(m_Recent));
-			}
+			get { return _readonlyRecent ?? (_readonlyRecent = new ReadOnlyObservableCollection<IContentEntity>(m_Recent)); }
 		}
 
 		#endregion
-
 
 		public Client()
 		{
@@ -118,7 +106,7 @@ namespace Waveface.ClientFramework
 			BunnyServiceSupplier.Default.Services.CollectionChanged += Services_CollectionChanged;
 		}
 
-		void Services_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		private void Services_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			foreach (var service in e.NewItems.OfType<IService>())
 			{
@@ -144,7 +132,7 @@ namespace Waveface.ClientFramework
 						{
 							var labelID = dr["label_id"].ToString();
 							var labelName = dr["name"].ToString();
-							var share_enabled = (bool)dr["share_enabled"];
+							var share_enabled = (bool) dr["share_enabled"];
 							var share_code = dr["share_code"].ToString();
 
 							if (labelID != "00000000-0000-0000-0000-000000000000")
@@ -175,7 +163,7 @@ namespace Waveface.ClientFramework
 						{
 							var labelID = dr["label_id"].ToString();
 							var labelName = dr["name"].ToString();
-							var share_enabled = (bool)dr["share_enabled"];
+							var share_enabled = (bool) dr["share_enabled"];
 							var share_code = dr["share_code"].ToString();
 
 							yield return new BunnyLabelContentGroup(labelID, labelName, share_enabled, share_code);
@@ -187,13 +175,12 @@ namespace Waveface.ClientFramework
 
 		#endregion
 
-
 		//TODO: tag & untag 接口一致...
 
 		public void Tag(IEnumerable<IContent> contents, string starredLabelId)
 		{
 			StationAPI.Tag(string.Join(",", contents.Select(content => content.ID).ToArray()), starredLabelId);
-			(m_Favorites.First() as IContentGroup).Refresh(); //Todo: Delete?
+
 			(m_Recent.First() as IContentGroup).Refresh();
 		}
 
@@ -231,7 +218,7 @@ namespace Waveface.ClientFramework
 		public void UnTag(string labelID, string contentID)
 		{
 			StationAPI.UnTag(contentID, labelID);
-			(m_Favorites.First() as IContentGroup).Refresh(); //Todo: Delete?
+
 			(m_Recent.First() as IContentGroup).Refresh();
 		}
 
@@ -256,7 +243,6 @@ namespace Waveface.ClientFramework
 			StationAPI.ClearLabel(StarredLabelId);
 		}
 
-
 		public void OnAir(string labelID, Boolean isOnAir)
 		{
 			StationAPI.OnAirLabel(labelID, isOnAir);
@@ -267,16 +253,18 @@ namespace Waveface.ClientFramework
 			StationAPI.ShareLabel(labelID, isShared);
 		}
 
-		void service_ContentPropertyChanged(object sender, ContentPropertyChangeEventArgs e)
+		private void service_ContentPropertyChanged(object sender, ContentPropertyChangeEventArgs e)
 		{
 			var content = e.Content as IContent;
 
 			if (content.Liked)
 			{
-				Tag(new IContent[] { content }, StarredLabelId);
+				Tag(new[] { content }, StarredLabelId);
 			}
 			else
+			{
 				UnTag(StarredLabelId, content.ID);
+			}
 		}
 
 		public bool IsOnAir(IContentGroup group)
@@ -284,13 +272,14 @@ namespace Waveface.ClientFramework
 			using (var conn = BunnyDB.CreateConnection())
 			{
 				conn.Open();
+
 				using (var cmd = conn.CreateCommand())
 				{
 					cmd.CommandText = "select on_air from [Labels] where label_id = @label";
 					cmd.Parameters.Add(new SQLiteParameter("@label", new Guid(group.ID)));
 					var on_air = cmd.ExecuteScalar();
 
-					return on_air != null && (bool)on_air;
+					return on_air != null && (bool) on_air;
 				}
 			}
 		}
