@@ -60,7 +60,6 @@ namespace InfiniteStorage
 			using (var db = new MyDbContext())
 			{
 				var allFiles = from f in db.Object.Files
-							   where !f.deleted
 							   select f;
 
 
@@ -73,7 +72,7 @@ namespace InfiniteStorage
 
 				foreach (var file in missingFiles)
 				{
-					file.deleted = true;
+					db.Object.Files.Remove(file);
 				}
 
 				db.Object.SaveChanges();
