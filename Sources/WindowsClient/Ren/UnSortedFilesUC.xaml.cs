@@ -221,7 +221,7 @@ namespace Waveface.Client
 
 		private void ShowEvents()
 		{
-			BunnyLabelContentGroup _contentEntity = (BunnyLabelContentGroup)ClientFramework.Client.Default.Favorites[0];
+			BunnyLabelContentGroup _contentEntity = (BunnyLabelContentGroup)ClientFramework.Client.Default.Recent[0];
 
 			List<string> _starredIDs = GetStarredIDs(_contentEntity);
 

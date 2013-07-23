@@ -375,8 +375,7 @@
 
     </Window.Resources>
 
-    <Grid x:Name="gdMain"
-          Background="{DynamicResource ContentAreaBackground}">
+    <Grid x:Name="gdMain" Background="{DynamicResource ContentAreaBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="302*" />
@@ -385,10 +384,10 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="215" MinWidth="215" MaxWidth="400" />
-            <ColumnDefinition />      
+            <ColumnDefinition />
             <ColumnDefinition Width="200" MinWidth="200" />
         </Grid.ColumnDefinitions>
-        
+
         <Grid Grid.Row="0" Grid.Column="1"
               Margin="0,0,0,1"
               Background="#FF5D5D5D">
@@ -397,7 +396,7 @@
                                   Direction="270"
                                   ShadowDepth="1" />
             </Grid.Effect>
-            
+
             <Grid Grid.Row="0"
                   Background="{DynamicResource TitleBarBackground}">
                 <DockPanel>
@@ -429,7 +428,7 @@
                 </DockPanel>
             </Grid>
         </Grid>
-        
+
         <Grid Grid.Row="0" Grid.Column="2"
               Margin="0,0,0,1"
               Background="{DynamicResource TitleBarBackground}">
@@ -447,7 +446,7 @@
                                   Direction="0"
                                   ShadowDepth="1" />
             </Grid.Effect>
-            
+
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*" MinHeight="100" />
@@ -522,7 +521,7 @@
                            Content="{DynamicResource FavoritesGroupTitle}"
                            FontFamily="Segoe UI"
                            Foreground="#FFA8A8A8" />
-                    
+
                     <local:FavoriteListBox x:Name="lbxFavorites"
                                            Grid.Row="1"
                                            AllowDrop="True"
@@ -530,10 +529,10 @@
                                            DragEnter="Favorites_DragEnter"
                                            Drop="Favorites_Drop"
                                            ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
-                </Grid>                                            
+                </Grid>
             </Grid>
         </Grid>
-        
+
         <GridSplitter Grid.Row="1" Grid.Column="0"
                       Width="5"
                       Background="Transparent" />
@@ -558,10 +557,7 @@
 
         </Grid>
 
-        <Grid x:Name="gdContentArea"
-              Grid.Row="1"
-              Grid.Column="1"
-              Grid.ColumnSpan="2"
+        <Grid x:Name="gdContentArea" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
               Margin="1,0,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -588,22 +584,25 @@
                          VirtualizingStackPanel.IsVirtualizing="True"
                          VirtualizingStackPanel.VirtualizationMode="Recycling" />
             </ScrollViewer>
+
             <local:AddSourceTip Grid.Row="0"
                                 Width="Auto"
                                 Height="Auto" />
         </Grid>
 
-        <local:UnSortedFilesUC x:Name="unSortedFilesUC"
-                               Grid.Row="0"
-                               Grid.RowSpan="3"
-                               Grid.Column="1"
-                               Grid.ColumnSpan="2"
+        <local:UnSortedFilesUC x:Name="unSortedFilesUC" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Grid.ColumnSpan="2"
                                Width="Auto"
                                Height="Auto"
                                Margin="1,0,0,0"
                                Visibility="Collapsed" />
-        <StackPanel x:Name="stackPanel"
-                    Grid.Row="2"
+
+        <Grid x:Name="helpPanel" Grid.Row="2" Grid.ColumnSpan="3" Background="Black" Height="80"  Margin="8, 0, 8, 0">
+            <Grid Margin="2" Background="Gray">
+                <Button Content="X" x:Name="btnHelpPanelClose" Width="15" Height="15" FontSize="10" FontWeight="ExtraBold"  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="4" Click="btnHelpPanelClose_Click" />
+            </Grid>
+        </Grid>
+
+        <StackPanel x:Name="stackPanel"  Grid.Row="2"
                     Background="Black"
                     Orientation="Horizontal">
             <StackPanel.Effect>
@@ -625,10 +624,8 @@
                    Foreground="#FFA8A8A8"
                    MouseDown="Label_MouseDown" />
         </StackPanel>
-        <Grid x:Name="ContentAreaToolBar"
-              Grid.Row="2"
-              Grid.Column="1"
-              Grid.ColumnSpan="2"
+
+        <Grid x:Name="ContentAreaToolBar" Grid.Row="2" Grid.Column="1"  Grid.ColumnSpan="2"
               Margin="1,0,0,0"
               Background="#FF333333">
             <Grid.Effect>
