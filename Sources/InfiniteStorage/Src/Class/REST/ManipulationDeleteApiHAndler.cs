@@ -24,12 +24,7 @@ namespace InfiniteStorage.REST
 
 			markAsDeleted(pendingDeleteFiles);
 
-			var affectedLabels = queryAffectedLabels(pendingDeleteFiles);
-
-			deleteLabelFiles(pendingDeleteFiles);
-
-			changeLabelSeqNum(affectedLabels);
-
+			var affectedLabels = Manipulation.Manipulation.RemoveLabelFiles(pendingDeleteFiles.Select(x=>x.file_id));
 			var deletedFolders = deleteFoldersIfEmpty(folders);
 			deleteFolderRecords(deletedFolders);
 
@@ -110,86 +105,6 @@ namespace InfiniteStorage.REST
 			}
 
 			return deleted;
-		}
-
-		
-		private void deleteLabelFiles(List<AbstractFileToManipulate> pendingDeleteFiles)
-		{
-			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
-			{
-				conn.Open();
-
-				using (var transaction = conn.BeginTransaction())
-				using (var cmd = conn.CreateCommand())
-				{
-					cmd.CommandText = "delete from LabelFiles where file_id = @file";
-					cmd.Prepare();
-
-					foreach (var file in pendingDeleteFiles)
-					{
-						cmd.Parameters.Clear();
-						cmd.Parameters.Add(new SQLiteParameter("@file", file.file_id));
-						cmd.ExecuteNonQuery();
-					}
-
-					transaction.Commit();
-				}
-			}
-		}
-
-		private void changeLabelSeqNum(ICollection<Guid> affectedLabels)
-		{
-			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
-			{
-				conn.Open();
-
-				using (var transaction = conn.BeginTransaction())
-				using (var cmd = conn.CreateCommand())
-				{
-					cmd.CommandText = "update Labels set seq = @seq where label_id = @label";
-					cmd.Prepare();
-
-					foreach (var label_id in affectedLabels)
-					{
-						cmd.Parameters.Clear();
-						cmd.Parameters.Add(new SQLiteParameter("@label", label_id));
-						cmd.Parameters.Add(new SQLiteParameter("@seq", SeqNum.GetNextSeq()));
-						cmd.ExecuteNonQuery();
-					}
-
-					transaction.Commit();
-				}
-			}
-		}
-
-		private ICollection<Guid> queryAffectedLabels(List<AbstractFileToManipulate> pendingDeleteFiles)
-		{
-			var affectedLabels = new List<Guid>();
-
-			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
-			{
-				conn.Open();
-				using (var cmd = conn.CreateCommand())
-				{
-					cmd.CommandText = "select label_id from labelFiles where file_id = @file";
-					cmd.Prepare();
-
-					foreach (var file in pendingDeleteFiles)
-					{
-						cmd.Parameters.Clear();
-						cmd.Parameters.Add(new SQLiteParameter("@file", file.file_id));
-						using (var reader = cmd.ExecuteReader())
-						{
-							while (reader.Read())
-							{
-								affectedLabels.Add(reader.GetGuid(0));
-							}
-						}
-					}
-				}
-			}
-
-			return affectedLabels.Distinct().ToList();
 		}
 
 		private void markAsDeleted(List<AbstractFileToManipulate> pendingDeleteFiles)

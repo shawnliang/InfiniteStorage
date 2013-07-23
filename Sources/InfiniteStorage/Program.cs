@@ -19,6 +19,7 @@ using System.Globalization;
 using System.Threading;
 using System.Diagnostics;
 using readCamera;
+using System.ComponentModel;
 
 namespace InfiniteStorage
 {
@@ -88,6 +89,7 @@ namespace InfiniteStorage
 				if (!Directory.Exists(Settings.Default.SingleFolderLocation))
 					Directory.CreateDirectory(Settings.Default.SingleFolderLocation);
 			}
+
 			try
 			{
 				NginxUtility.Instance.PrepareNginxConfig(12888, Settings.Default.SingleFolderLocation);
@@ -117,6 +119,22 @@ namespace InfiniteStorage
 			}
 
 			SeqNum.InitFromDB();
+
+			// checking db and file consistency
+			var dialog = new MigratingDataDialog();
+			var migratingCompleted = false;
+			dialog.Show();
+			var bg = new BackgroundWorker();
+			bg.DoWork += (s, e) => { ConsistencyChecker.RemoveMissingFilesFromDB(); };
+			bg.RunWorkerCompleted += (s, e) =>
+			{
+				dialog.CloseByApp();
+				migratingCompleted = true;
+			};
+			bg.RunWorkerAsync();
+
+			while (!migratingCompleted)
+				Application.DoEvents();
 
 			if (HomeSharing.Enabled)
 				NginxUtility.Instance.Start();

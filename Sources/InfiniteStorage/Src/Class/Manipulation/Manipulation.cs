@@ -114,6 +114,98 @@ namespace InfiniteStorage.Manipulation
 			}
 		}
 
+		public static ICollection<Guid> RemoveLabelFiles(IEnumerable<Guid> file_ids)
+		{
+			var affectedLabels = queryAffectedLabels(file_ids);
+			
+			if (affectedLabels.Any())
+			{
+				deleteLabelFiles(file_ids);
+				changeLabelSeqNum(affectedLabels);
+			}
+
+			return affectedLabels;
+		}
+
+		private static ICollection<Guid> queryAffectedLabels(IEnumerable<Guid> file_ids)
+		{
+			var affectedLabels = new List<Guid>();
+
+			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "select label_id from labelFiles where file_id = @file";
+					cmd.Prepare();
+
+					foreach (var file_id in file_ids)
+					{
+						cmd.Parameters.Clear();
+						cmd.Parameters.Add(new SQLiteParameter("@file", file_id));
+						using (var reader = cmd.ExecuteReader())
+						{
+							while (reader.Read())
+							{
+								affectedLabels.Add(reader.GetGuid(0));
+							}
+						}
+					}
+				}
+			}
+
+			return affectedLabels.Distinct().ToList();
+		}
+
+		private static void deleteLabelFiles(IEnumerable<Guid> file_ids)
+		{
+			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
+			{
+				conn.Open();
+
+				using (var transaction = conn.BeginTransaction())
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "delete from LabelFiles where file_id = @file";
+					cmd.Prepare();
+
+					foreach (var file_id in file_ids)
+					{
+						cmd.Parameters.Clear();
+						cmd.Parameters.Add(new SQLiteParameter("@file", file_id));
+						cmd.ExecuteNonQuery();
+					}
+
+					transaction.Commit();
+				}
+			}
+		}
+
+		private static void changeLabelSeqNum(ICollection<Guid> affectedLabels)
+		{
+			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
+			{
+				conn.Open();
+
+				using (var transaction = conn.BeginTransaction())
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "update Labels set seq = @seq where label_id = @label";
+					cmd.Prepare();
+
+					foreach (var label_id in affectedLabels)
+					{
+						cmd.Parameters.Clear();
+						cmd.Parameters.Add(new SQLiteParameter("@label", label_id));
+						cmd.Parameters.Add(new SQLiteParameter("@seq", SeqNum.GetNextSeq()));
+						cmd.ExecuteNonQuery();
+					}
+
+					transaction.Commit();
+				}
+			}
+		}
+
 		private static void moveFiles(string targetPath, List<AbstractFileToManipulate> filesToMove, out List<AbstractFileToManipulate> movedFiles, out List<AbstractFileToManipulate> notMovedFiles)
 		{
 			movedFiles = new List<AbstractFileToManipulate>();

@@ -94,6 +94,13 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\Dialog\MigratingDataDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Src\Dialog\MigratingDataDialog.Designer.cs">
+      <DependentUpon>MigratingDataDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Src\Class\ConsistencyChecker.cs" />
     <Compile Include="Src\Dialog\AskCameraImportDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -288,6 +295,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.zh-TW.resx">
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Src\Dialog\MigratingDataDialog.resx">
+      <DependentUpon>MigratingDataDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\PreferenceDialog.zh-TW.resx">
       <DependentUpon>PreferenceDialog.cs</DependentUpon>
