@@ -125,7 +125,12 @@ namespace InfiniteStorage
 			var migratingCompleted = false;
 			dialog.Show();
 			var bg = new BackgroundWorker();
-			bg.DoWork += (s, e) => { ConsistencyChecker.RemoveMissingFilesFromDB(); };
+			bg.DoWork += (s, e) =>
+			{
+				ConsistencyChecker.RemoveMissingFilesFromDB();
+				ConsistencyChecker.RemoveMissingFoldersFromDB();
+				ConsistencyChecker.RemoveMissingDevicesFromDB();
+			};
 			bg.RunWorkerCompleted += (s, e) =>
 			{
 				dialog.CloseByApp();

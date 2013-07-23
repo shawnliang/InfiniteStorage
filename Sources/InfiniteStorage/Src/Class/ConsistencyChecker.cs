@@ -17,6 +17,43 @@ namespace InfiniteStorage
 				Manipulation.Manipulation.RemoveLabelFiles(missingFiles.Select(x=>x.file_id));
 		}
 
+		public static void RemoveMissingFoldersFromDB()
+		{
+			using (var db = new MyDbContext())
+			{
+				var folders = from f in db.Object.Folders
+							  select f;
+
+				foreach (var folder in folders)
+				{
+					var folder_path = Path.Combine(MyFileFolder.Photo, folder.path);
+					if (!Directory.Exists(folder_path))
+						db.Object.Folders.Remove(folder);
+				}
+
+				db.Object.SaveChanges();
+			}
+		}
+
+		public static void RemoveMissingDevicesFromDB()
+		{
+			using (var db = new MyDbContext())
+			{
+				var devices = from dev in db.Object.Devices
+							  where !dev.deleted
+							  select dev;
+
+				foreach (var dev in devices)
+				{
+					var dev_path = Path.Combine(MyFileFolder.Photo, dev.folder_name);
+					if (!Directory.Exists(dev_path))
+						db.Object.Devices.Remove(dev);
+				}
+
+				db.Object.SaveChanges();
+			}
+		}
+
 		private static List<FileAsset> markMissingFilesAsDeleted()
 		{
 			var missingFiles = new List<FileAsset>();
