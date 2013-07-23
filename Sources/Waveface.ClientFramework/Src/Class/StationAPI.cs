@@ -7,6 +7,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace Waveface.ClientFramework
 {
@@ -198,5 +199,16 @@ namespace Waveface.ClientFramework
 			return Post(uri, parameters);
 		}
 		#endregion
+
+		public static string QueryPairingPasscode()
+		{
+			var parameters = new NameValueCollection();
+			var uri = API_BASE_URL + "/pairing/passcode";
+			var reply = Post(uri, parameters);
+
+			var response = JsonConvert.DeserializeObject<dynamic>(reply);
+
+			return response.passcode.Value.ToString();
+		}
 	}
 }

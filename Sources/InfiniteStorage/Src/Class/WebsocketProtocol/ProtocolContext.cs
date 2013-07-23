@@ -19,6 +19,8 @@ namespace InfiniteStorage.WebsocketProtocol
 		public long total_count { get; set; }
 		public long recved_files { get; set; }
 
+		public string passcode { get; set; }
+
 		public IFileStorage storage { get; private set; }
 		public ITempFileFactory factory { get; private set; }
 

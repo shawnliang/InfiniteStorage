@@ -29,7 +29,7 @@ namespace BonjourAgent
 			}
 		}
 
-		public void Register(ushort backup_port, ushort notify_port, ushort rest_port, string server_id, bool is_accepting, bool home_sharing)
+		public void Register(ushort backup_port, ushort notify_port, ushort rest_port, string server_id, bool is_accepting, bool home_sharing, string passcode)
 		{
 			m_svc.Name = Environment.MachineName;
 			m_svc.Port = (short)backup_port;
@@ -43,6 +43,7 @@ namespace BonjourAgent
 			txt.Add("rest_port", rest_port.ToString());
 			txt.Add("version", "1.0");
 			txt.Add("service_name", ServiceName);
+			txt.Add("passcode", passcode);
 			txt.Add("waiting_for_pair", is_accepting ? "true" : "false");
 			txt.Add("home_sharing", home_sharing ? "true" : "false");
 			m_svc.TxtRecord = txt;

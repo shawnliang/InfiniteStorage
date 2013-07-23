@@ -36,8 +36,6 @@ namespace InfiniteStorage
 		private ThumbnailCreator m_thumbnailCreator;
 		private ShareLabelMonitor m_shareMonitor;
 		private readCamera.camerAccess cameraImport;
-		private List<WebsocketProtocol.ProtocolContext> waitForUserAccept = new List<WebsocketProtocol.ProtocolContext>();
-		private object userAcceptCS = new object();
 
 		public StationServer()
 		{
@@ -59,8 +57,6 @@ namespace InfiniteStorage
 			// ----- pair -----
 			InfiniteStorageWebSocketService.PairingRequesting += InfiniteStorageWebSocketService_PairingRequesting;
 			Pair.PairWebSocketService.PairingModeChanging += PairWebSocketService_PairingModeChanging;
-			Pair.PairWebSocketService.NewDeviceAccepting += PairWebSocketService_NewDeviceAccepting;
-			Pair.PairWebSocketService.NewDeviceRejecting += PairWebSocketService_NewDeviceRejecting;
 
 
 			// ----- backup status timer -----
@@ -94,6 +90,7 @@ namespace InfiniteStorage
 			rest_server.AddHandler("/label_cover", new LabelCoverApiHandler());
 			rest_server.AddHandler("/manipulation/delete", new ManipulationDeleteApiHAndler());
 			rest_server.AddHandler("/manipulation/move", new ManipulationMoveApiHandler());
+			rest_server.AddHandler("/pairing/passcode", new PairingPasscodeApiHandler());
 
 			m_ReRegBonjourTimer = new NoReentrantTimer(reregisterBonjour, null, 60 * 1000, 60 * 1000);
 
@@ -129,87 +126,15 @@ namespace InfiniteStorage
 		
 		void InfiniteStorageWebSocketService_PairingRequesting(object sender, WebsocketProtocol.WebsocketEventArgs e)
 		{
-			var subscribers = Pair.PairWebSocketService.GetAllSubscribers();
-
-			if (!BonjourServiceRegistrator.Instance.IsAccepting || subscribers.Count == 0)
+			if (string.IsNullOrEmpty(e.ctx.passcode) || e.ctx.passcode == BonjourServiceRegistrator.Instance.Passcode)
 			{
-				try
-				{
-					log4net.LogManager.GetLogger("pairing").Debug("Not in pairing mode or subscriber is not ready. Reject this connection: " + e.ctx.device_name);
-					e.ctx.handleDisapprove();
-				}
-				catch (Exception err)
-				{
-					log4net.LogManager.GetLogger("pairing").Warn("Unable to reject a pairing request", err);
-				}
-				return;
+				e.ctx.handleApprove();
 			}
-
-			foreach (var subscriber in subscribers)
+			else
 			{
-				subscriber.NewPairingRequestComing(e.ctx.device_id, e.ctx.device_name);
-			}
-
-			lock(userAcceptCS)
-			{
-				if (!waitForUserAccept.Contains(e.ctx))
-					waitForUserAccept.Add(e.ctx);
+				e.ctx.handleDisapprove();
 			}
 		}
-
-		void PairWebSocketService_NewDeviceAccepting(object sender, Pair.NewDeviceRespondingEventArgs e)
-		{
-
-			log4net.LogManager.GetLogger("pairing").Debug("UI accepts " + e.device_id);
-			lock (userAcceptCS)
-			{
-				var toRemove = new List<WebsocketProtocol.ProtocolContext>();
-
-				var devices = waitForUserAccept.Where(x => x.device_id == e.device_id);
-				foreach (var ctx in devices)
-				{
-					log4net.LogManager.GetLogger("pairing").Debug("call handleApprove()");
-					try
-					{
-						ctx.handleApprove();
-					}
-					catch (Exception err)
-					{
-						log4net.LogManager.GetLogger("pairing").Warn("Unable to approve. Connection already closed? " + ctx.device_name, err);
-					}
-					toRemove.Add(ctx);
-				}
-
-				foreach (var ctx in toRemove)
-					waitForUserAccept.Remove(ctx);
-			}
-		}
-
-		void PairWebSocketService_NewDeviceRejecting(object sender, Pair.NewDeviceRespondingEventArgs e)
-		{
-			lock (userAcceptCS)
-			{
-				var toRemove = new List<WebsocketProtocol.ProtocolContext>();
-
-				var devices = waitForUserAccept.Where(x => x.device_id == e.device_id);
-				foreach (var ctx in devices)
-				{
-					try
-					{
-						ctx.handleDisapprove();
-					}
-					catch (Exception err)
-					{
-						log4net.LogManager.GetLogger("pairing").Warn("Unable to disapprove. Connection already closed? " + ctx.device_name, err);
-					}
-					toRemove.Add(ctx);
-				}
-
-				foreach (var ctx in toRemove)
-					waitForUserAccept.Remove(ctx);
-			}
-		}
-
 
 		void PairWebSocketService_PairingModeChanging(object sender, Pair.PairingModeChangingEventArgs e)
 		{

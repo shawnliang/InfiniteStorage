@@ -76,7 +76,7 @@
     <system:String x:Key="ANS_step1_1">Install Favorite on your mobile device</system:String>
     <system:String x:Key="ANS_step1_2">and turn it on.</system:String>
     <system:String x:Key="ANS_step2">Make sure your device and this PC are on the same Wifi network.</system:String>
-    <system:String x:Key="ANS_step3">Follow the instruction on you device</system:String>
+    <system:String x:Key="ANS_step3">Input the 4 digits below on your device.</system:String>
     <system:String x:Key="ANS_findDev">Finding device...</system:String>
     <system:String x:Key="ANS_importQuestion">Do you want to allow following devices to auto import their photos and videos to this PC?</system:String>
     <system:String x:Key="ANS_allowSelected">Allow selected</system:String>

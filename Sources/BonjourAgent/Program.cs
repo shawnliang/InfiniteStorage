@@ -26,7 +26,7 @@ namespace BonjourAgent
 
 				using (var bonjour = new BonjourService(options.server_name))
 				{
-					bonjour.Register(options.backup_port, options.notify_port, options.rest_port, options.server_id, options.is_accepting, options.home_sharing);
+					bonjour.Register(options.backup_port, options.notify_port, options.rest_port, options.server_id, options.is_accepting, options.home_sharing, options.passcode);
 
 					Console.Read();
 				}
@@ -56,6 +56,9 @@ namespace BonjourAgent
 
 		[Option("rest-port", Required = true)]
 		public ushort rest_port { get; set; }
+
+		[Option("passcode", Required = true)]
+		public string passcode { get; set; }
 
 		[Option("is-accepting", DefaultValue=false)]
 		public bool is_accepting { get; set; }

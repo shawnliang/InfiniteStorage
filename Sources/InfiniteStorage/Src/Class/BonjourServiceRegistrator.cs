@@ -24,6 +24,9 @@ namespace InfiniteStorage
 
 		private BonjourServiceRegistrator()
 		{
+			var rand = new Random();
+			var code = rand.Next(10000);
+			Passcode = code.ToString("0000");
 		}
 
 		public static BonjourServiceRegistrator Instance
@@ -36,6 +39,12 @@ namespace InfiniteStorage
 			backup_port = backup;
 			notify_port = notify;
 			rest_port = rest;
+		}
+
+		public string Passcode
+		{
+			get;
+			private set;
 		}
 
 		public void Register(bool? isAccepting = null)
@@ -70,8 +79,8 @@ namespace InfiniteStorage
 				agentProcess.StartInfo = new ProcessStartInfo
 				{
 					FileName = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "BonjourAgent.exe"),
-					Arguments = string.Format("--server-name \"{0}\" --server-id {1} --backup-port {2} --notify-port {3} --rest-port {4}",
-						 Settings.Default.LibraryName, Settings.Default.ServerId, backup_port, notify_port, rest_port) + otherArg,
+					Arguments = string.Format("--server-name \"{0}\" --server-id {1} --backup-port {2} --notify-port {3} --rest-port {4} --passcode {5}",
+						 Settings.Default.LibraryName, Settings.Default.ServerId, backup_port, notify_port, rest_port, Passcode) + otherArg,
 					CreateNoWindow = true,
 					WindowStyle = ProcessWindowStyle.Hidden,
 
