@@ -14,7 +14,6 @@ namespace Waveface.ClientFramework
 {
 	internal class BunnyService : Service
 	{
-		private BunnyDeviceTimelineContentGroup timeline;
 		private Timer timer;
 		private bool timerStarted;
 		private bool _isRecving;
@@ -43,9 +42,6 @@ namespace Waveface.ClientFramework
 
 		private void PopulateContent(ObservableCollection<IContentEntity> content)
 		{
-			timeline = new BunnyDeviceTimelineContentGroup(ID, Path.Combine(BunnyDB.ResourceFolder, Name));
-			content.Add(timeline);
-
 			using (var conn = BunnyDB.CreateConnection())
 			{
 				conn.Open();
@@ -71,7 +67,7 @@ namespace Waveface.ClientFramework
 
 			if (!timerStarted)
 			{
-				timer.Change(1000, Timeout.Infinite);
+				timer.Change(2000, Timeout.Infinite);
 				timerStarted = true;
 			}
 		}
@@ -94,31 +90,27 @@ namespace Waveface.ClientFramework
 			{
 				if (IsRecving)
 				{
-					if (timeline != null)
-					{
-						timeline.Refresh();
-					}
+					base.Refresh();
 
-					var unsorteds = Contents.Where(x => x.Name == "Unsorted").ToList();
+					//var unsorteds = Contents.Where(x => x.Name == "Unsorted").ToList();
+					//if (unsorteds.Any())
+					//{
+					//	foreach (BunnyContentGroup unsorted in unsorteds)
+					//	{
+					//		unsorted.Refresh();
+					//	}
+					//}
+					//else
+					//{
+					//	ObservableCollection<IContentEntity> newContents = new ObservableCollection<IContentEntity>();
+					//	PopulateContent(newContents);
 
-					if (unsorteds.Any())
-					{
-						foreach (BunnyContentGroup unsorted in unsorteds)
-						{
-							unsorted.Refresh();
-						}
-					}
-					else
-					{
-						ObservableCollection<IContentEntity> newContents = new ObservableCollection<IContentEntity>();
-						PopulateContent(newContents);
+					//	if (newContents.Where(x => x.Name == "Unsorted").Any())
+					//	{
+					//		base.Refresh();
+					//	}
 
-						if (newContents.Where(x => x.Name == "Unsorted").Any())
-						{
-							base.Refresh();
-						}
-
-					}
+					//}
 				}
 			}
 			catch

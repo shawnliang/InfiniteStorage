@@ -30,7 +30,7 @@ namespace InfiniteStorage
 				dir.Attributes = FileAttributes.Hidden | dir.Attributes;
 			}
 
-			var storage = new DefaultFolderFileStorage();
+			var storage = new ByMonthFileStorage();
 
 			var ctx = new ProtocolContext(new TempFileFactory(MyFileFolder.Temp), storage, new UnconnectedState())
 			{

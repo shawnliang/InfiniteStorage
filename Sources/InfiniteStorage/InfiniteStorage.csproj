@@ -94,6 +94,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Src\Class\ByMonthFileStorage.cs" />
     <Compile Include="Src\Dialog\MigratingDataDialog.cs">
       <SubType>Form</SubType>
     </Compile>
