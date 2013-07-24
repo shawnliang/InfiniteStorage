@@ -16,6 +16,7 @@ namespace InfiniteStorage.Data.Pairing
 	public class PairingServerMsgs
 	{
 		public pairing_request pairing_request { get; set; }
+		public thumb_info thumb_received { get; set; }
 	}
 
 	public class subscribe
@@ -37,5 +38,11 @@ namespace InfiniteStorage.Data.Pairing
 	{
 		public string device_id { get; set; }
 		public string device_name { get; set; }
+	}
+
+	public class thumb_info
+	{
+		public int transfer_count { get; set; }
+		public string path { get; set; }
 	}
 }

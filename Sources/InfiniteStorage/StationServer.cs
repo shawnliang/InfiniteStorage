@@ -36,6 +36,8 @@ namespace InfiniteStorage
 		private ThumbnailCreator m_thumbnailCreator;
 		private ShareLabelMonitor m_shareMonitor;
 		private readCamera.camerAccess cameraImport;
+		private object waitItemsCS = new object();
+		private List<WebsocketProtocol.ProtocolContext> waitForApprovalItems = new List<WebsocketProtocol.ProtocolContext>();
 
 		public StationServer()
 		{
@@ -56,7 +58,10 @@ namespace InfiniteStorage
 
 			// ----- pair -----
 			InfiniteStorageWebSocketService.PairingRequesting += InfiniteStorageWebSocketService_PairingRequesting;
+			InfiniteStorageWebSocketService.ThumbnailReceived += InfiniteStorageWebSocketService_ThumbnailReceived;
 			Pair.PairWebSocketService.PairingModeChanging += PairWebSocketService_PairingModeChanging;
+			Pair.PairWebSocketService.NewDeviceAccepting += PairWebSocketService_NewDeviceAccepting;
+			Pair.PairWebSocketService.NewDeviceRejecting += PairWebSocketService_NewDeviceRejecting;
 
 
 			// ----- backup status timer -----
@@ -123,6 +128,15 @@ namespace InfiniteStorage
 			
 		}
 
+		void InfiniteStorageWebSocketService_ThumbnailReceived(object sender, WebsocketProtocol.ThumbnailReceivedEventArgs e)
+		{
+			var pairingSubscribers = Pair.PairWebSocketService.GetAllSubscribers();
+			foreach (var peer in pairingSubscribers)
+			{
+				peer.ThumbnailReceived(e.thumbnail_path, e.transfer_count);
+			}
+		}
+
 		
 		void InfiniteStorageWebSocketService_PairingRequesting(object sender, WebsocketProtocol.WebsocketEventArgs e)
 		{
@@ -142,6 +156,11 @@ namespace InfiniteStorage
 			}
 			else
 			{
+				lock (waitItemsCS)
+				{
+					waitForApprovalItems.Add(e.ctx);
+				}
+
 				foreach (var subscriber in pairingSubscribers)
 				{
 					subscriber.NewPairingRequestComing(e.ctx.device_id, e.ctx.device_name);
@@ -153,6 +172,53 @@ namespace InfiniteStorage
 		{
 			BonjourServiceRegistrator.Instance.Register(e.enabled);
 		}
+
+		void PairWebSocketService_NewDeviceRejecting(object sender, Pair.NewDeviceRespondingEventArgs e)
+		{
+			List<WebsocketProtocol.ProtocolContext> items;
+			lock (waitItemsCS)
+			{
+				items = (from c in waitForApprovalItems
+						 where c.device_id == e.device_id
+						 select c).ToList();
+			}
+
+			foreach (var item in items)
+			{
+				try
+				{
+					item.handleDisapprove();
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn("Unable to disapprove " + item.device_name, err);
+				}
+			}
+		}
+
+		void PairWebSocketService_NewDeviceAccepting(object sender, Pair.NewDeviceRespondingEventArgs e)
+		{
+			List<WebsocketProtocol.ProtocolContext> items;
+			lock (waitItemsCS)
+			{
+				items = (from c in waitForApprovalItems
+						 where c.device_id == e.device_id
+						 select c).ToList();
+			}
+
+			foreach (var item in items)
+			{
+				try
+				{
+					item.handleApprove();
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn("Unable to approve " + item.device_name, err);
+				}
+			}
+		}
+
 
 		static void _fm1_CameraDetected(object sender, readCamera.CameraDetectedEventArgs e)
 		{
