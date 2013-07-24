@@ -153,11 +153,11 @@ namespace InfiniteStorage.WebsocketProtocol
 			}
 		}
 		
-		public void raiseOnThumbnailReceived(string thumbPath)
+		public void raiseOnThumbnailReceived(string thumbPath, int transferCount)
 		{
 			var handler = OnThumbnailReceived;
 			if (handler != null)
-				handler(this, new ThumbnailReceivedEventArgs(thumbPath, this.device_id));
+				handler(this, new ThumbnailReceivedEventArgs(thumbPath, this.device_id, transferCount));
 		}
 
 		public void raiseOnFileEnding()

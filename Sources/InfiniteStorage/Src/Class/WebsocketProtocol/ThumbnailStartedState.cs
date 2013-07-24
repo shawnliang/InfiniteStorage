@@ -20,7 +20,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			var temp = ctx.GetData(TEMP_FILE_KEY) as ITempFile;
 			temp.EndWrite();
 
-			ctx.raiseOnThumbnailReceived(temp.Path);
+			ctx.raiseOnThumbnailReceived(temp.Path, (int)cmd.transfer_count);
 
 			ctx.SetState(new WaitForApproveState());
 		}

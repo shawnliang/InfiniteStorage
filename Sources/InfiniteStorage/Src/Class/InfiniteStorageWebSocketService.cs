@@ -20,6 +20,7 @@ namespace InfiniteStorage
 		public static event EventHandler<WebsocketEventArgs> FileReceiving;
 		public static event EventHandler<WebsocketEventArgs> FileEnding;
 		public static event EventHandler<WebsocketEventArgs> FileReceived;
+		public static event EventHandler<ThumbnailReceivedEventArgs> ThumbnailReceived;
 
 		public InfiniteStorageWebSocketService()
 		{
@@ -45,6 +46,7 @@ namespace InfiniteStorage
 			ctx.OnFileReceiving += FileReceiving;
 			ctx.OnFileReceived += FileReceived;
 			ctx.OnFileEnding += FileEnding;
+			ctx.OnThumbnailReceived += ThumbnailReceived;
 
 			handler = new ProtocolHanlder(ctx);
 		}
