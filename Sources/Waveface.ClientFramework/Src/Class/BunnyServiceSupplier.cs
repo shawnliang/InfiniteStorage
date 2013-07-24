@@ -159,7 +159,7 @@ namespace Waveface.ClientFramework
 				var notify = JsonConvert.DeserializeObject<NotifyMsg>(e.Data);
 				var active_devices = notify.active_devices;
 
-				var services = this.Services;
+				var services = Services;
 
 				var actives = from s in services
 							  where active_devices.Contains(s.ID)

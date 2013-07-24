@@ -1,40 +1,38 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
+#endregion
+
 namespace Waveface.Model
 {
-	/// <summary>
-	/// 
-	/// </summary>
 	public class Service : IService, INotifyPropertyChanged
 	{
 		#region Var
+
 		private string _id;
 		private string _name;
 		private IServiceSupplier _supplier;
 		private ObservableCollection<IContentEntity> _observableContents;
-		#endregion
 
+		#endregion
 
 		#region Private Property
+
 		private bool m_NeedRefresh { get; set; }
 
-
-		Lazy<IEnumerable<IContentEntity>> m_Contents
-		{
-			get;
-			set;
-		}
+		private Lazy<IEnumerable<IContentEntity>> m_Contents { get; set; }
 
 		//private Action<ObservableCollection<IContentEntity>> m_populateFunc;
+
 		#endregion
 
-
 		#region Protected Property
-		
+
 		/// <summary>
 		/// Gets the m_ observable contents.
 		/// </summary>
@@ -48,23 +46,19 @@ namespace Waveface.Model
 					_observableContents = new ObservableCollection<IContentEntity>();
 					_observableContents.CollectionChanged += _observableContents_CollectionChanged;
 				}
+
 				return _observableContents;
 			}
 		}
+
 		#endregion
 
-
 		#region Public Property
+
 		public virtual string ID
 		{
-			get
-			{
-				return _id ?? string.Empty;
-			}
-			protected set
-			{
-				_id = value;
-			}
+			get { return _id ?? string.Empty; }
+			protected set { _id = value; }
 		}
 
 		public virtual string Name
@@ -73,14 +67,12 @@ namespace Waveface.Model
 			{
 				if (_name == null)
 				{
-					_name = this.GetType().Name;
+					_name = GetType().Name;
 				}
+
 				return _name;
 			}
-			private set
-			{
-				_name = value;
-			}
+			private set { _name = value; }
 		}
 
 
@@ -90,14 +82,8 @@ namespace Waveface.Model
 		/// <value>The supplier.</value>
 		public IServiceSupplier Supplier
 		{
-			get
-			{
-				return _supplier;
-			}
-			set
-			{
-				_supplier = value;
-			}
+			get { return _supplier; }
+			set { _supplier = value; }
 		}
 
 		/// <summary>
@@ -106,31 +92,23 @@ namespace Waveface.Model
 		/// <value>The contents.</value>
 		public IEnumerable<IContentEntity> Contents
 		{
-			get
-			{
-				return m_Contents.Value;
-			}
+			get { return m_Contents.Value; }
 		}
 
-		public string Description
-		{
-			get;
-			private set;
-		}
+		public string Description { get; private set; }
 
-		public Uri Uri
-		{
-			get;
-			protected set;
-		}
+		public Uri Uri { get; protected set; }
+
 		#endregion
 
 		#region Event
+
 		public event EventHandler<ContentPropertyChangeEventArgs> ContentPropertyChanged;
+
 		#endregion
 
-
 		#region Constructor
+
 		public Service()
 		{
 			m_NeedRefresh = true;
@@ -140,18 +118,19 @@ namespace Waveface.Model
 		{
 			m_NeedRefresh = true;
 
-			this.ID = id;
-			this.Supplier = supplier;
-			this.Name = name;
+			ID = id;
+			Supplier = supplier;
+			Name = name;
 		}
 
 		public Service(string id, IServiceSupplier supplier, string name, IEnumerable<IContentEntity> value)
 		{
 			m_NeedRefresh = true;
 
-			this.ID = id;
-			this.Supplier = supplier;
-			this.Name = name;
+			ID = id;
+			Supplier = supplier;
+			Name = name;
+
 			SetContents(value);
 		}
 
@@ -159,68 +138,67 @@ namespace Waveface.Model
 		{
 			m_NeedRefresh = true;
 
-			this.ID = id;
-			this.Supplier = supplier;
-			this.Name = name;
+			ID = id;
+			Supplier = supplier;
+			Name = name;
+
 			SetContents(func);
 		}
+
 		#endregion
 
-		
-
 		#region Private Method
+
 		protected void SetContents(Action<ObservableCollection<IContentEntity>> func)
 		{
 			//m_populateFunc = func;
 
 			m_Contents = new Lazy<IEnumerable<IContentEntity>>(() =>
-			{
-				//m_ObservableContents.Clear();
+				                                                   {
+					                                                   //m_ObservableContents.Clear();
 
-				if (m_NeedRefresh)
-				{
-					var newContents = new ObservableCollection<IContentEntity>();
-					func(newContents);
+					                                                   if (m_NeedRefresh)
+					                                                   {
+						                                                   var newContents = new ObservableCollection<IContentEntity>();
+						                                                   func(newContents);
 
-					m_ObservableContents.RefreshTo(newContents);
+						                                                   m_ObservableContents.RefreshTo(newContents);
 
-					m_NeedRefresh = false;
-				}
+						                                                   m_NeedRefresh = false;
+					                                                   }
 
-				foreach (var content in m_ObservableContents)
-					(content as ContentEntity).Service = this;
+					                                                   foreach (var content in m_ObservableContents)
+						                                                   (content as ContentEntity).Service = this;
 
-				return m_ObservableContents;
-			});
-
+					                                                   return m_ObservableContents;
+				                                                   });
 		}
 
 		public void SetContents(IEnumerable<IContentEntity> values)
 		{
-			SetContents((contents) =>
-			{
-				contents.AddRange(values);
-			});
+			SetContents((contents) => { contents.AddRange(values); });
 		}
+
 		#endregion
 
 		protected void OnContentPropertyChanged(ContentPropertyChangeEventArgs e)
 		{
 			if (ContentPropertyChanged == null)
 				return;
+
 			ContentPropertyChanged(this, e);
 		}
 
-
 		#region Public Method
+
 		public override string ToString()
 		{
-			return this.Name;
+			return Name;
 		}
+
 		#endregion
 
-
-		void _observableContents_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		private void _observableContents_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			if (e.Action == NotifyCollectionChangedAction.Add)
 			{
@@ -231,7 +209,7 @@ namespace Waveface.Model
 			}
 		}
 
-		void item_ContentPropertyChanged(object sender, ContentPropertyChangeEventArgs e)
+		private void item_ContentPropertyChanged(object sender, ContentPropertyChangeEventArgs e)
 		{
 			OnContentPropertyChanged(e);
 		}
@@ -252,6 +230,7 @@ namespace Waveface.Model
 		protected void OnPropertyChanged(string name)
 		{
 			var handler = PropertyChanged;
+			
 			if (handler != null)
 			{
 				handler(this, new PropertyChangedEventArgs(name));

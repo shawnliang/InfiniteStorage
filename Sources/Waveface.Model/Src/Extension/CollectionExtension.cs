@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Collections.ObjectModel;
+﻿#region
 
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+
+#endregion
 
 namespace Waveface.Model
 {

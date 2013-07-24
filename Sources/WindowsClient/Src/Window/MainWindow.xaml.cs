@@ -31,6 +31,7 @@ namespace Waveface.Client
 		public static string HELP_URL = "http://waveface.uservoice.com/knowledgebase/articles/214932-step1-import-photos-videos-from-your-phone";
 
 		private DispatcherTimer uiDelayTimer;
+		private DispatcherTimer recentTimer;
 		private DispatcherTimer m_timelineShareToDelayTimer;
 
 		public MainWindow()
@@ -433,7 +434,22 @@ namespace Waveface.Client
 			uiDelayTimer.Interval = new TimeSpan(0, 0, 1);
 			uiDelayTimer.Start();
 
+			recentTimer = new DispatcherTimer();
+			recentTimer.Tick += recentTimer_Tick;
+			recentTimer.Interval = new TimeSpan(0, 0, 2);
+			recentTimer.Start();
+
 			ShowHelpPanel(true);
+		}
+
+		void recentTimer_Tick(object sender, EventArgs e)
+		{
+			ClientFramework.Client.Default.RefreshRecent(); // - ?
+
+			foreach (IContentGroup _contentGroup in lbxRecent.Items.OfType<IContentGroup>())
+			{
+				_contentGroup.Refresh();
+			}
 		}
 
 		private void lblHomeSharingTutorialTip_MouseDown(object sender, MouseButtonEventArgs e)
@@ -955,11 +971,11 @@ namespace Waveface.Client
 			{
 				lbxContentContainer.UnselectAll();
 				lbxContentContainer.SelectedItem = dataContext;
-				
+
 				try
 				{
 					PropertyInfo pi = typeof(ListBox).GetProperty("AnchorItem", BindingFlags.NonPublic | BindingFlags.Instance);
-					
+
 					if (pi != null)
 					{
 						pi.SetValue(lbxContentContainer, dataContext, null);

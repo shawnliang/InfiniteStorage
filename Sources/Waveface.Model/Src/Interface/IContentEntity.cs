@@ -1,12 +1,17 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+
+#endregion
 
 namespace Waveface.Model
 {
 	public interface IContentEntity
 	{
 		#region Property
+
 		/// <summary>
 		/// Gets the ID.
 		/// </summary>
@@ -31,9 +36,7 @@ namespace Waveface.Model
 		/// </value>
 		Uri Uri { get; }
 
-
 		IService Service { get; }
-
 
 		/// <summary>
 		/// Gets the parent.
@@ -59,7 +62,6 @@ namespace Waveface.Model
 		/// </value>
 		Image Image { get; }
 
-
 		/// <summary>
 		/// Gets the thumbnails.
 		/// </summary>
@@ -67,7 +69,6 @@ namespace Waveface.Model
 		/// The thumbnails.
 		/// </value>
 		Image Thumbnail { get; }
-
 
 		/// <summary>
 		/// Gets or sets the size.
@@ -108,10 +109,13 @@ namespace Waveface.Model
 		/// The memo.
 		/// </value>
 		Dictionary<String, String> Memo { get; }
+
 		#endregion
 
 		#region Method
+
 		void Refresh();
+
 		#endregion
 	}
 }

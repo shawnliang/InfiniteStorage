@@ -1109,10 +1109,10 @@ namespace Waveface.Client
 
 				foreach (string _fileID in _fileIDs)
 				{
-					_contents.Add(new Content{ID = _fileID,});
-				}			
+					_contents.Add(new Content { ID = _fileID, });
+				}
 
-				m_mainWindow.TimelineShareTo(_contents, _name);				
+				m_mainWindow.TimelineShareTo(_contents, _name);
 			}
 		}
 	}

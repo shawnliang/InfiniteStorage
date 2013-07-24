@@ -1,15 +1,19 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+
+#endregion
 
 namespace Waveface.Model
 {
 	internal interface ILazy
 	{
 		#region Method
+
 		void Init();
 		void BeginInit();
 		//IAsyncResult BeginInit();
@@ -18,35 +22,39 @@ namespace Waveface.Model
 		//void EndInit(IAsyncResult asyncResult);
 
 		void CancelInit();
+
 		#endregion
 	}
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <typeparam name="T"></typeparam>
 	public class Lazy<T> : ILazy
 	{
 		#region Delegate
-		delegate void InitMethodDelegate();
+
+		private delegate void InitMethodDelegate();
+
 		#endregion
 
 		#region Static Var
+
 		private static bool _enableBackgroundInit;
 		private static Thread _backgroundInitThread;
 		private static object _unInitLazysLockKey;
 		private static List<ILazy> _unInitLazys;
+
 		#endregion
 
 		#region Var
+
 		private SynchronizationContext _syncContext = SynchronizationContext.Current;
 		private Func<T> _func;
 		private bool _isValueCreated;
 		//private InitMethodDelegate _InitDelegate;
 		private Thread _initThread;
+
 		#endregion
 
 		#region Private Static Property
+
 		/// <summary>
 		/// Gets the m_ background init thread.
 		/// </summary>
@@ -57,30 +65,30 @@ namespace Waveface.Model
 			{
 				if (_backgroundInitThread == null)
 				{
-					_backgroundInitThread = new Thread(new ThreadStart(() =>
-					{
-						while (true)
-						{
-							ILazy lazyObj = m_UnInitLazys.FirstOrDefault();
-							if (lazyObj != null)
-							{
-								try
-								{
-									lazyObj.Init();
-								}
-								catch (Exception)
-								{
-									m_UnInitLazys.Remove(lazyObj);
-									m_UnInitLazys.Add(lazyObj);
-								}
-							}
-							//else
-							//{
-							Thread.Sleep(100);
-							Application.DoEvents();
-							//}
-						}
-					})) { IsBackground = true, Priority = ThreadPriority.Lowest };
+					_backgroundInitThread = new Thread(() =>
+						                                   {
+							                                   while (true)
+							                                   {
+								                                   ILazy lazyObj = m_UnInitLazys.FirstOrDefault();
+								                                   if (lazyObj != null)
+								                                   {
+									                                   try
+									                                   {
+										                                   lazyObj.Init();
+									                                   }
+									                                   catch (Exception)
+									                                   {
+										                                   m_UnInitLazys.Remove(lazyObj);
+										                                   m_UnInitLazys.Add(lazyObj);
+									                                   }
+								                                   }
+								                                   //else
+								                                   //{
+								                                   Thread.Sleep(100);
+								                                   Application.DoEvents();
+								                                   //}
+							                                   }
+						                                   }) {IsBackground = true, Priority = ThreadPriority.Lowest};
 				}
 				return _backgroundInitThread;
 			}
@@ -96,7 +104,8 @@ namespace Waveface.Model
 						m_BackgroundInitThread.Abort();
 					}
 					catch
-					{ }
+					{
+					}
 				}
 				_backgroundInitThread = value;
 			}
@@ -132,15 +141,14 @@ namespace Waveface.Model
 				}
 			}
 		}
+
 		#endregion
 
 		#region Public Static Property
+
 		public static bool EnableBackgroundInit
 		{
-			get
-			{
-				return _enableBackgroundInit;
-			}
+			get { return _enableBackgroundInit; }
 			set
 			{
 				if (_enableBackgroundInit == value)
@@ -154,9 +162,11 @@ namespace Waveface.Model
 				}
 			}
 		}
+
 		#endregion
 
 		#region Private Property
+
 		///// <summary>
 		///// Gets or sets the m_ async result.
 		///// </summary>
@@ -183,10 +193,7 @@ namespace Waveface.Model
 		/// <value>The m_ func.</value>
 		private Func<T> m_Func
 		{
-			get
-			{
-				return _func;
-			}
+			get { return _func; }
 			set
 			{
 				if (_func != value)
@@ -202,7 +209,6 @@ namespace Waveface.Model
 		/// </summary>
 		/// <value>The m_ result.</value>
 		private T m_Result { get; set; }
-
 
 
 		///// <summary>
@@ -235,19 +241,19 @@ namespace Waveface.Model
 				if (_initThread == null)
 				{
 					_initThread = new Thread(() =>
-					{
-						try
-						{
-							Init();
-						}
-						catch
-						{
-							m_Result = default(T);
-							IsValueCreated = false;
-							IsIniting = false;
-							_initThread = null;
-						}
-					});
+						                         {
+							                         try
+							                         {
+								                         Init();
+							                         }
+							                         catch
+							                         {
+								                         m_Result = default(T);
+								                         IsValueCreated = false;
+								                         IsIniting = false;
+								                         _initThread = null;
+							                         }
+						                         });
 					_initThread.Priority = ThreadPriority.Highest;
 				}
 				return _initThread;
@@ -278,10 +284,11 @@ namespace Waveface.Model
 				_initThread = value;
 			}
 		}
+
 		#endregion
 
-
 		#region Public Property
+
 		/// <summary>
 		/// Gets or sets the initial value.
 		/// </summary>
@@ -318,10 +325,7 @@ namespace Waveface.Model
 		/// </value>
 		public Boolean IsValueCreated
 		{
-			get
-			{
-				return _isValueCreated;
-			}
+			get { return _isValueCreated; }
 			private set
 			{
 				if (_isValueCreated == value)
@@ -341,14 +345,17 @@ namespace Waveface.Model
 		/// 	<c>true</c> if this instance is initing; otherwise, <c>false</c>.
 		/// </value>
 		public Boolean IsIniting { get; private set; }
+
 		#endregion
 
 		#region Event
+
 		public event EventHandler ValueInited;
+
 		#endregion
 
-
 		#region Constructor
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Lazy&lt;T&gt;"/> class.
 		/// </summary>
@@ -363,7 +370,7 @@ namespace Waveface.Model
 		/// <param name="func">The func.</param>
 		public Lazy(Func<T> func)
 		{
-			this.ValueInited += new EventHandler(Lazy_ValueInited);
+			ValueInited += Lazy_ValueInited;
 			SetValue(func);
 			m_UnInitLazys.Add(this);
 		}
@@ -385,10 +392,11 @@ namespace Waveface.Model
 		{
 			m_UnInitLazys.Remove(this);
 		}
+
 		#endregion
 
-
 		#region Private Method
+
 		/// <summary>
 		/// Resets this instance.
 		/// </summary>
@@ -433,7 +441,7 @@ namespace Waveface.Model
 		/// <param name="o">The o.</param>
 		private void PostSyncContext<T>(Action<T> target, Object o)
 		{
-			m_SyncContext.Post((obj) => target((T)obj), o);
+			m_SyncContext.Post((obj) => target((T) obj), o);
 		}
 
 		/// <summary>
@@ -444,10 +452,11 @@ namespace Waveface.Model
 		{
 			return !IsIniting && !IsValueCreated && m_Func != null;
 		}
+
 		#endregion
 
-
 		#region Protected Method
+
 		/// <summary>
 		/// Raises the <see cref="E:ValueInited"/> event.
 		/// </summary>
@@ -456,10 +465,11 @@ namespace Waveface.Model
 		{
 			RaiseEvent(ValueInited, e);
 		}
+
 		#endregion
 
-
 		#region Public Method
+
 		/// <summary>
 		/// Clears the value.
 		/// </summary>
@@ -607,20 +617,23 @@ namespace Waveface.Model
 		{
 			SetValue(() => value);
 		}
+
 		#endregion
 
 		#region Event Process
+
 		/// <summary>
 		/// Handles the ValueInited event of the Lazy control.
 		/// </summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-		void Lazy_ValueInited(object sender, EventArgs e)
+		private void Lazy_ValueInited(object sender, EventArgs e)
 		{
 			//m_AsyncResult = null;
 			IsIniting = false;
 			m_UnInitLazys.Remove(this);
 		}
+
 		#endregion
 	}
 }

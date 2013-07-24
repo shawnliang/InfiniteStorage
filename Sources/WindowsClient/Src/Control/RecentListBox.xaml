@@ -16,9 +16,6 @@
          d:DesignWidth="400"
          mc:Ignorable="d">
 
-    <ListBox.Resources>
-    </ListBox.Resources>
-
     <ListBox.ItemTemplate>
         <DataTemplate>
             <Grid x:Name="item"

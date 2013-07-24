@@ -1,30 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
+#endregion
+
 namespace Waveface.Model
 {
-	/// <summary>
-	/// 
-	/// </summary>
 	public abstract class ServiceSupplier : IServiceSupplier, INotifyPropertyChanged
 	{
 		#region Var
+
 		private ObservableCollection<IService> _services;
+
 		#endregion
 
-
 		#region Protected Property
+
 		/// <summary>
 		/// Gets the info.
 		/// </summary>
 		/// <value>The info.</value>
 		protected abstract ServiceSupplierInfo m_Info { get; }
+
 		#endregion
 
-
 		#region Public Property
+
 		/// <summary>
 		/// Gets the ID.
 		/// </summary>
@@ -59,32 +62,27 @@ namespace Waveface.Model
 		/// <value>The services.</value>
 		public virtual ObservableCollection<IService> Services
 		{
-			get
-			{
-				return _services ?? (_services = new ObservableCollection<IService>());
-			}
+			get { return _services ?? (_services = new ObservableCollection<IService>()); }
 		}
 
 
-		public string Description
-		{
-			get;
-			private set;
-		}
+		public string Description { get; private set; }
 
 		/// <summary>
 		/// Gets or sets the tag.
 		/// </summary>
 		/// <value>The tag.</value>
 		public object Tag { get; set; }
+
 		#endregion
 
-
 		#region Public Method
+
 		public override string ToString()
 		{
-			return this.Name;
+			return Name;
 		}
+
 		#endregion
 
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -92,6 +90,7 @@ namespace Waveface.Model
 		protected void OnPropertyChanged(string name)
 		{
 			var handler = PropertyChanged;
+
 			if (handler != null)
 			{
 				handler(this, new PropertyChangedEventArgs(name));

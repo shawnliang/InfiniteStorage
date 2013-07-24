@@ -1,24 +1,27 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
+using System.ComponentModel;
+
+#endregion
 
 namespace Waveface.Model
 {
-	/// <summary>
-	/// 
-	/// </summary>
 	public class ContentGroup : ContentEntity, IContentGroup
 	{
 		#region Var
+
 		private ObservableCollection<IContentEntity> _observableContents;
 		private ReadOnlyObservableCollection<IContentEntity> _readOnlyObservableContents;
 		private Action<ObservableCollection<IContentEntity>> _setContentAction;
+
 		#endregion
 
-
 		#region Private Property
+
 		private bool m_NeedRefresh { get; set; }
 
 		/// <summary>
@@ -32,15 +35,17 @@ namespace Waveface.Model
 				if (_observableContents == null)
 				{
 					_observableContents = new ObservableCollection<IContentEntity>();
-					_observableContents.CollectionChanged += new NotifyCollectionChangedEventHandler(_observableContents_CollectionChanged);
+					_observableContents.CollectionChanged += _observableContents_CollectionChanged;
 				}
+
 				return _observableContents;
 			}
 		}
+
 		#endregion
 
-
 		#region Public Property
+
 		public ReadOnlyObservableCollection<IContentEntity> Contents
 		{
 			get
@@ -64,28 +69,24 @@ namespace Waveface.Model
 				}
 				return _readOnlyObservableContents;
 			}
-			private set
-			{
-				_readOnlyObservableContents = value;
-			}
+			private set { _readOnlyObservableContents = value; }
 		}
 
 		public virtual int ContentCount
 		{
-			get
-			{
-				return Contents.Count;
-			}
+			get { return Contents.Count; }
 		}
-		#endregion
 
+		#endregion
 
 		#region Event
+
 		public event EventHandler<ContentPropertyChangeEventArgs> ContentPropertyChanged;
+
 		#endregion
 
-
 		#region Constructor
+
 		public ContentGroup()
 		{
 			m_NeedRefresh = true;
@@ -95,7 +96,6 @@ namespace Waveface.Model
 			: this(id, name, uri, (contents) => { })
 		{
 			m_NeedRefresh = true;
-
 		}
 
 		public ContentGroup(string id, string name, Uri uri, IEnumerable<IContentEntity> value)
@@ -121,14 +121,16 @@ namespace Waveface.Model
 
 			SetContents((contents) => func(this, contents));
 		}
+
 		#endregion
 
-
 		#region Protected Method
+
 		protected void OnContentPropertyChanged(ContentPropertyChangeEventArgs e)
 		{
 			if (ContentPropertyChanged == null)
 				return;
+
 			ContentPropertyChanged(this, e);
 		}
 
@@ -139,26 +141,24 @@ namespace Waveface.Model
 		protected void SetContents(Action<ObservableCollection<IContentEntity>> func)
 		{
 			_setContentAction = (contents) =>
-			{
-				contents.Clear();
-				func(contents);
+				                    {
+					                    contents.Clear();
+					                    func(contents);
 
-				foreach (var content in contents)
-					(content as ContentEntity).Service = this.Service;
-			};
+					                    foreach (var content in contents)
+						                    (content as ContentEntity).Service = Service;
+				                    };
 		}
 
 		protected void SetContents(IEnumerable<IContentEntity> values)
 		{
-			SetContents((contents) =>
-			{
-				contents.AddRange(values);
-			});
+			SetContents((contents) => { contents.AddRange(values); });
 		}
+
 		#endregion
 
-
 		#region Public Method
+
 		public override void Refresh()
 		{
 			//Contents = null;
@@ -167,10 +167,12 @@ namespace Waveface.Model
 			m_NeedRefresh = true;
 			OnPropertyChanged("ContentCount");
 		}
+
 		#endregion
 
 		#region Event Process
-		void _observableContents_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+
+		private void _observableContents_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			if (e.Action == NotifyCollectionChangedAction.Add)
 			{
@@ -187,16 +189,16 @@ namespace Waveface.Model
 			}
 		}
 
-		void group_ContentPropertyChanged(object sender, ContentPropertyChangeEventArgs e)
+		private void group_ContentPropertyChanged(object sender, ContentPropertyChangeEventArgs e)
 		{
 			OnContentPropertyChanged(e);
 		}
 
-		void item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		private void item_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			OnContentPropertyChanged(new ContentPropertyChangeEventArgs(sender as IContentEntity, e.PropertyName));
 		}
-		#endregion
 
+		#endregion
 	}
 }

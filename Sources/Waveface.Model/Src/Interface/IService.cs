@@ -1,14 +1,16 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
+
+#endregion
 
 namespace Waveface.Model
 {
-	/// <summary>
-	/// 
-	/// </summary>
 	public interface IService
 	{
 		#region Property
+
 		String ID { get; }
 
 		string Name { get; }
@@ -28,15 +30,19 @@ namespace Waveface.Model
 		string Description { get; }
 
 		Uri Uri { get; }
+
 		#endregion
 
 		#region Event
+
 		event EventHandler<ContentPropertyChangeEventArgs> ContentPropertyChanged;
+
 		#endregion
 
-
 		#region Method
+
 		void Refresh();
+
 		#endregion
 	}
 }

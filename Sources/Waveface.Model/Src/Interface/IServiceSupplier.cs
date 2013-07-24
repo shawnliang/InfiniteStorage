@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+﻿#region
+
 using System.Collections.ObjectModel;
+
+#endregion
 
 namespace Waveface.Model
 {
-	/// <summary>
-	/// 
-	/// </summary>
 	public interface IServiceSupplier
 	{
 		#region Property
+
 		/// <summary>
 		/// Gets the ID.
 		/// </summary>
@@ -17,13 +18,11 @@ namespace Waveface.Model
 		/// </value>
 		string ID { get; }
 
-
 		/// <summary>
 		/// Gets the name.
 		/// </summary>
 		/// <value>The name.</value>
 		string Name { get; }
-
 
 		/// <summary>
 		/// Gets the description.
@@ -39,6 +38,7 @@ namespace Waveface.Model
 		/// </summary>
 		/// <value>The services.</value>
 		ObservableCollection<IService> Services { get; }
+
 		#endregion
 	}
 }

@@ -145,21 +145,19 @@ namespace Waveface.ClientFramework
 			}
 		}
 
-		private IEnumerable<IContentEntity> GetRecent()
+		public static IEnumerable<IContentEntity> GetRecent()
 		{
-			int k = 0;
-
 			using (var conn = BunnyDB.CreateConnection())
 			{
 				conn.Open();
 
 				using (var cmd = conn.CreateCommand())
 				{
-					cmd.CommandText = "SELECT * FROM Labels";
+					cmd.CommandText = "SELECT * FROM Labels limit 7";
 
 					using (var dr = cmd.ExecuteReader())
 					{
-						while (dr.Read() && (k++ < 7))
+						while (dr.Read())
 						{
 							var labelID = dr["label_id"].ToString();
 							var labelName = dr["name"].ToString();
@@ -174,6 +172,14 @@ namespace Waveface.ClientFramework
 		}
 
 		#endregion
+
+		public void RefreshRecent()
+		{
+			foreach (IContentEntity _contentEntity in m_Recent)
+			{
+				_contentEntity.Refresh();
+			}
+		}
 
 		//TODO: tag & untag 接口一致...
 
@@ -259,7 +265,7 @@ namespace Waveface.ClientFramework
 
 			if (content.Liked)
 			{
-				Tag(new[] { content }, StarredLabelId);
+				Tag(new[] {content}, StarredLabelId);
 			}
 			else
 			{

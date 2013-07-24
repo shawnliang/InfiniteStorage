@@ -136,6 +136,7 @@ namespace Waveface.ClientFramework
 
 			//檢查是否型態相等
 			var value = obj as IService;
+
 			if (value == null)
 				return false;
 
