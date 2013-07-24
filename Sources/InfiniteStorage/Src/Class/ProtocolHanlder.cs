@@ -36,6 +36,10 @@ namespace InfiniteStorage
 						ctx.handleConnectCmd(cmd);
 					else if (cmd.isUpdatecountCmd())
 						ctx.handleUpdateCountCmd(cmd);
+					else if (cmd.isThumbStartCmd())
+						ctx.handleThumbStartCmd(cmd);
+					else if (cmd.isThumbEndCmd())
+						ctx.handleThumbEndCmd(cmd);
 					else
 						throw new ProtocolErrorException("Unknown action: " + cmd.action);
 				}

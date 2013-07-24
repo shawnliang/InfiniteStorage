@@ -43,5 +43,11 @@ namespace InfiniteStorage.WebsocketProtocol
 			ctx.Stop(WebSocketSharp.Frame.CloseStatusCode.POLICY_VIOLATION, "User rejected");
 			ctx.SetState(new UnconnectedState());
 		}
+
+		public override void handleThumbStartCmd(ProtocolContext ctx, TextCommand cmd)
+		{
+			ctx.SetData(ThumbnailStartedState.TEMP_FILE_KEY, ctx.factory.CreateTempFile());
+			ctx.SetState(new ThumbnailStartedState());
+		}
 	}
 }

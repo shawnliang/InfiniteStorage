@@ -126,13 +126,26 @@ namespace InfiniteStorage
 		
 		void InfiniteStorageWebSocketService_PairingRequesting(object sender, WebsocketProtocol.WebsocketEventArgs e)
 		{
-			if (string.IsNullOrEmpty(e.ctx.passcode) || e.ctx.passcode == BonjourServiceRegistrator.Instance.Passcode)
+			var pairingSubscribers = Pair.PairWebSocketService.GetAllSubscribers();
+
+			if (string.IsNullOrEmpty(e.ctx.passcode) && pairingSubscribers.Any())
 			{
+				// old client does not provide passcode.
+				// for backward compatibility, just accept it.
 				e.ctx.handleApprove();
+				return;
+			}
+
+			if (!pairingSubscribers.Any() || BonjourServiceRegistrator.Instance.Passcode != e.ctx.passcode)
+			{
+				e.ctx.handleDisapprove();
 			}
 			else
 			{
-				e.ctx.handleDisapprove();
+				foreach (var subscriber in pairingSubscribers)
+				{
+					subscriber.NewPairingRequestComing(e.ctx.device_id, e.ctx.device_name);
+				}
 			}
 		}
 

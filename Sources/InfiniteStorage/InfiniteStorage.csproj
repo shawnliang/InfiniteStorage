@@ -96,6 +96,8 @@
   <ItemGroup>
     <Compile Include="Src\Class\ByMonthFileStorage.cs" />
     <Compile Include="Src\Class\REST\PairingPasscodeApiHandler.cs" />
+    <Compile Include="Src\Class\WebsocketProtocol\ThumbnailReceivedEventArgs.cs" />
+    <Compile Include="Src\Class\WebsocketProtocol\ThumbnailStartedState.cs" />
     <Compile Include="Src\Dialog\MigratingDataDialog.cs">
       <SubType>Form</SubType>
     </Compile>

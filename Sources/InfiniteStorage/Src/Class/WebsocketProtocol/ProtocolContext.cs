@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+
 
 namespace InfiniteStorage.WebsocketProtocol
 {
@@ -9,6 +11,8 @@ namespace InfiniteStorage.WebsocketProtocol
 	public class ProtocolContext : IProtocolHandlerContext, IConnectionStatus
 	{
 		private AbstractProtocolState state;
+		private Dictionary<string, object> memo = new Dictionary<string, object>();
+
 		public FileContext fileCtx { get; set; }
 		public ITempFile temp_file { get; set; }
 		public string device_name { get; set; }
@@ -34,7 +38,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		public event EventHandler<WebsocketEventArgs> OnFileReceiving;
 		public event EventHandler<WebsocketEventArgs> OnFileEnding;
 		public event EventHandler<WebsocketEventArgs> OnFileReceived;
-		
+		public event EventHandler<ThumbnailReceivedEventArgs> OnThumbnailReceived;
 
 		public ProtocolContext(ITempFileFactory factory, IFileStorage storage, AbstractProtocolState initialState)
 		{
@@ -77,6 +81,16 @@ namespace InfiniteStorage.WebsocketProtocol
 		public void handleUpdateCountCmd(TextCommand cmd)
 		{
 			state.handleUpdateCountCmd(this, cmd);
+		}
+
+		public void handleThumbStartCmd(TextCommand cmd)
+		{
+			state.handleThumbStartCmd(this, cmd);
+		}
+
+		public void handleThumbEndCmd(TextCommand cmd)
+		{
+			state.handleThumbEndCmd(this, cmd);
 		}
 
 		public void handleApprove()
@@ -138,15 +152,22 @@ namespace InfiniteStorage.WebsocketProtocol
 				handler(this, new WebsocketEventArgs(this));
 			}
 		}
+		
+		public void raiseOnThumbnailReceived(string thumbPath)
+		{
+			var handler = OnThumbnailReceived;
+			if (handler != null)
+				handler(this, new ThumbnailReceivedEventArgs(thumbPath, this.device_id));
+		}
 
-		internal void raiseOnFileEnding()
+		public void raiseOnFileEnding()
 		{
 			var handler = OnFileEnding;
 			if (handler != null)
 				handler(this, new WebsocketEventArgs(this));
 		}
 
-		internal void raiseOnFileReceiving()
+		public void raiseOnFileReceiving()
 		{
 			var handler = OnFileReceiving;
 			if (handler != null)
@@ -193,6 +214,22 @@ namespace InfiniteStorage.WebsocketProtocol
 				throw new InvalidOperationException("PingFunc is not set");
 		}
 
-		public bool BackToPhoneDialogClosed { get; set; }
+		public bool ContainsData(string key)
+		{
+			return memo.ContainsKey(key);
+		}
+
+		public void SetData(string key, object data)
+		{
+			if (memo.ContainsKey(key))
+				memo.Remove(key);
+
+			memo.Add(key, data);
+		}
+
+		public object GetData(string key)
+		{
+			return memo[key];
+		}
 	}
 }

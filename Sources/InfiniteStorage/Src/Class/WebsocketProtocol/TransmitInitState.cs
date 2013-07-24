@@ -75,5 +75,17 @@ namespace InfiniteStorage.WebsocketProtocol
 			ctx.backup_count = cmd.backuped_count;
 			ctx.raiseOnTotalCountUpdated();
 		}
+
+		public override void handleThumbStartCmd(ProtocolContext protocolContext, TextCommand cmd)
+		{
+		}
+
+		public override void handleThumbEndCmd(ProtocolContext protocolContext, TextCommand cmd)
+		{
+		}
+
+		public override void handleBinaryData(ProtocolContext ctx, byte[] data)
+		{
+		}
 	}
 }

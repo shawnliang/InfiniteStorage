@@ -37,5 +37,15 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			return "update-count".Equals(action);
 		}
+
+		public bool isThumbStartCmd()
+		{
+			return "thumbnail-start".Equals(action);
+		}
+
+		public bool isThumbEndCmd()
+		{
+			return "thumbnail-end".Equals(action);
+		}
 	}
 }

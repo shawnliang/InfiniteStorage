@@ -42,5 +42,15 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			throw new ProtocolErrorException(errorMsg("disapprove"));
 		}
+
+		public virtual void handleThumbStartCmd(ProtocolContext protocolContext, TextCommand cmd)
+		{
+			throw new ProtocolErrorException(errorMsg(cmd.action));
+		}
+
+		public virtual void handleThumbEndCmd(ProtocolContext protocolContext, TextCommand cmd)
+		{
+			throw new ProtocolErrorException(errorMsg(cmd.action));
+		}
 	}
 }

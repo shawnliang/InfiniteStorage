@@ -86,6 +86,7 @@
     <Compile Include="TestTempFile.cs" />
     <Compile Include="testTransmitInitState.cs" />
     <Compile Include="testWaitingForApprove.cs" />
+    <Compile Include="testRecvThumbnail.cs" />
     <Compile Include="UnitTest_correctMailAddress.cs" />
   </ItemGroup>
   <ItemGroup>
