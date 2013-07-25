@@ -1,26 +1,27 @@
-﻿using System.Windows;
+﻿#region
+
+using System.Windows;
 using System.Windows.Controls;
+
+#endregion
 
 namespace Waveface.Client
 {
-	/// <summary>
-	/// Interaction logic for ZoomSlider.xaml
-	/// </summary>
 	public partial class ZoomSlider : UserControl
 	{
 		#region Var
-		public static readonly DependencyProperty _minimum = DependencyProperty.Register("Minimum", typeof(double), typeof(ZoomSlider), new UIPropertyMetadata(0.0, new PropertyChangedCallback(OnMinimumChanged)));
-		public static readonly DependencyProperty _maximum = DependencyProperty.Register("Maximum", typeof(double), typeof(ZoomSlider), new UIPropertyMetadata(0.0, new PropertyChangedCallback(OnMaximumChanged)));
-		public static readonly DependencyProperty _value = DependencyProperty.Register("Value", typeof(double), typeof(ZoomSlider), new UIPropertyMetadata(0.0, new PropertyChangedCallback(OnValueChanged)));
+
+		public static readonly DependencyProperty _minimum = DependencyProperty.Register("Minimum", typeof (double), typeof (ZoomSlider), new UIPropertyMetadata(0.0, OnMinimumChanged));
+		public static readonly DependencyProperty _maximum = DependencyProperty.Register("Maximum", typeof (double), typeof (ZoomSlider), new UIPropertyMetadata(0.0, OnMaximumChanged));
+		public static readonly DependencyProperty _value = DependencyProperty.Register("Value", typeof (double), typeof (ZoomSlider), new UIPropertyMetadata(0.0, OnValueChanged));
+
 		#endregion
 
 		#region Property
+
 		public double Minimum
 		{
-			get
-			{
-				return (double)GetValue(_value);
-			}
+			get { return (double) GetValue(_value); }
 			set
 			{
 				SetValue(_value, value);
@@ -30,10 +31,7 @@ namespace Waveface.Client
 
 		public double Maximum
 		{
-			get
-			{
-				return (double)GetValue(_value);
-			}
+			get { return (double) GetValue(_value); }
 			set
 			{
 				SetValue(_value, value);
@@ -43,29 +41,28 @@ namespace Waveface.Client
 
 		public double Value
 		{
-			get
-			{
-				return (double)GetValue(_value);
-			}
+			get { return (double) GetValue(_value); }
 			set
 			{
 				SetValue(_value, value);
 				slider.Value = value;
 			}
 		}
+
 		#endregion
 
 		public ZoomSlider()
 		{
-			this.InitializeComponent();
+			InitializeComponent();
 		}
 
 		private static void OnMinimumChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (o == null)
 				return;
+
 			var obj = o as ZoomSlider;
-			obj.Minimum = (double)e.NewValue;
+			obj.Minimum = (double) e.NewValue;
 		}
 
 
@@ -73,21 +70,23 @@ namespace Waveface.Client
 		{
 			if (o == null)
 				return;
+
 			var obj = o as ZoomSlider;
-			obj.Maximum = (double)e.NewValue;
+			obj.Maximum = (double) e.NewValue;
 		}
 
 		private static void OnValueChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (o == null)
 				return;
+
 			var obj = o as ZoomSlider;
-			obj.Value = (double)e.NewValue;
+			obj.Value = (double) e.NewValue;
 		}
 
 		private void slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
-			this.Value = slider.Value;
+			Value = slider.Value;
 		}
 	}
 }

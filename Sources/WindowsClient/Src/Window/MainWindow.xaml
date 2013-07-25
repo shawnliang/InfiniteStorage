@@ -20,12 +20,6 @@
         mc:Ignorable="d">
 
     <Window.Resources>
-        <BitmapImage x:Key="AddDeviceIcon"
-                     CacheOption="OnDemand"
-                     UriSource="pack://application:,,,/Resource/ico_add_source.png" />
-
-
-        <local:ContentTypeCountConverter x:Key="ContentTypeCountConverter" />
         <!--  Brushes used in Styling of ScrollViewer  -->
 
         <SolidColorBrush x:Key="DisabledForegroundBrush"
@@ -379,7 +373,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="302*" />
-            <RowDefinition Height="54" />
+            <RowDefinition Height="72" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -602,37 +596,30 @@
             </Grid>
         </Grid>
 
-        <StackPanel x:Name="stackPanel"  Grid.Row="2"
-                    Background="Black"
-                    Orientation="Horizontal">
+        <StackPanel x:Name="stackPanel" Grid.Row="2" Background="#d5d5d5">
             <StackPanel.Effect>
-                <DropShadowEffect BlurRadius="1"
-                                  Direction="45"
-                                  ShadowDepth="1" />
+                <DropShadowEffect BlurRadius="1" Direction="45" ShadowDepth="1" />
             </StackPanel.Effect>
-            <Image Width="22"
-                   Height="22"
-                   Margin="10,0,0,0"
-                   MouseDown="btnAddNewSource_Click"
-                   Source="{DynamicResource AddDeviceIcon}" />
-            <Label Height="{Binding ActualHeight,
-                                    ElementName=stackPanel}"
-                   VerticalContentAlignment="Center"
-                   Content="{DynamicResource AddDeviceIconText}"
-                   FontFamily="Segoe UI"
-                   FontSize="18"
-                   Foreground="#FFA8A8A8"
-                   MouseDown="Label_MouseDown" />
+
+            <local:ButtonImageText Margin="4" x:Name="btnAddDevice" 
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Foreground="#4F4F4F"
+                                    ImageUri="pack://application:,,,/Resource/bar_source_1.png"
+                                    ImageEnterUri="pack://application:,,,/Resource/bar_source_2.png"
+                                    Text="{DynamicResource AddDeviceIconText}"
+                                    MouseDown="btnAddNewSource_Click"/>
         </StackPanel>
 
         <Grid x:Name="ContentAreaToolBar" Grid.Row="2" Grid.Column="1"  Grid.ColumnSpan="2"
-              Margin="1,0,0,0"
-              Background="#FF333333">
+              Margin="0,0,0,0"
+              Background="#d5d5d5">
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="1"
                                   Direction="90"
                                   ShadowDepth="1" />
             </Grid.Effect>
+
             <Grid Margin="0">
                 <local:ContentActionBar x:Name="cabContentActionBar"
                                         HorizontalAlignment="Right"
@@ -644,14 +631,20 @@
                                         MoveToExistingFolder="ContentActionBar_MoveToExistingFolder"
                                         MoveToNewFolder="ContentActionBar_MoveToNewFolder"
                                         Padding="0,0,5,0"
-                                        Style="{StaticResource ContentActionBarStyle}" />
-                <local:ZoomSlider x:Name="zoomSlider"
-                                  Margin="10,0,0,0"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Center"
+                                        Style="{StaticResource ContentActionBarStyle}" 
+                                        Visibility="Collapsed"/>
+
+                <StackPanel HorizontalAlignment="Left" Margin="20, 4, 4, 4" VerticalAlignment="Center">
+                    <local:ZoomSlider x:Name="zoomSlider" Margin="0, 19, 0, 8"
                                   Maximum="400"
                                   Minimum="150"
-                                  Value="200" />
+                                  Value="200" Width="104" />
+
+                    <TextBlock Grid.Row="1" x:Name="tbText"  HorizontalAlignment="Center" Foreground="#4F4F4F" Text="Thumbnail Size" FontSize="11" FontWeight="Bold" />
+                </StackPanel>
+
+
+
                 <local:FavoriteAllButton x:Name="btnFavoriteAll"
                                          Width="100"
                                          Margin="0,27,10,27"
@@ -660,6 +653,34 @@
                                          Click="FavoriteAllButton_Click"
                                          Cursor="Hand"
                                          Visibility="Collapsed" />
+
+                <local:ButtonImageText Margin="-20, 4, 4, 4" x:Name="btnCreateAlbum" 
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Foreground="#456CB9"
+                                    ImageUri="pack://application:,,,/Resource/bar_cloud_1.png"
+                                    ImageEnterUri="pack://application:,,,/Resource/bar_cloud_2.png"
+                                    Text="Create Album"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <local:ButtonImageText Margin="4" x:Name="btnAddTo" 
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Foreground="#4F4F4F"
+                                    ImageUri="pack://application:,,,/Resource/bar_add_1.png"
+                                    ImageEnterUri="pack://application:,,,/Resource/bar_add_2.png"
+                                    Text="Add to"/>
+
+                    <local:ButtonImageText Margin="20, 4, 24, 4" x:Name="btnView" 
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Foreground="#4F4F4F"
+                                    ImageUri="pack://application:,,,/Resource/bar_view_1.png"
+                                    ImageEnterUri="pack://application:,,,/Resource/bar_view_2.png"
+                                    Text="View"/>
+                </StackPanel>
+
+
             </Grid>
         </Grid>
     </Grid>

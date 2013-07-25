@@ -439,7 +439,7 @@ namespace Waveface.Client
 			recentTimer.Interval = new TimeSpan(0, 0, 2);
 			recentTimer.Start();
 
-			ShowHelpPanel(true);
+			//ShowHelpPanel(true);
 		}
 
 		void recentTimer_Tick(object sender, EventArgs e)
@@ -918,12 +918,6 @@ namespace Waveface.Client
 		}
 
 		private void btnAddNewSource_Click(object sender, MouseButtonEventArgs e)
-		{
-			WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog();
-			_waitForPairingDialog.Show();
-		}
-
-		private void Label_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog
 															 {
