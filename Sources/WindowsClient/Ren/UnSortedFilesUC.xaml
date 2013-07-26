@@ -201,7 +201,7 @@
             			</Waveface:SliderWithDraggingEvents.Effect>
             		</Waveface:SliderWithDraggingEvents>
             	</Grid>
-                <Waveface:ContentActionBar x:Name="contentActionBar" IsEnabled="False" HorizontalAlignment="Right" AddToFavorite="ContentActionBar_AddToFavorite" AddToStarred="ContentActionBar_AddToStarred" CreateFavorite="ContentActionBar_CreateFavorite" ShowMoveTo="False" MoveToNewFolder="ContentActionBar_MoveToNewFolder" MoveToExistingFolder="ContentActionBar_MoveToExistingFolder" Padding="0"/>
+                <Waveface:ContentActionBar x:Name="contentActionBar" IsEnabled="False" HorizontalAlignment="Right" AddToFavorite="ContentActionBar_AddToFavorite" AddToStarred="ContentActionBar_AddToStarred" CreateFavorite="ContentActionBar_CreateFavorite" MoveToNewFolder="ContentActionBar_MoveToNewFolder" MoveToExistingFolder="ContentActionBar_MoveToExistingFolder" Padding="0"/>
             </Grid>
 
             <Grid x:Name="gridEmptyPanel"

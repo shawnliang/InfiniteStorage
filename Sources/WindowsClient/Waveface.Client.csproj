@@ -121,6 +121,9 @@
       <DependentUpon>MoveToButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Ren\ButtonImageText.xaml.cs" />
+    <Compile Include="Ren\CloudSharingDialog.xaml.cs">
+      <DependentUpon>CloudSharingDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Ren\ShareEventDialog.xaml.cs">
       <DependentUpon>ShareEventDialog.xaml</DependentUpon>
     </Compile>
@@ -305,6 +308,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Ren\ButtonImageText.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Ren\CloudSharingDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

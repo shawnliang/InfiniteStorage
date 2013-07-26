@@ -32,7 +32,7 @@ namespace Waveface.Client
 
 		private DispatcherTimer uiDelayTimer;
 		private DispatcherTimer recentTimer;
-		private DispatcherTimer m_timelineShareToDelayTimer;
+		private DispatcherTimer timelineShareToDelayTimer;
 
 		public MainWindow()
 		{
@@ -89,7 +89,6 @@ namespace Waveface.Client
 				Settings.Default.Save();
 			}
 		}
-
 
 		public void StarContent(IEnumerable<IContentEntity> contentEntities)
 		{
@@ -149,7 +148,7 @@ namespace Waveface.Client
 				return false;
 			}
 
-			var favorites = ClientFramework.Client.Default.Favorites; //.Skip(1)
+			var favorites = ClientFramework.Client.Default.Favorites;
 
 			if (!favorites.Any())
 			{
@@ -159,11 +158,12 @@ namespace Waveface.Client
 				return false;
 			}
 
-			var dialog = new AddToAlbumDialog();
-			dialog.Owner = this;
-			dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-
-			dialog.ItemSource = favorites;
+			var dialog = new AddToAlbumDialog
+							 {
+								 Owner = this,
+								 WindowStartupLocation = WindowStartupLocation.CenterOwner,
+								 ItemSource = favorites
+							 };
 
 			if (dialog.ShowDialog() != true)
 				return false;
@@ -176,7 +176,7 @@ namespace Waveface.Client
 
 		private void AddToFavorite(string favoriteID, IEnumerable<IContentEntity> contents)
 		{
-			var favorites = ClientFramework.Client.Default.Favorites; //.Skip(1)
+			var favorites = ClientFramework.Client.Default.Favorites;
 
 			if (!favorites.Any())
 			{
@@ -319,7 +319,7 @@ namespace Waveface.Client
 
 		private void SaveSelectedContentsToFavorite()
 		{
-			var selectedContents = GetSelectedContents();
+			IEnumerable<IContentEntity> selectedContents = GetSelectedContents();
 
 			SaveToFavorite(selectedContents);
 		}
@@ -365,15 +365,15 @@ namespace Waveface.Client
 		{
 			SaveToFavorite(contents, name);
 
-			m_timelineShareToDelayTimer = new DispatcherTimer();
-			m_timelineShareToDelayTimer.Interval = new TimeSpan(0, 0, 1);
-			m_timelineShareToDelayTimer.Tick += timelineShareToTimer_Tick;
-			m_timelineShareToDelayTimer.Start();
+			timelineShareToDelayTimer = new DispatcherTimer();
+			timelineShareToDelayTimer.Interval = new TimeSpan(0, 0, 1);
+			timelineShareToDelayTimer.Tick += timelineShareToTimer_Tick;
+			timelineShareToDelayTimer.Start();
 		}
 
 		private void timelineShareToTimer_Tick(object sender, EventArgs e)
 		{
-			m_timelineShareToDelayTimer.Stop();
+			timelineShareToDelayTimer.Stop();
 
 			ToggleButtonAutomationPeer _peer = new ToggleButtonAutomationPeer(rspRightSidePane2.tbtnCloudSharing);
 			IToggleProvider _toggleProvider = _peer.GetPattern(PatternInterface.Toggle) as IToggleProvider;
@@ -428,6 +428,16 @@ namespace Waveface.Client
 				.ObserveOn(DispatcherScheduler.Current)
 				.Subscribe(ex => lbxFavorites_SelectionChanged(lbxFavorites, ex));
 
+			Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
+				handler => (s, ex) => handler(ex),
+				h => lbxRecent.SelectionChanged += h,
+				h => lbxRecent.SelectionChanged -= h
+				)
+				.Window(TimeSpan.FromMilliseconds(50))
+				.SelectMany(x => x.TakeLast(1))
+				.SubscribeOn(ThreadPoolScheduler.Instance)
+				.ObserveOn(DispatcherScheduler.Current)
+				.Subscribe(ex => lbxRecent_SelectionChanged(lbxRecent, ex));
 
 			uiDelayTimer = new DispatcherTimer();
 			uiDelayTimer.Tick += uiDelayTimer_Tick;
@@ -442,7 +452,7 @@ namespace Waveface.Client
 			//ShowHelpPanel(true);
 		}
 
-		void recentTimer_Tick(object sender, EventArgs e)
+		private void recentTimer_Tick(object sender, EventArgs e)
 		{
 			ClientFramework.Client.Default.RefreshRecent(); // - ?
 
@@ -471,8 +481,10 @@ namespace Waveface.Client
 					Process.Start(HELP_URL);
 				}
 
-				WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog();
-				_waitForPairingDialog.Owner = this;
+				WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog
+																 {
+																	 Owner = this
+																 };
 				_waitForPairingDialog.ShowDialog();
 
 				Settings.Default.IsFirstUse = false;
@@ -507,6 +519,7 @@ namespace Waveface.Client
 		{
 			if (e.Key != Key.Enter)
 				return;
+
 			RenameFavorite();
 		}
 
@@ -528,10 +541,12 @@ namespace Waveface.Client
 			if (group == null)
 			{
 				//TODO: 待重構
-				var viewer = new PhotoViewer();
-				viewer.Owner = this;
-				viewer.Source = (lbxContentContainer.SelectedItems.Count > 1) ? lbxContentContainer.SelectedItems.OfType<IContentEntity>() : lbxContentContainer.DataContext;
-				viewer.SelectedIndex = (lbxContentContainer.SelectedItems.Count > 1) ? 0 : lbxContentContainer.SelectedIndex;
+				var viewer = new PhotoViewer
+								 {
+									 Owner = this,
+									 Source = (lbxContentContainer.SelectedItems.Count > 1) ? lbxContentContainer.SelectedItems.OfType<IContentEntity>() : lbxContentContainer.DataContext,
+									 SelectedIndex = (lbxContentContainer.SelectedItems.Count > 1) ? 0 : lbxContentContainer.SelectedIndex
+								 };
 
 				viewer.ShowDialog();
 				return;
@@ -552,6 +567,7 @@ namespace Waveface.Client
 														group.Contents.Count(item =>
 																				 {
 																					 var content = item as IContent;
+
 																					 if (content == null)
 																						 return false;
 
@@ -560,6 +576,7 @@ namespace Waveface.Client
 														group.Contents.Count(item =>
 																				 {
 																					 var content = item as IContent;
+
 																					 if (content == null)
 																						 return false;
 
@@ -584,8 +601,10 @@ namespace Waveface.Client
 			if (group == null)
 			{
 				var service = lbxDeviceContainer.SelectedItem as IService;
+
 				if (service == null)
 					return;
+
 				lblContentLocation.DataContext = null;
 				lbxContentContainer.DataContext = null;
 				System.Windows.Forms.Application.DoEvents();
@@ -607,6 +626,8 @@ namespace Waveface.Client
 
 		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, EventArgs e)
 		{
+			ShowToolBarButtons(true);
+
 			var ti = sender as TreeViewItem;
 
 			if (ti == null)
@@ -687,6 +708,7 @@ namespace Waveface.Client
 				case Key.Enter:
 					if (lbxContentContainer.SelectedItem == null)
 						return;
+
 					Enter();
 					break;
 			}
@@ -701,11 +723,15 @@ namespace Waveface.Client
 
 		private void lbxFavorites_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
+			ShowToolBarButtons(false);
+
 			ShowSelectedFavoriteContents(sender, false);
 		}
 
 		private void lbxRecent_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
+			ShowToolBarButtons(true);
+
 			ShowSelectedFavoriteContents(sender, true);
 		}
 
@@ -788,6 +814,7 @@ namespace Waveface.Client
 					rspRightSidePanel.PhotoCount = contentEntities.Count(item =>
 																			 {
 																				 var content = item as IContent;
+
 																				 if (content == null)
 																					 return false;
 
@@ -797,6 +824,7 @@ namespace Waveface.Client
 					rspRightSidePanel.VideoCount = contentEntities.Count(item =>
 																			 {
 																				 var content = item as IContent;
+
 																				 if (content == null)
 																					 return false;
 
@@ -981,6 +1009,7 @@ namespace Waveface.Client
 			}
 
 			needSpecialMulitSelectProcess = false;
+
 			e.Handled = true;
 		}
 
@@ -1354,5 +1383,86 @@ namespace Waveface.Client
 		}
 
 		#endregion
+
+		private void btnCreateCloudAlbum_Click(object sender, RoutedEventArgs e)
+		{
+			IEnumerable<IContentEntity> _entities = GetSelectedContents();
+
+			if (!_entities.Any())
+			{
+				_entities = lbxContentContainer.Items.OfType<IContentEntity>().ToArray(); //Get All
+			}
+
+			if (!_entities.Any())
+			{
+				return;
+			}
+
+			string _title = lblContentLocation.Content + " [" + DateTime.Now.ToString("yyyy-MM-dd HH:mm") + "]";
+
+			CloudSharingDialog _dialog = new CloudSharingDialog(_entities, _title)
+											 {
+												 Owner = this
+											 };
+			_dialog.ShowDialog();
+
+			List<string> _fileIDs = _dialog.FileIDs;
+			_title = _dialog.TitleName;
+
+			_dialog = null;
+
+			if ((_fileIDs != null) && (_title != string.Empty))
+			{
+				List<Content> _contents = new List<Content>();
+
+				foreach (string _fileID in _fileIDs)
+				{
+					_contents.Add(new Content { ID = _fileID, });
+				}
+
+				TimelineShareTo(_contents, _title);
+			}
+		}
+
+		private void btnView_Click(object sender, RoutedEventArgs e)
+		{
+			IEnumerable<IContentEntity> _entities = GetSelectedContents();
+
+			if (!_entities.Any())
+			{
+				_entities = lbxContentContainer.Items.OfType<IContentEntity>().ToArray(); //Get All
+			}
+
+			if (!_entities.Any())
+			{
+				return;
+			}
+
+			PhotoViewer _viewer = new PhotoViewer
+			{
+				Owner = this,
+				Source = _entities,
+				SelectedIndex = 0
+			};
+
+			_viewer.ShowDialog();
+		}
+
+		private void ShowToolBarButtons(bool flag)
+		{
+			zoomPanel.Visibility = Visibility.Visible;
+			btnView.Visibility = Visibility.Visible;
+
+			if(flag)
+			{
+				btnCreateCloudAlbum.Visibility = Visibility.Visible;
+				btnAddTo.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				btnCreateCloudAlbum.Visibility = Visibility.Collapsed;
+				btnAddTo.Visibility = Visibility.Collapsed;
+			}
+		}
 	}
 }

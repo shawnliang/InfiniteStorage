@@ -20,12 +20,12 @@ namespace Waveface.Client
 	{
 		private bool m_isStarred;
 
-		public BitmapImage BitmapImage { get; set; }
+		public BitmapSource BitmapImage { get; set; }
 		public double MyWidth { get; set; }
 		public double MyHeight { get; set; }
 		public bool IsVideo { get; set; }
 		public bool IsPhoto { get; set; }
-		public BitmapImage MediaSource { get; set; }
+		public BitmapSource MediaSource { get; set; }
 		public string FileID { get; set; }
 
 		public bool IsStarred

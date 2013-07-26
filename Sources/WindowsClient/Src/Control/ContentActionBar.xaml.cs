@@ -14,56 +14,46 @@ namespace Waveface.Client
 	{
 		#region Var
 
-		public static readonly DependencyProperty s_showMoveTo = DependencyProperty.Register("ShowMoveTo", typeof (bool), typeof (ContentActionBar),
-		                                                                                    new UIPropertyMetadata(false, OnShowMoveToChanged));
+		public static readonly DependencyProperty s_enableMoveTo = DependencyProperty.Register("EnableMoveTo", typeof(bool), typeof(ContentActionBar),
+																							  new UIPropertyMetadata(false, OnEnableMoveToChanged));
 
-		public static readonly DependencyProperty s_enableMoveTo = DependencyProperty.Register("EnableMoveTo", typeof (bool), typeof (ContentActionBar),
-		                                                                                      new UIPropertyMetadata(false, OnEnableMoveToChanged));
+		public static readonly DependencyProperty s_enableCreate = DependencyProperty.Register("EnableCreate", typeof(bool), typeof(ContentActionBar),
+																							  new UIPropertyMetadata(true, OnEnableCreateChanged));
 
-		public static readonly DependencyProperty s_enableCreate = DependencyProperty.Register("EnableCreate", typeof (bool), typeof (ContentActionBar),
-		                                                                                      new UIPropertyMetadata(true, OnEnableCreateChanged));
+		public static readonly DependencyProperty s_enableAddTo = DependencyProperty.Register("EnableAddTo", typeof(bool), typeof(ContentActionBar),
+																							 new UIPropertyMetadata(true, OnEnableAddToChanged));
 
-		public static readonly DependencyProperty s_enableAddTo = DependencyProperty.Register("EnableAddTo", typeof (bool), typeof (ContentActionBar),
-		                                                                                     new UIPropertyMetadata(true, OnEnableAddToChanged));
-
-		public static readonly DependencyProperty s_hideStarredMenuItem = DependencyProperty.Register("HideStarredMenuItem", typeof (bool), typeof (ContentActionBar),
-		                                                                                             new UIPropertyMetadata(false, OnHideStarredMenuItemChanged));
+		public static readonly DependencyProperty s_hideStarredMenuItem = DependencyProperty.Register("HideStarredMenuItem", typeof(bool), typeof(ContentActionBar),
+																									 new UIPropertyMetadata(false, OnHideStarredMenuItemChanged));
 
 		#endregion
 
 		#region Property
 
-		public bool ShowMoveTo
-		{
-			get { return (bool) GetValue(s_showMoveTo); }
-			set { SetValue(s_showMoveTo, value); }
-		}
-
 		public bool EnableMoveTo
 		{
-			get { return (bool) GetValue(s_enableMoveTo); }
+			get { return (bool)GetValue(s_enableMoveTo); }
 			set { SetValue(s_enableMoveTo, value); }
 		}
 
 		public bool EnableCreate
 		{
-			get { return (bool) GetValue(s_enableMoveTo); }
+			get { return (bool)GetValue(s_enableMoveTo); }
 			set { SetValue(s_enableMoveTo, value); }
 		}
 
 		public bool EnableAddTo
 		{
-			get { return (bool) GetValue(s_enableMoveTo); }
+			get { return (bool)GetValue(s_enableMoveTo); }
 			set { SetValue(s_enableMoveTo, value); }
 		}
 
 		public bool HideStarredMenuItem
 		{
-			get { return (bool) GetValue(s_hideStarredMenuItem); }
+			get { return (bool)GetValue(s_hideStarredMenuItem); }
 			set
 			{
 				SetValue(s_hideStarredMenuItem, value);
-
 				(atbAddTo.ContextMenu.Items[1] as MenuItem).Visibility = value ? Visibility.Collapsed : Visibility.Visible;
 			}
 		}
@@ -138,15 +128,10 @@ namespace Waveface.Client
 			cm.VerticalOffset = -3;
 
 			var horizontalOffset = (source.TransformToAncestor(this).Transform(new Point(0d, 0d)).X + cm.ActualWidth > ActualWidth)
-				                       ? (ActualWidth - cm.ActualWidth) - source.TransformToAncestor(this).Transform(new Point(0d, 0d)).X
-				                       : 0;
+									   ? (ActualWidth - cm.ActualWidth) - source.TransformToAncestor(this).Transform(new Point(0d, 0d)).X
+									   : 0;
 
 			cm.HorizontalOffset = horizontalOffset;
-		}
-
-		private void Image_MouseDown(object sender, MouseButtonEventArgs e)
-		{
-			ShowContextMenu((sender as UIElement), (sender as UserControl).ContextMenu);
 		}
 
 		private void Create_MouseDown(object sender, MouseButtonEventArgs e)
@@ -159,22 +144,13 @@ namespace Waveface.Client
 			ShowContextMenu((sender as UIElement), (sender as UserControl).ContextMenu);
 		}
 
-		private static void OnShowMoveToChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-		{
-			if (o == null)
-				return;
-
-			var obj = o as ContentActionBar;
-			obj.ShowMoveTo = (bool) e.NewValue;
-		}
-
 		private static void OnEnableMoveToChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (o == null)
 				return;
 
 			var obj = o as ContentActionBar;
-			obj.EnableMoveTo = (bool) e.NewValue;
+			obj.EnableMoveTo = (bool)e.NewValue;
 		}
 
 		private static void OnEnableCreateChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
@@ -183,7 +159,7 @@ namespace Waveface.Client
 				return;
 
 			var obj = o as ContentActionBar;
-			obj.EnableCreate = (bool) e.NewValue;
+			obj.EnableCreate = (bool)e.NewValue;
 		}
 
 		private static void OnEnableAddToChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
@@ -192,7 +168,7 @@ namespace Waveface.Client
 				return;
 
 			var obj = o as ContentActionBar;
-			obj.EnableAddTo = (bool) e.NewValue;
+			obj.EnableAddTo = (bool)e.NewValue;
 		}
 
 		private static void OnHideStarredMenuItemChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
@@ -201,7 +177,7 @@ namespace Waveface.Client
 				return;
 
 			var obj = o as ContentActionBar;
-			obj.HideStarredMenuItem = (bool) e.NewValue;
+			obj.HideStarredMenuItem = (bool)e.NewValue;
 		}
 
 		private void miMoveToNewFolder_Click(object sender, RoutedEventArgs e)
