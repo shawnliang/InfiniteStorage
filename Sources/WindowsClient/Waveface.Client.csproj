@@ -123,6 +123,7 @@
     <Compile Include="Ren\ButtonImageText.xaml.cs" />
     <Compile Include="Ren\CloudSharingDialog.xaml.cs">
       <DependentUpon>CloudSharingDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Ren\ConfirmSyncDialog.xaml.cs">
       <DependentUpon>ConfirmSyncDialog.xaml</DependentUpon>
     </Compile>
