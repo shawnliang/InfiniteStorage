@@ -238,6 +238,14 @@
                     <TextBlock Grid.Row="2"
                                Style="{StaticResource StepText}"
                                Text="{DynamicResource ANS_step2}" />
+
+                    <Image Grid.Row="3"
+                           Cursor="Hand"
+                           MouseDown="Image_MouseDown_1">
+                        <Image.Source>
+                            <BitmapImage UriSource="pack://application:,,,/Resource/pc_Wifi.png" />
+                        </Image.Source>
+                    </Image>
                 </Grid>
             </Border>
 

@@ -2,7 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Sync options"
-        SizeToContent="WidthAndHeight">
+        Loaded="Window_Loaded_1"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner">
 
     <Window.Resources>
         <Style x:Key="SimpleListBoxItem" TargetType="ListBoxItem">
@@ -63,9 +66,10 @@
                         <GradientStop Offset="1.0" />
                     </LinearGradientBrush>
                 </StackPanel.Background>
-                <Label Margin="10,30,0,0"
+                <Label x:Name="connected_title"
+                       Margin="10,30,0,0"
                        HorizontalAlignment="Center"
-                       Content="GT-i9300 connected successfully!"
+                       Content="{DynamicResource ConfirmSync_1}"
                        FontSize="40"
                        FontWeight="Bold"
                        Foreground="White" />
@@ -76,7 +80,7 @@
                            FontSize="26"
                            FontWeight="Bold"
                            Foreground="White"
-                           Text="Everything on your device gets synced to this PC automatically -- from now on."
+                           Text="{DynamicResource ConfirmSync_2}"
                            TextAlignment="Center"
                            TextWrapping="WrapWithOverflow" />
             </StackPanel>
@@ -126,7 +130,7 @@
         </Grid>
 
         <Label Margin="0,10"
-               Content="Import photos from this devices"
+               Content="{DynamicResource ConfirmSync_3}"
                FontSize="20" />
 
         <Grid>
@@ -146,10 +150,10 @@
                            Source="{StaticResource BigPhotoIcon}" />
                     <StackPanel VerticalAlignment="Center">
                         <Label Margin="0"
-                               Content="Import the latest 150 photos or videos"
+                               Content="{DynamicResource ConfirmSync_4}"
                                FontSize="18"
                                FontWeight="Bold" />
-                        <Label Content="(Around 3 minutes)" FontWeight="Bold" />
+                        <Label Content="{DynamicResource ConfirmSync_5}" FontWeight="Bold" />
                     </StackPanel>
                 </StackPanel>
             </Button>
@@ -164,10 +168,10 @@
                            Source="{StaticResource BigPhotoIcon}" />
                     <StackPanel VerticalAlignment="Center">
                         <Label Margin="0"
-                               Content="Import all items"
+                               Content="{DynamicResource ConfirmSync_6}"
                                FontSize="18"
                                FontWeight="Bold" />
-                        <Label Content="(Takes longer)" FontWeight="Bold" />
+                        <Label Content="{DynamicResource ConfirmSync_7}" FontWeight="Bold" />
                     </StackPanel>
                 </StackPanel>
             </Button>

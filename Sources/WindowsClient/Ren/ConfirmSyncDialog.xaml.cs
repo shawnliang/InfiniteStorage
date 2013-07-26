@@ -36,6 +36,11 @@ namespace Waveface.Client
 			photoWall.ItemsSource = Thumbnails;
 		}
 
+		private void Window_Loaded_1(object sender, RoutedEventArgs e)
+		{
+			connected_title.Content = string.Format(connected_title.Content.ToString(), PairingRequest.device_name);
+		}
+
 		private void ImportLatest150Button_Click(object sender, RoutedEventArgs e)
 		{
 			SyncNow = true;
@@ -49,7 +54,5 @@ namespace Waveface.Client
 			SyncAll = true;
 			Close();
 		}
-
-		
 	}
 }

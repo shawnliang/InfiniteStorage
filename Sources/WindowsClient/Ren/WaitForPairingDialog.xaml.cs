@@ -28,6 +28,9 @@ namespace Waveface.Client
 
 		private Dictionary<string, ConfirmSyncDialog> pairingSources = new Dictionary<string, ConfirmSyncDialog>();
 
+		private int openConfirmDialogCount = 0;
+
+
 		public WaitForPairingDialog()
 		{
 			InitializeComponent();
@@ -100,18 +103,13 @@ namespace Waveface.Client
 				this.Dispatcher.Invoke(new MethodInvoker(() =>
 				{
 					var dialog = new ConfirmSyncDialog();
+
 					dialog.PairingRequest = req;
-
-					for (int i = 0; i < 10; i++)
-					{
-						dialog.Thumbnails.Add(new Uri(@"C:\Users\shawnliang\Pictures\Shawn_waveface.jpg", UriKind.Absolute));
-					}
-
 					dialog.Owner = this;
 					dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
 					dialog.Closing += dialog_Closing;
 					dialog.Show();
-
+					openConfirmDialogCount++;
 					pairingSources.Add(req.request_id, dialog);
 				}));
 			}
@@ -141,6 +139,13 @@ namespace Waveface.Client
 			else
 			{
 				WS_reject(dialog.PairingRequest.device_id);
+			}
+
+			--openConfirmDialogCount;
+
+			if (openConfirmDialogCount == 0)
+			{
+				Close();
 			}
 		}
 
