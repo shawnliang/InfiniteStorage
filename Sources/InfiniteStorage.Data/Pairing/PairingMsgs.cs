@@ -32,10 +32,13 @@ namespace InfiniteStorage.Data.Pairing
 	public class accept_reject
 	{
 		public string device_id { get; set; }
+		public bool sync_old { get; set; }
+		public int last_x_days { get; set; }
 	}
 
 	public class pairing_request
 	{
+		public string request_id { get; set; }
 		public string device_id { get; set; }
 		public string device_name { get; set; }
 	}
@@ -44,5 +47,6 @@ namespace InfiniteStorage.Data.Pairing
 	{
 		public int transfer_count { get; set; }
 		public string path { get; set; }
+		public string request_id { get; set; }
 	}
 }

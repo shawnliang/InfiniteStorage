@@ -133,24 +133,28 @@ namespace InfiniteStorage
 			var pairingSubscribers = Pair.PairWebSocketService.GetAllSubscribers();
 			foreach (var peer in pairingSubscribers)
 			{
-				peer.ThumbnailReceived(e.thumbnail_path, e.transfer_count);
+				peer.ThumbnailReceived(e.thumbnail_path, e.transfer_count, e.ctx.GetData("requestId") as string);
 			}
 		}
 
 		
 		void InfiniteStorageWebSocketService_PairingRequesting(object sender, WebsocketProtocol.WebsocketEventArgs e)
 		{
+			var requestID = new Guid().ToString();
+			e.ctx.SetData("requestId", requestID);
+
 			var pairingSubscribers = Pair.PairWebSocketService.GetAllSubscribers();
 
-			if (string.IsNullOrEmpty(e.ctx.passcode) && pairingSubscribers.Any())
-			{
-				// old client does not provide passcode.
-				// for backward compatibility, just accept it.
-				e.ctx.handleApprove();
-				return;
-			}
+			//if (string.IsNullOrEmpty(e.ctx.passcode) && pairingSubscribers.Any())
+			//{
+			//	// old client does not provide passcode.
+			//	// for backward compatibility, just accept it.
+			//	e.ctx.handleApprove();
+			//	return;
+			//}
 
-			if (!pairingSubscribers.Any() || BonjourServiceRegistrator.Instance.Passcode != e.ctx.passcode)
+			if (!pairingSubscribers.Any() || 
+				!string.IsNullOrEmpty(e.ctx.passcode) && BonjourServiceRegistrator.Instance.Passcode != e.ctx.passcode)
 			{
 				e.ctx.handleDisapprove();
 			}
@@ -163,7 +167,7 @@ namespace InfiniteStorage
 
 				foreach (var subscriber in pairingSubscribers)
 				{
-					subscriber.NewPairingRequestComing(e.ctx.device_id, e.ctx.device_name);
+					subscriber.NewPairingRequestComing(e.ctx.device_id, e.ctx.device_name, requestID);
 				}
 			}
 		}
@@ -210,7 +214,7 @@ namespace InfiniteStorage
 			{
 				try
 				{
-					item.handleApprove();
+					item.handleApprove(e.syncOld, e.last_x_days);
 				}
 				catch (Exception err)
 				{

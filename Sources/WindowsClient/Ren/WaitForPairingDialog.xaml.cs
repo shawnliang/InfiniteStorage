@@ -15,6 +15,7 @@ using WebSocketSharp;
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
 using Waveface.ClientFramework;
+using System.Windows.Media.Imaging;
 
 #endregion
 
@@ -24,6 +25,8 @@ namespace Waveface.Client
 	{
 		private WebSocket m_webSocket;
 		private BackgroundWorker m_bgworker = new BackgroundWorker();
+
+		private Dictionary<string, ConfirmSyncDialog> pairingSources = new Dictionary<string, ConfirmSyncDialog>();
 
 		public WaitForPairingDialog()
 		{
@@ -88,13 +91,83 @@ namespace Waveface.Client
 
 		private void webSocket_OnMessage(object sender, MessageEventArgs e)
 		{
-			try
+			PairingServerMsgs _msgs = JsonConvert.DeserializeObject<PairingServerMsgs>(e.Data);
+			var req = _msgs.pairing_request;
+			var thumb = _msgs.thumb_received;
+
+			if (req != null)
 			{
-				PairingServerMsgs _msgs = JsonConvert.DeserializeObject<PairingServerMsgs>(e.Data);
+				this.Dispatcher.Invoke(new MethodInvoker(() =>
+				{
+					var dialog = new ConfirmSyncDialog();
+					dialog.PairingRequest = req;
+
+					for (int i = 0; i < 10; i++)
+					{
+						dialog.Thumbnails.Add(new Uri(@"C:\Users\shawnliang\Pictures\Shawn_waveface.jpg", UriKind.Absolute));
+					}
+
+					dialog.Owner = this;
+					dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+					dialog.Closing += dialog_Closing;
+					dialog.Show();
+
+					pairingSources.Add(req.request_id, dialog);
+				}));
 			}
-			catch
+
+
+			if (thumb != null)
 			{
+				this.Dispatcher.Invoke(new MethodInvoker(() =>
+				{
+					if (pairingSources.ContainsKey(thumb.request_id))
+					{
+						var dialog = pairingSources[thumb.request_id];
+						dialog.Thumbnails.Add(new Uri(thumb.path, UriKind.Absolute));
+					}
+				}));
 			}
+		}
+
+		void dialog_Closing(object sender, CancelEventArgs e)
+		{
+			var dialog = (ConfirmSyncDialog)sender;
+
+			if (dialog.SyncNow)
+			{
+				WS_accept(dialog.PairingRequest.device_id, dialog.SyncOldPhotos, dialog.SyncAll ? int.MaxValue : 30);
+			}
+			else
+			{
+				WS_reject(dialog.PairingRequest.device_id);
+			}
+		}
+
+		private void WS_reject(string device_id)
+		{
+			PairingClientMsgs _msgs = new PairingClientMsgs
+			{
+				reject = new accept_reject { device_id = device_id }
+			};
+
+
+			string _json = JsonConvert.SerializeObject(_msgs);
+
+			m_webSocket.Send(_json);
+		}
+
+		private void WS_accept(string device_id, bool syncOld, int last_x_days)
+		{
+			PairingClientMsgs _msgs = new PairingClientMsgs
+			{
+				accept = new accept_reject { device_id = device_id, sync_old = syncOld, last_x_days = last_x_days }
+			};
+
+
+			string _json = JsonConvert.SerializeObject(_msgs);
+
+			m_webSocket.Send(_json);
 		}
 
 		private void WS_subscribe_start()

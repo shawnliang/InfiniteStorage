@@ -93,9 +93,9 @@ namespace InfiniteStorage.WebsocketProtocol
 			state.handleThumbEndCmd(this, cmd);
 		}
 
-		public void handleApprove()
+		public void handleApprove(bool syncOld = true, int last_x_days = int.MaxValue)
 		{
-			state.handleApprove(this);
+			state.handleApprove(this, syncOld, last_x_days);
 		}
 
 		public void handleDisapprove()
@@ -157,7 +157,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			var handler = OnThumbnailReceived;
 			if (handler != null)
-				handler(this, new ThumbnailReceivedEventArgs(thumbPath, this.device_id, transferCount));
+				handler(this, new ThumbnailReceivedEventArgs(thumbPath, this, transferCount));
 		}
 
 		public void raiseOnFileEnding()

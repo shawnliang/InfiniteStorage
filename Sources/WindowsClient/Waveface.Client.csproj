@@ -123,6 +123,8 @@
     <Compile Include="Ren\ButtonImageText.xaml.cs" />
     <Compile Include="Ren\CloudSharingDialog.xaml.cs">
       <DependentUpon>CloudSharingDialog.xaml</DependentUpon>
+    <Compile Include="Ren\ConfirmSyncDialog.xaml.cs">
+      <DependentUpon>ConfirmSyncDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Ren\ShareEventDialog.xaml.cs">
       <DependentUpon>ShareEventDialog.xaml</DependentUpon>
@@ -314,6 +316,10 @@
     <Page Include="Ren\CloudSharingDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Ren\ConfirmSyncDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Ren\ShareEventDialog.xaml">
       <Generator>MSBuild:Compile</Generator>

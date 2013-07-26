@@ -56,7 +56,7 @@ namespace InfiniteStorage.Pair
 
 				if (msg.accept != null)
 				{
-					raiseNewDeviceAcceptingEvent(msg.accept.device_id);
+					raiseNewDeviceAcceptingEvent(msg.accept);
 				}
 
 				if (msg.reject != null)
@@ -105,11 +105,11 @@ namespace InfiniteStorage.Pair
 			}
 		}
 
-		private void raiseNewDeviceAcceptingEvent(string device_id)
+		private void raiseNewDeviceAcceptingEvent(accept_reject accept)
 		{
 			var handler = NewDeviceAccepting;
 			if (handler != null)
-				handler(this, new NewDeviceRespondingEventArgs(device_id));
+				handler(this, new NewDeviceRespondingEventArgs(accept.device_id, accept.sync_old, accept.last_x_days));
 		}
 
 		private void raiseNewDeviceRejectingEvent(string device_id)

@@ -81,7 +81,6 @@ namespace InfiniteStorage.Camera
 		public string device_folder { get; set; }
 
 		private DefaultFolderFileStorage storage = new DefaultFolderFileStorage();
-		ProgressTooltip progressDialog;
 
 
 		public ImportStorage(string device_id, string device_folder)

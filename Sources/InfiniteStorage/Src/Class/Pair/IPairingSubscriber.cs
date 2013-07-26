@@ -6,8 +6,8 @@ namespace InfiniteStorage.Pair
 {
 	public interface IPairingSubscriber
 	{
-		void NewPairingRequestComing(string device_id, string device_name);
-		void ThumbnailReceived(string path, int transferCount);
+		void NewPairingRequestComing(string device_id, string device_name, string requestId);
+		void ThumbnailReceived(string path, int transferCount, string requestId);
 	}
 
 	class PairingSubscriber : IPairingSubscriber
@@ -19,13 +19,14 @@ namespace InfiniteStorage.Pair
 			this.peer = peer;
 		}
 
-		public void NewPairingRequestComing(string device_id, string device_name)
+		public void NewPairingRequestComing(string device_id, string device_name, string requestId)
 		{
 			var msg = JsonConvert.SerializeObject(
 				new PairingServerMsgs
 				{
 					pairing_request = new pairing_request
 					{
+						request_id = requestId,
 						device_id = device_id,
 						device_name = device_name
 					}
@@ -37,13 +38,14 @@ namespace InfiniteStorage.Pair
 		}
 
 
-		public void ThumbnailReceived(string path, int transferCount)
+		public void ThumbnailReceived(string path, int transferCount, string requestId)
 		{
 			var msg = JsonConvert.SerializeObject(
 				new PairingServerMsgs
 				{
 					thumb_received = new thumb_info
 					{
+						request_id = requestId,
 						path = path,
 						transfer_count = transferCount
 					}

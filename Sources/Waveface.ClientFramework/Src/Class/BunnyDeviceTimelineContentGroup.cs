@@ -75,5 +75,10 @@ namespace Waveface.ClientFramework
 			//比較內容是否相等
 			return this.ID == value.ID;
 		}
+
+		public override int GetHashCode()
+		{
+			return ID.GetHashCode();
+		}
 	}
 }
