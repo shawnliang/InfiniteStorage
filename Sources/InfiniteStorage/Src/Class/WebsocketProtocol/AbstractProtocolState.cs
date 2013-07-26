@@ -33,7 +33,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			return string.Format("{0} is not expected in {1}", somethingUnexepected, this.ToString());
 		}
 
-		public virtual void handleApprove(ProtocolContext protocolContext, bool syncOld = true, int last_x_days = int.MaxValue)
+		public virtual void handleApprove(ProtocolContext protocolContext, bool syncOld = true, int latest_x_items = int.MaxValue)
 		{
 			throw new ProtocolErrorException(errorMsg("approve"));
 		}

@@ -46,7 +46,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			}
 		}
 
-		public void ReplyAcceptMsgToDevice(ProtocolContext ctx, Device clientInfo, bool syncOld = true, int last_x_days = int.MaxValue)
+		public void ReplyAcceptMsgToDevice(ProtocolContext ctx, Device clientInfo, bool syncOld = true, int latest_x_items = int.MaxValue)
 		{
 			var summary = Util.GetDeviceSummary(clientInfo.device_id);
 
@@ -65,8 +65,8 @@ namespace InfiniteStorage.WebsocketProtocol
 				video_count = (summary != null) ? (long?)summary.video_count : null,
 				audio_count = (summary != null) ? (long?)summary.audio_count : null,
 
-				sync_all = !syncOld,
-				sync_last_x_days = last_x_days,
+				sync_all = syncOld && latest_x_items == int.MaxValue,
+				sync_init_items = latest_x_items,
 			};
 
 			ctx.SetState(new TransmitInitState());

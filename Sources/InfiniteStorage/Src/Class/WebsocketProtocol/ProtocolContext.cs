@@ -93,9 +93,9 @@ namespace InfiniteStorage.WebsocketProtocol
 			state.handleThumbEndCmd(this, cmd);
 		}
 
-		public void handleApprove(bool syncOld = true, int last_x_days = int.MaxValue)
+		public void handleApprove(bool syncOld = true, int latest_x_items = int.MaxValue)
 		{
-			state.handleApprove(this, syncOld, last_x_days);
+			state.handleApprove(this, syncOld, latest_x_items);
 		}
 
 		public void handleDisapprove()

@@ -16,7 +16,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			this.approveHandler = new ConnectMsgHandler();
 		}
 
-		public override void handleApprove(ProtocolContext ctx, bool syncOld = true, int last_x_days = int.MaxValue)
+		public override void handleApprove(ProtocolContext ctx, bool syncOld = true, int latest_x_items = int.MaxValue)
 		{
 			var dev = new Device
 			{
@@ -27,7 +27,7 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			Util.Save(dev);
 			ctx.device_folder_name = dev.folder_name;
-			approveHandler.ReplyAcceptMsgToDevice(ctx, dev, syncOld, last_x_days);
+			approveHandler.ReplyAcceptMsgToDevice(ctx, dev, syncOld, latest_x_items);
 		}
 
 		public override void handleDisapprove(ProtocolContext ctx)

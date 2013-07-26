@@ -161,7 +161,7 @@ namespace Waveface.Client
 		{
 			PairingClientMsgs _msgs = new PairingClientMsgs
 			{
-				accept = new accept_reject { device_id = device_id, sync_old = syncOld, last_x_days = last_x_days }
+				accept = new accept_reject { device_id = device_id, sync_old = syncOld, lastest_x_items = last_x_days }
 			};
 
 

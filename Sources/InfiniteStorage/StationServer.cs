@@ -214,7 +214,7 @@ namespace InfiniteStorage
 			{
 				try
 				{
-					item.handleApprove(e.syncOld, e.last_x_days);
+					item.handleApprove(e.syncOld, e.latest_x_items);
 				}
 				catch (Exception err)
 				{
