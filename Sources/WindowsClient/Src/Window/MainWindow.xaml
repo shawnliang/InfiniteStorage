@@ -619,19 +619,6 @@
             </Grid.Effect>
 
             <Grid Margin="0">
-                <local:ContentActionBar x:Name="cabContentActionBar"
-                                        HorizontalAlignment="Right"
-                                        HorizontalContentAlignment="Right"
-                                        AddToFavorite="ContentActionBar_AddToFavorite"
-                                        AddToStarred="ContentActionBar_AddToStarred"
-                                        CreateFavorite="ContentActionBar_CreateFavorite"
-                                        MoveToExistingFolder="ContentActionBar_MoveToExistingFolder"
-                                        MoveToNewFolder="ContentActionBar_MoveToNewFolder"
-                                        Padding="0,0,5,0"
-                                        Style="{StaticResource ContentActionBarStyle}" 
-                                        Visibility="Collapsed"
-                                        />
-
                 <StackPanel x:Name="zoomPanel" HorizontalAlignment="Left" Margin="20, 4, 4, 4" VerticalAlignment="Center" Visibility="Collapsed">
                     <local:ZoomSlider x:Name="zoomSlider" Margin="0, 19, 0, 8"
                                   Maximum="400"
@@ -642,34 +629,38 @@
                     <TextBlock Grid.Row="1" x:Name="tbText"  HorizontalAlignment="Center" Foreground="#4F4F4F" Text="Thumbnail Size" FontSize="11" FontWeight="Bold" />
                 </StackPanel>
 
-                <local:FavoriteAllButton x:Name="btnFavoriteAll"
-                                         Width="100"
-                                         Margin="0,27,10,27"
-                                         HorizontalAlignment="Right"
-                                         VerticalAlignment="Center"
-                                         Click="FavoriteAllButton_Click"
-                                         Cursor="Hand"
-                                         Visibility="Collapsed" />
-
                 <local:ButtonImageText Margin="-20, 4, 4, 4" x:Name="btnCreateCloudAlbum" 
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Foreground="#456CB9"
                                     ImageUri="pack://application:,,,/Resource/bar_cloud_1.png"
                                     ImageEnterUri="pack://application:,,,/Resource/bar_cloud_2.png"
-                                    Text="Create Album"
+                                    Text="Create Online Album"
                                     Click="btnCreateCloudAlbum_Click"
                                     Visibility="Collapsed"/>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <local:ButtonImageText Margin="4" x:Name="btnAddTo" 
+                    
+                    <local:ButtonImageText Margin="4" x:Name="btnActions" 
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
                                     Foreground="#4F4F4F"
                                     ImageUri="pack://application:,,,/Resource/bar_add_1.png"
                                     ImageEnterUri="pack://application:,,,/Resource/bar_add_2.png"
-                                    Text="Add to"
-                                    Visibility="Collapsed"/>
+                                    Text="Actions"
+                                    MouseDown="btnActions_MouseDown"
+                                    Visibility="Collapsed">
+                        <local:ButtonImageText.ContextMenu>
+                            <ContextMenu Style="{StaticResource contextMenuStyle1}" >
+                                <MenuItem Header="{DynamicResource CreateFavorite}" Click="miAddtoNewFavorite_Click" />
+                                <!-- MenuItem Header="{DynamicResource CreateNewFolder}"/>
+                                <Separator />
+                                <MenuItem Header="{DynamicResource AddToExistingFolder}"/ -->
+                                <MenuItem Header="{DynamicResource AddToFavorite}" Click="miAddToFavorite_Click" />
+                                <MenuItem Header="{DynamicResource AddToStarred}" Click="miAddToStarred_Click" />                             
+                            </ContextMenu>
+                        </local:ButtonImageText.ContextMenu>
+                    </local:ButtonImageText>
 
                     <local:ButtonImageText Margin="20, 4, 24, 4" x:Name="btnView" 
                                     HorizontalAlignment="Right"

@@ -5,7 +5,7 @@
       Width="860"
       MinHeight="600" 
       MinWidth="860"
-	  Title="Create Album" 
+	  Title="Create Online Album" 
       WindowStartupLocation="CenterScreen" 
       ResizeMode="CanResize"
       Loaded="Window_Loaded" 
