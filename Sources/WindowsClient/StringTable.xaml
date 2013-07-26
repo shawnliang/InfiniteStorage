@@ -72,23 +72,13 @@
 
     <!--  begin of need review  -->
     <system:String x:Key="AddNewSource">Add a Phone</system:String>
-    <system:String x:Key="ANS_9">I need more information?</system:String>
-    <system:String x:Key="ANS_step1_1">Install Favorite on your mobile device</system:String>
-    <system:String x:Key="ANS_step1_2">and turn it on.</system:String>
-    <system:String x:Key="ANS_step2">Make sure your device and this PC are on the same Wifi network.</system:String>
-    <system:String x:Key="ANS_step3">Input the 4 digits below on your device.</system:String>
-    <system:String x:Key="ANS_findDev">Finding device...</system:String>
-    <system:String x:Key="ANS_importQuestion">Do you want to allow following devices to auto import their photos and videos to this PC?</system:String>
-    <system:String x:Key="ANS_allowSelected">Allow selected</system:String>
-    <system:String x:Key="ANS_disallowAll">Disallow all</system:String>
-    <system:String x:Key="ANS_deviceAdded">Device {0} is successfully added to this PC.</system:String>
-    <system:String x:Key="ANS_deviveNotFound" xml:space="preserve">
-Favorite is unable to find a connectable device. Please make sure Favorite is running on your device and the device and this PC are on the same WIFI.
-
-Do you want to search for available device again?
-Press 'Yes' to search again. Press 'No' to quit pairing mode.
-    </system:String>
-    <system:String x:Key="ANS_deviveNotFound_title">Device Not Found</system:String>
+    <system:String x:Key="ANS_9">Learn more</system:String>
+    <system:String x:Key="ANS_step1_title">Install the app</system:String>
+    <system:String x:Key="ANS_step1">Search for 'Waveface Photos' on Google Play, or simply use the QR code.</system:String>
+    <system:String x:Key="ANS_step2_title">Turn on WiFi</system:String>
+    <system:String x:Key="ANS_step2">Make sure your device and this PC connect to the same WiFi network</system:String>
+    <system:String x:Key="ANS_step3_title">Enter the code</system:String>
+    <system:String x:Key="ANS_step3">Launch Waveface Photos on you device and enter the 4 digits below. Then you are good to go!</system:String>
     <!--  end of need review  -->
 
     <system:String x:Key="SelectAll">Select All</system:String>

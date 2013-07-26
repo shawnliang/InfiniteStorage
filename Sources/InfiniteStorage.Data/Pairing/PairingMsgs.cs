@@ -33,7 +33,7 @@ namespace InfiniteStorage.Data.Pairing
 	{
 		public string device_id { get; set; }
 		public bool sync_old { get; set; }
-		public int lastest_x_items { get; set; }
+		public int latest_x_items { get; set; }
 	}
 
 	public class pairing_request

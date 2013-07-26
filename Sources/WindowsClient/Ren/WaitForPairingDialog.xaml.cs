@@ -136,7 +136,7 @@ namespace Waveface.Client
 
 			if (dialog.SyncNow)
 			{
-				WS_accept(dialog.PairingRequest.device_id, dialog.SyncOldPhotos, dialog.SyncAll ? int.MaxValue : 30);
+				WS_accept(dialog.PairingRequest.device_id, true, dialog.SyncAll ? int.MaxValue : 150);
 			}
 			else
 			{
@@ -157,11 +157,11 @@ namespace Waveface.Client
 			m_webSocket.Send(_json);
 		}
 
-		private void WS_accept(string device_id, bool syncOld, int last_x_days)
+		private void WS_accept(string device_id, bool syncOld, int latest_x_items)
 		{
 			PairingClientMsgs _msgs = new PairingClientMsgs
 			{
-				accept = new accept_reject { device_id = device_id, sync_old = syncOld, lastest_x_items = last_x_days }
+				accept = new accept_reject { device_id = device_id, sync_old = syncOld, latest_x_items = latest_x_items }
 			};
 
 
@@ -201,7 +201,7 @@ namespace Waveface.Client
 			Process.Start(MainWindow.HELP_URL);
 		}
 
-		private void Hyperlink_RequestNavigate_1(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+		private void Image_MouseDown_1(object sender, MouseButtonEventArgs e)
 		{
 			Process.Start("https://play.google.com/store/apps/details?id=com.waveface.uploader");
 		}

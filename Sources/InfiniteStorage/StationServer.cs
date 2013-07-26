@@ -140,7 +140,7 @@ namespace InfiniteStorage
 		
 		void InfiniteStorageWebSocketService_PairingRequesting(object sender, WebsocketProtocol.WebsocketEventArgs e)
 		{
-			var requestID = new Guid().ToString();
+			var requestID = Guid.NewGuid().ToString();
 			e.ctx.SetData("requestId", requestID);
 
 			var pairingSubscribers = Pair.PairWebSocketService.GetAllSubscribers();

@@ -14,8 +14,7 @@
                 <ResourceDictionary Source="StringTable.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <SolidColorBrush x:Key="DefaultBrush"
-                             Color="#4F4F4F" />
+            <SolidColorBrush x:Key="DefaultBrush" Color="#4F4F4F" />
             <Color x:Key="HighlightColor"
                    A="255"
                    B="229"
@@ -74,11 +73,9 @@
             <BitmapImage x:Key="VideoContentPlaceHolder"
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/video_ph.png" />
-            <SolidColorBrush x:Key="HighlightBrush"
-                             Color="{StaticResource HighlightColor}" />
+            <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource HighlightColor}" />
 
-            <SolidColorBrush x:Key="PressedBrush"
-                             Color="{StaticResource PressedColor}" />
+            <SolidColorBrush x:Key="PressedBrush" Color="{StaticResource PressedColor}" />
 
 
             <BitmapImage x:Key="FavoriteContentFlag"

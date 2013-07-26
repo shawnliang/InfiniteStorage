@@ -65,8 +65,8 @@ namespace InfiniteStorage.WebsocketProtocol
 				video_count = (summary != null) ? (long?)summary.video_count : null,
 				audio_count = (summary != null) ? (long?)summary.audio_count : null,
 
-				sync_all = syncOld && latest_x_items == int.MaxValue,
-				sync_init_items = latest_x_items,
+				sync_all = !syncOld,
+				sync_init_counts = latest_x_items,
 			};
 
 			ctx.SetState(new TransmitInitState());

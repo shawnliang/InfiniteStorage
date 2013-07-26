@@ -9,6 +9,50 @@
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
+
+        <Style x:Key="StepBorder" TargetType="Border">
+            <Setter Property="Background" Value="white" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" />
+            <Setter Property="Width" Value="240" />
+            <Setter Property="Height" Value="400" />
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Direction="270" Opacity="0.5" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="NumLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="30" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+
+        <Style x:Key="TitleLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="25" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="7,0,0,0" />
+        </Style>
+
+        <Style x:Key="StepText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Margin" Value="7,7,0,0" />
+            <Setter Property="TextWrapping" Value="WrapWithOverflow" />
+        </Style>
+
+        <Style x:Key="DigitText" TargetType="Label">
+            <Setter Property="FontSize" Value="30" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="DigitBorder" TargetType="Border">
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="3" />
+            <Setter Property="Margin" Value="3" />
+        </Style>
+
         <Style x:Key="LinkButton" TargetType="Button">
             <Setter Property="Template">
                 <Setter.Value>
@@ -135,102 +179,126 @@
             </Setter>
         </Style>
     </Window.Resources>
+    <Window.Effect>
+        <DropShadowEffect />
+    </Window.Effect>
     <StackPanel Margin="30,10">
-        <StackPanel Orientation="Horizontal">
-            <Label Margin="10, 5"
-                   HorizontalAlignment="Center"
-                   FontSize="30">
-                1.
-            </Label>
-            <TextBlock Grid.Column="1"
-                       VerticalAlignment="Center"
-                       FontSize="22"
-                       TextWrapping="WrapWithOverflow">
-                <Hyperlink NavigateUri="http://waveface.com/" RequestNavigate="Hyperlink_RequestNavigate_1">
-                    <Run Text="{DynamicResource ANS_step1_1}" />
-                </Hyperlink>
-                <Run Text="{DynamicResource ANS_step1_2}" />
-            </TextBlock>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Label Margin="10,5"
-                   HorizontalAlignment="Center"
-                   FontSize="30">
-                2.
-            </Label>
-            <TextBlock VerticalAlignment="Center"
-                       FontSize="22"
-                       Text="{DynamicResource ANS_step2}"
-                       TextWrapping="WrapWithOverflow" />
-        </StackPanel>
-
-        <StackPanel Orientation="Horizontal">
-            <Label Margin="10,5"
-                   HorizontalAlignment="Center"
-                   FontSize="30">
-                3.
-            </Label>
-            <TextBlock VerticalAlignment="Center"
-                       FontSize="22"
-                       Text="{DynamicResource ANS_step3}"
-                       TextWrapping="WrapWithOverflow" />
-        </StackPanel>
-
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0"
-                    Margin="3"
-                    BorderBrush="Black"
-                    BorderThickness="5">
-                <Label x:Name="digit1"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Content="1"
-                       FontSize="60" />
+            <Border Grid.Column="0" Style="{StaticResource StepBorder}">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="150" />
+                        <RowDefinition Height="3*" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Style="{StaticResource NumLabel}">1</Label>
+                    <TextBlock Grid.Row="1"
+                               Style="{StaticResource TitleLabel}"
+                               Text="{DynamicResource ANS_step1_title}" />
+                    <TextBlock Grid.Row="2"
+                               Style="{StaticResource StepText}"
+                               Text="{DynamicResource ANS_step1}" />
+
+                    <Image Grid.Row="3"
+                           Width="180"
+                           Cursor="Hand"
+                           MouseDown="Image_MouseDown_1">
+                        <Image.Source>
+                            <BitmapImage UriSource="pack://application:,,,/Resource/en_generic_rgb_wo_60.png" />
+                        </Image.Source>
+                    </Image>
+
+                </Grid>
+
             </Border>
-            <Border Grid.Column="1"
-                    Margin="3"
-                    BorderBrush="Black"
-                    BorderThickness="5">
-                <Label x:Name="digit2"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Content="2"
-                       FontSize="60" />
+
+            <Border Grid.Column="1" Style="{StaticResource StepBorder}">
+
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="150" />
+                        <RowDefinition Height="3*" />
+                    </Grid.RowDefinitions>
+
+
+                    <Label Style="{StaticResource NumLabel}">2</Label>
+                    <TextBlock Grid.Row="1"
+                               Style="{StaticResource TitleLabel}"
+                               Text="{DynamicResource ANS_step2_title}" />
+                    <TextBlock Grid.Row="2"
+                               Style="{StaticResource StepText}"
+                               Text="{DynamicResource ANS_step2}" />
+                </Grid>
             </Border>
-            <Border Grid.Column="2"
-                    Margin="3"
-                    BorderBrush="Black"
-                    BorderThickness="5">
-                <Label x:Name="digit3"
-                       Grid.Column="2"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Content="3"
-                       FontSize="60" />
+
+            <Border Grid.Column="2" Style="{StaticResource StepBorder}">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="150" />
+                        <RowDefinition Height="3*" />
+                    </Grid.RowDefinitions>
+                    <Label Style="{StaticResource NumLabel}">3</Label>
+                    <TextBlock Grid.Row="1"
+                               Style="{StaticResource TitleLabel}"
+                               Text="{DynamicResource ANS_step3_title}" />
+                    <TextBlock Grid.Row="2"
+                               Style="{StaticResource StepText}"
+                               Text="{DynamicResource ANS_step3}" />
+
+                    <Grid Grid.Row="3" MaxHeight="60">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Style="{StaticResource DigitBorder}">
+                            <Label x:Name="digit1"
+                                   Content="1"
+                                   Style="{StaticResource DigitText}" />
+                        </Border>
+                        <Border Grid.Column="1" Style="{StaticResource DigitBorder}">
+                            <Label x:Name="digit2"
+                                   Content="2"
+                                   Style="{StaticResource DigitText}" />
+                        </Border>
+                        <Border Grid.Column="2" Style="{StaticResource DigitBorder}">
+                            <Label x:Name="digit3"
+                                   Content="3"
+                                   Style="{StaticResource DigitText}" />
+                        </Border>
+                        <Border Grid.Column="3" Style="{StaticResource DigitBorder}">
+                            <Label x:Name="digit4"
+                                   Content="4"
+                                   Style="{StaticResource DigitText}" />
+                        </Border>
+                    </Grid>
+                </Grid>
             </Border>
-            <Border Grid.Column="3"
-                    Margin="3"
-                    BorderBrush="Black"
-                    BorderThickness="5">
-                <Label x:Name="digit4"
-                       Grid.Column="3"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Content="4"
-                       FontSize="60" />
-            </Border>
+
+
         </Grid>
+
+
+
+
 
         <Button x:Name="btnHelp"
                 Margin="0, 20, 0, 0"
-                HorizontalAlignment="Right"
+                HorizontalAlignment="left"
                 Click="btnHelp_Click"
                 Content="{DynamicResource ANS_9}"
                 FontSize="12"

@@ -15,71 +15,185 @@
             </Setter>
         </Style>
 
+
+        <Style x:Key="RoundButton" TargetType="{x:Type Button}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="BorderBrush" Value="AliceBlue" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Height" Value="34" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="22"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentControl HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Content="{TemplateBinding Content}" />
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="0.1" />
+                            </Border.Effect>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="AliceBlue" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="AliceBlue" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
     </Window.Resources>
 
     <StackPanel Margin="30" TextBlock.FontSize="18">
-        <ListBox x:Name="photoWall"
-                 Width="750"
-                 Height="380"
-                 ItemContainerStyle="{StaticResource SimpleListBoxItem}"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <Grid>
+            <StackPanel Panel.ZIndex="1000">
+                <StackPanel.Background>
+                    <LinearGradientBrush StartPoint="0,0.1" EndPoint="0,1">
+                        <GradientStop Offset="0.0" Color="Black" />
+                        <GradientStop Offset="1.0" />
+                    </LinearGradientBrush>
+                </StackPanel.Background>
+                <Label Margin="10,30,0,0"
+                       HorizontalAlignment="Center"
+                       Content="GT-i9300 connected successfully!"
+                       FontSize="40"
+                       FontWeight="Bold"
+                       Foreground="White" />
+                <TextBlock MinHeight="40"
+                           MaxWidth="700"
+                           Margin="10,10,0,0"
+                           HorizontalAlignment="Center"
+                           FontSize="26"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           Text="Everything on your device gets synced to this PC automatically -- from now on."
+                           TextAlignment="Center"
+                           TextWrapping="WrapWithOverflow" />
+            </StackPanel>
+            <ListBox x:Name="photoWall"
+                     Width="904"
+                     Height="300"
+                     ItemContainerStyle="{StaticResource SimpleListBoxItem}"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Disabled">
 
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border Width="75"
-                            Height="75"
-                            Margin="1"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Background="Green"
-                            RenderTransformOrigin="0.5,0.5">
-                        <Image Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                                                              AncestorType={x:Type ListBoxItem},
-                                                                              AncestorLevel=1},
-                                               Path=Width}"
-                               Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                                                               AncestorType={x:Type ListBoxItem},
-                                                                               AncestorLevel=1},
-                                                Path=Height}"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               RenderTransformOrigin="0.5,0.5"
-                               Stretch="UniformToFill">
-                            <Image.Source>
-                                <BitmapImage UriSource="{Binding IsAsync=True}" />
-                            </Image.Source>
-                        </Image>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Width="75"
+                                Height="75"
+                                Margin="0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Image Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                  AncestorType={x:Type ListBoxItem},
+                                                                                  AncestorLevel=1},
+                                                   Path=Width}"
+                                   Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                   AncestorType={x:Type ListBoxItem},
+                                                                                   AncestorLevel=1},
+                                                    Path=Height}"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   RenderTransformOrigin="0.5,0.5"
+                                   Stretch="UniformToFill">
+                                <Image.Source>
+                                    <BitmapImage UriSource="{Binding IsAsync=True}" />
+                                </Image.Source>
+                            </Image>
 
 
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
 
-        </ListBox>
-        <Label Content="Favorite automatically backup your new photos from {0} to this PC." />
-        <CheckBox x:Name="syncOldPhotos"
-                  Margin="0,10,0,0"
-                  Content="Also sync my old photos and videos" />
-        <StackPanel x:Name="radioPanel"
-                    Margin="30,0"
-                    IsEnabled="{Binding ElementName=syncOldPhotos,
-                                        Path=IsChecked}">
+            </ListBox>
+        </Grid>
+
+        <Label Margin="0,10"
+               Content="Import photos from this devices"
+               FontSize="20" />
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                    MinHeight="80"
+                    Margin="10"
+                    Click="ImportLatest150Button_Click"
+                    Style="{StaticResource RoundButton}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="50"
+                           Margin="10"
+                           Source="{StaticResource BigPhotoIcon}" />
+                    <StackPanel VerticalAlignment="Center">
+                        <Label Margin="0"
+                               Content="Import the latest 150 photos or videos"
+                               FontSize="18"
+                               FontWeight="Bold" />
+                        <Label Content="(Around 3 minutes)" FontWeight="Bold" />
+                    </StackPanel>
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="1"
+                    MinHeight="80"
+                    Margin="10"
+                    Click="ImportAllButton_Click"
+                    Style="{StaticResource RoundButton}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="50"
+                           Margin="10"
+                           Source="{StaticResource BigPhotoIcon}" />
+                    <StackPanel VerticalAlignment="Center">
+                        <Label Margin="0"
+                               Content="Import all items"
+                               FontSize="18"
+                               FontWeight="Bold" />
+                        <Label Content="(Takes longer)" FontWeight="Bold" />
+                    </StackPanel>
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <!--
+            <Label Content="Favorite automatically backup your new photos from {0} to this PC." />
+            <CheckBox x:Name="syncOldPhotos"
+            Margin="0,10,0,0"
+            Content="Also sync my old photos and videos" />
+            <StackPanel x:Name="radioPanel"
+            Margin="30,0"
+            IsEnabled="{Binding ElementName=syncOldPhotos,
+            Path=IsChecked}">
             <RadioButton x:Name="syncAll"
-                         Content="Sync all photos and videos in my devices to this PC"
-                         IsChecked="True" />
+            Content="Sync all photos and videos in my devices to this PC"
+            IsChecked="True" />
             <RadioButton x:Name="syncLast30days" Content="Sync photos and videos taken in the last 30 days in my devices to this PC" />
-        </StackPanel>
-
-
-        <Button MinWidth="120"
-                Margin="0, 20,0,0"
-                HorizontalAlignment="Right"
-                Click="SyncNowButton_Click"
-                Content="Sync Now" />
+            </StackPanel>
+            
+            
+            <Button MinWidth="120"
+            Margin="0, 20,0,0"
+            HorizontalAlignment="Right"
+            Click="SyncNowButton_Click"
+            Content="Sync Now" />
+        -->
     </StackPanel>
 </Window>

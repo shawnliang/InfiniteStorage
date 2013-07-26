@@ -21,17 +21,7 @@ namespace Waveface.Client
 	{
 		public InfiniteStorage.Data.Pairing.pairing_request PairingRequest { get; set; }
 		public bool SyncNow { get; private set; }
-
-
-		public bool SyncOldPhotos
-		{
-			get { return syncOldPhotos.IsChecked == true; }
-		}
-
-		public bool SyncAll
-		{
-			get { return syncAll.IsChecked == true; }
-		}
+		public bool SyncAll { get; private set; }
 
 		public ObservableCollection<Uri> Thumbnails
 		{
@@ -46,9 +36,17 @@ namespace Waveface.Client
 			photoWall.ItemsSource = Thumbnails;
 		}
 
-		private void SyncNowButton_Click(object sender, RoutedEventArgs e)
+		private void ImportLatest150Button_Click(object sender, RoutedEventArgs e)
 		{
 			SyncNow = true;
+			SyncAll = false;
+			Close();
+		}
+
+		private void ImportAllButton_Click(object sender, RoutedEventArgs e)
+		{
+			SyncNow = true;
+			SyncAll = true;
 			Close();
 		}
 

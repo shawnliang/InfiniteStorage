@@ -109,7 +109,7 @@ namespace InfiniteStorage.Pair
 		{
 			var handler = NewDeviceAccepting;
 			if (handler != null)
-				handler(this, new NewDeviceRespondingEventArgs(accept.device_id, accept.sync_old, accept.lastest_x_items));
+				handler(this, new NewDeviceRespondingEventArgs(accept.device_id, accept.sync_old, accept.latest_x_items));
 		}
 
 		private void raiseNewDeviceRejectingEvent(string device_id)
