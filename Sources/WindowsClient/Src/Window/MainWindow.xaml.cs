@@ -681,9 +681,6 @@ namespace Waveface.Client
 			rspRightSidePanel.Visibility = Visibility.Collapsed;
 			rspRightSidePane2.Visibility = Visibility.Collapsed;
 
-			lbxFavorites.SelectedItem = null;
-			lbxRecent.SelectedItem = null;
-
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = null;
 			System.Windows.Forms.Application.DoEvents();
@@ -713,20 +710,18 @@ namespace Waveface.Client
 
 		private void lbxFavorites_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			ShowToolBarButtons(false);
+			ShowSelectedFavoriteContents(sender, false);
 
 			lbxRecent.SelectedItem = null;
-
-			ShowSelectedFavoriteContents(sender, false);
+			ShowToolBarButtons(false);
 		}
 
 		private void lbxRecent_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			lbxFavorites.SelectedItem = null;
-
-			ShowToolBarButtons(true);
-
 			ShowSelectedFavoriteContents(sender, true);
+
+			lbxFavorites.SelectedItem = null;
+			ShowToolBarButtons(true);
 		}
 
 		private void ShowSelectedFavoriteContents(object sender, bool isRecent)
