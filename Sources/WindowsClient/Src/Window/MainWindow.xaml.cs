@@ -687,6 +687,8 @@ namespace Waveface.Client
 
 			lbxContentContainer.DataContext = group.Contents;
 			lbxContentContainer.SelectedIndex = -1;
+			lbxFavorites.SelectedIndex = -1;
+			lbxRecent.SelectedIndex = -1;
 
 			SetContentTypeCount(group);
 		}
