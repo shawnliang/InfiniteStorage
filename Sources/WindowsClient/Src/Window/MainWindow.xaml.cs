@@ -1468,7 +1468,54 @@ namespace Waveface.Client
 
 			SaveToFavorite(_entities);
 		}
+
+		private void window_ContentRendered(object sender, EventArgs e)
+		{
+			if (lbxDeviceContainer.Items.Count > 0)
+			{
+				var item = (TreeViewItem)lbxDeviceContainer.ItemContainerGenerator.ContainerFromIndex(0);
+				item.IsExpanded = true;
+
+				if (item.Items.Count > 0)
+				{
+
+					var group = ((IContentGroup)item.Items[0]);
+					lbxContentContainer.DataContext = group.Contents;
+					lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
+					lblContentLocation.DataContext = group;
+					SetContentTypeCount(group);
+					ShowToolBarButtons(true);
+
+					if (item.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+					{
+						var folder = (TreeViewItem)item.ItemContainerGenerator.ContainerFromIndex(0);
+						folder.IsSelected = true;
+					}
+					else
+					{
+						EventHandler eh = null;
+
+						eh = new EventHandler(delegate
+						{
+							if (item.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+							{
+								var folder = (TreeViewItem)item.ItemContainerGenerator.ContainerFromIndex(0);
+								folder.IsSelected = true;
+
+								item.ItemContainerGenerator.StatusChanged -= eh;
+							}
+						});
+
+						item.ItemContainerGenerator.StatusChanged += eh;
+					}
+
+				}
+			}
+		}
 	}
+
+
+
 
 	/*
 		private void ContentActionBar_AddToFavorite(object sender, EventArgs e)
