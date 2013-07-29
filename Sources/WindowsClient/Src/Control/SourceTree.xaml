@@ -11,7 +11,10 @@
           ItemContainerStyle="{DynamicResource TreeViewItemStyle1}"
           ItemsSource="{Binding IsAsync=True}"
           MouseUp="UserControl_MouseUp"
+          MouseMove="UserControl_MouseMove"
           PreviewKeyDown="UserControl_PreviewKeyDown"
+          PreviewMouseLeftButtonDown="UserControl_PreviewMouseLeftButtonDown"
+          DragOver="UserControl_DragOver"
           VirtualizingStackPanel.IsVirtualizing="True"
           VirtualizingStackPanel.VirtualizationMode="Recycling"
           d:DesignHeight="392.26"
@@ -20,15 +23,12 @@
     <TreeView.Resources>
 
         <ContextMenu x:Key="SourceContextMenu">
-            <MenuItem Click="StarMenuItem_Click"
-                      Header="Star" />
-            <MenuItem Click="CreateFavoriteMenuItem_Click"
-                      Header="Create Favorite..." />
-            <MenuItem Click="AddToFavoriteMenuItem_Click"
-                      Header="Add to Favorite..." />
+            <MenuItem Click="miStar_Click" Header="Star" />
+            <MenuItem Click="miCreateFavorite_Click" Header="Create Favorite..." />
+            <MenuItem Click="miAddToFavorite_Click" Header="Add to Favorite..." />            
             <Separator />
-            <MenuItem Click="DeleteMenuItem_Click"
-                      Header="Delete" />
+            <MenuItem Click="miLocateOnDisk_Click" Header="Locate on Disk" />
+            <MenuItem Click="miDelete_Click" Header="Delete" />
         </ContextMenu>
 
         <!--

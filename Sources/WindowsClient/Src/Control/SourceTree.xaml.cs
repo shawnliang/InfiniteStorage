@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using Waveface.Model;
 
 #endregion
 
@@ -13,6 +14,8 @@ namespace Waveface.Client
 {
 	public partial class SourceTree : TreeView
 	{
+		private Point m_startPoint;
+
 		#region Event
 
 		public event EventHandler TreeViewItemClick;
@@ -38,7 +41,7 @@ namespace Waveface.Client
 
 		private void recvingIcon_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			var recvIcon = (Image) sender;
+			var recvIcon = (Image)sender;
 
 			if (recvIcon.Visibility == Visibility.Visible)
 			{
@@ -115,24 +118,76 @@ namespace Waveface.Client
 			DeleteSourceInvoked(this, e);
 		}
 
-		private void StarMenuItem_Click(object sender, RoutedEventArgs e)
+		private void miStar_Click(object sender, RoutedEventArgs e)
 		{
 			OnStarInvoked(EventArgs.Empty);
 		}
 
-		private void CreateFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
+		private void miCreateFavorite_Click(object sender, RoutedEventArgs e)
 		{
 			OnCreateFavoriteInvoked(EventArgs.Empty);
 		}
 
-		private void AddToFavoriteMenuItem_Click(object sender, RoutedEventArgs e)
+		private void miAddToFavorite_Click(object sender, RoutedEventArgs e)
 		{
 			OnAddToFavoriteInvoked(EventArgs.Empty);
 		}
 
-		private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
+		private void miDelete_Click(object sender, RoutedEventArgs e)
 		{
 			OnDeleteSourceInvoked(EventArgs.Empty);
+		}
+
+		private void UserControl_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			m_startPoint = e.GetPosition(null);
+		}
+
+		private void UserControl_MouseMove(object sender, MouseEventArgs e)
+		{
+			Point _mousePos = e.GetPosition(null);
+			Vector _diff = m_startPoint - _mousePos;
+
+			if (e.LeftButton == MouseButtonState.Pressed &&
+				(Math.Abs(_diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+				 Math.Abs(_diff.Y) > SystemParameters.MinimumVerticalDragDistance))
+			{
+				if (SelectedItem != null)
+				{
+					IContentEntity _entity = SelectedItem as IContentEntity;
+
+					if (_entity != null)
+					{
+						string[] _files = new string[1];
+						_files[0] = _entity.Uri.LocalPath;
+
+						DataObject _dragData = new DataObject();
+						_dragData.SetData(DataFormats.FileDrop, _files);
+						DragDrop.DoDragDrop(this, _dragData, DragDropEffects.Copy);
+					}
+				}
+			}
+		}
+
+		private void UserControl_DragOver(object sender, DragEventArgs e)
+		{
+			e.Effects = DragDropEffects.None;
+			e.Handled = true;
+		}
+
+		private void miLocateOnDisk_Click(object sender, RoutedEventArgs e)
+		{
+			if (SelectedItem != null)
+			{
+				IContentEntity _entity = SelectedItem as IContentEntity;
+
+				if (_entity != null)
+				{
+					string _dir = _entity.Uri.LocalPath;
+					string _arg = @"/select, " + _dir;
+					System.Diagnostics.Process.Start("explorer.exe", _arg);
+				}
+			}
 		}
 	}
 }

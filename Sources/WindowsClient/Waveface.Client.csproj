@@ -130,6 +130,7 @@
     <Compile Include="Ren\ShareEventDialog.xaml.cs">
       <DependentUpon>ShareEventDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Ren\Utility\ListBoxDropHighlighter.cs" />
     <Compile Include="Src\Control\ContentActionBar.xaml.cs">
       <DependentUpon>ContentActionBar.xaml</DependentUpon>
     </Compile>

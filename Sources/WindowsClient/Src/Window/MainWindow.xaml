@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Waveface.Client"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
-        x:Name="window"
+        xmlns:utils="clr-namespace:Waveface.Client.Utility" x:Name="window"
         Title="Favorite"
         Width="807"
         Height="498.5"
@@ -32,8 +32,9 @@
         <ContextMenu x:Key="SourceContentContextMenu">
             <MenuItem Click="StarMenuItem_Click" Header="Star" />
             <MenuItem Click="CreateFavoriteMenuItem_Click" Header="Create Favorite..." />
-            <MenuItem Click="AddToFavoriteMenuItem_Click" Header="Add to Favorite..." />
+            <MenuItem Click="AddToFavoriteMenuItem_Click" Header="Add to Favorite..." />               
             <Separator />
+            <MenuItem Click="miLocateOnDisk_Click" Header="Locate on Disk" />
             <MenuItem Click="DeleteMenuItem_Click" Header="Delete" />
         </ContextMenu>
 
@@ -270,22 +271,26 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                Background="{TemplateBinding Background}">
+                        <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{TemplateBinding Background}">
                             <ContentPresenter />
                         </Border>
-                        <ControlTemplate.Triggers>
+                        <ControlTemplate.Triggers>                       
                             <Trigger Property="Selector.IsSelected" Value="True">
                                 <Setter Property="Background" Value="#FF427FED" />
                             </Trigger>
+                            
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsMouseOver" Value="True" />
                                     <Condition Property="IsSelected" Value="False" />
                                 </MultiTrigger.Conditions>
+                                
                                 <Setter Property="Background" Value="#5FB0E0E6" />
                             </MultiTrigger>
+
+                            <Trigger Property="utils:ListBoxDropHighlighter.IsPossibleDropTarget" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>

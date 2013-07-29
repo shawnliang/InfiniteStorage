@@ -9,6 +9,9 @@
          FontFamily="Segoe UI"
          ItemsSource="{Binding IsAsync=True}"
          PreviewKeyDown="UserControl_PreviewKeyDown"
+         MouseMove="UserControl_MouseMove"
+         PreviewMouseLeftButtonDown="UserControl_PreviewMouseLeftButtonDown"
+         DragOver="UserControl_DragOver"
          UseLayoutRounding="True"
          VirtualizingStackPanel.IsVirtualizing="True"
          VirtualizingStackPanel.VirtualizationMode="Recycling"
@@ -56,8 +59,7 @@
                        Foreground="#a8a8a8" />
             </Grid>
             <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}"
-                             Value="True">
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
                     <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedFav}" />
                     <Setter TargetName="item" Property="Background" Value="#d5d5d5" />
                     <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
@@ -67,8 +69,8 @@
 
                 <DataTrigger Binding="{Binding ShareEnabled}" Value="true">
                     <Setter TargetName="sourceName" Property="Foreground" Value="Red" />
-                </DataTrigger>                
-                
+                </DataTrigger>
+
                 <DataTrigger Binding="{Binding ID}"
                              Value="00000000-0000-0000-0000-000000000000">
                     <Setter TargetName="item" Property="ContextMenu" Value="{x:Null}" />
@@ -89,9 +91,7 @@
                     </MultiDataTrigger.Conditions>
                     <Setter TargetName="icon" Property="Source" Value="{StaticResource UnSelectedFavStar}" />
                 </MultiDataTrigger>
-
             </DataTemplate.Triggers>
-
         </DataTemplate>
     </ListBox.ItemTemplate>
 </ListBox>

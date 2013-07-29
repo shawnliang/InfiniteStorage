@@ -1081,13 +1081,20 @@ namespace Waveface.Client
 				(Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
 				 Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
 			{
-				ListBoxItem item = FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
+				IEnumerable<IContentEntity> _contents = GetSelectedContents();
 
-				var contents = GetSelectedContents();
+				List<string> _filePaths = new List<string>();
+
+				foreach (IContentEntity _entity in _contents)
+				{
+					_filePaths.Add(_entity.Uri.LocalPath);
+				}
 
 				// Initialize the drag & drop operation
-				DataObject dragData = new DataObject(typeof(IEnumerable<IContentEntity>), contents);
-				DragDrop.DoDragDrop(item, dragData, DragDropEffects.Move);
+				DataObject _dragData = new DataObject();
+				_dragData.SetData(typeof(IEnumerable<IContentEntity>), _contents);
+				_dragData.SetData(DataFormats.FileDrop, _filePaths.ToArray());
+				DragDrop.DoDragDrop(this, _dragData, DragDropEffects.Copy);
 			}
 		}
 
@@ -1141,7 +1148,7 @@ namespace Waveface.Client
 
 		private void Sources_Drop(object sender, DragEventArgs e)
 		{
-			if (e.Effects == DragDropEffects.Move && e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)))
+			if (e.Effects == DragDropEffects.Copy && e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)))
 			{
 				var controlItem = FindAnchestor<TreeViewItem>((DependencyObject)e.OriginalSource);
 
@@ -1583,59 +1590,18 @@ namespace Waveface.Client
 				}
 			}
 		}
-	}
 
-
-
-
-	/*
-		private void ContentActionBar_AddToFavorite(object sender, EventArgs e)
+		private void miLocateOnDisk_Click(object sender, RoutedEventArgs e)
 		{
-			AddSelectedToFavorite();
-		}
+			var selectedContents = GetSelectedContents();
 
-		private void ContentActionBar_AddToStarred(object sender, EventArgs e)
-		{
-			StarSelectedContents();
-		}
-
-		private void ContentActionBar_CreateFavorite(object sender, EventArgs e)
-		{
-			SaveSelectedContentsToFavorite();
-		}
-
-		private void ContentActionBar_MoveToNewFolder(object sender, EventArgs e)
-		{
-			var dialog = new CreateFolderDialog
-							 {
-								 Owner = this,
-								 WindowStartupLocation = WindowStartupLocation.CenterOwner
-							 };
-
-			if (dialog.ShowDialog() != true)
-				return;
-
-			var contents = GetSelectedContents();
-
-			if (contents.Any())
+			if(selectedContents.Count() > 0)
 			{
-				var targetFullPath = Path.Combine(contents.First().Service.Uri.LocalPath, dialog.CreateName);
-
-				MoveToFolder(targetFullPath, contents);
+				IContentEntity _entity = selectedContents.ElementAt(0);
+				string _dir = _entity.Uri.LocalPath;
+				string _arg = @"/select, " + _dir;
+				Process.Start("explorer.exe", _arg);
 			}
 		}
-
-		private void ContentActionBar_MoveToExistingFolder(object sender, EventArgs e)
-		{
-			MoveToExistingFolder(GetSelectedContents());
-		}
-
-		private void FavoriteAllButton_Click(object sender, RoutedEventArgs e)
-		{
-			ClientFramework.Client.Default.Tag(lbxContentContainer.Items.OfType<IContent>());
-			RefreshContentArea();
-			RefreshStarFavorite();
-		}
-	*/
-
+	}
 }
