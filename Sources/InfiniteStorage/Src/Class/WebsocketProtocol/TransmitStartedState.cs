@@ -60,17 +60,17 @@ namespace InfiniteStorage.WebsocketProtocol
 					log4net.LogManager.GetLogger(typeof(TransmitStartedState)).WarnFormat("{0} is expected to have {1} bytes but {2} bytes received.", ctx.fileCtx.file_name, ctx.fileCtx.file_size, ctx.temp_file.BytesWritten);
 
 				ctx.fileCtx.file_id = fileAsset.file_id;
+				ctx.recved_files++;
 				ctx.raiseOnFileReceived();
 			}
 			else
 			{
+				ctx.recved_files++;
 				ctx.temp_file.Delete();
 			}
 
 			log4net.LogManager.GetLogger("wsproto").Debug("send back file-exist for file recv success");
 			ctx.Send(new TextCommand { action = "file-exist", file_name = ctx.fileCtx.file_name });
-
-			ctx.recved_files++;
 			ctx.SetState(new TransmitInitState());
 		}
 	}

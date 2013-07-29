@@ -118,7 +118,7 @@ namespace InfiniteStorage
 			ProgramIPC.Instance.OnWinMsg += (s, e) =>
 			{
 				if (e.Message == ProgramIPC.MsgShowTooltip)
-					showProgramIsAtServiceBallonTips();
+					ImportUIPresenter.Instance.StartViewer();
 			};
 
 			m_thumbnailCreator = new ThumbnailCreator();
@@ -169,7 +169,7 @@ namespace InfiniteStorage
 					}
 					else
 					{
-						dialog = new ProgressTooltip(e.ctx.device_name);
+						dialog = new ProgressTooltip(e.ctx.device_name, e.ctx.device_id);
 						e.ctx.SetData(DATA_KEY_PROGRESS_DIALOG, dialog);
 						justCreated = true;
 					}

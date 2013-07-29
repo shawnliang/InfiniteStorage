@@ -12,16 +12,19 @@ namespace InfiniteStorage
 {
 	public partial class ProgressTooltip : Form
 	{
+		private string device_id;
+
 		public ProgressTooltip()
 		{
 			InitializeComponent();
 			this.progressText.Text = Resources.MenuItem_Preparing;
 		}
 
-		public ProgressTooltip(string deviceName)
+		public ProgressTooltip(string deviceName, string deviceId)
 			: this()
 		{
 			this.devname.Text = deviceName;
+			this.device_id = deviceId;
 		}
 
 		private void ProgressTooltip_Load(object sender, EventArgs e)
@@ -72,7 +75,7 @@ namespace InfiniteStorage
 
 		private void viewButton_Click(object sender, EventArgs e)
 		{
-			MessageBox.Show("Not implemented yet");
+			ImportUIPresenter.Instance.StartViewer(device_id);
 		}
 
 		private void closeButton_Click(object sender, EventArgs e)

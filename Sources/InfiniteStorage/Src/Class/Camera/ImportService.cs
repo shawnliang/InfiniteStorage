@@ -163,7 +163,7 @@ namespace InfiniteStorage.Camera
 		public void Connecting()
 		{
 			SynchronizationContextHelper.SendMainSyncContext(() => {
-				progress = new ProgressTooltip(device_folder);
+				progress = new ProgressTooltip(device_folder, device_id);
 			});
 
 			ImportingCameraCollection.Add(device_id);
