@@ -66,7 +66,7 @@ namespace InfiniteStorage
 
 		private void ProgressTooltip_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (tabControlEx1.SelectedTab == inProgressTab)
+			if (e.CloseReason == CloseReason.UserClosing && tabControlEx1.SelectedTab == inProgressTab)
 			{
 				e.Cancel = true;
 				Hide();

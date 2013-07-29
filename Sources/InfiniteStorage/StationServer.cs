@@ -136,7 +136,7 @@ namespace InfiniteStorage
 
 		void InfiniteStorageWebSocketService_DeviceDisconnected(object sender, WebsocketProtocol.WebsocketEventArgs e)
 		{
-			SynchronizationContextHelper.SendMainSyncContext(() =>
+			SynchronizationContextHelper.PostMainSyncContext(() =>
 			{
 				try
 				{
@@ -156,7 +156,7 @@ namespace InfiniteStorage
 
 		void InfiniteStorageWebSocketService_FileReceiving(object sender, WebsocketProtocol.WebsocketEventArgs e)
 		{
-			SynchronizationContextHelper.SendMainSyncContext(() =>
+			SynchronizationContextHelper.PostMainSyncContext(() =>
 			{
 				try
 				{
@@ -192,7 +192,7 @@ namespace InfiniteStorage
 
 		void InfiniteStorageWebSocketService_FileProgress(object sender, WebsocketProtocol.WebsocketEventArgs e)
 		{
-			SynchronizationContextHelper.SendMainSyncContext(() =>
+			SynchronizationContextHelper.PostMainSyncContext(() =>
 			{
 				try
 				{
@@ -210,7 +210,7 @@ namespace InfiniteStorage
 
 		void InfiniteStorageWebSocketService_FileReceived(object sender, WebsocketProtocol.WebsocketEventArgs e)
 		{
-			SynchronizationContextHelper.SendMainSyncContext(() =>
+			SynchronizationContextHelper.PostMainSyncContext(() =>
 			{
 				try
 				{
