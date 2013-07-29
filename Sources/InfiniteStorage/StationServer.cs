@@ -144,7 +144,7 @@ namespace InfiniteStorage
 						return;
 
 					var dialog = (ProgressTooltip)e.ctx.GetData(DATA_KEY_PROGRESS_DIALOG);
-					dialog.UpdateComplete((int)e.ctx.backup_count);
+					dialog.UpdateComplete((int)e.ctx.recved_files);
 					dialog.Show();
 				}
 				catch (Exception err)
@@ -238,7 +238,7 @@ namespace InfiniteStorage
 
 
 					if (e.ctx.backup_count + 1 >= e.ctx.total_count)
-						dialog.UpdateComplete((int)e.ctx.total_count);
+						dialog.UpdateComplete((int)e.ctx.recved_files);
 
 				}
 				catch (Exception err)
