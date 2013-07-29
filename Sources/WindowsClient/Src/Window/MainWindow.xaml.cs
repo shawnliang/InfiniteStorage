@@ -34,12 +34,15 @@ namespace Waveface.Client
 		private DispatcherTimer uiDelayTimer;
 		private DispatcherTimer recentTimer;
 		private DispatcherTimer timelineShareToDelayTimer;
+		private DispatcherTimer jumpToDeviceTimer;
 
 		public MainWindow()
 		{
 			InitializeComponent();
 
+#if !DEBUG
 			AppDomain.CurrentDomain.UnhandledException += Handler.UnhandledException;
+#endif
 		}
 
 		#region Private Method
@@ -482,16 +485,88 @@ namespace Waveface.Client
 					Process.Start(HELP_URL);
 				}
 
-				WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog
-																 {
-																	 Owner = this
-																 };
-				_waitForPairingDialog.ShowDialog();
+				showWaitForPairingDialog();
 
 				Settings.Default.IsFirstUse = false;
 				Settings.Default.Save();
 			}
 		}
+
+		private void showWaitForPairingDialog()
+		{
+			var dialog = new WaitForPairingDialog
+			{
+				Owner = this
+			};
+			dialog.ShowDialog();
+
+
+			if (dialog.PairedDevices.Any())
+			{
+				var jumpToDevice = dialog.PairedDevices.LastOrDefault();
+
+
+				if (jumpToDeviceTimer != null)
+				{
+					jumpToDeviceTimer.Stop();
+				}
+
+				jumpToDeviceTimer = new DispatcherTimer();
+				jumpToDeviceTimer.Interval = TimeSpan.FromMilliseconds(500);
+				jumpToDeviceTimer.Tick += (s, e) =>
+				{
+					Timer_JumpToDevice(jumpToDevice);
+					return;
+				};
+				jumpToDeviceTimer.Start();
+			}
+		}
+
+		private void Timer_JumpToDevice(InfiniteStorage.Data.Pairing.pairing_request jumpToDevice)
+		{
+			try
+			{
+				var sourceTree = lbxDeviceContainer;
+				if (!sourceTree.HasItems)
+					return;
+
+				foreach (IService dev in sourceTree.Items)
+				{
+					if (dev.ID.Equals(jumpToDevice.device_id, StringComparison.InvariantCultureIgnoreCase))
+					{
+						var devNode = (TreeViewItem)sourceTree.ItemContainerGenerator.ContainerFromItem(dev);
+
+						if (devNode != null && devNode.Items.Count > 0)
+						{
+							devNode.IsExpanded = true;
+
+							var folderNode = (TreeViewItem)devNode.ItemContainerGenerator.ContainerFromIndex(0);
+							if (folderNode != null)
+							{
+								folderNode.IsSelected = true;
+								lbxRecent.SelectedIndex = -1;
+								lbxFavorites.SelectedIndex = -1;
+
+								var group = (IContentGroup)devNode.Items[0];
+
+								lbxContentContainer.DataContext = group.Contents;
+								lblContentLocation.DataContext = group;
+								SetContentTypeCount(group);
+								ShowToolBarButtons(true);
+
+								jumpToDeviceTimer.Stop();
+							}
+						}
+					}
+				}
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("Unable to jump to " + jumpToDevice.device_name, err);
+			}
+		}
+
+
 
 		private void btnCopyShareLink_Click(object sender, RoutedEventArgs e)
 		{
@@ -934,11 +1009,7 @@ namespace Waveface.Client
 
 		private void btnAddNewSource_Click(object sender, MouseButtonEventArgs e)
 		{
-			WaitForPairingDialog _waitForPairingDialog = new WaitForPairingDialog
-															 {
-																 Owner = this
-															 };
-			_waitForPairingDialog.ShowDialog();
+			showWaitForPairingDialog();
 		}
 
 		private Point startPoint;
@@ -1473,22 +1544,22 @@ namespace Waveface.Client
 		{
 			if (lbxDeviceContainer.Items.Count > 0)
 			{
-				var item = (TreeViewItem)lbxDeviceContainer.ItemContainerGenerator.ContainerFromIndex(0);
-				item.IsExpanded = true;
+				var devNode = (TreeViewItem)lbxDeviceContainer.ItemContainerGenerator.ContainerFromIndex(0);
+				devNode.IsExpanded = true;
 
-				if (item.Items.Count > 0)
+				if (devNode.Items.Count > 0)
 				{
 
-					var group = ((IContentGroup)item.Items[0]);
+					var group = ((IContentGroup)devNode.Items[0]);
 					lbxContentContainer.DataContext = group.Contents;
 					lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
 					lblContentLocation.DataContext = group;
 					SetContentTypeCount(group);
 					ShowToolBarButtons(true);
 
-					if (item.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+					if (devNode.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
 					{
-						var folder = (TreeViewItem)item.ItemContainerGenerator.ContainerFromIndex(0);
+						var folder = (TreeViewItem)devNode.ItemContainerGenerator.ContainerFromIndex(0);
 						folder.IsSelected = true;
 					}
 					else
@@ -1497,16 +1568,16 @@ namespace Waveface.Client
 
 						eh = new EventHandler(delegate
 						{
-							if (item.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+							if (devNode.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
 							{
-								var folder = (TreeViewItem)item.ItemContainerGenerator.ContainerFromIndex(0);
+								var folder = (TreeViewItem)devNode.ItemContainerGenerator.ContainerFromIndex(0);
 								folder.IsSelected = true;
 
-								item.ItemContainerGenerator.StatusChanged -= eh;
+								devNode.ItemContainerGenerator.StatusChanged -= eh;
 							}
 						});
 
-						item.ItemContainerGenerator.StatusChanged += eh;
+						devNode.ItemContainerGenerator.StatusChanged += eh;
 					}
 
 				}

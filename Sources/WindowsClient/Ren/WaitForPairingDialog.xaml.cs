@@ -27,13 +27,15 @@ namespace Waveface.Client
 		private BackgroundWorker m_bgworker = new BackgroundWorker();
 
 		private Dictionary<string, ConfirmSyncDialog> pairingSources = new Dictionary<string, ConfirmSyncDialog>();
-
 		private int openConfirmDialogCount = 0;
+
+		public List<pairing_request> PairedDevices { get; set; }
 
 
 		public WaitForPairingDialog()
 		{
 			InitializeComponent();
+			PairedDevices = new List<pairing_request>();
 		}
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -135,6 +137,8 @@ namespace Waveface.Client
 			if (dialog.SyncNow)
 			{
 				WS_accept(dialog.PairingRequest.device_id, true, dialog.SyncAll ? int.MaxValue : 150);
+
+				PairedDevices.Add(dialog.PairingRequest);
 			}
 			else
 			{
