@@ -20,6 +20,8 @@ namespace InfiniteStorage
 {
 	public class StationServer
 	{
+		public const string DATA_KEY_PROGRESS_DIALOG = "progressDialog";
+
 		private NotifyIcon m_notifyIcon;
 		private NotifyIconController m_notifyIconController;
 		private Timer m_NotifyTimer;
@@ -53,7 +55,11 @@ namespace InfiniteStorage
 
 			// ----- auto label ------
 			m_autoLabel = new AutoLabelController();
-			InfiniteStorageWebSocketService.FileReceived += ProgressTooltip.Instance.OnFileEnding;
+			//InfiniteStorageWebSocketService.FileReceived += ProgressTooltip.Instance.OnFileEnding;
+			InfiniteStorageWebSocketService.DeviceDisconnected += InfiniteStorageWebSocketService_DeviceDisconnected;
+			InfiniteStorageWebSocketService.FileReceiving += InfiniteStorageWebSocketService_FileReceiving;
+			InfiniteStorageWebSocketService.FileProgress += InfiniteStorageWebSocketService_FileProgress;
+			InfiniteStorageWebSocketService.FileReceived += InfiniteStorageWebSocketService_FileReceived;
 			InfiniteStorageWebSocketService.FileReceived += m_autoLabel.FileReceived;
 
 			// ----- pair -----
@@ -127,6 +133,121 @@ namespace InfiniteStorage
 			cameraImport.ImportService = new Camera.ImportService();
 			
 		}
+
+		void InfiniteStorageWebSocketService_DeviceDisconnected(object sender, WebsocketProtocol.WebsocketEventArgs e)
+		{
+			SynchronizationContextHelper.SendMainSyncContext(() =>
+			{
+				try
+				{
+					if (!e.ctx.ContainsData(DATA_KEY_PROGRESS_DIALOG))
+						return;
+
+					var dialog = (ProgressTooltip)e.ctx.GetData(DATA_KEY_PROGRESS_DIALOG);
+					dialog.UpdateComplete((int)e.ctx.backup_count);
+					dialog.Show();
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn("Update progress ui error", err);
+				}
+			});
+		}
+
+		void InfiniteStorageWebSocketService_FileReceiving(object sender, WebsocketProtocol.WebsocketEventArgs e)
+		{
+			SynchronizationContextHelper.SendMainSyncContext(() =>
+			{
+				try
+				{
+					ProgressTooltip dialog = null;
+					bool justCreated = false;
+
+					if (e.ctx.ContainsData(DATA_KEY_PROGRESS_DIALOG))
+					{
+						dialog = (ProgressTooltip)e.ctx.GetData(DATA_KEY_PROGRESS_DIALOG);
+					}
+					else
+					{
+						dialog = new ProgressTooltip(e.ctx.device_name);
+						e.ctx.SetData(DATA_KEY_PROGRESS_DIALOG, dialog);
+						justCreated = true;
+					}
+
+					if (e.ctx.fileCtx == null)
+						return; // duplicated file
+
+					var percentage = e.ctx.temp_file.BytesWritten * 100 / e.ctx.fileCtx.file_size;
+					dialog.UpdateProgress((int)e.ctx.backup_count + 1, (int)e.ctx.total_count, (int)percentage);
+
+					if (justCreated)
+						dialog.Show();
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn("Update progress ui error", err);
+				}
+			});
+		}
+
+		void InfiniteStorageWebSocketService_FileProgress(object sender, WebsocketProtocol.WebsocketEventArgs e)
+		{
+			SynchronizationContextHelper.SendMainSyncContext(() =>
+			{
+				try
+				{
+					ProgressTooltip dialog = (ProgressTooltip)e.ctx.GetData(DATA_KEY_PROGRESS_DIALOG);
+					
+					var percentage = e.ctx.temp_file.BytesWritten * 100 / e.ctx.fileCtx.file_size;
+					dialog.UpdateProgress((int)e.ctx.backup_count + 1, (int)e.ctx.total_count, (int)percentage);
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn("Update progress ui error", err);
+				}
+			});
+		}
+
+		void InfiniteStorageWebSocketService_FileReceived(object sender, WebsocketProtocol.WebsocketEventArgs e)
+		{
+			SynchronizationContextHelper.SendMainSyncContext(() =>
+			{
+				try
+				{
+					InfiniteStorage.Model.FileAsset file;
+
+					using (var db = new InfiniteStorage.Model.MyDbContext())
+					{
+						var q = from f in db.Object.Files
+								where f.file_id == e.ctx.fileCtx.file_id
+								select f;
+
+						file = q.FirstOrDefault();
+					}
+
+					if (file == null)
+						return;
+
+					var file_path = Path.Combine(MyFileFolder.Photo, file.saved_path);
+
+					ProgressTooltip dialog = (ProgressTooltip)e.ctx.GetData(DATA_KEY_PROGRESS_DIALOG);
+					if (file.type == (int)InfiniteStorage.Model.FileAssetType.image)
+						dialog.UpdateImage(file_path);
+					else
+						dialog.UpdateImageToVideoIcon();
+
+
+					if (e.ctx.backup_count + 1 >= e.ctx.total_count)
+						dialog.UpdateComplete((int)e.ctx.total_count);
+
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn("Update progress ui error", err);
+				}
+			});
+		}
+
 
 		void InfiniteStorageWebSocketService_ThumbnailReceived(object sender, WebsocketProtocol.ThumbnailReceivedEventArgs e)
 		{

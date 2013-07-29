@@ -80,6 +80,9 @@ namespace InfiniteStorage.Camera
 		public string device_id { get; set; }
 		public string device_folder { get; set; }
 
+		private int recved_count { get; set; }
+		private ProgressTooltip progress;
+
 		private DefaultFolderFileStorage storage = new DefaultFolderFileStorage();
 
 
@@ -141,8 +144,12 @@ namespace InfiniteStorage.Camera
 			var util = new TransmitUtility();
 			util.SaveFileRecord(fileAsset);
 
-
-			ProgressTooltip.Instance.ShowFile(fileAsset.file_id, fileAsset.file_name, (FileAssetType)fileAsset.type, device_folder, device_id);
+			recved_count++;
+			progress.UpdateProgress(recved_count, recved_count, 100);
+			if (type == readCamera.FileType.Image)
+				progress.UpdateImage(full_path);
+			else
+				progress.UpdateImageToVideoIcon();
 		}
 
 		public string TempFolder
@@ -156,7 +163,7 @@ namespace InfiniteStorage.Camera
 		public void Connecting()
 		{
 			SynchronizationContextHelper.SendMainSyncContext(() => {
-				ProgressTooltip.Instance.ShowWaitingDevice(device_folder);
+				progress = new ProgressTooltip(device_folder);
 			});
 
 			ImportingCameraCollection.Add(device_id);
@@ -168,7 +175,7 @@ namespace InfiniteStorage.Camera
 
 		public void Completed()
 		{
-			ProgressTooltip.Instance.ShowCompleted(device_folder);
+			progress.UpdateComplete(recved_count);
 
 			ImportingCameraCollection.Remove(device_id);
 		}

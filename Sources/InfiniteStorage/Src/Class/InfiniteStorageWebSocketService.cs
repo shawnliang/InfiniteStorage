@@ -18,6 +18,7 @@ namespace InfiniteStorage
 		public static event EventHandler<WebsocketEventArgs> PairingRequesting;
 		public static event EventHandler<WebsocketEventArgs> TotalCountUpdated;
 		public static event EventHandler<WebsocketEventArgs> FileReceiving;
+		public static event EventHandler<WebsocketEventArgs> FileProgress;
 		public static event EventHandler<WebsocketEventArgs> FileEnding;
 		public static event EventHandler<WebsocketEventArgs> FileReceived;
 		public static event EventHandler<ThumbnailReceivedEventArgs> ThumbnailReceived;
@@ -44,6 +45,7 @@ namespace InfiniteStorage
 			ctx.OnPairingRequired += PairingRequesting;
 			ctx.OnTotalCountUpdated += TotalCountUpdated;
 			ctx.OnFileReceiving += FileReceiving;
+			ctx.OnFileProgress += FileProgress;
 			ctx.OnFileReceived += FileReceived;
 			ctx.OnFileEnding += FileEnding;
 			ctx.OnThumbnailReceived += ThumbnailReceived;

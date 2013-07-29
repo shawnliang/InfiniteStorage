@@ -17,6 +17,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			ctx.temp_file.Write(data);
 			log4net.LogManager.GetLogger("wsproto").DebugFormat("file content of {0}: {1} bytes", ctx.fileCtx.file_name, data.Length);
+			ctx.raiseOnFileProgress();
 		}
 
 		public override void handleFileEndCmd(ProtocolContext ctx, TextCommand cmd)

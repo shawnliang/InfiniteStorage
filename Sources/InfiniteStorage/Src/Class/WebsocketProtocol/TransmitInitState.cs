@@ -62,8 +62,8 @@ namespace InfiniteStorage.WebsocketProtocol
 			else
 			{
 				ctx.fileCtx = fileCtx;
-				ctx.raiseOnFileReceiving();
 				ctx.temp_file = ctx.factory.CreateTempFile();
+				ctx.raiseOnFileReceiving();
 				ctx.Send(new TextCommand { action = "file-go", file_name = cmd.file_name });
 				ctx.SetState(new TransmitStartedState());
 			}

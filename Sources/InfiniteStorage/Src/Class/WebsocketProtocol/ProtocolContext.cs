@@ -36,6 +36,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		public event EventHandler<WebsocketEventArgs> OnPairingRequired;
 		public event EventHandler<WebsocketEventArgs> OnTotalCountUpdated;
 		public event EventHandler<WebsocketEventArgs> OnFileReceiving;
+		public event EventHandler<WebsocketEventArgs> OnFileProgress;
 		public event EventHandler<WebsocketEventArgs> OnFileEnding;
 		public event EventHandler<WebsocketEventArgs> OnFileReceived;
 		public event EventHandler<ThumbnailReceivedEventArgs> OnThumbnailReceived;
@@ -144,7 +145,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			}
 		}
 
-		internal void raiseOnFileReceived()
+		public void raiseOnFileReceived()
 		{
 			var handler = OnFileReceived;
 			if (handler != null)
@@ -173,6 +174,13 @@ namespace InfiniteStorage.WebsocketProtocol
 			if (handler != null)
 				handler(this, new WebsocketEventArgs(this));
 
+		}
+
+		public void raiseOnFileProgress()
+		{
+			var handler = OnFileProgress;
+			if (handler != null)
+				handler(this, new WebsocketEventArgs(this));
 		}
 
 		public void Send(object data)
