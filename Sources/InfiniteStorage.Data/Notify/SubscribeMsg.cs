@@ -23,5 +23,7 @@ namespace InfiniteStorage.Data.Notify
 		public bool labels { get; set; }
 		public long? labels_from_seq { get; set; }
 		public bool devices { get; set; }
+
+		public bool ui_change { get; set; }
 	}
 }

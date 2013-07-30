@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 using System.Threading;
+using InfiniteStorage.Data.Notify;
 
 namespace Waveface.ClientFramework
 {
@@ -17,6 +18,7 @@ namespace Waveface.ClientFramework
 	{
 		#region Static Var
 		private static BunnyServiceSupplier _default;
+		private SynchronizationContext syncContext;
 		#endregion
 
 
@@ -51,25 +53,7 @@ namespace Waveface.ClientFramework
 		private BunnyServiceSupplier()
 		{
 			InitServices();
-			var syncContext = SynchronizationContext.Current;
-			Observable.Interval(TimeSpan.FromMilliseconds(5000)).Subscribe((times) => 
-			{
-				var services = GetServices();
-
-				var newServices = services.Except(this.Services);
-				var expiredServices = this.Services.Except(services).ToArray();
-
-				if (!newServices.Any() && !expiredServices.Any())
-					return;
-
-				syncContext.Post((o) =>
-				{
-					this.Services.AddRange(newServices);
-
-					foreach (var expiredService in expiredServices)
-						this.Services.Remove(expiredService);
-				}, null);
-			});
+			syncContext = SynchronizationContext.Current;
 		}
 		#endregion
 
@@ -156,22 +140,17 @@ namespace Waveface.ClientFramework
 				return;
 
 			try{
-				var notify = JsonConvert.DeserializeObject<NotifyMsg>(e.Data);
-				var active_devices = notify.active_devices;
+				var notify = JsonConvert.DeserializeObject<NotificationMsg>(e.Data);
 
-				var services = Services;
+				if (notify.active_devices != null)
+				{
+					updateServiceReceivingStatus(notify);
+				}
 
-				var actives = from s in services
-							  where active_devices.Contains(s.ID)
-							  select s;
-
-				foreach (BunnyService s in actives)
-					s.IsRecving = true;
-
-				var inactives = services.Except(actives);
-
-				foreach (BunnyService s in inactives)
-					s.IsRecving = false;
+				if (!string.IsNullOrEmpty(notify.NewDevice))
+				{
+					addNewDeviceToContents(notify.NewDevice);
+				}
 			}
 			catch(Exception err)
 			{
@@ -179,16 +158,60 @@ namespace Waveface.ClientFramework
 			}
 		}
 
+		private void addNewDeviceToContents(string device_id)
+		{
+			var q = from s in Services
+				where s.ID == device_id
+				select 1;
+
+			if (q.Any())
+				return;
+
+			
+			using (var conn = BunnyDB.CreateConnection())
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "select folder_name from [devices] where device_id = @dev";
+					cmd.Parameters.Add(new SQLiteParameter("@dev", device_id));
+					var dev_folder = cmd.ExecuteScalar().ToString();
+
+					if (dev_folder != null)
+					{
+						var service = new BunnyService(this, dev_folder.ToString(), device_id);
+
+						syncContext.Post((dummy) => {
+							Services.Add(service);
+						}, null);
+					}
+				}
+			}
+		}
+
+		private void updateServiceReceivingStatus(NotificationMsg notify)
+		{
+			var active_devices = notify.active_devices;
+
+			var services = Services;
+
+			var actives = from s in services
+						  where active_devices.Contains(s.ID)
+						  select s;
+
+			foreach (BunnyService s in actives)
+				s.IsRecving = true;
+
+			var inactives = services.Except(actives);
+
+			foreach (BunnyService s in inactives)
+				s.IsRecving = false;
+		}
+
 		void ws_OnClose(object sender, CloseEventArgs e)
 		{
 			subscribeActiveDeviceAsync();
 		}
 		#endregion
-	}
-
-
-	internal class NotifyMsg
-	{
-		public List<string> active_devices { get; set; }
 	}
 }

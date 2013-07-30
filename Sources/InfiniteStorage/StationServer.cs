@@ -41,6 +41,8 @@ namespace InfiniteStorage
 		private object waitItemsCS = new object();
 		private List<WebsocketProtocol.ProtocolContext> waitForApprovalItems = new List<WebsocketProtocol.ProtocolContext>();
 
+		private UIChangeNotificationController m_uiChangeNotifyController = new UIChangeNotificationController();
+
 		public StationServer()
 		{
 			// ----- notify icon and controller -----
@@ -55,7 +57,6 @@ namespace InfiniteStorage
 
 			// ----- auto label ------
 			m_autoLabel = new AutoLabelController();
-			//InfiniteStorageWebSocketService.FileReceived += ProgressTooltip.Instance.OnFileEnding;
 			InfiniteStorageWebSocketService.DeviceDisconnected += InfiniteStorageWebSocketService_DeviceDisconnected;
 			InfiniteStorageWebSocketService.FileReceiving += InfiniteStorageWebSocketService_FileReceiving;
 			InfiniteStorageWebSocketService.FileProgress += InfiniteStorageWebSocketService_FileProgress;
@@ -78,8 +79,9 @@ namespace InfiniteStorage
 			m_notifier = new Notifier();
 			NotifyWebSocketService.Subscribing += m_notifier.OnSubscribing;
 			NotifyWebSocketService.Disconnected += m_notifier.OnChannelDisconnected;
-
-
+			NotifyWebSocketService.Subscribing += m_uiChangeNotifyController.OnSubscribingUIChanges;
+			NotifyWebSocketService.Disconnected += m_uiChangeNotifyController.OnEndingSubscription;
+			InfiniteStorageWebSocketService.DeviceAccepted += m_uiChangeNotifyController.OnNewDevice;
 
 			// ----- rest server -----
 			rest_server = new HttpServer(14005);

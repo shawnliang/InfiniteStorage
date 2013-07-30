@@ -90,27 +90,7 @@ namespace Waveface.ClientFramework
 			{
 				if (IsRecving)
 				{
-					base.Refresh();
-
-					//var unsorteds = Contents.Where(x => x.Name == "Unsorted").ToList();
-					//if (unsorteds.Any())
-					//{
-					//	foreach (BunnyContentGroup unsorted in unsorteds)
-					//	{
-					//		unsorted.Refresh();
-					//	}
-					//}
-					//else
-					//{
-					//	ObservableCollection<IContentEntity> newContents = new ObservableCollection<IContentEntity>();
-					//	PopulateContent(newContents);
-
-					//	if (newContents.Where(x => x.Name == "Unsorted").Any())
-					//	{
-					//		base.Refresh();
-					//	}
-
-					//}
+					//base.Refresh();
 				}
 			}
 			catch

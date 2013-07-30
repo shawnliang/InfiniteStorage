@@ -95,6 +95,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Src\Class\ByMonthFileStorage.cs" />
+    <Compile Include="Src\Class\Notify\UIChangeNotificationController.cs" />
+    <Compile Include="Src\Class\Notify\UIChangeSubscriber.cs" />
     <Compile Include="Src\Class\REST\PairingPasscodeApiHandler.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ThumbnailReceivedEventArgs.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ThumbnailStartedState.cs" />

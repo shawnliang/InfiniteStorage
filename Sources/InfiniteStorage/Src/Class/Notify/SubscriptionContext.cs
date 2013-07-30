@@ -12,6 +12,7 @@ namespace InfiniteStorage.Notify
 		public bool subscribe_files { get; set; }
 		public bool subscribe_labels { get; set; }
 		public bool subscribe_devices { get; set; }
+		public bool subscribe_ui_changes { get; set; }
 
 		public SubscriptionContext(string dev_id, string dev_name, WebSocketSharp.Server.WebSocketService svc = null)
 		{

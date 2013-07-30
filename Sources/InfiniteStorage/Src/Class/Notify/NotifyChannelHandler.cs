@@ -50,13 +50,18 @@ namespace InfiniteStorage.Notify
 
 			if (subsribe.labels)
 			{
-				Ctx.subscribe_labels = subsribe.labels;
+				Ctx.subscribe_labels = true;
 				Ctx.labels_from_seq = subsribe.labels_from_seq.HasValue ? subsribe.labels_from_seq.Value : 0;
 			}
 
 			if (subsribe.devices)
 			{
 				Ctx.subscribe_devices = subsribe.devices;
+			}
+
+			if (subsribe.ui_change)
+			{
+				Ctx.subscribe_ui_changes = true;
 			}
 
 			raiseSubscribingEvent(svc, Ctx);
