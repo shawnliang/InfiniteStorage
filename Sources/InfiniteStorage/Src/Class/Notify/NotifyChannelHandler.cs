@@ -2,6 +2,8 @@
 using System;
 using WebSocketSharp;
 using WebSocketSharp.Server;
+using Newtonsoft.Json;
+using InfiniteStorage.Data.Notify;
 
 namespace InfiniteStorage.Notify
 {
@@ -23,38 +25,38 @@ namespace InfiniteStorage.Notify
 
 		public void HandleMessage(WebSocketService svc, MessageEventArgs args)
 		{
-			var msg = JObject.Parse(args.Data);
+			var msg = JsonConvert.DeserializeObject<SubscribeMsg>(args.Data);
 
 			if (Ctx != null)
 				throw new WebsocketProtocol.ProtocolErrorException("already connected");
 
-			if (msg[PROPERTY_CONNECT] == null)
+			if (msg.connect == null)
 				throw new WebsocketProtocol.ProtocolErrorException("connect is expected");
 
-			if (msg[PROPERTY_SUBSCRIBE] == null)
+			if (msg.subscribe == null)
 				throw new WebsocketProtocol.ProtocolErrorException("subscribe is expected");
 
 			Ctx = new SubscriptionContext(
-				msg[PROPERTY_CONNECT][PROPERTY_DEVICE_ID].Value<string>(),
-				msg[PROPERTY_CONNECT][PROPERTY_DEVICE_NAME].Value<string>(),
+				msg.connect.device_id,
+				msg.connect.device_name,
 				svc);
 
-			var subsribe = msg[PROPERTY_SUBSCRIBE];
-			if (subsribe[PROPERTY_FILES_FROM_SEQ] != null)
+			var subsribe = msg.subscribe;
+			if (subsribe.files_from_seq.HasValue)
 			{
 				Ctx.subscribe_files = true;
-				Ctx.files_from_seq = subsribe[PROPERTY_FILES_FROM_SEQ].Value<long>();
+				Ctx.files_from_seq = subsribe.files_from_seq.Value;
 			}
 
-			if (subsribe[PROPERTY_LABELS] != null)
+			if (subsribe.labels)
 			{
-				Ctx.subscribe_labels = subsribe[PROPERTY_LABELS].Value<bool>();
-				Ctx.labels_from_seq = (subsribe[PROPERTY_LABELS_FROM_SEQ] != null) ? subsribe[PROPERTY_LABELS_FROM_SEQ].Value<long>() : 0;
+				Ctx.subscribe_labels = subsribe.labels;
+				Ctx.labels_from_seq = subsribe.labels_from_seq.HasValue ? subsribe.labels_from_seq.Value : 0;
 			}
 
-			if (subsribe[PROPERTY_DEVICES] != null)
+			if (subsribe.devices)
 			{
-				Ctx.subscribe_devices = subsribe[PROPERTY_DEVICES].Value<bool>();
+				Ctx.subscribe_devices = subsribe.devices;
 			}
 
 			raiseSubscribingEvent(svc, Ctx);

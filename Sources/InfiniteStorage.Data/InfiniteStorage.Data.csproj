@@ -44,6 +44,7 @@
     <Compile Include="MessageEventArgs.cs" />
     <Compile Include="MessageReceiver.cs" />
     <Compile Include="NativeMethod.cs" />
+    <Compile Include="Notify\SubscribeMsg.cs" />
     <Compile Include="Pairing\PairingMsgs.cs" />
     <Compile Include="ProgramConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
