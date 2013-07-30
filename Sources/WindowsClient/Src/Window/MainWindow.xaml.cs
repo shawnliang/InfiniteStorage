@@ -552,10 +552,10 @@ namespace Waveface.Client
 
 								var group = (IContentGroup)devNode.Items[0];
 
+								ShowToolBarButtons(true);
 								lbxContentContainer.DataContext = group.Contents;
 								lblContentLocation.DataContext = group;
 								SetContentTypeCount(group);
-								ShowToolBarButtons(true);
 
 								jumpToDeviceTimer.Stop();
 							}
@@ -790,18 +790,24 @@ namespace Waveface.Client
 
 		private void lbxFavorites_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			ShowSelectedFavoriteContents(sender, false);
+			if (lbxFavorites.SelectedIndex >= 0)
+			{
+				ShowSelectedFavoriteContents(sender, false);
 
-			lbxRecent.SelectedItem = null;
-			ShowToolBarButtons(false);
+				lbxRecent.SelectedItem = null;
+				ShowToolBarButtons(false);
+			}
 		}
 
 		private void lbxRecent_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			ShowSelectedFavoriteContents(sender, true);
+			if (lbxRecent.SelectedIndex >= 0)
+			{
+				ShowSelectedFavoriteContents(sender, true);
 
-			lbxFavorites.SelectedItem = null;
-			ShowToolBarButtons(true);
+				lbxFavorites.SelectedItem = null;
+				ShowToolBarButtons(true);
+			}
 		}
 
 		private void ShowSelectedFavoriteContents(object sender, bool isRecent)
