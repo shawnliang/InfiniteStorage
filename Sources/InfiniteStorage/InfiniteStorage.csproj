@@ -208,10 +208,6 @@
     </Compile>
     <Compile Include="Src\Class\ProgramIPC.cs" />
     <Compile Include="Src\Class\Common\CopyDataStruct.cs" />
-    <Compile Include="Src\Class\Common\MessageEventArgs.cs" />
-    <Compile Include="Src\Class\Common\MessageReceiver.cs" />
-    <Compile Include="Src\Class\Common\NativeMethod.cs" />
-    <Compile Include="Src\Class\Common\WNDCLASS.cs" />
     <Compile Include="Src\UIControl\HomeSharingControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

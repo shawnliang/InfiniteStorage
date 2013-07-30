@@ -503,26 +503,29 @@ namespace Waveface.Client
 
 			if (dialog.PairedDevices.Any())
 			{
-				var jumpToDevice = dialog.PairedDevices.LastOrDefault();
-
-
-				if (jumpToDeviceTimer != null)
-				{
-					jumpToDeviceTimer.Stop();
-				}
-
-				jumpToDeviceTimer = new DispatcherTimer();
-				jumpToDeviceTimer.Interval = TimeSpan.FromMilliseconds(500);
-				jumpToDeviceTimer.Tick += (s, e) =>
-				{
-					Timer_JumpToDevice(jumpToDevice);
-					return;
-				};
-				jumpToDeviceTimer.Start();
+				var device_id = dialog.PairedDevices.LastOrDefault().device_id;
+				JumpToDevice(device_id);
 			}
 		}
 
-		private void Timer_JumpToDevice(InfiniteStorage.Data.Pairing.pairing_request jumpToDevice)
+		public void JumpToDevice(string device_id)
+		{
+			if (jumpToDeviceTimer != null)
+			{
+				jumpToDeviceTimer.Stop();
+			}
+
+			jumpToDeviceTimer = new DispatcherTimer();
+			jumpToDeviceTimer.Interval = TimeSpan.FromMilliseconds(500);
+			jumpToDeviceTimer.Tick += (s, e) =>
+			{
+				Timer_JumpToDevice(device_id);
+				return;
+			};
+			jumpToDeviceTimer.Start();
+		}
+
+		private void Timer_JumpToDevice(string device_id)
 		{
 			try
 			{
@@ -532,7 +535,7 @@ namespace Waveface.Client
 
 				foreach (IService dev in sourceTree.Items)
 				{
-					if (dev.ID.Equals(jumpToDevice.device_id, StringComparison.InvariantCultureIgnoreCase))
+					if (dev.ID.Equals(device_id, StringComparison.InvariantCultureIgnoreCase))
 					{
 						var devNode = (TreeViewItem)sourceTree.ItemContainerGenerator.ContainerFromItem(dev);
 
@@ -562,7 +565,7 @@ namespace Waveface.Client
 			}
 			catch (Exception err)
 			{
-				log4net.LogManager.GetLogger(GetType()).Warn("Unable to jump to " + jumpToDevice.device_name, err);
+				log4net.LogManager.GetLogger(GetType()).Warn("Unable to jump to " + device_id, err);
 			}
 		}
 

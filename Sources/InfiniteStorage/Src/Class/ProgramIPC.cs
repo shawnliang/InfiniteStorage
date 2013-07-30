@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace InfiniteStorage
 {
@@ -57,7 +58,21 @@ namespace InfiniteStorage
 				else
 					throw new Exception("Unable to find msg target");
 			}
-
 		}
+
+		public static int SendStringMsg(IntPtr hWnd, int wParam, string msg, int code)
+		{
+			byte[] sarr = System.Text.Encoding.Default.GetBytes(msg);
+
+			NativeMethods.COPYDATASTRUCT cds;
+			cds.dwData = (IntPtr)code;
+			cds.lpData = msg;
+			cds.cbData = sarr.Length + 1;
+
+			var result = NativeMethods.SendMessage(hWnd, NativeMethods.WM_COPYDATA, wParam, ref cds);
+
+			return result;
+		}
+
 	}
 }

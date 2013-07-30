@@ -136,7 +136,7 @@ namespace Waveface.Client
 
 			if (dialog.SyncNow)
 			{
-				WS_accept(dialog.PairingRequest.device_id, true, dialog.SyncAll ? int.MaxValue : 150);
+				WS_accept(dialog.PairingRequest.device_id, true, dialog.SyncAll ? int.MaxValue : 30);
 
 				PairedDevices.Add(dialog.PairingRequest);
 			}
