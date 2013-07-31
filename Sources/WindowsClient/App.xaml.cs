@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using InfiniteStorage.Data;
 using Microsoft.Win32;
+using Waveface.Client.Properties;
 
 #endregion
 
@@ -56,6 +57,14 @@ namespace Waveface.Client
 			m_wndMsgRecver = new InfiniteStorage.Win32.MessageReceiver(IPCData.UI_CLASS_NAME, null);
 			m_wndMsgRecver.AllowMessage((uint)NativeMethods.WM_COPYDATA);
 			m_wndMsgRecver.WndProc += m_wndMsgRecver_WndProc;
+
+			if (!Settings.Default.IsUpgraded)
+			{
+				Settings.Default.Upgrade();
+				Settings.Default.IsFirstUse = true;
+				Settings.Default.Save();
+			}
+
 		}
 
 		void m_wndMsgRecver_WndProc(object sender, InfiniteStorage.Win32.MessageEventArgs e)
