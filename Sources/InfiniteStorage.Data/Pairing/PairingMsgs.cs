@@ -32,7 +32,6 @@ namespace InfiniteStorage.Data.Pairing
 	public class accept_reject
 	{
 		public string device_id { get; set; }
-		public bool sync_old { get; set; }
 		public int latest_x_items { get; set; }
 	}
 

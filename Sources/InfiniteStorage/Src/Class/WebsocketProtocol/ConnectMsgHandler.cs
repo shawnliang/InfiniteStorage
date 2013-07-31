@@ -42,11 +42,11 @@ namespace InfiniteStorage.WebsocketProtocol
 			else
 			{
 				ctx.device_folder_name = clientInfo.folder_name;
-				ReplyAcceptMsgToDevice(ctx, clientInfo);
+				ReplyAcceptMsgToDevice(ctx, clientInfo, clientInfo.sync_init_count.HasValue ? (int)clientInfo.sync_init_count.Value : int.MaxValue);
 			}
 		}
 
-		public void ReplyAcceptMsgToDevice(ProtocolContext ctx, Device clientInfo, bool syncOld = true, int latest_x_items = int.MaxValue)
+		public void ReplyAcceptMsgToDevice(ProtocolContext ctx, Device clientInfo, int latest_x_items = int.MaxValue)
 		{
 			var summary = Util.GetDeviceSummary(clientInfo.device_id);
 
@@ -65,7 +65,7 @@ namespace InfiniteStorage.WebsocketProtocol
 				video_count = (summary != null) ? (long?)summary.video_count : null,
 				audio_count = (summary != null) ? (long?)summary.audio_count : null,
 
-				sync_all = !syncOld,
+				sync_all = (latest_x_items == int.MaxValue),
 				sync_init_counts = latest_x_items,
 			};
 

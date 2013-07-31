@@ -19,6 +19,8 @@ namespace InfiniteStorage.Model
 
 		public bool deleted { get; set; }
 
+		public long? sync_init_count { get; set; }
+
 		public virtual IEnumerable<FileAsset> files { get; set; }
 	}
 

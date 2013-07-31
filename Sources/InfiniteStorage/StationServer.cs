@@ -15,6 +15,7 @@ using Microsoft.Win32;
 using InfiniteStorage.Share;
 using InfiniteStorage.Data;
 using InfiniteStorage.Win32;
+using InfiniteStorage.Model;
 
 namespace InfiniteStorage
 {
@@ -339,7 +340,7 @@ namespace InfiniteStorage
 			{
 				try
 				{
-					item.handleApprove(e.syncOld, e.latest_x_items);
+					item.handleApprove(e.latest_x_items);
 				}
 				catch (Exception err)
 				{

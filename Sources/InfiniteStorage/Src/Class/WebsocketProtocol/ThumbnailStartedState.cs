@@ -25,10 +25,10 @@ namespace InfiniteStorage.WebsocketProtocol
 			ctx.SetState(new WaitForApproveState());
 		}
 
-		public override void handleApprove(ProtocolContext ctx, bool syncOld, int latest_x_items)
+		public override void handleApprove(ProtocolContext ctx, int latest_x_items)
 		{
 			var impl = new WaitForApproveState();
-			impl.handleApprove(ctx, syncOld, latest_x_items);
+			impl.handleApprove(ctx, latest_x_items);
 		}
 	}
 }

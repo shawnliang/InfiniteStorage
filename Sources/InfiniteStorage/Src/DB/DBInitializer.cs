@@ -426,10 +426,23 @@ UPDATE [Devices] SET deleted = 0;
 					schemaVersion = 13;
 				}
 
+				if (schemaVersion == 13)
+				{
+					using (var cmd = conn.CreateCommand())
+					{
+						cmd.CommandText = @"
+ALTER TABLE [Devices] Add Column [sync_init_count] BOOLEAN NULL;
+";
+						cmd.ExecuteNonQuery();
+					}
+
+					updateDbSchemaVersion(conn, 14);
+					schemaVersion = 14;
+				}
 
 				var curSchema = getDbSchemaVersion(conn);
 
-				if (curSchema > 13L)
+				if (curSchema > 14L)
 					throw new DBDowngradeException(string.Format("Existing db version {0} is newer than the installed version", curSchema));
 			}
 		}
