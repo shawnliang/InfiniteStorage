@@ -1,45 +1,45 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Windows.Controls;
+
+#endregion
 
 namespace Waveface.Client
 {
-	/// <summary>
-	/// Interaction logic for ContentItem.xaml
-	/// </summary>
 	public partial class ContentItem : UserControl
 	{
 		#region Property
+
 		public bool Tagged
 		{
-			get
-			{
-				return ltTag.Tagged;
-			}
-			set
-			{
-				ltTag.Tagged = value;
-			}
+			get { return ltTag.Tagged; }
+			set { ltTag.Tagged = value; }
 		}
-		#endregion
 
+		#endregion
 
 		#region Event
+
 		public event EventHandler TagStatusChanging;
 		public event EventHandler TagStatusChanged;
-		#endregion
 
+		#endregion
 
 		#region Constructor
+
 		public ContentItem()
 		{
-			this.InitializeComponent();
-			this.ltTag.TagStatusChanging += ltTag_TagStatusChanging;
-			this.ltTag.TagStatusChanged += ltTag_TagStatusChanged;
+			InitializeComponent();
+
+			ltTag.TagStatusChanging += ltTag_TagStatusChanging;
+			ltTag.TagStatusChanged += ltTag_TagStatusChanged;
 		}
+
 		#endregion
 
-
 		#region Protected Method
+
 		/// <summary>
 		/// Raises the <see cref="E:TagStatusChanging" /> event.
 		/// </summary>
@@ -48,6 +48,7 @@ namespace Waveface.Client
 		{
 			if (TagStatusChanging == null)
 				return;
+
 			TagStatusChanging(this, e);
 		}
 
@@ -59,22 +60,24 @@ namespace Waveface.Client
 		{
 			if (TagStatusChanged == null)
 				return;
+
 			TagStatusChanged(this, e);
 		}
+
 		#endregion
 
-
-
 		#region Event Process
-		void ltTag_TagStatusChanged(object sender, EventArgs e)
+
+		private void ltTag_TagStatusChanged(object sender, EventArgs e)
 		{
 			OnTagStatusChanged(EventArgs.Empty);
 		}
 
-		void ltTag_TagStatusChanging(object sender, EventArgs e)
+		private void ltTag_TagStatusChanging(object sender, EventArgs e)
 		{
 			OnTagStatusChanging(EventArgs.Empty);
 		}
+
 		#endregion
 	}
 }

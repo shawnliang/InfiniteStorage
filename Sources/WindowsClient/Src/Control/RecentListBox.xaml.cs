@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using Waveface.ClientFramework;
 using Waveface.Model;
 
@@ -84,7 +85,18 @@ namespace Waveface.Client
 
 		private void UserControl_DragOver(object sender, DragEventArgs e)
 		{
-			if (e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)))
+			bool _isItem0 = false;
+			ListBoxItem _listBoxItem = GetNearestContainer(e.OriginalSource as UIElement);
+
+			if(_listBoxItem != null)
+			{
+				if((Items[0]) == _listBoxItem.Content)
+				{
+					_isItem0 = true;
+				}
+			}
+
+			if (e.Data.GetDataPresent(typeof(IEnumerable<IContentEntity>)) && _isItem0)
 			{
 				e.Effects = DragDropEffects.Copy;
 			}
@@ -92,6 +104,19 @@ namespace Waveface.Client
 			{
 				e.Effects = DragDropEffects.None;
 			}
+		}
+
+		private ListBoxItem GetNearestContainer(UIElement element)
+		{
+			ListBoxItem _container = element as ListBoxItem;
+
+			while ((_container == null) && (element != null))
+			{
+				element = VisualTreeHelper.GetParent(element) as UIElement;
+				_container = element as ListBoxItem;
+			}
+
+			return _container;
 		}
 	}
 }

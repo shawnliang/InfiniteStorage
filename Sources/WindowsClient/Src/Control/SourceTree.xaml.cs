@@ -163,16 +163,10 @@ namespace Waveface.Client
 
 						DataObject _dragData = new DataObject();
 						_dragData.SetData(DataFormats.FileDrop, _files);
-						DragDrop.DoDragDrop(this, _dragData, DragDropEffects.Copy);
+						DragDrop.DoDragDrop(this, _dragData, DragDropEffects.Move);
 					}
 				}
 			}
-		}
-
-		private void UserControl_DragOver(object sender, DragEventArgs e)
-		{
-			e.Effects = DragDropEffects.None;
-			e.Handled = true;
 		}
 
 		private void miLocateOnDisk_Click(object sender, RoutedEventArgs e)

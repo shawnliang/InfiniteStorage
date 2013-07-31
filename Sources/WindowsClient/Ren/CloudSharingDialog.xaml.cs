@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,7 +15,9 @@ namespace Waveface.Client
 {
 	public partial class CloudSharingDialog : Window
 	{
-		private IEnumerable<IContentEntity> m_contentEntities;
+		private List<string> m_selectedEntitieIDs;
+		private List<IContentEntity> m_allEntities;
+
 		private string m_describeText;
 		private bool m_inited;
 		private int m_videosCount;
@@ -37,12 +40,24 @@ namespace Waveface.Client
 			}
 		}
 
-		public CloudSharingDialog(IEnumerable<IContentEntity> contentEntities, string describeText)
+		public CloudSharingDialog(IEnumerable<IContentEntity> allEntities, IEnumerable<IContentEntity> selectedEntities, string describeText)
 		{
-			m_contentEntities = contentEntities;
+			m_allEntities = allEntities.ToList();
 			m_describeText = describeText;
 
+			GetSelectedEntitieIDs(selectedEntities);
+
 			InitializeComponent();
+		}
+
+		private void GetSelectedEntitieIDs(IEnumerable<IContentEntity> selectedEntities)
+		{
+			m_selectedEntitieIDs = new List<string>();
+
+			foreach (IContentEntity _entity in selectedEntities)
+			{
+				m_selectedEntitieIDs.Add(_entity.ID);
+			}
 		}
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -63,7 +78,7 @@ namespace Waveface.Client
 		{
 			List<EventItem> _controls = new List<EventItem>();
 
-			foreach (BunnyContent _contentEntity in m_contentEntities)
+			foreach (BunnyContent _contentEntity in m_allEntities)
 			{
 				if (_contentEntity.Type == ContentType.Photo)
 				{
@@ -107,7 +122,11 @@ namespace Waveface.Client
 			for (int i = 0; i < lbItems.Items.Count; i++)
 			{
 				ListBoxItem _lbi = lbItems.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
-				_lbi.IsSelected = true;
+
+				if (m_selectedEntitieIDs.Contains(m_allEntities[i].ID))
+				{
+					_lbi.IsSelected = true;
+				}
 			}
 		}
 
@@ -149,11 +168,13 @@ namespace Waveface.Client
 			m_videosCount = _v;
 
 			tbCounts.Text = GetCountsString(m_photosCount, m_videosCount);
+
+			btnNext.IsEnabled = !((m_photosCount == 0) && (m_videosCount == 0));
 		}
 
 		private string GetCountsString(int photosCount, int videosCount)
 		{
-			string _c = string.Empty;
+			string _c = "No file selected";
 
 			string _photo = " " + (string)Application.Current.FindResource("photo");
 			string _photos = " " + (string)Application.Current.FindResource("photos");
@@ -200,6 +221,15 @@ namespace Waveface.Client
 			}
 
 			Close();
+		}
+
+		private void btnSelectAll_Click(object sender, RoutedEventArgs e)
+		{
+			for (int i = 0; i < lbItems.Items.Count; i++)
+			{
+				ListBoxItem _lbi = lbItems.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
+				_lbi.IsSelected = true;
+			}
 		}
 	}
 }

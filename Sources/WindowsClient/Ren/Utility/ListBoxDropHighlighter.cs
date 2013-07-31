@@ -10,10 +10,10 @@ namespace Waveface.Client.Utility
 	public static class ListBoxDropHighlighter
 	{
 		// the ListBoxItem that is the current drop target
-		private static ListBoxItem _currentItem;
+		private static ListBoxItem s_currentItem;
 
 		// Indicates whether the current ListBoxItem is a possible drop target
-		private static bool _dropPossible;
+		private static bool s_dropPossible;
 
 		#region IsPossibleDropTarget
 
@@ -33,10 +33,7 @@ namespace Waveface.Client.Utility
 
 		private static object CalculateIsPossibleDropTarget(DependencyObject item, object value)
 		{
-			if ((item == _currentItem) && (_dropPossible))
-				return true;
-			else
-				return false;
+			return (item == s_currentItem) && (s_dropPossible);
 		}
 
 		#endregion
@@ -44,19 +41,19 @@ namespace Waveface.Client.Utility
 		static ListBoxDropHighlighter()
 		{
 			EventManager.RegisterClassHandler(typeof(ListBoxItem),
-											  UIElement.PreviewDragEnterEvent,
+											  UIElement.DragEnterEvent,
 											  new DragEventHandler(OnDragEvent), true);
 
 			EventManager.RegisterClassHandler(typeof(ListBoxItem),
-											  UIElement.PreviewDragLeaveEvent,
+											  UIElement.DragLeaveEvent,
 											  new DragEventHandler(OnDragLeave), true);
 
 			EventManager.RegisterClassHandler(typeof(ListBoxItem),
-											  UIElement.PreviewDragOverEvent,
+											  UIElement.DragOverEvent,
 											  new DragEventHandler(OnDragEvent), true);
 
 			EventManager.RegisterClassHandler(typeof(ListBoxItem),
-											  UIElement.PreviewDropEvent,
+											  UIElement.DropEvent,
 											  new DragEventHandler(OnDragLeave), true);
 		}
 
@@ -66,26 +63,26 @@ namespace Waveface.Client.Utility
 		{
 			lock (IsPossibleDropTargetProperty)
 			{
-				_dropPossible = false;
+				s_dropPossible = false;
 
-				if (_currentItem != null)
+				if (s_currentItem != null)
 				{
-					DependencyObject _oldItem = _currentItem;
-					_currentItem = null;
+					DependencyObject _oldItem = s_currentItem;
+					s_currentItem = null;
 					_oldItem.InvalidateProperty(IsPossibleDropTargetProperty);
 				}
 
 				if (args.Effects != DragDropEffects.None)
 				{
-					_dropPossible = true;
+					s_dropPossible = true;
 				}
 
 				ListBoxItem _lbi = sender as ListBoxItem;
 
 				if (_lbi != null)
 				{
-					_currentItem = _lbi;
-					_currentItem.InvalidateProperty(IsPossibleDropTargetProperty);
+					s_currentItem = _lbi;
+					s_currentItem.InvalidateProperty(IsPossibleDropTargetProperty);
 				}
 			}
 		}
@@ -94,12 +91,12 @@ namespace Waveface.Client.Utility
 		{
 			lock (IsPossibleDropTargetProperty)
 			{
-				_dropPossible = false;
+				s_dropPossible = false;
 
-				if (_currentItem != null)
+				if (s_currentItem != null)
 				{
-					DependencyObject _oldItem = _currentItem;
-					_currentItem = null;
+					DependencyObject _oldItem = s_currentItem;
+					s_currentItem = null;
 					_oldItem.InvalidateProperty(IsPossibleDropTargetProperty);
 				}
 
@@ -107,7 +104,7 @@ namespace Waveface.Client.Utility
 
 				if (_lbi != null)
 				{
-					_currentItem = _lbi;
+					s_currentItem = _lbi;
 					_lbi.InvalidateProperty(IsPossibleDropTargetProperty);
 				}
 			}

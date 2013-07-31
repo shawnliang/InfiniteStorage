@@ -18,7 +18,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using NBug;
 using Waveface.ClientFramework;
 using Waveface.Model;
 using Settings = Waveface.Client.Properties.Settings;
@@ -1431,16 +1430,12 @@ namespace Waveface.Client
 
 		private void btnCreateCloudAlbum_Click(object sender, RoutedEventArgs e)
 		{
-			IEnumerable<IContentEntity> _entities = GetContents();
-
-			if (!_entities.Any())
-			{
-				return;
-			}
+			IEnumerable<IContentEntity> _allEntities = lbxContentContainer.Items.OfType<IContentEntity>().ToArray();
+			IEnumerable<IContentEntity> _selectedEntities = GetSelectedContents();
 
 			string _title = lblContentLocation.Content + " [" + DateTime.Now.ToString("yyyy-MM-dd HH:mm") + "]";
 
-			CloudSharingDialog _dialog = new CloudSharingDialog(_entities, _title)
+			CloudSharingDialog _dialog = new CloudSharingDialog(_allEntities, _selectedEntities, _title)
 											 {
 												 Owner = this
 											 };
@@ -1460,7 +1455,10 @@ namespace Waveface.Client
 					_contents.Add(new Content { ID = _fileID, });
 				}
 
-				TimelineShareTo(_contents, _title);
+				if (_contents.Count > 0)
+				{
+					TimelineShareTo(_contents, _title);
+				}
 			}
 		}
 
@@ -1477,7 +1475,7 @@ namespace Waveface.Client
 			{
 				Owner = this,
 				Source = _entities,
-				SelectedIndex = 0
+				SelectedIndex = 0,
 			};
 
 			_viewer.ShowDialog();
@@ -1604,7 +1602,7 @@ namespace Waveface.Client
 		{
 			var selectedContents = GetSelectedContents();
 
-			if(selectedContents.Count() > 0)
+			if (selectedContents.Count() > 0)
 			{
 				IContentEntity _entity = selectedContents.ElementAt(0);
 				string _dir = _entity.Uri.LocalPath;

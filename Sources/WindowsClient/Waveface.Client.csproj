@@ -295,6 +295,8 @@
     <Resource Include="Resource\bar_view_1.png" />
     <Resource Include="Resource\bar_view_2.png" />
     <Resource Include="Resource\PC_wifi.png" />
+    <Resource Include="Resource\getstarted.png" />
+    <Resource Include="Resource\arrow_right.png" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

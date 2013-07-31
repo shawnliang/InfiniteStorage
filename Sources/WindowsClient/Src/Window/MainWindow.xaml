@@ -2,17 +2,14 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
-        xmlns:fw="clr-namespace:Waveface.ClientFramework;assembly=Waveface.ClientFramework"
         xmlns:local="clr-namespace:Waveface.Client"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
-        xmlns:utils="clr-namespace:Waveface.Client.Utility" x:Name="window"
         Title="Favorite"
         Width="807"
         Height="498.5"
         MinWidth="1000"
-        MinHeight="600"
+        MinHeight="640"
         ContentRendered="window_ContentRendered"
         Icon="/Waveface.Client;component/Resource/FAV_512.ico"
         Loaded="Window_Loaded"
@@ -46,6 +43,7 @@
             <MenuItem Click="CreateFavoriteMenuItem_Click" Header="Create Favorite..." />
             <MenuItem Click="AddToFavoriteMenuItem_Click" Header="Add to Favorite..." />
             <Separator />
+            <MenuItem Click="miLocateOnDisk_Click" Header="Locate on Disk" />
             <MenuItem Click="UnTagMenuItem_Click" Header="Delete" />
         </ContextMenu>
 
@@ -274,6 +272,7 @@
                         <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{TemplateBinding Background}">
                             <ContentPresenter />
                         </Border>
+                        
                         <ControlTemplate.Triggers>                       
                             <Trigger Property="Selector.IsSelected" Value="True">
                                 <Setter Property="Background" Value="#FF427FED" />
@@ -288,9 +287,9 @@
                                 <Setter Property="Background" Value="#5FB0E0E6" />
                             </MultiTrigger>
 
-                            <Trigger Property="utils:ListBoxDropHighlighter.IsPossibleDropTarget" Value="True">
+                            <!-- Trigger Property="utils:ListBoxDropHighlighter.IsPossibleDropTarget" Value="True">
                                 <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                            </Trigger>
+                            </Trigger-->
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>

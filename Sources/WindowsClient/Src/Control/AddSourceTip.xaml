@@ -26,62 +26,58 @@
     </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot">
-        <Image Width="256"
-               Height="256"
+        <Image Width="790"
+               Height="518"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
-               Source="/Waveface.Client;component/Resource/FAV_512.ico"
+               Source="/Waveface.Client;component/Resource/getstarted.png"
                Stretch="Fill"
-               Margin="250, -100, 0, 0"
                >
             <Image.Effect>
                 <DropShadowEffect/>
             </Image.Effect>
-            <Image.RenderTransform>
-                <RotateTransform Angle="350" CenterX="95" CenterY="20" />
-            </Image.RenderTransform>
         </Image>
 
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-250, 0, 0, 0">
-            <Grid.Effect>
-                <DropShadowEffect ShadowDepth="2" />
-            </Grid.Effect>
-            
-            <Border BorderBrush="Black" BorderThickness="0.75" CornerRadius="5">
-                <StackPanel  Orientation="Vertical" Background="#FFFF00" Width="320" >
-                    <TextBlock FontFamily="Segoe UI" FontSize="24" Text="To Get Started, you can" HorizontalAlignment="Center" Margin="0, 8"/>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-300, 100, 0, 0">
 
-                    <Grid Margin="12, 8" Cursor="Hand">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="16"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+            <StackPanel  Orientation="Vertical" Width="390">
+                <TextBlock FontFamily="Segoe UI" FontSize="24" Text="To Get Started, you can ..." HorizontalAlignment="Center" FontWeight="ExtraBold" Margin="0, 8"/>
 
-                        <TextBlock Grid.Column="0" FontFamily="Segoe UI" FontSize="18" Text="1. " HorizontalAlignment ="Left" TextWrapping="Wrap"/>
-                        <TextBlock Grid.Column="1" Style="{StaticResource LinkButton}" FontFamily="Segoe UI" FontSize="18" Text="Get our mobile apps and enable auto sync over same Wi-Fi." HorizontalAlignment ="Left" TextWrapping="Wrap"/>
-                    </Grid>
+                <Grid Margin="12, 8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                    <Grid Margin="12, 8" Cursor="Hand">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="16"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" FontFamily="Segoe UI" FontSize="18" FontWeight="SemiBold" Text="1. " HorizontalAlignment ="Left" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Column="1" x:Name="tbHelpItem1" Cursor="Hand" FontFamily="Segoe UI" FontSize="18" FontWeight="SemiBold" HorizontalAlignment ="Left" TextWrapping="Wrap" MouseDown="tbHelpItem1_MouseDown">
+                        <Run>Get our mobile apps and enable auto sync over same Wi-Fi.</Run> <InlineUIContainer> <Image Margin="0, 8, 0, -4" Source="/Waveface.Client;component/Resource/arrow_right.png" Height="20"></Image> </InlineUIContainer>
+                    </TextBlock>
+                </Grid>
 
-                        <TextBlock Grid.Column="0" FontFamily="Segoe UI" FontSize="18" Text="2. " HorizontalAlignment ="Left" TextWrapping="Wrap"/>
-                        <TextBlock Grid.Column="1" FontFamily="Segoe UI" FontSize="18" Text="Plug in digital camera via USB." HorizontalAlignment ="Left" TextWrapping="Wrap"/>
-                    </Grid>
+                <Grid Margin="12, 12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                    <Grid Margin="12, 8 , 12, 16" Cursor="Hand">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="16"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" FontFamily="Segoe UI" FontSize="18" FontWeight="SemiBold" Text="2. " HorizontalAlignment ="Left" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Column="1" FontFamily="Segoe UI" FontSize="18" FontWeight="SemiBold" Text="Plug in digital camera via USB." HorizontalAlignment ="Left" TextWrapping="Wrap"/>
+                </Grid>
 
-                        <TextBlock Grid.Column="0" FontFamily="Segoe UI" FontSize="18" Text="3. " HorizontalAlignment ="Left" TextWrapping="Wrap"/>
-                        <TextBlock Grid.Column="1" Style="{StaticResource LinkButton}" FontFamily="Segoe UI" FontSize="18" Text="Get our Player app to enjoy Home Sharing for all albums created." HorizontalAlignment ="Left" TextWrapping="Wrap"/>
-                    </Grid>
-                </StackPanel>
-            </Border>
+                <Grid Margin="12, 8 , 12, 16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" FontFamily="Segoe UI" FontSize="18" FontWeight="SemiBold" Text="3. " HorizontalAlignment ="Left" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Column="1" x:Name="tbHelpItem3" Cursor="Hand" FontFamily="Segoe UI" FontSize="18" FontWeight="SemiBold" HorizontalAlignment ="Left" TextWrapping="Wrap" MouseDown="tbHelpItem3_MouseDown">
+                        <Run>Get our Player app to enjoy Home Sharing for all albums created.</Run> <InlineUIContainer> <Image Margin="0, 8, 0, -4" Source="/Waveface.Client;component/Resource/arrow_right.png" Height="20"></Image> </InlineUIContainer>
+                    </TextBlock>
+                </Grid>
+            </StackPanel>
+
         </Grid>
     </Grid>
 </UserControl>

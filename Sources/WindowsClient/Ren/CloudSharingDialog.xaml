@@ -151,6 +151,8 @@
         </Grid>
 
         <Grid Grid.Row="4" Margin="28,0">
+            <Button x:Name="btnSelectAll" Content="Select All"  Padding="8,4" HorizontalAlignment="Left"  VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Click="btnSelectAll_Click"/>
+            
             <Button x:Name="btnNext" Content="Next" HorizontalAlignment="Right" Padding="16,4" Margin="0, 0, 90, 0" VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Click="btnNext_Click"/>
             <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Right" Padding="16,4" VerticalAlignment="Center" FontSize="14" FontWeight="Bold" Click="btnCancel_Click" />
         </Grid>
