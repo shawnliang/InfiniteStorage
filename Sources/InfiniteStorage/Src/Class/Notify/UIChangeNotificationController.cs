@@ -51,6 +51,7 @@ namespace InfiniteStorage.Notify
 			{
 				var q = from f in db.Object.Files
 						join dir in db.Object.Folders on f.parent_folder equals dir.path
+						where f.file_id == arg.ctx.fileCtx.file_id
 						select dir;
 				folder = q.FirstOrDefault();
 			}
