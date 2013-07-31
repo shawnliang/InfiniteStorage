@@ -48,6 +48,7 @@ namespace InfiniteStorage
 		{
 			progressText.Text = string.Format(Resources.ProgressTooltip_Complete, importedCount);
 			progressBar1.Hide();
+			pictureBox1.ImageLocation = null;
 			pictureBox1.Image = Resources.check;
 			tabControlEx1.SelectedTab = finishedTab;
 
@@ -86,6 +87,14 @@ namespace InfiniteStorage
 		private void hideButton_Click(object sender, EventArgs e)
 		{
 			Hide();
+		}
+
+		public void UpdateInterrupted(int received_count)
+		{
+			progressText.Text = string.Format(Resources.ProgressTooltip_Interrupted, received_count);
+			progressBar1.Hide();
+			tabControlEx1.SelectedTab = finishedTab;
+			Show();
 		}
 	}
 }

@@ -293,11 +293,20 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
-        ///   查詢類似 {0} files are imported 的當地語系化字串。
+        ///   查詢類似 Import complete. {0} files are imported. 的當地語系化字串。
         /// </summary>
         internal static string ProgressTooltip_Complete {
             get {
                 return ResourceManager.GetString("ProgressTooltip_Complete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 Import stopped. {0} files are received. 的當地語系化字串。
+        /// </summary>
+        internal static string ProgressTooltip_Interrupted {
+            get {
+                return ResourceManager.GetString("ProgressTooltip_Interrupted", resourceCulture);
             }
         }
         
