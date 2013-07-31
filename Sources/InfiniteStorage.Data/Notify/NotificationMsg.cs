@@ -12,6 +12,8 @@ namespace InfiniteStorage.Data.Notify
 		public string new_device { get; set; }
 
 		public folder_info new_folder { get; set; }
+
+		public folder_info update_folder { get; set; }
 	}
 
 	public class folder_info

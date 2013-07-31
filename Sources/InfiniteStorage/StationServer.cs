@@ -82,7 +82,9 @@ namespace InfiniteStorage
 			NotifyWebSocketService.Subscribing += m_uiChangeNotifyController.OnSubscribingUIChanges;
 			NotifyWebSocketService.Disconnected += m_uiChangeNotifyController.OnEndingSubscription;
 			InfiniteStorageWebSocketService.DeviceAccepted += m_uiChangeNotifyController.OnNewDevice;
+			InfiniteStorageWebSocketService.FileReceived += m_uiChangeNotifyController.OnFileReceived;
 			Manipulation.Manipulation.FolderAdded += m_uiChangeNotifyController.OnFolderAdded;
+
 			// ----- rest server -----
 			rest_server = new HttpServer(14005);
 			rest_server.AddHandler("/image/", new ImageApiHandler());

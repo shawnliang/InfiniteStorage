@@ -5,6 +5,7 @@ using System.Text;
 using InfiniteStorage.WebsocketProtocol;
 using InfiniteStorage.Data.Notify;
 using Newtonsoft.Json;
+using InfiniteStorage.Model;
 
 namespace InfiniteStorage.Notify
 {
@@ -35,6 +36,35 @@ namespace InfiniteStorage.Notify
 					name = arg.name,
 					parent_folder = arg.parent_folder,
 					path = arg.path
+				}
+			};
+
+			UIChangeSubscriber.Instance.SendMsg(JsonConvert.SerializeObject(msg));
+		}
+
+		public void OnFileReceived(object sender, WebsocketEventArgs arg)
+		{
+			var file_id = arg.ctx.fileCtx.file_id;
+
+			Folder folder;
+			using (var db = new MyDbContext())
+			{
+				var q = from f in db.Object.Files
+						join dir in db.Object.Folders on f.parent_folder equals dir.path
+						select dir;
+				folder = q.FirstOrDefault();
+			}
+
+			if (folder == null)
+				return;
+
+			var msg = new NotificationMsg
+			{
+				update_folder = new folder_info
+				{
+					name = folder.name,
+					parent_folder = folder.parent_folder,
+					path = folder.path
 				}
 			};
 
