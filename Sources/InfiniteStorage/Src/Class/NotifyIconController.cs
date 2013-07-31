@@ -122,21 +122,50 @@ namespace InfiniteStorage
 				var item = new ToolStripMenuItem();
 				item.Text = getOverallProgressText(ctx);
 				item.Tag = ctx;
-				item.Enabled = false;
+				item.Click += item2_Click;
+				item.ForeColor = System.Drawing.Color.Gray;
 				deviceStipItems.Add(ctx, item);
 
 
 				var item2 = new ToolStripMenuItem();
 				item2.Text = getSingleFileText(ctx);
 				item2.Enabled = false;
+				item2.ForeColor = System.Drawing.Color.Gray;
+
 
 
 				notifyIcon.ContextMenuStrip.Items.Insert(2, item);
 				notifyIcon.ContextMenuStrip.Items.Insert(3, item2);
-				//notifyIcon.ShowBalloonTip(3000, Resources.ProductName, string.Format(Resources.BallonText_Transferring, ctx.device_name, ctx.total_count), ToolTipIcon.Info);
 			}
 
 		}
+
+		void item2_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				var menuItem = sender as ToolStripMenuItem;
+				if (menuItem == null)
+					return;
+
+				var ctx = menuItem.Tag as ProtocolContext;
+				if (ctx == null)
+					return;
+
+				var dialog = ctx.GetData(StationServer.DATA_KEY_PROGRESS_DIALOG) as ProgressTooltip;
+				if (dialog == null)
+					return;
+
+				dialog.UserHide = false;
+				dialog.Show();
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("Unable to bring out progress tooltip", err);
+			}
+		}
+
+
 
 		private static string getSingleFileText(ProtocolContext ctx)
 		{
