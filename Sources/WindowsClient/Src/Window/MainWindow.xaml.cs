@@ -40,7 +40,7 @@ namespace Waveface.Client
 			InitializeComponent();
 
 #if !DEBUG
-			AppDomain.CurrentDomain.UnhandledException += Handler.UnhandledException;
+			AppDomain.CurrentDomain.UnhandledException += NBug.Handler.UnhandledException;
 #endif
 		}
 
