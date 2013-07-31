@@ -22,7 +22,22 @@ namespace InfiniteStorage.Notify
 
 		public void OnNewDevice(object sender, WebsocketEventArgs arg)
 		{
-			var msg = new NotificationMsg { NewDevice = arg.ctx.device_id };
+			var msg = new NotificationMsg { new_device = arg.ctx.device_id };
+			UIChangeSubscriber.Instance.SendMsg(JsonConvert.SerializeObject(msg));
+		}
+
+		public void OnFolderAdded(object sender, Manipulation.FolderEventArgs arg)
+		{
+			var msg = new NotificationMsg
+			{
+				new_folder = new folder_info
+				{
+					name = arg.name,
+					parent_folder = arg.parent_folder,
+					path = arg.path
+				}
+			};
+
 			UIChangeSubscriber.Instance.SendMsg(JsonConvert.SerializeObject(msg));
 		}
 	}

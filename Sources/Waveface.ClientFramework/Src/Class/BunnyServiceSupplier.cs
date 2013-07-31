@@ -147,9 +147,14 @@ namespace Waveface.ClientFramework
 					updateServiceReceivingStatus(notify);
 				}
 
-				if (!string.IsNullOrEmpty(notify.NewDevice))
+				if (!string.IsNullOrEmpty(notify.new_device))
 				{
-					addNewDeviceToContents(notify.NewDevice);
+					addNewDevice(notify.new_device);
+				}
+
+				if (notify.new_folder != null)
+				{
+					addNewFolder(notify);
 				}
 			}
 			catch(Exception err)
@@ -158,7 +163,31 @@ namespace Waveface.ClientFramework
 			}
 		}
 
-		private void addNewDeviceToContents(string device_id)
+		private void addNewFolder(NotificationMsg notify)
+		{
+			// wrap the following find-and-modify logic in syncContext to avoid locking
+			syncContext.Post((dummy) =>
+			{
+				var folder = notify.new_folder;
+				// This is not always true in multi-level folder hiararchy.
+				// But currently we have only two level hiararchy (device and folder),
+				// So this is valid currently.
+				var device_name = folder.parent_folder;
+				var device = Services.Where(x => x.Name == device_name).FirstOrDefault();
+
+				if (device == null)
+					return;
+
+				if (!device.Contents.Where(x => x.Name == folder.name).Any())
+				{
+					var dev = device as BunnyService;
+					dev.AddContent(new BunnyContentGroup(dev.Name, folder.name, dev.ID) { Service = dev });
+				}
+
+			}, null);
+		}
+
+		private void addNewDevice(string device_id)
 		{
 			var q = from s in Services
 				where s.ID == device_id

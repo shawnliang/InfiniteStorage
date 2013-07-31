@@ -196,6 +196,11 @@ namespace Waveface.Model
 			return Name;
 		}
 
+		public void AddContent(IContentEntity content)
+		{
+			m_ObservableContents.Add(content);
+		}
+
 		#endregion
 
 		private void _observableContents_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

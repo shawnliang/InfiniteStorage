@@ -9,6 +9,8 @@ namespace InfiniteStorage.Manipulation
 {
 	class Manipulation
 	{
+		public static event EventHandler<FolderEventArgs> FolderAdded;
+
 		static FileMover fileMover = new FileMover();
 
 		public static MoveResult Move(List<Guid> files, string full_target_path)
@@ -23,7 +25,7 @@ namespace InfiniteStorage.Manipulation
 			if (!Directory.Exists(full_target_path))
 			{
 				Directory.CreateDirectory(full_target_path);
-				AddFolderRecord(partial_taget_path);
+				AddFolderRecord(Path.GetFileName(partial_taget_path), Path.GetDirectoryName(partial_taget_path), partial_taget_path);
 			}
 
 
@@ -98,20 +100,22 @@ namespace InfiniteStorage.Manipulation
 			}
 		}
 
-		public static void AddFolderRecord(string targetPath)
+		public static void AddFolderRecord(string name, string parent_folder, string path)
 		{
 			using (var db = new MyDbContext())
 			{
 				var q = from folder in db.Object.Folders
-						where folder.path == targetPath
+						where folder.path == path
 						select folder;
 
 				if (q.FirstOrDefault() != null)
 					return;
 
-				db.Object.Folders.Add(new Folder { path = targetPath, parent_folder = Path.GetDirectoryName(targetPath), name = Path.GetFileName(targetPath) });
+				db.Object.Folders.Add(new Folder { path = path, parent_folder = parent_folder, name = name });
 				db.Object.SaveChanges();
 			}
+
+			raiseFolderAddedEvent(new FolderEventArgs { name = name, parent_folder = parent_folder, path = path });
 		}
 
 		public static ICollection<Guid> RemoveLabelFiles(IEnumerable<Guid> file_ids)
@@ -126,6 +130,15 @@ namespace InfiniteStorage.Manipulation
 
 			return affectedLabels;
 		}
+
+		private static void raiseFolderAddedEvent(FolderEventArgs args)
+		{
+			var handler = FolderAdded;
+
+			if (handler != null)
+				handler(args, args);
+		}
+
 
 		private static ICollection<Guid> queryAffectedLabels(IEnumerable<Guid> file_ids)
 		{
@@ -281,4 +294,6 @@ namespace InfiniteStorage.Manipulation
 		public List<Guid> moved_files { get; set; }
 		public List<Guid> not_moved_files { get; set; }
 	}
+
+
 }

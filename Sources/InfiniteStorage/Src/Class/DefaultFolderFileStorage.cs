@@ -43,25 +43,7 @@ namespace InfiniteStorage
 			if (!Directory.Exists(storage_path))
 				Directory.CreateDirectory(storage_path);
 
-			using (var db = new MyDbContext())
-			{
-				var query = from folder in db.Object.Folders
-							where folder.path == partial_path
-							select 1;
-
-				if (!query.Any())
-				{
-					db.Object.Folders.Add(
-						new Folder
-						{
-							name = Resources.UnsortedFolderName,
-							parent_folder = this.devFolder,
-							path = partial_path
-						});
-
-					db.Object.SaveChanges();
-				}
-			}
+			Manipulation.Manipulation.AddFolderRecord(Resources.UnsortedFolderName, this.devFolder, partial_path);
 		}
 	}
 }

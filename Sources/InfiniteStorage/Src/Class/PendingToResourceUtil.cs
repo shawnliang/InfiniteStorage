@@ -160,27 +160,7 @@ namespace InfiniteStorage
 		{
 			var path = Path.Combine(dev_folder, sub_folder);
 
-			using (var db = new MyDbContext())
-			{
-
-				var q = from f in db.Object.Folders
-						where f.path == path
-						select f;
-
-				if (q.Any())
-					return;
-
-
-				db.Object.Folders.Add(
-					new Folder
-					{
-						name = sub_folder,
-						path = Path.Combine(dev_folder, sub_folder),
-						parent_folder = dev_folder
-					});
-
-				db.Object.SaveChanges();
-			}
+			Manipulation.Manipulation.AddFolderRecord(sub_folder, dev_folder, Path.Combine(dev_folder, sub_folder));
 		}
 	}
 }

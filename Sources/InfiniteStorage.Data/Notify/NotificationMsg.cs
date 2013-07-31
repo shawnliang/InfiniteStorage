@@ -9,6 +9,17 @@ namespace InfiniteStorage.Data.Notify
 	{
 		public List<string> active_devices { get; set; }
 
-		public string NewDevice { get; set; }
+		public string new_device { get; set; }
+
+		public folder_info new_folder { get; set; }
+	}
+
+	public class folder_info
+	{
+		public string name { get; set; }
+
+		public string parent_folder { get; set; }
+
+		public string path { get; set; }
 	}
 }

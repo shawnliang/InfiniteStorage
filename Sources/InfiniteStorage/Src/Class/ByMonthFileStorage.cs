@@ -27,18 +27,7 @@ namespace InfiniteStorage
 				Directory.CreateDirectory(targetDir);
 
 			var partial_folder = Path.Combine(devName, folder);
-			using (var db = new MyDbContext())
-			{
-				var q = from f in db.Object.Folders
-						where f.path.Equals(partial_folder)
-						select f;
-
-				if (!q.Any())
-				{
-					db.Object.Folders.Add(new Folder { path = partial_folder, name = folder, parent_folder = devName });
-					db.Object.SaveChanges();
-				}
-			}
+			Manipulation.Manipulation.AddFolderRecord(folder, devName, partial_folder);
 
 			var targetFile = Path.Combine(devFolderPath, folder, file.file_name);
 			return fileMover.Move(tempfile, targetFile);
