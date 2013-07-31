@@ -153,12 +153,10 @@ namespace InfiniteStorage
 					if (e.ctx.total_count == e.ctx.backup_count)
 					{
 						dialog.UpdateComplete((int)e.ctx.recved_files);
-						dialog.Show();
 					}
 					else
 					{
 						dialog.UpdateInterrupted((int)e.ctx.recved_files);
-						dialog.Show();
 					}
 				}
 				catch (Exception err)
@@ -175,7 +173,6 @@ namespace InfiniteStorage
 				try
 				{
 					ProgressTooltip dialog = null;
-					bool justCreated = false;
 
 					if (e.ctx.ContainsData(DATA_KEY_PROGRESS_DIALOG))
 					{
@@ -185,7 +182,6 @@ namespace InfiniteStorage
 					{
 						dialog = new ProgressTooltip(e.ctx.device_name, e.ctx.device_id);
 						e.ctx.SetData(DATA_KEY_PROGRESS_DIALOG, dialog);
-						justCreated = true;
 					}
 
 					if (e.ctx.fileCtx == null)
@@ -193,9 +189,6 @@ namespace InfiniteStorage
 
 					var percentage = e.ctx.temp_file.BytesWritten * 100 / e.ctx.fileCtx.file_size;
 					dialog.UpdateProgress((int)e.ctx.backup_count + 1, (int)e.ctx.total_count, (int)percentage);
-
-					if (justCreated)
-						dialog.Show();
 				}
 				catch (Exception err)
 				{

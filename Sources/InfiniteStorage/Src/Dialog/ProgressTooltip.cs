@@ -13,6 +13,7 @@ namespace InfiniteStorage
 	public partial class ProgressTooltip : Form
 	{
 		private string device_id;
+		public bool UserHide { get; set; }
 
 		public ProgressTooltip()
 		{
@@ -42,6 +43,13 @@ namespace InfiniteStorage
 		{
 			progressText.Text = string.Format(Resources.ProgressTooltip_Progress, current, totoal, percentage);
 			progressBar1.Value = percentage;
+			progressBar1.Visible = true;
+			tabControlEx1.SelectedTab = inProgressTab;
+
+			if (!UserHide)
+			{
+				Show();
+			}
 		}
 
 		public void UpdateComplete(int importedCount)
@@ -52,6 +60,17 @@ namespace InfiniteStorage
 			pictureBox1.Image = Resources.check;
 			tabControlEx1.SelectedTab = finishedTab;
 
+			UserHide = false;
+			Show();
+		}
+
+		public void UpdateInterrupted(int received_count)
+		{
+			progressText.Text = string.Format(Resources.ProgressTooltip_Interrupted, received_count);
+			progressBar1.Hide();
+			tabControlEx1.SelectedTab = finishedTab;
+
+			UserHide = false;
 			Show();
 		}
 
@@ -67,9 +86,10 @@ namespace InfiniteStorage
 
 		private void ProgressTooltip_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (e.CloseReason == CloseReason.UserClosing && tabControlEx1.SelectedTab == inProgressTab)
+			if (e.CloseReason == CloseReason.UserClosing)
 			{
 				e.Cancel = true;
+				UserHide = true;
 				Hide();
 			}
 		}
@@ -81,20 +101,16 @@ namespace InfiniteStorage
 
 		private void closeButton_Click(object sender, EventArgs e)
 		{
-			Close();
+			// keep UserHide == false, so that new photo from existing ws connection
+			// will trigger progress tooltip
+			Hide();
 		}
 
 		private void hideButton_Click(object sender, EventArgs e)
 		{
+			UserHide = true;
 			Hide();
 		}
-
-		public void UpdateInterrupted(int received_count)
-		{
-			progressText.Text = string.Format(Resources.ProgressTooltip_Interrupted, received_count);
-			progressBar1.Hide();
-			tabControlEx1.SelectedTab = finishedTab;
-			Show();
-		}
 	}
+
 }
