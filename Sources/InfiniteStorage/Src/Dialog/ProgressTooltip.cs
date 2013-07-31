@@ -89,7 +89,17 @@ namespace InfiniteStorage
 			if (e.CloseReason == CloseReason.UserClosing)
 			{
 				e.Cancel = true;
-				UserHide = true;
+
+				if (tabControlEx1.SelectedTab == inProgressTab)
+				{
+					UserHide = true;
+				}
+				else
+				{
+					// keep UserHide == false, so that new photo from existing ws connection
+					// will trigger progress tooltip
+				}
+
 				Hide();
 			}
 		}
@@ -97,6 +107,9 @@ namespace InfiniteStorage
 		private void viewButton_Click(object sender, EventArgs e)
 		{
 			ImportUIPresenter.Instance.StartViewer(device_id);
+			// keep UserHide == false, so that new photo from existing ws connection
+			// will trigger progress tooltip
+			Hide();
 		}
 
 		private void closeButton_Click(object sender, EventArgs e)
