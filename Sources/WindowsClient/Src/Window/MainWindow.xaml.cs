@@ -18,9 +18,10 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Waveface.Client.Properties;
 using Waveface.ClientFramework;
 using Waveface.Model;
-using Settings = Waveface.Client.Properties.Settings;
+using log4net;
 
 #endregion
 
@@ -35,6 +36,10 @@ namespace Waveface.Client
 		private DispatcherTimer timelineShareToDelayTimer;
 		private DispatcherTimer jumpToDeviceTimer;
 
+		private Point startPoint;
+		private Boolean needSpecialMulitSelectProcess;
+		private DateTime lastMouseLeftButtonDown;
+
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -42,6 +47,74 @@ namespace Waveface.Client
 #if !DEBUG
 			AppDomain.CurrentDomain.UnhandledException += NBug.Handler.UnhandledException;
 #endif
+		}
+
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			lbxDeviceContainer.DataContext = ClientFramework.Client.Default.Services;
+
+			lbxFavorites.DataContext = ClientFramework.Client.Default.Favorites;
+			lbxRecent.DataContext = ClientFramework.Client.Default.Recent;
+
+			rspRightSidePane2.tbxName.KeyDown += tbxName_KeyDown;
+			rspRightSidePane2.tbxName.LostFocus += tbxName_LostFocus;
+
+			rspRightSidePane2.tbtnHomeSharing.Checked += rspRightSidePane2_OnAirClick;
+			rspRightSidePane2.tbtnHomeSharing.Unchecked += rspRightSidePane2_OnAirClick;
+
+			rspRightSidePane2.tbtnCloudSharing.Checked += tbtnCloudSharing_Checked;
+			rspRightSidePane2.tbtnCloudSharing.Unchecked += tbtnCloudSharing_Checked;
+			rspRightSidePane2.btnCopyShareLink.Click += btnCopyShareLink_Click;
+
+			rspRightSidePanel.btnClearAll.Click += btnClearAll_Click;
+
+			rspRightSidePane2.lblHomeSharingTutorialTip.MouseDown += lblHomeSharingTutorialTip_MouseDown;
+
+			lblContentTypeCount.Content = string.Format("0 photos 0 videos");
+
+			Observable.FromEventPattern(
+				h => lbxDeviceContainer.TreeViewItemClick += h,
+				h => lbxDeviceContainer.TreeViewItemClick -= h
+				)
+				.Window(TimeSpan.FromMilliseconds(50))
+				.SelectMany(x => x.TakeLast(1))
+				.SubscribeOn(ThreadPoolScheduler.Instance)
+				.ObserveOn(DispatcherScheduler.Current)
+				.Subscribe(ex => TreeViewItem_PreviewMouseLeftButtonDown(ex.Sender, ex.EventArgs));
+
+			Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
+				handler => (s, ex) => handler(ex),
+				h => lbxFavorites.SelectionChanged += h,
+				h => lbxFavorites.SelectionChanged -= h
+				)
+				.Window(TimeSpan.FromMilliseconds(50))
+				.SelectMany(x => x.TakeLast(1))
+				.SubscribeOn(ThreadPoolScheduler.Instance)
+				.ObserveOn(DispatcherScheduler.Current)
+				.Subscribe(ex => lbxFavorites_SelectionChanged(lbxFavorites, ex));
+
+			Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
+				handler => (s, ex) => handler(ex),
+				h => lbxRecent.SelectionChanged += h,
+				h => lbxRecent.SelectionChanged -= h
+				)
+				.Window(TimeSpan.FromMilliseconds(50))
+				.SelectMany(x => x.TakeLast(1))
+				.SubscribeOn(ThreadPoolScheduler.Instance)
+				.ObserveOn(DispatcherScheduler.Current)
+				.Subscribe(ex => lbxRecent_SelectionChanged(lbxRecent, ex));
+
+			uiDelayTimer = new DispatcherTimer();
+			uiDelayTimer.Tick += uiDelayTimer_Tick;
+			uiDelayTimer.Interval = new TimeSpan(0, 0, 1);
+			uiDelayTimer.Start();
+
+			recentTimer = new DispatcherTimer();
+			recentTimer.Tick += recentTimer_Tick;
+			recentTimer.Interval = new TimeSpan(0, 0, 2);
+			recentTimer.Start();
+
+			ShowHelpPanel(true);
 		}
 
 		#region Private Method
@@ -192,8 +265,6 @@ namespace Waveface.Client
 			ClientFramework.Client.Default.AddToFavorite(contents, favoriteID);
 
 			(GetFavorite(favoriteID) as IContentGroup).Refresh();
-			//SelectToFavorite(favoriteID);
-			//RefreshSelectedFavorite();
 		}
 
 		private void SelectToStarFavorite()
@@ -249,7 +320,7 @@ namespace Waveface.Client
 			return lbxContentContainer.SelectedItems.OfType<IContentEntity>().ToArray();
 		}
 
-		private void DelectSelectedFolder()
+		private void DeleteSelectedFolder()
 		{
 			var folder = lbxDeviceContainer.SelectedItem as IContentGroup;
 
@@ -274,21 +345,21 @@ namespace Waveface.Client
 			lblContentLocation.DataContext = null;
 		}
 
-		private void DelectSelectedContents()
+		private void DelectSelectedSourceContents()
 		{
-			var selectedContents = GetSelectedContents();
+			var _selectedContents = GetSelectedContents();
 
-			DelectContents(selectedContents);
+			DelectSourceContents(_selectedContents);
 		}
 
-		private void DelectContents(IEnumerable<IContentEntity> contents)
+		private void DelectSourceContents(IEnumerable<IContentEntity> contents)
 		{
 			var contentIDs = contents.Select(content => content.ID);
 
-			DeleteContents(contentIDs);
+			DeleteSourceContents(contentIDs);
 		}
 
-		private void DeleteContents(IEnumerable<string> contentIDs)
+		private void DeleteSourceContents(IEnumerable<string> contentIDs)
 		{
 			if (MessageBox.Show(Application.Current.MainWindow, "Are you sure you want to delete?", "Confirm", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
 				return;
@@ -387,74 +458,6 @@ namespace Waveface.Client
 
 		#endregion
 
-		private void Window_Loaded(object sender, RoutedEventArgs e)
-		{
-			lbxDeviceContainer.DataContext = ClientFramework.Client.Default.Services;
-
-			lbxFavorites.DataContext = ClientFramework.Client.Default.Favorites;
-			lbxRecent.DataContext = ClientFramework.Client.Default.Recent;
-
-			rspRightSidePane2.tbxName.KeyDown += tbxName_KeyDown;
-			rspRightSidePane2.tbxName.LostFocus += tbxName_LostFocus;
-
-			rspRightSidePane2.tbtnHomeSharing.Checked += rspRightSidePane2_OnAirClick;
-			rspRightSidePane2.tbtnHomeSharing.Unchecked += rspRightSidePane2_OnAirClick;
-
-			rspRightSidePane2.tbtnCloudSharing.Checked += tbtnCloudSharing_Checked;
-			rspRightSidePane2.tbtnCloudSharing.Unchecked += tbtnCloudSharing_Checked;
-			rspRightSidePane2.btnCopyShareLink.Click += btnCopyShareLink_Click;
-
-			rspRightSidePanel.btnClearAll.Click += btnClearAll_Click;
-
-			rspRightSidePane2.lblHomeSharingTutorialTip.MouseDown += lblHomeSharingTutorialTip_MouseDown;
-
-			lblContentTypeCount.Content = string.Format("0 photos 0 videos");
-
-			Observable.FromEventPattern(
-				h => lbxDeviceContainer.TreeViewItemClick += h,
-				h => lbxDeviceContainer.TreeViewItemClick -= h
-				)
-				.Window(TimeSpan.FromMilliseconds(50))
-				.SelectMany(x => x.TakeLast(1))
-				.SubscribeOn(ThreadPoolScheduler.Instance)
-				.ObserveOn(DispatcherScheduler.Current)
-				.Subscribe(ex => TreeViewItem_PreviewMouseLeftButtonDown(ex.Sender, ex.EventArgs));
-
-			Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
-				handler => (s, ex) => handler(ex),
-				h => lbxFavorites.SelectionChanged += h,
-				h => lbxFavorites.SelectionChanged -= h
-				)
-				.Window(TimeSpan.FromMilliseconds(50))
-				.SelectMany(x => x.TakeLast(1))
-				.SubscribeOn(ThreadPoolScheduler.Instance)
-				.ObserveOn(DispatcherScheduler.Current)
-				.Subscribe(ex => lbxFavorites_SelectionChanged(lbxFavorites, ex));
-
-			Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
-				handler => (s, ex) => handler(ex),
-				h => lbxRecent.SelectionChanged += h,
-				h => lbxRecent.SelectionChanged -= h
-				)
-				.Window(TimeSpan.FromMilliseconds(50))
-				.SelectMany(x => x.TakeLast(1))
-				.SubscribeOn(ThreadPoolScheduler.Instance)
-				.ObserveOn(DispatcherScheduler.Current)
-				.Subscribe(ex => lbxRecent_SelectionChanged(lbxRecent, ex));
-
-			uiDelayTimer = new DispatcherTimer();
-			uiDelayTimer.Tick += uiDelayTimer_Tick;
-			uiDelayTimer.Interval = new TimeSpan(0, 0, 1);
-			uiDelayTimer.Start();
-
-			recentTimer = new DispatcherTimer();
-			recentTimer.Tick += recentTimer_Tick;
-			recentTimer.Interval = new TimeSpan(0, 0, 2);
-			recentTimer.Start();
-
-			//ShowHelpPanel(true);
-		}
-
 		private void recentTimer_Tick(object sender, EventArgs e)
 		{
 			ClientFramework.Client.Default.RefreshRecent(); // - ?
@@ -494,9 +497,9 @@ namespace Waveface.Client
 		private void showWaitForPairingDialog()
 		{
 			var dialog = new WaitForPairingDialog
-			{
-				Owner = this
-			};
+							 {
+								 Owner = this
+							 };
 			dialog.ShowDialog();
 
 
@@ -516,11 +519,7 @@ namespace Waveface.Client
 
 			jumpToDeviceTimer = new DispatcherTimer();
 			jumpToDeviceTimer.Interval = TimeSpan.FromMilliseconds(500);
-			jumpToDeviceTimer.Tick += (s, e) =>
-			{
-				Timer_JumpToDevice(device_id);
-				return;
-			};
+			jumpToDeviceTimer.Tick += (s, e) => Timer_JumpToDevice(device_id);
 			jumpToDeviceTimer.Start();
 		}
 
@@ -529,6 +528,7 @@ namespace Waveface.Client
 			try
 			{
 				var sourceTree = lbxDeviceContainer;
+
 				if (!sourceTree.HasItems)
 					return;
 
@@ -543,6 +543,7 @@ namespace Waveface.Client
 							devNode.IsExpanded = true;
 
 							var folderNode = (TreeViewItem)devNode.ItemContainerGenerator.ContainerFromIndex(0);
+
 							if (folderNode != null)
 							{
 								folderNode.IsSelected = true;
@@ -564,10 +565,9 @@ namespace Waveface.Client
 			}
 			catch (Exception err)
 			{
-				log4net.LogManager.GetLogger(GetType()).Warn("Unable to jump to " + device_id, err);
+				LogManager.GetLogger(GetType()).Warn("Unable to jump to " + device_id, err);
 			}
 		}
-
 
 
 		private void btnCopyShareLink_Click(object sender, RoutedEventArgs e)
@@ -630,9 +630,10 @@ namespace Waveface.Client
 			}
 
 			lblContentLocation.DataContext = group;
-
 			lbxContentContainer.DataContext = null;
-			System.Windows.Forms.Application.DoEvents();
+
+			DoEvents();
+
 			lbxContentContainer.DataContext = group.Contents;
 			lbxContentContainer.SelectedIndex = -1;
 			SetContentTypeCount(group);
@@ -684,7 +685,8 @@ namespace Waveface.Client
 
 				lblContentLocation.DataContext = null;
 				lbxContentContainer.DataContext = null;
-				System.Windows.Forms.Application.DoEvents();
+
+				DoEvents();
 
 				lbxContentContainer.DataContext = service.Contents;
 				lbxContentContainer.SelectedIndex = -1;
@@ -693,7 +695,8 @@ namespace Waveface.Client
 
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = null;
-			System.Windows.Forms.Application.DoEvents();
+
+			DoEvents();
 
 			lbxContentContainer.DataContext = (group as IContentGroup).Contents;
 			lbxContentContainer.SelectedIndex = -1;
@@ -750,6 +753,7 @@ namespace Waveface.Client
 			}
 
 			lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
+			btnDelete.IsEnabled = false;
 
 			Grid.SetColumnSpan(gdContentArea, 2);
 
@@ -760,7 +764,8 @@ namespace Waveface.Client
 
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = null;
-			System.Windows.Forms.Application.DoEvents();
+
+			DoEvents();
 
 			lbxContentContainer.DataContext = group.Contents;
 			lbxContentContainer.SelectedIndex = -1;
@@ -836,16 +841,16 @@ namespace Waveface.Client
 
 			SetContentTypeCount(group);
 
-			lbxContentContainer.ContextMenu = Resources["cm"] as ContextMenu;
+			lbxContentContainer.ContextMenu = Resources["ContentContextMenu"] as ContextMenu;
 			lbxContentContainer.ContextMenu.IsOpen = false;
 			lbxContentContainer.ContextMenu.Visibility = Visibility.Visible;
+			btnDelete.IsEnabled = false;
 
 			gdRightSide.Visibility = Visibility.Visible;
 			Grid.SetColumnSpan(gdContentArea, 1);
 
 			ContentAreaToolBar.Visibility = Visibility.Visible;
 			lbxContentContainer.Visibility = Visibility.Visible;
-			//btnFavoriteAll.Visibility = Visibility.Collapsed;
 			unSortedFilesUC.Visibility = Visibility.Collapsed;
 
 			bool _isStarredLabel = group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase);
@@ -865,7 +870,8 @@ namespace Waveface.Client
 			}
 
 			lbxContentContainer.DataContext = null;
-			System.Windows.Forms.Application.DoEvents();
+
+			DoEvents();
 
 			lbxContentContainer.DataContext = group.Contents;
 			lbxContentContainer.SelectedIndex = -1;
@@ -988,16 +994,21 @@ namespace Waveface.Client
 
 		private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
 		{
-			DelectSelectedContents();
+			DelectSelectedSourceContents();
 		}
 
 		private void UnTagMenuItem_Click(object sender, RoutedEventArgs e)
+		{
+			UnTag();
+		}
+
+		private void UnTag()
 		{
 			var group = GetCurrentContentGroup();
 			var selectedContents = GetSelectedContents();
 
 			foreach (var content in selectedContents)
-				ClientFramework.Client.Default.UnTag(group.ID, content.ID);
+				ClientFramework.Client.Default.UnTag(@group.ID, content.ID);
 
 			RefreshContentArea();
 		}
@@ -1019,10 +1030,6 @@ namespace Waveface.Client
 		{
 			showWaitForPairingDialog();
 		}
-
-		private Point startPoint;
-		private Boolean needSpecialMulitSelectProcess;
-		private DateTime lastMouseLeftButtonDown;
 
 		private void List_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
@@ -1244,7 +1251,7 @@ namespace Waveface.Client
 
 		private void lbxDeviceContainer_DeleteSourceInvoked(object sender, EventArgs e)
 		{
-			DelectSelectedFolder();
+			DeleteSelectedFolder();
 		}
 
 		private void lbxDeviceContainer_CreateFavoriteInvoked(object sender, EventArgs e)
@@ -1380,7 +1387,7 @@ namespace Waveface.Client
 			if (flag)
 			{
 				helpPanel.Opacity = 1.0;
-				helpPanel.Margin = new Thickness(8, -145, 8, 0);
+				helpPanel.Margin = new Thickness(344, -180, 4, 4);
 			}
 			else
 			{
@@ -1388,7 +1395,7 @@ namespace Waveface.Client
 				{
 					helpPanel.Opacity = 0.1 * i;
 
-					helpPanel.Margin = new Thickness(8, -14.5 * i, 8, 0);
+					helpPanel.Margin = new Thickness(344, -18 * i, 4, 4);
 					DoEvents();
 					Thread.Sleep(25);
 				}
@@ -1462,29 +1469,24 @@ namespace Waveface.Client
 			}
 		}
 
-		private void btnView_Click(object sender, RoutedEventArgs e)
+		private void btnDelete_Click(object sender, RoutedEventArgs e)
 		{
-			IEnumerable<IContentEntity> _entities = GetContents();
-
-			if (!_entities.Any())
+			switch (lbxContentContainer.ContextMenu.Name)
 			{
-				return;
+				case "SourceContentContextMenu":
+					DelectSelectedSourceContents();
+					break;
+
+				case "ContentContextMenu":
+					UnTag();
+					break;
 			}
-
-			PhotoViewer _viewer = new PhotoViewer
-			{
-				Owner = this,
-				Source = _entities,
-				SelectedIndex = 0,
-			};
-
-			_viewer.ShowDialog();
 		}
 
 		private void ShowToolBarButtons(bool flag)
 		{
 			zoomPanel.Visibility = Visibility.Visible;
-			btnView.Visibility = Visibility.Visible;
+			btnDelete.Visibility = Visibility.Visible;
 
 			if (flag)
 			{
@@ -1563,10 +1565,10 @@ namespace Waveface.Client
 
 				if (devNode.Items.Count > 0)
 				{
-
 					var group = ((IContentGroup)devNode.Items[0]);
 					lbxContentContainer.DataContext = group.Contents;
 					lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
+					btnDelete.IsEnabled = false;
 					lblContentLocation.DataContext = group;
 					SetContentTypeCount(group);
 					ShowToolBarButtons(true);
@@ -1580,20 +1582,19 @@ namespace Waveface.Client
 					{
 						EventHandler eh = null;
 
-						eh = new EventHandler(delegate
-						{
-							if (devNode.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
-							{
-								var folder = (TreeViewItem)devNode.ItemContainerGenerator.ContainerFromIndex(0);
-								folder.IsSelected = true;
+						eh = delegate
+								 {
+									 if (devNode.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+									 {
+										 var folder = (TreeViewItem)devNode.ItemContainerGenerator.ContainerFromIndex(0);
+										 folder.IsSelected = true;
 
-								devNode.ItemContainerGenerator.StatusChanged -= eh;
-							}
-						});
+										 devNode.ItemContainerGenerator.StatusChanged -= eh;
+									 }
+								 };
 
 						devNode.ItemContainerGenerator.StatusChanged += eh;
 					}
-
 				}
 			}
 		}
@@ -1609,6 +1610,11 @@ namespace Waveface.Client
 				string _arg = @"/select, " + _dir;
 				Process.Start("explorer.exe", _arg);
 			}
+		}
+
+		private void lbxContentContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			btnDelete.IsEnabled = lbxContentContainer.SelectedItems.Count != 0;
 		}
 	}
 }
