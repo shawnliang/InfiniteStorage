@@ -55,7 +55,7 @@
 			this.pictureBox1.Image = global::InfiniteStorage.Properties.Resources.Waiting;
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.TabStop = false;
-			this.pictureBox1.DoubleClick += new System.EventHandler(this.pictureBox1_DoubleClick);
+			this.pictureBox1.DoubleClick += new System.EventHandler(this.onDoubleClick);
 			// 
 			// tabControlEx1
 			// 
@@ -66,7 +66,7 @@
 			this.tabControlEx1.HideTabs = true;
 			this.tabControlEx1.Multiline = true;
 			this.tabControlEx1.Name = "tabControlEx1";
-			this.tabControlEx1.PageIndex = 3;
+			this.tabControlEx1.PageIndex = 2;
 			this.tabControlEx1.SelectedIndex = 0;
 			// 
 			// tabProgress
@@ -101,21 +101,25 @@
 			this.tabDisconnected.Controls.Add(this.disconnect_desc);
 			resources.ApplyResources(this.tabDisconnected, "tabDisconnected");
 			this.tabDisconnected.Name = "tabDisconnected";
+			this.tabDisconnected.DoubleClick += new System.EventHandler(this.onDoubleClick);
 			// 
 			// devname3
 			// 
 			resources.ApplyResources(this.devname3, "devname3");
 			this.devname3.Name = "devname3";
+			this.devname3.DoubleClick += new System.EventHandler(this.onDoubleClick);
 			// 
 			// disconnectedText
 			// 
 			resources.ApplyResources(this.disconnectedText, "disconnectedText");
 			this.disconnectedText.Name = "disconnectedText";
+			this.disconnectedText.DoubleClick += new System.EventHandler(this.onDoubleClick);
 			// 
 			// disconnect_desc
 			// 
 			resources.ApplyResources(this.disconnect_desc, "disconnect_desc");
 			this.disconnect_desc.Name = "disconnect_desc";
+			this.disconnect_desc.DoubleClick += new System.EventHandler(this.onDoubleClick);
 			// 
 			// tabComplete
 			// 
@@ -124,19 +128,19 @@
 			this.tabComplete.Controls.Add(this.devname2);
 			resources.ApplyResources(this.tabComplete, "tabComplete");
 			this.tabComplete.Name = "tabComplete";
-			this.tabComplete.DoubleClick += new System.EventHandler(this.pictureBox1_DoubleClick);
+			this.tabComplete.DoubleClick += new System.EventHandler(this.onDoubleClick);
 			// 
 			// importCompleteText
 			// 
 			resources.ApplyResources(this.importCompleteText, "importCompleteText");
 			this.importCompleteText.Name = "importCompleteText";
-			this.importCompleteText.Click += new System.EventHandler(this.pictureBox1_DoubleClick);
+			this.importCompleteText.Click += new System.EventHandler(this.onDoubleClick);
 			// 
 			// devname2
 			// 
 			resources.ApplyResources(this.devname2, "devname2");
 			this.devname2.Name = "devname2";
-			this.devname2.DoubleClick += new System.EventHandler(this.pictureBox1_DoubleClick);
+			this.devname2.DoubleClick += new System.EventHandler(this.onDoubleClick);
 			// 
 			// ProgressTooltip
 			// 
@@ -152,7 +156,7 @@
 			this.TopMost = true;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProgressTooltip_FormClosing);
 			this.Load += new System.EventHandler(this.ProgressTooltip_Load);
-			this.DoubleClick += new System.EventHandler(this.pictureBox1_DoubleClick);
+			this.DoubleClick += new System.EventHandler(this.onDoubleClick);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.tabControlEx1.ResumeLayout(false);
 			this.tabProgress.ResumeLayout(false);

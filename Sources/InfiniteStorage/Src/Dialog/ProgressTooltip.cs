@@ -111,9 +111,11 @@ namespace InfiniteStorage
 			Hide();
 		}
 
-		private void pictureBox1_DoubleClick(object sender, EventArgs e)
+		private void onDoubleClick(object sender, EventArgs e)
 		{
-
+			if (tabControlEx1.SelectedTab == tabComplete || 
+				tabControlEx1.SelectedTab == tabDisconnected)
+				ImportUIPresenter.Instance.StartViewer(device_id);
 		}
 	}
 
