@@ -8,7 +8,7 @@
         Title="Favorite"
         Width="807"
         Height="498.5"
-        MinWidth="1000"
+        MinWidth="1010"
         MinHeight="640"
         ContentRendered="window_ContentRendered"
         Icon="/Waveface.Client;component/Resource/FAV_512.ico"
@@ -26,20 +26,16 @@
         <SolidColorBrush x:Key="HorizontalNormalBrush" Color="#888" />
         <SolidColorBrush x:Key="HorizontalNormalBorderBrush" Color="#888" />
 
-        <ContextMenu x:Key="SourceContentContextMenu">
+        <ContextMenu x:Key="SourceContentContextMenu" x:Name="SourceContentContextMenu">
             <MenuItem Click="StarMenuItem_Click" Header="Star" />
             <MenuItem Click="CreateFavoriteMenuItem_Click" Header="Create Favorite..." />
-            <MenuItem Click="AddToFavoriteMenuItem_Click" Header="Add to Favorite..." />               
+            <MenuItem Click="AddToFavoriteMenuItem_Click" Header="Add to Favorite..." />
             <Separator />
             <MenuItem Click="miLocateOnDisk_Click" Header="Locate on Disk" />
             <MenuItem Click="DeleteMenuItem_Click" Header="Delete" />
         </ContextMenu>
 
-        <ContextMenu x:Key="cm">
-            <!--
-                <MenuItem Click="StarMenuItem_Click"
-                Header="Star" />
-            -->
+        <ContextMenu x:Key="ContentContextMenu" x:Name="ContentContextMenu">
             <MenuItem Click="CreateFavoriteMenuItem_Click" Header="Create Favorite..." />
             <MenuItem Click="AddToFavoriteMenuItem_Click" Header="Add to Favorite..." />
             <Separator />
@@ -272,18 +268,18 @@
                         <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{TemplateBinding Background}">
                             <ContentPresenter />
                         </Border>
-                        
-                        <ControlTemplate.Triggers>                       
+
+                        <ControlTemplate.Triggers>
                             <Trigger Property="Selector.IsSelected" Value="True">
                                 <Setter Property="Background" Value="#FF427FED" />
                             </Trigger>
-                            
+
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsMouseOver" Value="True" />
                                     <Condition Property="IsSelected" Value="False" />
                                 </MultiTrigger.Conditions>
-                                
+
                                 <Setter Property="Background" Value="#5FB0E0E6" />
                             </MultiTrigger>
 
@@ -351,6 +347,43 @@
             <ColumnDefinition />
             <ColumnDefinition Width="200" MinWidth="200" />
         </Grid.ColumnDefinitions>
+
+        <Grid x:Name="gdContentArea"
+              Grid.Row="1"
+              Grid.Column="1"
+              Grid.ColumnSpan="2"
+              Margin="1,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <ScrollViewer x:Name="svContentContainer"
+                          Grid.Row="0"
+                          HorizontalScrollBarVisibility="Disabled"
+                          IsDeferredScrollingEnabled="True"
+                          ScrollChanged="svContentContainer_ScrollChanged"
+                          VerticalScrollBarVisibility="Auto">
+                <ListBox x:Name="lbxContentContainer"
+                         Background="{x:Null}"
+                         BorderBrush="{x:Null}"
+                         Foreground="{x:Null}"
+                         IsSynchronizedWithCurrentItem="True"
+                         ItemsSource="{Binding IsAsync=True}"
+                         KeyDown="lbxContentContainer_KeyDown"
+                         PreviewMouseLeftButtonDown="List_PreviewMouseLeftButtonDown"
+                         PreviewMouseLeftButtonUp="lbxContentContainer_PreviewMouseLeftButtonUp"
+                         PreviewMouseMove="List_MouseMove"
+                         SelectionChanged="lbxContentContainer_SelectionChanged"
+                         SelectionMode="Extended"
+                         Style="{StaticResource PhotoListBoxStyle}"
+                         VirtualizingStackPanel.IsVirtualizing="True"
+                         VirtualizingStackPanel.VirtualizationMode="Recycling" />
+            </ScrollViewer>
+
+            <local:AddSourceTip Grid.Row="0"
+                                Width="Auto"
+                                Height="Auto" />
+        </Grid>
 
         <Grid Grid.Row="0"
               Grid.Column="1"
@@ -516,6 +549,7 @@
                                    Margin="10,10,10,5"
                                    AddToFavorite="rspRightSidePanel_AddToFavorite"
                                    SaveToFavorite="rspRightSidePanel_SaveToFavorite" />
+            
             <local:RightSidePanel2 x:Name="rspRightSidePane2"
                                    Height="Auto"
                                    Margin="0,5,0,0"
@@ -523,46 +557,9 @@
                                    DeleteButtonClick="rspRightSidePane2_DeleteButtonClick"
                                    FavoriteName="{Binding SelectedItem.Name,
                                                           ElementName=lbxFavorites,
-                                                          Mode=TwoWay}"
-                                   OnAirClick="rspRightSidePane2_OnAirClick" />
+                                                          Mode=TwoWay}"/>
 
 
-        </Grid>
-
-        <Grid x:Name="gdContentArea"
-              Grid.Row="1"
-              Grid.Column="1"
-              Grid.ColumnSpan="2"
-              Margin="1,0,0,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <ScrollViewer x:Name="svContentContainer"
-                          Grid.Row="0"
-                          HorizontalScrollBarVisibility="Disabled"
-                          IsDeferredScrollingEnabled="True"
-                          ScrollChanged="svContentContainer_ScrollChanged"
-                          VerticalScrollBarVisibility="Auto">
-                <ListBox x:Name="lbxContentContainer"
-                         Background="{x:Null}"
-                         BorderBrush="{x:Null}"
-                         Foreground="{x:Null}"
-                         IsSynchronizedWithCurrentItem="True"
-                         ItemsSource="{Binding IsAsync=True}"
-                         KeyDown="lbxContentContainer_KeyDown"
-                         PreviewMouseLeftButtonDown="List_PreviewMouseLeftButtonDown"
-                         PreviewMouseLeftButtonUp="lbxContentContainer_PreviewMouseLeftButtonUp"
-                         PreviewMouseMove="List_MouseMove"
-                         SelectionMode="Extended"
-                         Style="{StaticResource PhotoListBoxStyle}"
-                         VirtualizingStackPanel.IsVirtualizing="True"
-                         VirtualizingStackPanel.VirtualizationMode="Recycling" />
-            </ScrollViewer>
-
-            <local:AddSourceTip Grid.Row="0"
-                                Width="Auto"
-                                Height="Auto" />
         </Grid>
 
         <local:UnSortedFilesUC x:Name="unSortedFilesUC"
@@ -574,26 +571,6 @@
                                Height="Auto"
                                Margin="1,0,0,0"
                                Visibility="Collapsed" />
-
-        <Grid x:Name="helpPanel"
-              Grid.Row="2"
-              Grid.ColumnSpan="3"
-              Height="80"
-              Margin="8, 0, 8, 0"
-              Background="Black">
-            <Grid Margin="2" Background="Gray">
-                <Button x:Name="btnHelpPanelClose"
-                        Width="15"
-                        Height="15"
-                        Margin="4"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        Click="btnHelpPanelClose_Click"
-                        Content="X"
-                        FontSize="10"
-                        FontWeight="ExtraBold" />
-            </Grid>
-        </Grid>
 
         <StackPanel x:Name="stackPanel"
                     Grid.Row="2"
@@ -649,6 +626,61 @@
                                Text="Thumbnail Size" />
                 </StackPanel>
 
+                <Grid x:Name="helpPanel" Height="100" Width="420" Background="#456CB9"
+                                       Margin="344, -180, 4, 4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.Effect>
+                        <DropShadowEffect/>
+                    </Grid.Effect>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="56"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Grid.Column="0" Source="/Waveface.Client;component/Resource/ico_arrow_down.png" Width="36" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, 16"/>
+
+                    <Grid Grid.Column="1" Margin="0, 16, 12, 8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Foreground="White" Text="立即建立雲端相簿" FontSize="16" VerticalAlignment="Center" />
+                        <TextBlock Grid.Row="1" Grid.RowSpan="2" Foreground="White" Text="點這裡" FontSize="40" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <Grid Grid.Column="2" Margin="0, 16, 8, 8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="18"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Foreground="White" Text="◎" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Foreground="White" Text="◎" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <TextBlock Grid.Row="2" Grid.Column="0" Foreground="White" Text="◎" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+                        <TextBlock Grid.Row="0" Grid.Column="1" Foreground="White" Text="免帳號上傳照片、影片" FontSize="16" VerticalAlignment="Center" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Foreground="White" Text="自動同步到裝置中帶著走" FontSize="16" VerticalAlignment="Center" />
+                        <TextBlock Grid.Row="2" Grid.Column="1" Foreground="White" Text="輕鬆分享給親朋好友" FontSize="16" VerticalAlignment="Center" />
+                    </Grid>
+
+                    <Button Grid.Column="2" x:Name="btnHelpPanelClose" Background="#456CB9"
+                        Width="15"
+                        Height="15"
+                        Margin="4"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Click="btnHelpPanelClose_Click"
+                        Content="X"
+                        FontSize="10"
+                        FontWeight="ExtraBold" />
+                </Grid>
+
                 <local:ButtonImageText x:Name="btnCreateCloudAlbum"
                                        Margin="-20, 4, 4, 4"
                                        HorizontalAlignment="Center"
@@ -675,26 +707,21 @@
                         <local:ButtonImageText.ContextMenu>
                             <ContextMenu Style="{StaticResource contextMenuStyle1}">
                                 <MenuItem Click="miAddtoNewFavorite_Click" Header="{DynamicResource CreateFavorite}" />
-                                <!--
-                                    MenuItem Header="{DynamicResource CreateNewFolder}"/>
-                                    <Separator />
-                                    <MenuItem Header="{DynamicResource AddToExistingFolder}"/
-                                -->
                                 <MenuItem Click="miAddToFavorite_Click" Header="{DynamicResource AddToFavorite}" />
                                 <MenuItem Click="miAddToStarred_Click" Header="{DynamicResource AddToStarred}" />
                             </ContextMenu>
                         </local:ButtonImageText.ContextMenu>
                     </local:ButtonImageText>
 
-                    <local:ButtonImageText x:Name="btnView"
+                    <local:ButtonImageText x:Name="btnDelete"
                                            Margin="20, 4, 24, 4"
                                            HorizontalAlignment="Right"
                                            VerticalAlignment="Center"
-                                           Click="btnView_Click"
+                                           Click="btnDelete_Click"
                                            Foreground="#4F4F4F"
-                                           ImageEnterUri="pack://application:,,,/Resource/bar_view_2.png"
-                                           ImageUri="pack://application:,,,/Resource/bar_view_1.png"
-                                           Text="View"
+                                           ImageEnterUri="pack://application:,,,/Resource/bar_bin_2.png"
+                                           ImageUri="pack://application:,,,/Resource/bar_bin_1.png"
+                                           Text="Delete"
                                            Visibility="Collapsed" />
                 </StackPanel>
             </Grid>
