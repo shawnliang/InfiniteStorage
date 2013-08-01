@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DowngradeNotSupported" xml:space="preserve">
     <value>The wizard has detected that newer version of Favorite Home is already installed on your computer. Setup cannot continue.</value>
@@ -153,5 +153,8 @@
   </data>
   <data name="FinishStep1Command" xml:space="preserve">
     <value>{0}\application.exe</value>
+  </data>
+  <data name="LocationStep_NotEmpty" xml:space="preserve">
+    <value>The specified folder is not empty. Please choose an empty folder instead.</value>
   </data>
 </root>

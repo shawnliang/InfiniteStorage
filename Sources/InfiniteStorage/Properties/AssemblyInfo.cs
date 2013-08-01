@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Favorite Home")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Waveface Inc")]
+[assembly: AssemblyCompany("Waveface")]
 [assembly: AssemblyProduct("Favorite Home")]
 [assembly: AssemblyCopyright("Copyright © Waveface 2013")]
 [assembly: AssemblyTrademark("")]

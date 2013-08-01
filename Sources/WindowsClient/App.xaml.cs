@@ -62,7 +62,6 @@ namespace Waveface.Client
 			{
 				Settings.Default.Upgrade();
 				Settings.Default.IsUpgraded = true;
-				Settings.Default.IsFirstUse = true;
 				Settings.Default.Save();
 			}
 

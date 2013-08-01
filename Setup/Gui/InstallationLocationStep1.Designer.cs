@@ -28,10 +28,13 @@ namespace Gui
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InstallationLocationStep1));
 			this.lblDescription = new System.Windows.Forms.Label();
 			this.changeButton = new System.Windows.Forms.Button();
 			this.location = new System.Windows.Forms.TextBox();
+			this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+			((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lblDescription
@@ -50,6 +53,11 @@ namespace Gui
 			// 
 			resources.ApplyResources(this.location, "location");
 			this.location.Name = "location";
+			this.location.Validating += new System.ComponentModel.CancelEventHandler(this.location_Validating);
+			// 
+			// errorProvider1
+			// 
+			this.errorProvider1.ContainerControl = this;
 			// 
 			// InstallationLocationStep1
 			// 
@@ -63,6 +71,7 @@ namespace Gui
 			this.Controls.SetChildIndex(this.lblDescription, 0);
 			this.Controls.SetChildIndex(this.changeButton, 0);
 			this.Controls.SetChildIndex(this.location, 0);
+			((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -73,5 +82,6 @@ namespace Gui
 		private System.Windows.Forms.Label lblDescription;
 		private System.Windows.Forms.Button changeButton;
 		private System.Windows.Forms.TextBox location;
+		private System.Windows.Forms.ErrorProvider errorProvider1;
 	}
 }

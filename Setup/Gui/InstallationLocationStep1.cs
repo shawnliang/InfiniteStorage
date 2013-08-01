@@ -3,6 +3,9 @@ using SharpSetup.UI.Forms.Modern;
 using System.IO;
 using System;
 using System.Windows.Forms;
+using Microsoft.Win32;
+using System.Linq;
+using Gui.Properties;
 
 namespace Gui
 {
@@ -17,6 +20,27 @@ namespace Gui
 		private void InstallationLocationStep1_Entering(object sender, ChangeStepEventArgs e)
 		{
 			location.Text = Path.Combine(Environment.GetEnvironmentVariable("UserProfile"), "Favorite Home");
+			
+			if (!isLocationValid())
+				errorProvider1.SetError(location, Resources.LocationStep_NotEmpty);
+
+			try
+			{
+				var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+				Directory.Delete(Path.Combine(localAppData, "waveface"), true);
+			}
+			catch
+			{
+			}
+			
+			try
+			{
+				var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+				Directory.Delete(Path.Combine(appData, "Bunny"), true);
+			}
+			catch
+			{
+			}
 		}
 
 		private void changeButton_Click(object sender, EventArgs e)
@@ -32,6 +56,27 @@ namespace Gui
 		private void InstallationLocationStep1_MoveNext(object sender, ChangeStepEventArgs e)
 		{
 			Wizard.SetVariable<string>("resourceFolder", location.Text);
+
+			if (!isLocationValid())
+			{
+				e.Continue = false;
+				MessageBox.Show(Resources.LocationStep_NotEmpty);
+			}
+		}
+
+		private void location_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (isLocationValid())
+				errorProvider1.SetError(location, "");
+			else
+				errorProvider1.SetError(location, Resources.LocationStep_NotEmpty);
+		}
+
+		private bool isLocationValid()
+		{
+			var dir = new DirectoryInfo(location.Text);
+			// location must be empty or not exist
+			return !dir.Exists || !dir.GetFileSystemInfos().Any();
 		}
 	}
 }

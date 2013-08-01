@@ -80,7 +80,7 @@ namespace InfiniteStorage
 
 			if (string.IsNullOrEmpty(Settings.Default.ServerId))
 			{
-				Settings.Default.ServerId = generateSameServerIdForSameUserOnSamePC();
+				Settings.Default.ServerId = Guid.NewGuid().ToString();
 				Settings.Default.SingleFolderLocation = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", "");
 				Settings.Default.OrganizeMethod = (int)OrganizeMethod.YearMonth;
 				Settings.Default.LocationType = (int)LocationType.SingleFolder;
