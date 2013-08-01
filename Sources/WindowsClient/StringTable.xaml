@@ -82,8 +82,8 @@
 
     <system:String x:Key="ConfirmSync_1">{0} Connected Successfully!</system:String>
     <system:String x:Key="ConfirmSync_2">Everything on your device gets synced to this PC automatically -- from now on.</system:String>
-    <system:String x:Key="ConfirmSync_3">Import photos from this devices</system:String>
-    <system:String x:Key="ConfirmSync_4">Import the latest 150 photos or videos</system:String>
+    <system:String x:Key="ConfirmSync_3">Import photos and vedios from this devices</system:String>
+    <system:String x:Key="ConfirmSync_4">Import the latest 150 items</system:String>
     <system:String x:Key="ConfirmSync_5">(Around 3 minutes)</system:String>
     <system:String x:Key="ConfirmSync_6">Import all items</system:String>
     <system:String x:Key="ConfirmSync_7">(It takes longer)</system:String>

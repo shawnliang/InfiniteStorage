@@ -32,9 +32,10 @@
                         <Border Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="22"
+                                CornerRadius="10"
                                 Padding="{TemplateBinding Padding}">
-                            <ContentControl HorizontalAlignment="Center"
+                            <ContentControl Margin="20,0,0,0"
+                                            HorizontalAlignment="Left"
                                             VerticalAlignment="Center"
                                             Content="{TemplateBinding Content}" />
                             <Border.Effect>
@@ -46,14 +47,21 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="AliceBlue" />
+                    <Setter Property="Background" Value="#DAEEF3" />
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="AliceBlue" />
+                    <Setter Property="Background" Value="#B7DDE8" />
                 </Trigger>
             </Style.Triggers>
         </Style>
 
+        <BitmapImage x:Key="LeftBtnImg"
+                     CacheOption="OnDemand"
+                     UriSource="pack://application:,,,/Resource/ico_pic.png" />
+
+        <BitmapImage x:Key="RightBtnImg"
+                     CacheOption="OnDemand"
+                     UriSource="pack://application:,,,/Resource/ico_sand.png" />
 
     </Window.Resources>
 
@@ -61,18 +69,21 @@
         <Grid>
             <StackPanel Panel.ZIndex="1000">
                 <StackPanel.Background>
-                    <LinearGradientBrush StartPoint="0,0.1" EndPoint="0,1">
-                        <GradientStop Offset="0.0" Color="Black" />
-                        <GradientStop Offset="1.0" />
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="-0.2" Color="Black" />
+                        <GradientStop Offset="2" />
                     </LinearGradientBrush>
                 </StackPanel.Background>
-                <Label x:Name="connected_title"
-                       Margin="10,30,0,0"
-                       HorizontalAlignment="Center"
-                       Content="{DynamicResource ConfirmSync_1}"
-                       FontSize="40"
-                       FontWeight="Bold"
-                       Foreground="White" />
+                <TextBlock x:Name="connected_title"
+                           MaxWidth="850"
+                           Margin="10,30,0,0"
+                           HorizontalAlignment="Center"
+                           FontSize="40"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           Text="{DynamicResource ConfirmSync_1}"
+                           TextAlignment="Center"
+                           TextWrapping="WrapWithOverflow" />
                 <TextBlock MinHeight="40"
                            MaxWidth="700"
                            Margin="10,10,0,0"
@@ -140,15 +151,17 @@
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0"
-                    MinHeight="80"
+                    MinHeight="90"
                     Margin="10"
                     Click="ImportLatest150Button_Click"
                     Style="{StaticResource RoundButton}">
                 <StackPanel Orientation="Horizontal">
                     <Image Width="50"
                            Margin="10"
-                           Source="{StaticResource BigPhotoIcon}" />
-                    <StackPanel VerticalAlignment="Center">
+                           Source="{StaticResource LeftBtnImg}" />
+                    <StackPanel Margin="10,0,0,0"
+                                VerticalAlignment="Center"
+                                SnapsToDevicePixels="True">
                         <Label Margin="0"
                                Content="{DynamicResource ConfirmSync_4}"
                                FontSize="18"
@@ -158,15 +171,17 @@
                 </StackPanel>
             </Button>
             <Button Grid.Column="1"
-                    MinHeight="80"
+                    MinHeight="90"
                     Margin="10"
                     Click="ImportAllButton_Click"
                     Style="{StaticResource RoundButton}">
                 <StackPanel Orientation="Horizontal">
                     <Image Width="50"
                            Margin="10"
-                           Source="{StaticResource BigPhotoIcon}" />
-                    <StackPanel VerticalAlignment="Center">
+                           Source="{StaticResource RightBtnImg}" />
+                    <StackPanel Margin="10,0,0,0"
+                                VerticalAlignment="Center"
+                                SnapsToDevicePixels="True">
                         <Label Margin="0"
                                Content="{DynamicResource ConfirmSync_6}"
                                FontSize="18"

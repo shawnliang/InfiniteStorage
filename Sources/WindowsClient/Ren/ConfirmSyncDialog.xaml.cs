@@ -38,7 +38,7 @@ namespace Waveface.Client
 
 		private void Window_Loaded_1(object sender, RoutedEventArgs e)
 		{
-			connected_title.Content = string.Format(connected_title.Content.ToString(), PairingRequest.device_name);
+			connected_title.Text = string.Format(connected_title.Text.ToString(), PairingRequest.device_name);
 		}
 
 		private void ImportLatest150Button_Click(object sender, RoutedEventArgs e)
