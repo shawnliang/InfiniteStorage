@@ -395,6 +395,7 @@ namespace InfiniteStorage
 			var pair_port = initWebsocketServer<Pair.PairWebSocketService>(out pair_server, 14105);
 
 			Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "pair_port", pair_port);
+			Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "notify_port", notify_port);
 
 			BonjourServiceRegistrator.Instance.SetPorts(backup_port, notify_port, 14005);
 

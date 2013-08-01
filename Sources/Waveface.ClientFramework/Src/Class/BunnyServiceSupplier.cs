@@ -11,6 +11,7 @@ using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 using System.Threading;
 using InfiniteStorage.Data.Notify;
+using Microsoft.Win32;
 
 namespace Waveface.ClientFramework
 {
@@ -105,7 +106,12 @@ namespace Waveface.ClientFramework
 		private void subscribeActiveDeviceAsync()
 		{
 			System.Threading.Tasks.Task t = new System.Threading.Tasks.Task(() => {
-				ws = new WebSocket("ws://127.0.0.1:13995/", new string[] { });
+
+				var port = Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "notify_port", "13995");
+
+				var wsUrl = string.Format("ws://127.0.0.1:{0}/", port);
+
+				ws = new WebSocket(wsUrl, new string[] { });
 				ws.OnOpen += new EventHandler(ws_OnOpen);
 				ws.OnClose += new EventHandler<CloseEventArgs>(ws_OnClose);
 				ws.OnMessage += new EventHandler<MessageEventArgs>(ws_OnMessage);
