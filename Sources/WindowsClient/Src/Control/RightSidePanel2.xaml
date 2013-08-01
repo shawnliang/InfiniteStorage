@@ -24,21 +24,7 @@
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="ShareLinkButtonStyle"
-               TargetType="ToggleButton">
-            <Setter Property="Content" Value="{DynamicResource TurnOnCloudSharingButtonText}" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsChecked,
-                                               ElementName=tbtnCloudSharing,
-                                               IsAsync=True}"
-                             Value="True">
-                    <Setter Property="Content" Value="{DynamicResource TurnOffCloudSharingButtonText}" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="ShareLinkTipStyle"
-               TargetType="TextBlock">
+        <Style x:Key="ShareLinkTipStyle" TargetType="TextBlock">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsChecked,
                                                ElementName=tbtnCloudSharing,
@@ -48,14 +34,14 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <ControlTemplate x:Key="ButtonBaseControlTemplate1"
-                         TargetType="{x:Type ButtonBase}">
+        
+        <ControlTemplate x:Key="ButtonBaseControlTemplate1"  TargetType="{x:Type ButtonBase}">
             <Border x:Name="border"
                     Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="White"
+                    BorderThickness="1"
                     SnapsToDevicePixels="True">
-                <ContentPresenter x:Name="contentPresenter"
+                <ContentPresenter x:Name="contentPresenter"                               
                                   Margin="{TemplateBinding Padding}"
                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -66,29 +52,8 @@
                                   RecognizesAccessKey="True"
                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
             </Border>
-            <ControlTemplate.Triggers>
-                <Trigger Property="Button.IsDefaulted" Value="True">
-                    <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                </Trigger>
-                <Trigger Property="ToggleButton.IsChecked" Value="True">
-                    <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="Black" />
-                    <Setter TargetName="border" Property="Background" Value="#FFA0A0A0" />
-                    <Setter TargetName="border" Property="BorderBrush" Value="Black" />
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter TargetName="border" Property="Background" Value="#E5E5E5" />
-                    <Setter TargetName="border" Property="BorderBrush" Value="#FFADB2B5" />
-                    <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="#FF838383" />
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter TargetName="border" Property="Background" Value="#FFF4F4F4" />
-                    <Setter TargetName="border" Property="BorderBrush" Value="#FFADB2B5" />
-                    <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="#FF838383" />
-                </Trigger>
-            </ControlTemplate.Triggers>
         </ControlTemplate>
     </UserControl.Resources>
-
 
     <StackPanel x:Name="LayoutRoot">
         <TextBox x:Name="tbxName"
@@ -108,7 +73,7 @@
                  Text="[Favorite Name]"
                  TextChanged="tbxName_TextChanged" />
 
-        <ToggleButton x:Name="tbtnHomeSharing"
+        <!--ToggleButton x:Name="tbtnHomeSharing"
                       Height="34"
                       Margin="10,20,10,0"
                       Background="#FF4F4F4F"
@@ -120,23 +85,19 @@
                Margin="10,0"
                HorizontalAlignment="Center"
                Content="{DynamicResource HomeSharingTip}"
-               Foreground="#FFA8A8A8" />
+               Foreground="#FFA8A8A8" /-->
 
         <ToggleButton x:Name="tbtnCloudSharing"
-                      Height="34"
+                      Height="28"
                       Margin="10,20,10,0"
-                      Background="#FF4F4F4F"
+                      Background="DodgerBlue"
                       Foreground="White"
-                      Style="{DynamicResource ShareLinkButtonStyle}"
                       Template="{DynamicResource ButtonBaseControlTemplate1}"
-                      Cursor="Hand"/>
-        <TextBlock Margin="10,5,10,0"
-                   HorizontalAlignment="Center"
-                   Foreground="#FFA8A8A8"
-                   Style="{DynamicResource ShareLinkTipStyle}"
-                   Text="{DynamicResource CloudSharingTip}"
-                   TextWrapping="WrapWithOverflow" />
-        
+                      Cursor="Hand"
+                      Content="開啟"
+                      Checked="tbtnCloudSharing_Checked"
+                      Unchecked="tbtnCloudSharing_Unchecked" />
+
         <Grid Margin="10,20,10,0"
               Visibility="{Binding IsChecked,
                                    Converter={StaticResource BooleanToVisibilityConverter},

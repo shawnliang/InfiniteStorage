@@ -557,8 +557,7 @@
                                    DeleteButtonClick="rspRightSidePane2_DeleteButtonClick"
                                    FavoriteName="{Binding SelectedItem.Name,
                                                           ElementName=lbxFavorites,
-                                                          Mode=TwoWay}"
-                                   OnAirClick="rspRightSidePane2_OnAirClick" />
+                                                          Mode=TwoWay}"/>
 
 
         </Grid>

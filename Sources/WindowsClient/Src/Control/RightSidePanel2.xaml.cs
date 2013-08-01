@@ -3,6 +3,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 #endregion
 
@@ -16,12 +17,12 @@ namespace Waveface.Client
 
 		#region FavoriteName
 
-		public static readonly DependencyProperty _favoriteName = DependencyProperty.Register("FavoriteName", typeof (string), typeof (RightSidePanel2),
-		                                                                                      new UIPropertyMetadata(string.Empty, OnFavoriteNameChanged));
+		public static readonly DependencyProperty _favoriteName = DependencyProperty.Register("FavoriteName", typeof(string), typeof(RightSidePanel2),
+																							  new UIPropertyMetadata(string.Empty, OnFavoriteNameChanged));
 
 		public string FavoriteName
 		{
-			get { return (string) GetValue(_favoriteName); }
+			get { return (string)GetValue(_favoriteName); }
 			set
 			{
 				SetValue(_favoriteName, value);
@@ -70,12 +71,7 @@ namespace Waveface.Client
 				return;
 
 			var control = o as RightSidePanel2;
-			control.FavoriteName = (string) e.NewValue;
-		}
-
-		private void ToggleButton_Click(object sender, RoutedEventArgs e)
-		{
-			OnOnAirClick(EventArgs.Empty);
+			control.FavoriteName = (string)e.NewValue;
 		}
 
 		private void tbxName_TextChanged(object sender, TextChangedEventArgs e)
@@ -83,19 +79,33 @@ namespace Waveface.Client
 			FavoriteName = tbxName.Text;
 		}
 
+		/*
+		private void swbHomeSharing_IsOnStatusChanged(object sender, EventArgs e)
+		{
+			OnOnAirClick(EventArgs.Empty);
+		}
+		*/
+
 		private void btnAction_Copy1_Click(object sender, RoutedEventArgs e)
 		{
 			OnDeleteButtonClick(EventArgs.Empty);
 		}
 
-		private void swbHomeSharing_IsOnStatusChanged(object sender, EventArgs e)
-		{
-			OnOnAirClick(EventArgs.Empty);
-		}
-
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
 			OnCloudSharingClick(EventArgs.Empty);
+		}
+
+		private void tbtnCloudSharing_Checked(object sender, RoutedEventArgs e)
+		{
+			tbtnCloudSharing.Background = Brushes.Red;
+			tbtnCloudSharing.Content = "關閉";
+		}
+
+		private void tbtnCloudSharing_Unchecked(object sender, RoutedEventArgs e)
+		{
+			tbtnCloudSharing.Background = Brushes.DodgerBlue;
+			tbtnCloudSharing.Content = "開啟";
 		}
 	}
 }

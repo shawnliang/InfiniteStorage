@@ -59,8 +59,8 @@ namespace Waveface.Client
 			rspRightSidePane2.tbxName.KeyDown += tbxName_KeyDown;
 			rspRightSidePane2.tbxName.LostFocus += tbxName_LostFocus;
 
-			rspRightSidePane2.tbtnHomeSharing.Checked += rspRightSidePane2_OnAirClick;
-			rspRightSidePane2.tbtnHomeSharing.Unchecked += rspRightSidePane2_OnAirClick;
+			//rspRightSidePane2.tbtnHomeSharing.Checked += rspRightSidePane2_OnAirClick;
+			//rspRightSidePane2.tbtnHomeSharing.Unchecked += rspRightSidePane2_OnAirClick;
 
 			rspRightSidePane2.tbtnCloudSharing.Checked += tbtnCloudSharing_Checked;
 			rspRightSidePane2.tbtnCloudSharing.Unchecked += tbtnCloudSharing_Checked;
@@ -68,7 +68,7 @@ namespace Waveface.Client
 
 			rspRightSidePanel.btnClearAll.Click += btnClearAll_Click;
 
-			rspRightSidePane2.lblHomeSharingTutorialTip.MouseDown += lblHomeSharingTutorialTip_MouseDown;
+			//rspRightSidePane2.lblHomeSharingTutorialTip.MouseDown += lblHomeSharingTutorialTip_MouseDown;
 
 			lblContentTypeCount.Content = string.Format("0 photos 0 videos");
 
@@ -468,10 +468,12 @@ namespace Waveface.Client
 			}
 		}
 
+		/*
 		private void lblHomeSharingTutorialTip_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			Process.Start("http://waveface.uservoice.com/knowledgebase/articles/215523-step4-share-favorites-with-your-favorite-people");
 		}
+		*/
 
 		private void uiDelayTimer_Tick(object sender, EventArgs e)
 		{
@@ -915,20 +917,22 @@ namespace Waveface.Client
 			SaveToFavorite(lbxContentContainer.Items.OfType<IContentEntity>());
 		}
 
+		/*
+		// XAML: OnAirClick="rspRightSidePane2_OnAirClick"
+		//
 		private void rspRightSidePane2_OnAirClick(object sender, EventArgs e)
 		{
 			ClientFramework.Client.Default.OnAir((lblContentLocation.DataContext as IContentEntity).ID, rspRightSidePane2.tbtnHomeSharing.IsChecked.Value);
 		}
+		*/
 
 		private void updateRightSidePanel2(IContentGroup group)
 		{
-			var isOnAir = ClientFramework.Client.Default.IsOnAir(group);
-
-			rspRightSidePane2.tbtnHomeSharing.IsEnabled = ClientFramework.Client.Default.HomeSharingEnabled;
-			rspRightSidePane2.tbtnHomeSharing.IsChecked = isOnAir;
+			//var isOnAir = ClientFramework.Client.Default.IsOnAir(group);
+			//rspRightSidePane2.tbtnHomeSharing.IsEnabled = ClientFramework.Client.Default.HomeSharingEnabled;
+			//rspRightSidePane2.tbtnHomeSharing.IsChecked = isOnAir;
 
 			rspRightSidePane2.tbtnCloudSharing.IsChecked = (group as BunnyLabelContentGroup).ShareEnabled;
-
 			rspRightSidePane2.tbxShareLink.Text = (lblContentLocation.DataContext as BunnyLabelContentGroup).ShareURL;
 		}
 
