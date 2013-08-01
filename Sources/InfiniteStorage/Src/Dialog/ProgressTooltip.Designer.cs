@@ -30,18 +30,18 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgressTooltip));
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
-			this.devname = new System.Windows.Forms.Label();
-			this.progressText = new System.Windows.Forms.Label();
-			this.progressBar1 = new System.Windows.Forms.ProgressBar();
-			this.disconnect_desc = new System.Windows.Forms.Label();
 			this.tabControlEx1 = new InfiniteStorage.TabControlEx();
 			this.tabProgress = new System.Windows.Forms.TabPage();
+			this.devname = new System.Windows.Forms.Label();
+			this.progressBar1 = new System.Windows.Forms.ProgressBar();
+			this.progressText = new System.Windows.Forms.Label();
 			this.tabDisconnected = new System.Windows.Forms.TabPage();
 			this.devname3 = new System.Windows.Forms.Label();
 			this.disconnectedText = new System.Windows.Forms.Label();
+			this.disconnect_desc = new System.Windows.Forms.Label();
 			this.tabComplete = new System.Windows.Forms.TabPage();
-			this.devname2 = new System.Windows.Forms.Label();
 			this.importCompleteText = new System.Windows.Forms.Label();
+			this.devname2 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.tabControlEx1.SuspendLayout();
 			this.tabProgress.SuspendLayout();
@@ -55,26 +55,7 @@
 			this.pictureBox1.Image = global::InfiniteStorage.Properties.Resources.Waiting;
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.TabStop = false;
-			// 
-			// devname
-			// 
-			resources.ApplyResources(this.devname, "devname");
-			this.devname.Name = "devname";
-			// 
-			// progressText
-			// 
-			resources.ApplyResources(this.progressText, "progressText");
-			this.progressText.Name = "progressText";
-			// 
-			// progressBar1
-			// 
-			resources.ApplyResources(this.progressBar1, "progressBar1");
-			this.progressBar1.Name = "progressBar1";
-			// 
-			// disconnect_desc
-			// 
-			resources.ApplyResources(this.disconnect_desc, "disconnect_desc");
-			this.disconnect_desc.Name = "disconnect_desc";
+			this.pictureBox1.DoubleClick += new System.EventHandler(this.pictureBox1_DoubleClick);
 			// 
 			// tabControlEx1
 			// 
@@ -85,7 +66,7 @@
 			this.tabControlEx1.HideTabs = true;
 			this.tabControlEx1.Multiline = true;
 			this.tabControlEx1.Name = "tabControlEx1";
-			this.tabControlEx1.PageIndex = 2;
+			this.tabControlEx1.PageIndex = 3;
 			this.tabControlEx1.SelectedIndex = 0;
 			// 
 			// tabProgress
@@ -96,6 +77,21 @@
 			this.tabProgress.Controls.Add(this.progressText);
 			resources.ApplyResources(this.tabProgress, "tabProgress");
 			this.tabProgress.Name = "tabProgress";
+			// 
+			// devname
+			// 
+			resources.ApplyResources(this.devname, "devname");
+			this.devname.Name = "devname";
+			// 
+			// progressBar1
+			// 
+			resources.ApplyResources(this.progressBar1, "progressBar1");
+			this.progressBar1.Name = "progressBar1";
+			// 
+			// progressText
+			// 
+			resources.ApplyResources(this.progressText, "progressText");
+			this.progressText.Name = "progressText";
 			// 
 			// tabDisconnected
 			// 
@@ -116,6 +112,11 @@
 			resources.ApplyResources(this.disconnectedText, "disconnectedText");
 			this.disconnectedText.Name = "disconnectedText";
 			// 
+			// disconnect_desc
+			// 
+			resources.ApplyResources(this.disconnect_desc, "disconnect_desc");
+			this.disconnect_desc.Name = "disconnect_desc";
+			// 
 			// tabComplete
 			// 
 			this.tabComplete.BackColor = System.Drawing.SystemColors.Control;
@@ -123,16 +124,19 @@
 			this.tabComplete.Controls.Add(this.devname2);
 			resources.ApplyResources(this.tabComplete, "tabComplete");
 			this.tabComplete.Name = "tabComplete";
-			// 
-			// devname2
-			// 
-			resources.ApplyResources(this.devname2, "devname2");
-			this.devname2.Name = "devname2";
+			this.tabComplete.DoubleClick += new System.EventHandler(this.pictureBox1_DoubleClick);
 			// 
 			// importCompleteText
 			// 
 			resources.ApplyResources(this.importCompleteText, "importCompleteText");
 			this.importCompleteText.Name = "importCompleteText";
+			this.importCompleteText.Click += new System.EventHandler(this.pictureBox1_DoubleClick);
+			// 
+			// devname2
+			// 
+			resources.ApplyResources(this.devname2, "devname2");
+			this.devname2.Name = "devname2";
+			this.devname2.DoubleClick += new System.EventHandler(this.pictureBox1_DoubleClick);
 			// 
 			// ProgressTooltip
 			// 
@@ -148,6 +152,7 @@
 			this.TopMost = true;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProgressTooltip_FormClosing);
 			this.Load += new System.EventHandler(this.ProgressTooltip_Load);
+			this.DoubleClick += new System.EventHandler(this.pictureBox1_DoubleClick);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.tabControlEx1.ResumeLayout(false);
 			this.tabProgress.ResumeLayout(false);

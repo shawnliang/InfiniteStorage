@@ -150,23 +150,8 @@
   <data name="&gt;&gt;pictureBox1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="devname.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="devname.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="devname.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 12</value>
-  </data>
-  <data name="devname.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 19</value>
-  </data>
-  <data name="devname.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="devname.Text" xml:space="preserve">
-    <value>[dev name]</value>
+  <data name="tabControlEx1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="&gt;&gt;devname.Name" xml:space="preserve">
     <value>devname</value>
@@ -180,51 +165,6 @@
   <data name="&gt;&gt;devname.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="progressText.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="progressText.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="progressText.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 38</value>
-  </data>
-  <data name="progressText.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 20</value>
-  </data>
-  <data name="progressText.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="progressText.Text" xml:space="preserve">
-    <value>[progress text]</value>
-  </data>
-  <data name="&gt;&gt;progressText.Name" xml:space="preserve">
-    <value>progressText</value>
-  </data>
-  <data name="&gt;&gt;progressText.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;progressText.Parent" xml:space="preserve">
-    <value>tabProgress</value>
-  </data>
-  <data name="&gt;&gt;progressText.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="progressBar1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="progressBar1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="progressBar1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 62</value>
-  </data>
-  <data name="progressBar1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>204, 18</value>
-  </data>
-  <data name="progressBar1.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
   <data name="&gt;&gt;progressBar1.Name" xml:space="preserve">
     <value>progressBar1</value>
   </data>
@@ -237,38 +177,17 @@
   <data name="&gt;&gt;progressBar1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="disconnect_desc.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="&gt;&gt;progressText.Name" xml:space="preserve">
+    <value>progressText</value>
   </data>
-  <data name="disconnect_desc.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="disconnect_desc.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 56</value>
-  </data>
-  <data name="disconnect_desc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 30</value>
-  </data>
-  <data name="disconnect_desc.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="disconnect_desc.Text" xml:space="preserve">
-    <value>Remaining items will be imported when the device connects to this PC again.</value>
-  </data>
-  <data name="&gt;&gt;disconnect_desc.Name" xml:space="preserve">
-    <value>disconnect_desc</value>
-  </data>
-  <data name="&gt;&gt;disconnect_desc.Type" xml:space="preserve">
+  <data name="&gt;&gt;progressText.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;disconnect_desc.Parent" xml:space="preserve">
-    <value>tabDisconnected</value>
+  <data name="&gt;&gt;progressText.Parent" xml:space="preserve">
+    <value>tabProgress</value>
   </data>
-  <data name="&gt;&gt;disconnect_desc.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;progressText.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="tabControlEx1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="tabProgress.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -297,24 +216,6 @@
   <data name="&gt;&gt;tabProgress.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="devname3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="devname3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="devname3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 8</value>
-  </data>
-  <data name="devname3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 19</value>
-  </data>
-  <data name="devname3.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="devname3.Text" xml:space="preserve">
-    <value>[dev name]</value>
-  </data>
   <data name="&gt;&gt;devname3.Name" xml:space="preserve">
     <value>devname3</value>
   </data>
@@ -327,24 +228,6 @@
   <data name="&gt;&gt;devname3.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="disconnectedText.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="disconnectedText.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="disconnectedText.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 34</value>
-  </data>
-  <data name="disconnectedText.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 20</value>
-  </data>
-  <data name="disconnectedText.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="disconnectedText.Text" xml:space="preserve">
-    <value>[progress text]</value>
-  </data>
   <data name="&gt;&gt;disconnectedText.Name" xml:space="preserve">
     <value>disconnectedText</value>
   </data>
@@ -356,6 +239,18 @@
   </data>
   <data name="&gt;&gt;disconnectedText.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="&gt;&gt;disconnect_desc.Name" xml:space="preserve">
+    <value>disconnect_desc</value>
+  </data>
+  <data name="&gt;&gt;disconnect_desc.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;disconnect_desc.Parent" xml:space="preserve">
+    <value>tabDisconnected</value>
+  </data>
+  <data name="&gt;&gt;disconnect_desc.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="tabDisconnected.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -387,6 +282,9 @@
   <data name="importCompleteText.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="importCompleteText.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="importCompleteText.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 44</value>
   </data>
@@ -413,6 +311,9 @@
   </data>
   <data name="devname2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="devname2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="devname2.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 20</value>
@@ -486,6 +387,183 @@
   <data name="&gt;&gt;tabControlEx1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="devname.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="devname.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="devname.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 12</value>
+  </data>
+  <data name="devname.Size" type="System.Drawing.Size, System.Drawing">
+    <value>207, 19</value>
+  </data>
+  <data name="devname.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="devname.Text" xml:space="preserve">
+    <value>[dev name]</value>
+  </data>
+  <data name="&gt;&gt;devname.Name" xml:space="preserve">
+    <value>devname</value>
+  </data>
+  <data name="&gt;&gt;devname.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;devname.Parent" xml:space="preserve">
+    <value>tabProgress</value>
+  </data>
+  <data name="&gt;&gt;devname.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="progressBar1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="progressBar1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="progressBar1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 62</value>
+  </data>
+  <data name="progressBar1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>204, 18</value>
+  </data>
+  <data name="progressBar1.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;progressBar1.Name" xml:space="preserve">
+    <value>progressBar1</value>
+  </data>
+  <data name="&gt;&gt;progressBar1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;progressBar1.Parent" xml:space="preserve">
+    <value>tabProgress</value>
+  </data>
+  <data name="&gt;&gt;progressBar1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="progressText.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="progressText.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="progressText.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 38</value>
+  </data>
+  <data name="progressText.Size" type="System.Drawing.Size, System.Drawing">
+    <value>207, 20</value>
+  </data>
+  <data name="progressText.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="progressText.Text" xml:space="preserve">
+    <value>[progress text]</value>
+  </data>
+  <data name="&gt;&gt;progressText.Name" xml:space="preserve">
+    <value>progressText</value>
+  </data>
+  <data name="&gt;&gt;progressText.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;progressText.Parent" xml:space="preserve">
+    <value>tabProgress</value>
+  </data>
+  <data name="&gt;&gt;progressText.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="devname3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="devname3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="devname3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 8</value>
+  </data>
+  <data name="devname3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>207, 19</value>
+  </data>
+  <data name="devname3.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="devname3.Text" xml:space="preserve">
+    <value>[dev name]</value>
+  </data>
+  <data name="&gt;&gt;devname3.Name" xml:space="preserve">
+    <value>devname3</value>
+  </data>
+  <data name="&gt;&gt;devname3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;devname3.Parent" xml:space="preserve">
+    <value>tabDisconnected</value>
+  </data>
+  <data name="&gt;&gt;devname3.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="disconnectedText.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="disconnectedText.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="disconnectedText.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 34</value>
+  </data>
+  <data name="disconnectedText.Size" type="System.Drawing.Size, System.Drawing">
+    <value>207, 20</value>
+  </data>
+  <data name="disconnectedText.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="disconnectedText.Text" xml:space="preserve">
+    <value>[progress text]</value>
+  </data>
+  <data name="&gt;&gt;disconnectedText.Name" xml:space="preserve">
+    <value>disconnectedText</value>
+  </data>
+  <data name="&gt;&gt;disconnectedText.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;disconnectedText.Parent" xml:space="preserve">
+    <value>tabDisconnected</value>
+  </data>
+  <data name="&gt;&gt;disconnectedText.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="disconnect_desc.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="disconnect_desc.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="disconnect_desc.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 56</value>
+  </data>
+  <data name="disconnect_desc.Size" type="System.Drawing.Size, System.Drawing">
+    <value>228, 16</value>
+  </data>
+  <data name="disconnect_desc.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="disconnect_desc.Text" xml:space="preserve">
+    <value>Remaining items will be imported when the device connects to this PC again.</value>
+  </data>
+  <data name="&gt;&gt;disconnect_desc.Name" xml:space="preserve">
+    <value>disconnect_desc</value>
+  </data>
+  <data name="&gt;&gt;disconnect_desc.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;disconnect_desc.Parent" xml:space="preserve">
+    <value>tabDisconnected</value>
+  </data>
+  <data name="&gt;&gt;disconnect_desc.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -494,9 +572,6 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>313, 100</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>Manual</value>

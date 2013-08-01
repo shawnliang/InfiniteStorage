@@ -110,6 +110,11 @@ namespace InfiniteStorage
 			// will trigger progress tooltip
 			Hide();
 		}
+
+		private void pictureBox1_DoubleClick(object sender, EventArgs e)
+		{
+
+		}
 	}
 
 }
