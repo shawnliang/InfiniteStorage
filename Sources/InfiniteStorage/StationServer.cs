@@ -152,11 +152,13 @@ namespace InfiniteStorage
 
 					if (e.ctx.total_count == e.ctx.backup_count)
 					{
-						dialog.UpdateComplete((int)e.ctx.recved_files);
+						var total = e.ctx.total_count - e.ctx.backup_count + e.ctx.recved_files;
+						dialog.UpdateComplete((int)e.ctx.recved_files, (int)total);
 					}
 					else
 					{
-						dialog.UpdateInterrupted((int)e.ctx.recved_files);
+						var total = e.ctx.total_count - e.ctx.backup_count + e.ctx.recved_files;
+						dialog.UpdateInterrupted((int)e.ctx.recved_files, (int)total);
 					}
 				}
 				catch (Exception err)
@@ -184,17 +186,23 @@ namespace InfiniteStorage
 						e.ctx.SetData(DATA_KEY_PROGRESS_DIALOG, dialog);
 					}
 
-					if (e.ctx.fileCtx == null)
-						return; // duplicated file
-
-					var percentage = e.ctx.temp_file.BytesWritten * 100 / e.ctx.fileCtx.file_size;
-					dialog.UpdateProgress((int)e.ctx.backup_count + 1, (int)e.ctx.total_count, (int)percentage);
+					updateProgressDialog(e, dialog);
 				}
 				catch (Exception err)
 				{
 					log4net.LogManager.GetLogger(GetType()).Warn("Update progress ui error", err);
 				}
 			});
+		}
+
+		private static void updateProgressDialog(WebsocketProtocol.WebsocketEventArgs e, ProgressTooltip dialog)
+		{
+			if (e.ctx.fileCtx == null)
+				return; // duplicated file
+
+			var percentage = e.ctx.temp_file.BytesWritten * 100 / e.ctx.fileCtx.file_size;
+			var toTransfer = e.ctx.total_count - e.ctx.backup_count + e.ctx.recved_files;
+			dialog.UpdateProgress((int)e.ctx.recved_files, (int)toTransfer, (int)percentage);
 		}
 
 		void InfiniteStorageWebSocketService_FileProgress(object sender, WebsocketProtocol.WebsocketEventArgs e)
@@ -204,9 +212,8 @@ namespace InfiniteStorage
 				try
 				{
 					ProgressTooltip dialog = (ProgressTooltip)e.ctx.GetData(DATA_KEY_PROGRESS_DIALOG);
-					
-					var percentage = e.ctx.temp_file.BytesWritten * 100 / e.ctx.fileCtx.file_size;
-					dialog.UpdateProgress((int)e.ctx.backup_count + 1, (int)e.ctx.total_count, (int)percentage);
+
+					updateProgressDialog(e, dialog);
 				}
 				catch (Exception err)
 				{
@@ -245,7 +252,9 @@ namespace InfiniteStorage
 
 
 					if (e.ctx.backup_count + 1 >= e.ctx.total_count)
-						dialog.UpdateComplete((int)e.ctx.recved_files);
+					{
+						dialog.UpdateComplete((int)e.ctx.recved_files, (int)e.ctx.recved_files);
+					}
 
 				}
 				catch (Exception err)

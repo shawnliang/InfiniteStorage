@@ -13,6 +13,8 @@ namespace InfiniteStorage
 	public partial class ProgressTooltip : Form
 	{
 		private string device_id;
+
+		private bool inCompleteState;
 		public bool UserHide { get; set; }
 
 		public ProgressTooltip()
@@ -24,7 +26,7 @@ namespace InfiniteStorage
 		public ProgressTooltip(string deviceName, string deviceId)
 			: this()
 		{
-			this.devname.Text = deviceName;
+			this.devname.Text = this.devname2.Text = this.devname3.Text = deviceName;
 			this.device_id = deviceId;
 		}
 
@@ -32,7 +34,6 @@ namespace InfiniteStorage
 		{
 			Icon = Resources.ProductIcon;
 			Text = Resources.ProductName;
-			tabControlEx1.SelectedTab = inProgressTab;
 
 			this.StartPosition = FormStartPosition.Manual;
 			Location = new Point(Screen.PrimaryScreen.WorkingArea.Width - this.Size.Width,
@@ -41,10 +42,9 @@ namespace InfiniteStorage
 
 		public void UpdateProgress(int current, int totoal, int percentage)
 		{
+			tabControlEx1.SelectedTab = tabProgress;
 			progressText.Text = string.Format(Resources.ProgressTooltip_Progress, current, totoal, percentage);
 			progressBar1.Value = percentage;
-			progressBar1.Visible = true;
-			tabControlEx1.SelectedTab = inProgressTab;
 
 			if (!UserHide)
 			{
@@ -52,23 +52,22 @@ namespace InfiniteStorage
 			}
 		}
 
-		public void UpdateComplete(int importedCount)
+		public void UpdateComplete(int importedCount, int total)
 		{
-			progressText.Text = string.Format(Resources.ProgressTooltip_Complete, importedCount);
-			progressBar1.Hide();
+			tabControlEx1.SelectedTab = tabComplete;
+			importCompleteText.Text = string.Format(Resources.ProgressTooltip_Complete, importedCount, total);
 			pictureBox1.ImageLocation = null;
 			pictureBox1.Image = Resources.check;
-			tabControlEx1.SelectedTab = finishedTab;
 
+			inCompleteState = true;
 			UserHide = false;
 			Show();
 		}
 
-		public void UpdateInterrupted(int received_count)
+		public void UpdateInterrupted(int received, int total)
 		{
-			progressText.Text = string.Format(Resources.ProgressTooltip_Interrupted, received_count);
-			progressBar1.Hide();
-			tabControlEx1.SelectedTab = finishedTab;
+			tabControlEx1.SelectedTab = tabDisconnected;
+			disconnectedText.Text = string.Format(Resources.ProgressTooltip_Interrupted, received, total);
 
 			UserHide = false;
 			Show();
@@ -90,14 +89,14 @@ namespace InfiniteStorage
 			{
 				e.Cancel = true;
 
-				if (tabControlEx1.SelectedTab == inProgressTab)
-				{
-					UserHide = true;
-				}
-				else
+				if (inCompleteState)
 				{
 					// keep UserHide == false, so that new photo from existing ws connection
 					// will trigger progress tooltip
+				}
+				else
+				{
+					UserHide = true;
 				}
 
 				Hide();
@@ -109,19 +108,6 @@ namespace InfiniteStorage
 			ImportUIPresenter.Instance.StartViewer(device_id);
 			// keep UserHide == false, so that new photo from existing ws connection
 			// will trigger progress tooltip
-			Hide();
-		}
-
-		private void closeButton_Click(object sender, EventArgs e)
-		{
-			// keep UserHide == false, so that new photo from existing ws connection
-			// will trigger progress tooltip
-			Hide();
-		}
-
-		private void hideButton_Click(object sender, EventArgs e)
-		{
-			UserHide = true;
 			Hide();
 		}
 	}

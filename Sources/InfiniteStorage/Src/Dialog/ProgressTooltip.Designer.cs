@@ -33,16 +33,20 @@
 			this.devname = new System.Windows.Forms.Label();
 			this.progressText = new System.Windows.Forms.Label();
 			this.progressBar1 = new System.Windows.Forms.ProgressBar();
+			this.disconnect_desc = new System.Windows.Forms.Label();
 			this.tabControlEx1 = new InfiniteStorage.TabControlEx();
-			this.inProgressTab = new System.Windows.Forms.TabPage();
-			this.hideButton = new System.Windows.Forms.Button();
-			this.finishedTab = new System.Windows.Forms.TabPage();
-			this.closeButton = new System.Windows.Forms.Button();
-			this.viewButton = new System.Windows.Forms.Button();
+			this.tabProgress = new System.Windows.Forms.TabPage();
+			this.tabDisconnected = new System.Windows.Forms.TabPage();
+			this.devname3 = new System.Windows.Forms.Label();
+			this.disconnectedText = new System.Windows.Forms.Label();
+			this.tabComplete = new System.Windows.Forms.TabPage();
+			this.devname2 = new System.Windows.Forms.Label();
+			this.importCompleteText = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.tabControlEx1.SuspendLayout();
-			this.inProgressTab.SuspendLayout();
-			this.finishedTab.SuspendLayout();
+			this.tabProgress.SuspendLayout();
+			this.tabDisconnected.SuspendLayout();
+			this.tabComplete.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// pictureBox1
@@ -67,61 +71,74 @@
 			resources.ApplyResources(this.progressBar1, "progressBar1");
 			this.progressBar1.Name = "progressBar1";
 			// 
+			// disconnect_desc
+			// 
+			resources.ApplyResources(this.disconnect_desc, "disconnect_desc");
+			this.disconnect_desc.Name = "disconnect_desc";
+			// 
 			// tabControlEx1
 			// 
 			resources.ApplyResources(this.tabControlEx1, "tabControlEx1");
-			this.tabControlEx1.Controls.Add(this.inProgressTab);
-			this.tabControlEx1.Controls.Add(this.finishedTab);
+			this.tabControlEx1.Controls.Add(this.tabProgress);
+			this.tabControlEx1.Controls.Add(this.tabDisconnected);
+			this.tabControlEx1.Controls.Add(this.tabComplete);
 			this.tabControlEx1.HideTabs = true;
 			this.tabControlEx1.Multiline = true;
 			this.tabControlEx1.Name = "tabControlEx1";
 			this.tabControlEx1.PageIndex = 2;
 			this.tabControlEx1.SelectedIndex = 0;
 			// 
-			// inProgressTab
+			// tabProgress
 			// 
-			this.inProgressTab.BackColor = System.Drawing.SystemColors.Control;
-			this.inProgressTab.Controls.Add(this.hideButton);
-			resources.ApplyResources(this.inProgressTab, "inProgressTab");
-			this.inProgressTab.Name = "inProgressTab";
+			this.tabProgress.BackColor = System.Drawing.SystemColors.Control;
+			this.tabProgress.Controls.Add(this.devname);
+			this.tabProgress.Controls.Add(this.progressBar1);
+			this.tabProgress.Controls.Add(this.progressText);
+			resources.ApplyResources(this.tabProgress, "tabProgress");
+			this.tabProgress.Name = "tabProgress";
 			// 
-			// hideButton
+			// tabDisconnected
 			// 
-			resources.ApplyResources(this.hideButton, "hideButton");
-			this.hideButton.Name = "hideButton";
-			this.hideButton.UseVisualStyleBackColor = true;
-			this.hideButton.Click += new System.EventHandler(this.hideButton_Click);
+			this.tabDisconnected.BackColor = System.Drawing.SystemColors.Control;
+			this.tabDisconnected.Controls.Add(this.devname3);
+			this.tabDisconnected.Controls.Add(this.disconnectedText);
+			this.tabDisconnected.Controls.Add(this.disconnect_desc);
+			resources.ApplyResources(this.tabDisconnected, "tabDisconnected");
+			this.tabDisconnected.Name = "tabDisconnected";
 			// 
-			// finishedTab
+			// devname3
 			// 
-			this.finishedTab.BackColor = System.Drawing.SystemColors.Control;
-			this.finishedTab.Controls.Add(this.closeButton);
-			this.finishedTab.Controls.Add(this.viewButton);
-			resources.ApplyResources(this.finishedTab, "finishedTab");
-			this.finishedTab.Name = "finishedTab";
+			resources.ApplyResources(this.devname3, "devname3");
+			this.devname3.Name = "devname3";
 			// 
-			// closeButton
+			// disconnectedText
 			// 
-			resources.ApplyResources(this.closeButton, "closeButton");
-			this.closeButton.Name = "closeButton";
-			this.closeButton.UseVisualStyleBackColor = true;
-			this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
+			resources.ApplyResources(this.disconnectedText, "disconnectedText");
+			this.disconnectedText.Name = "disconnectedText";
 			// 
-			// viewButton
+			// tabComplete
 			// 
-			resources.ApplyResources(this.viewButton, "viewButton");
-			this.viewButton.Name = "viewButton";
-			this.viewButton.UseVisualStyleBackColor = true;
-			this.viewButton.Click += new System.EventHandler(this.viewButton_Click);
+			this.tabComplete.BackColor = System.Drawing.SystemColors.Control;
+			this.tabComplete.Controls.Add(this.importCompleteText);
+			this.tabComplete.Controls.Add(this.devname2);
+			resources.ApplyResources(this.tabComplete, "tabComplete");
+			this.tabComplete.Name = "tabComplete";
+			// 
+			// devname2
+			// 
+			resources.ApplyResources(this.devname2, "devname2");
+			this.devname2.Name = "devname2";
+			// 
+			// importCompleteText
+			// 
+			resources.ApplyResources(this.importCompleteText, "importCompleteText");
+			this.importCompleteText.Name = "importCompleteText";
 			// 
 			// ProgressTooltip
 			// 
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.progressBar1);
 			this.Controls.Add(this.tabControlEx1);
-			this.Controls.Add(this.progressText);
-			this.Controls.Add(this.devname);
 			this.Controls.Add(this.pictureBox1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
@@ -133,8 +150,10 @@
 			this.Load += new System.EventHandler(this.ProgressTooltip_Load);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.tabControlEx1.ResumeLayout(false);
-			this.inProgressTab.ResumeLayout(false);
-			this.finishedTab.ResumeLayout(false);
+			this.tabProgress.ResumeLayout(false);
+			this.tabDisconnected.ResumeLayout(false);
+			this.tabComplete.ResumeLayout(false);
+			this.tabComplete.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -144,12 +163,15 @@
 		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.Label devname;
 		private System.Windows.Forms.Label progressText;
-		private TabControlEx tabControlEx1;
-		private System.Windows.Forms.TabPage inProgressTab;
-		private System.Windows.Forms.Button hideButton;
-		private System.Windows.Forms.TabPage finishedTab;
-		private System.Windows.Forms.Button closeButton;
-		private System.Windows.Forms.Button viewButton;
 		private System.Windows.Forms.ProgressBar progressBar1;
+		private System.Windows.Forms.Label disconnect_desc;
+		private TabControlEx tabControlEx1;
+		private System.Windows.Forms.TabPage tabProgress;
+		private System.Windows.Forms.TabPage tabDisconnected;
+		private System.Windows.Forms.Label devname3;
+		private System.Windows.Forms.Label disconnectedText;
+		private System.Windows.Forms.TabPage tabComplete;
+		private System.Windows.Forms.Label importCompleteText;
+		private System.Windows.Forms.Label devname2;
 	}
 }

@@ -145,11 +145,14 @@ namespace InfiniteStorage.Camera
 			util.SaveFileRecord(fileAsset);
 
 			recved_count++;
-			progress.UpdateProgress(recved_count, recved_count, 100);
-			if (type == readCamera.FileType.Image)
-				progress.UpdateImage(full_path);
-			else
-				progress.UpdateImageToVideoIcon();
+			SynchronizationContextHelper.SendMainSyncContext(() =>
+			{
+				progress.UpdateProgress(recved_count, recved_count, 100);
+				if (type == readCamera.FileType.Image)
+					progress.UpdateImage(full_path);
+				else
+					progress.UpdateImageToVideoIcon();
+			});
 		}
 
 		public string TempFolder
@@ -175,7 +178,10 @@ namespace InfiniteStorage.Camera
 
 		public void Completed()
 		{
-			progress.UpdateComplete(recved_count);
+			SynchronizationContextHelper.SendMainSyncContext(() =>
+			{
+				progress.UpdateComplete(recved_count, recved_count);
+			});
 
 			ImportingCameraCollection.Remove(device_id);
 		}

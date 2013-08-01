@@ -181,7 +181,11 @@ namespace InfiniteStorage
 
 		private static string getOverallProgressText(ProtocolContext ctx)
 		{
-			return ctx.total_count > 0 ? string.Format("{0}: {1}/{2}", ctx.device_name, ctx.backup_count, ctx.total_count) : ctx.device_name;
+			var total = ctx.total_count - ctx.backup_count + ctx.recved_files;
+			if (ctx.recved_files > total)
+				total = ctx.recved_files;
+
+			return total > 0 ? string.Format("{0}: {1}/{2}", ctx.device_name, ctx.recved_files, total) : ctx.device_name;
 		}
 
 		public void refreshNotifyIconContextMenu()
