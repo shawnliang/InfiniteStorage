@@ -80,6 +80,7 @@
     <system:String x:Key="ANS_step3_title">Enter the code</system:String>
     <system:String x:Key="ANS_step3">Launch Waveface Photos on you device and enter the 4 digits below. Then you are good to go!</system:String>
 
+    <system:String x:Key="ConfirmSync_Title">What do you want to sync?</system:String>
     <system:String x:Key="ConfirmSync_1">{0} Connected Successfully!</system:String>
     <system:String x:Key="ConfirmSync_2">Everything on your device gets synced to this PC automatically -- from now on.</system:String>
     <system:String x:Key="ConfirmSync_3">Import photos and vedios from this devices</system:String>
