@@ -198,7 +198,12 @@ namespace Waveface.Model
 
 		public void AddContent(IContentEntity content)
 		{
-			m_ObservableContents.Add(content);
+			int index = 0;
+
+			while (index < m_ObservableContents.Count && m_ObservableContents[index].Name.CompareTo(content.Name) > 0)
+				index++;
+
+			m_ObservableContents.Insert(index, content);
 		}
 
 		#endregion
