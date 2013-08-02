@@ -68,8 +68,16 @@
                 </DataTrigger>
 
                 <DataTrigger Binding="{Binding ShareEnabled}" Value="true">
-                    <Setter TargetName="sourceName" Property="Foreground" Value="Red" />
+                    <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedCloudFav}" />
                 </DataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ShareEnabled}" Value="true" />
+                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="icon" Property="Source" Value="{StaticResource UnSelectedCloudFav}" />
+                </MultiDataTrigger>
 
                 <DataTrigger Binding="{Binding ID}"
                              Value="00000000-0000-0000-0000-000000000000">

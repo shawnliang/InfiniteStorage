@@ -95,7 +95,7 @@ namespace Waveface.ClientFramework
 							var savedPath = dr2["saved_path"].ToString();
 							var file = Path.Combine(BunnyDB.ResourceFolder, savedPath);
 
-							var type = ((long) dr2["type"] == 0) ? ContentType.Photo : ContentType.Video;
+							var type = ((long)dr2["type"] == 0) ? ContentType.Photo : ContentType.Video;
 							contents.Add(new BunnyContent(new Uri(file), dr2["file_id"].ToString(), type));
 						}
 					}
@@ -119,6 +119,32 @@ namespace Waveface.ClientFramework
 			refreshRecipients();
 		}
 
+		public int QueryAlbumUploadFilesCount(string name)
+		{
+			try
+			{
+				using (var conn = BunnyDB.CreateConnection())
+				{
+					conn.Open();
+
+					using (var cmd = conn.CreateCommand())
+					{
+						cmd.CommandText = "select count(1) from labels lb, labelFiles lf, Files f where lb.name = '" + name + "' and lb.label_id = lf.label_id and lf.file_id = f.file_id and f.on_cloud = 1";
+
+						using (var reader = cmd.ExecuteReader())
+						{
+							return int.Parse(reader[0].ToString());
+						}
+					}
+				}
+			}
+			catch
+			{
+			}
+
+			return 0;
+		}
+
 		private void refreshShareProperties()
 		{
 			using (var conn = BunnyDB.CreateConnection())
@@ -132,7 +158,7 @@ namespace Waveface.ClientFramework
 
 					using (var reader = cmd.ExecuteReader())
 					{
-						var share_enabled = (bool) reader["share_enabled"];
+						var share_enabled = (bool)reader["share_enabled"];
 						var share_code = reader["share_code"].ToString();
 
 						if (share_enabled != ShareEnabled)

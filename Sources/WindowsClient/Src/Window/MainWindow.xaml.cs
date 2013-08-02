@@ -65,6 +65,7 @@ namespace Waveface.Client
 			rspRightSidePane2.tbtnCloudSharing.Checked += tbtnCloudSharing_Checked;
 			rspRightSidePane2.tbtnCloudSharing.Unchecked += tbtnCloudSharing_Checked;
 			rspRightSidePane2.btnCopyShareLink.Click += btnCopyShareLink_Click;
+			rspRightSidePane2.btnOpenShareLink.Click += btnOpenShareLink_Click;
 
 			rspRightSidePanel.btnClearAll.Click += btnClearAll_Click;
 
@@ -452,8 +453,6 @@ namespace Waveface.Client
 			ToggleButtonAutomationPeer _peer = new ToggleButtonAutomationPeer(rspRightSidePane2.tbtnCloudSharing);
 			IToggleProvider _toggleProvider = _peer.GetPattern(PatternInterface.Toggle) as IToggleProvider;
 			_toggleProvider.Toggle();
-
-			EmailCloudSharing();
 		}
 
 		#endregion
@@ -571,10 +570,14 @@ namespace Waveface.Client
 			}
 		}
 
-
 		private void btnCopyShareLink_Click(object sender, RoutedEventArgs e)
 		{
 			Clipboard.SetText((lblContentLocation.DataContext as BunnyLabelContentGroup).ShareURL);
+		}
+
+		void btnOpenShareLink_Click(object sender, RoutedEventArgs e)
+		{
+			Process.Start((lblContentLocation.DataContext as BunnyLabelContentGroup).ShareURL);
 		}
 
 		private void tbtnCloudSharing_Checked(object sender, EventArgs e)
@@ -933,7 +936,8 @@ namespace Waveface.Client
 			//rspRightSidePane2.tbtnHomeSharing.IsChecked = isOnAir;
 
 			rspRightSidePane2.tbtnCloudSharing.IsChecked = (group as BunnyLabelContentGroup).ShareEnabled;
-			rspRightSidePane2.tbxShareLink.Text = (lblContentLocation.DataContext as BunnyLabelContentGroup).ShareURL;
+
+			rspRightSidePane2.Update(lblContentLocation.DataContext as BunnyLabelContentGroup);
 		}
 
 		private void rspRightSidePanel_AddToFavorite(object sender, EventArgs e)
@@ -943,13 +947,13 @@ namespace Waveface.Client
 
 		public void CloudSharing(bool isShared)
 		{
-			var labelGroup = lblContentLocation.DataContext as BunnyLabelContentGroup;
+			BunnyLabelContentGroup labelGroup = lblContentLocation.DataContext as BunnyLabelContentGroup;
 
 			ClientFramework.Client.Default.ShareLabel(labelGroup.ID, isShared);
 
 			labelGroup.RefreshShareProperties();
 
-			rspRightSidePane2.tbxShareLink.Text = labelGroup.ShareURL;
+			rspRightSidePane2.Update(labelGroup);
 		}
 
 		public void EmailCloudSharing()

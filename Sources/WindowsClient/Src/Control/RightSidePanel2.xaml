@@ -3,38 +3,42 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             x:Name="UserControl"
+             xmlns:WPFSpark="clr-namespace:WPFSpark" x:Name="UserControl"
              Height="557.25"
              UseLayoutRounding="True"
              d:DesignWidth="170"
              mc:Ignorable="d">
-    <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-
-        <Style x:Key="HomeSharingButtonStyle"
-               TargetType="ToggleButton">
-            <Setter Property="Content" Value="{DynamicResource TurnOnHomeSharingButtonText}" />
+    <UserControl.Resources>     
+        <Style TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="#9B9B9B" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    Background="{TemplateBinding Background}"
+                    Padding="{TemplateBinding Padding}"
+                                
+                    CornerRadius="0">
+                            <ContentControl Content="{TemplateBinding Content}" HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding IsChecked,
-                                               ElementName=tbtnHomeSharing,
-                                               IsAsync=True}"
-                             Value="True">
-                    <Setter Property="Content" Value="{DynamicResource TurnOffHomeSharingButtonText}" />
-                </DataTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource HighlightBrush}" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{StaticResource PressedBrush}" />
+                </Trigger>
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="ShareLinkTipStyle" TargetType="TextBlock">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsChecked,
-                                               ElementName=tbtnCloudSharing,
-                                               IsAsync=True}"
-                             Value="True">
-                    <Setter Property="Visibility" Value="Collapsed" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        
         <ControlTemplate x:Key="ButtonBaseControlTemplate1"  TargetType="{x:Type ButtonBase}">
             <Border x:Name="border"
                     Background="{TemplateBinding Background}"
@@ -55,99 +59,88 @@
         </ControlTemplate>
     </UserControl.Resources>
 
-    <StackPanel x:Name="LayoutRoot">
+    <StackPanel x:Name="LayoutRoot" Background="#1B1B1B">
+
         <TextBox x:Name="tbxName"
-                 Height="34"
-                 Margin="10,10,10,0"
+                 Height="36"
                  HorizontalAlignment="Stretch"
                  VerticalAlignment="Top"
                  HorizontalContentAlignment="Center"
                  VerticalContentAlignment="Center"
-                 Background="#FF3B3B3B"
-                 BorderBrush="Black"
-                 BorderThickness="1"
+                 Background="Black"
                  FontFamily="Segoe UI"
-                 FontSize="18.667"
+                 FontSize="20"
+                 BorderThickness="0"
                  FontWeight="Bold"
                  Foreground="White"
                  Text="[Favorite Name]"
                  TextChanged="tbxName_TextChanged" />
 
-        <!--ToggleButton x:Name="tbtnHomeSharing"
-                      Height="34"
-                      Margin="10,20,10,0"
-                      Background="#FF4F4F4F"
-                      Foreground="White"
-                      Style="{DynamicResource HomeSharingButtonStyle}"
-                      Template="{DynamicResource ButtonBaseControlTemplate1}"
-                      Cursor="Hand"/>
-        <Label x:Name="lblHomeSharingTutorialTip"
-               Margin="10,0"
-               HorizontalAlignment="Center"
-               Content="{DynamicResource HomeSharingTip}"
-               Foreground="#FFA8A8A8" /-->
+        <StackPanel x:Name="sbCloudSharing" Visibility="Collapsed">
+
+            <TextBlock Text="{DynamicResource SeeFavoriteTitle}" TextWrapping="Wrap" Margin="12,20,12,0" Foreground="White" />
+
+            <TextBox x:Name="tbxShareLink"
+                     Height="23"
+                     Margin="12, 8, 12, 0"
+                     VerticalAlignment="Top"
+                     VerticalContentAlignment="Center"
+                     IsReadOnly="True" />
+
+            <Button x:Name="btnCopyShareLink"
+                    Foreground="White"
+                    Height="26"
+                    Width="128"
+                    Margin="10,20,10,0"
+                    FontFamily="Segoe UI"
+                    FontSize="16"
+                    Content="{DynamicResource CopyButtonText}" />
+
+            <Button Height="26"
+                    Width="128"
+                    Foreground="White"
+                    Margin="10,20,10,0"
+                    FontFamily="Segoe UI"
+                    FontSize="16"
+                    Click="btnEmail_Click"
+                    Content="{DynamicResource EmailButtonText}" />
+
+            <Button x:Name="btnOpenShareLink"
+                    Foreground="White"
+                    Height="26"
+                    Width="128"
+                    Margin="10,20,10,0"
+                    FontFamily="Segoe UI"
+                    FontSize="16"
+                    Content="開啟網頁" />
+        </StackPanel>
+
+        <StackPanel x:Name="spProgressBar" Margin="12, 32, 12, 8">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,8" HorizontalAlignment="Center">
+                <TextBlock Text="正在上傳資料..." FontSize="14" Foreground="White" />
+                <TextBlock Text="" x:Name="tbProgress" Margin="4,0,0,0" FontSize="14" Foreground="White" />
+            </StackPanel>
+
+            <WPFSpark:FluidProgressBar x:Name="progressBar" Oscillate="True" Foreground="DodgerBlue" DotWidth="8" DotRadiusX="2" DotRadiusY="2" DotHeight="8"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="8,20,8,0" HorizontalAlignment="Center">
+            <TextBlock Text="公開網址" FontSize="14" Foreground="#FFA8A8A8" />
+            <TextBlock x:Name="tbLinkOpenClose" FontSize="14" Foreground="White" />
+        </StackPanel>
 
         <ToggleButton x:Name="tbtnCloudSharing"
-                      Height="28"
-                      Margin="10,20,10,0"
+                      Height="26"
+                      Width="128"
+                      Margin="10,4,10,0"
+                      FontFamily="Segoe UI"
+                      FontSize="16"
                       Background="DodgerBlue"
                       Foreground="White"
                       Template="{DynamicResource ButtonBaseControlTemplate1}"
                       Cursor="Hand"
-                      Content="開啟"
+                      Content="開啟"                      
                       Checked="tbtnCloudSharing_Checked"
                       Unchecked="tbtnCloudSharing_Unchecked" />
-
-        <Grid Margin="10,20,10,0"
-              Visibility="{Binding IsChecked,
-                                   Converter={StaticResource BooleanToVisibilityConverter},
-                                   ElementName=tbtnCloudSharing}">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            
-            <Label Grid.ColumnSpan="2"
-                   Content="{DynamicResource SeeFavoriteTitle}"
-                   Foreground="#FFA8A8A8" />
-            
-            <TextBox x:Name="tbxShareLink"
-                     Grid.ColumnSpan="2"
-                     Height="23"
-                     Margin="0,23,0,5"
-                     VerticalAlignment="Top"
-                     VerticalContentAlignment="Center"
-                     IsReadOnly="True" />
-            
-            <Button x:Name="btnCopyShareLink"
-                    Grid.Row="1"
-                    Height="34"
-                    Margin="0,0,2.5,0"
-                    VerticalAlignment="Top"
-                    Content="{DynamicResource CopyButtonText}" />
-            
-            <Button Grid.Row="1"
-                    Grid.Column="1"
-                    Height="34"
-                    Margin="2.5,0,0,0"
-                    VerticalAlignment="Top"
-                    Click="Button_Click"
-                    Content="{DynamicResource EmailButtonText}" />
-        </Grid>
-        
-        <Button x:Name="btnDelete"
-                MinWidth="144"
-                Margin="10,20,10,0"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Top"
-                Click="btnAction_Copy1_Click"
-                Content="Delete"
-                Visibility="Collapsed" />
-
     </StackPanel>
 </UserControl>

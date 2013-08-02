@@ -552,7 +552,7 @@
             
             <local:RightSidePanel2 x:Name="rspRightSidePane2"
                                    Height="Auto"
-                                   Margin="0,5,0,0"
+                                   Margin="0,0,0,0"
                                    CloudSharingClick="rspRightSidePane2_CloudSharingClick"
                                    DeleteButtonClick="rspRightSidePane2_DeleteButtonClick"
                                    FavoriteName="{Binding SelectedItem.Name,

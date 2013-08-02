@@ -44,6 +44,7 @@
     <ApplicationIcon>Resource\FAV_512.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Accessibility" />
     <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\EntityFramework.5.0.0\net40\EntityFramework.dll</HintPath>
@@ -62,9 +63,13 @@
       <HintPath>..\..\Libs\Ren\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="PresentationUI, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Printing" />
     <Reference Include="System.Reactive.Core, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Rx-Core.2.1.30214.0\lib\Net40\System.Reactive.Core.dll</HintPath>
@@ -99,6 +104,7 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
     <Reference Include="websocket-sharp, Version=1.0.2.34197, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\websocket-sharp\websocket-sharp.dll</HintPath>
@@ -130,6 +136,7 @@
     <Compile Include="Ren\ShareEventDialog.xaml.cs">
       <DependentUpon>ShareEventDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Ren\Utility\FluidProgressBar.xaml.cs" />
     <Compile Include="Ren\Utility\ListBoxDropHighlighter.cs" />
     <Compile Include="Src\Control\ContentActionBar.xaml.cs">
       <DependentUpon>ContentActionBar.xaml</DependentUpon>
@@ -302,6 +309,8 @@
     <Resource Include="Resource\bar_bin_1.png" />
     <Resource Include="Resource\bar_bin_2.png" />
     <Resource Include="Resource\ico_arrow_down.png" />
+    <Resource Include="Resource\ico_cloud_album_normal.png" />
+    <Resource Include="Resource\ico_cloud_album_select.png" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -332,6 +341,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Ren\ShareEventDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Ren\Utility\FluidProgressBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

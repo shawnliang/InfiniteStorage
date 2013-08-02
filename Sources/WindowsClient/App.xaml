@@ -92,6 +92,13 @@
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/ico_fav_unselect.png" />
 
+            <BitmapImage x:Key="SelectedCloudFav"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_cloud_album_select.png" />
+            <BitmapImage x:Key="UnSelectedCloudFav"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_cloud_album_normal.png" />            
+            
             <BitmapImage x:Key="SelectedStar"
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/ico_star_select.png" />
