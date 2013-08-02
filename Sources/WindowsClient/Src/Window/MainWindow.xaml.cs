@@ -480,6 +480,7 @@ namespace Waveface.Client
 
 			if (Settings.Default.IsFirstUse)
 			{
+				/*
 				MessageBoxResult _messageBoxResult = MessageBox.Show(Application.Current.MainWindow, "See a quick tour ?", "Favorite*", MessageBoxButton.YesNo, MessageBoxImage.Question,
 																	 MessageBoxResult.Yes);
 
@@ -487,6 +488,7 @@ namespace Waveface.Client
 				{
 					Process.Start(HELP_URL);
 				}
+				*/
 
 				showWaitForPairingDialog();
 
@@ -727,7 +729,7 @@ namespace Waveface.Client
 
 			if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
 			{
-				TryDisplayUnsortedTutorial();
+				//@ TryDisplayUnsortedTutorial();
 
 				ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(ti) as TreeViewItem;
 
@@ -759,6 +761,7 @@ namespace Waveface.Client
 
 			lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
 			btnDelete.IsEnabled = false;
+			btnActions.IsEnabled = false;
 
 			Grid.SetColumnSpan(gdContentArea, 2);
 
@@ -850,6 +853,7 @@ namespace Waveface.Client
 			lbxContentContainer.ContextMenu.IsOpen = false;
 			lbxContentContainer.ContextMenu.Visibility = Visibility.Visible;
 			btnDelete.IsEnabled = false;
+			btnActions.IsEnabled = false;
 
 			gdRightSide.Visibility = Visibility.Visible;
 			Grid.SetColumnSpan(gdContentArea, 1);
@@ -1399,14 +1403,8 @@ namespace Waveface.Client
 			}
 			else
 			{
-				for (int i = 9; i >= 0; i--)
-				{
-					helpPanel.Opacity = 0.1 * i;
-
-					helpPanel.Margin = new Thickness(344, -18 * i, 4, 4);
-					DoEvents();
-					Thread.Sleep(25);
-				}
+				helpPanel.Opacity = 0;
+				helpPanel.Margin = new Thickness(344, 0, 4, 4);
 			}
 		}
 
@@ -1445,10 +1443,12 @@ namespace Waveface.Client
 
 		private void btnCreateCloudAlbum_Click(object sender, RoutedEventArgs e)
 		{
+			ShowHelpPanel(false);
+
 			IEnumerable<IContentEntity> _allEntities = lbxContentContainer.Items.OfType<IContentEntity>().ToArray();
 			IEnumerable<IContentEntity> _selectedEntities = GetSelectedContents();
 
-			string _title = lblContentLocation.Content + " [" + DateTime.Now.ToString("yyyy-MM-dd HH:mm") + "]";
+			string _title = lblContentLocation.Content.ToString();
 
 			CloudSharingDialog _dialog = new CloudSharingDialog(_allEntities, _selectedEntities, _title)
 											 {
@@ -1577,6 +1577,7 @@ namespace Waveface.Client
 					lbxContentContainer.DataContext = group.Contents;
 					lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
 					btnDelete.IsEnabled = false;
+					btnActions.IsEnabled = false;
 					lblContentLocation.DataContext = group;
 					SetContentTypeCount(group);
 					ShowToolBarButtons(true);
@@ -1623,6 +1624,12 @@ namespace Waveface.Client
 		private void lbxContentContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			btnDelete.IsEnabled = lbxContentContainer.SelectedItems.Count != 0;
+			btnActions.IsEnabled = lbxContentContainer.SelectedItems.Count != 0;
+		}
+
+		private void lbxContentContainer_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			lbxContentContainer.UnselectAll();
 		}
 	}
 }

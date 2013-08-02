@@ -5,13 +5,13 @@
         xmlns:local="clr-namespace:Waveface.Client"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
-        Title="Favorite"
+        Title="{DynamicResource AppTitle}"
         Width="807"
         Height="498.5"
         MinWidth="1010"
         MinHeight="640"
         ContentRendered="window_ContentRendered"
-        Icon="/Waveface.Client;component/Resource/FAV_512.ico"
+        Icon="/Waveface.Client;component/Resource/Bunnydesktop.ico"
         Loaded="Window_Loaded"
         UseLayoutRounding="True"
         WindowState="Maximized"
@@ -236,8 +236,6 @@
             </local:WrapperControl>
         </DataTemplate>
 
-
-
         <!--  Main photo catalog view  -->
         <Style x:Key="PhotoListBoxStyle" TargetType="{x:Type ListBox}">
             <Setter Property="Foreground" Value="White" />
@@ -248,10 +246,8 @@
                                    HorizontalAlignment="Stretch"
                                    VerticalAlignment="Top"
                                    IsItemsHost="True"
-                                   ItemHeight="{Binding Value,
-                                                        ElementName=zoomSlider}"
-                                   ItemWidth="{Binding Value,
-                                                       ElementName=zoomSlider}"
+                                   ItemHeight="{Binding Value, ElementName=zoomSlider}"
+                                   ItemWidth="{Binding Value, ElementName=zoomSlider}"
                                    Orientation="Horizontal" />
                     </ControlTemplate>
                 </Setter.Value>
@@ -366,9 +362,9 @@
                 <ListBox x:Name="lbxContentContainer"
                          Background="{x:Null}"
                          BorderBrush="{x:Null}"
-                         Foreground="{x:Null}"
-                         IsSynchronizedWithCurrentItem="True"
+                         Foreground="{x:Null}"                   
                          ItemsSource="{Binding IsAsync=True}"
+                         MouseDown="lbxContentContainer_MouseDown"
                          KeyDown="lbxContentContainer_KeyDown"
                          PreviewMouseLeftButtonDown="List_PreviewMouseLeftButtonDown"
                          PreviewMouseLeftButtonUp="lbxContentContainer_PreviewMouseLeftButtonUp"
@@ -693,7 +689,7 @@
                                        Visibility="Collapsed" />
 
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-
+                    
                     <local:ButtonImageText x:Name="btnActions"
                                            Margin="4"
                                            HorizontalAlignment="Right"

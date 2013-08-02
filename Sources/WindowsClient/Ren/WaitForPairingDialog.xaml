@@ -7,7 +7,7 @@
         Loaded="Window_Loaded"
         ResizeMode="NoResize"
         SizeToContent="WidthAndHeight"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Icon="/Waveface.Client;component/Resource/Bunnydesktop.ico">
     <Window.Resources>
 
         <Style x:Key="StepBorder" TargetType="Border">

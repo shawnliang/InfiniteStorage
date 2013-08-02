@@ -41,7 +41,8 @@
     <StartupObject>Waveface.Client.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resource\FAV_512.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
@@ -311,6 +312,7 @@
     <Resource Include="Resource\ico_arrow_down.png" />
     <Resource Include="Resource\ico_cloud_album_normal.png" />
     <Resource Include="Resource\ico_cloud_album_select.png" />
+    <Resource Include="Resource\Bunnydesktop.ico" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -585,7 +587,6 @@
     <Resource Include="Resource\ico_unsort_unselect.png" />
     <Resource Include="Resource\video_ph.png" />
     <Resource Include="Resource\uppressed.png" />
-    <Resource Include="Resource\FAV_512.ico" />
     <Resource Include="Resource\notfavoriteicon.png" />
     <Resource Include="Resource\pplaceholder.png" />
     <Resource Include="Ren\Images\add_folder.png" />

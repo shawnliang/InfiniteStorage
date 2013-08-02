@@ -1,8 +1,8 @@
 ﻿#region
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -31,7 +31,7 @@ namespace Waveface.Client
 			{
 				if (tbName.Text == string.Empty)
 				{
-					return m_describeText;
+					return m_describeText + " [" + DateTime.Now.ToString("yyyy-MM-dd HH:mm") + "]";
 				}
 				else
 				{
@@ -48,6 +48,20 @@ namespace Waveface.Client
 			GetSelectedEntitieIDs(selectedEntities);
 
 			InitializeComponent();
+
+			CenterWindowOnScreen();
+		}
+
+		private void CenterWindowOnScreen()
+		{
+			double _screenWidth = SystemParameters.PrimaryScreenWidth;
+			double _screenHeight = SystemParameters.PrimaryScreenHeight;
+
+			Width = _screenWidth * 0.75;
+			Height = _screenHeight * 0.75;
+
+			Left = (_screenWidth / 2) - (Width / 2);
+			Top = (_screenHeight / 2) - (Height / 2);
 		}
 
 		private void GetSelectedEntitieIDs(IEnumerable<IContentEntity> selectedEntities)
@@ -92,7 +106,6 @@ namespace Waveface.Client
 					_eventItem.BitmapImage = _contentEntity.ThumbnailSource;
 
 					_controls.Add(_eventItem);
-
 				}
 				else
 				{
@@ -225,11 +238,12 @@ namespace Waveface.Client
 
 		private void btnSelectAll_Click(object sender, RoutedEventArgs e)
 		{
-			for (int i = 0; i < lbItems.Items.Count; i++)
-			{
-				ListBoxItem _lbi = lbItems.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
-				_lbi.IsSelected = true;
-			}
+			lbItems.SelectAll();
+		}
+
+		private void lbItems_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			lbItems.UnselectAll();
 		}
 	}
 }

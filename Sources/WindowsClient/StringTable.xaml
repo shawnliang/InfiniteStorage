@@ -1,6 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="AppTitle">Waveface Albums</system:String>
+    
     <system:String x:Key="AddDeviceIconText">Add Device</system:String>
     <system:String x:Key="SourceGroupTitle">SOURCES</system:String>
     <system:String x:Key="FavoritesGroupTitle">ALBUMS</system:String>
@@ -95,6 +98,7 @@
     <system:String x:Key="AddTo">Add To</system:String>
     <system:String x:Key="MoveTo">Move To</system:String>
     <system:String x:Key="Create">Create</system:String>
+    <system:String x:Key="Create2">Create</system:String>
 
     <system:String x:Key="Share">Share</system:String>
     <system:String x:Key="ShareEvent">Share This Event</system:String>

@@ -84,7 +84,7 @@
 
             <Image Style="{StaticResource ButtonImageTextImageStyle}" />
         </Border>
-
+        
         <TextBlock Grid.Row="1" x:Name="tbText" Style="{StaticResource ButtonImageTextTextBlockStyle}" Text="{Binding Path=Text}" />
     </Grid>
 </UserControl>

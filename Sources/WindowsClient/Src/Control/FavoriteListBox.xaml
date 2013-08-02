@@ -69,6 +69,8 @@
 
                 <DataTrigger Binding="{Binding ShareEnabled}" Value="true">
                     <Setter TargetName="icon" Property="Source" Value="{StaticResource UnSelectedCloudFav}" />
+                    <Setter TargetName="sourceName" Property="Foreground" Value="DodgerBlue" />
+                    <Setter TargetName="sourceCount" Property="Foreground" Value="DodgerBlue" />
                 </DataTrigger>
 
                 <MultiDataTrigger>

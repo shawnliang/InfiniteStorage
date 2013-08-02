@@ -121,7 +121,7 @@
                 <TextBlock Text="" x:Name="tbProgress" Margin="4,0,0,0" FontSize="14" Foreground="White" />
             </StackPanel>
 
-            <WPFSpark:FluidProgressBar x:Name="progressBar" Oscillate="True" Foreground="DodgerBlue" DotWidth="8" DotRadiusX="2" DotRadiusY="2" DotHeight="8"/>
+            <ProgressBar x:Name="progressBar" IsIndeterminate="True" Foreground="DodgerBlue" Height="8"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="8,20,8,0" HorizontalAlignment="Center">
