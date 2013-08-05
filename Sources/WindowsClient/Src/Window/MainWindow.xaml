@@ -246,8 +246,10 @@
                                    HorizontalAlignment="Stretch"
                                    VerticalAlignment="Top"
                                    IsItemsHost="True"
-                                   ItemHeight="{Binding Value, ElementName=zoomSlider}"
-                                   ItemWidth="{Binding Value, ElementName=zoomSlider}"
+                                   ItemHeight="{Binding Value,
+                                                        ElementName=zoomSlider}"
+                                   ItemWidth="{Binding Value,
+                                                       ElementName=zoomSlider}"
                                    Orientation="Horizontal" />
                     </ControlTemplate>
                 </Setter.Value>
@@ -261,7 +263,9 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{TemplateBinding Background}">
+                        <Border HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Background="{TemplateBinding Background}">
                             <ContentPresenter />
                         </Border>
 
@@ -279,9 +283,11 @@
                                 <Setter Property="Background" Value="#5FB0E0E6" />
                             </MultiTrigger>
 
-                            <!-- Trigger Property="utils:ListBoxDropHighlighter.IsPossibleDropTarget" Value="True">
+                            <!--
+                                Trigger Property="utils:ListBoxDropHighlighter.IsPossibleDropTarget" Value="True">
                                 <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                            </Trigger-->
+                                </Trigger
+                            -->
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -362,10 +368,10 @@
                 <ListBox x:Name="lbxContentContainer"
                          Background="{x:Null}"
                          BorderBrush="{x:Null}"
-                         Foreground="{x:Null}"                   
+                         Foreground="{x:Null}"
                          ItemsSource="{Binding IsAsync=True}"
-                         MouseDown="lbxContentContainer_MouseDown"
                          KeyDown="lbxContentContainer_KeyDown"
+                         MouseDown="lbxContentContainer_MouseDown"
                          PreviewMouseLeftButtonDown="List_PreviewMouseLeftButtonDown"
                          PreviewMouseLeftButtonUp="lbxContentContainer_PreviewMouseLeftButtonUp"
                          PreviewMouseMove="List_MouseMove"
@@ -545,7 +551,7 @@
                                    Margin="10,10,10,5"
                                    AddToFavorite="rspRightSidePanel_AddToFavorite"
                                    SaveToFavorite="rspRightSidePanel_SaveToFavorite" />
-            
+
             <local:RightSidePanel2 x:Name="rspRightSidePane2"
                                    Height="Auto"
                                    Margin="0,0,0,0"
@@ -553,7 +559,7 @@
                                    DeleteButtonClick="rspRightSidePane2_DeleteButtonClick"
                                    FavoriteName="{Binding SelectedItem.Name,
                                                           ElementName=lbxFavorites,
-                                                          Mode=TwoWay}"/>
+                                                          Mode=TwoWay}" />
 
 
         </Grid>
@@ -622,59 +628,137 @@
                                Text="Thumbnail Size" />
                 </StackPanel>
 
-                <Grid x:Name="helpPanel" Height="100" Width="420" Background="#456CB9"
-                                       Margin="344, -180, 4, 4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid x:Name="helpPanel"
+                      Width="420"
+                      Height="100"
+                      Margin="344, -180, 4, 4"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Background="#456CB9"
+                      Visibility="Collapsed">
+
+                    <Grid.Style>
+                        <Style TargetType="FrameworkElement">
+                            <Style.Triggers>
+                                <Trigger Property="Visibility" Value="Visible">
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0:0:2"
+                                                                 From="0.0"
+                                                                 Storyboard.TargetProperty="Opacity"
+                                                                 To="1.0" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
                     <Grid.Effect>
-                        <DropShadowEffect/>
+                        <DropShadowEffect />
                     </Grid.Effect>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="56"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="56" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Image Grid.Column="0" Source="/Waveface.Client;component/Resource/ico_arrow_down.png" Width="36" Height="40" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, 16"/>
+
+                    <Image Grid.Column="0"
+                           Width="36"
+                           Height="40"
+                           Margin="0, 0, 0, 16"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Bottom"
+                           Source="/Waveface.Client;component/Resource/ico_arrow_down.png" />
 
                     <Grid Grid.Column="1" Margin="0, 16, 12, 8">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Foreground="White" Text="立即建立雲端相簿" FontSize="16" VerticalAlignment="Center" />
-                        <TextBlock Grid.Row="1" Grid.RowSpan="2" Foreground="White" Text="點這裡" FontSize="40" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="0"
+                                   VerticalAlignment="Center"
+                                   FontSize="16"
+                                   Foreground="White"
+                                   Text="立即建立雲端相簿" />
+                        <TextBlock Grid.Row="1"
+                                   Grid.RowSpan="2"
+                                   VerticalAlignment="Center"
+                                   FontSize="40"
+                                   FontWeight="Bold"
+                                   Foreground="White"
+                                   Text="點這裡" />
                     </Grid>
 
                     <Grid Grid.Column="2" Margin="0, 16, 8, 8">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="18"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="18" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Row="0" Grid.Column="0" Foreground="White" Text="◎" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        <TextBlock Grid.Row="1" Grid.Column="0" Foreground="White" Text="◎" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        <TextBlock Grid.Row="2" Grid.Column="0" Foreground="White" Text="◎" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="18"
+                                   Foreground="White"
+                                   Text="◎" />
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="18"
+                                   Foreground="White"
+                                   Text="◎" />
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="18"
+                                   Foreground="White"
+                                   Text="◎" />
 
-                        <TextBlock Grid.Row="0" Grid.Column="1" Foreground="White" Text="免帳號上傳照片、影片" FontSize="16" VerticalAlignment="Center" />
-                        <TextBlock Grid.Row="1" Grid.Column="1" Foreground="White" Text="自動同步到裝置中帶著走" FontSize="16" VerticalAlignment="Center" />
-                        <TextBlock Grid.Row="2" Grid.Column="1" Foreground="White" Text="輕鬆分享給親朋好友" FontSize="16" VerticalAlignment="Center" />
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="1"
+                                   VerticalAlignment="Center"
+                                   FontSize="16"
+                                   Foreground="White"
+                                   Text="免帳號上傳照片、影片" />
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="1"
+                                   VerticalAlignment="Center"
+                                   FontSize="16"
+                                   Foreground="White"
+                                   Text="自動同步到裝置中帶著走" />
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="1"
+                                   VerticalAlignment="Center"
+                                   FontSize="16"
+                                   Foreground="White"
+                                   Text="輕鬆分享給親朋好友" />
                     </Grid>
 
-                    <Button Grid.Column="2" x:Name="btnHelpPanelClose" Background="#456CB9"
-                        Width="15"
-                        Height="15"
-                        Margin="4"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        Click="btnHelpPanelClose_Click"
-                        Content="X"
-                        FontSize="10"
-                        FontWeight="ExtraBold" />
+                    <Button x:Name="btnHelpPanelClose"
+                            Grid.Column="2"
+                            Width="15"
+                            Height="15"
+                            Margin="4"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Background="#456CB9"
+                            Click="btnHelpPanelClose_Click"
+                            Content="X"
+                            FontSize="10"
+                            FontWeight="ExtraBold" />
                 </Grid>
 
                 <local:ButtonImageText x:Name="btnCreateCloudAlbum"
@@ -689,7 +773,7 @@
                                        Visibility="Collapsed" />
 
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                    
+
                     <local:ButtonImageText x:Name="btnActions"
                                            Margin="4"
                                            HorizontalAlignment="Right"
