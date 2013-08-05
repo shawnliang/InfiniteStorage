@@ -384,7 +384,9 @@
 
             <local:AddSourceTip Grid.Row="0"
                                 Width="Auto"
-                                Height="Auto" />
+                                Height="Auto"
+                                TipOneMouseDown="GettingStarted_Tip1Clicked"
+                                TipThreeMouseDown="GettingStarted_Tip3Clicked" />
         </Grid>
 
         <Grid Grid.Row="0"

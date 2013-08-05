@@ -1650,5 +1650,15 @@ namespace Waveface.Client
 		{
 			lbxContentContainer.UnselectAll();
 		}
+
+		private void GettingStarted_Tip1Clicked(object sender, MouseButtonEventArgs e)
+		{
+			showWaitForPairingDialog();
+		}
+
+		private void GettingStarted_Tip3Clicked(object sender, MouseButtonEventArgs e)
+		{
+			Process.Start("https://play.google.com/store/apps/details?id=com.waveface.favoriteplayer");
+		}
 	}
 }
