@@ -1459,6 +1459,15 @@ namespace Waveface.Client
 			List<string> _fileIDs = _dialog.FileIDs;
 			_title = _dialog.TitleName;
 
+			foreach (IContentGroup _group in lbxFavorites.Items.OfType<IContentGroup>())
+			{
+				if(_group.Name == _title)
+				{
+					_title += " [" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "]";
+					break;
+				}
+			}
+
 			_dialog = null;
 
 			if ((_fileIDs != null) && (_title != string.Empty))
