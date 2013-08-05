@@ -3,7 +3,7 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <system:String x:Key="AppTitle">Waveface Albums</system:String>
-    
+
     <system:String x:Key="AddDeviceIconText">Add Device</system:String>
     <system:String x:Key="SourceGroupTitle">SOURCES</system:String>
     <system:String x:Key="FavoritesGroupTitle">ALBUMS</system:String>
@@ -91,6 +91,13 @@
     <system:String x:Key="ConfirmSync_5">(Around 3 minutes)</system:String>
     <system:String x:Key="ConfirmSync_6">Import all items</system:String>
     <system:String x:Key="ConfirmSync_7">(It takes longer)</system:String>
+
+
+    <system:String x:Key="menuitem_star">Star</system:String>
+    <system:String x:Key="menuitem_create_album">Create a new album...</system:String>
+    <system:String x:Key="menuitem_add_album">Add to an existing album...</system:String>
+    <system:String x:Key="menuitem_locate">Locate on disk</system:String>
+    <system:String x:Key="menuitem_delete">Delete</system:String>
     <!--  end of need review  -->
 
     <system:String x:Key="SelectAll">Select All</system:String>

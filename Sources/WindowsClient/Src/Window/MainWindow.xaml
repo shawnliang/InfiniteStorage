@@ -27,20 +27,20 @@
         <SolidColorBrush x:Key="HorizontalNormalBorderBrush" Color="#888" />
 
         <ContextMenu x:Key="SourceContentContextMenu" x:Name="SourceContentContextMenu">
-            <MenuItem Click="StarMenuItem_Click" Header="Star" />
-            <MenuItem Click="CreateFavoriteMenuItem_Click" Header="Create Favorite..." />
-            <MenuItem Click="AddToFavoriteMenuItem_Click" Header="Add to Favorite..." />
+            <MenuItem Click="StarMenuItem_Click" Header="{DynamicResource menuitem_star}" />
+            <MenuItem Click="CreateFavoriteMenuItem_Click" Header="{DynamicResource menuitem_create_album}" />
+            <MenuItem Click="AddToFavoriteMenuItem_Click" Header="{DynamicResource menuitem_add_album}" />
             <Separator />
-            <MenuItem Click="miLocateOnDisk_Click" Header="Locate on Disk" />
-            <MenuItem Click="DeleteMenuItem_Click" Header="Delete" />
+            <MenuItem Click="miLocateOnDisk_Click" Header="{DynamicResource menuitem_locate}" />
+            <MenuItem Click="DeleteMenuItem_Click" Header="{DynamicResource menuitem_delete}" />
         </ContextMenu>
 
         <ContextMenu x:Key="ContentContextMenu" x:Name="ContentContextMenu">
-            <MenuItem Click="CreateFavoriteMenuItem_Click" Header="Create Favorite..." />
-            <MenuItem Click="AddToFavoriteMenuItem_Click" Header="Add to Favorite..." />
+            <MenuItem Click="CreateFavoriteMenuItem_Click" Header="{DynamicResource menuitem_create_album}" />
+            <MenuItem Click="AddToFavoriteMenuItem_Click" Header="{DynamicResource menuitem_add_album}" />
             <Separator />
-            <MenuItem Click="miLocateOnDisk_Click" Header="Locate on Disk" />
-            <MenuItem Click="UnTagMenuItem_Click" Header="Delete" />
+            <MenuItem Click="miLocateOnDisk_Click" Header="{DynamicResource menuitem_locate}" />
+            <MenuItem Click="UnTagMenuItem_Click" Header="{DynamicResource menuitem_delete}" />
         </ContextMenu>
 
         <LinearGradientBrush x:Key="PressedBrush" StartPoint="0,0" EndPoint="0,1">

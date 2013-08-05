@@ -10,8 +10,8 @@
           Grid.IsSharedSizeScope="True"
           ItemContainerStyle="{DynamicResource TreeViewItemStyle1}"
           ItemsSource="{Binding IsAsync=True}"
-          MouseUp="UserControl_MouseUp"
           MouseMove="UserControl_MouseMove"
+          MouseUp="UserControl_MouseUp"
           PreviewKeyDown="UserControl_PreviewKeyDown"
           PreviewMouseLeftButtonDown="UserControl_PreviewMouseLeftButtonDown"
           VirtualizingStackPanel.IsVirtualizing="True"
@@ -22,12 +22,12 @@
     <TreeView.Resources>
 
         <ContextMenu x:Key="SourceContextMenu">
-            <MenuItem Click="miStar_Click" Header="Star" />
-            <MenuItem Click="miCreateFavorite_Click" Header="Create Favorite..." />
-            <MenuItem Click="miAddToFavorite_Click" Header="Add to Favorite..." />            
+            <MenuItem Click="miStar_Click" Header="{DynamicResource menuitem_star}" />
+            <MenuItem Click="miCreateFavorite_Click" Header="{DynamicResource menuitem_create_album}" />
+            <MenuItem Click="miAddToFavorite_Click" Header="{DynamicResource menuitem_add_album}" />
             <Separator />
-            <MenuItem Click="miLocateOnDisk_Click" Header="Locate on Disk" />
-            <MenuItem Click="miDelete_Click" Header="Delete" />
+            <MenuItem Click="miLocateOnDisk_Click" Header="{DynamicResource menuitem_locate}" />
+            <MenuItem Click="miDelete_Click" Header="{DynamicResource menuitem_delete}" />
         </ContextMenu>
 
         <!--
@@ -36,7 +36,7 @@
             <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
             Color="Transparent" />
         -->
-        
+
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <BitmapImage x:Key="SelectedIcon"
                      CacheOption="OnDemand"
@@ -53,14 +53,11 @@
         <BitmapImage x:Key="CycleIcon"
                      CacheOption="OnDemand"
                      UriSource="pack://application:,,,/Resource/arrow_circle_double.png" />
-        <Style x:Key="TreeViewItemStyle1"
-               TargetType="{x:Type TreeViewItem}">
-            <EventSetter Event="UIElement.PreviewMouseLeftButtonDown"
-                         Handler="TreeViewItem_PreviewMouseLeftButtonDown" />
+        <Style x:Key="TreeViewItemStyle1" TargetType="{x:Type TreeViewItem}">
+            <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="TreeViewItem_PreviewMouseLeftButtonDown" />
             <Setter Property="Template" Value="{DynamicResource TreeViewItemControlTemplate1}" />
         </Style>
-        <ControlTemplate x:Key="TreeViewItemControlTemplate1"
-                         TargetType="{x:Type TreeViewItem}">
+        <ControlTemplate x:Key="TreeViewItemControlTemplate1" TargetType="{x:Type TreeViewItem}">
             <Grid x:Name="Item">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -179,15 +176,16 @@
 
     <TreeView.ItemTemplate>
         <HierarchicalDataTemplate ItemsSource="{Binding Contents}">
-            <StackPanel Orientation="Horizontal" AllowDrop="False">
+            <StackPanel AllowDrop="False" Orientation="Horizontal">
                 <Label Content="{Binding Name}"
                        FontSize="18"
                        Foreground="#a8a8a8" />
-                
+
                 <Image x:Name="recvingIcon"
                        IsVisibleChanged="recvingIcon_IsVisibleChanged"
                        Source="{StaticResource CycleIcon}"
-                       Visibility="{Binding IsRecving, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                       Visibility="{Binding IsRecving,
+                                            Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
             <HierarchicalDataTemplate.ItemTemplate>
                 <DataTemplate>
@@ -222,9 +220,7 @@
                     </Grid>
 
                     <DataTemplate.Triggers>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem},
-                                                       Path=IsSelected}"
-                                     Value="True">
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}" Value="True">
                             <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedIcon}" />
                             <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
                             <Setter TargetName="item" Property="Background" Value="#d5d5d5" />
@@ -232,9 +228,7 @@
                             <Setter TargetName="sourceCount" Property="Foreground" Value="Black" />
                         </DataTrigger>
 
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem},
-                                                       Path=DataContext.ID}"
-                                     Value="Unsorted">
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=DataContext.ID}" Value="Unsorted">
                             <Setter TargetName="item" Property="ContextMenu" Value="{x:Null}" />
                         </DataTrigger>
 
