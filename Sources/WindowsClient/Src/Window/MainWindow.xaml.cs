@@ -9,7 +9,6 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Security.Permissions;
-using System.Threading;
 using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
@@ -1459,7 +1458,7 @@ namespace Waveface.Client
 			List<string> _fileIDs = _dialog.FileIDs;
 			_title = _dialog.TitleName;
 
-			foreach (IContentGroup _group in lbxFavorites.Items.OfType<IContentGroup>())
+			foreach (IContentGroup _group in ClientFramework.Client.Default.GetFavorites(true))
 			{
 				if(_group.Name == _title)
 				{
