@@ -212,25 +212,25 @@ namespace InfiniteStorage
 
 				var orientation = ImageHelper.ImageOrientation(fullImage);
 				file.orientation = (int)orientation;
+				ImageHelper.CorrectOrientation(orientation, fullImage);
 
 				if (longSide > 2048)
 				{
 					using (var thum = ImageHelper.ScaleBasedOnLongSide(fullImage, 2048))
 					{
-						ImageHelper.CorrectOrientation(orientation, thum);
 						thum.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".large.thumb"), ImageFormat.Jpeg);
 					}
 				}
 				else
 				{
 					fullImage.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".large.thumb"), ImageFormat.Jpeg);
+
 				}
 
 				if (longSide > 1024)
 				{
 					using (var thum = ImageHelper.ScaleBasedOnLongSide(fullImage, 1024))
 					{
-						ImageHelper.CorrectOrientation(orientation, thum);
 						thum.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".medium.thumb"), ImageFormat.Jpeg);
 					}
 				}
@@ -243,7 +243,6 @@ namespace InfiniteStorage
 				{
 					using (var thum = ImageHelper.ScaleBasedOnLongSide(fullImage, 512))
 					{
-						ImageHelper.CorrectOrientation(orientation, thum);
 						thum.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".small.thumb"), ImageFormat.Jpeg);
 					}
 				}
@@ -256,7 +255,6 @@ namespace InfiniteStorage
 				{
 					using (var thum = ImageHelper.ScaleBasedOnLongSide(fullImage, 256))
 					{
-						ImageHelper.CorrectOrientation(orientation, thum);
 						thum.Save(Path.Combine(thumbnailLocation, file.file_id.ToString() + ".tiny.thumb"), ImageFormat.Jpeg);
 					}
 				}

@@ -38,6 +38,7 @@ namespace Waveface.Client
 		private Point startPoint;
 		private Boolean needSpecialMulitSelectProcess;
 		private DateTime lastMouseLeftButtonDown;
+		private long sourceTreeClickCount;
 
 		public MainWindow()
 		{
@@ -113,8 +114,6 @@ namespace Waveface.Client
 			recentTimer.Tick += recentTimer_Tick;
 			recentTimer.Interval = new TimeSpan(0, 0, 2);
 			recentTimer.Start();
-
-			ShowHelpPanel(true);
 		}
 
 		#region Private Method
@@ -780,6 +779,18 @@ namespace Waveface.Client
 			lbxRecent.SelectedIndex = -1;
 
 			SetContentTypeCount(group);
+
+			checkToShowHelpPanel();
+		}
+
+		private void checkToShowHelpPanel()
+		{
+			sourceTreeClickCount++;
+			if (!ClientFramework.Client.Default.Favorites.Cast<BunnyLabelContentGroup>().Where(x => x.ShareEnabled).Any() &&
+				sourceTreeClickCount == 1)
+			{
+				ShowHelpPanel(true);
+			}
 		}
 
 		private void lbxContentContainer_KeyDown(object sender, KeyEventArgs e)
@@ -1397,13 +1408,11 @@ namespace Waveface.Client
 		{
 			if (flag)
 			{
-				helpPanel.Opacity = 1.0;
-				helpPanel.Margin = new Thickness(344, -180, 4, 4);
+				helpPanel.Visibility = System.Windows.Visibility.Visible;
 			}
 			else
 			{
-				helpPanel.Opacity = 0;
-				helpPanel.Margin = new Thickness(344, 0, 4, 4);
+				helpPanel.Visibility = System.Windows.Visibility.Collapsed;
 			}
 		}
 
@@ -1513,6 +1522,7 @@ namespace Waveface.Client
 			{
 				btnCreateCloudAlbum.Visibility = Visibility.Collapsed;
 				btnActions.Visibility = Visibility.Collapsed;
+				helpPanel.Visibility = System.Windows.Visibility.Collapsed;
 			}
 		}
 
@@ -1638,6 +1648,16 @@ namespace Waveface.Client
 		private void lbxContentContainer_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			lbxContentContainer.UnselectAll();
+		}
+
+		private void GettingStarted_Tip1Clicked(object sender, MouseButtonEventArgs e)
+		{
+			showWaitForPairingDialog();
+		}
+
+		private void GettingStarted_Tip3Clicked(object sender, MouseButtonEventArgs e)
+		{
+			Process.Start("https://play.google.com/store/apps/details?id=com.waveface.favoriteplayer");
 		}
 	}
 }

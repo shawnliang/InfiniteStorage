@@ -250,10 +250,12 @@ namespace InfiniteStorage
 					else
 						dialog.UpdateImageToVideoIcon();
 
-
+					// +1 because when the last photo is received, backuped_count is (n-1) and total_count is (n).
+					// Device will then send update-count command to update backuped_count to (n) after some delays.
 					if (e.ctx.backup_count + 1 >= e.ctx.total_count)
 					{
 						dialog.UpdateComplete((int)e.ctx.recved_files, (int)e.ctx.recved_files);
+						e.ctx.recved_files = 0;
 					}
 
 				}
