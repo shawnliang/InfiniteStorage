@@ -55,7 +55,7 @@ namespace Waveface.ClientFramework
 			{
 				if (_favorites == null)
 				{
-					_favorites = new ObservableCollection<IContentEntity>(GetFavorites());
+					_favorites = new ObservableCollection<IContentEntity>(GetFavorites(false));
 				}
 
 				return _favorites;
@@ -116,7 +116,7 @@ namespace Waveface.ClientFramework
 
 		#region Private Method
 
-		private IEnumerable<IContentEntity> GetFavorites()
+		public IEnumerable<IContentEntity> GetFavorites(bool all)
 		{
 			using (var conn = BunnyDB.CreateConnection())
 			{
@@ -124,7 +124,15 @@ namespace Waveface.ClientFramework
 
 				using (var cmd = conn.CreateCommand())
 				{
-					cmd.CommandText = "SELECT * FROM Labels where auto_type == 0 and deleted == 0";
+					if(all)
+					{
+						cmd.CommandText = "SELECT * FROM Labels where auto_type == 0";
+					}
+					else
+					{
+						cmd.CommandText = "SELECT * FROM Labels where auto_type == 0 and deleted == 0";
+					}
+					
 
 					using (var dr = cmd.ExecuteReader())
 					{
@@ -203,7 +211,7 @@ namespace Waveface.ClientFramework
 			StationAPI.Tag(string.Join(",", contents.Select(content => content.ID).ToArray()), labelID);
 
 			m_Favorites.Clear();
-			m_Favorites.AddRange(GetFavorites());
+			m_Favorites.AddRange(GetFavorites(false));
 		}
 
 		public void Delete(IEnumerable<string> ids = null, IEnumerable<string> paths = null)
@@ -233,7 +241,7 @@ namespace Waveface.ClientFramework
 			StationAPI.Tag(string.Join(",", contents.Select(content => content.ID).ToArray()), favoriteID);
 
 			m_Favorites.Clear();
-			m_Favorites.AddRange(GetFavorites());
+			m_Favorites.AddRange(GetFavorites(false));
 		}
 
 		public void RemoveFavorite(string favoriteID)
@@ -241,7 +249,7 @@ namespace Waveface.ClientFramework
 			StationAPI.DeleteLabel(favoriteID);
 
 			m_Favorites.Clear();
-			m_Favorites.AddRange(GetFavorites());
+			m_Favorites.AddRange(GetFavorites(false));
 		}
 
 		public void ClearTaggedContents()
