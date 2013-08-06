@@ -5,6 +5,9 @@
         Loaded="Window_Loaded_1"
         ResizeMode="NoResize"
         SizeToContent="WidthAndHeight"
+        TextOptions.TextFormattingMode ="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="Segoe UI"
         WindowStartupLocation="CenterOwner">
 
     <Window.Resources>

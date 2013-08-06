@@ -5,7 +5,7 @@
              xmlns:local="clr-namespace:Waveface.Client"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Name="UserControl"
-             UseLayoutRounding="True"
+             
              mc:Ignorable="d">
     <UserControl.Resources>
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />

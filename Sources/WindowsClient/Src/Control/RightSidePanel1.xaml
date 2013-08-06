@@ -6,7 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Name="UserControl"
              Width="183"
-             UseLayoutRounding="True"
+             
              d:DesignHeight="402"
              d:DesignWidth="150"
              mc:Ignorable="d">

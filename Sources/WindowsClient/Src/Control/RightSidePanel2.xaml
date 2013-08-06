@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:WPFSpark="clr-namespace:WPFSpark" x:Name="UserControl"
              Height="557.25"
-             UseLayoutRounding="True"
+             
              d:DesignWidth="170"
              mc:Ignorable="d">
     <UserControl.Resources>     

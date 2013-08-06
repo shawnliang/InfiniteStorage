@@ -12,9 +12,14 @@
         MinHeight="640"
         ContentRendered="window_ContentRendered"
         Icon="/Waveface.Client;component/Resource/Bunnydesktop.ico"
-        Loaded="Window_Loaded"
-        UseLayoutRounding="True"
+        Loaded="Window_Loaded"        
         WindowState="Maximized"
+        
+        
+        SnapsToDevicePixels ="True"      
+        TextOptions.TextFormattingMode ="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="Segoe UI"
         mc:Ignorable="d">
 
     <Window.Resources>
@@ -282,6 +287,14 @@
 
                                 <Setter Property="Background" Value="#5FB0E0E6" />
                             </MultiTrigger>
+
+                            <!--Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger-->
 
                             <!--
                                 Trigger Property="utils:ListBoxDropHighlighter.IsPossibleDropTarget" Value="True">

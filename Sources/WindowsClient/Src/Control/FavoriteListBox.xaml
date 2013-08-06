@@ -12,7 +12,7 @@
          MouseMove="UserControl_MouseMove"
          PreviewMouseLeftButtonDown="UserControl_PreviewMouseLeftButtonDown"
          DragOver="UserControl_DragOver"
-         UseLayoutRounding="True"
+         
          VirtualizingStackPanel.IsVirtualizing="True"
          VirtualizingStackPanel.VirtualizationMode="Recycling"
          d:DesignHeight="109"

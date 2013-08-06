@@ -7,6 +7,12 @@
         Height="183"
         Background="#FF595959"
         WindowStyle="ToolWindow"
+        
+        
+        SnapsToDevicePixels ="True"
+        TextOptions.TextFormattingMode ="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="Segoe UI"
         Loaded="Window_Loaded">
 
     <Grid x:Name="LayoutRoot">

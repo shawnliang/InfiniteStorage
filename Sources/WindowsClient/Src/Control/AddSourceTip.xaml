@@ -6,7 +6,7 @@
              x:Name="UserControl"
              Width="1000"
              Height="500"
-             UseLayoutRounding="True"
+             
              d:DesignHeight="158"
              d:DesignWidth="204"
              mc:Ignorable="d">

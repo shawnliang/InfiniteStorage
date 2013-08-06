@@ -7,7 +7,7 @@
              x:Name="UserControl"
              Width="79.667"
              Height="27.001"
-             UseLayoutRounding="True"
+             
              mc:Ignorable="d">
 
     <Grid x:Name="LayoutRoot">

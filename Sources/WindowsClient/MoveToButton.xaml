@@ -7,7 +7,7 @@
 	mc:Ignorable="d"
 	x:Class="Waveface.Client.MoveToButton"
 	x:Name="UserControl"
-	UseLayoutRounding="True">
+	>
 
 	<UserControl.Resources>
 		<Style x:Key="MoveToStyle"

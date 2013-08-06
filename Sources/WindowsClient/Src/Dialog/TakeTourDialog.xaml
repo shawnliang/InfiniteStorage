@@ -11,6 +11,12 @@
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner"
         WindowStyle="ToolWindow"
+        
+        
+        SnapsToDevicePixels ="True"
+        TextOptions.TextFormattingMode ="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="Segoe UI"
         mc:Ignorable="d">
     <StackPanel>
         <Grid HorizontalAlignment="Stretch">
