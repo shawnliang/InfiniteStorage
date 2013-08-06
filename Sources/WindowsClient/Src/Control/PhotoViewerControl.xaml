@@ -21,7 +21,7 @@
             </Style.Triggers>
         </Style>
 
-        <Style TargetType="Image">
+        <Style x:Key="imgStyle" TargetType="Image">
             <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="Photo">
@@ -53,6 +53,7 @@
                                    Source="{Binding ThumbnailSource,
                                                     IsAsync=True}"
                                    Stretch="Fill"
+                                   Style="{StaticResource imgStyle}"
                                    ToolTipService.Placement="Top" />
                         </Border>
                     </ControlTemplate>
@@ -89,7 +90,11 @@
                                       MediaFailed="meVideo_MediaFailed"
                                       MediaOpened="meVideo_MediaOpened"
                                       ScrubbingEnabled="True" />
-                        <Image x:Name="ImgObject" DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}" />
+                        <Image x:Name="ImgObject"
+                               DataContext="{Binding SelectedItem,
+                                                     ElementName=lbImages,
+                                                     IsAsync=True}"
+                               Style="{StaticResource imgStyle}" />
                         <Thumb x:Name="ImgThumb"
                                DragDelta="ImgThumb_DragDelta"
                                MouseWheel="ImgThumb_MouseWheel"
