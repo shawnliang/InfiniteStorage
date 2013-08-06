@@ -373,7 +373,22 @@ namespace Waveface.Client
 			var group = GetCurrentContentGroup();
 			ClientFramework.Client.Default.RemoveFavorite(group.ID);
 
-			lbxFavorites.SelectedIndex = 0;
+			if (lbxFavorites.HasItems)
+				lbxFavorites.SelectedIndex = 0;
+			else
+			{
+				lbxFavorites.SelectedIndex = -1;
+				lbxContentContainer.DataContext = null;
+				lblContentLocation.DataContext = null;
+				ShowToolBarButtons(false);
+				SetContentTypeCount(null);
+
+				Grid.SetColumnSpan(gdContentArea, 2);
+
+				gdRightSide.Visibility = Visibility.Collapsed;
+				rspRightSidePanel.Visibility = Visibility.Collapsed;
+				rspRightSidePane2.Visibility = Visibility.Collapsed;
+			}
 		}
 
 		private void AddSelectedToFavorite()
@@ -646,7 +661,10 @@ namespace Waveface.Client
 
 		private void SetContentTypeCount(IContentGroup group)
 		{
-			lblContentTypeCount.Content = string.Format("{0} photos {1} videos",
+			if (group == null)
+				lblContentTypeCount.Content = "";
+			else
+				lblContentTypeCount.Content = string.Format("{0} photos {1} videos",
 														group.Contents.Count(item =>
 																				 {
 																					 var content = item as IContent;
