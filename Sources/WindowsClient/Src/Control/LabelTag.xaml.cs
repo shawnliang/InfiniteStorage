@@ -12,10 +12,7 @@ namespace Waveface.Client
 	public partial class LabelTag : UserControl
 	{
 		#region Var
-
 		public static readonly DependencyProperty _tagged = DependencyProperty.Register("Tagged", typeof(bool), typeof(LabelTag), new UIPropertyMetadata(false, OnTaggedChanged));
-		private bool m_isMouseClick;
-
 		#endregion
 
 		#region Property
@@ -25,10 +22,7 @@ namespace Waveface.Client
 			get { return (bool)GetValue(_tagged); }
 			set
 			{
-				OnTagStatusChanging(EventArgs.Empty);
 				SetValue(_tagged, value);
-				imgSelected.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-				OnTagStatusChanged(EventArgs.Empty);
 			}
 		}
 
@@ -36,7 +30,6 @@ namespace Waveface.Client
 
 		#region Event
 
-		public event EventHandler TagStatusChanging;
 		public event EventHandler TagStatusChanged;
 
 		#endregion
@@ -51,18 +44,6 @@ namespace Waveface.Client
 		#endregion
 
 		#region Protected Method
-
-		/// <summary>
-		/// Raises the <see cref="E:TagStatusChanging" /> event.
-		/// </summary>
-		/// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-		protected void OnTagStatusChanging(EventArgs e)
-		{
-			if (TagStatusChanging == null)
-				return;
-			TagStatusChanging(this, e);
-		}
-
 		/// <summary>
 		/// Raises the <see cref="E:TagStatusChanged" /> event.
 		/// </summary>
@@ -84,21 +65,13 @@ namespace Waveface.Client
 				return;
 
 			var labelTag = o as LabelTag;
-
-			if(labelTag.m_isMouseClick)
-				return;
-
-			labelTag.Tagged = (bool)e.NewValue;
+			labelTag.imgSelected.Visibility = (bool)e.NewValue ? Visibility.Visible : Visibility.Collapsed;
+			labelTag.OnTagStatusChanged(EventArgs.Empty);
 		}
 
 		private void UserControl_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			m_isMouseClick = true;
-
 			Tagged = !Tagged;
-
-			m_isMouseClick = false;
-
 			e.Handled = true;
 		}
 

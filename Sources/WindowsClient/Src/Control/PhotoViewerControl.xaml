@@ -63,11 +63,11 @@
 
     <Grid x:Name="LayoutRoot" Margin="2.001,0,-2.001,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
         </Grid.RowDefinitions>
 
-        <Viewbox DockPanel.Dock="Top" x:Name="viewbox">
+        <Viewbox x:Name="viewbox" DockPanel.Dock="Top">
             <Canvas x:Name="ImgCanvas"
                     Width="602"
                     Height="371"
@@ -98,12 +98,12 @@
                 </ContentControl>
             </Canvas>
         </Viewbox>
-        
+
         <Label x:Name="DateTaken"
                Grid.Row="1"
                Margin="0,0,8,0"
-               VerticalAlignment="Center"
                HorizontalAlignment="Right"
+               VerticalAlignment="Center"
                HorizontalContentAlignment="Center"
                VerticalContentAlignment="Center"
                Content="{Binding SelectedItem.Name,
@@ -113,7 +113,7 @@
                FontSize="16"
                Foreground="White"
                Opacity="0.6" />
-              
+
         <ListBox x:Name="lbImages"
                  HorizontalAlignment="Center"
                  VerticalAlignment="Bottom"
@@ -133,6 +133,7 @@
         <l:VideoControl x:Name="vcVideoControl"
                         Width="300"
                         Height="22"
+                        Margin="0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"
                         DataContext="{Binding SelectedItem,
@@ -141,8 +142,9 @@
                         PauseButtonClick="vcVideoControl_PauseButtonClick"
                         PlayButtonClick="vcVideoControl_PlayButtonClick"
                         SeekPosition="vcVideoControl_SeekPosition"
-                        VolumeChanged="vcVideoControl_VolumeChanged" Margin="0" Visibility="Collapsed" />
-        
+                        Visibility="Collapsed"
+                        VolumeChanged="vcVideoControl_VolumeChanged" />
+
         <l:ViewerControl x:Name="vcViewerControl"
                          Grid.Row="1"
                          Width="300"
@@ -158,8 +160,8 @@
                          Previous="ViewerControl_Previous"
                          Stared="{Binding SelectedItem.Liked,
                                           ElementName=lbImages,
-                                          Mode=TwoWay,
-                                          IsAsync=True}" />        
-        
+                                          Mode=OneWay,
+                                          IsAsync=True}" />
+
     </Grid>
 </UserControl>

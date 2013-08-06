@@ -21,7 +21,6 @@ namespace Waveface.Client
 
 		#region Event
 
-		public event EventHandler TagStatusChanging;
 		public event EventHandler TagStatusChanged;
 
 		#endregion
@@ -32,26 +31,12 @@ namespace Waveface.Client
 		{
 			InitializeComponent();
 
-			ltTag.TagStatusChanging += ltTag_TagStatusChanging;
 			ltTag.TagStatusChanged += ltTag_TagStatusChanged;
 		}
 
 		#endregion
 
 		#region Protected Method
-
-		/// <summary>
-		/// Raises the <see cref="E:TagStatusChanging" /> event.
-		/// </summary>
-		/// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-		protected void OnTagStatusChanging(EventArgs e)
-		{
-			if (TagStatusChanging == null)
-				return;
-
-			TagStatusChanging(this, e);
-		}
-
 		/// <summary>
 		/// Raises the <see cref="E:TagStatusChanged" /> event.
 		/// </summary>
@@ -72,12 +57,6 @@ namespace Waveface.Client
 		{
 			OnTagStatusChanged(EventArgs.Empty);
 		}
-
-		private void ltTag_TagStatusChanging(object sender, EventArgs e)
-		{
-			OnTagStatusChanging(EventArgs.Empty);
-		}
-
 		#endregion
 	}
 }

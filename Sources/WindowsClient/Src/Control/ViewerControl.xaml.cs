@@ -66,7 +66,6 @@ namespace Waveface.Client
 			set
 			{
 				SetValue(_stared, value);
-				staredControl.Tagged = value;
 			}
 		}
 		#endregion
@@ -158,12 +157,6 @@ namespace Waveface.Client
 		private void CloseButton_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			OnClose(EventArgs.Empty);
-		}
-
-
-		private void staredControl_MouseDown_1(object sender, MouseButtonEventArgs e)
-		{
-			this.Stared = !this.Stared;
 		}
 	}
 }
