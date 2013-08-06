@@ -93,14 +93,14 @@
                         Orientation="Horizontal">
                 <TextBlock x:Name="tbTitle0"
                            Margin="14,14,0,0"
-                           FontFamily="Segoe UI Light"
+                           FontFamily="Segoe UI"
                            FontSize="18.667"
                            FontWeight="Bold"
                            Foreground="White"
                            Text="" />
                 <TextBlock x:Name="tbTitle"
                            Margin="2,14,0,0"
-                           FontFamily="Segoe UI Light"
+                           FontFamily="Segoe UI"
                            FontSize="18.667"
                            FontWeight="Bold"
                            Foreground="White"
@@ -211,7 +211,7 @@
                   Visibility="Collapsed">
                 <TextBlock HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           FontFamily="Segoe UI Light"
+                           FontFamily="Segoe UI"
                            FontSize="28"
                            FontWeight="Bold"
                            Foreground="White"

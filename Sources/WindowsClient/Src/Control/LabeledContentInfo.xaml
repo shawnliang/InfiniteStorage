@@ -20,7 +20,7 @@
                VerticalAlignment="Center"
                HorizontalContentAlignment="Center"
                Content="Click the start to Favorite"
-               FontFamily="Segoe UI Light"
+               FontFamily="Segoe UI"
                Foreground="Gray"
                Visibility="Collapsed" />
         <Image Width="150"
@@ -38,7 +38,7 @@
                Content="{Binding PhotoCount,
                                  ElementName=UserControl}"
                ContentStringFormat=" {0} photos"
-               FontFamily="Segoe UI Light"
+               FontFamily="Segoe UI"
                Foreground="White" />
         <Label x:Name="lblLabeledCount_Copy"
                Width="130"
@@ -50,7 +50,7 @@
                Content="{Binding VideoCount,
                                  ElementName=UserControl}"
                ContentStringFormat=" {0} videos"
-               FontFamily="Segoe UI Light"
+               FontFamily="Segoe UI"
                Foreground="White" />
     </Grid>
 </UserControl>
