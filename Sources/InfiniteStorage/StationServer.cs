@@ -153,12 +153,14 @@ namespace InfiniteStorage
 					if (e.ctx.total_count == e.ctx.backup_count)
 					{
 						var total = e.ctx.total_count - e.ctx.backup_count + e.ctx.recved_files;
-						dialog.UpdateComplete((int)e.ctx.recved_files, (int)total);
+						if (total > 0)
+							dialog.UpdateComplete((int)e.ctx.recved_files, (int)total);
 					}
 					else
 					{
 						var total = e.ctx.total_count - e.ctx.backup_count + e.ctx.recved_files;
-						dialog.UpdateInterrupted((int)e.ctx.recved_files, (int)total);
+						if (total > 0)
+							dialog.UpdateInterrupted((int)e.ctx.recved_files, (int)total);
 					}
 				}
 				catch (Exception err)
@@ -283,14 +285,6 @@ namespace InfiniteStorage
 			e.ctx.SetData("requestId", requestID);
 
 			var pairingSubscribers = Pair.PairWebSocketService.GetAllSubscribers();
-
-			//if (string.IsNullOrEmpty(e.ctx.passcode) && pairingSubscribers.Any())
-			//{
-			//	// old client does not provide passcode.
-			//	// for backward compatibility, just accept it.
-			//	e.ctx.handleApprove();
-			//	return;
-			//}
 
 			if (!pairingSubscribers.Any() || 
 				!string.IsNullOrEmpty(e.ctx.passcode) && BonjourServiceRegistrator.Instance.Passcode != e.ctx.passcode)
