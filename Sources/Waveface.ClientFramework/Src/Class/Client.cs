@@ -161,7 +161,8 @@ namespace Waveface.ClientFramework
 
 				using (var cmd = conn.CreateCommand())
 				{
-					cmd.CommandText = "SELECT * FROM Labels limit 7";
+					cmd.CommandText = "SELECT * FROM Labels where auto_type <> 0 or label_id = @starId";
+					cmd.Parameters.Add(new SQLiteParameter("@starId", Guid.Empty));
 
 					using (var dr = cmd.ExecuteReader())
 					{
