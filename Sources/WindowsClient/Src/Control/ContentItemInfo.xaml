@@ -14,7 +14,7 @@
 				Opacity="0.65"
 				StrokeThickness="0" />
 			<TextBlock x:Name="DateTaken"
-				FontFamily="Segoe UI Light"
+				FontFamily="Segoe UI"
 				FontSize="13"
 				Opacity="0.6"
 				TextWrapping="Wrap" Foreground="#FFA8A8A8" VerticalAlignment="Center" Margin="5,0,0,0" />
