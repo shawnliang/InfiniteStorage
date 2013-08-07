@@ -15,278 +15,268 @@ using Waveface.Model;
 
 namespace Waveface.Client
 {
-    /// <summary>
-    /// Interaction logic for PhotoViewerControl.xaml
-    /// </summary>
-    public partial class PhotoViewerControl : UserControl
-    {
-        private DispatcherTimer _timer;
-        private ScaleTransform myScale = new ScaleTransform();
+	public partial class PhotoViewerControl : UserControl
+	{
+		private DispatcherTimer _timer;
+		private ScaleTransform myScale = new ScaleTransform();
+
+		private DispatcherTimer m_Timer
+		{
+			get
+			{
+				if (_timer == null)
+				{
+					_timer = new DispatcherTimer();
+					_timer.Interval = TimeSpan.FromMilliseconds(100);
+					_timer.Tick += _timer_Tick;
+				}
+
+				return _timer;
+			}
+		}
+
+		public event EventHandler Close;
+
+		public PhotoViewerControl()
+		{
+			InitializeComponent();
+		}
+
+		public int SelectedIndex
+		{
+			get { return lbImages.SelectedIndex; }
+			set
+			{
+				lbImages.SelectedIndex = value;
+				vcViewerControl.PageNo = value + 1;
+			}
+		}
+
+		public object SelectedItem
+		{
+			get { return lbImages.SelectedItem; }
+			set { lbImages.SelectedItem = value; }
+		}
+
+		public Object Source
+		{
+			get { return lbImages.DataContext; }
+			set
+			{
+				lbImages.DataContext = value;
+				vcViewerControl.PageCount = (value as IEnumerable<IContentEntity>).Count();
+			}
+		}
+
+		protected void OnClose(EventArgs e)
+		{
+			if (Close == null)
+				return;
+
+			Close(this, e);
+		}
+
+		public void Previous()
+		{
+			var value = lbImages.SelectedIndex - 1;
+
+			if (value < 0)
+				value = lbImages.Items.Count - 1;
+
+			lbImages.SelectedIndex = value;
+			vcViewerControl.PageNo = lbImages.SelectedIndex + 1;
+		}
+
+		public void Next()
+		{
+			lbImages.SelectedIndex = (lbImages.SelectedIndex + 1)%lbImages.Items.Count;
+			vcViewerControl.PageNo = lbImages.SelectedIndex + 1;
+		}
 
 
-        private DispatcherTimer m_Timer
-        {
-            get
-            {
-                if (_timer == null)
-                {
-                    _timer = new DispatcherTimer();
-                    _timer.Interval = TimeSpan.FromMilliseconds(100);
-                    _timer.Tick += _timer_Tick;
-                }
-                return _timer;
-            }
-        }
+		private void WindowLoaded(object sender, RoutedEventArgs e)
+		{
+			ImgContentCtrl.RenderTransform = myScale;
+			ImgContentCtrl.BorderBrush = Brushes.White;
+		}
 
-        public event EventHandler Close;
+		private void ImgThumb_DragDelta(object sender, DragDeltaEventArgs e)
+		{
+			double left = Canvas.GetLeft(ImgContentCtrl);
+			double top = Canvas.GetTop(ImgContentCtrl);
 
+			left += e.HorizontalChange;
+			top += e.VerticalChange;
 
-        public PhotoViewerControl()
-        {
-            InitializeComponent();
-        }
+			Canvas.SetLeft(ImgContentCtrl, left);
+			Canvas.SetTop(ImgContentCtrl, top);
+		}
 
+		private void ImgThumb_MouseWheel(object sender, MouseWheelEventArgs e)
+		{
+			Grid.SetRowSpan(viewbox, 2);
 
-        public int SelectedIndex
-        {
-            get { return lbImages.SelectedIndex; }
-            set
-            {
-                lbImages.SelectedIndex = value;
-                vcViewerControl.PageNo = value + 1;
-            }
-        }
+			//  Variable for holding the mouse's delta value.
+			int deltaValue;
+			deltaValue = e.Delta;
 
-        public object SelectedItem
-        {
-            get
-            {
-                return lbImages.SelectedItem;
-            }
-            set
-            {
-                lbImages.SelectedItem = value;
-            }
-        }
+			//  Set the center point of the ScaleTransform object
+			//  to the cursor location.
+			myScale.CenterX = e.GetPosition(ImgContentCtrl).X;
+			myScale.CenterY = e.GetPosition(ImgContentCtrl).Y;
+			
+			//  Zoom in when the user scrolls the mouse wheel up
+			//  and vice versa.
+			if ((deltaValue > 0))
+			{
+				//  Limit zoom-in to 500%
+				if ((myScale.ScaleX < 5))
+				{
+					ZoomIn();
+				}
+				//  When mouse wheel is scrolled down...
+			}
+			else
+			{
+				//  Limit zoom-out to 80%
+				if ((myScale.ScaleX > 0.8))
+				{
+					ZoomOut();
+				}
+			}
+		}
 
-        public Object Source
-        {
-            get { return lbImages.DataContext; }
-            set
-            {
-                lbImages.DataContext = value;
-                vcViewerControl.PageCount = (value as IEnumerable<IContentEntity>).Count();
-            }
-        }
+		public void ZoomOut()
+		{
+			//  Zoom-out by 10%
+			myScale.ScaleX -= 0.1;
+			myScale.ScaleY = myScale.ScaleX;
+		}
 
+		public void ZoomIn()
+		{
+			//  Zoom-in in 10% increments
+			myScale.ScaleX += 0.1;
+			myScale.ScaleY = myScale.ScaleX;
+		}
 
-        protected void OnClose(EventArgs e)
-        {
-            if (Close == null)
-                return;
-            Close(this, e);
-        }
+		private void ViewerControl_Next(object sender, EventArgs e)
+		{
+			Next();
+		}
 
+		private void ViewerControl_Previous(object sender, EventArgs e)
+		{
+			Previous();
+		}
 
-        public void Previous()
-        {
-            var value = lbImages.SelectedIndex - 1;
+		private void ViewerControl_Close(object sender, EventArgs e)
+		{
+			OnClose(EventArgs.Empty);
+		}
 
-            if (value < 0)
-                value = lbImages.Items.Count - 1;
+		private void ImgContentCtrl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			if (e.ChangedButton != MouseButton.Left)
+				return;
 
-            lbImages.SelectedIndex = value;
-            vcViewerControl.PageNo = lbImages.SelectedIndex + 1;
-        }
+			OnClose(EventArgs.Empty);
+		}
 
-        public void Next()
-        {
-            lbImages.SelectedIndex = (lbImages.SelectedIndex + 1)%lbImages.Items.Count;
-            vcViewerControl.PageNo = lbImages.SelectedIndex + 1;
-        }
+		private void meVideo_MediaOpened(object sender, RoutedEventArgs e)
+		{
+			vcVideoControl.Duration = meVideo.NaturalDuration.TimeSpan.TotalMilliseconds;
+			vcVideoControl.Volume = meVideo.Volume;
+		}
 
+		private void _timer_Tick(object sender, EventArgs e)
+		{
+			vcVideoControl.Position = meVideo.Position.TotalMilliseconds;
+		}
 
-        private void WindowLoaded(object sender, RoutedEventArgs e)
-        {
-            ImgContentCtrl.RenderTransform = myScale;
-            ImgContentCtrl.BorderBrush = Brushes.White;
-        }
+		private void meVideo_MediaEnded(object sender, RoutedEventArgs e)
+		{
+			StopVideo();
+			meVideo.Position = TimeSpan.FromMilliseconds(0);
+		}
 
-        private void ImgThumb_DragDelta(object sender, DragDeltaEventArgs e)
-        {
-            double left = Canvas.GetLeft(ImgContentCtrl);
-            double top = Canvas.GetTop(ImgContentCtrl);
+		private void StopVideo()
+		{
+			m_Timer.Stop();
+			meVideo.Stop();
+			vcVideoControl.IsPlaying = false;
+		}
 
-            left += e.HorizontalChange;
-            top += e.VerticalChange;
+		private void meVideo_MediaFailed(object sender, ExceptionRoutedEventArgs e)
+		{
+			StopVideo();
+			meVideo.Position = TimeSpan.FromMilliseconds(0);
+		}
 
-            Canvas.SetLeft(ImgContentCtrl, left);
-            Canvas.SetTop(ImgContentCtrl, top);
-        }
+		private void vcVideoControl_PlayButtonClick(object sender, EventArgs e)
+		{
+			PlayVideo();
+		}
 
-        private void ImgThumb_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            Grid.SetRowSpan(viewbox, 2);
+		private void PlayVideo()
+		{
+			m_Timer.Start();
+			meVideo.Play();
+			vcVideoControl.IsPlaying = true;
+		}
 
-            //  Variable for holding the mouse's delta value.
-            int deltaValue;
-            deltaValue = e.Delta;
-            //  Set the center point of the ScaleTransform object
-            //  to the cursor location.
-            myScale.CenterX = e.GetPosition(ImgContentCtrl).X;
-            myScale.CenterY = e.GetPosition(ImgContentCtrl).Y;
-            //  Zoom in when the user scrolls the mouse wheel up
-            //  and vice versa.
-            if ((deltaValue > 0))
-            {
-                //  Limit zoom-in to 500%
-                if ((myScale.ScaleX < 5))
-                {
-                    ZoomIn();
-                }
-                //  When mouse wheel is scrolled down...
-            }
-            else
-            {
-                //  Limit zoom-out to 80%
-                if ((myScale.ScaleX > 0.8))
-                {
-                    ZoomOut();
-                }
-            }
-        }
+		private void vcVideoControl_PauseButtonClick(object sender, EventArgs e)
+		{
+			PauseVideo();
+		}
 
-        public void ZoomOut()
-        {
-            //  Zoom-out by 10%
-            myScale.ScaleX -= 0.1;
-            myScale.ScaleY = myScale.ScaleX;
-        }
+		private void PauseVideo()
+		{
+			meVideo.Pause();
+			vcVideoControl.IsPlaying = false;
+		}
 
-        public void ZoomIn()
-        {
-            //  Zoom-in in 10% increments
-            myScale.ScaleX += 0.1;
-            myScale.ScaleY = myScale.ScaleX;
-        }
+		private void lbImages_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			var content = (lbImages.SelectedItem as IContent);
 
-        private void ViewerControl_Next(object sender, EventArgs e)
-        {
-            Next();
-        }
+			if (content == null)
+				return;
 
-        private void ViewerControl_Previous(object sender, EventArgs e)
-        {
-            Previous();
-        }
+			ResetImgContentCtrlUI();
 
-        private void ViewerControl_Close(object sender, EventArgs e)
-        {
-            OnClose(EventArgs.Empty);
-        }
+			if (content.Type == ContentType.Video)
+			{
+				vcVideoControl.Visibility = Visibility.Visible;
+				PlayVideo();
+			}
+			else
+			{
+				vcVideoControl.Visibility = Visibility.Collapsed;
+			}
+		}
 
-        private void ImgContentCtrl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton != MouseButton.Left)
-                return;
+		private void ResetImgContentCtrlUI()
+		{
+			myScale.ScaleX = 1;
+			myScale.ScaleY = 1;
 
-            OnClose(EventArgs.Empty);
-        }
+			Canvas.SetLeft(ImgContentCtrl, 0);
+			Canvas.SetTop(ImgContentCtrl, 0);
 
-        private void meVideo_MediaOpened(object sender, RoutedEventArgs e)
-        {
-            vcVideoControl.Duration = meVideo.NaturalDuration.TimeSpan.TotalMilliseconds;
-            vcVideoControl.Volume = meVideo.Volume;
-        }
+			Grid.SetRowSpan(viewbox, 1);
+		}
 
-        private void _timer_Tick(object sender, EventArgs e)
-        {
-            vcVideoControl.Position = meVideo.Position.TotalMilliseconds;
-        }
+		private void vcVideoControl_VolumeChanged(object sender, EventArgs e)
+		{
+			meVideo.Volume = vcVideoControl.Volume;
+		}
 
-        private void meVideo_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            StopVideo();
-            meVideo.Position = TimeSpan.FromMilliseconds(0);
-        }
-
-        private void StopVideo()
-        {
-            m_Timer.Stop();
-            meVideo.Stop();
-            vcVideoControl.IsPlaying = false;
-        }
-
-        private void meVideo_MediaFailed(object sender, ExceptionRoutedEventArgs e)
-        {
-            StopVideo();
-            meVideo.Position = TimeSpan.FromMilliseconds(0);
-        }
-
-        private void vcVideoControl_PlayButtonClick(object sender, EventArgs e)
-        {
-            PlayVideo();
-        }
-
-        private void PlayVideo()
-        {
-            m_Timer.Start();
-            meVideo.Play();
-            vcVideoControl.IsPlaying = true;
-        }
-
-        private void vcVideoControl_PauseButtonClick(object sender, EventArgs e)
-        {
-            PauseVideo();
-        }
-
-        private void PauseVideo()
-        {
-            meVideo.Pause();
-            vcVideoControl.IsPlaying = false;
-        }
-
-        private void lbImages_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var content = (lbImages.SelectedItem as IContent);
-
-            if (content == null)
-                return;
-
-            ResetImgContentCtrlUI();
-
-            if (content.Type == ContentType.Video)
-            {
-                vcVideoControl.Visibility = Visibility.Visible;
-                PlayVideo();
-            }
-            else
-            {
-                vcVideoControl.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void ResetImgContentCtrlUI()
-        {
-            myScale.ScaleX = 1;
-            myScale.ScaleY = 1;
-
-            Canvas.SetLeft(ImgContentCtrl, 0);
-            Canvas.SetTop(ImgContentCtrl, 0);
-
-            Grid.SetRowSpan(viewbox, 1);
-        }
-
-        private void vcVideoControl_VolumeChanged(object sender, EventArgs e)
-        {
-            meVideo.Volume = vcVideoControl.Volume;
-        }
-
-        private void vcVideoControl_SeekPosition(object sender, EventArgs e)
-        {
-            PauseVideo();
-            meVideo.Position = TimeSpan.FromMilliseconds(vcVideoControl.Position);
-            PlayVideo();
-        }
-    }
+		private void vcVideoControl_SeekPosition(object sender, EventArgs e)
+		{
+			PauseVideo();
+			meVideo.Position = TimeSpan.FromMilliseconds(vcVideoControl.Position);
+			PlayVideo();
+		}
+	}
 }

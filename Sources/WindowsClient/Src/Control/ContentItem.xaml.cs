@@ -57,6 +57,7 @@ namespace Waveface.Client
 		{
 			OnTagStatusChanged(EventArgs.Empty);
 		}
+
 		#endregion
 	}
 }

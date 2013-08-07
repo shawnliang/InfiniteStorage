@@ -193,7 +193,7 @@
                     <DataTemplate>
                         <Border Width="144"
                                 Height="144"
-                                Margin="4"
+                                Margin="1"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Cursor="Hand"
