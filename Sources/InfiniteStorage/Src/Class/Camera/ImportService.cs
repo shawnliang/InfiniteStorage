@@ -83,7 +83,7 @@ namespace InfiniteStorage.Camera
 		private int recved_count { get; set; }
 		private ProgressTooltip progress;
 
-		private DefaultFolderFileStorage storage = new DefaultFolderFileStorage();
+		private ByMonthFileStorage storage = new ByMonthFileStorage();
 
 
 		public ImportStorage(string device_id, string device_folder)
@@ -118,7 +118,7 @@ namespace InfiniteStorage.Camera
 			var file_size = new FileInfo(temp).Length;
 			var file_name = Path.GetFileName(file_path);
 
-			var full_path = storage.MoveToStorage(temp, new FileContext { file_name = file_name });
+			var full_path = storage.MoveToStorage(temp, new FileContext { file_name = file_name, datetime = time });
 			var partial_path = PathUtil.MakeRelative(full_path, MyFileFolder.Photo);
 
 
