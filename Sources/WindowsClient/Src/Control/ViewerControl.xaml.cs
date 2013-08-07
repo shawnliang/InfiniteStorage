@@ -1,29 +1,35 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
+#endregion
+
 namespace Waveface.Client
 {
-	/// <summary>
-	/// Interaction logic for ViewerControl.xaml
-	/// </summary>
 	public partial class ViewerControl : UserControl
 	{
 		#region Var
-		public static readonly DependencyProperty _pageNo = DependencyProperty.Register("PageNo", typeof(int), typeof(ViewerControl), new UIPropertyMetadata(0, new PropertyChangedCallback(OnPageNoChanged)));
-		public static readonly DependencyProperty _pageCount = DependencyProperty.Register("PageCount", typeof(int), typeof(ViewerControl), new UIPropertyMetadata(0, new PropertyChangedCallback(OnPageCountChanged)));
-		public static readonly DependencyProperty _enableStar = DependencyProperty.Register("EnableStar", typeof(bool), typeof(ViewerControl), new UIPropertyMetadata(true, new PropertyChangedCallback(OnEnableStarChanged)));
-		public static readonly DependencyProperty _stared = DependencyProperty.Register("Stared", typeof(bool), typeof(ViewerControl), new UIPropertyMetadata(false, new PropertyChangedCallback(OnStaredChanged)));
+
+		public static readonly DependencyProperty _pageNo = DependencyProperty.Register("PageNo", typeof (int), typeof (ViewerControl), new UIPropertyMetadata(0, OnPageNoChanged));
+
+		public static readonly DependencyProperty _pageCount = DependencyProperty.Register("PageCount", typeof (int), typeof (ViewerControl),
+		                                                                                   new UIPropertyMetadata(0, OnPageCountChanged));
+
+		public static readonly DependencyProperty _enableStar = DependencyProperty.Register("EnableStar", typeof (bool), typeof (ViewerControl),
+		                                                                                    new UIPropertyMetadata(true, OnEnableStarChanged));
+
+		public static readonly DependencyProperty _stared = DependencyProperty.Register("Stared", typeof (bool), typeof (ViewerControl), new UIPropertyMetadata(false, OnStaredChanged));
+
 		#endregion
 
 		#region Property
+
 		public int PageNo
 		{
-			get
-			{
-				return (int)GetValue(_pageNo);
-			}
+			get { return (int) GetValue(_pageNo); }
 			set
 			{
 				SetValue(_pageNo, value);
@@ -33,10 +39,7 @@ namespace Waveface.Client
 
 		public int PageCount
 		{
-			get
-			{
-				return (int)GetValue(_pageCount);
-			}
+			get { return (int) GetValue(_pageCount); }
 			set
 			{
 				SetValue(_pageCount, value);
@@ -46,10 +49,7 @@ namespace Waveface.Client
 
 		public bool EnableStar
 		{
-			get
-			{
-				return (bool)GetValue(_enableStar);
-			}
+			get { return (bool) GetValue(_enableStar); }
 			set
 			{
 				SetValue(_enableStar, value);
@@ -59,33 +59,32 @@ namespace Waveface.Client
 
 		public bool Stared
 		{
-			get
-			{
-				return (bool)GetValue(_stared);
-			}
-			set
-			{
-				SetValue(_stared, value);
-			}
+			get { return (bool) GetValue(_stared); }
+			set { SetValue(_stared, value); }
 		}
+
 		#endregion
 
 		#region Event
+
 		public event EventHandler Previous;
 		public event EventHandler Next;
 		public event EventHandler Close;
+
 		#endregion
 
 		public ViewerControl()
 		{
-			this.InitializeComponent();
+			InitializeComponent();
 		}
 
 		#region Protected Method
+
 		protected void OnPrevious(EventArgs e)
 		{
 			if (Previous == null)
 				return;
+
 			Previous(this, e);
 		}
 
@@ -93,6 +92,7 @@ namespace Waveface.Client
 		{
 			if (Next == null)
 				return;
+
 			Next(this, e);
 		}
 
@@ -100,51 +100,49 @@ namespace Waveface.Client
 		{
 			if (Close == null)
 				return;
+
 			Close(this, e);
 		}
 
 		#endregion
 
-
 		private static void OnPageNoChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (o == null)
 				return;
+
 			var obj = o as ViewerControl;
-			obj.PageNo = (int)e.NewValue;
+			obj.PageNo = (int) e.NewValue;
 		}
 
 		private static void OnPageCountChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (o == null)
 				return;
+
 			var obj = o as ViewerControl;
-			obj.PageCount = (int)e.NewValue;
+			obj.PageCount = (int) e.NewValue;
 		}
-
-
 
 		private static void OnEnableStarChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (o == null)
 				return;
-			var obj = o as ViewerControl;
-			obj.EnableStar = (bool)e.NewValue;
-		}
 
+			var obj = o as ViewerControl;
+			obj.EnableStar = (bool) e.NewValue;
+		}
 
 		private static void OnStaredChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (o == null)
 				return;
+
 			var obj = o as ViewerControl;
-			obj.Stared = (bool)e.NewValue;
+			obj.Stared = (bool) e.NewValue;
 		}
 
-
-
-
-		private void NextButton_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void NextButton_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			OnNext(EventArgs.Empty);
 		}

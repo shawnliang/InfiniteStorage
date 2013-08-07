@@ -234,27 +234,23 @@
         -->
 
         <DataTemplate DataType="{x:Type wvmodel:Content}">
-            <local:WrapperControl x:Name="wc"
-                                  Padding="10"
-                                  Type="{x:Type local:ContentItem}">
-                <!--  <local:ContentItem Visibility="Collapsed"/>  -->
+            <local:WrapperControl x:Name="wc" Padding="5" Type="{x:Type local:ContentItem}">
             </local:WrapperControl>
         </DataTemplate>
 
         <!--  Main photo catalog view  -->
         <Style x:Key="PhotoListBoxStyle" TargetType="{x:Type ListBox}">
             <Setter Property="Foreground" Value="White" />
+            <Setter Property="Foreground" Value="White" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBox}">
-                        <WrapPanel Margin="5"
+                        <WrapPanel Margin="4"
                                    HorizontalAlignment="Stretch"
                                    VerticalAlignment="Top"
                                    IsItemsHost="True"
-                                   ItemHeight="{Binding Value,
-                                                        ElementName=zoomSlider}"
-                                   ItemWidth="{Binding Value,
-                                                       ElementName=zoomSlider}"
+                                   ItemHeight="{Binding Value, ElementName=zoomSlider}"
+                                   ItemWidth="{Binding Value, ElementName=zoomSlider}"
                                    Orientation="Horizontal" />
                     </ControlTemplate>
                 </Setter.Value>
@@ -268,8 +264,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
+                        <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="1"
                                 Background="{TemplateBinding Background}">
                             <ContentPresenter />
                         </Border>
@@ -378,6 +373,7 @@
                           IsDeferredScrollingEnabled="True"
                           ScrollChanged="svContentContainer_ScrollChanged"
                           VerticalScrollBarVisibility="Auto">
+                
                 <ListBox x:Name="lbxContentContainer"
                          Background="{x:Null}"
                          BorderBrush="{x:Null}"
