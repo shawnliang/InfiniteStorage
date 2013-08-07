@@ -432,7 +432,7 @@
                                FontSize="18.667"
                                Foreground="White" />
                         <Label x:Name="lblContentTypeCount"
-                               VerticalContentAlignment="Bottom"
+                               VerticalContentAlignment="Center"
                                Content="0 photos 0 videos"
                                FontFamily="Segoe UI"
                                FontSize="15"
@@ -481,6 +481,7 @@
                            Background="Black"
                            Content="{DynamicResource SourceGroupTitle}"
                            FontFamily="Segoe UI"
+                           FontWeight="Bold"
                            Foreground="#FFA8A8A8" />
 
                     <local:SourceTree x:Name="lbxDeviceContainer"
@@ -509,9 +510,11 @@
                         <RowDefinition Height="30" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
+                    
                     <Label Grid.Row="0"
                            Background="Black"
                            Content="{DynamicResource RecentGroupTitle}"
+                           FontWeight="Bold"
                            FontFamily="Segoe UI"
                            Foreground="#FFA8A8A8" />
 
@@ -535,9 +538,11 @@
                         <RowDefinition Height="30" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
+                    
                     <Label Grid.Row="0"
                            Background="Black"
                            Content="{DynamicResource FavoritesGroupTitle}"
+                           FontWeight="Bold"
                            FontFamily="Segoe UI"
                            Foreground="#FFA8A8A8" />
 
@@ -637,7 +642,7 @@
                     <TextBlock x:Name="tbText"
                                Grid.Row="1"
                                HorizontalAlignment="Center"
-                               FontSize="11"
+                               FontSize="12"
                                FontWeight="Bold"
                                Foreground="#4F4F4F"
                                Text="Thumbnail Size" />
