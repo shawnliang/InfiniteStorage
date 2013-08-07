@@ -30,7 +30,14 @@ namespace InfiniteStorage
 			Manipulation.Manipulation.AddFolderRecord(folder, devName, partial_folder);
 
 			var targetFile = Path.Combine(devFolderPath, folder, file.file_name);
-			return fileMover.Move(tempfile, targetFile);
+			var result_path = fileMover.Move(tempfile, targetFile);
+
+			if (file.datetime.Kind == DateTimeKind.Utc)
+				File.SetLastWriteTimeUtc(result_path, file.datetime);
+			else
+				File.SetLastWriteTime(result_path, file.datetime);
+
+			return result_path;
 		}
 
 		public void setDeviceName(string name)
