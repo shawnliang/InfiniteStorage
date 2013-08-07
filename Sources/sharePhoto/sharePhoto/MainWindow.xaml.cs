@@ -379,52 +379,60 @@ namespace Wpf_testHTTP
         bool shareButtonClick = false;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if(AutoCompleteBox.Text.Trim() =="")
-                AutoCompleteBox.Text = "";
+			Mouse.OverrideCursor = Cursors.Wait;
 
-            if (AutoCompleteBox.Text == "Invite more people...")
-                AutoCompleteBox.Text = "";
-            char[] delimiterChars0 = { ';' };
-            // 0 get email setup
-            string _emailStr = setup_emailList();
-            if (email_list.Items.Count <= 0 && _emailStr !="")
-            {
-                bool result = checkAvailable(_emailStr);
-                if (result == false)
-                {
-                    if(_emailStr !="")
-                    label_invalid.Visibility = Visibility.Visible;
-                    return;
-                }
-            }
-            else if (AutoCompleteBox.Text != "")
-            {             
-                if (AutoCompleteBox.Text.Trim() != "")
-                label_invalid.Visibility = Visibility.Visible;
-                return;
-            }
-            if (_emailStr == "")
-            {              
-                //label_invalid.Visibility = Visibility.Visible;
-                return;
-            }
-            arr = _emailStr.Split(delimiterChars0);
-            foreach (string _mail in arr)
-            {
-                email_arr.Add(_mail);
-            }
-            shareButtonClick = true;
+			try
+			{
+				if (AutoCompleteBox.Text.Trim() == "")
+					AutoCompleteBox.Text = "";
 
-			if (sendEmailList())
-			{
-				this.Close();
+				if (AutoCompleteBox.Text == "Invite more people...")
+					AutoCompleteBox.Text = "";
+				char[] delimiterChars0 = { ';' };
+				// 0 get email setup
+				string _emailStr = setup_emailList();
+				if (email_list.Items.Count <= 0 && _emailStr != "")
+				{
+					bool result = checkAvailable(_emailStr);
+					if (result == false)
+					{
+						if (_emailStr != "")
+							label_invalid.Visibility = Visibility.Visible;
+						return;
+					}
+				}
+				else if (AutoCompleteBox.Text != "")
+				{
+					if (AutoCompleteBox.Text.Trim() != "")
+						label_invalid.Visibility = Visibility.Visible;
+					return;
+				}
+				if (_emailStr == "")
+				{
+					//label_invalid.Visibility = Visibility.Visible;
+					return;
+				}
+				arr = _emailStr.Split(delimiterChars0);
+				foreach (string _mail in arr)
+				{
+					email_arr.Add(_mail);
+				}
+				shareButtonClick = true;
+
+				if (sendEmailList())
+				{
+					this.Close();
+				}
+				else
+				{
+					Mouse.OverrideCursor = null;
+					MessageBox.Show("Unable to send invitation. Please check your network connectivity");
+				}
 			}
-			else
+			finally
 			{
-				MessageBox.Show("Unable to send invitation. Please check your network connectivity");
+				Mouse.OverrideCursor = null;
 			}
-			
-            return;
         }
 
         private void service_run()

@@ -597,7 +597,21 @@ namespace Waveface.Client
 
 		private void tbtnCloudSharing_Checked(object sender, EventArgs e)
 		{
-			CloudSharing(rspRightSidePane2.tbtnCloudSharing.IsChecked.Value);
+			try
+			{
+				Mouse.OverrideCursor = Cursors.Wait;
+				CloudSharing(rspRightSidePane2.tbtnCloudSharing.IsChecked.Value);
+			}
+			catch (Exception err)
+			{
+				Mouse.OverrideCursor = null;
+				rspRightSidePane2.tbtnCloudSharing.IsChecked = !rspRightSidePane2.tbtnCloudSharing.IsChecked;
+				MessageBox.Show(this, err.Message + "\r\n" + "Please check your network connection.", "Unable to open/close online album", MessageBoxButton.OK, MessageBoxImage.Warning);
+			}
+			finally
+			{
+				Mouse.OverrideCursor = null;
+			}
 		}
 
 		private void btnClearAll_Click(object sender, RoutedEventArgs e)
