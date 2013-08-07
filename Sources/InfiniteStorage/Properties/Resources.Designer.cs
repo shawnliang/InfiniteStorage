@@ -210,6 +210,33 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   查詢類似 Earlier this week 的當地語系化字串。
+        /// </summary>
+        internal static string LabelName_ThisWeek {
+            get {
+                return ResourceManager.GetString("LabelName_ThisWeek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 Today 的當地語系化字串。
+        /// </summary>
+        internal static string LabelName_Today {
+            get {
+                return ResourceManager.GetString("LabelName_Today", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 Yesterday 的當地語系化字串。
+        /// </summary>
+        internal static string LabelName_Yesterday {
+            get {
+                return ResourceManager.GetString("LabelName_Yesterday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 - Backup complete 的當地語系化字串。
         /// </summary>
         internal static string MenuItem_BackupComplete {

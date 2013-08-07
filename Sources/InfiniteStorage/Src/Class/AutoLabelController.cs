@@ -16,50 +16,24 @@ namespace InfiniteStorage
 			{
 				var file = args.ctx.fileCtx;
 
-
-				if (file.type == FileAssetType.image)
+				if (withinToday(file.datetime))
 				{
-					if (withinToday(file.datetime))
-					{
-						var labels = new Guid[] { Settings.Default.LabelPhotoToday };
+					var labels = new Guid[] { Settings.Default.LabelPhotoToday };
 
-						updateLabels(args, labels);
-					}
-
-					if (withinYesterday(file.datetime))
-					{
-						var labels = new Guid[] { Settings.Default.LabelPhotoYesterday };
-						updateLabels(args, labels);
-					}
-
-					if (withinThisWeek(file.datetime))
-					{
-						var labels = new Guid[] { Settings.Default.LabelPhotoThisWeek };
-
-						updateLabels(args, labels);
-					}
+					updateLabels(args, labels);
 				}
-				else if (file.type == FileAssetType.video)
+
+				if (withinYesterday(file.datetime))
 				{
-					if (withinToday(file.datetime))
-					{
-						var labels = new Guid[] { Settings.Default.LabelVideoToday };
+					var labels = new Guid[] { Settings.Default.LabelPhotoYesterday };
+					updateLabels(args, labels);
+				}
 
-						updateLabels(args, labels);
-					}
+				if (withinThisWeek(file.datetime))
+				{
+					var labels = new Guid[] { Settings.Default.LabelPhotoThisWeek };
 
-					if (withinYesterday(file.datetime))
-					{
-						var labels = new Guid[] { Settings.Default.LabelVideoYesterday };
-						updateLabels(args, labels);
-					}
-
-					if (withinThisWeek(file.datetime))
-					{
-						var labels = new Guid[] { Settings.Default.LabelVideoThisWeek };
-
-						updateLabels(args, labels);
-					}
+					updateLabels(args, labels);
 				}
 			}
 			catch (Exception e)
@@ -79,9 +53,9 @@ namespace InfiniteStorage
 		{
 			var now = DateTime.Now;
 			var startOfThisWeek = now.AddDays(-6.0).TrimToDay();
-			var tomorrow = now.AddDays(1.0).TrimToDay();
+			var yesterday = now.AddDays(-1.0).TrimToDay();
 
-			return startOfThisWeek <= dateTime && dateTime < tomorrow;
+			return startOfThisWeek <= dateTime && dateTime < yesterday;
 		}
 
 		private bool withinToday(DateTime dateTime)
@@ -150,29 +124,40 @@ namespace InfiniteStorage
 				unlinkLabeledFiles(toRemove);
 
 			recomputeYesterday();
+			recomputeEarierThisWeek();
 		}
 
-		private void recomputeYesterday()
+		private static void recomputeEarierThisWeek()
 		{
-			recomputeYesterday(FileAssetType.image);
-			recomputeYesterday(FileAssetType.video);
+			var label_id = Settings.Default.LabelPhotoThisWeek;
+
+			var yesterday = DateTime.Now.AddDays(-1.0).TrimToDay();
+			var sevenDaysAgo = DateTime.Now.AddDays(-7.0).TrimToDay();
+
+
+			recomputePeriodForLabel(label_id, sevenDaysAgo, yesterday);
 		}
 
-		private static void recomputeYesterday(FileAssetType file_type)
+		private static void recomputeYesterday()
 		{
-			var label_id = (file_type == FileAssetType.image) ? Settings.Default.LabelPhotoYesterday : Settings.Default.LabelVideoYesterday;
+			var label_id = Settings.Default.LabelPhotoYesterday;
 
 			var yes_start = DateTime.Now.AddDays(-1.0).TrimToDay();
 			var yes_end = DateTime.Now.TrimToDay();
 
 
+			recomputePeriodForLabel(label_id, yes_start, yes_end);
+		}
+
+		private static void recomputePeriodForLabel(Guid label_id, DateTime start, DateTime end)
+		{
 			using (var db = new MyDbContext())
 			{
 				var actual = (from f in db.Object.Files
-							  where f.event_time >= yes_start && f.event_time < yes_end && f.type == (int)file_type
+							  where f.event_time >= start && f.event_time < end
 							  select f.file_id).Union(
 							  from f in db.Object.PendingFiles
-							  where f.event_time >= yes_start && f.event_time < yes_end && f.type == (int)file_type
+							  where f.event_time >= start && f.event_time < end
 							  select f.file_id
 							  ).ToList();
 

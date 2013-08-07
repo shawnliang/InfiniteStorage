@@ -238,4 +238,13 @@
   <data name="ProgressTooltip_Interrupted" xml:space="preserve">
     <value>Device disconnected: {0} / {1}</value>
   </data>
+  <data name="LabelName_ThisWeek" xml:space="preserve">
+    <value>Earlier this week</value>
+  </data>
+  <data name="LabelName_Today" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="LabelName_Yesterday" xml:space="preserve">
+    <value>Yesterday</value>
+  </data>
 </root>

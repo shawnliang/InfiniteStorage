@@ -440,9 +440,43 @@ ALTER TABLE [Devices] Add Column [sync_init_count] BOOLEAN NULL;
 					schemaVersion = 14;
 				}
 
+				if (schemaVersion == 14)
+				{
+					using (var cmd = conn.CreateCommand())
+					{
+						cmd.CommandText = @"
+delete from [labels] where auto_type = 4 or auto_type = 5 or auto_type = 6
+";
+						cmd.ExecuteNonQuery();
+					}
+
+					updateDbSchemaVersion(conn, 15);
+					schemaVersion = 15;
+				}
+
+				if (schemaVersion == 15)
+				{
+					using (var cmd = conn.CreateCommand())
+					{
+						cmd.CommandText = @"
+update [Labels] set [name] = @today where auto_type = 1;
+update [Labels] set [name] = @yesterday where auto_type = 2;
+update [Labels] set [name] = @thisWeek where auto_type = 3;
+";
+						cmd.Parameters.Add(new SQLiteParameter("@today", Resources.LabelName_Today));
+						cmd.Parameters.Add(new SQLiteParameter("@yesterday", Resources.LabelName_Yesterday));
+						cmd.Parameters.Add(new SQLiteParameter("@thisWeek", Resources.LabelName_ThisWeek));
+
+						cmd.ExecuteNonQuery();
+					}
+
+					updateDbSchemaVersion(conn, 16);
+					schemaVersion = 16;
+				}
+
 				var curSchema = getDbSchemaVersion(conn);
 
-				if (curSchema > 14L)
+				if (curSchema > 16L)
 					throw new DBDowngradeException(string.Format("Existing db version {0} is newer than the installed version", curSchema));
 			}
 		}
