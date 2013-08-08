@@ -162,6 +162,7 @@
                          EnableStar="{Binding EnableTag}"
                          Next="ViewerControl_Next"
                          Previous="ViewerControl_Previous"
+                         DeletePic="VcViewerControl_OnDeletePic"
                          Stared="{Binding SelectedItem.Liked,
                                           ElementName=lbImages,
                                           Mode=OneWay,

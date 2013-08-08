@@ -33,6 +33,11 @@ namespace Waveface.Client
 			InitializeComponent();
 		}
 
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			pvcViewer.Tag = Owner;
+		}
+
 		private void Window_KeyDown(object sender, KeyEventArgs e)
 		{
 			switch (e.Key)

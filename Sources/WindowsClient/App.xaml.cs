@@ -2,6 +2,7 @@
 
 using System;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -89,6 +90,23 @@ namespace Waveface.Client
 			catch (Exception err)
 			{
 				log4net.LogManager.GetLogger(GetType()).Warn("Process windows message error", err);
+			}
+		}
+
+		private void App_OnExit(object sender, ExitEventArgs e)
+		{
+			try
+			{
+				string _tempPathBase = Path.GetTempPath() + "Waveface Photos" + "\\";
+
+				if (Directory.Exists(_tempPathBase))
+				{
+					DirectoryInfo _dir = new DirectoryInfo(_tempPathBase);
+					_dir.Delete(true);
+				}
+			}
+			catch
+			{			
 			}
 		}
 	}

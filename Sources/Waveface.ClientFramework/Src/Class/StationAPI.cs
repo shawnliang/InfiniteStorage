@@ -178,7 +178,9 @@ namespace Waveface.ClientFramework
 			if (parameters.Count == 0)
 				return null;
 
-			return Post(uri, parameters);
+			string _ret = Post(uri, parameters);
+
+			return _ret;
 		}
 
 		public static string Move(IEnumerable<string> ids, string targetPath)

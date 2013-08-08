@@ -28,16 +28,33 @@ namespace Waveface.ClientFramework
 				{
 					lock (this)
 					{
-						var file = this.Uri.LocalPath;
+						var file = Uri.LocalPath;
+
 						if (!File.Exists(file))
 							return null;
 
-						if (this.Type == ContentType.Video)
+						if (Type == ContentType.Video)
 							return null;
 
-						_imageSource = BitmapFrame.Create(this.Uri);
+						string _tempPathBase = Path.GetTempPath() + "Waveface Photos" + "\\";
+
+						if (!Directory.Exists(_tempPathBase))
+							Directory.CreateDirectory(_tempPathBase);
+
+						string _tempFile = Path.Combine(_tempPathBase, Path.GetFileName(Uri.LocalPath));
+
+						try
+						{
+							File.Copy(Uri.LocalPath, _tempFile, true);
+							_imageSource = BitmapFrame.Create(new Uri(_tempFile));
+						}
+						catch
+						{
+							_imageSource = BitmapFrame.Create(this.Uri);
+						}
 
 						var metadata = _imageSource.Metadata as BitmapMetadata;
+
 						if (metadata != null)
 						{
 							Rotation rotate = Rotation.Rotate0;
@@ -47,6 +64,7 @@ namespace Waveface.ClientFramework
 							if (metaValue != null)
 							{
 								ushort value = (ushort)metaValue;
+
 								if (value == 6)
 								{
 									rotate = Rotation.Rotate90;
@@ -196,7 +214,7 @@ namespace Waveface.ClientFramework
 		public override void Refresh()
 		{
 			base.Refresh();
-			this.Liked =GetLiked();
+			this.Liked = GetLiked();
 		}
 
 		public override bool Equals(object obj)
@@ -221,7 +239,7 @@ namespace Waveface.ClientFramework
 		public override int GetHashCode()
 		{
 			return this.Uri.LocalPath.GetHashCode();
-		} 
+		}
 		#endregion
 	}
 }

@@ -15,7 +15,6 @@
         Loaded="Window_Loaded"        
         WindowState="Maximized"
         
-        
         SnapsToDevicePixels ="True"      
         TextOptions.TextFormattingMode ="Ideal"
         TextOptions.TextRenderingMode="Auto"
