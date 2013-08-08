@@ -313,6 +313,7 @@
     <Resource Include="Resource\ico_cloud_album_normal.png" />
     <Resource Include="Resource\ico_cloud_album_select.png" />
     <Resource Include="Resource\Bunnydesktop.ico" />
+    <Resource Include="Resource\Discard.png" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

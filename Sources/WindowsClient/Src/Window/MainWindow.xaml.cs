@@ -355,13 +355,16 @@ namespace Waveface.Client
 		{
 			var contentIDs = contents.Select(content => content.ID);
 
-			DeleteSourceContents(contentIDs);
+			DeleteSourceContents(contentIDs, true);
 		}
 
-		private void DeleteSourceContents(IEnumerable<string> contentIDs)
+		public void DeleteSourceContents(IEnumerable<string> contentIDs, bool ask)
 		{
-			if (MessageBox.Show(Application.Current.MainWindow, "Are you sure you want to delete?", "Confirm", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
-				return;
+			if (ask)
+			{
+				if (MessageBox.Show(Application.Current.MainWindow, "Are you sure you want to delete?", "Confirm", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
+					return;
+			}
 
 			ClientFramework.Client.Default.Delete(contentIDs);
 			RefreshContentArea();
@@ -660,6 +663,10 @@ namespace Waveface.Client
 								 };
 
 				viewer.ShowDialog();
+
+				RefreshContentArea();
+				RefreshFavorites();
+
 				return;
 			}
 

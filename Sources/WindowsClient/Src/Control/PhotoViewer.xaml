@@ -12,7 +12,9 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
         WindowState="Maximized"
-        WindowStyle="None">
+        WindowStyle="None"
+        Loaded="Window_Loaded"
+        >
     <Grid>
         <Rectangle Fill="#FF222222" Opacity="0.95" />
         <local:PhotoViewerControl x:Name="pvcViewer" Close="pvcViewer_Close" />

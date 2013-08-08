@@ -78,6 +78,13 @@ namespace Waveface.Client
 
 		public void Previous()
 		{
+			if (lbImages.Items.Count <= 0)
+			{
+				vcViewerControl.PageNo = 0;
+				vcViewerControl.PageCount = 0;
+				return;
+			}
+
 			var value = lbImages.SelectedIndex - 1;
 
 			if (value < 0)
@@ -89,10 +96,16 @@ namespace Waveface.Client
 
 		public void Next()
 		{
-			lbImages.SelectedIndex = (lbImages.SelectedIndex + 1)%lbImages.Items.Count;
+			if (lbImages.Items.Count <= 0)
+			{
+				vcViewerControl.PageNo = 0;
+				vcViewerControl.PageCount = 0;
+				return;
+			}
+
+			lbImages.SelectedIndex = (lbImages.SelectedIndex + 1) % lbImages.Items.Count;
 			vcViewerControl.PageNo = lbImages.SelectedIndex + 1;
 		}
-
 
 		private void WindowLoaded(object sender, RoutedEventArgs e)
 		{
@@ -124,7 +137,7 @@ namespace Waveface.Client
 			//  to the cursor location.
 			myScale.CenterX = e.GetPosition(ImgContentCtrl).X;
 			myScale.CenterY = e.GetPosition(ImgContentCtrl).Y;
-			
+
 			//  Zoom in when the user scrolls the mouse wheel up
 			//  and vice versa.
 			if ((deltaValue > 0))
@@ -277,6 +290,44 @@ namespace Waveface.Client
 			PauseVideo();
 			meVideo.Position = TimeSpan.FromMilliseconds(vcVideoControl.Position);
 			PlayVideo();
+		}
+
+		private void VcViewerControl_OnDeletePic(object sender, EventArgs e)
+		{
+			int _index = lbImages.SelectedIndex;
+
+			List<IContentEntity> _source = ((IEnumerable<IContentEntity>)lbImages.DataContext).ToList();
+			IContentEntity _contentEntity = (IContentEntity)lbImages.SelectedItem;
+
+			if (MessageBox.Show(Application.Current.MainWindow, "Are you sure you want to delete?", "Confirm", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
+				return;
+
+			MainWindow _mainWindow = (MainWindow)Tag;
+
+			_mainWindow.DeleteSourceContents(new[] {_contentEntity.ID}, false);
+
+			_source.Remove((IContentEntity)lbImages.SelectedItem);
+
+			Source = _source;
+
+			if (_source.Count > _index)
+			{
+				lbImages.SelectedIndex = _index;
+			}
+			else
+			{
+				if (_source.Count > 0)
+				{
+					lbImages.SelectedIndex = 0;
+				}
+				else
+				{
+					vcViewerControl.PageNo = 0;
+					vcViewerControl.PageCount = 0;
+				}
+			}
+
+			vcViewerControl.PageNo = lbImages.SelectedIndex + 1;
 		}
 	}
 }
