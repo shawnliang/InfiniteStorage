@@ -67,6 +67,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			{
 				ctx.recved_files++;
 				ctx.temp_file.Delete();
+				ctx.raiseOnFileDropped();
 			}
 
 			log4net.LogManager.GetLogger("wsproto").Debug("send back file-exist for file recv success");

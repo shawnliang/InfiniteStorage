@@ -42,10 +42,6 @@ namespace InfiniteStorage
 			ImportUIPresenter.Instance.StartViewer();
 		}
 
-		public void OnFileReceiving(object sender, WebsocketEventArgs arg)
-		{
-		}
-
 		private static void openFolderInExplorer(string folder)
 		{
 			if (!Directory.Exists(folder))

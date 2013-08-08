@@ -21,6 +21,7 @@ namespace InfiniteStorage
 		public static event EventHandler<WebsocketEventArgs> FileProgress;
 		public static event EventHandler<WebsocketEventArgs> FileEnding;
 		public static event EventHandler<WebsocketEventArgs> FileReceived;
+		public static event EventHandler<WebsocketEventArgs> FileDropped;
 		public static event EventHandler<ThumbnailReceivedEventArgs> ThumbnailReceived;
 
 		public InfiniteStorageWebSocketService()
@@ -48,8 +49,9 @@ namespace InfiniteStorage
 			ctx.OnFileProgress += FileProgress;
 			ctx.OnFileReceived += FileReceived;
 			ctx.OnFileEnding += FileEnding;
+			ctx.OnFileDropped += FileDropped;
 			ctx.OnThumbnailReceived += ThumbnailReceived;
-
+			
 			handler = new ProtocolHanlder(ctx);
 		}
 

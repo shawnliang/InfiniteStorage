@@ -62,6 +62,7 @@ namespace InfiniteStorage
 			InfiniteStorageWebSocketService.FileReceiving += InfiniteStorageWebSocketService_FileReceiving;
 			InfiniteStorageWebSocketService.FileProgress += InfiniteStorageWebSocketService_FileProgress;
 			InfiniteStorageWebSocketService.FileReceived += InfiniteStorageWebSocketService_FileReceived;
+			InfiniteStorageWebSocketService.FileDropped += InfiniteStorageWebSocketService_FileDropped;
 			InfiniteStorageWebSocketService.FileReceived += m_autoLabel.FileReceived;
 
 			// ----- pair -----
@@ -139,6 +140,34 @@ namespace InfiniteStorage
 			
 		}
 
+		void InfiniteStorageWebSocketService_FileDropped(object sender, WebsocketProtocol.WebsocketEventArgs e)
+		{
+			SynchronizationContextHelper.PostMainSyncContext(() =>
+			{
+				try
+				{
+					ProgressTooltip dialog = (ProgressTooltip)e.ctx.GetData(DATA_KEY_PROGRESS_DIALOG);
+
+					// +1 because when the last photo is received, backuped_count is (n-1) and total_count is (n).
+					// Device will then send update-count command to update backuped_count to (n) after some delays.
+					if (e.ctx.backup_count + 1 >= e.ctx.total_count)
+					{
+						dialog.UpdateComplete((int)e.ctx.recved_files, (int)e.ctx.recved_files);
+						e.ctx.recved_files = 0;
+					}
+					else
+					{
+						updateProgressDialog(e, dialog);
+					}
+
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn("Update progress ui error", err);
+				}
+			});
+		}
+
 		void InfiniteStorageWebSocketService_DeviceDisconnected(object sender, WebsocketProtocol.WebsocketEventArgs e)
 		{
 			SynchronizationContextHelper.PostMainSyncContext(() =>
@@ -199,10 +228,10 @@ namespace InfiniteStorage
 
 		private static void updateProgressDialog(WebsocketProtocol.WebsocketEventArgs e, ProgressTooltip dialog)
 		{
-			if (e.ctx.fileCtx == null)
-				return; // duplicated file
+			var percentage = 100L;
+			if (e.ctx.fileCtx != null)
+				percentage = e.ctx.temp_file.BytesWritten * 100 / e.ctx.fileCtx.file_size;
 
-			var percentage = e.ctx.temp_file.BytesWritten * 100 / e.ctx.fileCtx.file_size;
 			var toTransfer = e.ctx.total_count - e.ctx.backup_count + e.ctx.recved_files;
 			dialog.UpdateProgress((int)e.ctx.recved_files, (int)toTransfer, (int)percentage);
 		}
@@ -459,7 +488,6 @@ namespace InfiniteStorage
 			InfiniteStorageWebSocketService.DeviceAccepted += m_notifyIconController.OnDeviceConnected;
 			InfiniteStorageWebSocketService.DeviceDisconnected += m_notifyIconController.OnDeviceDisconnected;
 			InfiniteStorageWebSocketService.TotalCountUpdated += m_notifyIconController.OnTotalCountUpdated;
-			InfiniteStorageWebSocketService.FileReceiving += m_notifyIconController.OnFileReceiving;
 		}
 
 		private void showProgramIsAtServiceBallonTips()

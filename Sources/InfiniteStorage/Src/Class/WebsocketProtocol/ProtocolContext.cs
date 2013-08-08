@@ -39,6 +39,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		public event EventHandler<WebsocketEventArgs> OnFileProgress;
 		public event EventHandler<WebsocketEventArgs> OnFileEnding;
 		public event EventHandler<WebsocketEventArgs> OnFileReceived;
+		public event EventHandler<WebsocketEventArgs> OnFileDropped;
 		public event EventHandler<ThumbnailReceivedEventArgs> OnThumbnailReceived;
 
 		public ProtocolContext(ITempFileFactory factory, IFileStorage storage, AbstractProtocolState initialState)
@@ -159,6 +160,13 @@ namespace InfiniteStorage.WebsocketProtocol
 			var handler = OnThumbnailReceived;
 			if (handler != null)
 				handler(this, new ThumbnailReceivedEventArgs(thumbPath, this, transferCount));
+		}
+
+		public void raiseOnFileDropped()
+		{
+			var handler = OnFileDropped;
+			if (handler != null)
+				handler(this, new WebsocketEventArgs(this));
 		}
 
 		public void raiseOnFileEnding()
