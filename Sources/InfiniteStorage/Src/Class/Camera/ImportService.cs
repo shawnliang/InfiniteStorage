@@ -6,6 +6,7 @@ using InfiniteStorage.Model;
 using System.IO;
 using InfiniteStorage.WebsocketProtocol;
 using InfiniteStorage.Win32;
+using InfiniteStorage.Notify;
 
 namespace InfiniteStorage.Camera
 {
@@ -82,7 +83,6 @@ namespace InfiniteStorage.Camera
 
 		private int recved_count { get; set; }
 		private ProgressTooltip progress;
-
 		private ByMonthFileStorage storage = new ByMonthFileStorage();
 
 
@@ -153,6 +153,9 @@ namespace InfiniteStorage.Camera
 				else
 					progress.UpdateImageToVideoIcon();
 			});
+
+			var folder_path = fileAsset.parent_folder;
+			UIChangeNotificationController.NotifyFolderUpdate(new Folder { name = Path.GetFileName(folder_path), parent_folder = Path.GetDirectoryName(folder_path), path = folder_path });
 		}
 
 		public string TempFolder
