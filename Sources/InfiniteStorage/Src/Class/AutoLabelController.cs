@@ -154,10 +154,10 @@ namespace InfiniteStorage
 			using (var db = new MyDbContext())
 			{
 				var actual = (from f in db.Object.Files
-							  where f.event_time >= start && f.event_time < end
+							  where f.event_time >= start && f.event_time < end && !f.deleted
 							  select f.file_id).Union(
 							  from f in db.Object.PendingFiles
-							  where f.event_time >= start && f.event_time < end
+							  where f.event_time >= start && f.event_time < end && !f.deleted
 							  select f.file_id
 							  ).ToList();
 
