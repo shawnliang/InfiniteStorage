@@ -39,7 +39,7 @@ namespace InfiniteStorage
 
 		public void OnOpenUIMenuItemCliecked(object sender, EventArgs arg)
 		{
-			ImportUIPresenter.Instance.StartViewer();
+			MainUIWrapper.Instance.StartViewer();
 		}
 
 		private static void openFolderInExplorer(string folder)

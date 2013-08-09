@@ -124,7 +124,7 @@ namespace InfiniteStorage
 			ProgramIPC.Instance.OnWinMsg += (s, e) =>
 			{
 				if (e.Message == ProgramIPC.MsgShowTooltip)
-					ImportUIPresenter.Instance.StartViewer();
+					MainUIWrapper.Instance.StartViewer();
 			};
 
 			m_thumbnailCreator = new ThumbnailCreator();

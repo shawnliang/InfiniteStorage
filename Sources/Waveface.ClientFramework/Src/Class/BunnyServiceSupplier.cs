@@ -86,7 +86,7 @@ namespace Waveface.ClientFramework
 
 				using (var cmd = conn.CreateCommand())
 				{
-					cmd.CommandText = "SELECT * FROM Devices";
+					cmd.CommandText = "SELECT * FROM Devices order by folder_name";
 
 					using (var dr = cmd.ExecuteReader())
 					{

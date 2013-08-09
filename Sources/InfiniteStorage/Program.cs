@@ -150,7 +150,7 @@ namespace InfiniteStorage
 			BonjourServiceRegistrator.Instance.Register(false);
 
 			if (!Environment.GetCommandLineArgs().Contains("--minimized"))
-				ImportUIPresenter.Instance.StartViewer();
+				MainUIWrapper.Instance.StartViewer();
 
 			Application.Run();
 		}
@@ -209,7 +209,7 @@ namespace InfiniteStorage
 
 			try
 			{
-				ImportUIPresenter.Instance.StopViewer();
+				MainUIWrapper.Instance.StopViewer();
 			}
 			catch (Exception err)
 			{

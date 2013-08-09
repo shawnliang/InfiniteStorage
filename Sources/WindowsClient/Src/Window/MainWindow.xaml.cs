@@ -21,6 +21,7 @@ using Waveface.Client.Properties;
 using Waveface.ClientFramework;
 using Waveface.Model;
 using log4net;
+using CommandLine;
 
 #endregion
 
@@ -114,6 +115,16 @@ namespace Waveface.Client
 			recentTimer.Tick += recentTimer_Tick;
 			recentTimer.Interval = new TimeSpan(0, 0, 2);
 			recentTimer.Start();
+
+
+			var cmdArgs = Environment.GetCommandLineArgs();
+			var options = new CmdLineOptions();
+			CommandLine.Parser.Default.ParseArguments(cmdArgs, options);
+
+			if (!string.IsNullOrEmpty(options.select_device))
+				JumpToDevice(options.select_device);
+			else if (ClientFramework.Client.Default.Services.Any())
+				JumpToDevice(ClientFramework.Client.Default.Services.First().ID);
 		}
 
 		#region Private Method
@@ -1619,50 +1630,6 @@ namespace Waveface.Client
 			}
 
 			SaveToFavorite(_entities);
-		}
-
-		private void window_ContentRendered(object sender, EventArgs e)
-		{
-			if (lbxDeviceContainer.Items.Count > 0)
-			{
-				var devNode = (TreeViewItem)lbxDeviceContainer.ItemContainerGenerator.ContainerFromIndex(0);
-				devNode.IsExpanded = true;
-
-				if (devNode.Items.Count > 0)
-				{
-					var group = ((IContentGroup)devNode.Items[0]);
-					lbxContentContainer.DataContext = group.Contents;
-					lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
-					btnDelete.IsEnabled = false;
-					btnActions.IsEnabled = false;
-					lblContentLocation.DataContext = group;
-					SetContentTypeCount(group);
-					ShowToolBarButtons(true);
-
-					if (devNode.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
-					{
-						var folder = (TreeViewItem)devNode.ItemContainerGenerator.ContainerFromIndex(0);
-						folder.IsSelected = true;
-					}
-					else
-					{
-						EventHandler eh = null;
-
-						eh = delegate
-								 {
-									 if (devNode.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
-									 {
-										 var folder = (TreeViewItem)devNode.ItemContainerGenerator.ContainerFromIndex(0);
-										 folder.IsSelected = true;
-
-										 devNode.ItemContainerGenerator.StatusChanged -= eh;
-									 }
-								 };
-
-						devNode.ItemContainerGenerator.StatusChanged += eh;
-					}
-				}
-			}
 		}
 
 		private void miLocateOnDisk_Click(object sender, RoutedEventArgs e)

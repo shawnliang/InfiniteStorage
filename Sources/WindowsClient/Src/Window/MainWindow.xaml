@@ -10,7 +10,6 @@
         Height="498.5"
         MinWidth="1010"
         MinHeight="640"
-        ContentRendered="window_ContentRendered"
         Icon="/Waveface.Client;component/Resource/Bunnydesktop.ico"
         Loaded="Window_Loaded"        
         WindowState="Maximized"
