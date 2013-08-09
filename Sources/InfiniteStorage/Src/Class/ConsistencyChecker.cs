@@ -60,8 +60,8 @@ namespace InfiniteStorage
 			using (var db = new MyDbContext())
 			{
 				var allFiles = from f in db.Object.Files
+							   where !f.deleted
 							   select f;
-
 
 				foreach (var file in allFiles)
 				{
