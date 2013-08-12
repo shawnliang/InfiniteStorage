@@ -24,20 +24,33 @@ namespace InfiniteStorage.WebsocketProtocol
 			{
 				var saved_file = from f in db.Object.Files
 								 where f.file_path.Equals(full_path, StringComparison.InvariantCultureIgnoreCase) && f.device_id == device_id
-								 select f;
+								 select new { 
+									has_origin = f.has_origin
+								 };
 
-
-				var pending_files = from f in db.Object.PendingFiles
-									where f.file_path.Equals(full_path, StringComparison.InvariantCultureIgnoreCase) && f.device_id == device_id
-									select f;
-
-				return saved_file.Any() || pending_files.Any();
+				if (file.is_thumbnail)
+					return saved_file.Any();
+				else
+					return saved_file.Any() && saved_file.First().has_origin;
 			}
 		}
 
 		public long GetNextSeq()
 		{
 			return SeqNum.GetNextSeq();
+		}
+
+
+		public Guid? QueryFileId(string device_id, string file_path)
+		{
+			using (var db = new MyDbContext())
+			{
+				var file_id = from f in db.Object.Files
+							  where f.file_path.Equals(file_path, StringComparison.InvariantCultureIgnoreCase) && f.device_id == device_id
+							  select f.file_id;
+
+				return file_id.FirstOrDefault();
+			}
 		}
 	}
 }

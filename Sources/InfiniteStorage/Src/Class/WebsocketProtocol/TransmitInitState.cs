@@ -45,7 +45,8 @@ namespace InfiniteStorage.WebsocketProtocol
 				file_name = cmd.file_name,
 				file_size = cmd.file_size,
 				folder = cmd.folder,
-
+				
+				is_thumbnail = cmd.is_thumbnail,
 				datetime = cmd.datetime,
 				type = type
 			};

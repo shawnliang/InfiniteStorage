@@ -29,6 +29,13 @@ namespace InfiniteStorage.WebsocketProtocol
 			if (!Util.HasDuplicateFile(ctx.fileCtx, ctx.device_id))
 			{
 				string saved;
+
+				var file_id = Util.QueryFileId(ctx.device_id, Path.Combine(ctx.fileCtx.folder, ctx.fileCtx.file_name));
+				if (file_id == null)
+					file_id = Guid.NewGuid();
+
+				ctx.fileCtx.file_id = file_id.Value;
+
 				try
 				{
 					saved = ctx.storage.MoveToStorage(ctx.temp_file.Path, ctx.fileCtx);
@@ -44,15 +51,15 @@ namespace InfiniteStorage.WebsocketProtocol
 				{
 					device_id = ctx.device_id,
 					event_time = ctx.fileCtx.datetime,
-					file_id = Guid.NewGuid(),
+					file_id = file_id.Value,
 					file_name = ctx.fileCtx.file_name,
 					file_path = Path.Combine(ctx.fileCtx.folder, ctx.fileCtx.file_name),
 					file_size = ctx.fileCtx.file_size,
 					type = (int)ctx.fileCtx.type,
-					saved_path = partial_path,
-					parent_folder = Path.GetDirectoryName(partial_path),
+					saved_path = ctx.fileCtx.is_thumbnail ? null : partial_path,
+					parent_folder = ctx.fileCtx.is_thumbnail ? null : Path.GetDirectoryName(partial_path),
 					seq = Util.GetNextSeq(),
-					has_origin = true,
+					has_origin = !ctx.fileCtx.is_thumbnail,
 				};
 				Util.SaveFileRecord(fileAsset);
 
@@ -60,8 +67,8 @@ namespace InfiniteStorage.WebsocketProtocol
 				if (ctx.fileCtx.file_size != ctx.temp_file.BytesWritten)
 					log4net.LogManager.GetLogger(typeof(TransmitStartedState)).WarnFormat("{0} is expected to have {1} bytes but {2} bytes received.", ctx.fileCtx.file_name, ctx.fileCtx.file_size, ctx.temp_file.BytesWritten);
 
-				ctx.fileCtx.file_id = fileAsset.file_id;
-				ctx.recved_files++;
+				if (!ctx.fileCtx.is_thumbnail)
+					ctx.recved_files++;
 				ctx.raiseOnFileReceived();
 			}
 			else

@@ -14,6 +14,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		public long transfer_count { get; set; }
 		public long transfer_size { get; set; }
 		public string type { get; set; }
+		public bool is_thumbnail { get; set; }
 
 		public long backuped_count { get; set; }
 		public long total_count { get; set; }
