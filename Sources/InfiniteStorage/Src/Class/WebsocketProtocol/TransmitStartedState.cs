@@ -51,7 +51,8 @@ namespace InfiniteStorage.WebsocketProtocol
 					type = (int)ctx.fileCtx.type,
 					saved_path = partial_path,
 					parent_folder = Path.GetDirectoryName(partial_path),
-					seq = Util.GetNextSeq(), 
+					seq = Util.GetNextSeq(),
+					has_origin = true,
 				};
 				Util.SaveFileRecord(fileAsset);
 

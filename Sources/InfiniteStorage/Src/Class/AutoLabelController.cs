@@ -154,12 +154,8 @@ namespace InfiniteStorage
 			using (var db = new MyDbContext())
 			{
 				var actual = (from f in db.Object.Files
-							  where f.event_time >= start && f.event_time < end && !f.deleted
-							  select f.file_id).Union(
-							  from f in db.Object.PendingFiles
-							  where f.event_time >= start && f.event_time < end && !f.deleted
-							  select f.file_id
-							  ).ToList();
+							  where f.event_time >= start && f.event_time < end && !f.deleted && f.has_origin
+							  select f.file_id).ToList();
 
 				var current = (from f in db.Object.LabelFiles
 							   where f.label_id == label_id
@@ -187,29 +183,6 @@ namespace InfiniteStorage
 					db.Object.SaveChanges();
 				}
 			}
-		}
-
-		private static List<Guid> computeLabeledFiles(SQLiteConnection conn, DateTime yesterdayStart, DateTime yesterdayEnd, FileAssetType type)
-		{
-			var fileIds = new List<Guid>();
-
-			using (var cmd = conn.CreateCommand())
-			{
-				cmd.CommandText =
-				"select file_id from Files        where event_time >= @yes_start and event_time < @today and [type] = @type union " +
-				"select file_id from PendingFiles where event_time >= @yes_start and event_time < @today and [type] = @type";
-				cmd.Parameters.Add(new SQLiteParameter("@yes_start", yesterdayStart));
-				cmd.Parameters.Add(new SQLiteParameter("@today", yesterdayEnd));
-				cmd.Parameters.Add(new SQLiteParameter("@type", (object)(int)type));
-				using (var reader = cmd.ExecuteReader())
-				{
-					while (reader.Read())
-					{
-						fileIds.Add(reader.GetGuid(0));
-					}
-				}
-			}
-			return fileIds;
 		}
 
 		private static void unlinkLabeledFiles(List<LabeledFile> toRemove)
@@ -257,20 +230,7 @@ namespace InfiniteStorage
 									  label_id = f.label_id,
 									  auto_type = l.auto_type,
 									  taken_time = t.event_time
-								  }).Union(
-								 from f in db.Object.LabelFiles
-								 join l in db.Object.Labels on f.label_id equals l.label_id
-								 join t in db.Object.PendingFiles on f.file_id equals t.file_id
-								 where l.auto_type > (int)AutoLabelType.NotAuto
-								 select
-								 new
-								 {
-									 file_id = f.file_id,
-									 label_id = f.label_id,
-									 auto_type = l.auto_type,
-									 taken_time = t.event_time
-								 }
-								 );
+								  });
 
 				foreach (var labelFile in labelFiles)
 				{

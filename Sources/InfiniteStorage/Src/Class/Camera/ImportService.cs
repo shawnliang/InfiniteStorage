@@ -138,7 +138,8 @@ namespace InfiniteStorage.Camera
 				type = (type == readCamera.FileType.Image) ? (int)FileAssetType.image : (int)FileAssetType.video,
 				saved_path = partial_path,
 				parent_folder = Path.GetDirectoryName(partial_path),
-				seq = SeqNum.GetNextSeq()
+				seq = SeqNum.GetNextSeq(),
+				has_origin = true
 			};
 
 			var util = new TransmitUtility();
