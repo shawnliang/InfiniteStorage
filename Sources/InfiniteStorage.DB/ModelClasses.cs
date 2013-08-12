@@ -60,6 +60,8 @@ namespace InfiniteStorage.Model
 		public int? orientation { get; set; }
 
 		public bool? on_cloud { get; set; }
+
+		public bool has_origin { get; set; }
 	}
 
 

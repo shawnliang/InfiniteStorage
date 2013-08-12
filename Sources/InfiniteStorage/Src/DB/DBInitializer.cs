@@ -474,9 +474,24 @@ update [Labels] set [name] = @thisWeek where auto_type = 3;
 					schemaVersion = 16;
 				}
 
+				if (schemaVersion == 16)
+				{
+					using (var cmd = conn.CreateCommand())
+					{
+						cmd.CommandText = @"
+ALTER TABLE [Files] Add Column [has_origin] BOOLEAN NULL;
+update [Files] set [has_origin] = 1;
+";
+						cmd.ExecuteNonQuery();
+					}
+
+					updateDbSchemaVersion(conn, 17);
+					schemaVersion = 17;
+				}
+
 				var curSchema = getDbSchemaVersion(conn);
 
-				if (curSchema > 16L)
+				if (curSchema > 17L)
 					throw new DBDowngradeException(string.Format("Existing db version {0} is newer than the installed version", curSchema));
 			}
 		}
