@@ -57,6 +57,10 @@ public class NativeMethods
 	[DllImport("user32.dll", SetLastError = true)]
 	public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
 
+	[DllImport("user32.dll", SetLastError = true)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool GetWindowPlacement(IntPtr hWnd, out WINDOWPLACEMENT lpwndpl);
+
 	/// <summary>
 	/// Registers the class W.
 	/// </summary>
@@ -100,6 +104,16 @@ public class NativeMethods
 	   IntPtr hInstance,
 	   IntPtr lpParam
 	);
+
+	public struct WINDOWPLACEMENT
+	{
+		public int length;
+		public int flags;
+		public int showCmd;
+		public System.Drawing.Point ptMinPosition;
+		public System.Drawing.Point ptMaxPosition;
+		public System.Drawing.Rectangle rcNormalPosition;
+	}
 
 	//Used for WM_COPYDATA for string messages
 	//[StructLayout(LayoutKind.Sequential)]

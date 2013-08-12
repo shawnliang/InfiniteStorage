@@ -87,7 +87,12 @@ namespace InfiniteStorage
 			{
 				if (viewerProcess != null)
 				{
-					NativeMethods.ShowWindow(viewerProcess.MainWindowHandle, NativeMethods.WindowShowStyle.Restore);
+					NativeMethods.WINDOWPLACEMENT placement;
+					NativeMethods.GetWindowPlacement(viewerProcess.MainWindowHandle, out placement);
+
+					if (placement.showCmd == (int)NativeMethods.WindowShowStyle.ShowMinimized)
+						NativeMethods.ShowWindow(viewerProcess.MainWindowHandle, NativeMethods.WindowShowStyle.Restore);
+
 					NativeMethods.SetForegroundWindow(viewerProcess.MainWindowHandle);
 					instructUiToGoToDevice(device_id);
 				}
