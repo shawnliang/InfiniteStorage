@@ -207,6 +207,8 @@ namespace InfiniteStorage
 			if (e.ctx.fileCtx != null && e.ctx.fileCtx.is_thumbnail)
 				return;
 
+			var file_id = e.ctx.fileCtx.file_id;
+
 			SynchronizationContextHelper.PostMainSyncContext(() =>
 			{
 				try
@@ -222,6 +224,10 @@ namespace InfiniteStorage
 						dialog = new ProgressTooltip(e.ctx.device_name, e.ctx.device_id);
 						e.ctx.SetData(DATA_KEY_PROGRESS_DIALOG, dialog);
 					}
+
+					var s92Path = Path.Combine(MyFileFolder.Thumbs, file_id.ToString() + ".s92.thumb");
+					if (File.Exists(s92Path))
+						dialog.UpdateImage(s92Path);
 
 					updateProgressDialog(e, dialog);
 				}
