@@ -45,11 +45,11 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			using (var db = new MyDbContext())
 			{
-				var file_id = from f in db.Object.Files
+				var file = from f in db.Object.Files
 							  where f.file_path.Equals(file_path, StringComparison.InvariantCultureIgnoreCase) && f.device_id == device_id
-							  select f.file_id;
+							  select new { file_id = f.file_id };
 
-				return file_id.FirstOrDefault();
+				return file.Any() ? file.First().file_id : (Guid?)null;
 			}
 		}
 	}
