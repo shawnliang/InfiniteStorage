@@ -771,22 +771,10 @@ namespace Waveface.Client
 			var group = ti.DataContext as IContentGroup;
 
 			if (group == null)
-				return;
-
-			group.Refresh();
-
-			if (group.ID.Equals("Unsorted", StringComparison.CurrentCultureIgnoreCase))
 			{
-				//@ TryDisplayUnsortedTutorial();
+				IService _service = ti.DataContext as IService;
 
-				ItemsControl parent = ItemsControl.ItemsControlFromItemContainer(ti) as TreeViewItem;
-
-				if (parent == null)
-					return;
-
-				var service = parent.DataContext as IService;
-
-				if (service == null)
+				if (_service == null)
 					return;
 
 				Cursor = Cursors.Wait;
@@ -795,17 +783,19 @@ namespace Waveface.Client
 				lbxContentContainer.Visibility = Visibility.Collapsed;
 
 				unSortedFilesUC.Visibility = Visibility.Visible;
-				unSortedFilesUC.Init(service, group, this);
+				unSortedFilesUC.Init(_service, group, this);
 
 				Cursor = Cursors.Arrow;
+
+				return;
 			}
-			else
-			{
-				unSortedFilesUC.Stop();
-				unSortedFilesUC.Visibility = Visibility.Collapsed;
-				ContentAreaToolBar.Visibility = Visibility.Visible;
-				lbxContentContainer.Visibility = Visibility.Visible;
-			}
+
+			group.Refresh();
+
+			unSortedFilesUC.Stop();
+			unSortedFilesUC.Visibility = Visibility.Collapsed;
+			ContentAreaToolBar.Visibility = Visibility.Visible;
+			lbxContentContainer.Visibility = Visibility.Visible;
 
 			lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
 			btnDelete.IsEnabled = false;
@@ -831,6 +821,8 @@ namespace Waveface.Client
 			SetContentTypeCount(group);
 
 			checkToShowHelpPanel();
+
+			GC.Collect();
 		}
 
 		private void checkToShowHelpPanel()
@@ -1519,7 +1511,7 @@ namespace Waveface.Client
 
 			foreach (IContentGroup _group in ClientFramework.Client.Default.GetFavorites(true))
 			{
-				if(_group.Name == _title)
+				if (_group.Name == _title)
 				{
 					_title += " [" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "]";
 					break;

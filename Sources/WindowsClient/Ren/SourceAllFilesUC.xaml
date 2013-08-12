@@ -1,7 +1,6 @@
-﻿<UserControl x:Class="Waveface.Client.UnSortedFilesUC"
+﻿<UserControl x:Class="Waveface.Client.SourceAllFilesUC"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:Waveface="clr-namespace:Waveface.Client"
              Width="1024"
              Height="768"
              SizeChanged="Window_SizeChanged">
@@ -52,25 +51,6 @@
             <GradientStop Offset="1" Color="#FF1E1E1F" />
             <GradientStop Color="#FF323232" />
         </LinearGradientBrush>
-
-        <Style TargetType="{x:Type ToolTip}">
-            <Setter Property="Background" Value="Black" />
-            <Setter Property="Margin" Value="24" />
-            <Setter Property="Padding" Value="16" />
-            <Setter Property="Background" Value="#333333" />
-        </Style>
-
-        <DataTemplate x:Key="SbPreviewTemplate">
-            <Grid>
-                <TextBlock HorizontalAlignment="Stretch"
-                           VerticalAlignment="Stretch"
-                           FontSize="18"
-                           FontWeight="Bold"
-                           Foreground="White"
-                           Text="{Binding Path=FirstItem.DescribeText}" />
-            </Grid>
-        </DataTemplate>
-
     </UserControl.Resources>
 
     <Grid Background="#303032">
@@ -85,7 +65,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="48" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="54" />
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0"
@@ -128,80 +107,6 @@
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                 </ListBox>
-            </Grid>
-
-            <Grid Grid.Row="2" Background="#333333">
-            	<Grid.Effect>
-            		<DropShadowEffect BlurRadius="1"
-            			Direction="90"
-            			ShadowDepth="1" />
-            	</Grid.Effect>
-                <Label x:Name="lblSelectedCount" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="#FFA8A8A8" FontSize="16"/>
-                <Grid Grid.Column="0" HorizontalAlignment="Center" Margin="0">
-            		<Grid.ColumnDefinitions>
-            			<ColumnDefinition Width="Auto" />
-            			<ColumnDefinition Width="180" />
-            			<ColumnDefinition Width="Auto" />
-            		</Grid.ColumnDefinitions>
-
-            		<Grid.RowDefinitions>
-            			<RowDefinition Height="20" />
-            			<RowDefinition Height="30" />
-            		</Grid.RowDefinitions>
-
-            		<TextBlock Grid.Row="1"
-            			Grid.Column="0"
-            			Margin="6,0"
-            			HorizontalAlignment="Left"
-            			VerticalAlignment="Center"
-            			FontSize="11"
-            			FontWeight="Bold"
-            			Foreground="#929292"
-            			Text="{DynamicResource SHORTER}" />
-            		<TextBlock Grid.Row="1"
-            			Grid.Column="2"
-            			Margin="6,0"
-            			HorizontalAlignment="Right"
-            			VerticalAlignment="Center"
-            			FontSize="11"
-            			FontWeight="Bold"
-            			Foreground="#929292"
-            			Text="{DynamicResource LONGER}" />
-
-            		<StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-            			<TextBlock
-            				x:Name="tbEventIntervalType"
-            				FontSize="11"
-            				FontWeight="Bold"
-            				Foreground="#DDDDDD"
-            				Text="" />
-            		</StackPanel>
-
-            		<Waveface:SliderWithDraggingEvents x:Name="sliderEvent"
-            			Grid.Row="1"
-            			Grid.Column="1"
-            			Height="18"
-            			HorizontalAlignment="Stretch"
-            			BorderThickness="0"
-            			Foreground="#B4B4B4"
-            			IsSnapToTickEnabled="True"
-            			Maximum="6"
-            			Minimum="0"
-            			ThumbDragStarted="sliderEvent_ThumbDragStarted"
-            			ThumbDragCompleted="sliderEvent_ThumbDragCompleted"
-            			ValueChanged="sliderEvent_ValueChanged"
-            			Delay ="1500"
-            			Interval="1500"
-            			LargeChange="1"
-            			SmallChange="1"
-            			TickFrequency="1"
-            			Value="4">
-            			<Waveface:SliderWithDraggingEvents.Effect>
-            				<DropShadowEffect ShadowDepth="0.1" />
-            			</Waveface:SliderWithDraggingEvents.Effect>
-            		</Waveface:SliderWithDraggingEvents>
-            	</Grid>
-                <Waveface:ContentActionBar x:Name="contentActionBar" IsEnabled="False" HorizontalAlignment="Right" AddToFavorite="ContentActionBar_AddToFavorite" AddToStarred="ContentActionBar_AddToStarred" CreateFavorite="ContentActionBar_CreateFavorite" MoveToNewFolder="ContentActionBar_MoveToNewFolder" MoveToExistingFolder="ContentActionBar_MoveToExistingFolder" Padding="0"/>
             </Grid>
 
             <Grid x:Name="gridEmptyPanel"

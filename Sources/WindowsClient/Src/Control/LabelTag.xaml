@@ -31,6 +31,7 @@
         <Image x:Name="image"
                Source="{StaticResource UnFavoriteContentFlag}"
                Stretch="Fill" />
+        
         <Image x:Name="imgSelected"
                Source="{StaticResource FavoriteContentFlag}"
                Stretch="Fill"

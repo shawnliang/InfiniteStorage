@@ -239,8 +239,8 @@
     <Compile Include="Ren\EventUC.xaml.cs">
       <DependentUpon>EventUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Ren\UnSortedFilesUC.xaml.cs">
-      <DependentUpon>UnSortedFilesUC.xaml</DependentUpon>
+    <Compile Include="Ren\SourceAllFilesUC.xaml.cs">
+      <DependentUpon>SourceAllFilesUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Ren\RT.cs" />
     <Compile Include="Ren\Utility\BoolToVisibilityConverter.cs" />
@@ -475,7 +475,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Ren\UnSortedFilesUC.xaml">
+    <Page Include="Ren\SourceAllFilesUC.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

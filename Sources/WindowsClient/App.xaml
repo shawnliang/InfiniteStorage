@@ -6,7 +6,6 @@
              xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
              ShutdownMode="OnMainWindowClose"
              Startup="Application_Startup"
-             Exit="App_OnExit"
              StartupUri="Src\Window\MainWindow.xaml">
     <Application.Resources>
 

@@ -22,6 +22,8 @@ namespace Waveface.Client
 
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
+			DeleteTempDirectory();
+
 			var cultureName = (string) Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "Culture", "");
 			
 			if (!string.IsNullOrEmpty(cultureName))
@@ -68,6 +70,23 @@ namespace Waveface.Client
 
 		}
 
+		private static void DeleteTempDirectory()
+		{
+			try
+			{
+				string _tempPathBase = Path.GetTempPath() + "Waveface Photos" + "\\";
+
+				if (Directory.Exists(_tempPathBase))
+				{
+					DirectoryInfo _dir = new DirectoryInfo(_tempPathBase);
+					_dir.Delete(true);
+				}
+			}
+			catch
+			{
+			}
+		}
+
 		void m_wndMsgRecver_WndProc(object sender, InfiniteStorage.Win32.MessageEventArgs e)
 		{
 			try
@@ -90,23 +109,6 @@ namespace Waveface.Client
 			catch (Exception err)
 			{
 				log4net.LogManager.GetLogger(GetType()).Warn("Process windows message error", err);
-			}
-		}
-
-		private void App_OnExit(object sender, ExitEventArgs e)
-		{
-			try
-			{
-				string _tempPathBase = Path.GetTempPath() + "Waveface Photos" + "\\";
-
-				if (Directory.Exists(_tempPathBase))
-				{
-					DirectoryInfo _dir = new DirectoryInfo(_tempPathBase);
-					_dir.Delete(true);
-				}
-			}
-			catch
-			{			
 			}
 		}
 	}

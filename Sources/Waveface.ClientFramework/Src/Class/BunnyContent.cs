@@ -28,9 +28,7 @@ namespace Waveface.ClientFramework
 				{
 					lock (this)
 					{
-						var file = Uri.LocalPath;
-
-						if (!File.Exists(file))
+						if (!File.Exists(Uri.LocalPath))
 							return null;
 
 						if (Type == ContentType.Video)
@@ -50,7 +48,7 @@ namespace Waveface.ClientFramework
 						}
 						catch
 						{
-							_imageSource = BitmapFrame.Create(this.Uri);
+							_imageSource = BitmapFrame.Create(Uri);
 						}
 
 						var metadata = _imageSource.Metadata as BitmapMetadata;

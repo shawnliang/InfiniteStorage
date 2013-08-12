@@ -4,17 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:PendingUI="clr-namespace:Waveface.Client" mc:Ignorable="d" SizeChanged="UserControl_SizeChanged" 
+             xmlns:PendingUI="clr-namespace:Waveface.Client" mc:Ignorable="d"
              d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        
-        <Storyboard x:Key="ShowInfo">
-            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ltTag" Storyboard.TargetProperty="(UIElement.Visibility)">
-                <DiscreteObjectKeyFrame KeyTime="0"  Value="{x:Static Visibility.Visible}" />
-            </ObjectAnimationUsingKeyFrames>
-        </Storyboard>
-        
+
         <Style x:Key="SimpleListBoxItem" TargetType="ListBoxItem">
             <Setter Property="Template">
                 <Setter.Value>
@@ -65,92 +59,43 @@
         </Style>
 
         <PendingUI:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
-
-        <Style x:Key="contextMenuStyle1"
-               TargetType="{x:Type ContextMenu}">
-            <Setter Property="Foreground" Value="#FFA8A8A8" />
-            <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ContextMenu}">
-                        <Border Background="#FF181818"
-                                CornerRadius="4">
-                            <StackPanel Margin="5,5,5,5"
-                                        ClipToBounds="True"
-                                        IsItemsHost="True"
-                                        Orientation="Vertical" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </UserControl.Resources>
 
-    <Grid x:Name="gridMain" Background="#3F3F3F" MouseEnter="gridMain_MouseEnter" MouseLeave="gridMain_MouseLeave" MouseDown="gridMain_MouseDown" >
+    <Grid x:Name="gridMain" Background="#3F3F3F">
         <i:Interaction.Behaviors>
             <PendingUI:IgnoreMouseWheelBehavior />
         </i:Interaction.Behaviors>
 
-        <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Grid Grid.Column="0">
+            <Rectangle Width="108" Height="112" Fill="Red" Margin="4, 8" VerticalAlignment="Top"/>
+            <TextBlock x:Name="tbTitle" Width="108" Height="112" Foreground="White" TextAlignment="Center" Margin="4, 24, 4, 8" VerticalAlignment="Top" HorizontalAlignment="Center" TextWrapping="Wrap" Text="2013.5.20, 11:59" FontSize="30" FontWeight="Bold"/>         
+            <TextBlock x:Name="tbTotalCount" Foreground="#929292" Margin="2, 120, 2, 0" VerticalAlignment="Top" TextAlignment="Center" TextWrapping="Wrap" Text="99 Photos" FontSize="11" />
+        </Grid>
+        
+        <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="60" />
+                <RowDefinition Height="0" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="40"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Image Margin="12,13,4,0" Width="20" Height="20" VerticalAlignment="Top" Source="pack://application:,,,/Ren/Images/add_folder.png" />
-
-                <Grid Grid.Column="1" x:Name="gridTextBox" Cursor="Pen">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="36" />
-                        <RowDefinition Height="20" />
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Margin="0,8,8,0" Grid.Row="0" Cursor="Pen" Orientation="Horizontal" >
-                        <TextBox x:Name="tbDescribe" IsReadOnly="True" BorderThickness="0" Background="#3F3F3F" Foreground="#E6E6E6"  VerticalContentAlignment="Center" FontSize="18" Width="320" HorizontalAlignment="Left" MouseEnter="tbDescribe_MouseEnter" MouseLeave="tbDescribe_MouseLeave" TextChanged="tbDescribe_TextChanged">
-                            <TextBox.Style>
-                                <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-                                    <Style.Triggers>
-                                        <Trigger Property="PendingUI:WatermarkTextBehavior.IsWatermarked" Value="True">
-                                            <Setter Property="Foreground" Value="White" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBox.Style>
-                            <i:Interaction.Behaviors>
-                                <PendingUI:WatermarkTextBehavior Text="{DynamicResource DescribeTheEvent}" />
-                            </i:Interaction.Behaviors>
-                        </TextBox>
-                    </StackPanel>
-
-                    <StackPanel x:Name="spToolBar" Margin="0,8,16,0" Grid.Row="0" Cursor="Hand"  HorizontalAlignment="Right" Orientation="Horizontal" Visibility="Collapsed" >
-                        <Button x:Name="btnShare" Style="{StaticResource FlatButtonStyle}" Foreground="White" Click="btnShare_Click" Content="{DynamicResource Share}" Margin="10,0,0,0" Padding="5,0" />
-                        <Button x:Name="btnSelectAll" Style="{StaticResource FlatButtonStyle}" Foreground="White"   Click="btnSelectAll_Click" Content="{DynamicResource SelectAll}" Margin="10,0,0,0" Padding="5,0" />
-                    </StackPanel>
-
-                    <StackPanel Margin="2,0,0,0" Grid.Row="1" Orientation="Horizontal">
-                        <TextBlock x:Name="tbTitle" Foreground="#929292" Text="2013.5.20, 11:59" FontSize="12" FontWeight="SemiBold"/>
-                        <TextBlock x:Name="tbTimeAgo" Foreground="#929292" Margin="4,0,0,0" Text="Yesterday" FontSize="11" />
-                        <TextBlock x:Name="tbTotalCount" Foreground="#929292" Margin="12,0,0,0" Text="99 Photos" FontSize="11" />
-                    </StackPanel>
-                </Grid>
-            </Grid>
+            
+            <StackPanel Orientation="Horizontal">           
+                <TextBlock x:Name="tbTimeAgo" Foreground="#929292" Margin="12,0,0,0" VerticalAlignment="Bottom" Text="Yesterday" FontSize="16" />
+                <!--TextBlock x:Name="tbTotalCount" Foreground="#929292" Margin="12,0,0,0" VerticalAlignment="Bottom" Text="99 Photos" FontSize="16" /-->
+            </StackPanel>
 
             <ListBox BorderThickness="0" 
-                     Margin="12,0,0,8" 
+                     Margin="0, 6, 0, 32" 
                      Background="#3F3F3F" 
                      Grid.Row="1" 
                      x:Name="lbEvent" 
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                      ItemContainerStyle="{StaticResource SimpleListBoxItem}" 
                      SelectionMode="Extended"
-                     Loaded="lbEvent_Loaded"
                      PreviewMouseRightButtonUp="lbEvent_PreviewMouseRightButtonUp"
                      PreviewMouseRightButtonDown="lbEvent_PreviewMouseRightButtonDown"
                      PreviewMouseLeftButtonDown="lbEvent_PreviewMouseLeftButtonDown"
@@ -160,36 +105,19 @@
                 >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <DataTemplate.Triggers>
-                            <EventTrigger RoutedEvent="Mouse.MouseEnter">
-                                <BeginStoryboard x:Name="ShowInfo_BeginStoryboard" Storyboard="{StaticResource ShowInfo}" />
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Mouse.MouseLeave">
-                                <RemoveStoryboard BeginStoryboardName="ShowInfo_BeginStoryboard" />
-                            </EventTrigger>
-                        </DataTemplate.Triggers>   
-                        
-                        <StackPanel>
-                            <Border BorderThickness="1" Background="Transparent">
+                        <StackPanel >
+                            <Border BorderThickness="1" Width="62" Height="62">
                                 <Grid>
                                     <Image Source="{Binding Path=MediaSource}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill"
                                     Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}"/>
 
-                                    <Image Source="{Binding Path=BitmapImage}" HorizontalAlignment="Left"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top"  Stretch="UniformToFill"  Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=Width}"
-                                    Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=Height}" 
+                                    <Image Source="{Binding Path=BitmapImage}" HorizontalAlignment="Left"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top"  Stretch="UniformToFill"
                                     Visibility="{Binding Path=IsPhoto, Converter={StaticResource BoolToHiddenConverter}}"/>
 
-                                    <Image Source="{Binding Path=BitmapImage}" Width="48" Margin="3" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                    <Image Source="{Binding Path=BitmapImage}" Width="48" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Bottom"
                                     Height="36" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" Stretch="UniformToFill" />
 
-                                    <!--Image Source="pack://application:,,,/Ren/Images/checkmark.png" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=IsSelected}"
-                                        Stretch="Uniform" Width="40" Height="40" Margin="-8"  HorizontalAlignment="Right" VerticalAlignment="Top"/-->
-
-                                    <Border BorderBrush="#5FB0E0E6" Padding="2"  BorderThickness="6" CornerRadius="0.5" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsMouseOver}"/>
-                                    <Border BorderBrush="#FF427FED" Padding="2"  BorderThickness="6" CornerRadius="0.5" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/>
-
-                                    <PendingUI:LabelTag x:Name="ltTag" Width="30" Height="30" Margin="4" Tag="{Binding FileID}" HorizontalAlignment="Left" VerticalAlignment="Top" Tagged="{Binding IsStarred, Mode=TwoWay}" 
-                                                        Visibility="{Binding Tagged, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=ltTag}" TagStatusChanged="ltTag_TagStatusChanged" />
+                                    <!-- Border BorderBrush="#FF427FED" Padding="2"  BorderThickness="6" CornerRadius="0.5" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/-->
                                 </Grid>
                             </Border>
                         </StackPanel>
@@ -197,19 +125,9 @@
                 </ListBox.ItemTemplate>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
+                        <WrapPanel Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
-                <ListBox.ContextMenu>
-                    <ContextMenu Style="{StaticResource contextMenuStyle1}" x:Name="contextMenu">
-                        <MenuItem Header="{DynamicResource CreateFavorite}" x:Name="CreateFavorite" Click="ContextMenuItem_Click"/>
-                        <MenuItem Header="{DynamicResource CreateNewFolder}" x:Name="CreateNewFolder" Click="ContextMenuItem_Click"/>
-                        <Separator />
-                        <MenuItem Header="{DynamicResource AddToFavorite}" x:Name="AddToFavorite" Click="ContextMenuItem_Click"/>
-                        <MenuItem Header="{DynamicResource AddToStarred}" x:Name="AddToStarred" Click="ContextMenuItem_Click"/>
-                        <MenuItem Header="{DynamicResource AddToExistingFolder}" x:Name="AddToExistingFolder" Click="ContextMenuItem_Click"/>
-                    </ContextMenu>
-                </ListBox.ContextMenu>
             </ListBox>
         </Grid>
     </Grid>
