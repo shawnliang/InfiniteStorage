@@ -142,6 +142,9 @@ namespace InfiniteStorage
 
 		void InfiniteStorageWebSocketService_FileDropped(object sender, WebsocketProtocol.WebsocketEventArgs e)
 		{
+			if (e.ctx.fileCtx != null && e.ctx.fileCtx.is_thumbnail)
+				return;
+
 			SynchronizationContextHelper.PostMainSyncContext(() =>
 			{
 				try
@@ -201,6 +204,9 @@ namespace InfiniteStorage
 
 		void InfiniteStorageWebSocketService_FileReceiving(object sender, WebsocketProtocol.WebsocketEventArgs e)
 		{
+			if (e.ctx.fileCtx != null && e.ctx.fileCtx.is_thumbnail)
+				return;
+
 			SynchronizationContextHelper.PostMainSyncContext(() =>
 			{
 				try
@@ -238,6 +244,9 @@ namespace InfiniteStorage
 
 		void InfiniteStorageWebSocketService_FileProgress(object sender, WebsocketProtocol.WebsocketEventArgs e)
 		{
+			if (e.ctx.fileCtx != null && e.ctx.fileCtx.is_thumbnail)
+				return;
+
 			SynchronizationContextHelper.PostMainSyncContext(() =>
 			{
 				try
@@ -255,6 +264,9 @@ namespace InfiniteStorage
 
 		void InfiniteStorageWebSocketService_FileReceived(object sender, WebsocketProtocol.WebsocketEventArgs e)
 		{
+			if (e.ctx.fileCtx.is_thumbnail)
+				return;
+
 			SynchronizationContextHelper.PostMainSyncContext(() =>
 			{
 				try

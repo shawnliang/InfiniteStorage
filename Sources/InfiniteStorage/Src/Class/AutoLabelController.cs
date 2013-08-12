@@ -16,6 +16,9 @@ namespace InfiniteStorage
 			{
 				var file = args.ctx.fileCtx;
 
+				if (file.is_thumbnail)
+					return;
+
 				if (withinToday(file.datetime))
 				{
 					var labels = new Guid[] { Settings.Default.LabelPhotoToday };

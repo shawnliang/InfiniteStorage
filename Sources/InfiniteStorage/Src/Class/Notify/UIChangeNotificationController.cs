@@ -44,6 +44,9 @@ namespace InfiniteStorage.Notify
 
 		public void OnFileReceived(object sender, WebsocketEventArgs arg)
 		{
+			if (arg.ctx.fileCtx.is_thumbnail)
+				return;
+
 			var file_id = arg.ctx.fileCtx.file_id;
 
 			Folder folder;
