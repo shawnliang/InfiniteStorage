@@ -61,7 +61,7 @@ namespace InfiniteStorage
 
 		private void generateThumbnails()
 		{
-			var files = getNoThumbnailFiles(from);
+			var files = getNoThumbnailFiles(0);
 
 			var successFiles = new List<FileAsset>();
 			foreach (var file in files)
@@ -295,7 +295,7 @@ namespace InfiniteStorage
 			using (var db = new MyDbContext())
 			{
 				var query = from f in db.Object.Files
-							where f.seq >= fromSeq && !f.deleted && !f.thumb_ready
+							where f.seq >= fromSeq && !f.deleted && !f.thumb_ready && f.has_origin
 							orderby f.seq ascending
 							select f;
 
