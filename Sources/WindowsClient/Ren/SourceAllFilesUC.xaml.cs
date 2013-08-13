@@ -146,14 +146,14 @@ namespace Waveface.Client
 				id = x.file_id.ToString(),
 				file_name = x.file_name,
 				tiny_path = (x.type == (int)FileAssetType.image)
-						? Path.Combine(m_thumbsPath, x.file_id + ".tiny.thumb")
-						: Path.Combine(m_thumbsPath, x.file_id + ".medium.thumb"),
+						? Path.Combine(m_thumbsPath, x.file_id + ".s92.thumb")
+						: Path.Combine(m_thumbsPath, x.file_id + ".s92.thumb"),
 				taken_time = x.event_time,
 				width = x.width,
 				height = x.height,
 				size = x.file_size,
 				type = x.type,
-				saved_path = Path.Combine(m_basePath, x.saved_path),
+				saved_path = "", //Path.Combine(m_basePath, x.saved_path),
 				has_origin = x.has_origin
 			}).ToList();
 
