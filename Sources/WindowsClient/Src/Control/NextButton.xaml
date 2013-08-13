@@ -19,5 +19,5 @@
         </Style>
     </UserControl.Resources>
 
-    <Image Cursor="Hand" Style="{StaticResource LBimgBtnStyle}" />
+    <Image Style="{StaticResource LBimgBtnStyle}" />
 </UserControl>
