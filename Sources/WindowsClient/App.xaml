@@ -27,6 +27,22 @@
                    G="215"
                    R="215" />
 
+            <BitmapImage x:Key="lb_right_img_normal"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_right_0.png" />
+
+            <BitmapImage x:Key="lb_right_img_mouseover"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_right_1.png" />
+
+            <BitmapImage x:Key="lb_left_img_normal"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_left_0.png" />
+
+            <BitmapImage x:Key="lb_left_img_mouseover"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_left_1.png" />
+
             <BitmapImage x:Key="AddToIcon"
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/ico_bar_addto_on.png" />
@@ -97,8 +113,8 @@
                          UriSource="pack://application:,,,/Resource/ico_cloud_album_select.png" />
             <BitmapImage x:Key="UnSelectedCloudFav"
                          CacheOption="OnDemand"
-                         UriSource="pack://application:,,,/Resource/ico_cloud_album_normal.png" />            
-            
+                         UriSource="pack://application:,,,/Resource/ico_cloud_album_normal.png" />
+
             <BitmapImage x:Key="SelectedStar"
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/ico_star_select.png" />
@@ -134,6 +150,14 @@
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/uppressed.png" />
 
+            <BitmapImage x:Key="LB_delete_0"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_delete_0.png" />
+
+            <BitmapImage x:Key="LB_delete_1"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_delete_1.png" />
+
             <Style TargetType="{x:Type Image}">
                 <!--
                     <Setter Property="RenderOptions.BitmapScalingMode"
@@ -141,8 +165,6 @@
                 -->
                 <Setter Property="SnapsToDevicePixels" Value="True" />
             </Style>
-
-
 
             <Style TargetType="{x:Type Button}">
                 <Setter Property="SnapsToDevicePixels" Value="True" />

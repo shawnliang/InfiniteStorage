@@ -8,15 +8,14 @@
         AllowsTransparency="True"
         Background="{x:Null}"
         KeyDown="Window_KeyDown"
+        Loaded="Window_Loaded"
         MouseRightButtonUp="Window_MouseRightButtonUp"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
         WindowState="Maximized"
-        WindowStyle="None"
-        Loaded="Window_Loaded"
-        >
+        WindowStyle="None">
     <Grid>
-        <Rectangle Fill="#FF222222" Opacity="0.95" />
+        <Rectangle Fill="#FF000000" Opacity="0.85" />
         <local:PhotoViewerControl x:Name="pvcViewer" Close="pvcViewer_Close" />
     </Grid>
 </Window>

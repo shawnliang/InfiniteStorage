@@ -319,6 +319,14 @@
     <Resource Include="Resource\ico_cloud_album_select.png" />
     <Resource Include="Resource\Bunnydesktop.ico" />
     <Resource Include="Resource\Discard.png" />
+    <Resource Include="Resource\LB_delete_0.png" />
+    <Resource Include="Resource\LB_delete_1.png" />
+    <Resource Include="Resource\LB_left_0.png" />
+    <Resource Include="Resource\LB_left_1.png" />
+    <Resource Include="Resource\LB_right_0.png" />
+    <Resource Include="Resource\LB_right_1.png" />
+    <Resource Include="Resource\LB_star_0.png" />
+    <Resource Include="Resource\LB_unstar_0.png" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
