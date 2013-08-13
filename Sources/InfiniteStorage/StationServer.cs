@@ -207,7 +207,22 @@ namespace InfiniteStorage
 			if (e.ctx.fileCtx != null && e.ctx.fileCtx.is_thumbnail)
 				return;
 
-			var file_id = e.ctx.fileCtx.file_id;
+			if (e.ctx.fileCtx == null)
+				return;	// duplicate file
+
+			var file_path = Path.Combine(e.ctx.fileCtx.folder, e.ctx.fileCtx.file_name);
+			var file_id = "";
+			using (var db = new MyDbContext())
+			{
+				var q = from f in db.Object.Files
+						where f.file_path == file_path
+						select f;
+
+				var file = q.FirstOrDefault();
+				if (file != null)
+					file_id = file.file_id.ToString();
+			}
+
 
 			SynchronizationContextHelper.PostMainSyncContext(() =>
 			{
@@ -225,9 +240,12 @@ namespace InfiniteStorage
 						e.ctx.SetData(DATA_KEY_PROGRESS_DIALOG, dialog);
 					}
 
-					var s92Path = Path.Combine(MyFileFolder.Thumbs, file_id.ToString() + ".s92.thumb");
-					if (File.Exists(s92Path))
-						dialog.UpdateImage(s92Path);
+					if (!string.IsNullOrEmpty(file_id))
+					{
+						var s92Path = Path.Combine(MyFileFolder.Thumbs, file_id.ToString() + ".s92.thumb");
+						if (File.Exists(s92Path))
+							dialog.UpdateImage(s92Path);
+					}
 
 					updateProgressDialog(e, dialog);
 				}
@@ -294,10 +312,6 @@ namespace InfiniteStorage
 					var file_path = Path.Combine(MyFileFolder.Photo, file.saved_path);
 
 					ProgressTooltip dialog = (ProgressTooltip)e.ctx.GetData(DATA_KEY_PROGRESS_DIALOG);
-					if (file.type == (int)InfiniteStorage.Model.FileAssetType.image)
-						dialog.UpdateImage(file_path);
-					else
-						dialog.UpdateImageToVideoIcon();
 
 					// +1 because when the last photo is received, backuped_count is (n-1) and total_count is (n).
 					// Device will then send update-count command to update backuped_count to (n) after some delays.
