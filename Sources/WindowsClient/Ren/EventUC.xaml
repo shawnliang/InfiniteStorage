@@ -95,13 +95,6 @@
                      x:Name="lbEvent" 
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                      ItemContainerStyle="{StaticResource SimpleListBoxItem}" 
-                     SelectionMode="Extended"
-                     PreviewMouseRightButtonUp="lbEvent_PreviewMouseRightButtonUp"
-                     PreviewMouseRightButtonDown="lbEvent_PreviewMouseRightButtonDown"
-                     PreviewMouseLeftButtonDown="lbEvent_PreviewMouseLeftButtonDown"
-                     MouseMove="lbEvent_MouseMove"
-                     SelectionChanged="lbEvent_SelectionChanged"
-                     ContextMenuOpening="contextMenu_ContextMenuOpening">
                 >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -117,7 +110,7 @@
                                     <Image Source="{Binding Path=BitmapImage}" Width="48" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Bottom"
                                     Height="36" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" Stretch="UniformToFill" />
 
-                                    <!-- Border BorderBrush="#FF427FED" Padding="2"  BorderThickness="6" CornerRadius="0.5" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/-->
+                                    <Rectangle Fill="#66000000" Visibility="{Binding Path=HasOrigin, Converter={StaticResource BoolToHiddenConverter}}" />
                                 </Grid>
                             </Border>
                         </StackPanel>

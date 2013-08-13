@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Security.Permissions;
 using System.Windows;
@@ -10,7 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using InfiniteStorage.Model;
-using Waveface.ClientFramework;
+using Microsoft.Win32;
 using Waveface.Model;
 
 #endregion
@@ -19,168 +20,222 @@ namespace Waveface.Client
 {
 	public partial class SourceAllFilesUC : UserControl
 	{
-		public static SourceAllFilesUC Current { get; set; }
-
-		public static int BY_MONTH = 30*24*60;
-
 		private IService m_currentDevice;
-		private IContentGroup m_unsortedGroup;
-		private List<string> m_defaultEventNameCache;
-		private ObservableCollection<EventUC> m_eventUCs;
-		private DispatcherTimer m_dispatcherTimer;
 		private MainWindow m_mainWindow;
 
-		public int VideosCount { get; set; }
-		public int PhotosCount { get; set; }
-		public RT Rt { get; set; }
+		private DispatcherTimer m_startTimer;
+		private DispatcherTimer m_refreshTimer;
+
+		private int m_videosCount;
+		private int m_photosCount;
+		private int m_hasOriginCount;
+
+		private string m_basePath;
+		private string m_thumbsPath;
+
+		private List<FileEntry> m_fileEntries { get; set; }
+
+		private Dictionary<string, List<FileEntry>> m_YM_Files;
+		private List<List<FileEntry>> m_months;
+		private ObservableCollection<EventUC> m_eventUCs;
 
 		public SourceAllFilesUC()
 		{
-			Current = this;
-
 			InitializeComponent();
 
-			Cursor = Cursors.Wait;
+			m_basePath = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", "");
+			m_thumbsPath = Path.Combine(m_basePath, ".thumbs");
 
 			InitTimer();
 		}
 
 		private void InitTimer()
 		{
-			m_dispatcherTimer = new DispatcherTimer();
-			m_dispatcherTimer.Tick += dispatcherTimer_Tick;
-			m_dispatcherTimer.Interval = new TimeSpan(0, 0, 2);
-		}
+			m_startTimer = new DispatcherTimer();
+			m_startTimer.Tick += StartTimerOnTick;
+			m_startTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);
 
-		public bool Init(IService device, IContentGroup unsortedGroup, MainWindow mainWindow)
-		{
-			m_mainWindow = mainWindow;
-
-			m_dispatcherTimer.Stop();
-			btnRefresh.Visibility = Visibility.Collapsed;
-
-			m_currentDevice = device;
-			m_unsortedGroup = unsortedGroup;
-
-			Rt = new RT();
-
-			List<FileAsset> m_files;
-
-			using (var _db = new MyDbContext())
-			{
-				var _q = from _f in _db.Object.Files
-				         where _f.device_id == device.ID && !_f.deleted
-				         select _f;
-
-				m_files = _q.ToList();
-			}
-
-			if (Rt.Init(m_files, device))
-			{
-				gridEmptyPanel.Visibility = Visibility.Collapsed;
-
-				tbTitle0.Visibility = Visibility.Visible;
-				tbTitle.Visibility = Visibility.Visible;
-				tbTotalCount.Visibility = Visibility.Visible;
-			}
-			else
-			{
-				gridEmptyPanel.Visibility = Visibility.Visible;
-				btnRefresh.Visibility = Visibility.Collapsed;
-
-				tbTitle0.Visibility = Visibility.Collapsed;
-				tbTitle.Visibility = Visibility.Collapsed;
-				tbTotalCount.Visibility = Visibility.Collapsed;
-
-				return false;
-			}
-
-			ShowEvents();
-
-			ShowTitle();
-
-			//m_dispatcherTimer.Start();
-
-			return true;
-		}
-
-		private void dispatcherTimer_Tick(object sender, EventArgs e)
-		{
-			int _count = m_unsortedGroup.ContentCount;
-
-			if (_count != Rt.RtData.file_changes.Count)
-			{
-				btnRefresh.Visibility = Visibility.Visible;
-			}
-
-			int _d = (_count - (VideosCount + PhotosCount));
-
-			if (_d > 0)
-			{
-				btnRefresh.Visibility = Visibility.Visible;
-			}
-			else
-			{
-				btnRefresh.Visibility = Visibility.Collapsed;
-			}
-
-			string _Refresh = (string) Application.Current.FindResource("Refresh");
-			btnRefresh.Content = _Refresh + " (" + _d + ")";
+			m_refreshTimer = new DispatcherTimer();
+			m_refreshTimer.Tick += RefreshTimerOnTick;
+			m_refreshTimer.Interval = new TimeSpan(0, 0, 0, 0, 2000);
 		}
 
 		public void Stop()
 		{
-			if (m_dispatcherTimer != null)
+			if (m_startTimer != null)
 			{
-				m_dispatcherTimer.Stop();
+				m_startTimer.Stop();
 			}
 		}
 
-		private void btnRefresh_Click(object sender, RoutedEventArgs e)
+		public void Load(IService device, MainWindow mainWindow)
 		{
-			m_dispatcherTimer.Stop();
+			gridWaitingPanel.Visibility = Visibility.Visible;
 
-			Cursor = Cursors.Wait;
+			m_mainWindow = mainWindow;
+			m_currentDevice = device;
 
-			DoEvents();
-
-			Init(m_currentDevice, m_unsortedGroup, m_mainWindow);
-
-			Cursor = Cursors.Arrow;
+			m_startTimer.Start();
 		}
 
-		private void ShowTitle()
+		private void StartTimerOnTick(object sender, EventArgs e)
 		{
+			m_startTimer.Stop();
+
+			List<FileAsset> _files = GetFilesFromDB();
+
+			if (_files.Count == 0)
+			{
+				tbTitle0.Visibility = Visibility.Collapsed;
+				tbTitle.Visibility = Visibility.Collapsed;
+				tbTotalCount.Visibility = Visibility.Collapsed;
+
+				return;
+			}
+
+			gridWaitingPanel.Visibility = Visibility.Collapsed;
+
+			prepareData(_files);
+
+			tbTitle0.Visibility = Visibility.Visible;
+			tbTitle.Visibility = Visibility.Visible;
+			tbTotalCount.Visibility = Visibility.Visible;
+
 			tbTitle.Text = m_currentDevice.Name;
+
+			ShowEvents_Init();
+
+			m_refreshTimer.Start();
 		}
 
-		private void ShowEvents()
+		void RefreshTimerOnTick(object sender, EventArgs e)
+		{
+			m_refreshTimer.Stop();
+
+			List<FileAsset> _files = GetFilesFromDB();
+			int _hasOriginCount = GetHasOriginCount(_files);
+
+			if ((_hasOriginCount != m_hasOriginCount) || (_files.Count != m_fileEntries.Count))
+			{
+				prepareData(_files);
+
+				ShowEvents();
+			}
+
+			m_refreshTimer.Start();
+		}
+
+		private List<FileAsset> GetFilesFromDB()
+		{
+			using (var _db = new MyDbContext())
+			{
+				IQueryable<FileAsset> _q = from _f in _db.Object.Files
+										   where _f.device_id == m_currentDevice.ID && !_f.deleted
+										   select _f;
+
+				return _q.ToList();
+			}
+		}
+
+		public void prepareData(List<FileAsset> files)
+		{
+			m_fileEntries = new List<FileEntry>();
+
+			List<FileEntry> _fCs = files.Select(x => new FileEntry
+			{
+				id = x.file_id.ToString(),
+				file_name = x.file_name,
+				tiny_path = (x.type == (int)FileAssetType.image)
+						? Path.Combine(m_thumbsPath, x.file_id + ".tiny.thumb")
+						: Path.Combine(m_thumbsPath, x.file_id + ".medium.thumb"),
+				taken_time = x.event_time,
+				width = x.width,
+				height = x.height,
+				size = x.file_size,
+				type = x.type,
+				saved_path = Path.Combine(m_basePath, x.saved_path),
+				has_origin = x.has_origin
+			}).ToList();
+
+			m_fileEntries = _fCs;
+			m_fileEntries = m_fileEntries.OrderBy(o => o.taken_time).ToList();
+
+			m_hasOriginCount = GetHasOriginCount(files);
+		}
+
+		private int GetHasOriginCount(List<FileAsset> files)
+		{
+			int _hasOriginCount = 0;
+
+			foreach (var _entry in files)
+			{
+				if (_entry.has_origin)
+				{
+					_hasOriginCount++;
+				}
+			}
+
+			return _hasOriginCount;
+		}
+
+		public Dictionary<string, List<FileEntry>> GroupingByMonth()
+		{
+			Dictionary<string, List<FileEntry>> _YM_Files = new Dictionary<string, List<FileEntry>>();
+
+			m_months = new List<List<FileEntry>>();
+
+			foreach (FileEntry _item in m_fileEntries)
+			{
+				DateTime _dt = _item.taken_time;
+
+				string _by = _dt.ToString("yyyy-MM");
+
+				if (!_YM_Files.ContainsKey(_by))
+				{
+					_YM_Files.Add(_by, new List<FileEntry>());
+				}
+
+				_YM_Files[_by].Add(_item);
+			}
+
+			_YM_Files.Keys.ToList().Sort();
+
+			foreach (string _day in _YM_Files.Keys)
+			{
+				m_months.Add(_YM_Files[_day]);
+			}
+
+			m_months.Reverse();
+
+			return _YM_Files;
+		}
+
+		#region Show
+
+		private void ShowEvents_Init()
 		{
 			Cursor = Cursors.Wait;
 
-			m_defaultEventNameCache = new List<string>();
-
-			PhotosCount = 0;
-			VideosCount = 0;
+			m_photosCount = 0;
+			m_videosCount = 0;
 
 			m_eventUCs = new ObservableCollection<EventUC>();
 			listBoxEvent.ItemsSource = m_eventUCs;
 
-			Rt.GroupingByEvent();
+			m_YM_Files = GroupingByMonth();
 
-			Rt.Events.Reverse();
-
-			foreach (List<FileChange> _event in Rt.Events)
+			foreach (List<FileEntry> _entries in m_months)
 			{
 				EventUC _ctl = new EventUC
-					               {
-						               Event = _event
-					               };
+								   {
+									   Event = _entries,
+									   YM = _entries[0].taken_time.ToString("yyyy-MM")
+								   };
 
 				_ctl.SetUI();
 
-				PhotosCount += _ctl.PhotosCount;
-				VideosCount += _ctl.VideosCount;
+				m_photosCount += _ctl.PhotosCount;
+				m_videosCount += _ctl.VideosCount;
 
 				m_eventUCs.Add(_ctl);
 
@@ -190,22 +245,68 @@ namespace Waveface.Client
 			ShowInfor();
 		}
 
+		private void ShowEvents()
+		{
+			Cursor = Cursors.Wait;
+
+			m_photosCount = 0;
+			m_videosCount = 0;
+
+			Dictionary<string, List<FileEntry>> _YM_Files = GroupingByMonth();
+
+			foreach (List<FileEntry> _entries in m_months)
+			{
+				EventUC _ctl = null;
+				string _YM = _entries[0].taken_time.ToString("yyyy-MM");
+
+				if (m_YM_Files.Keys.Contains(_YM))
+				{
+					foreach (EventUC _eventUc in m_eventUCs)
+					{
+						if (_eventUc.YM == _YM)
+						{
+							_ctl = _eventUc;
+							break;
+						}
+					}
+
+					_ctl.Event = _entries;
+				}
+				else
+				{
+					_ctl = new EventUC
+						       {
+							       Event = _entries,
+							       YM = _YM
+						       };
+
+					m_eventUCs.Add(_ctl);
+				}
+
+				_ctl.SetUI();
+
+				m_photosCount += _ctl.PhotosCount;
+				m_videosCount += _ctl.VideosCount;
+
+				DoEvents();
+			}
+
+			m_YM_Files = _YM_Files;
+
+			ShowInfor();
+		}
+
 		private void ShowInfor()
 		{
 			if (m_eventUCs.Count == 0)
 			{
-				gridEmptyPanel.Visibility = Visibility.Visible;
-				btnRefresh.Visibility = Visibility.Collapsed;
+				gridWaitingPanel.Visibility = Visibility.Visible;
 				tbTotalCount.Text = "";
 			}
 			else
 			{
-				//string _timeLineInformation = (string) Application.Current.FindResource("TimeLineInformation");
-				//string _plural = (string) Application.Current.FindResource("plural");
-				//string _tbTotalCount = string.Format(_timeLineInformation, GetCountsString(PhotosCount, VideosCount), m_eventUCs.Count, ((m_eventUCs.Count > 1) ? _plural : ""));
-				
-				string _tbTotalCount = GetCountsString(PhotosCount, VideosCount);
-				gridEmptyPanel.Visibility = Visibility.Collapsed;
+				string _tbTotalCount = GetCountsString(m_photosCount, m_videosCount);
+				gridWaitingPanel.Visibility = Visibility.Collapsed;
 				tbTotalCount.Text = _tbTotalCount;
 			}
 		}
@@ -214,10 +315,10 @@ namespace Waveface.Client
 		{
 			string _c = string.Empty;
 
-			string _photo = " " + (string) Application.Current.FindResource("photo");
-			string _photos = " " + (string) Application.Current.FindResource("photos");
-			string _video = " " + (string) Application.Current.FindResource("video");
-			string _videos = " " + (string) Application.Current.FindResource("videos");
+			string _photo = " " + (string)Application.Current.FindResource("photo");
+			string _photos = " " + (string)Application.Current.FindResource("photos");
+			string _video = " " + (string)Application.Current.FindResource("video");
+			string _videos = " " + (string)Application.Current.FindResource("videos");
 
 			if (photosCount > 0)
 			{
@@ -236,6 +337,8 @@ namespace Waveface.Client
 
 			return _c;
 		}
+
+		#endregion
 
 		private void listBoxEvent_LayoutUpdated(object sender, EventArgs e)
 		{
@@ -261,67 +364,9 @@ namespace Waveface.Client
 
 		public object ExitFrame(object f)
 		{
-			((DispatcherFrame) f).Continue = false;
+			((DispatcherFrame)f).Continue = false;
 
 			return null;
-		}
-
-		#endregion
-
-		#region Misc
-
-		public void Sub_SelectionChanged()
-		{
-			int _sum = 0;
-
-			foreach (EventUC _eventUc in listBoxEvent.Items)
-			{
-				_sum += _eventUc.GetSelectedFiles().Count;
-			}
-
-			Console.WriteLine("Sub_SelectionChanged: " + _sum);
-		}
-
-		public List<FileChange> GetAllSelectedFiles()
-		{
-			List<FileChange> _allFileChanges = new List<FileChange>();
-
-			foreach (EventUC _eventUc in listBoxEvent.Items)
-			{
-				_allFileChanges.AddRange(_eventUc.GetSelectedFiles());
-			}
-
-			return _allFileChanges;
-		}
-
-		public List<Content> Sub_GetAllSelectedFiles_ContentEntitys(bool simple)
-		{
-			List<FileChange> _allSelectedFiles = GetAllSelectedFiles();
-
-			return ConvertToContentEntities(simple, _allSelectedFiles);
-		}
-
-		private List<Content> ConvertToContentEntities(bool simple, IEnumerable<FileChange> _allSelectedFiles)
-		{
-			List<Content> _contentEntitys = new List<Content>();
-
-			foreach (FileChange _fc in _allSelectedFiles)
-			{
-				if (simple)
-				{
-					_contentEntitys.Add(new Content
-						                    {
-							                    ID = _fc.id,
-							                    Service = m_currentDevice
-						                    });
-				}
-				else
-				{
-					_contentEntitys.Add(new BunnyContent(new Uri(_fc.saved_path), _fc.id, (_fc.type == 0 ? ContentType.Photo : ContentType.Video)) {Service = m_currentDevice});
-				}
-			}
-
-			return _contentEntitys;
 		}
 
 		#endregion

@@ -782,8 +782,8 @@ namespace Waveface.Client
 				ContentAreaToolBar.Visibility = Visibility.Collapsed;
 				lbxContentContainer.Visibility = Visibility.Collapsed;
 
-				unSortedFilesUC.Visibility = Visibility.Visible;
-				unSortedFilesUC.Init(_service, group, this);
+				allFilesUC.Visibility = Visibility.Visible;
+				allFilesUC.Load(_service, this);
 
 				Cursor = Cursors.Arrow;
 
@@ -792,8 +792,8 @@ namespace Waveface.Client
 
 			group.Refresh();
 
-			unSortedFilesUC.Stop();
-			unSortedFilesUC.Visibility = Visibility.Collapsed;
+			allFilesUC.Stop();
+			allFilesUC.Visibility = Visibility.Collapsed;
 			ContentAreaToolBar.Visibility = Visibility.Visible;
 			lbxContentContainer.Visibility = Visibility.Visible;
 
@@ -912,7 +912,7 @@ namespace Waveface.Client
 
 			ContentAreaToolBar.Visibility = Visibility.Visible;
 			lbxContentContainer.Visibility = Visibility.Visible;
-			unSortedFilesUC.Visibility = Visibility.Collapsed;
+			allFilesUC.Visibility = Visibility.Collapsed;
 
 			bool _isStarredLabel = group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase);
 

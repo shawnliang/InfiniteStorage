@@ -242,7 +242,6 @@
     <Compile Include="Ren\SourceAllFilesUC.xaml.cs">
       <DependentUpon>SourceAllFilesUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Ren\RT.cs" />
     <Compile Include="Ren\Utility\BoolToVisibilityConverter.cs" />
     <Compile Include="Ren\Utility\IgnoreMouseWheelBehavior .cs" />
     <Compile Include="Ren\Utility\ScrollingPreviewData.cs" />

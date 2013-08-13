@@ -83,13 +83,13 @@
                            FontSize="18.667"
                            FontWeight="Bold"
                            Foreground="White"
-                           Text="Import Source" />
+                           Text="" />
                 <TextBlock x:Name="tbTotalCount"
                            Margin="10,20,0,0"
                            FontSize="14"
                            FontWeight="Bold"
                            Foreground="#FF5A5A5A"
-                           Text="99 Photos, 12 Videos" />
+                           Text="" />
             </StackPanel>
 
             <Grid Grid.Row="1">
@@ -109,26 +109,20 @@
                 </ListBox>
             </Grid>
 
-            <Grid x:Name="gridEmptyPanel"
+            <Grid x:Name="gridWaitingPanel"
                   Grid.Row="1"
                   Grid.RowSpan="2"
                   Background="#3F3F3F"
                   Visibility="Collapsed">
+                
                 <TextBlock HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            FontFamily="Segoe UI"
                            FontSize="28"
                            FontWeight="Bold"
                            Foreground="White"
-                           Text="All files imported" />
+                           Text="Waiting ..." />
             </Grid>
-
-            <Button x:Name="btnRefresh" Content="Refresh !" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Bottom" Cursor="Hand" Margin="0, 0, 0, -28" Foreground="White" FontWeight="Bold" Background="#4F4F4F" 
-                                FontSize="14" Padding="36, 8" Style="{StaticResource FlatButtonStyle}" Click="btnRefresh_Click">
-                <Button.Effect>
-                    <DropShadowEffect/>
-                </Button.Effect>
-            </Button>
         </Grid>
     </Grid>
 </UserControl>

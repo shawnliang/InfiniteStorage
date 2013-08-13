@@ -6,10 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Waveface.Model;
 
 #endregion
 
@@ -18,12 +15,11 @@ namespace Waveface.Client
 	public class EventItem : FrameworkElement, INotifyPropertyChanged
 	{
 		public BitmapSource BitmapImage { get; set; }
-		public double MyWidth { get; set; }
-		public double MyHeight { get; set; }
 		public bool IsVideo { get; set; }
 		public bool IsPhoto { get; set; }
 		public BitmapSource MediaSource { get; set; }
 		public string FileID { get; set; }
+		public bool HasOrigin { get; set; }
 
 		#region INotifyPropertyChanged Members
 
@@ -42,11 +38,10 @@ namespace Waveface.Client
 
 	public partial class EventUC : UserControl
 	{
-		public List<FileChange> Event { get; set; }
+		public List<FileEntry> Event { get; set; }
+		public string YM { get; set; }
 		public int VideosCount { get; set; }
 		public int PhotosCount { get; set; }
-
-		private Point startPoint;
 
 		public EventUC()
 		{
@@ -61,7 +56,7 @@ namespace Waveface.Client
 
 			List<EventItem> _controls = new List<EventItem>();
 
-			foreach (FileChange _file in Event)
+			foreach (FileEntry _file in Event)
 			{
 				if (_file.type == 0)
 				{
@@ -69,24 +64,22 @@ namespace Waveface.Client
 
 					try
 					{
-						//if (File.Exists(_path))
-						{
-							EventItem _eventItem = new EventItem
-													   {
-														   FileID = _file.id,
-														   IsVideo = false,
-														   IsPhoto = true
-													   };
+						EventItem _eventItem = new EventItem
+												   {
+													   FileID = _file.id,
+													   IsVideo = false,
+													   IsPhoto = true,
+													   HasOrigin = !_file.has_origin
+												   };
 
-							BitmapImage _bi = new BitmapImage();
-							_bi.BeginInit();
-							_bi.UriSource = new Uri(_path, UriKind.Absolute);
-							_bi.EndInit();
+						BitmapImage _bi = new BitmapImage();
+						_bi.BeginInit();
+						_bi.UriSource = new Uri(_path, UriKind.Absolute);
+						_bi.EndInit();
 
-							_eventItem.BitmapImage = _bi;
+						_eventItem.BitmapImage = _bi;
 
-							_controls.Add(_eventItem);
-						}
+						_controls.Add(_eventItem);
 					}
 					catch
 					{
@@ -98,7 +91,8 @@ namespace Waveface.Client
 											   {
 												   FileID = _file.id,
 												   IsVideo = true,
-												   IsPhoto = false
+												   IsPhoto = false,
+												   HasOrigin = !_file.has_origin
 											   };
 
 					BitmapImage _bi = new BitmapImage();
@@ -124,7 +118,7 @@ namespace Waveface.Client
 				}
 			}
 
-			lbEvent.Items.Clear();
+			//lbEvent.Items.Clear();
 			lbEvent.ItemsSource = _controls;
 		}
 
@@ -141,12 +135,7 @@ namespace Waveface.Client
 
 		private string GetTimeDisplayString()
 		{
-			string _timeInterval = string.Empty;
-			DateTime _startDateTime = SourceAllFilesUC.Current.Rt.DateTimeCache[Event[0].taken_time];
-
-			_timeInterval = _startDateTime.ToString("MMM yyyy");
-
-			return _timeInterval;
+			return Event[0].taken_time.ToString("MMM yyyy");
 		}
 
 		public void GetCounts()
@@ -154,7 +143,7 @@ namespace Waveface.Client
 			VideosCount = 0;
 			PhotosCount = 0;
 
-			foreach (FileChange _file in Event)
+			foreach (FileEntry _file in Event)
 			{
 				if (_file.type == 0)
 				{
@@ -164,120 +153,6 @@ namespace Waveface.Client
 				{
 					VideosCount++;
 				}
-			}
-		}
-
-		#region lbEvent
-
-		private void lbEvent_PreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e)
-		{
-			Point _clickPoint = e.GetPosition(lbEvent);
-
-			object _htElement = lbEvent.InputHitTest(_clickPoint);
-
-			if (_htElement != null)
-			{
-				ListBoxItem _clickedListBoxItem = GetVisualParent<ListBoxItem>(_htElement, 6);
-
-				if (_clickedListBoxItem != null)
-				{
-					if (_clickedListBoxItem.IsSelected)
-					{
-					}
-				}
-			}
-		}
-
-		private void lbEvent_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
-		{
-			e.Handled = true;
-		}
-
-		private void lbEvent_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-		{
-			startPoint = e.GetPosition(null);
-		}
-
-		private void lbEvent_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-		}
-
-		private void lbEvent_MouseMove(object sender, MouseEventArgs e)
-		{
-			// Get the current mouse position
-			Point _mousePos = e.GetPosition(null);
-			Vector _diff = startPoint - _mousePos;
-
-			if (e.LeftButton == MouseButtonState.Pressed &&
-				(Math.Abs(_diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
-				 Math.Abs(_diff.Y) > SystemParameters.MinimumVerticalDragDistance))
-			{
-				Point _clickPoint = e.GetPosition(lbEvent);
-
-				object _htElement = lbEvent.InputHitTest(_clickPoint);
-
-				if (_htElement != null)
-				{
-					ListBoxItem _clickedListBoxItem = GetVisualParent<ListBoxItem>(_htElement, 6);
-
-					if (_clickedListBoxItem != null)
-					{
-						_clickedListBoxItem.IsSelected = true;
-					}
-				}
-
-				List<Content> _contents = SourceAllFilesUC.Current.Sub_GetAllSelectedFiles_ContentEntitys(true);
-
-				DataObject _dragData = new DataObject(typeof(IEnumerable<IContentEntity>), _contents);
-				DragDrop.DoDragDrop(this, _dragData, DragDropEffects.Move);
-			}
-		}
-
-		#endregion
-
-		public List<FileChange> GetSelectedFiles()
-		{
-			List<FileChange> _fileChanges = new List<FileChange>();
-
-			for (int i = 0; i < lbEvent.Items.Count; i++)
-			{
-				ListBoxItem _lbi = lbEvent.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
-
-				if (_lbi.IsSelected)
-				{
-					_fileChanges.Add(Event[i]);
-				}
-			}
-
-			return _fileChanges;
-		}
-
-		#region Misc
-
-		public T GetVisualParent<T>(object childObject, int level) where T : Visual
-		{
-			DependencyObject _child = childObject as DependencyObject;
-
-			int k = 0;
-
-			while ((_child != null) && !(_child is T))
-			{
-				_child = VisualTreeHelper.GetParent(_child);
-
-				if (++k == level)
-					break;
-			}
-
-			return _child as T;
-		}
-
-		#endregion
-
-		private void contextMenu_ContextMenuOpening(object sender, ContextMenuEventArgs e)
-		{
-			if (SourceAllFilesUC.Current.GetAllSelectedFiles().Count == 0)
-			{
-				e.Handled = true;
 			}
 		}
 	}
