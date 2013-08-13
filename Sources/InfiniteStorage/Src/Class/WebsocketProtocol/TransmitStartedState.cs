@@ -26,7 +26,7 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			ctx.raiseOnFileEnding();
 
-			if (!Util.HasDuplicateFile(ctx.fileCtx, ctx.device_id))
+			if (ctx.fileCtx.is_thumbnail || !Util.HasDuplicateFile(ctx.fileCtx, ctx.device_id))
 			{
 				string saved;
 
@@ -78,8 +78,12 @@ namespace InfiniteStorage.WebsocketProtocol
 				ctx.raiseOnFileDropped();
 			}
 
-			log4net.LogManager.GetLogger("wsproto").Debug("send back file-exist for file recv success");
-			ctx.Send(new TextCommand { action = "file-exist", file_name = ctx.fileCtx.file_name });
+			if (!ctx.fileCtx.is_thumbnail)
+			{
+				log4net.LogManager.GetLogger("wsproto").Debug("send back file-exist for file recv success");
+				ctx.Send(new TextCommand { action = "file-exist", file_name = ctx.fileCtx.file_name });
+			}
+
 			ctx.SetState(new TransmitInitState());
 		}
 	}
