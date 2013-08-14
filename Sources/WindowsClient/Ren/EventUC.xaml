@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:PendingUI="clr-namespace:Waveface.Client" mc:Ignorable="d"
+             xmlns:PendingUI="clr-namespace:Waveface.Client" xmlns:gif="clr-namespace:WpfAnimatedGif" mc:Ignorable="d"
              d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -107,10 +107,13 @@
                                     <Image Source="{Binding Path=BitmapImage}" HorizontalAlignment="Left"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top"  Stretch="UniformToFill"
                                     Visibility="{Binding Path=IsPhoto, Converter={StaticResource BoolToHiddenConverter}}"/>
 
+                                    <Image gif:ImageBehavior.AnimatedSource="{Binding Path=BitmapImage}" HorizontalAlignment="Left"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top"
+                                     Visibility="{Binding Path=IsGif, Converter={StaticResource BoolToHiddenConverter}}" Stretch="UniformToFill" />
+                                    
                                     <Image Source="{Binding Path=BitmapImage}" Width="48" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Bottom"
                                     Height="36" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" Stretch="UniformToFill" />
-
-                                    <Rectangle Fill="#66000000" Visibility="{Binding Path=HasOrigin, Converter={StaticResource BoolToHiddenConverter}}" />
+                                    
+                                    <Rectangle Fill="#a0000000" Visibility="{Binding Path=HasOrigin, Converter={StaticResource BoolToHiddenConverter}}" />
                                 </Grid>
                             </Border>
                         </StackPanel>

@@ -144,6 +144,9 @@
     </Compile>
     <Compile Include="Ren\Utility\FluidProgressBar.xaml.cs" />
     <Compile Include="Ren\Utility\ListBoxDropHighlighter.cs" />
+    <Compile Include="Ren\WpfAnimatedGif\Encoder\AnimatedGifEncoder.cs" />
+    <Compile Include="Ren\WpfAnimatedGif\Encoder\LZWEncoder.cs" />
+    <Compile Include="Ren\WpfAnimatedGif\Encoder\NeuQuant.cs" />
     <Compile Include="Src\Control\ContentActionBar.xaml.cs">
       <DependentUpon>ContentActionBar.xaml</DependentUpon>
     </Compile>

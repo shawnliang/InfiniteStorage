@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Waveface.Client
 {
-	public class FileEntry
+	public class FileEntry : ICloneable
 	{
 		public string id { get; set; }
 		public string file_name { get; set; }
@@ -19,6 +19,11 @@ namespace Waveface.Client
 		public int type { get; set; }
 		public string saved_path { get; set; }
 		public bool has_origin { get; set; }
+
+		public object Clone()
+		{
+			return MemberwiseClone();
+		}
 	}
 
 	public class Event
