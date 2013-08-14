@@ -53,7 +53,7 @@ namespace UnitTest
 					f.type == (int)ctx.fileCtx.type &&
 					f.saved_path == @"fff\rrr" &&
 					f.parent_folder == "fff" &&
-					f.seq == 112345)
+					f.seq == 112345), ctx
 				)).Verifiable();
 
 
@@ -101,7 +101,7 @@ namespace UnitTest
 					f.type == (int)ctx.fileCtx.type &&
 					f.saved_path == @"fff\rrr" &&
 					f.parent_folder == "fff" &&
-					f.seq == 112345)
+					f.seq == 112345), ctx
 				)).Verifiable();
 
 
@@ -147,7 +147,7 @@ namespace UnitTest
 					f.saved_path == null &&
 					f.parent_folder == null &&
 					f.has_origin == false &&
-					f.seq == 112345)
+					f.seq == 112345), ctx
 				)).Verifiable();
 
 
@@ -168,9 +168,7 @@ namespace UnitTest
 			storage.VerifyAll();
 			Assert.IsTrue(called);
 
-			var o = JsonConvert.DeserializeObject<TextCommand>(sentData);
-			Assert.AreEqual("file-exist", o.action);
-			Assert.AreEqual(ctx.fileCtx.file_name, o.file_name);
+			Assert.AreEqual("", sentData);
 		}
 
 		[TestMethod]
