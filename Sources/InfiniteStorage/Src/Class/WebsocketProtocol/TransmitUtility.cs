@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Data.SQLite;
+using System.Collections.Generic;
 
 namespace InfiniteStorage.WebsocketProtocol
 {
@@ -40,6 +41,48 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			}
 		}
+
+		public void SaveFileRecords(List<Model.FileAsset> files)
+		{
+			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
+			{
+				conn.Open();
+
+				using (var transaction = conn.BeginTransaction())
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "INSERT OR REPLACE INTO [Files] (file_id, file_name, file_path, file_size, saved_path, parent_folder, device_id, type, event_time, seq, deleted, thumb_ready, on_cloud, width, height, has_origin) values (" +
+					 "@fid, @fname, @fpath, @fsize, @saved_path, @parent_folder, @devid, @type, @time, @seq, @del, @thumb, @oncloud, @width, @height, @has_origin)";
+					cmd.Prepare();
+
+					foreach (var file in files)
+					{
+						cmd.Parameters.Clear();
+						cmd.Parameters.Add(new SQLiteParameter("@fid", file.file_id));
+						cmd.Parameters.Add(new SQLiteParameter("@fname", file.file_name));
+						cmd.Parameters.Add(new SQLiteParameter("@fpath", file.file_path));
+						cmd.Parameters.Add(new SQLiteParameter("@fsize", file.file_size));
+						cmd.Parameters.Add(new SQLiteParameter("@saved_path", file.saved_path));
+						cmd.Parameters.Add(new SQLiteParameter("@parent_folder", file.parent_folder));
+						cmd.Parameters.Add(new SQLiteParameter("@devid", file.device_id));
+						cmd.Parameters.Add(new SQLiteParameter("@type", file.type));
+						cmd.Parameters.Add(new SQLiteParameter("@time", file.event_time));
+						cmd.Parameters.Add(new SQLiteParameter("@seq", file.seq));
+						cmd.Parameters.Add(new SQLiteParameter("@del", file.deleted));
+						cmd.Parameters.Add(new SQLiteParameter("@thumb", file.thumb_ready));
+						cmd.Parameters.Add(new SQLiteParameter("@oncloud", file.on_cloud == true));
+						cmd.Parameters.Add(new SQLiteParameter("@width", file.width));
+						cmd.Parameters.Add(new SQLiteParameter("@height", file.height));
+						cmd.Parameters.Add(new SQLiteParameter("@has_origin", file.has_origin));
+
+						cmd.ExecuteNonQuery();
+					}
+
+					transaction.Commit();
+				}
+			}
+		}
+
 
 		public bool HasDuplicateFile(FileContext file, string device_id)
 		{

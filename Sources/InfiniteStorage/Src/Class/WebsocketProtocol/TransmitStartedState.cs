@@ -1,11 +1,16 @@
 ﻿using InfiniteStorage.Model;
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace InfiniteStorage.WebsocketProtocol
 {
 	public class TransmitStartedState : AbstractProtocolState
 	{
+		public const string BULK_INSERT_QUEUE = "BulkInsertQueue";
+		public const string BULK_INSERT_LAST_FLUSH_TIME = "BulkInsertQueue_LastFlushTime";
+		public const int BULK_INSERT_BATCH_SIZE = 100;
+
 		public ITransmitStateUtility Util { get; set; }
 
 		public TransmitStartedState()
@@ -61,7 +66,39 @@ namespace InfiniteStorage.WebsocketProtocol
 					seq = Util.GetNextSeq(),
 					has_origin = !ctx.fileCtx.is_thumbnail,
 				};
-				Util.SaveFileRecord(fileAsset);
+
+
+				//Util.SaveFileRecord(fileAsset);
+
+				List<FileAsset> queue = null;
+				DateTime lastFlushTime;
+				if (ctx.ContainsData(BULK_INSERT_QUEUE))
+				{
+					queue = ctx.GetData(BULK_INSERT_QUEUE) as List<FileAsset>;
+					lastFlushTime = (DateTime)ctx.GetData(BULK_INSERT_LAST_FLUSH_TIME);
+				}
+				else
+				{
+					queue = new List<FileAsset>();
+					lastFlushTime = DateTime.Now;
+					ctx.SetData(BULK_INSERT_QUEUE, queue);
+					ctx.SetData(BULK_INSERT_LAST_FLUSH_TIME, lastFlushTime);
+				}
+
+				queue.Add(fileAsset);
+
+				if (queue.Count > BULK_INSERT_BATCH_SIZE || DateTime.Now - lastFlushTime > TimeSpan.FromSeconds(2.0))
+				{
+					(Util as TransmitUtility).SaveFileRecords(queue);
+
+					queue.Clear();
+					ctx.SetData(BULK_INSERT_LAST_FLUSH_TIME, DateTime.Now);
+				}
+
+
+
+
+
 
 
 				if (ctx.fileCtx.file_size != ctx.temp_file.BytesWritten)

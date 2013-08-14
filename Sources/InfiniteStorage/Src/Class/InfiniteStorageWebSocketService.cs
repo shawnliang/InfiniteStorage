@@ -5,6 +5,8 @@ using System.IO;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 using System.Diagnostics;
+using InfiniteStorage.Model;
+using System.Collections.Generic;
 
 namespace InfiniteStorage
 {
@@ -108,6 +110,18 @@ namespace InfiniteStorage
 
 		private void cleanupForClose()
 		{
+			if ((handler.ctx as ProtocolContext).ContainsData(TransmitStartedState.BULK_INSERT_QUEUE))
+			{
+				var queue = (handler.ctx as ProtocolContext).GetData(TransmitStartedState.BULK_INSERT_QUEUE) as List<FileAsset>;
+				
+				if (queue.Count > 0)
+				{
+					var util = new TransmitUtility();
+					util.SaveFileRecords(queue);
+				}
+			}
+
+
 			handler.Clear();
 
 			raiseDeviceDisconnectedEvent(new WebsocketEventArgs((ProtocolContext)handler.ctx));
