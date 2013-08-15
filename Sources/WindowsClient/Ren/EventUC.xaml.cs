@@ -1,14 +1,15 @@
 ﻿#region
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using WpfAnimatedGif;
+using Image = System.Drawing.Image;
 
 #endregion
 
@@ -20,6 +21,10 @@ namespace Waveface.Client
 		public bool IsVideo { get; set; }
 		public bool IsPhoto { get; set; }
 		public bool IsGIF { get; set; }
+
+		public bool IsMore { get; set; }
+		public bool IsLess { get; set; }
+
 		public BitmapSource MediaSource { get; set; }
 		public string FileID { get; set; }
 		public bool HasOrigin { get; set; }
@@ -46,9 +51,15 @@ namespace Waveface.Client
 		public int VideosCount { get; set; }
 		public int PhotosCount { get; set; }
 
+		private const int More = 100;
+		private bool m_showMoreButton;
+		private List<EventItem> m_eventItems;
+
 		public EventUC()
 		{
 			InitializeComponent();
+
+			m_showMoreButton = true;
 		}
 
 		public void SetUI()
@@ -57,44 +68,57 @@ namespace Waveface.Client
 
 			SetInfor();
 
-			//Event.Reverse();
+			Event.Reverse();
 
 			//試驗連張轉Gif
-			//List<FileEntry> _temp = GenGif();
-			List<FileEntry> _temp = Event;
+			//List<FileEntry> _FileEntrys = GenGif();
+			List<FileEntry> _FileEntrys = Event;
+			List<EventItem> _ctlItems = new List<EventItem>();
 
-			List<EventItem> _controls = new List<EventItem>();
+			int _idx = 0;
 
-			foreach (FileEntry _file in _temp)
+			foreach (FileEntry _file in _FileEntrys)
 			{
+				if (_idx == More)
+				{
+					EventItem _eventItem = new EventItem
+											   {
+												   IsMore = true
+											   };
+
+					_ctlItems.Add(_eventItem);
+				}
+
 				switch (_file.type)
 				{
 					case 0:
 						{
 							string _path = _file.tiny_path;
 
+
+							EventItem _eventItem = new EventItem
+													   {
+														   FileID = _file.id,
+														   IsVideo = false,
+														   IsPhoto = true,
+														   HasOrigin = !_file.has_origin
+													   };
+
 							try
 							{
-								EventItem _eventItem = new EventItem
-														   {
-															   FileID = _file.id,
-															   IsVideo = false,
-															   IsPhoto = true,
-															   HasOrigin = !_file.has_origin
-														   };
-
 								BitmapImage _bi = new BitmapImage();
 								_bi.BeginInit();
 								_bi.UriSource = new Uri(_path, UriKind.Absolute);
 								_bi.EndInit();
 
 								_eventItem.BitmapImage = _bi;
-
-								_controls.Add(_eventItem);
 							}
 							catch
 							{
 							}
+
+							_ctlItems.Add(_eventItem);
+
 						}
 
 						break;
@@ -108,12 +132,18 @@ namespace Waveface.Client
 														   HasOrigin = !_file.has_origin
 													   };
 
-							BitmapImage _bi = new BitmapImage();
-							_bi.BeginInit();
-							_bi.UriSource = new Uri("pack://application:,,,/Resource/video_ph.png");
-							_bi.EndInit();
+							try
+							{
+								BitmapImage _bi = new BitmapImage();
+								_bi.BeginInit();
+								_bi.UriSource = new Uri("pack://application:,,,/Resource/video_ph.png");
+								_bi.EndInit();
 
-							_eventItem.BitmapImage = _bi;
+								_eventItem.BitmapImage = _bi;
+							}
+							catch
+							{
+							}
 
 							BitmapImage _vidoeThumb = new BitmapImage();
 							_vidoeThumb.BeginInit();
@@ -127,7 +157,7 @@ namespace Waveface.Client
 
 							_eventItem.MediaSource = _vidoeThumb;
 
-							_controls.Add(_eventItem);
+							_ctlItems.Add(_eventItem);
 						}
 
 						break;
@@ -138,13 +168,13 @@ namespace Waveface.Client
 							try
 							{
 								EventItem _eventItem = new EventItem
-								{
-									FileID = _file.id,
-									IsVideo = false,
-									IsPhoto = false,
-									IsGIF = true,
-									HasOrigin = false
-								};
+														   {
+															   FileID = _file.id,
+															   IsVideo = false,
+															   IsPhoto = false,
+															   IsGIF = true,
+															   HasOrigin = false
+														   };
 
 								BitmapImage _bi = new BitmapImage();
 								_bi.BeginInit();
@@ -153,18 +183,76 @@ namespace Waveface.Client
 
 								_eventItem.BitmapImage = _bi;
 
-								_controls.Add(_eventItem);
+								_ctlItems.Add(_eventItem);
 							}
 							catch
 							{
 							}
 						}
+
 						break;
 				}
+
+				_idx++;
 			}
 
-			//lbEvent.Items.Clear();
-			lbEvent.ItemsSource = _controls;
+			//若少於More項
+			if (_ctlItems.Count < More)
+			{
+				m_eventItems = _ctlItems;
+
+				lbEvent.ItemsSource = m_eventItems;
+			}
+			else
+			{
+				_ctlItems.Add(new EventItem { IsLess = true });
+
+				m_eventItems = _ctlItems;
+
+				UpdateShowMoreUI();
+			}
+		}
+
+		private void UpdateShowMoreUI()
+		{
+			if (m_showMoreButton)
+			{
+				List<EventItem> _temp = new List<EventItem>();
+
+				for (int i = 0; i <= More; i++)
+				{
+					_temp.Add(m_eventItems[i]);
+				}
+
+				lbEvent.ItemsSource = _temp;
+			}
+			else
+			{
+				List<EventItem> _temp = new List<EventItem>();
+
+				for (int i = 0; i < m_eventItems.Count; i++)
+				{
+					if (i != More)
+						_temp.Add(m_eventItems[i]);
+				}
+
+				lbEvent.ItemsSource = _temp;
+			}
+		}
+
+		private void ListBox_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			EventItem _eventItem = (EventItem)((ListBoxItem)sender).Content;
+
+			if (_eventItem != null)
+			{
+				if (_eventItem.IsMore || _eventItem.IsLess)
+				{
+					m_showMoreButton = !m_showMoreButton;
+
+					UpdateShowMoreUI();
+				}
+			}
 		}
 
 		private List<FileEntry> GenGif()
@@ -243,7 +331,7 @@ namespace Waveface.Client
 
 				for (int i = 0; i < imageFilePaths.Count; i++)
 				{
-					_gifEncoder.AddFrame(System.Drawing.Image.FromFile(imageFilePaths[i]));
+					_gifEncoder.AddFrame(Image.FromFile(imageFilePaths[i]));
 				}
 
 				_gifEncoder.Finish();
