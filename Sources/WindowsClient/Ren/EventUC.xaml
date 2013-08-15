@@ -9,16 +9,6 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
-        <Style x:Key="SimpleListBoxItem" TargetType="ListBoxItem">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ListBoxItem">
-                        <ContentPresenter x:Name="contentPresenter"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
         <!-- Flat Button Style -->
         <Color x:Key="DefaultColor" A="255" R="240" G ="240" B="240"/>
         <Color x:Key="HighlightColor" A="255" R="229" G ="229" B="229"/>
@@ -70,20 +60,20 @@
             <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
+
         <Grid Grid.Column="0">
             <Rectangle Width="108" Height="112" Fill="Red" Margin="4, 8" VerticalAlignment="Top"/>
-            <TextBlock x:Name="tbTitle" Width="108" Height="112" Foreground="White" TextAlignment="Center" Margin="4, 24, 4, 8" VerticalAlignment="Top" HorizontalAlignment="Center" TextWrapping="Wrap" Text="2013.5.20, 11:59" FontSize="30" FontWeight="Bold"/>         
+            <TextBlock x:Name="tbTitle" Width="108" Height="112" Foreground="White" TextAlignment="Center" Margin="4, 24, 4, 8" VerticalAlignment="Top" HorizontalAlignment="Center" TextWrapping="Wrap" Text="2013.5.20, 11:59" FontSize="30" FontWeight="Bold"/>
             <TextBlock x:Name="tbTotalCount" Foreground="#929292" Margin="2, 120, 2, 0" VerticalAlignment="Top" TextAlignment="Center" TextWrapping="Wrap" Text="99 Photos" FontSize="11" />
         </Grid>
-        
+
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            
-            <StackPanel Orientation="Horizontal">           
+
+            <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="tbTimeAgo" Foreground="#929292" Margin="12,0,0,0" VerticalAlignment="Bottom" Text="Yesterday" FontSize="16" />
                 <!--TextBlock x:Name="tbTotalCount" Foreground="#929292" Margin="12,0,0,0" VerticalAlignment="Bottom" Text="99 Photos" FontSize="16" /-->
             </StackPanel>
@@ -93,12 +83,12 @@
                      Background="#3F3F3F" 
                      Grid.Row="1" 
                      x:Name="lbEvent" 
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                     ItemContainerStyle="{StaticResource SimpleListBoxItem}" 
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"                  
+                     SelectionMode="Extended"
                 >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel >
+                        <StackPanel>
                             <Border BorderThickness="1" Width="62" Height="62">
                                 <Grid>
                                     <Image Source="{Binding Path=MediaSource}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill"
@@ -109,16 +99,36 @@
 
                                     <Image gif:ImageBehavior.AnimatedSource="{Binding Path=BitmapImage}" HorizontalAlignment="Left"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top"
                                      Visibility="{Binding Path=IsGif, Converter={StaticResource BoolToHiddenConverter}}" Stretch="UniformToFill" />
-                                    
+
                                     <Image Source="{Binding Path=BitmapImage}" Width="48" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Bottom"
                                     Height="36" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" Stretch="UniformToFill" />
-                                    
+
                                     <Rectangle Fill="#a0000000" Visibility="{Binding Path=HasOrigin, Converter={StaticResource BoolToHiddenConverter}}" />
+
+                                    <Border BorderThickness="1" BorderBrush="White" Background="DodgerBlue"  Visibility="{Binding Path=IsMore, Converter={StaticResource BoolToHiddenConverter}}">
+                                        <TextBlock Text="More" Foreground="White"  FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <Border BorderThickness="1" BorderBrush="White" Background="DodgerBlue" Visibility="{Binding Path=IsLess, Converter={StaticResource BoolToHiddenConverter}}">
+                                        <TextBlock Text="Less" Foreground="White"  FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>                                    
                                 </Grid>
                             </Border>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
+                <ListBox.ItemContainerStyle>               
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListBox_MouseLeftButtonDown" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <ContentPresenter x:Name="contentPresenter"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel Orientation="Horizontal"/>
