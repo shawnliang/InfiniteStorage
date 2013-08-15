@@ -4,6 +4,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 #endregion
 
@@ -53,6 +54,32 @@ namespace Waveface.Client
 
 		public static readonly DependencyProperty ImageEnterUriProperty =
 			DependencyProperty.Register("ImageEnterUri", typeof(Uri), typeof(ButtonImageText), null);
+
+		#endregion
+
+		#region ImageDisableUri Property
+
+		public Uri ImageDisableUri
+		{
+			get { return (Uri)GetValue(ImageDisableUriProperty); }
+			set { SetValue(ImageDisableUriProperty, value); }
+		}
+
+		public static readonly DependencyProperty ImageDisableUriProperty =
+			DependencyProperty.Register("ImageDisableUri", typeof(Uri), typeof(ButtonImageText), null);
+
+		#endregion
+
+		#region DiableForeground Property
+
+		public Brush DisableForeground
+		{
+			get { return (Brush)GetValue(DisableForegroundProperty); }
+			set { SetValue(DisableForegroundProperty, value); }
+		}
+
+		public static readonly DependencyProperty DisableForegroundProperty =
+			DependencyProperty.Register("DisableForeground", typeof(Brush), typeof(ButtonImageText), null);
 
 		#endregion
 

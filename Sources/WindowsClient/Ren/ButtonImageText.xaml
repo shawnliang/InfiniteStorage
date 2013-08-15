@@ -27,7 +27,7 @@
                     <Setter Property="Source" Value="{Binding Path=ImageEnterUri}" />
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Source" Value="{Binding Path=ImageUri}" />
+                    <Setter Property="Source" Value="{Binding Path=ImageDisableUri}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -38,6 +38,11 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="FontSize" Value="12" />
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="{Binding Path=DisableForeground}" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Color x:Key="ButtonImageTextBorderHoverColor">Transparent</Color>

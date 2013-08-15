@@ -56,6 +56,12 @@
             </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
 
+        <Style x:Key="toolbarBtnStyle" TargetType="local:ButtonImageText">
+            <Setter Property="Foreground" Value="#4f4f4f" />
+            <Setter Property="DisableForeground" Value="#989898" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+        </Style>
+
         <!--  SrollViewer ScrollBar Repeat Buttons (at each end)  -->
         <Style x:Key="ScrollBarLineButton" TargetType="{x:Type RepeatButton}">
             <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -604,13 +610,13 @@
             </StackPanel.Effect>
 
             <local:ButtonImageText x:Name="btnAddDevice"
-                                   Margin="0,14, 0, 0"
+                                   Margin="0, 14, 0, 0"
                                    HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Foreground="#4F4F4F"
+                                   ImageDisableUri="pack://application:,,,/Resource/bar2_source_3.png"
                                    ImageEnterUri="pack://application:,,,/Resource/bar2_source_1.png"
                                    ImageUri="pack://application:,,,/Resource/bar2_source_0.png"
                                    MouseDown="btnAddNewSource_Click"
+                                   Style="{StaticResource toolbarBtnStyle}"
                                    Text="{DynamicResource AddDeviceIconText}" />
         </StackPanel>
 
@@ -805,42 +811,39 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <local:ButtonImageText x:Name="btnCreateAlbum"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
                                                Click="btnCreateCloudAlbum_Click"
-                                               Foreground="#4F4F4F"
+                                               ImageDisableUri="pack://application:,,,/Resource/bar2_create_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_create_1.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_create_0.png"
+                                               Style="{StaticResource toolbarBtnStyle}"
                                                Text="Create Album" />
 
                         <local:ButtonImageText x:Name="btnAddToAlbum"
                                                Grid.Column="1"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
                                                Click="btnCreateCloudAlbum_Click"
-                                               Foreground="#4F4F4F"
+                                               ImageDisableUri="pack://application:,,,/Resource/bar2_addto_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_addto_1.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_addto_0.png"
+                                               Style="{StaticResource toolbarBtnStyle}"
                                                Text="Add to Album" />
 
                         <local:ButtonImageText x:Name="btnShare"
                                                Grid.Column="2"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
                                                Click="btnCreateCloudAlbum_Click"
-                                               Foreground="#4F4F4F"
+                                               ImageDisableUri="pack://application:,,,/Resource/bar2_share_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_share_1.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_share_0.png"
+                                               Style="{StaticResource toolbarBtnStyle}"
                                                Text="Share" />
 
                         <local:ButtonImageText x:Name="btnDelete"
                                                Grid.Column="3"
-                                               HorizontalAlignment="Center"
                                                VerticalAlignment="Center"
                                                Click="btnDelete_Click"
-                                               Foreground="#4F4F4F"
+                                               ImageDisableUri="pack://application:,,,/Resource/bar2_trash_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_trash_1.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_trash_0.png"
+                                               Style="{StaticResource toolbarBtnStyle}"
                                                Text="Delete" />
                     </Grid>
 
@@ -850,12 +853,11 @@
 
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <local:ButtonImageText x:Name="btnPushToDevice"
-                                           Margin="0, 12, 5, 0"
-                                           HorizontalAlignment="Right"
-                                           VerticalAlignment="Center"
-                                           Foreground="#4F4F4F"
+                                           ImageDisableUri="pack://application:,,,/Resource/bar2_push_3.png"
                                            ImageEnterUri="pack://application:,,,/Resource/bar2_push_1.png"
                                            ImageUri="pack://application:,,,/Resource/bar2_push_0.png"
+                                           IsEnabled="False"
+                                           Style="{StaticResource toolbarBtnStyle}"
                                            Text="Push to Devices" />
                 </StackPanel>
             </Grid>
