@@ -10,14 +10,13 @@
         Height="498.5"
         MinWidth="1010"
         MinHeight="640"
-        Icon="/Waveface.Client;component/Resource/Bunnydesktop.ico"
-        Loaded="Window_Loaded"        
-        WindowState="Maximized"
-        
-        SnapsToDevicePixels ="True"      
-        TextOptions.TextFormattingMode ="Ideal"
-        TextOptions.TextRenderingMode="Auto"
         FontFamily="Segoe UI"
+        Icon="/Waveface.Client;component/Resource/Bunnydesktop.ico"
+        Loaded="Window_Loaded"
+        SnapsToDevicePixels="True"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        WindowState="Maximized"
         mc:Ignorable="d">
 
     <Window.Resources>
@@ -232,8 +231,9 @@
         -->
 
         <DataTemplate DataType="{x:Type wvmodel:Content}">
-            <local:WrapperControl x:Name="wc" Padding="5" Type="{x:Type local:ContentItem}">
-            </local:WrapperControl>
+            <local:WrapperControl x:Name="wc"
+                                  Padding="5"
+                                  Type="{x:Type local:ContentItem}" />
         </DataTemplate>
 
         <!--  Main photo catalog view  -->
@@ -247,8 +247,10 @@
                                    HorizontalAlignment="Stretch"
                                    VerticalAlignment="Top"
                                    IsItemsHost="True"
-                                   ItemHeight="{Binding Value, ElementName=zoomSlider}"
-                                   ItemWidth="{Binding Value, ElementName=zoomSlider}"
+                                   ItemHeight="{Binding Value,
+                                                        ElementName=zoomSlider}"
+                                   ItemWidth="{Binding Value,
+                                                       ElementName=zoomSlider}"
                                    Orientation="Horizontal" />
                     </ControlTemplate>
                 </Setter.Value>
@@ -262,8 +264,10 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="1"
-                                Background="{TemplateBinding Background}">
+                        <Border HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="1">
                             <ContentPresenter />
                         </Border>
 
@@ -281,13 +285,15 @@
                                 <Setter Property="Background" Value="#5FB0E0E6" />
                             </MultiTrigger>
 
-                            <!--Trigger Property="IsMouseOver" Value="True">
+                            <!--
+                                Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="RenderTransform">
-                                    <Setter.Value>
-                                        <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
-                                    </Setter.Value>
+                                <Setter.Value>
+                                <ScaleTransform ScaleX="1.2" ScaleY="1.2" />
+                                </Setter.Value>
                                 </Setter>
-                            </Trigger-->
+                                </Trigger
+                            -->
 
                             <!--
                                 Trigger Property="utils:ListBoxDropHighlighter.IsPossibleDropTarget" Value="True">
@@ -345,7 +351,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="302*" />
-            <RowDefinition Height="72" />
+            <RowDefinition Height="80" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -371,7 +377,7 @@
                           IsDeferredScrollingEnabled="True"
                           ScrollChanged="svContentContainer_ScrollChanged"
                           VerticalScrollBarVisibility="Auto">
-                
+
                 <ListBox x:Name="lbxContentContainer"
                          Background="{x:Null}"
                          BorderBrush="{x:Null}"
@@ -504,12 +510,12 @@
                         <RowDefinition Height="30" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    
+
                     <Label Grid.Row="0"
                            Background="Black"
                            Content="{DynamicResource RecentGroupTitle}"
-                           FontWeight="Bold"
                            FontFamily="Segoe UI"
+                           FontWeight="Bold"
                            Foreground="#FFA8A8A8" />
 
                     <local:RecentListBox x:Name="lbxRecent"
@@ -532,12 +538,12 @@
                         <RowDefinition Height="30" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    
+
                     <Label Grid.Row="0"
                            Background="Black"
                            Content="{DynamicResource FavoritesGroupTitle}"
-                           FontWeight="Bold"
                            FontFamily="Segoe UI"
+                           FontWeight="Bold"
                            Foreground="#FFA8A8A8" />
 
                     <local:FavoriteListBox x:Name="lbxFavorites"
@@ -579,14 +585,14 @@
         </Grid>
 
         <local:SourceAllFilesUC x:Name="allFilesUC"
-                               Grid.Row="0"
-                               Grid.RowSpan="3"
-                               Grid.Column="1"
-                               Grid.ColumnSpan="2"
-                               Width="Auto"
-                               Height="Auto"
-                               Margin="1,0,0,0"
-                               Visibility="Collapsed" />
+                                Grid.Row="0"
+                                Grid.RowSpan="3"
+                                Grid.Column="1"
+                                Grid.ColumnSpan="2"
+                                Width="Auto"
+                                Height="Auto"
+                                Margin="1,0,0,0"
+                                Visibility="Collapsed" />
 
         <StackPanel x:Name="stackPanel"
                     Grid.Row="2"
@@ -598,12 +604,12 @@
             </StackPanel.Effect>
 
             <local:ButtonImageText x:Name="btnAddDevice"
-                                   Margin="4"
+                                   Margin="0,13"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Foreground="#4F4F4F"
-                                   ImageEnterUri="pack://application:,,,/Resource/bar_source_2.png"
-                                   ImageUri="pack://application:,,,/Resource/bar_source_1.png"
+                                   ImageEnterUri="pack://application:,,,/Resource/bar2_source_0.png"
+                                   ImageUri="pack://application:,,,/Resource/bar2_source_0.png"
                                    MouseDown="btnAddNewSource_Click"
                                    Text="{DynamicResource AddDeviceIconText}" />
         </StackPanel>
@@ -622,19 +628,19 @@
 
             <Grid Margin="0">
                 <StackPanel x:Name="zoomPanel"
-                            Margin="20, 4, 4, 4"
+                            Margin="20, 4, 4, 3"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Visibility="Collapsed">
+                            VerticalAlignment="Bottom">
                     <local:ZoomSlider x:Name="zoomSlider"
                                       Width="104"
-                                      Margin="0, 19, 0, 8"
+                                      Margin="0, 19, 0, 12"
                                       Maximum="400"
                                       Minimum="150"
                                       Value="200" />
 
                     <TextBlock x:Name="tbText"
                                Grid.Row="1"
+                               Margin="0,0"
                                HorizontalAlignment="Center"
                                FontSize="12"
                                FontWeight="Bold"
@@ -775,48 +781,81 @@
                             FontWeight="ExtraBold" />
                 </Grid>
 
-                <local:ButtonImageText x:Name="btnCreateCloudAlbum"
-                                       Margin="-20, 4, 4, 4"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Click="btnCreateCloudAlbum_Click"
-                                       Foreground="#456CB9"
-                                       ImageEnterUri="pack://application:,,,/Resource/bar_cloud_2.png"
-                                       ImageUri="pack://application:,,,/Resource/bar_cloud_1.png"
-                                       Text="Create Online Album"
-                                       Visibility="Collapsed" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Label x:Name="selectionText"
+                           Margin="0,-4,0,0"
+                           HorizontalAlignment="Center"
+                           Content=""
+                           Foreground="#4F4F4F" />
+                    <Grid x:Name="middleBtnPanel"
+                          Grid.Row="1"
+                          MinWidth="320"
+                          Margin="0, -10, 0, 0"
+                          HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <local:ButtonImageText x:Name="btnCreateAlbum"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Click="btnCreateCloudAlbum_Click"
+                                               Foreground="#4F4F4F"
+                                               ImageEnterUri="pack://application:,,,/Resource/bar2_create_0.png"
+                                               ImageUri="pack://application:,,,/Resource/bar2_create_0.png"
+                                               Text="Create Album" />
+
+                        <local:ButtonImageText x:Name="btnAddToAlbum"
+                                               Grid.Column="1"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Click="btnCreateCloudAlbum_Click"
+                                               Foreground="#4F4F4F"
+                                               ImageEnterUri="pack://application:,,,/Resource/bar2_addto_0.png"
+                                               ImageUri="pack://application:,,,/Resource/bar2_addto_0.png"
+                                               Text="Add to Album" />
+
+                        <local:ButtonImageText x:Name="btnShare"
+                                               Grid.Column="2"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Click="btnCreateCloudAlbum_Click"
+                                               Foreground="#4F4F4F"
+                                               ImageEnterUri="pack://application:,,,/Resource/bar2_share_0.png"
+                                               ImageUri="pack://application:,,,/Resource/bar2_share_0.png"
+                                               Text="Share" />
+
+                        <local:ButtonImageText x:Name="btnDelete"
+                                               Grid.Column="3"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Click="btnDelete_Click"
+                                               Foreground="#4F4F4F"
+                                               ImageEnterUri="pack://application:,,,/Resource/bar2_trash_0.png"
+                                               ImageUri="pack://application:,,,/Resource/bar2_trash_0.png"
+                                               Text="Delete" />
+                    </Grid>
+
+                </Grid>
+
+
 
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-
-                    <local:ButtonImageText x:Name="btnActions"
-                                           Margin="4"
+                    <local:ButtonImageText x:Name="btnPushToDevice"
+                                           Margin="0, 12, 5, 0"
                                            HorizontalAlignment="Right"
                                            VerticalAlignment="Center"
                                            Foreground="#4F4F4F"
-                                           ImageEnterUri="pack://application:,,,/Resource/bar_add_2.png"
-                                           ImageUri="pack://application:,,,/Resource/bar_add_1.png"
-                                           MouseDown="btnActions_MouseDown"
-                                           Text="Actions"
-                                           Visibility="Collapsed">
-                        <local:ButtonImageText.ContextMenu>
-                            <ContextMenu Style="{StaticResource contextMenuStyle1}">
-                                <MenuItem Click="miAddtoNewFavorite_Click" Header="{DynamicResource CreateFavorite}" />
-                                <MenuItem Click="miAddToFavorite_Click" Header="{DynamicResource AddToFavorite}" />
-                                <MenuItem Click="miAddToStarred_Click" Header="{DynamicResource AddToStarred}" />
-                            </ContextMenu>
-                        </local:ButtonImageText.ContextMenu>
-                    </local:ButtonImageText>
-
-                    <local:ButtonImageText x:Name="btnDelete"
-                                           Margin="20, 4, 24, 4"
-                                           HorizontalAlignment="Right"
-                                           VerticalAlignment="Center"
-                                           Click="btnDelete_Click"
-                                           Foreground="#4F4F4F"
-                                           ImageEnterUri="pack://application:,,,/Resource/bar_bin_2.png"
-                                           ImageUri="pack://application:,,,/Resource/bar_bin_1.png"
-                                           Text="Delete"
-                                           Visibility="Collapsed" />
+                                           ImageEnterUri="pack://application:,,,/Resource/bar2_push_0.png"
+                                           ImageUri="pack://application:,,,/Resource/bar2_push_0.png"
+                                           Text="Push to Devices" />
                 </StackPanel>
             </Grid>
         </Grid>
