@@ -68,17 +68,17 @@ namespace Waveface.Client
 
 		private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
 		{
-			if (e.ChangedButton != MouseButton.Left)
-				return;
+            //if (e.ChangedButton != MouseButton.Left)
+            //    return;
 
-			var tv = sender as TreeView;
+            //var tv = sender as TreeView;
 
-			var item = tv.ItemContainerGenerator.ContainerFromItem(tv.SelectedItem) as TreeViewItem;
+            //var item = tv.ItemContainerGenerator.ContainerFromItem(tv.SelectedItem) as TreeViewItem;
 
-			if (item != null && item.IsMouseOver)
-				item.IsExpanded = !item.IsExpanded;
+            //if (item != null && item.IsMouseOver)
+            //    item.IsExpanded = !item.IsExpanded;
 
-			e.Handled = true;
+            //e.Handled = true;
 		}
 
 		private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
