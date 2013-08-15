@@ -1639,6 +1639,11 @@ namespace Waveface.Client
 		{
 			btnDelete.IsEnabled = lbxContentContainer.SelectedItems.Count != 0;
 			btnCreateAlbum.IsEnabled = lbxContentContainer.SelectedItems.Count != 0;
+
+			if (lbxContentContainer.SelectedItems.Count == 0)
+				selectionText.Content = "";
+			else
+				selectionText.Content = string.Format((string)lbxContentContainer.FindResource("selection_text"), lbxContentContainer.SelectedItems.Count);
 		}
 
 		private void lbxContentContainer_MouseDown(object sender, MouseButtonEventArgs e)

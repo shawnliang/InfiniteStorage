@@ -604,11 +604,11 @@
             </StackPanel.Effect>
 
             <local:ButtonImageText x:Name="btnAddDevice"
-                                   Margin="0,13"
+                                   Margin="0,14, 0, 0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Foreground="#4F4F4F"
-                                   ImageEnterUri="pack://application:,,,/Resource/bar2_source_0.png"
+                                   ImageEnterUri="pack://application:,,,/Resource/bar2_source_1.png"
                                    ImageUri="pack://application:,,,/Resource/bar2_source_0.png"
                                    MouseDown="btnAddNewSource_Click"
                                    Text="{DynamicResource AddDeviceIconText}" />
@@ -788,9 +788,10 @@
                     </Grid.RowDefinitions>
 
                     <Label x:Name="selectionText"
-                           Margin="0,-4,0,0"
+                           Margin="0,-2,0,0"
                            HorizontalAlignment="Center"
                            Content=""
+                           FontWeight="Bold"
                            Foreground="#4F4F4F" />
                     <Grid x:Name="middleBtnPanel"
                           Grid.Row="1"
@@ -808,7 +809,7 @@
                                                VerticalAlignment="Center"
                                                Click="btnCreateCloudAlbum_Click"
                                                Foreground="#4F4F4F"
-                                               ImageEnterUri="pack://application:,,,/Resource/bar2_create_0.png"
+                                               ImageEnterUri="pack://application:,,,/Resource/bar2_create_1.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_create_0.png"
                                                Text="Create Album" />
 
@@ -818,7 +819,7 @@
                                                VerticalAlignment="Center"
                                                Click="btnCreateCloudAlbum_Click"
                                                Foreground="#4F4F4F"
-                                               ImageEnterUri="pack://application:,,,/Resource/bar2_addto_0.png"
+                                               ImageEnterUri="pack://application:,,,/Resource/bar2_addto_1.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_addto_0.png"
                                                Text="Add to Album" />
 
@@ -828,7 +829,7 @@
                                                VerticalAlignment="Center"
                                                Click="btnCreateCloudAlbum_Click"
                                                Foreground="#4F4F4F"
-                                               ImageEnterUri="pack://application:,,,/Resource/bar2_share_0.png"
+                                               ImageEnterUri="pack://application:,,,/Resource/bar2_share_1.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_share_0.png"
                                                Text="Share" />
 
@@ -838,7 +839,7 @@
                                                VerticalAlignment="Center"
                                                Click="btnDelete_Click"
                                                Foreground="#4F4F4F"
-                                               ImageEnterUri="pack://application:,,,/Resource/bar2_trash_0.png"
+                                               ImageEnterUri="pack://application:,,,/Resource/bar2_trash_1.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_trash_0.png"
                                                Text="Delete" />
                     </Grid>
@@ -853,7 +854,7 @@
                                            HorizontalAlignment="Right"
                                            VerticalAlignment="Center"
                                            Foreground="#4F4F4F"
-                                           ImageEnterUri="pack://application:,,,/Resource/bar2_push_0.png"
+                                           ImageEnterUri="pack://application:,,,/Resource/bar2_push_1.png"
                                            ImageUri="pack://application:,,,/Resource/bar2_push_0.png"
                                            Text="Push to Devices" />
                 </StackPanel>
