@@ -394,7 +394,6 @@ namespace Waveface.Client
 				lbxFavorites.SelectedIndex = -1;
 				lbxContentContainer.DataContext = null;
 				lblContentLocation.DataContext = null;
-				ShowToolBarButtons(false);
 				SetContentTypeCount(null);
 
 				Grid.SetColumnSpan(gdContentArea, 2);
@@ -582,9 +581,10 @@ namespace Waveface.Client
 
 								var group = (IContentGroup)devNode.Items[0];
 
-								ShowToolBarButtons(true);
 								lbxContentContainer.DataContext = group.Contents;
+								lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
 								lblContentLocation.DataContext = group;
+
 								SetContentTypeCount(group);
 
 								jumpToDeviceTimer.Stop();
@@ -761,8 +761,6 @@ namespace Waveface.Client
 
 		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, EventArgs e)
 		{
-			ShowToolBarButtons(true);
-
 			var ti = sender as TreeViewItem;
 
 			if (ti == null)
@@ -802,8 +800,8 @@ namespace Waveface.Client
 			lbxContentContainer.Visibility = Visibility.Visible;
 
 			lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
-			btnDelete.IsEnabled = false;
-			btnCreateAlbum.IsEnabled = false;
+			//btnDelete.IsEnabled = false;
+			//btnCreateAlbum.IsEnabled = false;
 
 			Grid.SetColumnSpan(gdContentArea, 2);
 
@@ -821,19 +819,7 @@ namespace Waveface.Client
 
 			SetContentTypeCount(group);
 
-			checkToShowHelpPanel();
-
 			GC.Collect();
-		}
-
-		private void checkToShowHelpPanel()
-		{
-			sourceTreeClickCount++;
-			if (!ClientFramework.Client.Default.Favorites.Cast<BunnyLabelContentGroup>().Where(x => x.ShareEnabled).Any() &&
-				sourceTreeClickCount == 1)
-			{
-				ShowHelpPanel(true);
-			}
 		}
 
 		private void lbxContentContainer_KeyDown(object sender, KeyEventArgs e)
@@ -860,7 +846,6 @@ namespace Waveface.Client
 				ShowSelectedFavoriteContents(sender, false);
 
 				lbxRecent.SelectedItem = null;
-				ShowToolBarButtons(false);
 			}
 		}
 
@@ -871,7 +856,6 @@ namespace Waveface.Client
 				ShowSelectedFavoriteContents(sender, true);
 
 				lbxFavorites.SelectedItem = null;
-				ShowToolBarButtons(true);
 			}
 		}
 
@@ -905,8 +889,7 @@ namespace Waveface.Client
 			lbxContentContainer.ContextMenu = Resources["ContentContextMenu"] as ContextMenu;
 			lbxContentContainer.ContextMenu.IsOpen = false;
 			lbxContentContainer.ContextMenu.Visibility = Visibility.Visible;
-			btnDelete.IsEnabled = false;
-			btnCreateAlbum.IsEnabled = false;
+			//btnDelete.IsEnabled = false;
 
 			gdRightSide.Visibility = Visibility.Visible;
 			Grid.SetColumnSpan(gdContentArea, 1);
@@ -1444,19 +1427,6 @@ namespace Waveface.Client
 
 		private void btnHelpPanelClose_Click(object sender, RoutedEventArgs e)
 		{
-			ShowHelpPanel(false);
-		}
-
-		private void ShowHelpPanel(bool flag)
-		{
-			if (flag)
-			{
-				helpPanel.Visibility = System.Windows.Visibility.Visible;
-			}
-			else
-			{
-				helpPanel.Visibility = System.Windows.Visibility.Collapsed;
-			}
 		}
 
 		#region DoEvents
@@ -1492,9 +1462,52 @@ namespace Waveface.Client
 			return _entities;
 		}
 
+		private void btnCreateAlbum_Click(object sender, RoutedEventArgs e)
+		{
+			IEnumerable<IContentEntity> _allEntities = lbxContentContainer.Items.OfType<IContentEntity>().ToArray();
+			IEnumerable<IContentEntity> _selectedEntities = GetSelectedContents();
+
+			string _title = lblContentLocation.Content.ToString();
+
+			CloudSharingDialog _dialog = new CloudSharingDialog(_allEntities, _selectedEntities, _title)
+			{
+				Owner = this
+			};
+			_dialog.Title = (string)this.FindResource("createAlbumDialogTitle");
+			_dialog.ShowDialog();
+
+			List<string> _fileIDs = _dialog.FileIDs;
+			_title = _dialog.TitleName;
+
+			foreach (IContentGroup _group in ClientFramework.Client.Default.GetFavorites(true))
+			{
+				if (_group.Name == _title)
+				{
+					_title += " (1) ";
+					break;
+				}
+			}
+
+			_dialog = null;
+
+			if ((_fileIDs != null) && (_title != string.Empty))
+			{
+				List<Content> _contents = new List<Content>();
+
+				foreach (string _fileID in _fileIDs)
+				{
+					_contents.Add(new Content { ID = _fileID, });
+				}
+
+				if (_contents.Count > 0)
+				{
+					SaveToFavorite(_contents, _title);
+				}
+			}
+		}
+
 		private void btnCreateCloudAlbum_Click(object sender, RoutedEventArgs e)
 		{
-			ShowHelpPanel(false);
 
 			IEnumerable<IContentEntity> _allEntities = lbxContentContainer.Items.OfType<IContentEntity>().ToArray();
 			IEnumerable<IContentEntity> _selectedEntities = GetSelectedContents();
@@ -1582,11 +1595,6 @@ namespace Waveface.Client
 			cm.HorizontalOffset = horizontalOffset;
 		}
 
-		//private void btnActions_MouseDown(object sender, MouseButtonEventArgs e)
-		//{
-		//	ShowContextMenu((sender as UIElement), (sender as UserControl).ContextMenu);
-		//}
-
 		private void miAddToFavorite_Click(object sender, RoutedEventArgs e)
 		{
 			IEnumerable<IContentEntity> _entities = GetContents();
@@ -1638,8 +1646,7 @@ namespace Waveface.Client
 
 		private void lbxContentContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			btnDelete.IsEnabled = lbxContentContainer.SelectedItems.Count != 0;
-			btnCreateAlbum.IsEnabled = lbxContentContainer.SelectedItems.Count != 0;
+			//btnDelete.IsEnabled = lbxContentContainer.SelectedItems.Count != 0;
 
 			if (lbxContentContainer.SelectedItems.Count == 0)
 				selectionText.Content = "";

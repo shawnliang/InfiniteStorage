@@ -20,6 +20,8 @@
         mc:Ignorable="d">
 
     <Window.Resources>
+        <local:IntToBoolConvertor x:Key="Int2ToBoolConverter" />
+
         <!--  Brushes used in Styling of ScrollViewer  -->
 
         <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
@@ -826,7 +828,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <local:ButtonImageText x:Name="btnCreateAlbum"
-                                               Click="btnCreateCloudAlbum_Click"
+                                               Click="btnCreateAlbum_Click"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_create_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_create_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_create_2.png"
@@ -861,6 +863,9 @@
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_trash_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_trash_2.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_trash_0.png"
+                                               IsEnabled="{Binding ElementName=lbxContentContainer,
+                                                                   Path=SelectedItems.Count,
+                                                                   Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
                                                Text="Delete" />
                     </Grid>

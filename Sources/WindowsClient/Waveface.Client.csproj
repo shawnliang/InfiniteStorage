@@ -147,6 +147,7 @@
     <Compile Include="Ren\WpfAnimatedGif\Encoder\AnimatedGifEncoder.cs" />
     <Compile Include="Ren\WpfAnimatedGif\Encoder\LZWEncoder.cs" />
     <Compile Include="Ren\WpfAnimatedGif\Encoder\NeuQuant.cs" />
+    <Compile Include="Src\Class\Converter\IntToBoolConvertor.cs" />
     <Compile Include="Src\Control\ContentActionBar.xaml.cs">
       <DependentUpon>ContentActionBar.xaml</DependentUpon>
     </Compile>
