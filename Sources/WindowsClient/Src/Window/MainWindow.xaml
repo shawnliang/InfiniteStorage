@@ -357,7 +357,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="302*" />
-            <RowDefinition Height="80" />
+            <RowDefinition Height="75" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -610,14 +610,16 @@
             </StackPanel.Effect>
 
             <local:ButtonImageText x:Name="btnAddDevice"
-                                   Margin="0, 14, 0, 0"
+                                   Margin="0, 24, 0, 0"
                                    HorizontalAlignment="Center"
+                                   Click="btnAddNewSource_Click"
                                    ImageDisableUri="pack://application:,,,/Resource/bar2_source_3.png"
                                    ImageEnterUri="pack://application:,,,/Resource/bar2_source_1.png"
+                                   ImagePressedUri="pack://application:,,,/Resource/bar2_source_2.png"
                                    ImageUri="pack://application:,,,/Resource/bar2_source_0.png"
-                                   MouseDown="btnAddNewSource_Click"
                                    Style="{StaticResource toolbarBtnStyle}"
                                    Text="{DynamicResource AddDeviceIconText}" />
+
         </StackPanel>
 
         <Grid x:Name="ContentAreaToolBar"
@@ -639,7 +641,7 @@
                             VerticalAlignment="Bottom">
                     <local:ZoomSlider x:Name="zoomSlider"
                                       Width="104"
-                                      Margin="0, 19, 0, 12"
+                                      Margin="0, 1, 0, 5"
                                       Maximum="400"
                                       Minimum="150"
                                       Value="200" />
@@ -794,7 +796,7 @@
                     </Grid.RowDefinitions>
 
                     <Label x:Name="selectionText"
-                           Margin="0,-2,0,0"
+                           Margin="0,0,0,0"
                            HorizontalAlignment="Center"
                            Content=""
                            FontWeight="Bold"
@@ -814,6 +816,7 @@
                                                Click="btnCreateCloudAlbum_Click"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_create_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_create_1.png"
+                                               ImagePressedUri="pack://application:,,,/Resource/bar2_create_2.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_create_0.png"
                                                Style="{StaticResource toolbarBtnStyle}"
                                                Text="Create Album" />
@@ -823,6 +826,7 @@
                                                Click="btnCreateCloudAlbum_Click"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_addto_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_addto_1.png"
+                                               ImagePressedUri="pack://application:,,,/Resource/bar2_addto_2.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_addto_0.png"
                                                Style="{StaticResource toolbarBtnStyle}"
                                                Text="Add to Album" />
@@ -832,16 +836,17 @@
                                                Click="btnCreateCloudAlbum_Click"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_share_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_share_1.png"
+                                               ImagePressedUri="pack://application:,,,/Resource/bar2_share_2.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_share_0.png"
                                                Style="{StaticResource toolbarBtnStyle}"
                                                Text="Share" />
 
                         <local:ButtonImageText x:Name="btnDelete"
                                                Grid.Column="3"
-                                               VerticalAlignment="Center"
                                                Click="btnDelete_Click"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_trash_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_trash_1.png"
+                                               ImagePressedUri="pack://application:,,,/Resource/bar2_trash_2.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_trash_0.png"
                                                Style="{StaticResource toolbarBtnStyle}"
                                                Text="Delete" />
@@ -855,8 +860,8 @@
                     <local:ButtonImageText x:Name="btnPushToDevice"
                                            ImageDisableUri="pack://application:,,,/Resource/bar2_push_3.png"
                                            ImageEnterUri="pack://application:,,,/Resource/bar2_push_1.png"
+                                           ImagePressedUri="pack://application:,,,/Resource/bar2_push_2.png"
                                            ImageUri="pack://application:,,,/Resource/bar2_push_0.png"
-                                           IsEnabled="False"
                                            Style="{StaticResource toolbarBtnStyle}"
                                            Text="Push to Devices" />
                 </StackPanel>

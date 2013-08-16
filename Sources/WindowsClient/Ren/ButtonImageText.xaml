@@ -20,12 +20,16 @@
         </Style>
 
         <Style x:Key="ButtonImageTextImageStyle" TargetType="Image">
+            <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="Margin" Value="0, 0, 0, -3" />
             <Setter Property="Source" Value="{Binding Path=ImageUri}" />
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Source" Value="{Binding Path=ImageEnterUri}" />
                 </Trigger>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsPressed}" Value="True">
+                    <Setter Property="Source" Value="{Binding Path=ImagePressedUri}" />
+                </DataTrigger>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Source" Value="{Binding Path=ImageDisableUri}" />
                 </Trigger>
@@ -57,40 +61,18 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Border x:Name="borMain"
-                Grid.Row="0"
-                MouseEnter="borMain_MouseEnter"
-                MouseLeave="borMain_MouseLeave"
-                MouseLeftButtonDown="borMain_MouseLeftButtonDown"
-                Style="{StaticResource ButtonImageTextBorderStyle}"
-                ToolTip="{Binding Path=ToolTip}">
+        <Button Click="Button_Click_1">
 
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup Name="MouseStates">
-                    <VisualState Name="MouseEnter">
-                        <Storyboard>
-                            <ColorAnimation Duration="0:0:00.1"
-                                            Storyboard.TargetName="borMain"
-                                            Storyboard.TargetProperty="BorderBrush.Color"
-                                            To="{StaticResource ButtonImageTextBorderHoverColor}" />
+            <Image x:Name="btnImage"
+                   Margin="-2,0,2,-3"
+                   Style="{StaticResource ButtonImageTextImageStyle}" />
 
-                            <ColorAnimation Duration="0:0:00.1"
-                                            Storyboard.TargetName="borMain"
-                                            Storyboard.TargetProperty="Background.Color"
-                                            To="{StaticResource ButtonImageTextBackHoverColor}" />
-
-                            <ThicknessAnimation Duration="0:0:00.1"
-                                                Storyboard.TargetName="borMain"
-                                                Storyboard.TargetProperty="Margin"
-                                                To="{StaticResource ButtonImageTextHoverThickness}" />
-                        </Storyboard>
-                    </VisualState>
-                    <VisualState Name="MouseLeave" />
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
-
-            <Image Style="{StaticResource ButtonImageTextImageStyle}" />
-        </Border>
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <ContentPresenter Content="{TemplateBinding Content}" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
 
         <TextBlock x:Name="tbText"
                    Grid.Row="1"

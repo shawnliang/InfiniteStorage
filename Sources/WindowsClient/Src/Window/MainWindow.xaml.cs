@@ -1090,7 +1090,7 @@ namespace Waveface.Client
 									 : Visibility.Visible;
 		}
 
-		private void btnAddNewSource_Click(object sender, MouseButtonEventArgs e)
+		private void btnAddNewSource_Click(object sender, RoutedEventArgs e)
 		{
 			showWaitForPairingDialog();
 		}
