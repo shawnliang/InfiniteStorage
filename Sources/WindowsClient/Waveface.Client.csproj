@@ -346,6 +346,8 @@
     <Resource Include="Resource\loading_logo.gif" />
     <Resource Include="Resource\Less.png" />
     <Resource Include="Resource\More.png" />
+    <Resource Include="Resource\video.png" />
+    <Resource Include="Resource\circleProgress.gif" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

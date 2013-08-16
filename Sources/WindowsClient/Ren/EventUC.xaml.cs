@@ -60,6 +60,7 @@ namespace Waveface.Client
 		public string YM { get; set; }
 		public int VideosCount { get; set; }
 		public int PhotosCount { get; set; }
+		public bool Changed { get; set; }
 
 		public List<FileEntry> FileEntrys
 		{
@@ -70,7 +71,7 @@ namespace Waveface.Client
 
 				m_fileEntrys = value;
 
-				m_changed = m_oldFileEntrysCount != m_fileEntrys.Count;
+				Changed = m_oldFileEntrysCount != m_fileEntrys.Count;
 			}
 		}
 
@@ -78,7 +79,6 @@ namespace Waveface.Client
 		private List<FileEntry> m_fileEntrys = new List<FileEntry>();
 		private const int More = 100;
 		private bool m_showMoreButton;
-		private bool m_changed;
 		private List<EventItem> m_eventItems;
 
 		public EventUC()
@@ -102,7 +102,7 @@ namespace Waveface.Client
 			List<EventItem> _ctlItems = new List<EventItem>();
 
 			// 若改變項目個數, 則重新產生UI
-			if (m_changed)
+			if (Changed)
 			{
 				int _idx = 0;
 
@@ -247,7 +247,7 @@ namespace Waveface.Client
 
 				foreach (EventItem _item in m_eventItems)
 				{
-					if (_item.FileID != string.Empty) //排除有可能More跟Less
+					if (!string.IsNullOrEmpty(_item.FileID)) //排除有可能More跟Less
 						_item.HasOrigin = !_id_FileEntrys[_item.FileID].has_origin;
 				}
 
@@ -258,16 +258,12 @@ namespace Waveface.Client
 			if (_ctlItems.Count < More)
 			{
 				m_eventItems = _ctlItems;
-
 				lbEvent.ItemsSource = m_eventItems;
 			}
 			else
 			{
-				if (m_changed) //重新產生UI狀況, 加入Less
-					_ctlItems.Add(new EventItem { IsLess = true });
-
+				_ctlItems.Add(new EventItem { IsLess = true });
 				m_eventItems = _ctlItems;
-
 				UpdateShowMoreUI();
 			}
 		}
