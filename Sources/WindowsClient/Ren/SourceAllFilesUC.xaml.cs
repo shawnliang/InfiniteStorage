@@ -8,7 +8,7 @@ using System.Linq;
 using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using InfiniteStorage.Model;
 using Microsoft.Win32;
@@ -32,7 +32,7 @@ namespace Waveface.Client
 
 		private string m_basePath;
 		private string m_thumbsPath;
-
+		private SolidColorBrush m_solidColorBrush;
 		private List<FileEntry> m_fileEntries { get; set; }
 
 		private Dictionary<string, List<FileEntry>> m_YM_Files;
@@ -45,6 +45,7 @@ namespace Waveface.Client
 
 			m_basePath = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", "");
 			m_thumbsPath = Path.Combine(m_basePath, ".thumbs");
+			m_solidColorBrush = new SolidColorBrush(Color.FromArgb(255, 120, 0, 34));
 
 			InitTimer();
 		}
@@ -57,7 +58,7 @@ namespace Waveface.Client
 
 			m_refreshTimer = new DispatcherTimer();
 			m_refreshTimer.Tick += RefreshTimerOnTick;
-			m_refreshTimer.Interval = new TimeSpan(0, 0, 0, 0, 2000);
+			m_refreshTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000);
 		}
 
 		public void Stop()
@@ -86,9 +87,8 @@ namespace Waveface.Client
 
 			if (_files.Count == 0)
 			{
-				tbTitle0.Visibility = Visibility.Collapsed;
 				tbTitle.Visibility = Visibility.Collapsed;
-				tbTotalCount.Visibility = Visibility.Collapsed;
+				//tbTotalCount.Visibility = Visibility.Collapsed;
 
 				return;
 			}
@@ -97,9 +97,8 @@ namespace Waveface.Client
 
 			prepareData(_files);
 
-			tbTitle0.Visibility = Visibility.Visible;
 			tbTitle.Visibility = Visibility.Visible;
-			tbTotalCount.Visibility = Visibility.Visible;
+			//tbTotalCount.Visibility = Visibility.Visible;
 
 			tbTitle.Text = m_currentDevice.Name;
 
@@ -112,14 +111,20 @@ namespace Waveface.Client
 		{
 			m_refreshTimer.Stop();
 
-			List<FileAsset> _files = GetFilesFromDB();
-			int _hasOriginCount = GetHasOriginCount(_files);
-
-			if ((_hasOriginCount != m_hasOriginCount) || (_files.Count != m_fileEntries.Count))
+			try
 			{
-				prepareData(_files);
+				List<FileAsset> _files = GetFilesFromDB();
+				int _hasOriginCount = GetHasOriginCount(_files);
 
-				ShowEvents();
+				if ((_hasOriginCount != m_hasOriginCount) || (_files.Count != m_fileEntries.Count))
+				{
+					prepareData(_files);
+
+					ShowEvents();
+				}
+			}
+			catch
+			{
 			}
 
 			m_refreshTimer.Start();
@@ -224,7 +229,7 @@ namespace Waveface.Client
 			{
 				EventUC _ctl = new EventUC
 								   {
-									   Event = _entries,
+									   FileEntrys = _entries,
 									   YM = _entries[0].taken_time.ToString("yyyy-MM")
 								   };
 
@@ -264,15 +269,22 @@ namespace Waveface.Client
 						}
 					}
 
-					_ctl.Event = _entries;
+					if (_ctl == null)
+					{
+						continue;
+					}
+
+					_ctl.FileEntrys = _entries;
 				}
 				else
 				{
 					_ctl = new EventUC
-						       {
-							       Event = _entries,
-							       YM = _YM
-						       };
+							   {
+								   FileEntrys = _entries,
+								   YM = _YM,
+							   };
+
+					_ctl.Changed = true;
 
 					m_eventUCs.Add(_ctl);
 				}
@@ -295,13 +307,13 @@ namespace Waveface.Client
 			if (m_eventUCs.Count == 0)
 			{
 				gridWaitingPanel.Visibility = Visibility.Visible;
-				tbTotalCount.Text = "";
+				//tbTotalCount.Text = "";
 			}
 			else
 			{
-				string _tbTotalCount = GetCountsString(m_photosCount, m_videosCount);
 				gridWaitingPanel.Visibility = Visibility.Collapsed;
-				tbTotalCount.Text = _tbTotalCount;
+				//string _tbTotalCount = GetCountsString(m_photosCount, m_videosCount);
+				//tbTotalCount.Text = _tbTotalCount;
 			}
 		}
 
@@ -342,6 +354,20 @@ namespace Waveface.Client
 		private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
 			//Cursor = Cursors.Wait;
+		}
+
+		private void tbtnCloudSharing_Checked(object sender, RoutedEventArgs e)
+		{
+			tbtnCloudSharing.Background = m_solidColorBrush;
+			tbtnCloudSharing.Content = "關閉自動匯入";
+			imgCircleProgress.Visibility = Visibility.Visible;
+		}
+
+		private void tbtnCloudSharing_Unchecked(object sender, RoutedEventArgs e)
+		{
+			tbtnCloudSharing.Background = Brushes.DodgerBlue;
+			tbtnCloudSharing.Content = "開啟自動匯入";
+			imgCircleProgress.Visibility = Visibility.Collapsed;
 		}
 
 		#region DoEvents

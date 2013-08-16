@@ -64,7 +64,7 @@ namespace Waveface.Client
 
 			List<EventItem> _controls = new List<EventItem>();
 
-			foreach (FileEntry _file in m_eventUC.Event)
+			foreach (FileEntry _file in m_eventUC.FileEntrys)
 			{
 				_smallFileExists = false;
 

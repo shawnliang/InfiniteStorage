@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:PendingUI="clr-namespace:Waveface.Client" xmlns:gif="clr-namespace:WpfAnimatedGif" mc:Ignorable="d"
+             xmlns:PendingUI="clr-namespace:Waveface.Client" mc:Ignorable="d"
              d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -57,14 +57,26 @@
         </i:Interaction.Behaviors>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="140"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
-            <Rectangle Width="108" Height="112" Fill="Red" Margin="4, 8" VerticalAlignment="Top"/>
-            <TextBlock x:Name="tbTitle" Width="108" Height="112" Foreground="White" TextAlignment="Center" Margin="4, 24, 4, 8" VerticalAlignment="Top" HorizontalAlignment="Center" TextWrapping="Wrap" Text="2013.5.20, 11:59" FontSize="30" FontWeight="Bold"/>
-            <TextBlock x:Name="tbTotalCount" Foreground="#929292" Margin="2, 120, 2, 0" VerticalAlignment="Top" TextAlignment="Center" TextWrapping="Wrap" Text="99 Photos" FontSize="11" />
+            <Border BorderThickness="0" Margin="4, 8" BorderBrush="#f0f0f0" VerticalAlignment="Top">
+                <Image x:Name="imgHead" Width="120" Height="120" Stretch="UniformToFill">
+                    <Image.Effect>
+                        <BlurEffect Radius="4"/>
+                    </Image.Effect>
+                </Image>
+            </Border>
+            
+            <StackPanel Margin="4, 24, 4, 8" Width="120" Height="120" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <TextBlock x:Name="tbTitleMonth" Foreground="#ffffff" TextAlignment="Center"  TextWrapping="Wrap" Text="12" FontSize="36" FontWeight="Bold"/>
+                <TextBlock x:Name="tbTitleYear" Foreground="#ffffff" TextAlignment="Center"  TextWrapping="Wrap" Text="1999" FontSize="28" FontWeight="Bold"/>
+            </StackPanel>
+
+            <TextBlock x:Name="tbTotalCount" Foreground="#929292" Margin="2, 132, 2, 0" VerticalAlignment="Top" TextAlignment="Center" TextWrapping="Wrap" Text="99 Photos" FontSize="12" />
+
         </Grid>
 
         <Grid Grid.Column="1">
@@ -79,7 +91,7 @@
             </StackPanel>
 
             <ListBox BorderThickness="0" 
-                     Margin="0, 6, 0, 32" 
+                     Margin="0, 8, 0, 40" 
                      Background="#3F3F3F" 
                      Grid.Row="1" 
                      x:Name="lbEvent" 
@@ -89,7 +101,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
-                            <Border BorderThickness="1" Width="62" Height="62">
+                            <Border BorderThickness="0" Width="60" Height="60">
                                 <Grid>
                                     <Image Source="{Binding Path=MediaSource}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill"
                                     Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}"/>
@@ -97,27 +109,23 @@
                                     <Image Source="{Binding Path=BitmapImage}" HorizontalAlignment="Left"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top"  Stretch="UniformToFill"
                                     Visibility="{Binding Path=IsPhoto, Converter={StaticResource BoolToHiddenConverter}}"/>
 
-                                    <Image gif:ImageBehavior.AnimatedSource="{Binding Path=BitmapImage}" HorizontalAlignment="Left"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top"
-                                     Visibility="{Binding Path=IsGif, Converter={StaticResource BoolToHiddenConverter}}" Stretch="UniformToFill" />
+                                    <!--Image gif:ImageBehavior.AnimatedSource="{Binding Path=BitmapImage}" HorizontalAlignment="Left"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top"
+                                     Visibility="{Binding Path=IsGif, Converter={StaticResource BoolToHiddenConverter}}" Stretch="UniformToFill" /-->
 
                                     <Image Source="{Binding Path=BitmapImage}" Width="48" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Bottom"
                                     Height="36" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" Stretch="UniformToFill" />
 
-                                    <Rectangle Fill="#a0000000" Visibility="{Binding Path=HasOrigin, Converter={StaticResource BoolToHiddenConverter}}" />
+                                    <Rectangle Fill="#cc000000" Visibility="{Binding Path=HasOrigin, Converter={StaticResource BoolToHiddenConverter}}" />
 
-                                    <Border BorderThickness="1" BorderBrush="White" Background="DodgerBlue"  Visibility="{Binding Path=IsMore, Converter={StaticResource BoolToHiddenConverter}}">
-                                        <TextBlock Text="More" Foreground="White"  FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
+                                    <Image Source="/Waveface.Client;component/Resource/More.png" Visibility="{Binding Path=IsMore, Converter={StaticResource BoolToHiddenConverter}}" HorizontalAlignment="Left"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top"  Stretch="UniformToFill"/>
 
-                                    <Border BorderThickness="1" BorderBrush="White" Background="DodgerBlue" Visibility="{Binding Path=IsLess, Converter={StaticResource BoolToHiddenConverter}}">
-                                        <TextBlock Text="Less" Foreground="White"  FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>                                    
+                                    <Image Source="/Waveface.Client;component/Resource/Less.png" Visibility="{Binding Path=IsLess, Converter={StaticResource BoolToHiddenConverter}}" HorizontalAlignment="Left"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top"  Stretch="UniformToFill"/>
                                 </Grid>
                             </Border>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-                <ListBox.ItemContainerStyle>               
+                <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
                         <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListBox_MouseLeftButtonDown" />
                         <Setter Property="Template">
