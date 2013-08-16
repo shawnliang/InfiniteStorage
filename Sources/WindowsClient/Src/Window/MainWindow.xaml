@@ -487,93 +487,80 @@
                                   Direction="0"
                                   ShadowDepth="1" />
             </Grid.Effect>
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                   	<ScrollViewer HorizontalScrollBarVisibility="Disabled"
                           IsDeferredScrollingEnabled="True"
                           VerticalScrollBarVisibility="Auto">
-                <StackPanel>
+        		<StackPanel>
 
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+        			<Grid>
+        				<Grid.RowDefinitions>
+        					<RowDefinition Height="30" />
+        					<RowDefinition Height="*" />
+        				</Grid.RowDefinitions>
 
-                        <Label Grid.Row="0"
-                               VerticalContentAlignment="Bottom"
-                               Content="{DynamicResource SourceGroupTitle}"
-                               FontFamily="Segoe UI"
-                               FontWeight="Bold"
-                               Foreground="#FFA8A8A8"
-                               Padding="0,0,0,2" />
+        				<Label Grid.Row="0"
+        					Content="{DynamicResource SourceGroupTitle}"
+        					FontFamily="Segoe UI"
+        					FontWeight="Bold"
+        					Foreground="#FFA8A8A8" Padding="0,0,0,2" VerticalContentAlignment="Bottom" />
 
-                        <local:SourceTree x:Name="lbxDeviceContainer"
-                                          Grid.Row="1"
-                                          AddToFavoriteInvoked="lbxDeviceContainer_AddToFavoriteInvoked"
-                                          AllowDrop="True"
-                                          BorderBrush="{x:Null}"
-                                          CreateFavoriteInvoked="lbxDeviceContainer_CreateFavoriteInvoked"
-                                          DeleteSourceInvoked="lbxDeviceContainer_DeleteSourceInvoked"
-                                          DragOver="Sources_DragOver"
-                                          Drop="Sources_Drop"
-                                          Padding="0"
-                                          StarInvoked="lbxDeviceContainer_StarInvoked"
-                                          VirtualizingStackPanel.IsVirtualizing="True"
-                                          VirtualizingStackPanel.VirtualizationMode="Recycling" />
-                    </Grid>
+        				<local:SourceTree x:Name="lbxDeviceContainer"
+        					Grid.Row="1"
+        					AddToFavoriteInvoked="lbxDeviceContainer_AddToFavoriteInvoked"
+        					AllowDrop="True"
+        					BorderBrush="{x:Null}"
+        					CreateFavoriteInvoked="lbxDeviceContainer_CreateFavoriteInvoked"
+        					DeleteSourceInvoked="lbxDeviceContainer_DeleteSourceInvoked"
+        					DragOver="Sources_DragOver"
+        					Drop="Sources_Drop"
+        					StarInvoked="lbxDeviceContainer_StarInvoked"
+        					VirtualizingStackPanel.IsVirtualizing="True"
+        					VirtualizingStackPanel.VirtualizationMode="Recycling" Padding="0" />
+        			</Grid>
 
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+        			<Grid>
+        				<Grid.RowDefinitions>
+        					<RowDefinition Height="30" />
+        					<RowDefinition Height="*" />
+        				</Grid.RowDefinitions>
+                    
+        				<Label Grid.Row="0"
+        					Content="{DynamicResource RecentGroupTitle}"
+        					FontWeight="Bold"
+        					FontFamily="Segoe UI"
+        					Foreground="#FFA8A8A8" Padding="0,0,0,2" VerticalContentAlignment="Bottom" />
 
-                        <Label Grid.Row="0"
-                               VerticalContentAlignment="Bottom"
-                               Content="{DynamicResource RecentGroupTitle}"
-                               FontFamily="Segoe UI"
-                               FontWeight="Bold"
-                               Foreground="#FFA8A8A8"
-                               Padding="0,0,0,2" />
+        				<local:RecentListBox x:Name="lbxRecent"
+        					Grid.Row="1"
+        					AllowDrop="True"
+        					DragEnter="Favorites_DragEnter"
+        					Drop="Recent_Drop"
+        					ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+        			</Grid>
 
-                        <local:RecentListBox x:Name="lbxRecent"
-                                             Grid.Row="1"
-                                             AllowDrop="True"
-                                             DragEnter="Favorites_DragEnter"
-                                             Drop="Recent_Drop"
-                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
-                    </Grid>
+        			<Grid x:Name="gridAlbumGroup" Style="{StaticResource LocalAlbumGroupStyle}">
+        				<Grid.RowDefinitions>
+        					<RowDefinition Height="30" />
+        					<RowDefinition Height="*" />
+        				</Grid.RowDefinitions>
+                    
+        				<Label Grid.Row="0"
+        					Content="{DynamicResource FavoritesGroupTitle}"
+        					FontWeight="Bold"
+        					FontFamily="Segoe UI"
+        					Foreground="#FFA8A8A8" VerticalContentAlignment="Bottom" Padding="0,0,0,2" />
 
-
-                    <Label Grid.Row="0"
-                           Background="Black"
-                           Content="{DynamicResource FavoritesGroupTitle}"
-                           FontFamily="Segoe UI"
-                           FontWeight="Bold"
-                           Foreground="#FFA8A8A8" />
-                    <Label Grid.Row="0"
-                           Background="Black"
-                           Content="{DynamicResource FavoritesGroupTitle}"
-                           FontFamily="Segoe UI"
-                           FontWeight="Bold"
-                           Foreground="#FFA8A8A8" />
-                    <Label Grid.Row="0"
-                           VerticalContentAlignment="Bottom"
-                           Content="{DynamicResource FavoritesGroupTitle}"
-                           FontFamily="Segoe UI"
-                           FontWeight="Bold"
-                           Foreground="#FFA8A8A8"
-                           Padding="0,0,0,2" />
-
-                    <local:FavoriteListBox x:Name="lbxFavorites"
-                                           Grid.Row="1"
-                                           AllowDrop="True"
-                                           DeleteFavoriteInvoked="lbxFavorites_DeleteFavoriteInvoked"
-                                           DragEnter="Favorites_DragEnter"
-                                           Drop="Favorites_Drop"
-                                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                           ScrollViewer.VerticalScrollBarVisibility="Disabled" />
-                </StackPanel>
-            </ScrollViewer>
+        				<local:FavoriteListBox x:Name="lbxFavorites"
+        					Grid.Row="1"
+							 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+        					AllowDrop="True"
+        					DeleteFavoriteInvoked="lbxFavorites_DeleteFavoriteInvoked"
+        					DragEnter="Favorites_DragEnter"
+        					Drop="Favorites_Drop"
+        					ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+        			</Grid>
+        		</StackPanel>
+        	</ScrollViewer>
         </Grid>
 
         <GridSplitter Grid.Row="1"
