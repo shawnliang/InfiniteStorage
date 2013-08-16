@@ -343,6 +343,9 @@
     <Resource Include="Resource\bar2_trash_1.png" />
     <Resource Include="Resource\bar2_trash_2.png" />
     <Resource Include="Resource\bar2_trash_3.png" />
+    <Resource Include="Resource\loading_logo.gif" />
+    <Resource Include="Resource\Less.png" />
+    <Resource Include="Resource\More.png" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
