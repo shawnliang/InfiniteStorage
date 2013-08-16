@@ -768,6 +768,10 @@ namespace Waveface.Client
 			if (ti == null)
 				return;
 
+            lbxContentContainer.SelectedIndex = -1;
+            lbxFavorites.SelectedIndex = -1;
+            lbxRecent.SelectedIndex = -1;
+
 			var group = ti.DataContext as IContentGroup;
 
 			if (group == null)
@@ -814,9 +818,6 @@ namespace Waveface.Client
 			DoEvents();
 
 			lbxContentContainer.DataContext = group.Contents;
-			lbxContentContainer.SelectedIndex = -1;
-			lbxFavorites.SelectedIndex = -1;
-			lbxRecent.SelectedIndex = -1;
 
 			SetContentTypeCount(group);
 

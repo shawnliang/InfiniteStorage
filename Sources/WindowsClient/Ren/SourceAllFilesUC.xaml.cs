@@ -212,8 +212,6 @@ namespace Waveface.Client
 
 		private void ShowEvents_Init()
 		{
-			Cursor = Cursors.Wait;
-
 			m_photosCount = 0;
 			m_videosCount = 0;
 
@@ -245,8 +243,6 @@ namespace Waveface.Client
 
 		private void ShowEvents()
 		{
-			Cursor = Cursors.Wait;
-
 			m_photosCount = 0;
 			m_videosCount = 0;
 
@@ -340,12 +336,12 @@ namespace Waveface.Client
 
 		private void listBoxEvent_LayoutUpdated(object sender, EventArgs e)
 		{
-			Cursor = Cursors.Arrow;
+			//Cursor = Cursors.Arrow;
 		}
 
 		private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
-			Cursor = Cursors.Wait;
+			//Cursor = Cursors.Wait;
 		}
 
 		#region DoEvents
