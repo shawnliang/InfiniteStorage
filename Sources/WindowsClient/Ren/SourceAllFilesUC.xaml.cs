@@ -86,7 +86,6 @@ namespace Waveface.Client
 
 			if (_files.Count == 0)
 			{
-				tbTitle0.Visibility = Visibility.Collapsed;
 				tbTitle.Visibility = Visibility.Collapsed;
 				tbTotalCount.Visibility = Visibility.Collapsed;
 
@@ -97,7 +96,6 @@ namespace Waveface.Client
 
 			prepareData(_files);
 
-			tbTitle0.Visibility = Visibility.Visible;
 			tbTitle.Visibility = Visibility.Visible;
 			tbTotalCount.Visibility = Visibility.Visible;
 
@@ -119,7 +117,12 @@ namespace Waveface.Client
 			{
 				prepareData(_files);
 
-				ShowEvents();
+				try
+				{
+					ShowEvents();
+				}
+				catch
+				{}
 			}
 
 			m_refreshTimer.Start();
@@ -224,7 +227,7 @@ namespace Waveface.Client
 			{
 				EventUC _ctl = new EventUC
 								   {
-									   Event = _entries,
+									   FileEntrys = _entries,
 									   YM = _entries[0].taken_time.ToString("yyyy-MM")
 								   };
 
@@ -264,15 +267,15 @@ namespace Waveface.Client
 						}
 					}
 
-					_ctl.Event = _entries;
+					_ctl.FileEntrys = _entries;
 				}
 				else
 				{
 					_ctl = new EventUC
-						       {
-							       Event = _entries,
-							       YM = _YM
-						       };
+							   {
+								   FileEntrys = _entries,
+								   YM = _YM
+							   };
 
 					m_eventUCs.Add(_ctl);
 				}

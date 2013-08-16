@@ -9,6 +9,10 @@ namespace InfiniteStorage.WebsocketProtocol
 {
 	class TransmitUtility : ITransmitStateUtility, IFileUtility
 	{
+		public const string BULK_INSERT_QUEUE = "BulkInsertQueue";
+		public const string BULK_INSERT_LAST_FLUSH_TIME = "BulkInsertQueue_LastFlushTime";
+		public const int BULK_INSERT_BATCH_SIZE = 100;
+
 		public void SaveFileRecord(Model.FileAsset file)
 		{
 			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
@@ -118,6 +122,43 @@ namespace InfiniteStorage.WebsocketProtocol
 							  select new { file_id = f.file_id };
 
 				return file.Any() ? file.First().file_id : (Guid?)null;
+			}
+		}
+
+		public void SaveFileRecord(FileAsset file, ProtocolContext ctx)
+		{
+			List<FileAsset> queue = null;
+			DateTime lastFlushTime;
+			if (ctx.ContainsData(BULK_INSERT_QUEUE))
+			{
+				queue = ctx.GetData(BULK_INSERT_QUEUE) as List<FileAsset>;
+				lastFlushTime = (DateTime)ctx.GetData(BULK_INSERT_LAST_FLUSH_TIME);
+			}
+			else
+			{
+				queue = new List<FileAsset>();
+				lastFlushTime = DateTime.Now;
+				ctx.SetData(BULK_INSERT_QUEUE, queue);
+				ctx.SetData(BULK_INSERT_LAST_FLUSH_TIME, lastFlushTime);
+			}
+
+			queue.Add(file);
+
+			if (queue.Count > BULK_INSERT_BATCH_SIZE || DateTime.Now - lastFlushTime > TimeSpan.FromSeconds(2.0))
+			{
+				FlushFileRecords(ctx);
+			}
+		}
+
+		public void FlushFileRecords(ProtocolContext ctx)
+		{
+			if (ctx.ContainsData(BULK_INSERT_QUEUE))
+			{
+				var queue = (List<FileAsset>)ctx.GetData(BULK_INSERT_QUEUE);
+				this.SaveFileRecords(queue);
+
+				queue.Clear();
+				ctx.SetData(BULK_INSERT_LAST_FLUSH_TIME, DateTime.Now);
 			}
 		}
 	}

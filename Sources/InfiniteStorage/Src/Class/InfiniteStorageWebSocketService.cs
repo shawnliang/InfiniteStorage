@@ -110,21 +110,21 @@ namespace InfiniteStorage
 
 		private void cleanupForClose()
 		{
-			if ((handler.ctx as ProtocolContext).ContainsData(TransmitStartedState.BULK_INSERT_QUEUE))
+			try
 			{
-				var queue = (handler.ctx as ProtocolContext).GetData(TransmitStartedState.BULK_INSERT_QUEUE) as List<FileAsset>;
-				
-				if (queue.Count > 0)
-				{
-					var util = new TransmitUtility();
-					util.SaveFileRecords(queue);
-				}
+				var util = new TransmitUtility();
+				util.FlushFileRecords(handler.ctx as ProtocolContext);
+
+				handler.Clear();
 			}
-
-
-			handler.Clear();
-
-			raiseDeviceDisconnectedEvent(new WebsocketEventArgs((ProtocolContext)handler.ctx));
+			catch (Exception err)
+			{
+				logger.Warn("cleanupForClose failed", err);
+			}
+			finally
+			{
+				raiseDeviceDisconnectedEvent(new WebsocketEventArgs((ProtocolContext)handler.ctx));
+			}
 		}
 	}
 }

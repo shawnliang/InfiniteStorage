@@ -803,7 +803,7 @@ namespace Waveface.Client
 
 			lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
 			btnDelete.IsEnabled = false;
-			btnActions.IsEnabled = false;
+			btnCreateAlbum.IsEnabled = false;
 
 			Grid.SetColumnSpan(gdContentArea, 2);
 
@@ -906,7 +906,7 @@ namespace Waveface.Client
 			lbxContentContainer.ContextMenu.IsOpen = false;
 			lbxContentContainer.ContextMenu.Visibility = Visibility.Visible;
 			btnDelete.IsEnabled = false;
-			btnActions.IsEnabled = false;
+			btnCreateAlbum.IsEnabled = false;
 
 			gdRightSide.Visibility = Visibility.Visible;
 			Grid.SetColumnSpan(gdContentArea, 1);
@@ -1091,7 +1091,7 @@ namespace Waveface.Client
 									 : Visibility.Visible;
 		}
 
-		private void btnAddNewSource_Click(object sender, MouseButtonEventArgs e)
+		private void btnAddNewSource_Click(object sender, RoutedEventArgs e)
 		{
 			showWaitForPairingDialog();
 		}
@@ -1558,13 +1558,11 @@ namespace Waveface.Client
 
 			if (flag)
 			{
-				btnCreateCloudAlbum.Visibility = Visibility.Visible;
-				btnActions.Visibility = Visibility.Visible;
+				middleBtnPanel.Visibility = System.Windows.Visibility.Visible;
 			}
 			else
 			{
-				btnCreateCloudAlbum.Visibility = Visibility.Collapsed;
-				btnActions.Visibility = Visibility.Collapsed;
+				middleBtnPanel.Visibility = Visibility.Collapsed;
 				helpPanel.Visibility = System.Windows.Visibility.Collapsed;
 			}
 		}
@@ -1584,10 +1582,10 @@ namespace Waveface.Client
 			cm.HorizontalOffset = horizontalOffset;
 		}
 
-		private void btnActions_MouseDown(object sender, MouseButtonEventArgs e)
-		{
-			ShowContextMenu((sender as UIElement), (sender as UserControl).ContextMenu);
-		}
+		//private void btnActions_MouseDown(object sender, MouseButtonEventArgs e)
+		//{
+		//	ShowContextMenu((sender as UIElement), (sender as UserControl).ContextMenu);
+		//}
 
 		private void miAddToFavorite_Click(object sender, RoutedEventArgs e)
 		{
@@ -1641,7 +1639,12 @@ namespace Waveface.Client
 		private void lbxContentContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			btnDelete.IsEnabled = lbxContentContainer.SelectedItems.Count != 0;
-			btnActions.IsEnabled = lbxContentContainer.SelectedItems.Count != 0;
+			btnCreateAlbum.IsEnabled = lbxContentContainer.SelectedItems.Count != 0;
+
+			if (lbxContentContainer.SelectedItems.Count == 0)
+				selectionText.Content = "";
+			else
+				selectionText.Content = string.Format((string)lbxContentContainer.FindResource("selection_text"), lbxContentContainer.SelectedItems.Count);
 		}
 
 		private void lbxContentContainer_MouseDown(object sender, MouseButtonEventArgs e)

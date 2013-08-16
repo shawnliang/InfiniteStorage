@@ -5,7 +5,7 @@ namespace InfiniteStorage.WebsocketProtocol
 {
 	public interface ITransmitStateUtility
 	{
-		void SaveFileRecord(FileAsset file);
+		void SaveFileRecord(FileAsset file, ProtocolContext ctx);
 		bool HasDuplicateFile(FileContext file, string device_id);
 		long GetNextSeq();
 

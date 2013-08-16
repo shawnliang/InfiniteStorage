@@ -17,6 +17,8 @@ namespace Waveface.Client
 {
 	public class EventItem : FrameworkElement, INotifyPropertyChanged
 	{
+		private bool m_hasOrigin;
+
 		public BitmapSource BitmapImage { get; set; }
 		public bool IsVideo { get; set; }
 		public bool IsPhoto { get; set; }
@@ -27,7 +29,16 @@ namespace Waveface.Client
 
 		public BitmapSource MediaSource { get; set; }
 		public string FileID { get; set; }
-		public bool HasOrigin { get; set; }
+
+		public bool HasOrigin
+		{
+			get { return m_hasOrigin; }
+			set
+			{
+				m_hasOrigin = value;
+				OnPropertyChanged("HasOrigin");
+			}
+		}
 
 		#region INotifyPropertyChanged Members
 
@@ -46,13 +57,28 @@ namespace Waveface.Client
 
 	public partial class EventUC : UserControl
 	{
-		public List<FileEntry> Event { get; set; }
 		public string YM { get; set; }
 		public int VideosCount { get; set; }
 		public int PhotosCount { get; set; }
 
+		public List<FileEntry> FileEntrys
+		{
+			get { return m_fileEntrys; }
+			set
+			{
+				m_oldFileEntrysCount = m_fileEntrys.Count;
+
+				m_fileEntrys = value;
+
+				m_changed = m_oldFileEntrysCount != m_fileEntrys.Count;
+			}
+		}
+
+		private int m_oldFileEntrysCount;
+		private List<FileEntry> m_fileEntrys = new List<FileEntry>();
 		private const int More = 100;
 		private bool m_showMoreButton;
+		private bool m_changed;
 		private List<EventItem> m_eventItems;
 
 		public EventUC()
@@ -68,132 +94,164 @@ namespace Waveface.Client
 
 			SetInfor();
 
-			Event.Reverse();
+			FileEntrys.Reverse();
 
 			//試驗連張轉Gif
 			//List<FileEntry> _FileEntrys = GenGif();
-			List<FileEntry> _FileEntrys = Event;
+			List<FileEntry> _FileEntrys = FileEntrys;
 			List<EventItem> _ctlItems = new List<EventItem>();
 
-			int _idx = 0;
-
-			foreach (FileEntry _file in _FileEntrys)
+			// 若改變項目個數, 則重新產生UI
+			if (m_changed)
 			{
-				if (_idx == More)
+				int _idx = 0;
+
+				foreach (FileEntry _file in _FileEntrys)
 				{
-					EventItem _eventItem = new EventItem
-											   {
-												   IsMore = true
-											   };
+					if (_idx == More)
+					{
+						EventItem _eventItem = new EventItem
+												   {
+													   IsMore = true
+												   };
 
-					_ctlItems.Add(_eventItem);
-				}
+						_ctlItems.Add(_eventItem);
+					}
 
-				switch (_file.type)
-				{
-					case 0:
-						{
-							string _path = _file.tiny_path;
-
-
-							EventItem _eventItem = new EventItem
-													   {
-														   FileID = _file.id,
-														   IsVideo = false,
-														   IsPhoto = true,
-														   HasOrigin = !_file.has_origin
-													   };
-
-							try
+					switch (_file.type)
+					{
+						case 0:
 							{
-								BitmapImage _bi = new BitmapImage();
-								_bi.BeginInit();
-								_bi.UriSource = new Uri(_path, UriKind.Absolute);
-								_bi.EndInit();
+								string _path = _file.tiny_path;
 
-								_eventItem.BitmapImage = _bi;
-							}
-							catch
-							{
-							}
 
-							_ctlItems.Add(_eventItem);
-
-						}
-
-						break;
-					case 1:
-						{
-							EventItem _eventItem = new EventItem
-													   {
-														   FileID = _file.id,
-														   IsVideo = true,
-														   IsPhoto = false,
-														   HasOrigin = !_file.has_origin
-													   };
-
-							try
-							{
-								BitmapImage _bi = new BitmapImage();
-								_bi.BeginInit();
-								_bi.UriSource = new Uri("pack://application:,,,/Resource/video_ph.png");
-								_bi.EndInit();
-
-								_eventItem.BitmapImage = _bi;
-							}
-							catch
-							{
-							}
-
-							BitmapImage _vidoeThumb = new BitmapImage();
-							_vidoeThumb.BeginInit();
-
-							if (File.Exists(_file.tiny_path))
-								_vidoeThumb.UriSource = new Uri(_file.tiny_path, UriKind.Absolute);
-							else
-								_vidoeThumb.UriSource = new Uri("pack://application:,,,/Ren/Images/video_130x110.png");
-
-							_vidoeThumb.EndInit();
-
-							_eventItem.MediaSource = _vidoeThumb;
-
-							_ctlItems.Add(_eventItem);
-						}
-
-						break;
-					case 999:
-						{
-							string _path = _file.tiny_path;
-
-							try
-							{
 								EventItem _eventItem = new EventItem
 														   {
 															   FileID = _file.id,
 															   IsVideo = false,
-															   IsPhoto = false,
-															   IsGIF = true,
-															   HasOrigin = false
+															   IsPhoto = true,
+															   IsGIF = false,
+															   HasOrigin = !_file.has_origin
 														   };
 
-								BitmapImage _bi = new BitmapImage();
-								_bi.BeginInit();
-								_bi.UriSource = new Uri(_path, UriKind.Absolute);
-								_bi.EndInit();
+								try
+								{
+									BitmapImage _bi = new BitmapImage();
+									_bi.BeginInit();
+									_bi.UriSource = new Uri(_path, UriKind.Absolute);
+									_bi.EndInit();
 
-								_eventItem.BitmapImage = _bi;
+									_eventItem.BitmapImage = _bi;
+
+									if (_idx == 0)
+									{
+										imgHead.Source = _bi;
+									}
+								}
+								catch
+								{
+								}
 
 								_ctlItems.Add(_eventItem);
 							}
-							catch
-							{
-							}
-						}
 
-						break;
+							break;
+						case 1:
+							{
+								EventItem _eventItem = new EventItem
+														   {
+															   FileID = _file.id,
+															   IsVideo = true,
+															   IsPhoto = false,
+															   IsGIF = false,
+															   HasOrigin = !_file.has_origin
+														   };
+
+								try
+								{
+									BitmapImage _bi = new BitmapImage();
+									_bi.BeginInit();
+									_bi.UriSource = new Uri("pack://application:,,,/Resource/video_ph.png");
+									_bi.EndInit();
+
+									_eventItem.BitmapImage = _bi;
+								}
+								catch
+								{
+								}
+
+								BitmapImage _vidoeThumb = new BitmapImage();
+								_vidoeThumb.BeginInit();
+
+								if (File.Exists(_file.tiny_path))
+									_vidoeThumb.UriSource = new Uri(_file.tiny_path, UriKind.Absolute);
+								else
+									_vidoeThumb.UriSource = new Uri("pack://application:,,,/Ren/Images/video_130x110.png");
+
+								_vidoeThumb.EndInit();
+
+								_eventItem.MediaSource = _vidoeThumb;
+
+								if (_idx == 0)
+								{
+									imgHead.Source = _vidoeThumb;
+								}
+
+								_ctlItems.Add(_eventItem);
+							}
+
+							break;
+						case 999:
+							{
+								string _path = _file.tiny_path;
+
+								try
+								{
+									EventItem _eventItem = new EventItem
+															   {
+																   FileID = _file.id,
+																   IsVideo = false,
+																   IsPhoto = false,
+																   IsGIF = true,
+																   HasOrigin = false
+															   };
+
+									BitmapImage _bi = new BitmapImage();
+									_bi.BeginInit();
+									_bi.UriSource = new Uri(_path, UriKind.Absolute);
+									_bi.EndInit();
+
+									_eventItem.BitmapImage = _bi;
+
+									_ctlItems.Add(_eventItem);
+								}
+								catch
+								{
+								}
+							}
+
+							break;
+					}
+
+					_idx++;
+				}
+			}
+			else // 若沒改變項目個數, 則只重設HasOrigin欄位
+			{
+				Dictionary<string, FileEntry> _id_FileEntrys = new Dictionary<string, FileEntry>();
+
+				foreach (FileEntry _entry in _FileEntrys)
+				{
+					_id_FileEntrys.Add(_entry.id, _entry);
 				}
 
-				_idx++;
+				foreach (EventItem _item in m_eventItems)
+				{
+					if (_item.FileID != string.Empty) //排除有可能More跟Less
+						_item.HasOrigin = !_id_FileEntrys[_item.FileID].has_origin;
+				}
+
+				return;
 			}
 
 			//若少於More項
@@ -205,7 +263,8 @@ namespace Waveface.Client
 			}
 			else
 			{
-				_ctlItems.Add(new EventItem { IsLess = true });
+				if (m_changed) //重新產生UI狀況, 加入Less
+					_ctlItems.Add(new EventItem { IsLess = true });
 
 				m_eventItems = _ctlItems;
 
@@ -262,11 +321,11 @@ namespace Waveface.Client
 			int _idx = 0;
 			bool _preOK = false;
 
-			for (int i = 0; i < Event.Count; i++)
+			for (int i = 0; i < FileEntrys.Count; i++)
 			{
-				if (i < Event.Count - 1)
+				if (i < FileEntrys.Count - 1)
 				{
-					if (Math.Abs(Event[i + 1].taken_time.Second - Event[i].taken_time.Second) < 8)
+					if (Math.Abs(FileEntrys[i + 1].taken_time.Second - FileEntrys[i].taken_time.Second) < 8)
 					{
 						if (!_preOK && !_temp.Keys.Contains(_idx))
 						{
@@ -290,7 +349,7 @@ namespace Waveface.Client
 			List<FileEntry> _ret = new List<FileEntry>();
 			int _skip = 0;
 
-			for (int i = 0; i < Event.Count; i++)
+			for (int i = 0; i < FileEntrys.Count; i++)
 			{
 				if (_temp.Keys.Contains(i) && _temp[i] > 2)
 				{
@@ -300,7 +359,7 @@ namespace Waveface.Client
 				}
 
 				if (_skip-- <= 0)
-					_ret.Add(Event[i]);
+					_ret.Add(FileEntrys[i]);
 			}
 
 			return _ret;
@@ -313,7 +372,7 @@ namespace Waveface.Client
 			if (!Directory.Exists(_tempPathBase))
 				Directory.CreateDirectory(_tempPathBase);
 
-			string _gif = Path.Combine(_tempPathBase, Path.GetFileName(Event[idx].tiny_path)) + ".gif";
+			string _gif = Path.Combine(_tempPathBase, Path.GetFileName(FileEntrys[idx].tiny_path)) + ".gif";
 
 			if (!File.Exists(_gif))
 			{
@@ -321,7 +380,7 @@ namespace Waveface.Client
 
 				for (int k = 0; k < length; k++)
 				{
-					imageFilePaths.Add(Event[idx + k].tiny_path);
+					imageFilePaths.Add(FileEntrys[idx + k].tiny_path);
 				}
 
 				AnimatedGifEncoder _gifEncoder = new AnimatedGifEncoder();
@@ -337,7 +396,7 @@ namespace Waveface.Client
 				_gifEncoder.Finish();
 			}
 
-			FileEntry _ret = (FileEntry)Event[idx].Clone();
+			FileEntry _ret = (FileEntry)FileEntrys[idx].Clone();
 			_ret.tiny_path = _gif;
 			_ret.type = 999;
 
@@ -346,18 +405,12 @@ namespace Waveface.Client
 
 		private void SetInfor()
 		{
-			string _timeInterval = GetTimeDisplayString();
-
-			tbTitle.Text = _timeInterval;
+			tbTitleMonth.Text = FileEntrys[0].taken_time.ToString("MMM");
+			tbTitleYear.Text = FileEntrys[0].taken_time.ToString("yyyy");
 
 			tbTimeAgo.Visibility = Visibility.Collapsed;
 
 			tbTotalCount.Text = SourceAllFilesUC.GetCountsString(PhotosCount, VideosCount);
-		}
-
-		private string GetTimeDisplayString()
-		{
-			return Event[0].taken_time.ToString("MMM yyyy");
 		}
 
 		public void GetCounts()
@@ -365,7 +418,7 @@ namespace Waveface.Client
 			VideosCount = 0;
 			PhotosCount = 0;
 
-			foreach (FileEntry _file in Event)
+			foreach (FileEntry _file in FileEntrys)
 			{
 				if (_file.type == 0)
 				{

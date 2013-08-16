@@ -4,6 +4,8 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 #endregion
 
@@ -56,6 +58,45 @@ namespace Waveface.Client
 
 		#endregion
 
+		#region ImageDisableUri Property
+
+		public Uri ImageDisableUri
+		{
+			get { return (Uri)GetValue(ImageDisableUriProperty); }
+			set { SetValue(ImageDisableUriProperty, value); }
+		}
+
+		public static readonly DependencyProperty ImageDisableUriProperty =
+			DependencyProperty.Register("ImageDisableUri", typeof(Uri), typeof(ButtonImageText), null);
+
+		#endregion
+
+		#region ImagePressedUri Property
+
+		public Uri ImagePressedUri
+		{
+			get { return (Uri)GetValue(ImagePressedUriProperty); }
+			set { SetValue(ImagePressedUriProperty, value); }
+		}
+
+		public static readonly DependencyProperty ImagePressedUriProperty =
+			DependencyProperty.Register("ImagePressedUri", typeof(Uri), typeof(ButtonImageText), null);
+
+		#endregion
+
+		#region DiableForeground Property
+
+		public Brush DisableForeground
+		{
+			get { return (Brush)GetValue(DisableForegroundProperty); }
+			set { SetValue(DisableForegroundProperty, value); }
+		}
+
+		public static readonly DependencyProperty DisableForegroundProperty =
+			DependencyProperty.Register("DisableForeground", typeof(Brush), typeof(ButtonImageText), null);
+
+		#endregion
+
 		public ButtonImageText()
 		{
 			InitializeComponent();
@@ -64,32 +105,21 @@ namespace Waveface.Client
 		}
 
 		#region Click Event Procedure
-
-		private void borMain_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-		{
-			RaiseClick(e);
-		}
-
 		public delegate void ClickEventHandler(object sender, RoutedEventArgs e);
 
 		public event ClickEventHandler Click;
 
 		protected void RaiseClick(RoutedEventArgs e)
 		{
-			if (null != Click)
+			var handler = Click;
+			if (handler != null)
 				Click(this, e);
 		}
 
+		private void Button_Click_1(object sender, RoutedEventArgs e)
+		{
+			RaiseClick(e);
+		}
 		#endregion
-
-		private void borMain_MouseEnter(object sender, MouseEventArgs e)
-		{
-			VisualStateManager.GoToElementState(borMain, "MouseEnter", true);
-		}
-
-		private void borMain_MouseLeave(object sender, MouseEventArgs e)
-		{
-			VisualStateManager.GoToElementState(borMain, "MouseLeave", true);
-		}
 	}
 }

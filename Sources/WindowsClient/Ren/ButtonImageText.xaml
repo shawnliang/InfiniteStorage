@@ -1,14 +1,14 @@
 ﻿<UserControl x:Class="Waveface.Client.ButtonImageText"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DesignHeight="100"
-             d:DesignWidth="100">
-    
+             d:DesignWidth="100"
+             mc:Ignorable="d">
+
     <UserControl.Resources>
-        <Style TargetType="Border" x:Key="ButtonImageTextBorderStyle">
+        <Style x:Key="ButtonImageTextBorderStyle" TargetType="Border">
             <Setter Property="Margin" Value="4" />
             <Setter Property="BorderBrush" Value="White" />
             <Setter Property="BorderThickness" Value="0" />
@@ -19,25 +19,34 @@
             <Setter Property="Background" Value="Transparent" />
         </Style>
 
-        <Style TargetType="Image" x:Key="ButtonImageTextImageStyle">
-            <Setter Property="Margin" Value="0" />
+        <Style x:Key="ButtonImageTextImageStyle" TargetType="Image">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0, 0, 0, -3" />
             <Setter Property="Source" Value="{Binding Path=ImageUri}" />
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Source" Value="{Binding Path=ImageEnterUri}" />
                 </Trigger>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsPressed}" Value="True">
+                    <Setter Property="Source" Value="{Binding Path=ImagePressedUri}" />
+                </DataTrigger>
                 <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Source" Value="{Binding Path=ImageUri}" />
+                    <Setter Property="Source" Value="{Binding Path=ImageDisableUri}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
 
-        <Style TargetType="TextBlock" x:Key="ButtonImageTextTextBlockStyle">
+        <Style x:Key="ButtonImageTextTextBlockStyle" TargetType="TextBlock">
             <Setter Property="Margin" Value="2, 0, 2, 2" />
             <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1}, Path=Foreground}" />
-            <Setter Property="HorizontalAlignment"  Value="Center" />
-            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="FontSize" Value="12" />
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="{Binding Path=DisableForeground}" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Color x:Key="ButtonImageTextBorderHoverColor">Transparent</Color>
@@ -51,40 +60,23 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
-        <Border Grid.Row="0" x:Name="borMain" Style="{StaticResource ButtonImageTextBorderStyle}"
-            MouseEnter="borMain_MouseEnter"
-            MouseLeave="borMain_MouseLeave"
-            MouseLeftButtonDown="borMain_MouseLeftButtonDown"
-            ToolTip="{Binding Path=ToolTip}">
 
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup Name="MouseStates">
-                    <VisualState Name="MouseEnter">
-                        <Storyboard>
-                            <ColorAnimation To="{StaticResource ButtonImageTextBorderHoverColor}"
-                              Duration="0:0:00.1"
-                              Storyboard.TargetName="borMain"
-                              Storyboard.TargetProperty="BorderBrush.Color" />
-                            
-                            <ColorAnimation To="{StaticResource ButtonImageTextBackHoverColor}"
-                              Duration="0:0:00.1"
-                              Storyboard.TargetName="borMain"
-                              Storyboard.TargetProperty="Background.Color" />
-                            
-                            <ThicknessAnimation To="{StaticResource ButtonImageTextHoverThickness}"
-                                  Duration="0:0:00.1"
-                                  Storyboard.TargetName="borMain"
-                                  Storyboard.TargetProperty="Margin" />
-                        </Storyboard>
-                    </VisualState>
-                    <VisualState Name="MouseLeave" />
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
+        <Button Click="Button_Click_1">
 
-            <Image Style="{StaticResource ButtonImageTextImageStyle}" />
-        </Border>
-        
-        <TextBlock Grid.Row="1" x:Name="tbText" Style="{StaticResource ButtonImageTextTextBlockStyle}" Text="{Binding Path=Text}" />
+            <Image x:Name="btnImage"
+                   Margin="-2,0,2,-3"
+                   Style="{StaticResource ButtonImageTextImageStyle}" />
+
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <ContentPresenter Content="{TemplateBinding Content}" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <TextBlock x:Name="tbText"
+                   Grid.Row="1"
+                   Style="{StaticResource ButtonImageTextTextBlockStyle}"
+                   Text="{Binding Path=Text}" />
     </Grid>
 </UserControl>
