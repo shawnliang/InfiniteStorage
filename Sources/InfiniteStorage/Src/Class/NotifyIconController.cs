@@ -170,8 +170,12 @@ namespace InfiniteStorage
 				return Resources.MenuItem_BackupComplete;
 			}
 
+			var percentage = 0L;
+			if (ctx.fileCtx != null && ctx.fileCtx.file_size > 0)
+				percentage = 100 * ctx.temp_file.BytesWritten / ctx.fileCtx.file_size;
+
 			return ctx.temp_file != null ?
-							string.Format("  - {0} : {1}%", ctx.fileCtx.file_name, 100 * ctx.temp_file.BytesWritten / ctx.fileCtx.file_size) :
+							string.Format("  - {0} : {1}%", ctx.fileCtx.file_name, percentage) :
 							Resources.MenuItem_Preparing;
 		}
 
