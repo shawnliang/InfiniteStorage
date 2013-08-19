@@ -200,7 +200,7 @@
                                Grid.Column="0"
                        Stretch="None" 
 							    HorizontalAlignment="Center" VerticalAlignment="Center"
-                               Source="{StaticResource UnSelectedPC}" />
+                               Source="{StaticResource UnSelectedMobile}" />
 
                 <Label x:Name="item" Content="{Binding Name}" Foreground="#a8a8a8"  />
 
@@ -276,7 +276,7 @@
 										                  <HierarchicalDataTemplate.Triggers>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}" Value="True">
                             <Setter TargetName="item" Property="Foreground" Value="Black" />
-                    <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedPC}"/>
+                    <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedMobile}"/>
                 </DataTrigger>
 						</HierarchicalDataTemplate.Triggers>
         </HierarchicalDataTemplate>

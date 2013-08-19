@@ -146,7 +146,14 @@
             <BitmapImage x:Key="SelectedPC"
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/menu_pc_1.png" />
+            
+            <BitmapImage x:Key="UnSelectedMobile"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/menu_phone_0.png" />
 
+            <BitmapImage x:Key="SelectedMobile"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/menu_phone_1.png" />
             <BitmapImage x:Key="NormalStarBox"
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/star_noitem.png" />
