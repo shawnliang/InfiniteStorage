@@ -97,7 +97,6 @@
         								<RotateTransform Angle="180" CenterY="3" CenterX="3"/>
         							</Setter.Value>
         						</Setter>
-        						<Setter Property="Stroke" TargetName="ExpandPath" Value="#FF262626"/>
         					</Trigger>
         				</ControlTemplate.Triggers>
         			</ControlTemplate>
@@ -199,9 +198,9 @@
             <StackPanel AllowDrop="False" Orientation="Horizontal">
 				<Image x:Name="icon"
                                Grid.Column="0"
-                               Width="18"
-                               Height="18"
-                               Source="{StaticResource UnSelectedIcon}" />
+                       Stretch="None" 
+							    HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Source="{StaticResource UnSelectedMobile}" />
 
                 <Label x:Name="item" Content="{Binding Name}" Foreground="#a8a8a8"  />
 
@@ -224,8 +223,8 @@
 
                         <Image x:Name="icon"
                                Grid.Column="0"
-                               Width="18"
-                               Height="18"
+                               Stretch="None" 
+							    HorizontalAlignment="Center" VerticalAlignment="Center"
                                Margin="28,2,0,0"
                                Source="{StaticResource UnSelectedIcon}" />
 
@@ -277,7 +276,8 @@
 										                  <HierarchicalDataTemplate.Triggers>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}" Value="True">
                             <Setter TargetName="item" Property="Foreground" Value="Black" />
-                        </DataTrigger>
+                    <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedMobile}"/>
+                </DataTrigger>
 						</HierarchicalDataTemplate.Triggers>
         </HierarchicalDataTemplate>
     </TreeView.ItemTemplate>

@@ -8,6 +8,7 @@
          BorderBrush="{x:Null}"
          FontFamily="Segoe UI"
          ItemsSource="{Binding IsAsync=True}"
+         IsSynchronizedWithCurrentItem ="False"
          PreviewKeyDown="UserControl_PreviewKeyDown"
          MouseMove="UserControl_MouseMove"
          PreviewMouseLeftButtonDown="UserControl_PreviewMouseLeftButtonDown"
@@ -67,10 +68,9 @@
                             Grid.Column="0"
                             Orientation="Horizontal">
                     <Image x:Name="icon"
-                           Width="18"
-                           Height="18"
+                           Stretch="None" 
+							    HorizontalAlignment="Center" VerticalAlignment="Center"
                            Margin="10, 2, 0, 0"
-                           VerticalAlignment="Center"
                            Source="{StaticResource UnSelectedFav}" />
                     <Label x:Name="sourceName"
                            VerticalAlignment="Center"
@@ -97,8 +97,6 @@
 
                 <DataTrigger Binding="{Binding ShareEnabled}" Value="true">
                     <Setter TargetName="icon" Property="Source" Value="{StaticResource UnSelectedCloudFav}" />
-                    <Setter TargetName="sourceName" Property="Foreground" Value="DodgerBlue" />
-                    <Setter TargetName="sourceCount" Property="Foreground" Value="DodgerBlue" />
                 </DataTrigger>
 
                 <MultiDataTrigger>
@@ -119,7 +117,7 @@
                         <Condition Binding="{Binding ID}" Value="00000000-0000-0000-0000-000000000000" />
                         <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True" />
                     </MultiDataTrigger.Conditions>
-                    <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedStar}" />
+                    <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedFavStar}" />
                 </MultiDataTrigger>
 
                 <MultiDataTrigger>

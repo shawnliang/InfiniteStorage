@@ -23,13 +23,10 @@
         <local:IntToBoolConvertor x:Key="Int2ToBoolConverter" />
 
         <local:TestList x:Key="testList">
-            <local:TestData AlbumName="12345" />
-            <local:TestData AlbumName="12345" />
-            <local:TestData AlbumName="12345" />
-            <local:TestData AlbumName="12345" />
-            <local:TestData AlbumName="12345" />
-            <local:TestData AlbumName="12345" />
-            <local:TestData AlbumName="12345" />
+            <local:TestData AlbumName="123456" />
+            <local:TestData AlbumName="123456" />
+            <local:TestData AlbumName="123456" />
+            <local:TestData AlbumName="123456" />
         </local:TestList>
 
         <!--  Brushes used in Styling of ScrollViewer  -->
@@ -337,6 +334,15 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="CloudAlbumGroupStyle" TargetType="Grid">
+            <Setter Property="Visibility" Value="Visible" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Items.Count, ElementName=lbxCloudAlbums, IsAsync=True}" Value="0">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
         <Style x:Key="LocalAlbumGroupStyle" TargetType="Grid">
             <Setter Property="Visibility" Value="Visible" />
             <Style.Triggers>
@@ -346,7 +352,7 @@
             </Style.Triggers>
         </Style>
 
-        <Style TargetType="local:SourceTree">
+        <Style x:Key="SourceGroupStyle" TargetType="Grid">
             <Setter Property="Visibility" Value="Visible" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Items.Count, ElementName=lbxDeviceContainer, IsAsync=True}" Value="0">
@@ -504,7 +510,7 @@
                           VerticalScrollBarVisibility="Auto">
                 <StackPanel>
 
-                    <Grid>
+                    <Grid Style="{StaticResource SourceGroupStyle}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
@@ -516,7 +522,7 @@
                                FontFamily="Segoe UI"
                                FontWeight="Bold"
                                Foreground="#FFA8A8A8"
-                               Padding="0,0,0,2" />
+                               Padding="5,0,0,5" />
 
                         <local:SourceTree x:Name="lbxDeviceContainer"
                                           Grid.Row="1"
@@ -540,12 +546,13 @@
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0"
+                               Height="30"
                                VerticalContentAlignment="Bottom"
                                Content="{DynamicResource RecentGroupTitle}"
                                FontFamily="Segoe UI"
                                FontWeight="Bold"
                                Foreground="#FFA8A8A8"
-                               Padding="0,0,0,2" />
+                               Padding="5,0,0,5" />
 
                         <local:RecentListBox x:Name="lbxRecent"
                                              Grid.Row="1"
@@ -555,13 +562,38 @@
                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
                     </Grid>
 
-                    <Grid x:Name="gridAlbumGroup" Style="{StaticResource LocalAlbumGroupStyle}">
+                    <Grid x:Name="gridCloudAlbumGroup" Style="{StaticResource CloudAlbumGroupStyle}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0"
+                               Margin="5,0,0,5"
+                               VerticalContentAlignment="Bottom"
+                               Content="ONLINE ALBUM"
+                               FontFamily="Segoe UI"
+                               FontWeight="Bold"
+                               Foreground="#FFA8A8A8"
+                               Padding="0,0,0,2" />
+
+                        <local:FavoriteListBox x:Name="lbxCloudAlbums"
+                                               Grid.Row="1"
+                                               AllowDrop="True"
+                                               DeleteFavoriteInvoked="lbxFavorites_DeleteFavoriteInvoked"
+                                               DragEnter="Favorites_DragEnter"
+                                               Drop="Favorites_Drop"
+                                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                               ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                    </Grid>
+                    <Grid x:Name="gridLocalAlbumGroup" Style="{StaticResource LocalAlbumGroupStyle}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Row="0"
+                               Margin="5,0,0,5"
                                VerticalContentAlignment="Bottom"
                                Content="{DynamicResource FavoritesGroupTitle}"
                                FontFamily="Segoe UI"
@@ -602,8 +634,7 @@
                                    Margin="0,0,0,0"
                                    CloudSharingClick="rspRightSidePane2_CloudSharingClick"
                                    DeleteButtonClick="rspRightSidePane2_DeleteButtonClick"
-                                   FavoriteName="{Binding SelectedItem.Name,
-                                                          ElementName=lbxFavorites,
+                                   FavoriteName="{Binding Name,
                                                           Mode=TwoWay}" />
 
 
@@ -876,6 +907,8 @@
 
                 </Grid>
 
+
+
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <local:ButtonImageText x:Name="btnPushToDevice"
                                            ImageDisableUri="pack://application:,,,/Resource/bar2_push_3.png"
@@ -906,8 +939,8 @@
                     </local:AddToCallout>
 
                 </Popup>
+
             </Grid>
         </Grid>
     </Grid>
 </Window>
-

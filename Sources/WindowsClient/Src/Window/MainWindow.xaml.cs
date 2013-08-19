@@ -23,6 +23,8 @@ using Waveface.Model;
 using log4net;
 using CommandLine;
 using System.Windows.Media.Imaging;
+using System.ComponentModel;
+using System.Windows.Data;
 
 #endregion
 
@@ -51,11 +53,34 @@ namespace Waveface.Client
 #endif
 		}
 
+        private bool CloudAlbumFilter(object item)
+        {
+            var group = item as BunnyLabelContentGroup;
+            return group.ShareEnabled;
+        }
+
+        private bool LocalAlbumFilter(object item)
+        {
+            var group = item as BunnyLabelContentGroup;
+            return !group.ShareEnabled;
+        }
+
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			lbxDeviceContainer.DataContext = ClientFramework.Client.Default.Services;
 
-			lbxFavorites.DataContext = ClientFramework.Client.Default.Favorites;
+            ICollectionView cloudAlbums = new ListCollectionView(ClientFramework.Client.Default.Favorites);
+            cloudAlbums.Filter = CloudAlbumFilter;
+
+            lbxCloudAlbums.DataContext = cloudAlbums;
+
+            ICollectionView localAlbums = new ListCollectionView(ClientFramework.Client.Default.Favorites);
+            localAlbums.Filter = LocalAlbumFilter;
+
+
+            lbxFavorites.DataContext = localAlbums;
+
+           
 			lbxRecent.DataContext = ClientFramework.Client.Default.Recent;
 
 			rspRightSidePane2.tbxName.KeyDown += tbxName_KeyDown;
@@ -84,6 +109,17 @@ namespace Waveface.Client
 				.SubscribeOn(ThreadPoolScheduler.Instance)
 				.ObserveOn(DispatcherScheduler.Current)
 				.Subscribe(ex => TreeViewItem_PreviewMouseLeftButtonDown(ex.Sender, ex.EventArgs));
+
+            Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
+            handler => (s, ex) => handler(ex),
+            h => lbxCloudAlbums.SelectionChanged += h,
+            h => lbxCloudAlbums.SelectionChanged -= h
+            )
+            .Window(TimeSpan.FromMilliseconds(50))
+            .SelectMany(x => x.TakeLast(1))
+            .SubscribeOn(ThreadPoolScheduler.Instance)
+            .ObserveOn(DispatcherScheduler.Current)
+            .Subscribe(ex => lbxFavorites_SelectionChanged(lbxCloudAlbums, ex));
 
 			Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
 				handler => (s, ex) => handler(ex),
@@ -191,7 +227,7 @@ namespace Waveface.Client
 		{
 			foreach (var favorite in ClientFramework.Client.Default.Favorites.OfType<IContentGroup>())
 			{
-				favorite.Refresh();
+                RefreshFavorite(favorite);
 			}
 		}
 
@@ -201,6 +237,12 @@ namespace Waveface.Client
 				return;
 
 			favorite.Refresh();
+            (lbxCloudAlbums.ItemsSource as ICollectionView).Refresh();
+            (lbxFavorites.ItemsSource as ICollectionView).Refresh();
+
+            System.Windows.Forms.Application.DoEvents();
+
+            lbxCloudAlbums.SelectedItem = lbxFavorites.SelectedItem = GetCurrentContentGroup();
 		}
 
 		private IContentGroup GetSelectedFavoriteGroup()
@@ -392,6 +434,7 @@ namespace Waveface.Client
 				lbxFavorites.SelectedIndex = 0;
 			else
 			{
+                lbxCloudAlbums.SelectedIndex = -1;
 				lbxFavorites.SelectedIndex = -1;
 				lbxContentContainer.DataContext = null;
 				lblContentLocation.DataContext = null;
@@ -578,6 +621,7 @@ namespace Waveface.Client
 							{
 								folderNode.IsSelected = true;
 								lbxRecent.SelectedIndex = -1;
+                                lbxCloudAlbums.SelectedIndex = -1;
 								lbxFavorites.SelectedIndex = -1;
 
 								var group = (IContentGroup)devNode.Items[0];
@@ -768,6 +812,7 @@ namespace Waveface.Client
 				return;
 
             lbxContentContainer.SelectedIndex = -1;
+            lbxCloudAlbums.SelectedIndex = -1;
             lbxFavorites.SelectedIndex = -1;
             lbxRecent.SelectedIndex = -1;
 
@@ -842,10 +887,12 @@ namespace Waveface.Client
 
 		private void lbxFavorites_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (lbxFavorites.SelectedIndex >= 0)
+            var listbox = sender as ListBox;
+            if (listbox.SelectedIndex >= 0)
 			{
 				ShowSelectedFavoriteContents(sender, false);
 
+                ((listbox == lbxCloudAlbums) ? lbxFavorites : lbxCloudAlbums).SelectedItem = null;
 				lbxRecent.SelectedItem = null;
 			}
 		}
@@ -856,6 +903,7 @@ namespace Waveface.Client
 			{
 				ShowSelectedFavoriteContents(sender, true);
 
+                lbxCloudAlbums.SelectedItem = null;
 				lbxFavorites.SelectedItem = null;
 			}
 		}
@@ -976,6 +1024,8 @@ namespace Waveface.Client
 			//rspRightSidePane2.tbtnHomeSharing.IsEnabled = ClientFramework.Client.Default.HomeSharingEnabled;
 			//rspRightSidePane2.tbtnHomeSharing.IsChecked = isOnAir;
 
+            rspRightSidePane2.DataContext = group;
+
 			rspRightSidePane2.tbtnCloudSharing.IsChecked = (group as BunnyLabelContentGroup).ShareEnabled;
 
 			rspRightSidePane2.Update(lblContentLocation.DataContext as BunnyLabelContentGroup);
@@ -992,9 +1042,11 @@ namespace Waveface.Client
 
 			ClientFramework.Client.Default.ShareLabel(labelGroup.ID, isShared);
 
-			labelGroup.RefreshShareProperties();
+            RefreshFavorites();
 
-			rspRightSidePane2.Update(labelGroup);
+            labelGroup.RefreshShareProperties();
+
+            rspRightSidePane2.Update(labelGroup);
 		}
 
 		public void EmailCloudSharing()

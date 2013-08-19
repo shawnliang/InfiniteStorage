@@ -34,22 +34,8 @@ namespace Waveface.ClientFramework
 						if (Type == ContentType.Video)
 							return null;
 
-						string _tempPathBase = Path.GetTempPath() + "Waveface Photos" + "\\";
 
-						if (!Directory.Exists(_tempPathBase))
-							Directory.CreateDirectory(_tempPathBase);
-
-						string _tempFile = Path.Combine(_tempPathBase, Path.GetFileName(Uri.LocalPath));
-
-						try
-						{
-							File.Copy(Uri.LocalPath, _tempFile, true);
-							_imageSource = BitmapFrame.Create(new Uri(_tempFile));
-						}
-						catch
-						{
-							_imageSource = BitmapFrame.Create(Uri);
-						}
+                        _imageSource = BitmapFrame.Create(Uri, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
 
 						var metadata = _imageSource.Metadata as BitmapMetadata;
 

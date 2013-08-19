@@ -296,7 +296,6 @@ namespace Waveface.Client
 		{
 			int _index = lbImages.SelectedIndex;
 
-			List<IContentEntity> _source = ((IEnumerable<IContentEntity>)lbImages.DataContext).ToList();
 			IContentEntity _contentEntity = (IContentEntity)lbImages.SelectedItem;
 
 			if (MessageBox.Show(Application.Current.MainWindow, "Are you sure you want to delete?", "Confirm", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
@@ -306,28 +305,25 @@ namespace Waveface.Client
 
 			_mainWindow.DeleteSourceContents(new[] {_contentEntity.ID}, false);
 
-			_source.Remove((IContentEntity)lbImages.SelectedItem);
-
-			Source = _source;
-
-			if (_source.Count > _index)
-			{
-				lbImages.SelectedIndex = _index;
-			}
-			else
-			{
-				if (_source.Count > 0)
-				{
-					lbImages.SelectedIndex = 0;
-				}
-				else
-				{
-					vcViewerControl.PageNo = 0;
-					vcViewerControl.PageCount = 0;
-				}
-			}
+            if (lbImages.Items.Count > _index)
+            {
+                lbImages.SelectedIndex = _index;
+            }
+            else
+            {
+                if (lbImages.Items.Count > 0)
+                {
+                    lbImages.SelectedIndex = 0;
+                }
+                else
+                {
+                    vcViewerControl.PageNo = 0;
+                    vcViewerControl.PageCount = 0;
+                }
+            }
 
 			vcViewerControl.PageNo = lbImages.SelectedIndex + 1;
+            vcViewerControl.PageCount = lbImages.Items.Count;
 		}
 	}
 }
