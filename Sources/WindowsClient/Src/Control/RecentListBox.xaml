@@ -8,6 +8,7 @@
          BorderBrush="{x:Null}"
          FontFamily="Segoe UI"
          ItemsSource="{Binding IsAsync=True}"
+         IsSynchronizedWithCurrentItem ="False"
          PreviewKeyDown="UserControl_PreviewKeyDown"
          MouseMove="UserControl_MouseMove"
          PreviewMouseLeftButtonDown="UserControl_PreviewMouseLeftButtonDown"
@@ -62,11 +63,10 @@
                             Grid.Column="0"
                             Orientation="Horizontal">
                     <Image x:Name="icon"
-                           Width="18"
-                           Height="18"
+                           Stretch="None" 
+							    HorizontalAlignment="Center" VerticalAlignment="Center"
                            Margin="10, 2, 0, 0"
-                           VerticalAlignment="Center"
-                           Source="{StaticResource UnSelectedFav}" />
+                           Source="{StaticResource UnSelectedRecent}" />
                     <Label x:Name="sourceName"
                            VerticalAlignment="Center"
                            VerticalContentAlignment="Center"
@@ -85,7 +85,7 @@
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem},
                                                Path=IsSelected}"
                              Value="True">
-                    <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedFav}" />
+                    <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedRecent}" />
                     <Setter TargetName="item" Property="Background" Value="#d5d5d5" />
                     <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
                     <Setter TargetName="sourceCount" Property="Foreground" Value="Black" />
@@ -101,7 +101,7 @@
                         <Condition Binding="{Binding ID}" Value="00000000-0000-0000-0000-000000000000" />
                         <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True" />
                     </MultiDataTrigger.Conditions>
-                    <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedStar}" />
+                    <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedFavStar}" />
                 </MultiDataTrigger>
 
                 <MultiDataTrigger>

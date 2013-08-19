@@ -37,8 +37,8 @@ namespace Waveface.Client
 			if (TreeViewItemClick == null)
 				return;
 
-            if (e.Source is ToggleButton)
-                return;
+            //if (e.Source is ToggleButton)
+            //    return;
 
 			TreeViewItemClick(sender, EventArgs.Empty);
 		}

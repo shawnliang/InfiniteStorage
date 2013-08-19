@@ -307,8 +307,6 @@
     <Resource Include="Resource\ico_pic.png" />
     <Resource Include="Resource\ico_sand.png" />
     <Resource Include="Resource\ico_arrow_down.png" />
-    <Resource Include="Resource\ico_cloud_album_normal.png" />
-    <Resource Include="Resource\ico_cloud_album_select.png" />
     <Resource Include="Resource\Bunnydesktop.ico" />
     <Resource Include="Resource\Discard.png" />
     <Resource Include="Resource\LB_delete_0.png" />
@@ -346,6 +344,22 @@
     <Resource Include="Resource\loading_logo.gif" />
     <Resource Include="Resource\Less.png" />
     <Resource Include="Resource\More.png" />
+    <Resource Include="Resource\ico_fav_unselect.png" />
+    <Resource Include="Resource\ico_fav_select.png" />
+    <Resource Include="Resource\ico_cloud_album_normal.png" />
+    <Resource Include="Resource\ico_cloud_album_select.png" />
+    <Resource Include="Resource\ico_folder_unselect.png" />
+    <Resource Include="Resource\ico_folder_select.png" />
+    <Resource Include="Resource\menu_pc_0.png" />
+    <Resource Include="Resource\menu_pc_1.png" />
+    <Resource Include="Resource\menu_phone_0.png" />
+    <Resource Include="Resource\menu_phone_1.png" />
+    <Resource Include="Resource\menu_recent_0.png" />
+    <Resource Include="Resource\menu_recent_1.png" />
+    <Resource Include="Resource\ico_star_select.png" />
+    <Resource Include="Resource\ico_star_unselect.png" />
+    <Resource Include="Resource\ico_fav_star_unselect.png" />
+    <Resource Include="Resource\ico_fav_star_select.png" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -610,12 +624,6 @@
   <ItemGroup>
     <Resource Include="Resource\arrow_circle_double.png" />
     <Resource Include="Resource\favoriteicon.png" />
-    <Resource Include="Resource\ico_fav_select.png" />
-    <Resource Include="Resource\ico_fav_unselect.png" />
-    <Resource Include="Resource\ico_star_select.png" />
-    <Resource Include="Resource\ico_folder_select.png" />
-    <Resource Include="Resource\ico_folder_unselect.png" />
-    <Resource Include="Resource\ico_star_unselect.png" />
     <Resource Include="Resource\ico_unsort_select.png" />
     <Resource Include="Resource\ico_unsort_unselect.png" />
     <Resource Include="Resource\video_ph.png" />
@@ -641,9 +649,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\ico_add_source.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resource\ico_fav_star_unselect.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\ico_arrow.png" />

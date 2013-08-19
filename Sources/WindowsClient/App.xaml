@@ -122,9 +122,30 @@
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/ico_star_unselect.png" />
 
+            <BitmapImage x:Key="SelectedFavStar"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/ico_fav_star_select.png" />
+
             <BitmapImage x:Key="UnSelectedFavStar"
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/ico_fav_star_unselect.png" />
+
+
+            <BitmapImage x:Key="SelectedRecent"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/menu_recent_1.png" />
+
+            <BitmapImage x:Key="UnSelectedRecent"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/menu_recent_0.png" />
+            
+            <BitmapImage x:Key="UnSelectedPC"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/menu_pc_0.png" />
+
+            <BitmapImage x:Key="SelectedPC"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/menu_pc_1.png" />
 
             <BitmapImage x:Key="NormalStarBox"
                          CacheOption="OnDemand"
@@ -159,10 +180,8 @@
                          UriSource="pack://application:,,,/Resource/LB_delete_1.png" />
 
             <Style TargetType="{x:Type Image}">
-                <!--
-                    <Setter Property="RenderOptions.BitmapScalingMode"
+                <Setter Property="RenderOptions.BitmapScalingMode"
                     Value="NearestNeighbor" />
-                -->
                 <Setter Property="SnapsToDevicePixels" Value="True" />
             </Style>
 
