@@ -22,6 +22,7 @@ using Waveface.ClientFramework;
 using Waveface.Model;
 using log4net;
 using CommandLine;
+using System.Windows.Media.Imaging;
 
 #endregion
 
@@ -1667,6 +1668,16 @@ namespace Waveface.Client
 		private void GettingStarted_Tip3Clicked(object sender, MouseButtonEventArgs e)
 		{
 			Process.Start("https://play.google.com/store/apps/details?id=com.waveface.favoriteplayer");
+		}
+
+		private void btnAddToAlbum_Click_1(object sender, RoutedEventArgs e)
+		{
+			addToAlbumPopup.IsOpen = !addToAlbumPopup.IsOpen;
+
+			if (addToAlbumPopup.IsOpen)
+			{
+//				addToAlbumPopup.HorizontalOffset = 0 - ((UserControl)addToAlbumPopup.Child).ActualWidth / 2;
+			}
 		}
 	}
 }

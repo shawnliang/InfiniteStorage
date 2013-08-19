@@ -148,6 +148,14 @@
     <Compile Include="Ren\WpfAnimatedGif\Encoder\LZWEncoder.cs" />
     <Compile Include="Ren\WpfAnimatedGif\Encoder\NeuQuant.cs" />
     <Compile Include="Src\Class\Converter\IntToBoolConvertor.cs" />
+    <Compile Include="Src\Class\TestData.cs" />
+    <Compile Include="Src\Control\AddToCallout.xaml.cs">
+      <DependentUpon>AddToCallout.xaml</DependentUpon>
+    </Compile>
+
+    <Compile Include="Src\Control\CalloutMenu.xaml.cs" >
+      <DependentUpon>CalloutMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Control\ContentActionBar.xaml.cs">
       <DependentUpon>ContentActionBar.xaml</DependentUpon>
     </Compile>
@@ -383,6 +391,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Ren\Utility\FluidProgressBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Src\Control\AddToCallout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Src\Control\CalloutMenu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
