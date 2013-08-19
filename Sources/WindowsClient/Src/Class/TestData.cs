@@ -8,10 +8,9 @@ namespace Waveface.Client
 {
 	class TestData
 	{
-		public ImageSource Image { get; set; }
 		public String Text { get; set; }
 
-		public Uri ImageUri { get; set; }
+		public ImageSource Image { get; set; }
 		public String AlbumName { get; set; }
 		public String AlbumID { get; set; }
 		public bool IsAddToNewAlbum { get; set; }

@@ -33,11 +33,25 @@
                                     Height="110"
                                     Margin="0,0,0,13"
                                     BorderBrush="Black"
-                                    BorderThickness="2">
-                                <StackPanel Orientation="Vertical">
-                                    <Image HorizontalAlignment="Center" Source="{Binding Image}" />
-                                    <Label HorizontalAlignment="Center" Content="{Binding Text}" />
-                                </StackPanel>
+                                    BorderThickness="1">
+                                <Grid>
+                                    <Image HorizontalAlignment="Center"
+                                           Source="{Binding Image}"
+                                           Stretch="UniformToFill" />
+                                    <Label VerticalAlignment="Bottom"
+                                           Background="DarkGray"
+                                           Content="{Binding AlbumName}"
+                                           FontSize="14"
+                                           Visibility="Visible" />
+                                    <!--
+                                        <Label HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Bottom"
+                                        Background="Black"
+                                        Content=""
+                                        Foreground="#acacac"
+                                        Opacity="40" />
+                                    -->
+                                </Grid>
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

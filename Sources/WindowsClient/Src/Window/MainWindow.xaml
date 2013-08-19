@@ -23,13 +23,13 @@
         <local:IntToBoolConvertor x:Key="Int2ToBoolConverter" />
 
         <local:TestList x:Key="testList">
-            <local:TestData Text="12345" />
-            <local:TestData Text="12345" />
-            <local:TestData Text="12345" />
-            <local:TestData Text="12345" />
-            <local:TestData Text="12345" />
-            <local:TestData Text="12345" />
-            <local:TestData Text="12345" />
+            <local:TestData AlbumName="12345" />
+            <local:TestData AlbumName="12345" />
+            <local:TestData AlbumName="12345" />
+            <local:TestData AlbumName="12345" />
+            <local:TestData AlbumName="12345" />
+            <local:TestData AlbumName="12345" />
+            <local:TestData AlbumName="12345" />
         </local:TestList>
 
         <!--  Brushes used in Styling of ScrollViewer  -->
@@ -888,6 +888,7 @@
 
                 <Popup x:Name="addToAlbumPopup"
                        AllowsTransparency="True"
+                       DataContext="{StaticResource testList}"
                        HorizontalOffset="-180"
                        Placement="Top"
                        PlacementTarget="{Binding ElementName=btnAddToAlbum}"
@@ -895,7 +896,7 @@
                        StaysOpen="False"
                        VerticalOffset="-35">
 
-                    <local:AddToCallout x:Name="addToCallout" DataContext="{StaticResource testList}">
+                    <local:AddToCallout x:Name="addToCallout">
                         <local:AddToCallout.Effect>
                             <DropShadowEffect BlurRadius="6"
                                               Direction="270"

@@ -1676,7 +1676,28 @@ namespace Waveface.Client
 
 			if (addToAlbumPopup.IsOpen)
 			{
-//				addToAlbumPopup.HorizontalOffset = 0 - ((UserControl)addToAlbumPopup.Child).ActualWidth / 2;
+				var albums = new List<TestData>() {
+								new TestData { 
+									IsAddToNewAlbum = true,
+									AlbumName = "New Album",
+									Image = BitmapFrame.Create(new Uri("pack://application:,,,/Resource/bar2_source_0.png"))
+								}
+				};
+
+				albums.AddRange(
+					ClientFramework.Client.Default.Favorites.Select(x =>
+					{
+						var firstPic = (x as IContentGroup).Contents.FirstOrDefault() as BunnyContent;
+
+						return new TestData
+						{
+							AlbumID = x.ID,
+							AlbumName = x.Name,
+							Image = (firstPic != null) ? firstPic.ImageSource : null
+						};
+					}).OrderBy(x => x.AlbumName));
+
+				addToAlbumPopup.DataContext = albums;		  
 			}
 		}
 	}
