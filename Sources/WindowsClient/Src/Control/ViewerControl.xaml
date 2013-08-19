@@ -67,7 +67,6 @@
                        Foreground="White" />
 
                 <Label x:Name="lblPageCount"
-                       Width="31.567"
                        HorizontalContentAlignment="Center"
                        VerticalContentAlignment="Center"
                        Content="0"
