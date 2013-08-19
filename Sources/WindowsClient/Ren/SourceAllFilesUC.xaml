@@ -36,6 +36,25 @@
             </Style.Triggers>
         </Style>
 
+        <ControlTemplate x:Key="ButtonBaseControlTemplate1"  TargetType="{x:Type ButtonBase}">
+            <Border x:Name="border"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="White"
+                    BorderThickness="1"
+                    SnapsToDevicePixels="True">
+                <ContentPresenter x:Name="contentPresenter"                               
+                                  Margin="{TemplateBinding Padding}"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  Content="{TemplateBinding Content}"
+                                  ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Focusable="False"
+                                  RecognizesAccessKey="True"
+                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+            </Border>
+        </ControlTemplate>
+        
         <Style x:Key="SimpleListBoxItem"
                TargetType="ListBoxItem">
             <Setter Property="Template">
@@ -67,24 +86,31 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0"
-                        Background="{DynamicResource TitleBarBackground}"
-                        Orientation="Horizontal">
-                <TextBlock x:Name="tbTitle"
-                           Margin="2,14,0,0"
-                           FontFamily="Segoe UI"
-                           FontSize="18.667"
-                           FontWeight="Bold"
-                           Foreground="White"
-                           Text="" />
-                <TextBlock x:Name="tbTotalCount"
-                           Margin="10,20,0,0"
-                           FontSize="14"
-                           FontWeight="Bold"
-                           Foreground="#FF5A5A5A"
-                           Text="" />
-            </StackPanel>
+            <Grid Grid.Row="0"  Background="{DynamicResource TitleBarBackground}">
+                <TextBlock x:Name="tbTitle" Margin="12,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"                        
+                           FontFamily="Segoe UI" FontSize="20" FontWeight="Bold" Foreground="White" Text=""/>
+                
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                    <Image x:Name="imgCircleProgress" Visibility="Collapsed" Width="32" Height="32"  HorizontalAlignment="Right" VerticalAlignment="Center" gif:ImageBehavior.AnimatedSource="/Waveface.Client;component/Resource/circleProgress.gif" />
+                    <TextBlock x:Name="tbTitleInfo"  VerticalAlignment="Center" FontFamily="Segoe UI" FontSize="16" Margin="8, 0, 0, 0" Foreground="White" Text="xxxx xxx xxxx"/>
+                </StackPanel>
 
+                <ToggleButton x:Name="tbtnCloudSharing" HorizontalAlignment="Right"
+                      Height="26"
+                      Width="128"
+                      Margin="10,4,10,0"
+                      FontFamily="Segoe UI"
+                      FontSize="14"
+                      Background="DodgerBlue"
+                      Foreground="White"
+                      Template="{DynamicResource ButtonBaseControlTemplate1}"
+                      Cursor="Hand"
+                      Content="開啟自動匯入"                      
+                      Checked="tbtnCloudSharing_Checked"
+                      Unchecked="tbtnCloudSharing_Unchecked" />
+            </Grid>
+
+            
             <Grid Grid.Row="1">
                 <ListBox x:Name="listBoxEvent"
                          VirtualizingStackPanel.IsVirtualizing="True"

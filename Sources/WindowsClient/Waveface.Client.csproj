@@ -147,6 +147,7 @@
     <Compile Include="Ren\WpfAnimatedGif\Encoder\AnimatedGifEncoder.cs" />
     <Compile Include="Ren\WpfAnimatedGif\Encoder\LZWEncoder.cs" />
     <Compile Include="Ren\WpfAnimatedGif\Encoder\NeuQuant.cs" />
+    <Compile Include="Src\Class\Converter\IntToBoolConvertor.cs" />
     <Compile Include="Src\Control\ContentActionBar.xaml.cs">
       <DependentUpon>ContentActionBar.xaml</DependentUpon>
     </Compile>
@@ -360,6 +361,8 @@
     <Resource Include="Resource\ico_star_unselect.png" />
     <Resource Include="Resource\ico_fav_star_unselect.png" />
     <Resource Include="Resource\ico_fav_star_select.png" />
+    <Resource Include="Resource\video.png" />
+    <Resource Include="Resource\circleProgress.gif" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
