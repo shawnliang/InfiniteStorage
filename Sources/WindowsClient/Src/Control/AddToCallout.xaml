@@ -4,7 +4,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Waveface.Client"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:wvmodel="clr-namespace:Waveface.Model;assembly=Waveface.Model"
              mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type wvmodel:ContentGroup}">
+            <local:GroupContentItem Padding="10" />
+        </DataTemplate>
+    </UserControl.Resources>
 
     <local:CalloutMenu MaxWidth="430"
                        Background="#d5d5d5"
@@ -12,49 +19,22 @@
         <StackPanel Margin="10, 5, 10, 20" Orientation="Vertical">
 
             <Label HorizontalAlignment="Center"
-                   Content="8 files selected"
+                   Content="{Binding RelativeSource={RelativeSource AncestorType=local:AddToCallout},
+                                     Path=SelectionText}"
+                   FontSize="15"
                    Foreground="#4d4d4d" />
             <ScrollViewer MaxHeight="240">
                 <ItemsControl Background="{x:Null}"
                               BorderThickness="0"
                               ItemsSource="{Binding}"
+                              PreviewMouseLeftButtonDown="Border_MouseLeftButtonDown_1"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                               ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <!--  <WrapPanel Orientation="Horizontal" />  -->
                             <UniformGrid Columns="3" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Width="110"
-                                    Height="110"
-                                    Margin="0,0,0,13"
-                                    BorderBrush="Black"
-                                    BorderThickness="1">
-                                <Grid>
-                                    <Image HorizontalAlignment="Center"
-                                           Source="{Binding Image}"
-                                           Stretch="UniformToFill" />
-                                    <Label VerticalAlignment="Bottom"
-                                           Background="DarkGray"
-                                           Content="{Binding AlbumName}"
-                                           FontSize="14"
-                                           Visibility="Visible" />
-                                    <!--
-                                        <Label HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Bottom"
-                                        Background="Black"
-                                        Content=""
-                                        Foreground="#acacac"
-                                        Opacity="40" />
-                                    -->
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
         </StackPanel>

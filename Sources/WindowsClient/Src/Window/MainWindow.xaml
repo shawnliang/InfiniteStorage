@@ -22,13 +22,6 @@
     <Window.Resources>
         <local:IntToBoolConvertor x:Key="Int2ToBoolConverter" />
 
-        <local:TestList x:Key="testList">
-            <local:TestData AlbumName="123456" />
-            <local:TestData AlbumName="123456" />
-            <local:TestData AlbumName="123456" />
-            <local:TestData AlbumName="123456" />
-        </local:TestList>
-
         <!--  Brushes used in Styling of ScrollViewer  -->
 
         <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
@@ -921,7 +914,6 @@
 
                 <Popup x:Name="addToAlbumPopup"
                        AllowsTransparency="True"
-                       DataContext="{StaticResource testList}"
                        HorizontalOffset="-180"
                        Placement="Top"
                        PlacementTarget="{Binding ElementName=btnAddToAlbum}"
@@ -929,9 +921,9 @@
                        StaysOpen="False"
                        VerticalOffset="-35">
 
-                    <local:AddToCallout x:Name="addToCallout">
+                    <local:AddToCallout x:Name="addToCallout" AlbumClicked="AddToAlbum_AlbumClicked">
                         <local:AddToCallout.Effect>
-                            <DropShadowEffect BlurRadius="6"
+                            <DropShadowEffect BlurRadius="4"
                                               Direction="270"
                                               Opacity="0.6"
                                               ShadowDepth="1" />

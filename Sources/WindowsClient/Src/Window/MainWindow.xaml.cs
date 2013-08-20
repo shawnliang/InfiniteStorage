@@ -1702,9 +1702,15 @@ namespace Waveface.Client
 			//btnDelete.IsEnabled = lbxContentContainer.SelectedItems.Count != 0;
 
 			if (lbxContentContainer.SelectedItems.Count == 0)
+			{
 				selectionText.Content = "";
+				addToCallout.SelectionText = "";
+			}
 			else
-				selectionText.Content = string.Format((string)lbxContentContainer.FindResource("selection_text"), lbxContentContainer.SelectedItems.Count);
+			{
+				addToCallout.SelectionText = string.Format((string)lbxContentContainer.FindResource("selection_text"), lbxContentContainer.SelectedItems.Count);
+				selectionText.Content = addToCallout.SelectionText;
+			}
 		}
 
 		private void lbxContentContainer_MouseDown(object sender, MouseButtonEventArgs e)
@@ -1728,29 +1734,30 @@ namespace Waveface.Client
 
 			if (addToAlbumPopup.IsOpen)
 			{
-				var albums = new List<TestData>() {
-								new TestData { 
-									IsAddToNewAlbum = true,
-									AlbumName = "New Album",
-									Image = BitmapFrame.Create(new Uri("pack://application:,,,/Resource/bar2_source_0.png"))
-								}
+				var albums = new List<IContentEntity>() {
+								new CreateNewAlbumContentEntity((string)FindResource("CreateFavorite"))
 				};
 
 				albums.AddRange(
-					ClientFramework.Client.Default.Favorites.Select(x =>
-					{
-						var firstPic = (x as IContentGroup).Contents.FirstOrDefault() as BunnyContent;
-
-						return new TestData
-						{
-							AlbumID = x.ID,
-							AlbumName = x.Name,
-							Image = (firstPic != null) ? firstPic.ImageSource : null
-						};
-					}).OrderBy(x => x.AlbumName));
+					ClientFramework.Client.Default.Favorites.OrderBy(x => x.Name));
 
 				addToAlbumPopup.DataContext = albums;		  
 			}
+		}
+
+		private void AddToAlbum_AlbumClicked(object sender, AlbumClickedEventArgs e)
+		{
+			if (e.DataContext is CreateNewAlbumContentEntity)
+			{
+				btnCreateAlbum_Click(this, new RoutedEventArgs());
+			}
+			else
+			{
+				var album = e.DataContext as IContentGroup;
+				AddToFavorite(album.ID, GetSelectedContents());
+			}
+
+			addToAlbumPopup.IsOpen = false;
 		}
 	}
 }
