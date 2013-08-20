@@ -34,7 +34,6 @@ namespace Waveface.ClientFramework
 						if (Type == ContentType.Video)
 							return null;
 
-
                         _imageSource = BitmapFrame.Create(Uri, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
 
 						var metadata = _imageSource.Metadata as BitmapMetadata;

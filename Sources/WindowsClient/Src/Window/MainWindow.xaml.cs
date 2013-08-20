@@ -99,15 +99,26 @@ namespace Waveface.Client
 
 			lblContentTypeCount.Content = string.Format("0 photos 0 videos");
 
-			Observable.FromEventPattern(
-				h => lbxDeviceContainer.TreeViewItemClick += h,
-				h => lbxDeviceContainer.TreeViewItemClick -= h
-				)
-				.Window(TimeSpan.FromMilliseconds(50))
-				.SelectMany(x => x.TakeLast(1))
-				.SubscribeOn(ThreadPoolScheduler.Instance)
-				.ObserveOn(DispatcherScheduler.Current)
-				.Subscribe(ex => TreeViewItem_PreviewMouseLeftButtonDown(ex.Sender, ex.EventArgs));
+            //Observable.FromEventPattern(
+            //    h => lbxDeviceContainer.TreeViewItemClick += h,
+            //    h => lbxDeviceContainer.TreeViewItemClick -= h
+            //    )
+            //    .Window(TimeSpan.FromMilliseconds(50))
+            //    .SelectMany(x => x.TakeLast(1))
+            //    .SubscribeOn(ThreadPoolScheduler.Instance)
+            //    .ObserveOn(DispatcherScheduler.Current)
+            //    .Subscribe(ex => TreeViewItem_PreviewMouseLeftButtonDown(ex.Sender, ex.EventArgs));
+
+            Observable.FromEvent<RoutedPropertyChangedEventHandler<object>, RoutedPropertyChangedEventArgs<object>>(
+            handler => (s, ex) => handler(ex),
+            h => lbxDeviceContainer.SelectedItemChanged += h,
+            h => lbxDeviceContainer.SelectedItemChanged -= h
+            )
+            .Window(TimeSpan.FromMilliseconds(50))
+            .SelectMany(x => x.TakeLast(1))
+            .SubscribeOn(ThreadPoolScheduler.Instance)
+            .ObserveOn(DispatcherScheduler.Current)
+            .Subscribe(ex => TreeViewItem_SelectedItemChanged(ex.OriginalSource, ex));
 
             Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
             handler => (s, ex) => handler(ex),
@@ -803,9 +814,29 @@ namespace Waveface.Client
 			SetContentTypeCount(group as IContentGroup);
 		}
 
-		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, EventArgs e)
+        private DependencyObject GetControlItem(ItemsControl itemsControl, object value)
+        {
+            foreach (var item in itemsControl.Items)
+            {
+                var dp = itemsControl.ItemContainerGenerator.ContainerFromItem(value);
+
+                if (dp != null)
+                    return dp;
+
+                var currentTreeViewItem = itemsControl.ItemContainerGenerator.ContainerFromItem(item);
+
+                var childDp = GetControlItem(currentTreeViewItem as ItemsControl, value);
+
+                if (childDp != null)
+                    return childDp;
+            }
+            return null;
+        }
+
+        private void TreeViewItem_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
 		{
-			var ti = sender as TreeViewItem;
+            var treeView = sender as TreeView;
+            var ti = GetControlItem(treeView, treeView.SelectedItem) as TreeViewItem;
 
 			if (ti == null)
 				return;
@@ -866,6 +897,70 @@ namespace Waveface.Client
 
 			GC.Collect();
 		}
+
+    //private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, EventArgs e)
+    //    {
+    //        var ti = sender as TreeViewItem;
+
+    //        if (ti == null)
+    //            return;
+
+    //        lbxContentContainer.SelectedIndex = -1;
+    //        lbxCloudAlbums.SelectedIndex = -1;
+    //        lbxFavorites.SelectedIndex = -1;
+    //        lbxRecent.SelectedIndex = -1;
+
+    //        var group = ti.DataContext as IContentGroup;
+
+    //        if (group == null)
+    //        {
+    //            IService _service = ti.DataContext as IService;
+
+    //            if (_service == null)
+    //                return;
+
+    //            Cursor = Cursors.Wait;
+
+    //            ContentAreaToolBar.Visibility = Visibility.Collapsed;
+    //            lbxContentContainer.Visibility = Visibility.Collapsed;
+
+    //            allFilesUC.Visibility = Visibility.Visible;
+    //            allFilesUC.Load(_service, this);
+
+    //            Cursor = Cursors.Arrow;
+
+    //            return;
+    //        }
+
+    //        group.Refresh();
+
+    //        allFilesUC.Stop();
+    //        allFilesUC.Visibility = Visibility.Collapsed;
+    //        ContentAreaToolBar.Visibility = Visibility.Visible;
+    //        lbxContentContainer.Visibility = Visibility.Visible;
+
+    //        lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
+    //        //btnDelete.IsEnabled = false;
+    //        //btnCreateAlbum.IsEnabled = false;
+
+    //        Grid.SetColumnSpan(gdContentArea, 2);
+
+    //        gdRightSide.Visibility = Visibility.Collapsed;
+
+    //        rspRightSidePanel.Visibility = Visibility.Collapsed;
+    //        rspRightSidePane2.Visibility = Visibility.Collapsed;
+
+    //        lblContentLocation.DataContext = group;
+    //        lbxContentContainer.DataContext = null;
+
+    //        DoEvents();
+
+    //        lbxContentContainer.DataContext = group.Contents;
+
+    //        SetContentTypeCount(group);
+
+    //        GC.Collect();
+    //    }
 
 		private void lbxContentContainer_KeyDown(object sender, KeyEventArgs e)
 		{
