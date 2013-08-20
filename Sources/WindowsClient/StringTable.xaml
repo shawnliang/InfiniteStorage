@@ -74,7 +74,7 @@
     <system:String x:Key="LONGER">GENERAL</system:String>
 
     <!--  begin of need review  -->
-    <system:String x:Key="AddNewSource">Add a Phone</system:String>
+    <system:String x:Key="AddNewSource">Add a New Source</system:String>
     <system:String x:Key="ANS_9">Learn more</system:String>
     <system:String x:Key="ANS_step1_title">Install the app</system:String>
     <system:String x:Key="ANS_step1">Search for 'Waveface Photos' on Google Play, or simply use the QR code.</system:String>

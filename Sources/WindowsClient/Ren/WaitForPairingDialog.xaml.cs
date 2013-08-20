@@ -40,25 +40,25 @@ namespace Waveface.Client
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			try
-			{
-				digit1.Content = digit2.Content = digit3.Content = digit4.Content = "";
+            try
+            {
+                digit1.Content = digit2.Content = digit3.Content = digit4.Content = "";
 
-				m_bgworker.DoWork += m_bgworker_DoWork;
-				m_bgworker.RunWorkerCompleted += m_bgworker_RunWorkerCompleted;
-				m_bgworker.RunWorkerAsync();
+                m_bgworker.DoWork += m_bgworker_DoWork;
+                m_bgworker.RunWorkerCompleted += m_bgworker_RunWorkerCompleted;
+                m_bgworker.RunWorkerAsync();
 
-				var _port = Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "pair_port", 0);
+                var _port = Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "pair_port", 0);
 
-				m_webSocket = new WebSocket("ws://127.0.0.1:" + _port);
-				m_webSocket.OnMessage += webSocket_OnMessage;
-				m_webSocket.Connect();
+                m_webSocket = new WebSocket("ws://127.0.0.1:" + _port);
+                m_webSocket.OnMessage += webSocket_OnMessage;
+                m_webSocket.Connect();
 
-				WS_subscribe_start();
-			}
-			catch
-			{
-			}
+                WS_subscribe_start();
+            }
+            catch
+            {
+            }
 		}
 
 		void m_bgworker_DoWork(object sender, DoWorkEventArgs e)
@@ -72,14 +72,14 @@ namespace Waveface.Client
 
 		void m_bgworker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			if (e.Error != null || e.Cancelled || e.Result == null)
-				return;
+            if (e.Error != null || e.Cancelled || e.Result == null)
+                return;
 
-			var passcode = e.Result as string;
-			digit1.Content = passcode.Substring(0, 1);
-			digit2.Content = passcode.Substring(1, 1);
-			digit3.Content = passcode.Substring(2, 1);
-			digit4.Content = passcode.Substring(3, 1);
+            var passcode = e.Result as string;
+            digit1.Content = passcode.Substring(0, 1);
+            digit2.Content = passcode.Substring(1, 1);
+            digit3.Content = passcode.Substring(2, 1);
+            digit4.Content = passcode.Substring(3, 1);
 		}
 
 		private void Window_Closing(object sender, CancelEventArgs e)
