@@ -22,6 +22,13 @@
     <Window.Resources>
         <local:IntToBoolConvertor x:Key="Int2ToBoolConverter" />
 
+        <local:TestList x:Key="testList">
+            <local:TestData AlbumName="123456" />
+            <local:TestData AlbumName="123456" />
+            <local:TestData AlbumName="123456" />
+            <local:TestData AlbumName="123456" />
+        </local:TestList>
+
         <!--  Brushes used in Styling of ScrollViewer  -->
 
         <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
@@ -327,7 +334,7 @@
             </Style.Triggers>
         </Style>
 
-		        <Style x:Key="CloudAlbumGroupStyle" TargetType="Grid">
+        <Style x:Key="CloudAlbumGroupStyle" TargetType="Grid">
             <Setter Property="Visibility" Value="Visible" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Items.Count, ElementName=lbxCloudAlbums, IsAsync=True}" Value="0">
@@ -498,101 +505,113 @@
                                   Direction="0"
                                   ShadowDepth="1" />
             </Grid.Effect>
-                   	<ScrollViewer HorizontalScrollBarVisibility="Disabled"
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                           IsDeferredScrollingEnabled="True"
                           VerticalScrollBarVisibility="Auto">
-        		<StackPanel>
+                <StackPanel>
 
-        			<Grid Style="{StaticResource SourceGroupStyle}">
-        				<Grid.RowDefinitions>
-        					<RowDefinition Height="30" />
-        					<RowDefinition Height="*" />
-        				</Grid.RowDefinitions>
+                    <Grid Style="{StaticResource SourceGroupStyle}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-        				<Label Grid.Row="0"
-        					Content="{DynamicResource SourceGroupTitle}"
-        					FontFamily="Segoe UI"
-        					FontWeight="Bold"
-        					Foreground="#FFA8A8A8" Padding="5,0,0,5" VerticalContentAlignment="Bottom" />
+                        <Label Grid.Row="0"
+                               VerticalContentAlignment="Bottom"
+                               Content="{DynamicResource SourceGroupTitle}"
+                               FontFamily="Segoe UI"
+                               FontWeight="Bold"
+                               Foreground="#FFA8A8A8"
+                               Padding="5,0,0,5" />
 
-        				<local:SourceTree x:Name="lbxDeviceContainer"
-        					Grid.Row="1"
-        					AddToFavoriteInvoked="lbxDeviceContainer_AddToFavoriteInvoked"
-        					AllowDrop="True"
-        					BorderBrush="{x:Null}"
-        					CreateFavoriteInvoked="lbxDeviceContainer_CreateFavoriteInvoked"
-        					DeleteSourceInvoked="lbxDeviceContainer_DeleteSourceInvoked"
-        					DragOver="Sources_DragOver"
-        					Drop="Sources_Drop"
-        					StarInvoked="lbxDeviceContainer_StarInvoked"
-        					VirtualizingStackPanel.IsVirtualizing="True"
-        					VirtualizingStackPanel.VirtualizationMode="Recycling" Padding="0" />
-        			</Grid>
+                        <local:SourceTree x:Name="lbxDeviceContainer"
+                                          Grid.Row="1"
+                                          AddToFavoriteInvoked="lbxDeviceContainer_AddToFavoriteInvoked"
+                                          AllowDrop="True"
+                                          BorderBrush="{x:Null}"
+                                          CreateFavoriteInvoked="lbxDeviceContainer_CreateFavoriteInvoked"
+                                          DeleteSourceInvoked="lbxDeviceContainer_DeleteSourceInvoked"
+                                          DragOver="Sources_DragOver"
+                                          Drop="Sources_Drop"
+                                          Padding="0"
+                                          StarInvoked="lbxDeviceContainer_StarInvoked"
+                                          VirtualizingStackPanel.IsVirtualizing="True"
+                                          VirtualizingStackPanel.VirtualizationMode="Recycling" />
+                    </Grid>
 
-        			<Grid>
-        				<Grid.RowDefinitions>
-        					<RowDefinition Height="30" />
-        					<RowDefinition Height="*" />
-        				</Grid.RowDefinitions>
-                    
-        				<Label Grid.Row="0"
-        					Content="{DynamicResource RecentGroupTitle}"
-        					FontWeight="Bold"
-        					FontFamily="Segoe UI"
-        					Foreground="#FFA8A8A8" Padding="5,0,0,5" VerticalContentAlignment="Bottom" Height="30" />
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-        				<local:RecentListBox x:Name="lbxRecent"
-        					Grid.Row="1"
-        					AllowDrop="True"
-        					DragEnter="Favorites_DragEnter"
-        					Drop="Recent_Drop"
-        					ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
-        			</Grid>
+                        <Label Grid.Row="0"
+                               Height="30"
+                               VerticalContentAlignment="Bottom"
+                               Content="{DynamicResource RecentGroupTitle}"
+                               FontFamily="Segoe UI"
+                               FontWeight="Bold"
+                               Foreground="#FFA8A8A8"
+                               Padding="5,0,0,5" />
 
-        			<Grid x:Name="gridCloudAlbumGroup" Style="{StaticResource CloudAlbumGroupStyle}">
-        				<Grid.RowDefinitions>
-        					<RowDefinition Height="30" />
-        					<RowDefinition Height="*" />
-        				</Grid.RowDefinitions>
-                    
-        				<Label Grid.Row="0"
-        					Content="ONLINE ALBUM"
-        					FontWeight="Bold"
-        					FontFamily="Segoe UI"
-        					Foreground="#FFA8A8A8" VerticalContentAlignment="Bottom" Padding="0,0,0,2" Margin="5,0,0,5" />
+                        <local:RecentListBox x:Name="lbxRecent"
+                                             Grid.Row="1"
+                                             AllowDrop="True"
+                                             DragEnter="Favorites_DragEnter"
+                                             Drop="Recent_Drop"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                    </Grid>
 
-        				<local:FavoriteListBox x:Name="lbxCloudAlbums"
-        					Grid.Row="1"
-							 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-        					AllowDrop="True"
-        					DeleteFavoriteInvoked="lbxFavorites_DeleteFavoriteInvoked"
-        					DragEnter="Favorites_DragEnter"
-        					Drop="Favorites_Drop"
-        					ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
-        			</Grid>
-        			<Grid x:Name="gridLocalAlbumGroup" Style="{StaticResource LocalAlbumGroupStyle}">
-        				<Grid.RowDefinitions>
-        					<RowDefinition Height="30" />
-        					<RowDefinition Height="*" />
-        				</Grid.RowDefinitions>
-                    
-        				<Label Grid.Row="0"
-        					Content="{DynamicResource FavoritesGroupTitle}"
-        					FontWeight="Bold"
-        					FontFamily="Segoe UI"
-        					Foreground="#FFA8A8A8" VerticalContentAlignment="Bottom" Padding="0,0,0,2" Margin="5,0,0,5" />
+                    <Grid x:Name="gridCloudAlbumGroup" Style="{StaticResource CloudAlbumGroupStyle}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-        				<local:FavoriteListBox x:Name="lbxFavorites"
-        					Grid.Row="1"
-        					ScrollViewer.VerticalScrollBarVisibility="Disabled"
-        					AllowDrop="True"
-        					DeleteFavoriteInvoked="lbxFavorites_DeleteFavoriteInvoked"
-        					DragEnter="Favorites_DragEnter"
-        					Drop="Favorites_Drop"
-        					ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
-        			</Grid>
-        		</StackPanel>
-        	</ScrollViewer>
+                        <Label Grid.Row="0"
+                               Margin="5,0,0,5"
+                               VerticalContentAlignment="Bottom"
+                               Content="ONLINE ALBUM"
+                               FontFamily="Segoe UI"
+                               FontWeight="Bold"
+                               Foreground="#FFA8A8A8"
+                               Padding="0,0,0,2" />
+
+                        <local:FavoriteListBox x:Name="lbxCloudAlbums"
+                                               Grid.Row="1"
+                                               AllowDrop="True"
+                                               DeleteFavoriteInvoked="lbxFavorites_DeleteFavoriteInvoked"
+                                               DragEnter="Favorites_DragEnter"
+                                               Drop="Favorites_Drop"
+                                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                               ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                    </Grid>
+                    <Grid x:Name="gridLocalAlbumGroup" Style="{StaticResource LocalAlbumGroupStyle}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Row="0"
+                               Margin="5,0,0,5"
+                               VerticalContentAlignment="Bottom"
+                               Content="{DynamicResource FavoritesGroupTitle}"
+                               FontFamily="Segoe UI"
+                               FontWeight="Bold"
+                               Foreground="#FFA8A8A8"
+                               Padding="0,0,0,2" />
+
+                        <local:FavoriteListBox x:Name="lbxFavorites"
+                                               Grid.Row="1"
+                                               AllowDrop="True"
+                                               DeleteFavoriteInvoked="lbxFavorites_DeleteFavoriteInvoked"
+                                               DragEnter="Favorites_DragEnter"
+                                               Drop="Favorites_Drop"
+                                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                               ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
 
         <GridSplitter Grid.Row="1"
@@ -854,7 +873,7 @@
 
                         <local:ButtonImageText x:Name="btnAddToAlbum"
                                                Grid.Column="1"
-                                               Click="btnCreateCloudAlbum_Click"
+                                               Click="btnAddToAlbum_Click_1"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_addto_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_addto_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_addto_2.png"
@@ -899,6 +918,28 @@
                                            Style="{StaticResource toolbarBtnStyle}"
                                            Text="Push to Devices" />
                 </StackPanel>
+
+                <Popup x:Name="addToAlbumPopup"
+                       AllowsTransparency="True"
+                       DataContext="{StaticResource testList}"
+                       HorizontalOffset="-180"
+                       Placement="Top"
+                       PlacementTarget="{Binding ElementName=btnAddToAlbum}"
+                       PopupAnimation="Fade"
+                       StaysOpen="False"
+                       VerticalOffset="-35">
+
+                    <local:AddToCallout x:Name="addToCallout">
+                        <local:AddToCallout.Effect>
+                            <DropShadowEffect BlurRadius="6"
+                                              Direction="270"
+                                              Opacity="0.6"
+                                              ShadowDepth="1" />
+                        </local:AddToCallout.Effect>
+                    </local:AddToCallout>
+
+                </Popup>
+
             </Grid>
         </Grid>
     </Grid>

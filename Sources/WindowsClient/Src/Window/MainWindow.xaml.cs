@@ -22,6 +22,7 @@ using Waveface.ClientFramework;
 using Waveface.Model;
 using log4net;
 using CommandLine;
+using System.Windows.Media.Imaging;
 using System.ComponentModel;
 using System.Windows.Data;
 
@@ -1814,6 +1815,37 @@ namespace Waveface.Client
 		private void GettingStarted_Tip3Clicked(object sender, MouseButtonEventArgs e)
 		{
 			Process.Start("https://play.google.com/store/apps/details?id=com.waveface.favoriteplayer");
+		}
+
+		private void btnAddToAlbum_Click_1(object sender, RoutedEventArgs e)
+		{
+			addToAlbumPopup.IsOpen = !addToAlbumPopup.IsOpen;
+
+			if (addToAlbumPopup.IsOpen)
+			{
+				var albums = new List<TestData>() {
+								new TestData { 
+									IsAddToNewAlbum = true,
+									AlbumName = "New Album",
+									Image = BitmapFrame.Create(new Uri("pack://application:,,,/Resource/bar2_source_0.png"))
+								}
+				};
+
+				albums.AddRange(
+					ClientFramework.Client.Default.Favorites.Select(x =>
+					{
+						var firstPic = (x as IContentGroup).Contents.FirstOrDefault() as BunnyContent;
+
+						return new TestData
+						{
+							AlbumID = x.ID,
+							AlbumName = x.Name,
+							Image = (firstPic != null) ? firstPic.ImageSource : null
+						};
+					}).OrderBy(x => x.AlbumName));
+
+				addToAlbumPopup.DataContext = albums;		  
+			}
 		}
 	}
 }
