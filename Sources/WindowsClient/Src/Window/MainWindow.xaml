@@ -876,7 +876,7 @@
 
                         <local:ButtonImageText x:Name="btnShare"
                                                Grid.Column="2"
-                                               Click="btnCreateCloudAlbum_Click"
+                                               Click="btnShare_Click"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_share_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_share_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_share_2.png"
@@ -930,6 +930,26 @@
                         </local:AddToCallout.Effect>
                     </local:AddToCallout>
 
+                </Popup>
+
+                <Popup x:Name="sharePopup"
+                       AllowsTransparency="True"
+                       HorizontalOffset="-85"
+                       Placement="Top"
+                       PlacementTarget="{Binding ElementName=btnShare}"
+                       PopupAnimation="Fade"
+                       StaysOpen="False"
+                       VerticalOffset="-35">
+                    <local:ShareCallout x:Name="shareCallout"
+                                        CreateOnlineAlbumClicked="ShareCallout_CreateOnlineAlbumClicked_1"
+                                        SaveToClicked="ShareCallout_SaveToClicked_1">
+                        <local:ShareCallout.Effect>
+                            <DropShadowEffect BlurRadius="4"
+                                              Direction="270"
+                                              Opacity="0.6"
+                                              ShadowDepth="1" />
+                        </local:ShareCallout.Effect>
+                    </local:ShareCallout>
                 </Popup>
 
             </Grid>

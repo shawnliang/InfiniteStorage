@@ -147,6 +147,9 @@
     <Compile Include="Ren\WpfAnimatedGif\Encoder\AnimatedGifEncoder.cs" />
     <Compile Include="Ren\WpfAnimatedGif\Encoder\LZWEncoder.cs" />
     <Compile Include="Ren\WpfAnimatedGif\Encoder\NeuQuant.cs" />
+    <Compile Include="Src\Control\ShareCallout.xaml.cs">
+      <DependentUpon>ShareCallout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Class\Converter\IntToBoolConvertor.cs" />
     <Compile Include="Src\Class\CreateNewAlbumContentEntity.cs" />
     <Compile Include="Src\Class\TestData.cs" />
@@ -371,6 +374,8 @@
     <Resource Include="Resource\ico_fav_star_select.png" />
     <Resource Include="Resource\video.png" />
     <Resource Include="Resource\circleProgress.gif" />
+    <Resource Include="Resource\pop_online.png" />
+    <Resource Include="Resource\pop_save.png" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -407,6 +412,10 @@
     <Page Include="Ren\Utility\FluidProgressBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Src\Control\ShareCallout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Src\Control\AddToCallout.xaml">
       <SubType>Designer</SubType>

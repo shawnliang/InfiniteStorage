@@ -100,6 +100,11 @@
     <system:String x:Key="menuitem_delete">Delete</system:String>
 
     <system:String x:Key="selection_text">{0} files selected</system:String>
+    <system:String x:Key="addto_selection_text">Add {0} items to</system:String>
+    <system:String x:Key="share_selection_text">Share {0} items to</system:String>
+    <system:String x:Key="addto_all_selection_text">Add all {0} items to</system:String>
+    <system:String x:Key="share_all_selection_text">Share all {0} items to</system:String>
+
     <system:String x:Key="createAlbumDialogTitle">Create Album</system:String>
     <!--  end of need review  -->
 

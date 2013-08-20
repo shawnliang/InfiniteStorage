@@ -97,6 +97,19 @@ namespace Waveface.Client
 
 		#endregion
 
+		#region TextMargin Property
+
+		public Thickness TextMargin
+		{
+			get { return (Thickness)GetValue(TextMarginProperty); }
+			set { SetValue(TextMarginProperty, value); }
+		}
+
+		public static readonly DependencyProperty TextMarginProperty =
+			DependencyProperty.Register("TextMargin", typeof(Thickness), typeof(ButtonImageText), new PropertyMetadata(new Thickness(2, 0, 2, 2)));
+
+		#endregion
+
 		public ButtonImageText()
 		{
 			InitializeComponent();

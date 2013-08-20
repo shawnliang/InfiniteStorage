@@ -8,25 +8,16 @@
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <Style x:Key="ButtonImageTextBorderStyle" TargetType="Border">
-            <Setter Property="Margin" Value="4" />
-            <Setter Property="BorderBrush" Value="White" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="CornerRadius" Value="50" />
-            <Setter Property="Width" Value="40" />
-            <Setter Property="Height" Value="40" />
-            <Setter Property="Background" Value="Transparent" />
-        </Style>
 
         <Style x:Key="ButtonImageTextImageStyle" TargetType="Image">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="Margin" Value="0, 0, 0, -3" />
+            <!--  <Setter Property="Source" Value="file:///C:/Users/shawnliang/workspace/InfiniteStorage/Sources/WindowsClient/Resource/bar2_share_0.png" />  -->
             <Setter Property="Source" Value="{Binding Path=ImageUri}" />
             <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsMouseOver}" Value="True">
                     <Setter Property="Source" Value="{Binding Path=ImageEnterUri}" />
-                </Trigger>
+                </DataTrigger>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsPressed}" Value="True">
                     <Setter Property="Source" Value="{Binding Path=ImagePressedUri}" />
                 </DataTrigger>
@@ -37,7 +28,7 @@
         </Style>
 
         <Style x:Key="ButtonImageTextTextBlockStyle" TargetType="TextBlock">
-            <Setter Property="Margin" Value="2, 0, 2, 2" />
+            <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1}, Path=TextMargin}" />
             <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1}, Path=Foreground}" />
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="FontWeight" Value="Bold" />
@@ -55,17 +46,35 @@
         <Thickness x:Key="ButtonImageTextHoverThickness">4</Thickness>
     </UserControl.Resources>
 
-    <Grid>
+    <!--
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+    -->
 
-        <Button Click="Button_Click_1">
+    <Grid>
+        <Button x:Name="btn"
+                Height="{Binding Path=Height}"
+                Click="Button_Click_1">
 
-            <Image x:Name="btnImage"
-                   Margin="-2,0,2,-3"
-                   Style="{StaticResource ButtonImageTextImageStyle}" />
+            <Grid VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Image x:Name="btnImage"
+                       Grid.Row="0"
+                       Margin="-2,0,2,-3"
+                       Stretch="None"
+                       Style="{StaticResource ButtonImageTextImageStyle}" />
+
+                <TextBlock x:Name="tbText"
+                           Grid.Row="1"
+                           Style="{StaticResource ButtonImageTextTextBlockStyle}"
+                           Text="{Binding Path=Text}" />
+            </Grid>
 
             <Button.Template>
                 <ControlTemplate TargetType="Button">
@@ -73,10 +82,7 @@
                 </ControlTemplate>
             </Button.Template>
         </Button>
-
-        <TextBlock x:Name="tbText"
-                   Grid.Row="1"
-                   Style="{StaticResource ButtonImageTextTextBlockStyle}"
-                   Text="{Binding Path=Text}" />
     </Grid>
+
+    <!--  </Grid>  -->
 </UserControl>

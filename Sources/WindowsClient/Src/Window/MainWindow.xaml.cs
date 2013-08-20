@@ -1612,8 +1612,16 @@ namespace Waveface.Client
 
 		private void btnCreateAlbum_Click(object sender, RoutedEventArgs e)
 		{
+			createNormalAlbum();
+		}
+
+		private void createNormalAlbum(bool noSelectMeansSelectAll = false)
+		{
 			IEnumerable<IContentEntity> _allEntities = lbxContentContainer.Items.OfType<IContentEntity>().ToArray();
 			IEnumerable<IContentEntity> _selectedEntities = GetSelectedContents();
+
+			if (noSelectMeansSelectAll && !_selectedEntities.Any())
+				_selectedEntities = _allEntities;
 
 			string _title = lblContentLocation.Content.ToString();
 
@@ -1657,15 +1665,23 @@ namespace Waveface.Client
 		private void btnCreateCloudAlbum_Click(object sender, RoutedEventArgs e)
 		{
 
+			createCloudAlbum();
+		}
+
+		private void createCloudAlbum(bool noSelectMeansSelectAll = false)
+		{
 			IEnumerable<IContentEntity> _allEntities = lbxContentContainer.Items.OfType<IContentEntity>().ToArray();
 			IEnumerable<IContentEntity> _selectedEntities = GetSelectedContents();
+
+			if (noSelectMeansSelectAll && !_selectedEntities.Any())
+				_selectedEntities = _allEntities;
 
 			string _title = lblContentLocation.Content.ToString();
 
 			CloudSharingDialog _dialog = new CloudSharingDialog(_allEntities, _selectedEntities, _title)
-											 {
-												 Owner = this
-											 };
+			{
+				Owner = this
+			};
 			_dialog.ShowDialog();
 
 			List<string> _fileIDs = _dialog.FileIDs;
@@ -1799,12 +1815,24 @@ namespace Waveface.Client
 			if (lbxContentContainer.SelectedItems.Count == 0)
 			{
 				selectionText.Content = "";
-				addToCallout.SelectionText = "";
+
+
+				if (lbxContentContainer.Items.Count > 0)
+				{
+					addToCallout.SelectionText = string.Format((string)FindResource("addto_all_selection_text"), lbxContentContainer.Items.Count);
+					shareCallout.SelectionText = string.Format((string)FindResource("share_all_selection_text"), lbxContentContainer.Items.Count);
+				}
+				else
+				{
+					addToCallout.SelectionText = "";
+					shareCallout.SelectionText = "";
+				}
 			}
 			else
 			{
-				addToCallout.SelectionText = string.Format((string)lbxContentContainer.FindResource("selection_text"), lbxContentContainer.SelectedItems.Count);
-				selectionText.Content = addToCallout.SelectionText;
+				selectionText.Content = string.Format((string)FindResource("selection_text"), lbxContentContainer.SelectedItems.Count);
+				addToCallout.SelectionText = string.Format((string)FindResource("addto_selection_text"), lbxContentContainer.SelectedItems.Count);
+				shareCallout.SelectionText = string.Format((string)FindResource("share_selection_text"), lbxContentContainer.SelectedItems.Count);
 			}
 		}
 
@@ -1844,7 +1872,7 @@ namespace Waveface.Client
 		{
 			if (e.DataContext is CreateNewAlbumContentEntity)
 			{
-				btnCreateAlbum_Click(this, new RoutedEventArgs());
+				createNormalAlbum(false);
 			}
 			else
 			{
@@ -1854,5 +1882,21 @@ namespace Waveface.Client
 
 			addToAlbumPopup.IsOpen = false;
 		}
+
+		private void btnShare_Click(object sender, RoutedEventArgs e)
+		{
+			sharePopup.IsOpen = !sharePopup.IsOpen;
+		}
+
+		private void ShareCallout_CreateOnlineAlbumClicked_1(object sender, EventArgs e)
+		{
+			createCloudAlbum(true);
+		}
+
+		private void ShareCallout_SaveToClicked_1(object sender, EventArgs e)
+		{
+
+		}
+
 	}
 }
