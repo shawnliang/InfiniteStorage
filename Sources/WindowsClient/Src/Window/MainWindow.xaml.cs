@@ -1877,7 +1877,16 @@ namespace Waveface.Client
 			else
 			{
 				var album = e.DataContext as IContentGroup;
-				AddToFavorite(album.ID, GetSelectedContents());
+
+				var selected = GetSelectedContents();
+				if (!selected.Any())
+				{	selected = lbxContentContainer.Items.OfType<IContentEntity>().ToArray();
+
+					if (!selected.Any())
+						return;
+				}
+
+				AddToFavorite(album.ID, selected);
 			}
 
 			addToAlbumPopup.IsOpen = false;
@@ -1895,7 +1904,31 @@ namespace Waveface.Client
 
 		private void ShareCallout_SaveToClicked_1(object sender, EventArgs e)
 		{
+			var selected = GetSelectedContents();
+			if (!selected.Any())
+			{	selected = lbxContentContainer.Items.OfType<IContentEntity>().ToArray();
 
+				if (!selected.Any())
+					return;
+			}
+
+			var dialog = new System.Windows.Forms.FolderBrowserDialog() { Description = string.Format("Select a folder to save {0} items", selected.Count()) };
+			var result = dialog.ShowDialog();
+
+			if (result == System.Windows.Forms.DialogResult.OK)
+			{
+				foreach (var item in selected)
+				{
+					var file_name = Path.GetFileName(item.Uri.LocalPath);
+					File.Copy(item.Uri.LocalPath, Path.Combine(dialog.SelectedPath, file_name), true);
+				}
+
+
+				string _arg = "\"" + dialog.SelectedPath + "\"";
+				Process.Start("explorer.exe", _arg);
+			}
+
+			
 		}
 
 	}
