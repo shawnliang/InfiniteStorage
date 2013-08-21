@@ -9,7 +9,8 @@
 
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type wvmodel:ContentGroup}">
-            <local:GroupContentItem Padding="10" />
+            <!--  <local:GroupContentItem Padding="10" />  -->
+            <local:AlbumItem Margin="10" Foreground="#4d4d4d" />
         </DataTemplate>
     </UserControl.Resources>
 

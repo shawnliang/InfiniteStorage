@@ -196,6 +196,9 @@
     <Compile Include="Src\Control\WrapperControl.xaml.cs">
       <DependentUpon>WrapperControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Src\Control\AlbumItem.xaml.cs">
+      <DependentUpon>AlbumItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Dialog\AddToAlbumDialog.xaml.cs">
       <DependentUpon>AddToAlbumDialog.xaml</DependentUpon>
     </Compile>
@@ -298,6 +301,10 @@
     <Compile Include="StepPanel.xaml.cs">
       <DependentUpon>StepPanel.xaml</DependentUpon>
     </Compile>
+    <Page Include="Src\Control\AlbumItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="StepPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
