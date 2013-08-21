@@ -22,6 +22,14 @@
     <Window.Resources>
         <local:IntToBoolConvertor x:Key="Int2ToBoolConverter" />
 
+        <local:ListBoxToSelectionTextConvertor x:Key="shareToSelectionTextConvertor"
+                                               NoSelectionTemplate="{StaticResource share_all_selection_text}"
+                                               SelectionTemplate="{StaticResource share_selection_text}" />
+
+        <local:ListBoxToSelectionTextConvertor x:Key="addToSelectionTextConvertor"
+                                               NoSelectionTemplate="{StaticResource addto_all_selection_text}"
+                                               SelectionTemplate="{StaticResource addto_selection_text}" />
+
         <!--  Brushes used in Styling of ScrollViewer  -->
 
         <SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
@@ -921,7 +929,13 @@
                        StaysOpen="False"
                        VerticalOffset="-35">
 
-                    <local:AddToCallout x:Name="addToCallout" AlbumClicked="AddToAlbum_AlbumClicked">
+                    <local:AddToCallout AlbumClicked="AddToAlbum_AlbumClicked">
+                        <local:AddToCallout.SelectionText>
+                            <MultiBinding Converter="{StaticResource addToSelectionTextConvertor}">
+                                <Binding ElementName="lbxContentContainer" Path="Items.Count" />
+                                <Binding ElementName="lbxContentContainer" Path="SelectedItems.Count" />
+                            </MultiBinding>
+                        </local:AddToCallout.SelectionText>
                         <local:AddToCallout.Effect>
                             <DropShadowEffect BlurRadius="4"
                                               Direction="270"
@@ -940,9 +954,13 @@
                        PopupAnimation="Fade"
                        StaysOpen="False"
                        VerticalOffset="-35">
-                    <local:ShareCallout x:Name="shareCallout"
-                                        CreateOnlineAlbumClicked="ShareCallout_CreateOnlineAlbumClicked_1"
-                                        SaveToClicked="ShareCallout_SaveToClicked_1">
+                    <local:ShareCallout CreateOnlineAlbumClicked="ShareCallout_CreateOnlineAlbumClicked_1" SaveToClicked="ShareCallout_SaveToClicked_1">
+                        <local:ShareCallout.SelectionText>
+                            <MultiBinding Converter="{StaticResource shareToSelectionTextConvertor}">
+                                <Binding ElementName="lbxContentContainer" Path="Items.Count" />
+                                <Binding ElementName="lbxContentContainer" Path="SelectedItems.Count" />
+                            </MultiBinding>
+                        </local:ShareCallout.SelectionText>
                         <local:ShareCallout.Effect>
                             <DropShadowEffect BlurRadius="4"
                                               Direction="270"
