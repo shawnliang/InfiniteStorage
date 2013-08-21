@@ -869,6 +869,9 @@
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_create_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_create_2.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_create_0.png"
+                                               IsEnabled="{Binding ElementName=lbxContentContainer,
+                                                                   Path=Items.Count,
+                                                                   Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
                                                Text="Create Album" />
 
@@ -879,6 +882,9 @@
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_addto_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_addto_2.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_addto_0.png"
+                                               IsEnabled="{Binding ElementName=lbxContentContainer,
+                                                                   Path=Items.Count,
+                                                                   Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
                                                Text="Add to Album" />
 
@@ -889,6 +895,9 @@
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_share_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_share_2.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_share_0.png"
+                                               IsEnabled="{Binding ElementName=lbxContentContainer,
+                                                                   Path=Items.Count,
+                                                                   Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
                                                Text="Share" />
 
