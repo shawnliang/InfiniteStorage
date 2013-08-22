@@ -1,4 +1,5 @@
-﻿#region
+﻿﻿
+#region
 
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ using CommandLine;
 using System.Windows.Media.Imaging;
 using System.ComponentModel;
 using System.Windows.Data;
+using Waveface.Client.Src.Dialog;
 
 #endregion
 
@@ -624,31 +626,31 @@ namespace Waveface.Client
 
 						if (jumpToFirstChild)
 						{
-							if (devNode != null && devNode.Items.Count > 0)
+						if (devNode != null && devNode.Items.Count > 0)
+						{
+							devNode.IsExpanded = true;
+
+							var folderNode = (TreeViewItem)devNode.ItemContainerGenerator.ContainerFromIndex(0);
+
+							if (folderNode != null)
 							{
-								devNode.IsExpanded = true;
+								folderNode.IsSelected = true;
+								lbxRecent.SelectedIndex = -1;
+								lbxCloudAlbums.SelectedIndex = -1;
+								lbxFavorites.SelectedIndex = -1;
 
-								var folderNode = (TreeViewItem)devNode.ItemContainerGenerator.ContainerFromIndex(0);
+								var group = (IContentGroup)devNode.Items[0];
 
-								if (folderNode != null)
-								{
-									folderNode.IsSelected = true;
-									lbxRecent.SelectedIndex = -1;
-									lbxCloudAlbums.SelectedIndex = -1;
-									lbxFavorites.SelectedIndex = -1;
+								lbxContentContainer.DataContext = group.Contents;
+								lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
+								lblContentLocation.DataContext = group;
 
-									var group = (IContentGroup)devNode.Items[0];
+								SetContentTypeCount(group);
 
-									lbxContentContainer.DataContext = group.Contents;
-									lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
-									lblContentLocation.DataContext = group;
-
-									SetContentTypeCount(group);
-
-									jumpToDeviceTimer.Stop();
-								}
+								jumpToDeviceTimer.Stop();
 							}
 						}
+					}
 						else
 						{
 							if (devNode != null)
@@ -1910,6 +1912,15 @@ namespace Waveface.Client
 			}
 
 			
+		}
+
+		private void btnPushToDevice_Click(object sender, System.Windows.RoutedEventArgs e)
+		{
+			var dialog = new HomeSharingDialog()
+			{
+				Owner = this
+			};
+			dialog.ShowDialog();
 		}
 
 	}

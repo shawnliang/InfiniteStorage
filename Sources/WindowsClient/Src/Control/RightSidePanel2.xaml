@@ -39,24 +39,6 @@
             </Style.Triggers>
         </Style>
 
-        <ControlTemplate x:Key="ButtonBaseControlTemplate1"  TargetType="{x:Type ButtonBase}">
-            <Border x:Name="border"
-                    Background="{TemplateBinding Background}"
-                    BorderBrush="White"
-                    BorderThickness="1"
-                    SnapsToDevicePixels="True">
-                <ContentPresenter x:Name="contentPresenter"                               
-                                  Margin="{TemplateBinding Padding}"
-                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                  Content="{TemplateBinding Content}"
-                                  ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                                  Focusable="False"
-                                  RecognizesAccessKey="True"
-                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-            </Border>
-        </ControlTemplate>
     </UserControl.Resources>
 
     <StackPanel x:Name="LayoutRoot" Background="#1B1B1B">
@@ -135,12 +117,10 @@
                       Margin="10,4,10,0"
                       FontFamily="Segoe UI"
                       FontSize="16"
-                      Background="DodgerBlue"
                       Foreground="White"
-                      Template="{DynamicResource ButtonBaseControlTemplate1}"
                       Cursor="Hand"
                       Content="開啟"                      
                       Checked="tbtnCloudSharing_Checked"
-                      Unchecked="tbtnCloudSharing_Unchecked" />
+                      Unchecked="tbtnCloudSharing_Unchecked" BorderBrush="White" />
     </StackPanel>
 </UserControl>

@@ -14,7 +14,7 @@
         TextOptions.TextFormattingMode ="Ideal"
         TextOptions.TextRenderingMode="Auto"
         FontFamily="Segoe UI"
-        WindowStartupLocation="CenterScreen" Icon="/Waveface.Client;component/Resource/Bunnydesktop.ico">
+        WindowStartupLocation="CenterOwner" Icon="/Waveface.Client;component/Resource/Bunnydesktop.ico">
     <Window.Resources>
 
         <Style x:Key="TitleLabel" TargetType="{x:Type TextBlock}">

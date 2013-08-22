@@ -301,7 +301,8 @@ namespace Waveface.ClientFramework
 
 		public bool HomeSharingEnabled
 		{
-			get { return Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", "true").Equals("true"); }
+			get { return Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", "true").ToString().Equals("true", StringComparison.CurrentCultureIgnoreCase); }
+            set { Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", value.ToString()); }
 		}
 	}
 }
