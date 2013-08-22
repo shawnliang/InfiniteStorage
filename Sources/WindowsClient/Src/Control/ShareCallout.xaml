@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="Waveface.Client.ShareCallout"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Waveface.Client"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style x:Key="buttonStyle" TargetType="local:ButtonImageText">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextMargin" Value="1,10,1,1" />
+            <Setter Property="Width" Value="120" />
+            <Setter Property="Height" Value="120" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#98bebf" />
+                </Trigger>
+            </Style.Triggers>
+
+        </Style>
+    </UserControl.Resources>
+
+    <local:CalloutMenu MaxWidth="280"
+                       Background="#d5d5d5"
+                       BorderBrush="#d5d5d5">
+        <StackPanel Margin="10, 5, 10, 20" Orientation="Vertical">
+
+            <Label HorizontalAlignment="Center"
+                   Content="{Binding RelativeSource={RelativeSource AncestorType=local:ShareCallout},
+                                     Path=SelectionText}"
+                   FontSize="15"
+                   Foreground="#4d4d4d" />
+            <StackPanel Orientation="Horizontal">
+
+                <local:ButtonImageText Click="btnOnlineAlbum_click"
+                                       ImageDisableUri="pack://application:,,,/Resource/pop_online.png"
+                                       ImageEnterUri="pack://application:,,,/Resource/pop_online.png"
+                                       ImagePressedUri="pack://application:,,,/Resource/pop_online.png"
+                                       ImageUri="pack://application:,,,/Resource/pop_online.png"
+                                       Style="{StaticResource buttonStyle}"
+                                       Text="Online Album..." />
+
+
+                <local:ButtonImageText Click="btnSaveTo_click"
+                                       ImageDisableUri="pack://application:,,,/Resource/pop_save.png"
+                                       ImageEnterUri="pack://application:,,,/Resource/pop_save.png"
+                                       ImagePressedUri="pack://application:,,,/Resource/pop_save.png"
+                                       ImageUri="pack://application:,,,/Resource/pop_save.png"
+                                       Style="{StaticResource buttonStyle}"
+                                       Text="Save To..." />
+            </StackPanel>
+        </StackPanel>
+
+    </local:CalloutMenu>
+
+</UserControl>

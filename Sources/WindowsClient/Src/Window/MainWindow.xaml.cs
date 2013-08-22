@@ -1614,8 +1614,16 @@ namespace Waveface.Client
 
 		private void btnCreateAlbum_Click(object sender, RoutedEventArgs e)
 		{
+			createNormalAlbum();
+		}
+
+		private void createNormalAlbum(bool noSelectMeansSelectAll = false)
+		{
 			IEnumerable<IContentEntity> _allEntities = lbxContentContainer.Items.OfType<IContentEntity>().ToArray();
 			IEnumerable<IContentEntity> _selectedEntities = GetSelectedContents();
+
+			if (noSelectMeansSelectAll && !_selectedEntities.Any())
+				_selectedEntities = _allEntities;
 
 			string _title = lblContentLocation.Content.ToString();
 
@@ -1659,8 +1667,16 @@ namespace Waveface.Client
 		private void btnCreateCloudAlbum_Click(object sender, RoutedEventArgs e)
 		{
 
+			createCloudAlbum();
+		}
+
+		private void createCloudAlbum(bool noSelectMeansSelectAll = false)
+		{
 			IEnumerable<IContentEntity> _allEntities = lbxContentContainer.Items.OfType<IContentEntity>().ToArray();
 			IEnumerable<IContentEntity> _selectedEntities = GetSelectedContents();
+
+			if (noSelectMeansSelectAll && !_selectedEntities.Any())
+				_selectedEntities = _allEntities;
 
 			string _title = lblContentLocation.Content.ToString();
 
@@ -1796,12 +1812,28 @@ namespace Waveface.Client
 
 		private void lbxContentContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			//btnDelete.IsEnabled = lbxContentContainer.SelectedItems.Count != 0;
-
 			if (lbxContentContainer.SelectedItems.Count == 0)
+			{
 				selectionText.Content = "";
+
+
+				//if (lbxContentContainer.Items.Count > 0)
+				//{
+				//	addToCallout.SelectionText = string.Format((string)FindResource("addto_all_selection_text"), lbxContentContainer.Items.Count);
+				//	shareCallout.SelectionText = string.Format((string)FindResource("share_all_selection_text"), lbxContentContainer.Items.Count);
+				//}
+				//else
+				//{
+				//	addToCallout.SelectionText = "";
+				//	shareCallout.SelectionText = "";
+				//}
+			}
 			else
-				selectionText.Content = string.Format((string)lbxContentContainer.FindResource("selection_text"), lbxContentContainer.SelectedItems.Count);
+			{
+				selectionText.Content = string.Format((string)FindResource("selection_text"), lbxContentContainer.SelectedItems.Count);
+				//addToCallout.SelectionText = string.Format((string)FindResource("addto_selection_text"), lbxContentContainer.SelectedItems.Count);
+				//shareCallout.SelectionText = string.Format((string)FindResource("share_selection_text"), lbxContentContainer.SelectedItems.Count);
+			}
 		}
 
 		private void lbxContentContainer_MouseDown(object sender, MouseButtonEventArgs e)
@@ -1821,33 +1853,79 @@ namespace Waveface.Client
 
 		private void btnAddToAlbum_Click_1(object sender, RoutedEventArgs e)
 		{
-			addToAlbumPopup.IsOpen = !addToAlbumPopup.IsOpen;
+			addToAlbumPopup.IsOpen = true;
 
-			if (addToAlbumPopup.IsOpen)
-			{
-				var albums = new List<TestData>() {
-								new TestData { 
-									IsAddToNewAlbum = true,
-									AlbumName = "New Album",
-									Image = BitmapFrame.Create(new Uri("pack://application:,,,/Resource/bar2_source_0.png"))
-								}
+			var albums = new List<IContentEntity>() {
+								new CreateNewAlbumContentEntity((string)FindResource("CreateFavorite"))
 				};
 
-				albums.AddRange(
-					ClientFramework.Client.Default.Favorites.Select(x =>
-					{
-						var firstPic = (x as IContentGroup).Contents.FirstOrDefault() as BunnyContent;
+			albums.AddRange(
+				ClientFramework.Client.Default.Favorites.OrderBy(x => x.Name));
 
-						return new TestData
-						{
-							AlbumID = x.ID,
-							AlbumName = x.Name,
-							Image = (firstPic != null) ? firstPic.ImageSource : null
-						};
-					}).OrderBy(x => x.AlbumName));
+			addToAlbumPopup.DataContext = albums;
+		}
 
-				addToAlbumPopup.DataContext = albums;		  
+		private void AddToAlbum_AlbumClicked(object sender, AlbumClickedEventArgs e)
+		{
+			if (e.DataContext is CreateNewAlbumContentEntity)
+			{
+				createNormalAlbum(false);
 			}
+			else
+			{
+				var album = e.DataContext as IContentGroup;
+
+				var selected = GetSelectedContents();
+				if (!selected.Any())
+				{	selected = lbxContentContainer.Items.OfType<IContentEntity>().ToArray();
+
+					if (!selected.Any())
+						return;
+				}
+
+				AddToFavorite(album.ID, selected);
+			}
+
+			addToAlbumPopup.IsOpen = false;
+		}
+
+		private void btnShare_Click(object sender, RoutedEventArgs e)
+		{
+			sharePopup.IsOpen = true;
+		}
+
+		private void ShareCallout_CreateOnlineAlbumClicked_1(object sender, EventArgs e)
+			{
+			createCloudAlbum(true);
+								}
+
+		private void ShareCallout_SaveToClicked_1(object sender, EventArgs e)
+					{
+			var selected = GetSelectedContents();
+			if (!selected.Any())
+			{	selected = lbxContentContainer.Items.OfType<IContentEntity>().ToArray();
+
+				if (!selected.Any())
+					return;
+			}
+
+			var dialog = new System.Windows.Forms.FolderBrowserDialog() { Description = string.Format("Select a folder to save {0} items", selected.Count()) };
+			var result = dialog.ShowDialog();
+
+			if (result == System.Windows.Forms.DialogResult.OK)
+			{
+				foreach (var item in selected)
+						{
+					var file_name = Path.GetFileName(item.Uri.LocalPath);
+					File.Copy(item.Uri.LocalPath, Path.Combine(dialog.SelectedPath, file_name), true);
+				}
+
+
+				string _arg = "\"" + dialog.SelectedPath + "\"";
+				Process.Start("explorer.exe", _arg);
+			}
+
+			
 		}
 
 		private void btnPushToDevice_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -1858,5 +1936,6 @@ namespace Waveface.Client
 			};
 			dialog.ShowDialog();
 		}
+
 	}
 }

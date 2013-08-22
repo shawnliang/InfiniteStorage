@@ -22,12 +22,13 @@
     <Window.Resources>
         <local:IntToBoolConvertor x:Key="Int2ToBoolConverter" />
 
-        <local:TestList x:Key="testList">
-            <local:TestData AlbumName="123456" />
-            <local:TestData AlbumName="123456" />
-            <local:TestData AlbumName="123456" />
-            <local:TestData AlbumName="123456" />
-        </local:TestList>
+        <local:ListBoxToSelectionTextConvertor x:Key="shareToSelectionTextConvertor"
+                                               NoSelectionTemplate="{StaticResource share_all_selection_text}"
+                                               SelectionTemplate="{StaticResource share_selection_text}" />
+
+        <local:ListBoxToSelectionTextConvertor x:Key="addToSelectionTextConvertor"
+                                               NoSelectionTemplate="{StaticResource addto_all_selection_text}"
+                                               SelectionTemplate="{StaticResource addto_selection_text}" />
 
         <!--  Brushes used in Styling of ScrollViewer  -->
 
@@ -660,7 +661,7 @@
             </StackPanel.Effect>
 
             <local:ButtonImageText x:Name="btnAddDevice"
-                                   Margin="0, 24, 0, 0"
+                                   Margin="0, 21, 0, 0"
                                    HorizontalAlignment="Center"
                                    Click="btnAddNewSource_Click"
                                    ImageDisableUri="pack://application:,,,/Resource/bar2_source_3.png"
@@ -868,8 +869,11 @@
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_create_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_create_2.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_create_0.png"
+                                               IsEnabled="{Binding ElementName=lbxContentContainer,
+                                                                   Path=Items.Count,
+                                                                   Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
-                                               Text="Create Album" />
+                                               Text="Create" />
 
                         <local:ButtonImageText x:Name="btnAddToAlbum"
                                                Grid.Column="1"
@@ -878,16 +882,22 @@
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_addto_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_addto_2.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_addto_0.png"
+                                               IsEnabled="{Binding ElementName=lbxContentContainer,
+                                                                   Path=Items.Count,
+                                                                   Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
-                                               Text="Add to Album" />
+                                               Text="Add" />
 
                         <local:ButtonImageText x:Name="btnShare"
                                                Grid.Column="2"
-                                               Click="btnCreateCloudAlbum_Click"
+                                               Click="btnShare_Click"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_share_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_share_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_share_2.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_share_0.png"
+                                               IsEnabled="{Binding ElementName=lbxContentContainer,
+                                                                   Path=Items.Count,
+                                                                   Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
                                                Text="Share" />
 
@@ -911,6 +921,7 @@
 
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <local:ButtonImageText x:Name="btnPushToDevice"
+                                           Margin="0,0,20,0"
                                            ImageDisableUri="pack://application:,,,/Resource/bar2_push_3.png"
                                            ImageEnterUri="pack://application:,,,/Resource/bar2_push_1.png"
                                            ImagePressedUri="pack://application:,,,/Resource/bar2_push_2.png"
@@ -921,23 +932,52 @@
 
                 <Popup x:Name="addToAlbumPopup"
                        AllowsTransparency="True"
-                       DataContext="{StaticResource testList}"
-                       HorizontalOffset="-180"
+                       HorizontalOffset="-190"
                        Placement="Top"
                        PlacementTarget="{Binding ElementName=btnAddToAlbum}"
                        PopupAnimation="Fade"
                        StaysOpen="False"
                        VerticalOffset="-35">
 
-                    <local:AddToCallout x:Name="addToCallout">
+                    <local:AddToCallout AlbumClicked="AddToAlbum_AlbumClicked">
+                        <local:AddToCallout.SelectionText>
+                            <MultiBinding Converter="{StaticResource addToSelectionTextConvertor}">
+                                <Binding ElementName="lbxContentContainer" Path="Items.Count" />
+                                <Binding ElementName="lbxContentContainer" Path="SelectedItems.Count" />
+                            </MultiBinding>
+                        </local:AddToCallout.SelectionText>
                         <local:AddToCallout.Effect>
-                            <DropShadowEffect BlurRadius="6"
+                            <DropShadowEffect BlurRadius="4"
                                               Direction="270"
                                               Opacity="0.6"
                                               ShadowDepth="1" />
                         </local:AddToCallout.Effect>
                     </local:AddToCallout>
 
+                </Popup>
+
+                <Popup x:Name="sharePopup"
+                       AllowsTransparency="True"
+                       HorizontalOffset="-85"
+                       Placement="Top"
+                       PlacementTarget="{Binding ElementName=btnShare}"
+                       PopupAnimation="Fade"
+                       StaysOpen="False"
+                       VerticalOffset="-35">
+                    <local:ShareCallout CreateOnlineAlbumClicked="ShareCallout_CreateOnlineAlbumClicked_1" SaveToClicked="ShareCallout_SaveToClicked_1">
+                        <local:ShareCallout.SelectionText>
+                            <MultiBinding Converter="{StaticResource shareToSelectionTextConvertor}">
+                                <Binding ElementName="lbxContentContainer" Path="Items.Count" />
+                                <Binding ElementName="lbxContentContainer" Path="SelectedItems.Count" />
+                            </MultiBinding>
+                        </local:ShareCallout.SelectionText>
+                        <local:ShareCallout.Effect>
+                            <DropShadowEffect BlurRadius="4"
+                                              Direction="270"
+                                              Opacity="0.6"
+                                              ShadowDepth="1" />
+                        </local:ShareCallout.Effect>
+                    </local:ShareCallout>
                 </Popup>
 
             </Grid>
