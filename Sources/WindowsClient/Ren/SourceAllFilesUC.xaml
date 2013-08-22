@@ -113,24 +113,14 @@
                                FontFamily="Segoe UI"
                                FontSize="16"
                                Foreground="White"
-                               Text="xxxx xxx xxxx" />
+                               Text="" />
 
-                    <Label Foreground="white">
-                        <Label.Content>
-                            <MultiBinding StringFormat="preparing:{0}, recving: {1}, {2}/{3}">
-                                <Binding Path="RecvStatus.IsPreparing" />
-                                <Binding Path="RecvStatus.IsPreparing" />
-                                <Binding Path="RecvStatus.IsPreparing" />
-                                <Binding Path="RecvStatus.IsPreparing" />
-
-                            </MultiBinding>
-                        </Label.Content>
-                    </Label>
-
-                    <Label Content="{Binding RecvStatus.IsPreparing}" Foreground="white" />
-                    <Label Content="{Binding RecvStatus.IsReceiving}" Foreground="white" />
-                    <Label Content="{Binding RecvStatus.Received}" Foreground="white" />
-                    <Label Content="{Binding RecvStatus.Total}" Foreground="white" />
+                    <Grid Visibility="Collapsed">
+                        <Label Content="{Binding RecvStatus.IsPreparing}" Foreground="white" />
+                        <Label Content="{Binding RecvStatus.IsReceiving}" Foreground="white" />
+                        <Label Content="{Binding RecvStatus.Received}" Foreground="white" />
+                        <Label Content="{Binding RecvStatus.Total}" Foreground="white" />
+                    </Grid>
 
                 </StackPanel>
 

@@ -13,7 +13,7 @@ using System.Windows.Threading;
 using InfiniteStorage.Model;
 using Microsoft.Win32;
 using Waveface.Model;
-
+using Waveface.ClientFramework;
 #endregion
 
 namespace Waveface.Client
@@ -122,12 +122,47 @@ namespace Waveface.Client
 
 					ShowEvents();
 				}
+
+
+				var service = (BunnyService)m_currentDevice;
+
+				if (service.RecvStatus.IsPreparing)
+				{
+					imgCircleProgress.Visibility = System.Windows.Visibility.Visible;
+					tbTitleInfo.Text = "Scanning photos...";
+				}
+				else if (service.RecvStatus.IsReceiving)
+				{
+					imgCircleProgress.Visibility = System.Windows.Visibility.Visible;
+					tbTitleInfo.Text = string.Format("Importing... ({0} / {1})", service.RecvStatus.Received, service.RecvStatus.Total);
+				}
+				else
+				{
+					imgCircleProgress.Visibility = System.Windows.Visibility.Collapsed;
+
+					var lastImportTime = getLastImportTime();
+
+					if (lastImportTime.HasValue)
+						tbTitleInfo.Text = string.Format("Last import time: {0}", lastImportTime);
+				}
 			}
 			catch
 			{
 			}
 
 			m_refreshTimer.Start();
+		}
+
+		private DateTime? getLastImportTime()
+		{
+			using (var db = new MyDbContext())
+			{
+				var q = from f in db.Object.Files
+						where f.import_time != null
+						select f.import_time;
+
+				return q.Max();
+			}
 		}
 
 		private List<FileAsset> GetFilesFromDB()

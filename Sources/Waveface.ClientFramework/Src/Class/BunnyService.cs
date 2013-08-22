@@ -13,7 +13,7 @@ using Waveface.Model;
 
 namespace Waveface.ClientFramework
 {
-	internal class BunnyService : Service
+	public class BunnyService : Service
 	{
 		private Timer timer;
 		private bool timerStarted;
