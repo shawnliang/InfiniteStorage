@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace Waveface.ClientFramework
 		private Timer timer;
 		private bool timerStarted;
 		private bool _isRecving;
+		private ReceivingStatus _recvStatus = new ReceivingStatus();
 
 		public bool IsRecving
 		{
@@ -28,6 +30,19 @@ namespace Waveface.ClientFramework
 				{
 					_isRecving = value;
 					OnPropertyChanged("IsRecving");
+				}
+			}
+		}
+
+		public ReceivingStatus RecvStatus
+		{
+			get { return _recvStatus; }
+			set
+			{
+				if (_recvStatus != value)
+				{
+					_recvStatus = value;
+					OnPropertyChanged("RecvStatus");
 				}
 			}
 		}
@@ -131,4 +146,74 @@ namespace Waveface.ClientFramework
 
 		#endregion
 	}
+
+	public class ReceivingStatus : INotifyPropertyChanged
+	{
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		private int _total;
+		private int _received;
+		private bool _is_preparing;
+		private bool _is_receiving;
+
+		public int Total
+		{
+			get { return _total; }
+			set 
+			{
+				if (_total != value)
+				{
+					_total = value;
+					notifyPropertyChanged("Total");
+				}
+			}
+		}
+
+		public int Received
+		{
+			get { return _received; }
+			set
+			{
+				if (_received != value)
+				{
+					_received = value;
+					notifyPropertyChanged("Received");
+				}
+			}
+		}
+
+		public bool IsPreparing
+		{
+			get { return _is_preparing; }
+			set
+			{
+				if (_is_preparing != value)
+				{
+					_is_preparing = value;
+					notifyPropertyChanged("IsPreparing");
+				}
+			}
+		}
+
+		public bool IsReceiving
+		{
+			get { return _is_receiving; }
+			set
+			{
+				if (_is_receiving != value)
+				{
+					_is_receiving = value;
+					notifyPropertyChanged("IsReceiving");
+				}
+			}
+		}
+
+		private void notifyPropertyChanged(string propertyName)
+		{
+			var handler = PropertyChanged;
+			if (handler != null)
+				handler(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
+
 }

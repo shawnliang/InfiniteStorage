@@ -872,6 +872,7 @@ namespace Waveface.Client
 				ContentAreaToolBar.Visibility = Visibility.Collapsed;
 				lbxContentContainer.Visibility = Visibility.Collapsed;
 
+				allFilesUC.DataContext = _service;
 				allFilesUC.Visibility = Visibility.Visible;
 				allFilesUC.Load(_service, this);
 

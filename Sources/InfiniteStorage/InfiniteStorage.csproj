@@ -127,7 +127,6 @@
     <Compile Include="Src\Class\HomeSharing.cs" />
     <Compile Include="Src\Class\Manipulation\FileToManipulate.cs" />
     <Compile Include="Src\Class\Manipulation\Manipulation.cs" />
-    <Compile Include="Src\Class\Notify\ActiveDeviceNotifyMsg.cs" />
     <Compile Include="Src\Class\Pair\IPairingSubscriber.cs" />
     <Compile Include="Src\Class\Pair\NewDeviceAcceptingEventArgs.cs" />
     <Compile Include="Src\Class\Pair\PairingModeChangingEventArgs.cs" />
