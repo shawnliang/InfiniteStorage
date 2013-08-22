@@ -58,7 +58,7 @@ namespace Waveface.Client
 
 			m_refreshTimer = new DispatcherTimer();
 			m_refreshTimer.Tick += RefreshTimerOnTick;
-			m_refreshTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000);
+			m_refreshTimer.Interval = new TimeSpan(0, 0, 0, 0, 1500);
 		}
 
 		public void Stop()
@@ -88,7 +88,6 @@ namespace Waveface.Client
 			if (_files.Count == 0)
 			{
 				tbTitle.Visibility = Visibility.Collapsed;
-				//tbTotalCount.Visibility = Visibility.Collapsed;
 
 				return;
 			}
@@ -98,7 +97,6 @@ namespace Waveface.Client
 			prepareData(_files);
 
 			tbTitle.Visibility = Visibility.Visible;
-			//tbTotalCount.Visibility = Visibility.Visible;
 
 			tbTitle.Text = m_currentDevice.Name;
 
@@ -116,7 +114,12 @@ namespace Waveface.Client
 				List<FileAsset> _files = GetFilesFromDB();
 				int _hasOriginCount = GetHasOriginCount(_files);
 
-				if ((_hasOriginCount != m_hasOriginCount) || (_files.Count != m_fileEntries.Count))
+				if ((_hasOriginCount == m_hasOriginCount) && (_files.Count == m_fileEntries.Count))
+				{
+					// 同步完成?!
+
+				}
+				else
 				{
 					prepareData(_files);
 
@@ -149,6 +152,8 @@ namespace Waveface.Client
 			catch
 			{
 			}
+
+			GC.Collect();
 
 			m_refreshTimer.Start();
 		}
@@ -184,19 +189,14 @@ namespace Waveface.Client
 			List<FileEntry> _fCs = files.Select(x => new FileEntry
 			{
 				id = x.file_id.ToString(),
-				file_name = x.file_name,
-				tiny_path = Path.Combine(m_thumbsPath, x.file_id + ".s92.thumb"),
+				tiny_path = Path.Combine(m_thumbsPath, x.file_id + ".tiny.thumb"),
+				s92_path = Path.Combine(m_thumbsPath, x.file_id + ".s92.thumb"),
 				taken_time = x.event_time,
-				width = x.width,
-				height = x.height,
-				size = x.file_size,
 				type = x.type,
-				saved_path = "", //Path.Combine(m_basePath, x.saved_path),
 				has_origin = x.has_origin
 			}).ToList();
 
-			m_fileEntries = _fCs;
-			m_fileEntries = m_fileEntries.OrderBy(o => o.taken_time).ToList();
+			m_fileEntries = _fCs.OrderBy(o => o.taken_time).ToList();
 
 			m_hasOriginCount = GetHasOriginCount(files);
 		}
@@ -256,6 +256,7 @@ namespace Waveface.Client
 			m_videosCount = 0;
 
 			m_eventUCs = new ObservableCollection<EventUC>();
+
 			listBoxEvent.ItemsSource = m_eventUCs;
 
 			m_YM_Files = GroupingByMonth();
@@ -342,13 +343,10 @@ namespace Waveface.Client
 			if (m_eventUCs.Count == 0)
 			{
 				gridWaitingPanel.Visibility = Visibility.Visible;
-				//tbTotalCount.Text = "";
 			}
 			else
 			{
 				gridWaitingPanel.Visibility = Visibility.Collapsed;
-				//string _tbTotalCount = GetCountsString(m_photosCount, m_videosCount);
-				//tbTotalCount.Text = _tbTotalCount;
 			}
 		}
 
@@ -381,27 +379,17 @@ namespace Waveface.Client
 
 		#endregion
 
-		private void listBoxEvent_LayoutUpdated(object sender, EventArgs e)
-		{
-			//Cursor = Cursors.Arrow;
-		}
-
-		private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-		{
-			//Cursor = Cursors.Wait;
-		}
-
 		private void tbtnCloudSharing_Checked(object sender, RoutedEventArgs e)
 		{
-			tbtnCloudSharing.Background = m_solidColorBrush;
-			tbtnCloudSharing.Content = "關閉自動匯入";
+			tbAutoImport.Background = m_solidColorBrush;
+			tbAutoImport.Content = "關閉自動匯入";
 			imgCircleProgress.Visibility = Visibility.Visible;
 		}
 
 		private void tbtnCloudSharing_Unchecked(object sender, RoutedEventArgs e)
 		{
-			tbtnCloudSharing.Background = Brushes.DodgerBlue;
-			tbtnCloudSharing.Content = "開啟自動匯入";
+			tbAutoImport.Background = Brushes.DodgerBlue;
+			tbAutoImport.Content = "開啟自動匯入";
 			imgCircleProgress.Visibility = Visibility.Collapsed;
 		}
 

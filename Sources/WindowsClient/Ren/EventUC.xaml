@@ -51,7 +51,7 @@
         <PendingUI:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
     </UserControl.Resources>
 
-    <Grid x:Name="gridMain" Background="#3F3F3F">
+    <Grid x:Name="gridMain" Background="#4f4f4f">
         <i:Interaction.Behaviors>
             <PendingUI:IgnoreMouseWheelBehavior />
         </i:Interaction.Behaviors>
@@ -63,20 +63,24 @@
 
         <Grid Grid.Column="0">
             <Border BorderThickness="0" Margin="4, 8" BorderBrush="#f0f0f0" VerticalAlignment="Top">
-                <Image x:Name="imgHead" Width="120" Height="120" Stretch="UniformToFill">
-                    <Image.Effect>
-                        <BlurEffect Radius="4"/>
-                    </Image.Effect>
-                </Image>
+                <Grid>
+                    <Image x:Name="imgHead" Width="120" Height="120" Stretch="UniformToFill">
+                        <Image.Effect>
+                            <BlurEffect Radius="6"/>
+                        </Image.Effect>
+                    </Image>
+
+                    <Rectangle Fill="#90000000" Width="120" Height="120"/>
+                </Grid>
             </Border>
-            
+
             <StackPanel Margin="4, 24, 4, 8" Width="120" Height="120" VerticalAlignment="Top" HorizontalAlignment="Center">
-                <TextBlock x:Name="tbTitleMonth" Foreground="#ffffff" TextAlignment="Center"  TextWrapping="Wrap" Text="12" FontSize="36" FontWeight="Bold"/>
-                <TextBlock x:Name="tbTitleYear" Foreground="#ffffff" TextAlignment="Center"  TextWrapping="Wrap" Text="1999" FontSize="28" FontWeight="Bold"/>
+                <TextBlock x:Name="tbTitleMonth" Foreground="#ffffff" TextAlignment="Center"  TextWrapping="Wrap" Text="12" FontSize="36"/>
+                <TextBlock x:Name="tbTitleYear" Foreground="#ffffff" TextAlignment="Center"  TextWrapping="Wrap" Text="1999" FontSize="28"/>
+                
             </StackPanel>
-
-            <TextBlock x:Name="tbTotalCount" Foreground="#929292" Margin="2, 132, 2, 0" VerticalAlignment="Top" TextAlignment="Center" TextWrapping="Wrap" Text="99 Photos" FontSize="12" />
-
+            
+            <TextBlock x:Name="tbTotalCount" Margin="0, 134, 0, 0" Foreground="#aaaaaa" TextAlignment="Center" TextWrapping="Wrap" Text="99 Photos" FontSize="12" />
         </Grid>
 
         <Grid Grid.Column="1">
@@ -92,7 +96,7 @@
 
             <ListBox BorderThickness="0" 
                      Margin="0, 8, 0, 40" 
-                     Background="#3F3F3F" 
+                     Background="#4f4f4f" 
                      Grid.Row="1" 
                      x:Name="lbEvent" 
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"                  
@@ -107,19 +111,24 @@
                                     Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}"/>
 
                                     <Image Source="{Binding Path=BitmapImage}" HorizontalAlignment="Left"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top"  Stretch="UniformToFill"
-                                    Visibility="{Binding Path=IsPhoto, Converter={StaticResource BoolToHiddenConverter}}"/>
-
-                                    <!--Image gif:ImageBehavior.AnimatedSource="{Binding Path=BitmapImage}" HorizontalAlignment="Left"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top"
-                                     Visibility="{Binding Path=IsGif, Converter={StaticResource BoolToHiddenConverter}}" Stretch="UniformToFill" /-->
-
+                                    Visibility="{Binding Path=IsPhoto, Converter={StaticResource BoolToHiddenConverter}}">
+                                        <!-- Image.Effect>
+                                            <BlurEffect Radius="2"/>
+                                        </Image.Effect -->
+                                    </Image>
+                                        
                                     <Image Source="{Binding Path=BitmapImage}" Width="48" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Bottom"
                                     Height="36" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" Stretch="UniformToFill" />
 
                                     <Rectangle Fill="#cc000000" Visibility="{Binding Path=HasOrigin, Converter={StaticResource BoolToHiddenConverter}}" />
 
-                                    <Image Source="/Waveface.Client;component/Resource/More.png" Visibility="{Binding Path=IsMore, Converter={StaticResource BoolToHiddenConverter}}" HorizontalAlignment="Left"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top"  Stretch="UniformToFill"/>
-
-                                    <Image Source="/Waveface.Client;component/Resource/Less.png" Visibility="{Binding Path=IsLess, Converter={StaticResource BoolToHiddenConverter}}" HorizontalAlignment="Left"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top"  Stretch="UniformToFill"/>
+                                    <Border Cursor="Hand" Width="60" Height="60" Background="#313131" Visibility="{Binding Path=IsMore, Converter={StaticResource BoolToHiddenConverter}}" >
+                                        <TextBlock Margin="10, 0" Foreground="White" Text="{Binding MoreText}" TextAlignment="Center" TextWrapping="Wrap" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    
+                                    <Border Cursor="Hand" Width="60" Height="60" Background="#313131" Visibility="{Binding Path=IsLess, Converter={StaticResource BoolToHiddenConverter}}">
+                                        <TextBlock Margin="10, 0"  Foreground="White" Text="Less" TextAlignment="Center" TextWrapping="Wrap" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
                                 </Grid>
                             </Border>
                         </StackPanel>

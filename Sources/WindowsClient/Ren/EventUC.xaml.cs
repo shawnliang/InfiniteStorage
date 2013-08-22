@@ -4,12 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using WpfAnimatedGif;
-using Image = System.Drawing.Image;
 
 #endregion
 
@@ -22,10 +19,10 @@ namespace Waveface.Client
 		public BitmapSource BitmapImage { get; set; }
 		public bool IsVideo { get; set; }
 		public bool IsPhoto { get; set; }
-		public bool IsGIF { get; set; }
 
 		public bool IsMore { get; set; }
 		public bool IsLess { get; set; }
+		public string MoreText { get; set; }
 
 		public BitmapSource MediaSource { get; set; }
 		public string FileID { get; set; }
@@ -96,9 +93,6 @@ namespace Waveface.Client
 
 			FileEntrys.Reverse();
 
-			//試驗連張轉Gif
-			//List<FileEntry> _FileEntrys = GenGif();
-			List<FileEntry> _FileEntrys = FileEntrys;
 			List<EventItem> _ctlItems = new List<EventItem>();
 
 			// 若改變項目個數, 則重新產生UI
@@ -106,13 +100,14 @@ namespace Waveface.Client
 			{
 				int _idx = 0;
 
-				foreach (FileEntry _file in _FileEntrys)
+				foreach (FileEntry _file in FileEntrys)
 				{
 					if (_idx == More)
 					{
 						EventItem _eventItem = new EventItem
 												   {
-													   IsMore = true
+													   IsMore = true,
+													   MoreText = FileEntrys.Count - 100 + " More"
 												   };
 
 						_ctlItems.Add(_eventItem);
@@ -122,15 +117,23 @@ namespace Waveface.Client
 					{
 						case 0:
 							{
-								string _path = _file.tiny_path;
+								string _path = _file.s92_path;
 
+								if (!File.Exists(_path))
+								{
+									_path = _file.tiny_path;
+								}
+
+								if(_file.has_origin)
+								{
+									_path = _file.tiny_path;
+								}
 
 								EventItem _eventItem = new EventItem
 														   {
 															   FileID = _file.id,
 															   IsVideo = false,
 															   IsPhoto = true,
-															   IsGIF = false,
 															   HasOrigin = !_file.has_origin
 														   };
 
@@ -145,6 +148,16 @@ namespace Waveface.Client
 
 									if (_idx == 0)
 									{
+										string _sPath = _file.tiny_path.Replace(".tiny.", ".small.");
+
+										if (File.Exists(_sPath))
+										{
+											_bi = new BitmapImage();
+											_bi.BeginInit();
+											_bi.UriSource = new Uri(_sPath, UriKind.Absolute);
+											_bi.EndInit();
+										}
+
 										imgHead.Source = _bi;
 									}
 								}
@@ -163,7 +176,6 @@ namespace Waveface.Client
 															   FileID = _file.id,
 															   IsVideo = true,
 															   IsPhoto = false,
-															   IsGIF = false,
 															   HasOrigin = !_file.has_origin
 														   };
 
@@ -183,10 +195,18 @@ namespace Waveface.Client
 								BitmapImage _vidoeThumb = new BitmapImage();
 								_vidoeThumb.BeginInit();
 
-								if (File.Exists(_file.tiny_path))
+								if (File.Exists(_file.s92_path))
+								{
+									_vidoeThumb.UriSource = new Uri(_file.s92_path, UriKind.Absolute);
+								}
+								else if (File.Exists(_file.tiny_path))
+								{
 									_vidoeThumb.UriSource = new Uri(_file.tiny_path, UriKind.Absolute);
+								}
 								else
+								{
 									_vidoeThumb.UriSource = new Uri("pack://application:,,,/Ren/Images/video_130x110.png");
+								}
 
 								_vidoeThumb.EndInit();
 
@@ -201,36 +221,6 @@ namespace Waveface.Client
 							}
 
 							break;
-						case 999:
-							{
-								string _path = _file.tiny_path;
-
-								try
-								{
-									EventItem _eventItem = new EventItem
-															   {
-																   FileID = _file.id,
-																   IsVideo = false,
-																   IsPhoto = false,
-																   IsGIF = true,
-																   HasOrigin = false
-															   };
-
-									BitmapImage _bi = new BitmapImage();
-									_bi.BeginInit();
-									_bi.UriSource = new Uri(_path, UriKind.Absolute);
-									_bi.EndInit();
-
-									_eventItem.BitmapImage = _bi;
-
-									_ctlItems.Add(_eventItem);
-								}
-								catch
-								{
-								}
-							}
-
-							break;
 					}
 
 					_idx++;
@@ -240,7 +230,7 @@ namespace Waveface.Client
 			{
 				Dictionary<string, FileEntry> _id_FileEntrys = new Dictionary<string, FileEntry>();
 
-				foreach (FileEntry _entry in _FileEntrys)
+				foreach (FileEntry _entry in FileEntrys)
 				{
 					_id_FileEntrys.Add(_entry.id, _entry);
 				}
@@ -308,95 +298,6 @@ namespace Waveface.Client
 					UpdateShowMoreUI();
 				}
 			}
-		}
-
-		private List<FileEntry> GenGif()
-		{
-			Dictionary<int, int> _temp = new Dictionary<int, int>();
-
-			int _idx = 0;
-			bool _preOK = false;
-
-			for (int i = 0; i < FileEntrys.Count; i++)
-			{
-				if (i < FileEntrys.Count - 1)
-				{
-					if (Math.Abs(FileEntrys[i + 1].taken_time.Second - FileEntrys[i].taken_time.Second) < 8)
-					{
-						if (!_preOK && !_temp.Keys.Contains(_idx))
-						{
-							_temp.Add(_idx, 0);
-						}
-
-						_temp[_idx]++;
-
-						_preOK = true;
-					}
-					else
-					{
-						_idx = i + 1;
-
-						_preOK = false;
-					}
-				}
-			}
-
-
-			List<FileEntry> _ret = new List<FileEntry>();
-			int _skip = 0;
-
-			for (int i = 0; i < FileEntrys.Count; i++)
-			{
-				if (_temp.Keys.Contains(i) && _temp[i] > 2)
-				{
-					FileEntry _fileEntry = GetGifFile(i, _temp[i]);
-					_ret.Add(_fileEntry);
-					_skip = _temp[i];
-				}
-
-				if (_skip-- <= 0)
-					_ret.Add(FileEntrys[i]);
-			}
-
-			return _ret;
-		}
-
-		private FileEntry GetGifFile(int idx, int length)
-		{
-			string _tempPathBase = Path.GetTempPath() + "Waveface Photos" + "\\";
-
-			if (!Directory.Exists(_tempPathBase))
-				Directory.CreateDirectory(_tempPathBase);
-
-			string _gif = Path.Combine(_tempPathBase, Path.GetFileName(FileEntrys[idx].tiny_path)) + ".gif";
-
-			if (!File.Exists(_gif))
-			{
-				List<string> imageFilePaths = new List<string>();
-
-				for (int k = 0; k < length; k++)
-				{
-					imageFilePaths.Add(FileEntrys[idx + k].tiny_path);
-				}
-
-				AnimatedGifEncoder _gifEncoder = new AnimatedGifEncoder();
-				_gifEncoder.Start(_gif);
-				_gifEncoder.SetDelay(666);
-				_gifEncoder.SetRepeat(0); //-1:no repeat,0:always repeat
-
-				for (int i = 0; i < imageFilePaths.Count; i++)
-				{
-					_gifEncoder.AddFrame(Image.FromFile(imageFilePaths[i]));
-				}
-
-				_gifEncoder.Finish();
-			}
-
-			FileEntry _ret = (FileEntry)FileEntrys[idx].Clone();
-			_ret.tiny_path = _gif;
-			_ret.type = 999;
-
-			return _ret;
 		}
 
 		private void SetInfor()

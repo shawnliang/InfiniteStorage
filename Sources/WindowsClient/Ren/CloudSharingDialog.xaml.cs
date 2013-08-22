@@ -180,36 +180,9 @@ namespace Waveface.Client
 			m_photosCount = _p;
 			m_videosCount = _v;
 
-			tbCounts.Text = GetCountsString(m_photosCount, m_videosCount);
+			selectionText.Content = string.Format((string)FindResource("selection_text"), m_photosCount + m_videosCount);
 
 			btnNext.IsEnabled = !((m_photosCount == 0) && (m_videosCount == 0));
-		}
-
-		private string GetCountsString(int photosCount, int videosCount)
-		{
-			string _c = "No file selected";
-
-			string _photo = " " + (string)Application.Current.FindResource("photo");
-			string _photos = " " + (string)Application.Current.FindResource("photos");
-			string _video = " " + (string)Application.Current.FindResource("video");
-			string _videos = " " + (string)Application.Current.FindResource("videos");
-
-			if (photosCount > 0)
-			{
-				_c = photosCount + ((photosCount == 1) ? _photo : _photos);
-			}
-
-			if (videosCount > 0)
-			{
-				if (photosCount > 0)
-				{
-					_c = _c + ", ";
-				}
-
-				_c = _c + videosCount + ((videosCount == 1) ? _video : _videos);
-			}
-
-			return _c;
 		}
 
 		private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -242,6 +215,11 @@ namespace Waveface.Client
 		}
 
 		private void lbItems_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			//lbItems.UnselectAll();
+		}
+
+		private void btnUnSelectAll_Click(object sender, RoutedEventArgs e)
 		{
 			lbItems.UnselectAll();
 		}

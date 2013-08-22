@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:gif="clr-namespace:WpfAnimatedGif"
              Width="1024"
-             Height="768"
-             SizeChanged="Window_SizeChanged">
+             Height="768">
 
     <UserControl.Resources>
         <Style x:Key="FlatButtonStyle" TargetType="Button">
@@ -124,7 +123,7 @@
 
                 </StackPanel>
 
-                <ToggleButton x:Name="tbtnCloudSharing"
+                <ToggleButton x:Name="tbAutoImport"
                               Width="128"
                               Height="26"
                               Margin="10,4,10,0"
@@ -146,7 +145,6 @@
                          Background="#3F3F3F"
                          BorderThickness="0"
                          ItemContainerStyle="{StaticResource SimpleListBoxItem}"
-                         LayoutUpdated="listBoxEvent_LayoutUpdated"
                          ScrollViewer.CanContentScroll="false"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                          VirtualizingStackPanel.IsVirtualizing="True">

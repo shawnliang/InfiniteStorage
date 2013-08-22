@@ -139,14 +139,8 @@
     <Compile Include="Ren\ConfirmSyncDialog.xaml.cs">
       <DependentUpon>ConfirmSyncDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Ren\ShareEventDialog.xaml.cs">
-      <DependentUpon>ShareEventDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Ren\Utility\FluidProgressBar.xaml.cs" />
     <Compile Include="Ren\Utility\ListBoxDropHighlighter.cs" />
-    <Compile Include="Ren\WpfAnimatedGif\Encoder\AnimatedGifEncoder.cs" />
-    <Compile Include="Ren\WpfAnimatedGif\Encoder\LZWEncoder.cs" />
-    <Compile Include="Ren\WpfAnimatedGif\Encoder\NeuQuant.cs" />
     <Compile Include="Src\Class\Converter\ListBoxToSelectionTextConvertor.cs" />
     <Compile Include="Src\Control\ShareCallout.xaml.cs">
       <DependentUpon>ShareCallout.xaml</DependentUpon>
@@ -379,8 +373,6 @@
     <Resource Include="Resource\bar2_trash_2.png" />
     <Resource Include="Resource\bar2_trash_3.png" />
     <Resource Include="Resource\loading_logo.gif" />
-    <Resource Include="Resource\Less.png" />
-    <Resource Include="Resource\More.png" />
     <Resource Include="Resource\ico_fav_unselect.png" />
     <Resource Include="Resource\ico_fav_select.png" />
     <Resource Include="Resource\ico_cloud_album_normal.png" />
@@ -402,6 +394,7 @@
     <Resource Include="Resource\Push_Nexus7.png" />
     <Resource Include="Resource\pop_online.png" />
     <Resource Include="Resource\pop_save.png" />
+    <Resource Include="Resource\check_048_blue.png" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -430,10 +423,6 @@
     <Page Include="Ren\ConfirmSyncDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Ren\ShareEventDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Ren\Utility\FluidProgressBar.xaml">
       <Generator>MSBuild:Compile</Generator>
