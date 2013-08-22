@@ -11,8 +11,8 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="TextMargin" Value="1,10,1,1" />
-            <Setter Property="Width" Value="100" />
-            <Setter Property="Height" Value="80" />
+            <Setter Property="Width" Value="120" />
+            <Setter Property="Height" Value="120" />
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#98bebf" />
@@ -22,7 +22,7 @@
         </Style>
     </UserControl.Resources>
 
-    <local:CalloutMenu MaxWidth="240"
+    <local:CalloutMenu MaxWidth="280"
                        Background="#d5d5d5"
                        BorderBrush="#d5d5d5">
         <StackPanel Margin="10, 5, 10, 20" Orientation="Vertical">
