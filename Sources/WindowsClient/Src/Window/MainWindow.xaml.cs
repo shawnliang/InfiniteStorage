@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 #region
 
 using System;
@@ -44,7 +44,6 @@ namespace Waveface.Client
 		private Point startPoint;
 		private Boolean needSpecialMulitSelectProcess;
 		private DateTime lastMouseLeftButtonDown;
-		private long sourceTreeClickCount;
 
 		public MainWindow()
 		{
@@ -55,34 +54,34 @@ namespace Waveface.Client
 #endif
 		}
 
-        private bool CloudAlbumFilter(object item)
-        {
-            var group = item as BunnyLabelContentGroup;
-            return group.ShareEnabled;
-        }
+		private bool CloudAlbumFilter(object item)
+		{
+			var group = item as BunnyLabelContentGroup;
+			return group.ShareEnabled;
+		}
 
-        private bool LocalAlbumFilter(object item)
-        {
-            var group = item as BunnyLabelContentGroup;
-            return !group.ShareEnabled;
-        }
+		private bool LocalAlbumFilter(object item)
+		{
+			var group = item as BunnyLabelContentGroup;
+			return !group.ShareEnabled;
+		}
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			lbxDeviceContainer.DataContext = ClientFramework.Client.Default.Services;
 
-            ICollectionView cloudAlbums = new ListCollectionView(ClientFramework.Client.Default.Favorites);
-            cloudAlbums.Filter = CloudAlbumFilter;
+			ICollectionView cloudAlbums = new ListCollectionView(ClientFramework.Client.Default.Favorites);
+			cloudAlbums.Filter = CloudAlbumFilter;
 
-            lbxCloudAlbums.DataContext = cloudAlbums;
+			lbxCloudAlbums.DataContext = cloudAlbums;
 
-            ICollectionView localAlbums = new ListCollectionView(ClientFramework.Client.Default.Favorites);
-            localAlbums.Filter = LocalAlbumFilter;
+			ICollectionView localAlbums = new ListCollectionView(ClientFramework.Client.Default.Favorites);
+			localAlbums.Filter = LocalAlbumFilter;
 
 
-            lbxFavorites.DataContext = localAlbums;
+			lbxFavorites.DataContext = localAlbums;
 
-           
+		   
 			lbxRecent.DataContext = ClientFramework.Client.Default.Recent;
 
 			rspRightSidePane2.tbxName.KeyDown += tbxName_KeyDown;
@@ -102,37 +101,37 @@ namespace Waveface.Client
 
 			lblContentTypeCount.Content = string.Format("0 photos 0 videos");
 
-            //Observable.FromEventPattern(
-            //    h => lbxDeviceContainer.TreeViewItemClick += h,
-            //    h => lbxDeviceContainer.TreeViewItemClick -= h
-            //    )
-            //    .Window(TimeSpan.FromMilliseconds(50))
-            //    .SelectMany(x => x.TakeLast(1))
-            //    .SubscribeOn(ThreadPoolScheduler.Instance)
-            //    .ObserveOn(DispatcherScheduler.Current)
-            //    .Subscribe(ex => TreeViewItem_PreviewMouseLeftButtonDown(ex.Sender, ex.EventArgs));
+			//Observable.FromEventPattern(
+			//    h => lbxDeviceContainer.TreeViewItemClick += h,
+			//    h => lbxDeviceContainer.TreeViewItemClick -= h
+			//    )
+			//    .Window(TimeSpan.FromMilliseconds(50))
+			//    .SelectMany(x => x.TakeLast(1))
+			//    .SubscribeOn(ThreadPoolScheduler.Instance)
+			//    .ObserveOn(DispatcherScheduler.Current)
+			//    .Subscribe(ex => TreeViewItem_PreviewMouseLeftButtonDown(ex.Sender, ex.EventArgs));
 
-            Observable.FromEvent<RoutedPropertyChangedEventHandler<object>, RoutedPropertyChangedEventArgs<object>>(
-            handler => (s, ex) => handler(ex),
-            h => lbxDeviceContainer.SelectedItemChanged += h,
-            h => lbxDeviceContainer.SelectedItemChanged -= h
-            )
-            .Window(TimeSpan.FromMilliseconds(50))
-            .SelectMany(x => x.TakeLast(1))
-            .SubscribeOn(ThreadPoolScheduler.Instance)
-            .ObserveOn(DispatcherScheduler.Current)
-            .Subscribe(ex => TreeViewItem_SelectedItemChanged(ex.OriginalSource, ex));
+			Observable.FromEvent<RoutedPropertyChangedEventHandler<object>, RoutedPropertyChangedEventArgs<object>>(
+			handler => (s, ex) => handler(ex),
+			h => lbxDeviceContainer.SelectedItemChanged += h,
+			h => lbxDeviceContainer.SelectedItemChanged -= h
+			)
+			.Window(TimeSpan.FromMilliseconds(50))
+			.SelectMany(x => x.TakeLast(1))
+			.SubscribeOn(ThreadPoolScheduler.Instance)
+			.ObserveOn(DispatcherScheduler.Current)
+			.Subscribe(ex => TreeViewItem_SelectedItemChanged(ex.OriginalSource, ex));
 
-            Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
-            handler => (s, ex) => handler(ex),
-            h => lbxCloudAlbums.SelectionChanged += h,
-            h => lbxCloudAlbums.SelectionChanged -= h
-            )
-            .Window(TimeSpan.FromMilliseconds(50))
-            .SelectMany(x => x.TakeLast(1))
-            .SubscribeOn(ThreadPoolScheduler.Instance)
-            .ObserveOn(DispatcherScheduler.Current)
-            .Subscribe(ex => lbxFavorites_SelectionChanged(lbxCloudAlbums, ex));
+			Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
+			handler => (s, ex) => handler(ex),
+			h => lbxCloudAlbums.SelectionChanged += h,
+			h => lbxCloudAlbums.SelectionChanged -= h
+			)
+			.Window(TimeSpan.FromMilliseconds(50))
+			.SelectMany(x => x.TakeLast(1))
+			.SubscribeOn(ThreadPoolScheduler.Instance)
+			.ObserveOn(DispatcherScheduler.Current)
+			.Subscribe(ex => lbxFavorites_SelectionChanged(lbxCloudAlbums, ex));
 
 			Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
 				handler => (s, ex) => handler(ex),
@@ -172,7 +171,7 @@ namespace Waveface.Client
 			CommandLine.Parser.Default.ParseArguments(cmdArgs, options);
 
 			if (!string.IsNullOrEmpty(options.select_device))
-				JumpToDevice(options.select_device);
+				JumpToDevice(options.select_device, false);
 			else if (ClientFramework.Client.Default.Services.Any())
 				JumpToDevice(ClientFramework.Client.Default.Services.First().ID);
 		}
@@ -240,7 +239,7 @@ namespace Waveface.Client
 		{
 			foreach (var favorite in ClientFramework.Client.Default.Favorites.OfType<IContentGroup>())
 			{
-                RefreshFavorite(favorite);
+				RefreshFavorite(favorite);
 			}
 		}
 
@@ -250,12 +249,12 @@ namespace Waveface.Client
 				return;
 
 			favorite.Refresh();
-            (lbxCloudAlbums.ItemsSource as ICollectionView).Refresh();
-            (lbxFavorites.ItemsSource as ICollectionView).Refresh();
+			(lbxCloudAlbums.ItemsSource as ICollectionView).Refresh();
+			(lbxFavorites.ItemsSource as ICollectionView).Refresh();
 
-            System.Windows.Forms.Application.DoEvents();
+			System.Windows.Forms.Application.DoEvents();
 
-            lbxCloudAlbums.SelectedItem = lbxFavorites.SelectedItem = GetCurrentContentGroup();
+			lbxCloudAlbums.SelectedItem = lbxFavorites.SelectedItem = GetCurrentContentGroup();
 		}
 
 		private IContentGroup GetSelectedFavoriteGroup()
@@ -447,7 +446,7 @@ namespace Waveface.Client
 				lbxFavorites.SelectedIndex = 0;
 			else
 			{
-                lbxCloudAlbums.SelectedIndex = -1;
+				lbxCloudAlbums.SelectedIndex = -1;
 				lbxFavorites.SelectedIndex = -1;
 				lbxContentContainer.DataContext = null;
 				lblContentLocation.DataContext = null;
@@ -592,11 +591,11 @@ namespace Waveface.Client
 			if (dialog.PairedDevices.Any())
 			{
 				var device_id = dialog.PairedDevices.LastOrDefault().device_id;
-				JumpToDevice(device_id);
+				JumpToDevice(device_id, false);
 			}
 		}
 
-		public void JumpToDevice(string device_id)
+		public void JumpToDevice(string device_id, bool jumpToFirstChild = true)
 		{
 			if (jumpToDeviceTimer != null)
 			{
@@ -605,11 +604,11 @@ namespace Waveface.Client
 
 			jumpToDeviceTimer = new DispatcherTimer();
 			jumpToDeviceTimer.Interval = TimeSpan.FromMilliseconds(500);
-			jumpToDeviceTimer.Tick += (s, e) => Timer_JumpToDevice(device_id);
+			jumpToDeviceTimer.Tick += (s, e) => Timer_JumpToDevice(device_id, jumpToFirstChild);
 			jumpToDeviceTimer.Start();
 		}
 
-		private void Timer_JumpToDevice(string device_id)
+		private void Timer_JumpToDevice(string device_id, bool jumpToFirstChild)
 		{
 			try
 			{
@@ -624,6 +623,9 @@ namespace Waveface.Client
 					{
 						var devNode = (TreeViewItem)sourceTree.ItemContainerGenerator.ContainerFromItem(dev);
 
+
+						if (jumpToFirstChild)
+						{
 						if (devNode != null && devNode.Items.Count > 0)
 						{
 							devNode.IsExpanded = true;
@@ -634,7 +636,7 @@ namespace Waveface.Client
 							{
 								folderNode.IsSelected = true;
 								lbxRecent.SelectedIndex = -1;
-                                lbxCloudAlbums.SelectedIndex = -1;
+								lbxCloudAlbums.SelectedIndex = -1;
 								lbxFavorites.SelectedIndex = -1;
 
 								var group = (IContentGroup)devNode.Items[0];
@@ -645,6 +647,15 @@ namespace Waveface.Client
 
 								SetContentTypeCount(group);
 
+								jumpToDeviceTimer.Stop();
+							}
+						}
+					}
+						else
+						{
+							if (devNode != null)
+							{
+								devNode.IsSelected = true;
 								jumpToDeviceTimer.Stop();
 							}
 						}
@@ -817,37 +828,37 @@ namespace Waveface.Client
 			SetContentTypeCount(group as IContentGroup);
 		}
 
-        private DependencyObject GetControlItem(ItemsControl itemsControl, object value)
-        {
-            foreach (var item in itemsControl.Items)
-            {
-                var dp = itemsControl.ItemContainerGenerator.ContainerFromItem(value);
-
-                if (dp != null)
-                    return dp;
-
-                var currentTreeViewItem = itemsControl.ItemContainerGenerator.ContainerFromItem(item);
-
-                var childDp = GetControlItem(currentTreeViewItem as ItemsControl, value);
-
-                if (childDp != null)
-                    return childDp;
-            }
-            return null;
-        }
-
-        private void TreeViewItem_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+		private DependencyObject GetControlItem(ItemsControl itemsControl, object value)
 		{
-            var treeView = sender as TreeView;
-            var ti = GetControlItem(treeView, treeView.SelectedItem) as TreeViewItem;
+			foreach (var item in itemsControl.Items)
+			{
+				var dp = itemsControl.ItemContainerGenerator.ContainerFromItem(value);
+
+				if (dp != null)
+					return dp;
+
+				var currentTreeViewItem = itemsControl.ItemContainerGenerator.ContainerFromItem(item);
+
+				var childDp = GetControlItem(currentTreeViewItem as ItemsControl, value);
+
+				if (childDp != null)
+					return childDp;
+			}
+			return null;
+		}
+
+		private void TreeViewItem_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+		{
+			var treeView = sender as TreeView;
+			var ti = GetControlItem(treeView, treeView.SelectedItem) as TreeViewItem;
 
 			if (ti == null)
 				return;
 
-            lbxContentContainer.SelectedIndex = -1;
-            lbxCloudAlbums.SelectedIndex = -1;
-            lbxFavorites.SelectedIndex = -1;
-            lbxRecent.SelectedIndex = -1;
+			lbxContentContainer.SelectedIndex = -1;
+			lbxCloudAlbums.SelectedIndex = -1;
+			lbxFavorites.SelectedIndex = -1;
+			lbxRecent.SelectedIndex = -1;
 
 			var group = ti.DataContext as IContentGroup;
 
@@ -863,6 +874,7 @@ namespace Waveface.Client
 				ContentAreaToolBar.Visibility = Visibility.Collapsed;
 				lbxContentContainer.Visibility = Visibility.Collapsed;
 
+				allFilesUC.DataContext = _service;
 				allFilesUC.Visibility = Visibility.Visible;
 				allFilesUC.Load(_service, this);
 
@@ -901,69 +913,69 @@ namespace Waveface.Client
 			GC.Collect();
 		}
 
-    //private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, EventArgs e)
-    //    {
-    //        var ti = sender as TreeViewItem;
+	//private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, EventArgs e)
+	//    {
+	//        var ti = sender as TreeViewItem;
 
-    //        if (ti == null)
-    //            return;
+	//        if (ti == null)
+	//            return;
 
-    //        lbxContentContainer.SelectedIndex = -1;
-    //        lbxCloudAlbums.SelectedIndex = -1;
-    //        lbxFavorites.SelectedIndex = -1;
-    //        lbxRecent.SelectedIndex = -1;
+	//        lbxContentContainer.SelectedIndex = -1;
+	//        lbxCloudAlbums.SelectedIndex = -1;
+	//        lbxFavorites.SelectedIndex = -1;
+	//        lbxRecent.SelectedIndex = -1;
 
-    //        var group = ti.DataContext as IContentGroup;
+	//        var group = ti.DataContext as IContentGroup;
 
-    //        if (group == null)
-    //        {
-    //            IService _service = ti.DataContext as IService;
+	//        if (group == null)
+	//        {
+	//            IService _service = ti.DataContext as IService;
 
-    //            if (_service == null)
-    //                return;
+	//            if (_service == null)
+	//                return;
 
-    //            Cursor = Cursors.Wait;
+	//            Cursor = Cursors.Wait;
 
-    //            ContentAreaToolBar.Visibility = Visibility.Collapsed;
-    //            lbxContentContainer.Visibility = Visibility.Collapsed;
+	//            ContentAreaToolBar.Visibility = Visibility.Collapsed;
+	//            lbxContentContainer.Visibility = Visibility.Collapsed;
 
-    //            allFilesUC.Visibility = Visibility.Visible;
-    //            allFilesUC.Load(_service, this);
+	//            allFilesUC.Visibility = Visibility.Visible;
+	//            allFilesUC.Load(_service, this);
 
-    //            Cursor = Cursors.Arrow;
+	//            Cursor = Cursors.Arrow;
 
-    //            return;
-    //        }
+	//            return;
+	//        }
 
-    //        group.Refresh();
+	//        group.Refresh();
 
-    //        allFilesUC.Stop();
-    //        allFilesUC.Visibility = Visibility.Collapsed;
-    //        ContentAreaToolBar.Visibility = Visibility.Visible;
-    //        lbxContentContainer.Visibility = Visibility.Visible;
+	//        allFilesUC.Stop();
+	//        allFilesUC.Visibility = Visibility.Collapsed;
+	//        ContentAreaToolBar.Visibility = Visibility.Visible;
+	//        lbxContentContainer.Visibility = Visibility.Visible;
 
-    //        lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
-    //        //btnDelete.IsEnabled = false;
-    //        //btnCreateAlbum.IsEnabled = false;
+	//        lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
+	//        //btnDelete.IsEnabled = false;
+	//        //btnCreateAlbum.IsEnabled = false;
 
-    //        Grid.SetColumnSpan(gdContentArea, 2);
+	//        Grid.SetColumnSpan(gdContentArea, 2);
 
-    //        gdRightSide.Visibility = Visibility.Collapsed;
+	//        gdRightSide.Visibility = Visibility.Collapsed;
 
-    //        rspRightSidePanel.Visibility = Visibility.Collapsed;
-    //        rspRightSidePane2.Visibility = Visibility.Collapsed;
+	//        rspRightSidePanel.Visibility = Visibility.Collapsed;
+	//        rspRightSidePane2.Visibility = Visibility.Collapsed;
 
-    //        lblContentLocation.DataContext = group;
-    //        lbxContentContainer.DataContext = null;
+	//        lblContentLocation.DataContext = group;
+	//        lbxContentContainer.DataContext = null;
 
-    //        DoEvents();
+	//        DoEvents();
 
-    //        lbxContentContainer.DataContext = group.Contents;
+	//        lbxContentContainer.DataContext = group.Contents;
 
-    //        SetContentTypeCount(group);
+	//        SetContentTypeCount(group);
 
-    //        GC.Collect();
-    //    }
+	//        GC.Collect();
+	//    }
 
 		private void lbxContentContainer_KeyDown(object sender, KeyEventArgs e)
 		{
@@ -984,12 +996,12 @@ namespace Waveface.Client
 
 		private void lbxFavorites_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-            var listbox = sender as ListBox;
-            if (listbox.SelectedIndex >= 0)
+			var listbox = sender as ListBox;
+			if (listbox.SelectedIndex >= 0)
 			{
 				ShowSelectedFavoriteContents(sender, false);
 
-                ((listbox == lbxCloudAlbums) ? lbxFavorites : lbxCloudAlbums).SelectedItem = null;
+				((listbox == lbxCloudAlbums) ? lbxFavorites : lbxCloudAlbums).SelectedItem = null;
 				lbxRecent.SelectedItem = null;
 			}
 		}
@@ -1000,7 +1012,7 @@ namespace Waveface.Client
 			{
 				ShowSelectedFavoriteContents(sender, true);
 
-                lbxCloudAlbums.SelectedItem = null;
+				lbxCloudAlbums.SelectedItem = null;
 				lbxFavorites.SelectedItem = null;
 			}
 		}
@@ -1121,7 +1133,7 @@ namespace Waveface.Client
 			//rspRightSidePane2.tbtnHomeSharing.IsEnabled = ClientFramework.Client.Default.HomeSharingEnabled;
 			//rspRightSidePane2.tbtnHomeSharing.IsChecked = isOnAir;
 
-            rspRightSidePane2.DataContext = group;
+			rspRightSidePane2.DataContext = group;
 
 			rspRightSidePane2.tbtnCloudSharing.IsChecked = (group as BunnyLabelContentGroup).ShareEnabled;
 
@@ -1139,11 +1151,11 @@ namespace Waveface.Client
 
 			ClientFramework.Client.Default.ShareLabel(labelGroup.ID, isShared);
 
-            RefreshFavorites();
+			RefreshFavorites();
 
-            labelGroup.RefreshShareProperties();
+			labelGroup.RefreshShareProperties();
 
-            rspRightSidePane2.Update(labelGroup);
+			rspRightSidePane2.Update(labelGroup);
 		}
 
 		public void EmailCloudSharing()
@@ -1666,7 +1678,6 @@ namespace Waveface.Client
 
 		private void btnCreateCloudAlbum_Click(object sender, RoutedEventArgs e)
 		{
-
 			createCloudAlbum();
 		}
 
@@ -1681,9 +1692,9 @@ namespace Waveface.Client
 			string _title = lblContentLocation.Content.ToString();
 
 			CloudSharingDialog _dialog = new CloudSharingDialog(_allEntities, _selectedEntities, _title)
-											 {
-												 Owner = this
-											 };
+			{
+				Owner = this
+			};
 			_dialog.ShowDialog();
 
 			List<string> _fileIDs = _dialog.FileIDs;
@@ -1810,32 +1821,6 @@ namespace Waveface.Client
 			}
 		}
 
-		private void lbxContentContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (lbxContentContainer.SelectedItems.Count == 0)
-			{
-				selectionText.Text = "";
-
-
-				//if (lbxContentContainer.Items.Count > 0)
-				//{
-				//	addToCallout.SelectionText = string.Format((string)FindResource("addto_all_selection_text"), lbxContentContainer.Items.Count);
-				//	shareCallout.SelectionText = string.Format((string)FindResource("share_all_selection_text"), lbxContentContainer.Items.Count);
-				//}
-				//else
-				//{
-				//	addToCallout.SelectionText = "";
-				//	shareCallout.SelectionText = "";
-				//}
-			}
-			else
-			{
-                selectionText.Text = string.Format((string)FindResource("selection_text"), lbxContentContainer.SelectedItems.Count);
-				//addToCallout.SelectionText = string.Format((string)FindResource("addto_selection_text"), lbxContentContainer.SelectedItems.Count);
-				//shareCallout.SelectionText = string.Format((string)FindResource("share_selection_text"), lbxContentContainer.SelectedItems.Count);
-			}
-		}
-
 		private void lbxContentContainer_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			lbxContentContainer.UnselectAll();
@@ -1895,12 +1880,12 @@ namespace Waveface.Client
 		}
 
 		private void ShareCallout_CreateOnlineAlbumClicked_1(object sender, EventArgs e)
-			{
+		{
 			createCloudAlbum(true);
-								}
+		}
 
 		private void ShareCallout_SaveToClicked_1(object sender, EventArgs e)
-					{
+		{
 			var selected = GetSelectedContents();
 			if (!selected.Any())
 			{	selected = lbxContentContainer.Items.OfType<IContentEntity>().ToArray();
@@ -1915,7 +1900,7 @@ namespace Waveface.Client
 			if (result == System.Windows.Forms.DialogResult.OK)
 			{
 				foreach (var item in selected)
-						{
+				{
 					var file_name = Path.GetFileName(item.Uri.LocalPath);
 					File.Copy(item.Uri.LocalPath, Path.Combine(dialog.SelectedPath, file_name), true);
 				}

@@ -62,6 +62,8 @@ namespace InfiniteStorage.Model
 		public bool? on_cloud { get; set; }
 
 		public bool has_origin { get; set; }
+
+		public DateTime? import_time { get; set; }
 	}
 
 

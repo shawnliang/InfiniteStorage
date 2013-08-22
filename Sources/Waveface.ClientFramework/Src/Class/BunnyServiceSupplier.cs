@@ -148,7 +148,7 @@ namespace Waveface.ClientFramework
 			try{
 				var notify = JsonConvert.DeserializeObject<NotificationMsg>(e.Data);
 
-				if (notify.active_devices != null)
+				if (notify.recving_devices != null)
 				{
 					updateServiceReceivingStatus(notify);
 				}
@@ -258,21 +258,31 @@ namespace Waveface.ClientFramework
 
 		private void updateServiceReceivingStatus(NotificationMsg notify)
 		{
-			var active_devices = notify.active_devices;
+			var recving_devices = notify.recving_devices;
 
-			var services = Services;
+			var services = Services.ToList();
 
 			var actives = from s in services
-						  where active_devices.Contains(s.ID)
+						  where recving_devices.Where(x => x.DeviceId.Equals(s.ID, StringComparison.InvariantCultureIgnoreCase)).Any()
 						  select s;
 
 			foreach (BunnyService s in actives)
+			{
 				s.IsRecving = true;
+				var status = recving_devices.Where(x => x.DeviceId.Equals(s.ID, StringComparison.InvariantCultureIgnoreCase)).First();
+				s.RecvStatus.IsReceiving = status.IsReceiving;
+				s.RecvStatus.IsPreparing = status.IsPreparing;
+				s.RecvStatus.Total = status.Total;
+				s.RecvStatus.Received = status.Received;
+			}
 
 			var inactives = services.Except(actives);
 
 			foreach (BunnyService s in inactives)
+			{
 				s.IsRecving = false;
+				s.RecvStatus = new ReceivingStatus();
+			}
 		}
 
 		void ws_OnClose(object sender, CloseEventArgs e)

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using InfiniteStorage.Data.Notify;
 
 namespace InfiniteStorage.Notify
 {
@@ -42,14 +43,20 @@ namespace InfiniteStorage.Notify
 
 			if (ctx.subscribe_devices)
 			{
-				var active_devices = (from c in util.GetAllBackupConnections()
-									  where c.IsRecving
-									  select c.device_id).ToList();
 
-				active_devices.AddRange(Camera.ImportingCameraCollection.GetAllCameras());
+				var recv_status = from c in util.GetAllBackupConnections()
+								  where c.IsPreparing || c.IsRecving
+								  select new ReceivingStatus
+								  {
+									  DeviceId = c.device_id,
+									  IsPreparing = c.IsPreparing,
+									  IsReceiving = c.IsRecving,
+									  Received = (int)c.recved_files,
+									  Total = (int)(c.total_count - c.backup_count + c.recved_files),
+								  };
 
 				ctx.Send(
-					JsonConvert.SerializeObject(new ActiveDeviceNotifyMsg { active_devices = active_devices }));
+					JsonConvert.SerializeObject(new NotificationMsg {  recving_devices = recv_status.ToList() }));
 			}
 		}
 

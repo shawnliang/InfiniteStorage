@@ -60,6 +60,7 @@ namespace InfiniteStorage.WebsocketProtocol
 					parent_folder = ctx.fileCtx.is_thumbnail ? null : Path.GetDirectoryName(partial_path),
 					seq = Util.GetNextSeq(),
 					has_origin = !ctx.fileCtx.is_thumbnail,
+					import_time = DateTime.UtcNow,
 				};
 
 

@@ -489,9 +489,28 @@ update [Files] set [has_origin] = 1;
 					schemaVersion = 17;
 				}
 
+				if (schemaVersion == 17)
+				{
+					using (var cmd = conn.CreateCommand())
+					{
+						cmd.CommandText = @"
+ALTER TABLE [Files] Add Column [import_time] TIMESTAMP NULL;
+update [Files] set [import_time] = datetime('now');
+
+CREATE INDEX [idx_Files_import_time_1] ON [Files](
+[seq]  desc);
+
+";
+						cmd.ExecuteNonQuery();
+					}
+
+					updateDbSchemaVersion(conn, 18);
+					schemaVersion = 18;
+				}
+
 				var curSchema = getDbSchemaVersion(conn);
 
-				if (curSchema > 17L)
+				if (curSchema > 18L)
 					throw new DBDowngradeException(string.Format("Existing db version {0} is newer than the installed version", curSchema));
 			}
 		}
