@@ -8,19 +8,19 @@
              d:DesignHeight="371"
              d:DesignWidth="602"
              mc:Ignorable="d">
-    
+
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-       
+
         <Storyboard x:Key="ShowInfo">
             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ltTag" Storyboard.TargetProperty="(UIElement.Visibility)">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
             </ObjectAnimationUsingKeyFrames>
-           
+
             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="photoInfo" Storyboard.TargetProperty="(UIElement.Visibility)">
                 <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
             </ObjectAnimationUsingKeyFrames>
-            
+
             <StringAnimationUsingKeyFrames Storyboard.TargetName="photoInfo" Storyboard.TargetProperty="(l:ContentItemInfo.FileName)">
                 <DiscreteStringKeyFrame KeyTime="0" Value="{Binding Name, IsAsync=True}" />
             </StringAnimationUsingKeyFrames>
@@ -36,12 +36,12 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    
+
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="Mouse.MouseEnter">
             <BeginStoryboard x:Name="ShowInfo_BeginStoryboard" Storyboard="{StaticResource ShowInfo}" />
         </EventTrigger>
-        
+
         <EventTrigger RoutedEvent="Mouse.MouseLeave">
             <RemoveStoryboard BeginStoryboardName="ShowInfo_BeginStoryboard" />
         </EventTrigger>
@@ -52,7 +52,8 @@
                VerticalAlignment="Center"
                OpacityMask="Black"
                RenderTransformOrigin="0.5,0.5"
-               Source="{Binding ThumbnailSource, IsAsync=True}"
+               Source="{Binding ThumbnailSource,
+                                IsAsync=True}"
                Stretch="UniformToFill">
             <Image.RenderTransform>
                 <TransformGroup>
@@ -63,9 +64,12 @@
                 </TransformGroup>
             </Image.RenderTransform>
         </Image>
-        
-        <l:ContentItemInfo x:Name="photoInfo" Height="37" VerticalAlignment="Bottom" Visibility="Collapsed" />
-        
+
+        <l:ContentItemInfo x:Name="photoInfo"
+                           Height="37"
+                           VerticalAlignment="Bottom"
+                           Visibility="Collapsed" />
+
         <Image x:Name="imgVideoIcon"
                Width="48"
                Height="35"
@@ -74,15 +78,19 @@
                VerticalAlignment="Bottom"
                Stretch="Fill"
                Style="{StaticResource VideoIconStyle}" />
-        
+
         <Grid Visibility="{Binding EnableTag, Converter={StaticResource BooleanToVisibilityConverter}, IsAsync=True}">
-            <l:LabelTag x:Name="ltTag" Margin="2"
+            <l:LabelTag x:Name="ltTag"
                         Width="30"
                         Height="30"
+                        Margin="2"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Tagged="{Binding Liked, Mode=TwoWay}"
-                        Visibility="{Binding Tagged, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=ltTag}" />
+                        Tagged="{Binding Liked,
+                                         Mode=TwoWay}"
+                        Visibility="{Binding Tagged,
+                                             Converter={StaticResource BooleanToVisibilityConverter},
+                                             ElementName=ltTag}" />
         </Grid>
     </Grid>
 </UserControl>

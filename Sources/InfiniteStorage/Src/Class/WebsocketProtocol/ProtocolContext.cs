@@ -46,7 +46,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			this.factory = factory;
 			this.storage = storage;
-
+			this.IsPreparing = true;
 			this.state = initialState;
 		}
 
@@ -218,6 +218,7 @@ namespace InfiniteStorage.WebsocketProtocol
 			get { return total_count > 0 && total_count != backup_count; }
 		}
 
+		public bool IsPreparing { get; set; }
 
 		public bool Ping()
 		{

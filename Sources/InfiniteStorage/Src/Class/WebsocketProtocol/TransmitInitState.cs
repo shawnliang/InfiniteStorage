@@ -67,6 +67,9 @@ namespace InfiniteStorage.WebsocketProtocol
 				ctx.raiseOnFileReceiving();
 
 				if (!fileCtx.is_thumbnail)
+					ctx.IsPreparing = false;
+
+				if (!fileCtx.is_thumbnail)
 				{
 					ctx.Send(new TextCommand { action = "file-go", file_name = cmd.file_name });
 				}

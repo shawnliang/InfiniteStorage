@@ -13,6 +13,14 @@ namespace InfiniteStorage
 
 		bool IsRecving { get; }
 
+		bool IsPreparing { get; }
+
 		bool Ping();
+
+		long backup_count { get; }
+
+		long total_count { get; }
+
+		long recved_files { get; }
 	}
 }
