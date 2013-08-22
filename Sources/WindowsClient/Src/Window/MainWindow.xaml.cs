@@ -42,7 +42,6 @@ namespace Waveface.Client
 		private Point startPoint;
 		private Boolean needSpecialMulitSelectProcess;
 		private DateTime lastMouseLeftButtonDown;
-		private long sourceTreeClickCount;
 
 		public MainWindow()
 		{
@@ -170,7 +169,7 @@ namespace Waveface.Client
 			CommandLine.Parser.Default.ParseArguments(cmdArgs, options);
 
 			if (!string.IsNullOrEmpty(options.select_device))
-				JumpToDevice(options.select_device);
+				JumpToDevice(options.select_device, false);
 			else if (ClientFramework.Client.Default.Services.Any())
 				JumpToDevice(ClientFramework.Client.Default.Services.First().ID);
 		}
@@ -590,11 +589,11 @@ namespace Waveface.Client
 			if (dialog.PairedDevices.Any())
 			{
 				var device_id = dialog.PairedDevices.LastOrDefault().device_id;
-				JumpToDevice(device_id);
+				JumpToDevice(device_id, false);
 			}
 		}
 
-		public void JumpToDevice(string device_id)
+		public void JumpToDevice(string device_id, bool jumpToFirstChild = true)
 		{
 			if (jumpToDeviceTimer != null)
 			{
@@ -603,11 +602,11 @@ namespace Waveface.Client
 
 			jumpToDeviceTimer = new DispatcherTimer();
 			jumpToDeviceTimer.Interval = TimeSpan.FromMilliseconds(500);
-			jumpToDeviceTimer.Tick += (s, e) => Timer_JumpToDevice(device_id);
+			jumpToDeviceTimer.Tick += (s, e) => Timer_JumpToDevice(device_id, jumpToFirstChild);
 			jumpToDeviceTimer.Start();
 		}
 
-		private void Timer_JumpToDevice(string device_id)
+		private void Timer_JumpToDevice(string device_id, bool jumpToFirstChild)
 		{
 			try
 			{
@@ -622,27 +621,39 @@ namespace Waveface.Client
 					{
 						var devNode = (TreeViewItem)sourceTree.ItemContainerGenerator.ContainerFromItem(dev);
 
-						if (devNode != null && devNode.Items.Count > 0)
+
+						if (jumpToFirstChild)
 						{
-							devNode.IsExpanded = true;
-
-							var folderNode = (TreeViewItem)devNode.ItemContainerGenerator.ContainerFromIndex(0);
-
-							if (folderNode != null)
+							if (devNode != null && devNode.Items.Count > 0)
 							{
-								folderNode.IsSelected = true;
-								lbxRecent.SelectedIndex = -1;
-								lbxCloudAlbums.SelectedIndex = -1;
-								lbxFavorites.SelectedIndex = -1;
+								devNode.IsExpanded = true;
 
-								var group = (IContentGroup)devNode.Items[0];
+								var folderNode = (TreeViewItem)devNode.ItemContainerGenerator.ContainerFromIndex(0);
 
-								lbxContentContainer.DataContext = group.Contents;
-								lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
-								lblContentLocation.DataContext = group;
+								if (folderNode != null)
+								{
+									folderNode.IsSelected = true;
+									lbxRecent.SelectedIndex = -1;
+									lbxCloudAlbums.SelectedIndex = -1;
+									lbxFavorites.SelectedIndex = -1;
 
-								SetContentTypeCount(group);
+									var group = (IContentGroup)devNode.Items[0];
 
+									lbxContentContainer.DataContext = group.Contents;
+									lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
+									lblContentLocation.DataContext = group;
+
+									SetContentTypeCount(group);
+
+									jumpToDeviceTimer.Stop();
+								}
+							}
+						}
+						else
+						{
+							if (devNode != null)
+							{
+								devNode.IsSelected = true;
 								jumpToDeviceTimer.Stop();
 							}
 						}
@@ -1805,32 +1816,6 @@ namespace Waveface.Client
 				string _dir = _entity.Uri.LocalPath;
 				string _arg = @"/select, " + _dir;
 				Process.Start("explorer.exe", _arg);
-			}
-		}
-
-		private void lbxContentContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (lbxContentContainer.SelectedItems.Count == 0)
-			{
-				selectionText.Content = "";
-
-
-				//if (lbxContentContainer.Items.Count > 0)
-				//{
-				//	addToCallout.SelectionText = string.Format((string)FindResource("addto_all_selection_text"), lbxContentContainer.Items.Count);
-				//	shareCallout.SelectionText = string.Format((string)FindResource("share_all_selection_text"), lbxContentContainer.Items.Count);
-				//}
-				//else
-				//{
-				//	addToCallout.SelectionText = "";
-				//	shareCallout.SelectionText = "";
-				//}
-			}
-			else
-			{
-				selectionText.Content = string.Format((string)FindResource("selection_text"), lbxContentContainer.SelectedItems.Count);
-				//addToCallout.SelectionText = string.Format((string)FindResource("addto_selection_text"), lbxContentContainer.SelectedItems.Count);
-				//shareCallout.SelectionText = string.Format((string)FindResource("share_selection_text"), lbxContentContainer.SelectedItems.Count);
 			}
 		}
 
