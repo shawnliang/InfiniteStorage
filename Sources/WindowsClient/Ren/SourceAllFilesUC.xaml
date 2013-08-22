@@ -85,30 +85,6 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-<<<<<<< HEAD
-            <Grid Grid.Row="0"  Background="{DynamicResource TitleBarBackground}">
-                <TextBlock x:Name="tbTitle" Margin="12,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"                        
-                           FontFamily="Segoe UI" FontSize="20" FontWeight="Bold" Foreground="White" Text=""/>
-                
-                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                    <Image x:Name="imgCircleProgress" Visibility="Collapsed" Width="32" Height="32"  HorizontalAlignment="Right" VerticalAlignment="Center" gif:ImageBehavior.AnimatedSource="/Waveface.Client;component/Resource/circleProgress.gif" />
-                    <TextBlock x:Name="tbTitleInfo"  VerticalAlignment="Center" FontFamily="Segoe UI" FontSize="16" Margin="8, 0, 0, 0" Foreground="White" Text=""/>
-                </StackPanel>
-
-                <ToggleButton x:Name="tbAutoImport" HorizontalAlignment="Right"
-                      Height="26"
-                      Width="128"
-                      Margin="10,4,10,0"
-                      FontFamily="Segoe UI"
-                      FontSize="14"
-                      Background="DodgerBlue"
-                      Foreground="White"
-                      Template="{DynamicResource ButtonBaseControlTemplate1}"
-                      Cursor="Hand"
-                      Content="開啟自動匯入"                      
-                      Checked="tbtnCloudSharing_Checked"
-                      Unchecked="tbtnCloudSharing_Unchecked" />
-=======
             <Grid Grid.Row="0" Background="{DynamicResource TitleBarBackground}">
                 <TextBlock x:Name="tbTitle"
                            Margin="12,0,0,0"
@@ -157,7 +133,7 @@
 
                 </StackPanel>
 
-                <ToggleButton x:Name="tbtnCloudSharing"
+                <ToggleButton x:Name="tbAutoImport"
                               Width="128"
                               Height="26"
                               Margin="10,4,10,0"
@@ -171,18 +147,12 @@
                               Foreground="White"
                               Template="{DynamicResource ButtonBaseControlTemplate1}"
                               Unchecked="tbtnCloudSharing_Unchecked" />
->>>>>>> dacc8984b9a5ac46d6170a7eb46bf925c96778ac
             </Grid>
 
 
             <Grid Grid.Row="1">
                 <ListBox x:Name="listBoxEvent"
-<<<<<<< HEAD
-                         VirtualizingStackPanel.IsVirtualizing="True"
-                         Background="#4f4f4f"
-=======
                          Background="#3F3F3F"
->>>>>>> dacc8984b9a5ac46d6170a7eb46bf925c96778ac
                          BorderThickness="0"
                          ItemContainerStyle="{StaticResource SimpleListBoxItem}"
                          ScrollViewer.CanContentScroll="false"
