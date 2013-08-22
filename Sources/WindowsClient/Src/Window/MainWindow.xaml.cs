@@ -1,4 +1,5 @@
-﻿#region
+﻿
+#region
 
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ using CommandLine;
 using System.Windows.Media.Imaging;
 using System.ComponentModel;
 using System.Windows.Data;
+using Waveface.Client.Src.Dialog;
 
 #endregion
 
@@ -1846,6 +1848,15 @@ namespace Waveface.Client
 
 				addToAlbumPopup.DataContext = albums;		  
 			}
+		}
+
+		private void btnPushToDevice_Click(object sender, System.Windows.RoutedEventArgs e)
+		{
+			var dialog = new HomeSharingDialog()
+			{
+				Owner = this
+			};
+			dialog.ShowDialog();
 		}
 	}
 }

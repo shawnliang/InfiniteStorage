@@ -204,6 +204,9 @@
     <Compile Include="Src\Control\ContentItem.xaml.cs">
       <DependentUpon>ContentItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Src\Dialog\HomeSharingDialog.xaml.cs">
+      <DependentUpon>HomeSharingDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Dialog\MoveToFolderDialog.xaml.cs">
       <DependentUpon>MoveToFolderDialog.xaml</DependentUpon>
     </Compile>
@@ -294,6 +297,14 @@
     <Compile Include="StepPanel.xaml.cs">
       <DependentUpon>StepPanel.xaml</DependentUpon>
     </Compile>
+    <Page Include="Src\Dialog\HomeSharingDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Src\ResourceDictionary\ToggleButtonResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="StepPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -377,6 +388,7 @@
     <Resource Include="Resource\ico_fav_star_select.png" />
     <Resource Include="Resource\video.png" />
     <Resource Include="Resource\circleProgress.gif" />
+    <Resource Include="Resource\Push_Nexus7.png" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

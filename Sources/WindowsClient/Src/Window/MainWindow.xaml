@@ -916,7 +916,7 @@
                                            ImagePressedUri="pack://application:,,,/Resource/bar2_push_2.png"
                                            ImageUri="pack://application:,,,/Resource/bar2_push_0.png"
                                            Style="{StaticResource toolbarBtnStyle}"
-                                           Text="Push to Devices" />
+                                           Text="Push to Devices" Click="btnPushToDevice_Click" />
                 </StackPanel>
 
                 <Popup x:Name="addToAlbumPopup"
