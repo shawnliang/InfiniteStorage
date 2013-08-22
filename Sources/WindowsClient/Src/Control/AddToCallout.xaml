@@ -8,13 +8,28 @@
              mc:Ignorable="d">
 
     <UserControl.Resources>
+
+        <Style x:Key="albumStyle" TargetType="local:AlbumItem">
+            <Setter Property="Width" Value="120" />
+            <Setter Property="Height" Value="120" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="CoverWidth" Value="80" />
+            <Setter Property="CoverHeight" Value="80" />
+            <Setter Property="Foreground" Value="#4d4d4d" />
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#98bebf" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <DataTemplate DataType="{x:Type wvmodel:ContentGroup}">
-            <!--  <local:GroupContentItem Padding="10" />  -->
-            <local:AlbumItem Margin="10" Foreground="#4d4d4d" />
+            <local:AlbumItem Style="{StaticResource albumStyle}" />
         </DataTemplate>
     </UserControl.Resources>
 
-    <local:CalloutMenu MaxWidth="430"
+    <local:CalloutMenu MaxWidth="460"
                        Background="#d5d5d5"
                        BorderBrush="#d5d5d5">
         <StackPanel Margin="10, 5, 10, 20" Orientation="Vertical">
@@ -24,7 +39,7 @@
                                      Path=SelectionText}"
                    FontSize="15"
                    Foreground="#4d4d4d" />
-            <ScrollViewer MaxHeight="240">
+            <ScrollViewer MaxHeight="280">
                 <ItemsControl Background="{x:Null}"
                               BorderThickness="0"
                               ItemsSource="{Binding}"

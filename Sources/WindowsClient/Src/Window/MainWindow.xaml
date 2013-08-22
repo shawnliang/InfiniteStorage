@@ -661,7 +661,7 @@
             </StackPanel.Effect>
 
             <local:ButtonImageText x:Name="btnAddDevice"
-                                   Margin="0, 24, 0, 0"
+                                   Margin="0, 21, 0, 0"
                                    HorizontalAlignment="Center"
                                    Click="btnAddNewSource_Click"
                                    ImageDisableUri="pack://application:,,,/Resource/bar2_source_3.png"
@@ -873,7 +873,7 @@
                                                                    Path=Items.Count,
                                                                    Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
-                                               Text="Create Album" />
+                                               Text="Create" />
 
                         <local:ButtonImageText x:Name="btnAddToAlbum"
                                                Grid.Column="1"
@@ -886,7 +886,7 @@
                                                                    Path=Items.Count,
                                                                    Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
-                                               Text="Add to Album" />
+                                               Text="Add" />
 
                         <local:ButtonImageText x:Name="btnShare"
                                                Grid.Column="2"
@@ -921,6 +921,7 @@
 
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <local:ButtonImageText x:Name="btnPushToDevice"
+                                           Margin="0,0,20,0"
                                            ImageDisableUri="pack://application:,,,/Resource/bar2_push_3.png"
                                            ImageEnterUri="pack://application:,,,/Resource/bar2_push_1.png"
                                            ImagePressedUri="pack://application:,,,/Resource/bar2_push_2.png"
@@ -931,7 +932,7 @@
 
                 <Popup x:Name="addToAlbumPopup"
                        AllowsTransparency="True"
-                       HorizontalOffset="-180"
+                       HorizontalOffset="-190"
                        Placement="Top"
                        PlacementTarget="{Binding ElementName=btnAddToAlbum}"
                        PopupAnimation="Fade"
