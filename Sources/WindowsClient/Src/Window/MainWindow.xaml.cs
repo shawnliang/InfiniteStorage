@@ -1664,7 +1664,6 @@ namespace Waveface.Client
 
 		private void btnCreateCloudAlbum_Click(object sender, RoutedEventArgs e)
 		{
-
 			createCloudAlbum();
 		}
 
