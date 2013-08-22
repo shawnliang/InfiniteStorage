@@ -67,9 +67,14 @@
         </LinearGradientBrush>
 
         <Style x:Key="toolbarBtnStyle" TargetType="local:ButtonImageText">
-            <Setter Property="Foreground" Value="#4f4f4f" />
+            <Setter Property="Foreground" Value="#525252" />
             <Setter Property="DisableForeground" Value="#989898" />
             <Setter Property="VerticalAlignment" Value="Bottom" />
+			 <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#272727" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <!--  SrollViewer ScrollBar Repeat Buttons (at each end)  -->
@@ -650,28 +655,20 @@
                                 Height="Auto"
                                 Margin="1,0,0,0"
                                 Visibility="Collapsed" />
+        <Grid x:Name="stackPanel"
+        	Grid.Row="2"
+        	Background="#d5d5d5">
+        	<local:ButtonImageText x:Name="btnAddDevice"
+        		HorizontalAlignment="Center"
+        		Click="btnAddNewSource_Click"
+        		ImageDisableUri="pack://application:,,,/Resource/bar2_source_3.png"
+        		ImageEnterUri="pack://application:,,,/Resource/bar2_source_1.png"
+        		ImagePressedUri="pack://application:,,,/Resource/bar2_source_2.png"
+        		ImageUri="pack://application:,,,/Resource/bar2_source_0.png"
+        		Style="{StaticResource toolbarBtnStyle}"
+        		Text="{DynamicResource AddDeviceIconText}" FontFamily="Segoe UI Semibold" Margin="0,0,0,2" />
 
-        <StackPanel x:Name="stackPanel"
-                    Grid.Row="2"
-                    Background="#d5d5d5">
-            <StackPanel.Effect>
-                <DropShadowEffect BlurRadius="1"
-                                  Direction="45"
-                                  ShadowDepth="1" />
-            </StackPanel.Effect>
-
-            <local:ButtonImageText x:Name="btnAddDevice"
-                                   Margin="0, 21, 0, 0"
-                                   HorizontalAlignment="Center"
-                                   Click="btnAddNewSource_Click"
-                                   ImageDisableUri="pack://application:,,,/Resource/bar2_source_3.png"
-                                   ImageEnterUri="pack://application:,,,/Resource/bar2_source_1.png"
-                                   ImagePressedUri="pack://application:,,,/Resource/bar2_source_2.png"
-                                   ImageUri="pack://application:,,,/Resource/bar2_source_0.png"
-                                   Style="{StaticResource toolbarBtnStyle}"
-                                   Text="{DynamicResource AddDeviceIconText}" />
-
-        </StackPanel>
+        </Grid>
 
         <Grid x:Name="ContentAreaToolBar"
               Grid.Row="2"
@@ -679,11 +676,6 @@
               Grid.ColumnSpan="2"
               Margin="0,0,0,0"
               Background="#d5d5d5">
-            <Grid.Effect>
-                <DropShadowEffect BlurRadius="1"
-                                  Direction="90"
-                                  ShadowDepth="1" />
-            </Grid.Effect>
 
             <Grid Margin="0">
                 <StackPanel x:Name="zoomPanel"
@@ -702,9 +694,8 @@
                                Margin="0,0"
                                HorizontalAlignment="Center"
                                FontSize="12"
-                               FontWeight="Bold"
                                Foreground="#4F4F4F"
-                               Text="Thumbnail Size" />
+                               Text="Thumbnail Size" FontFamily="Segoe UI Semibold" />
                 </StackPanel>
 
                 <Grid x:Name="helpPanel"
@@ -840,18 +831,16 @@
                             FontWeight="ExtraBold" />
                 </Grid>
 
-                <Grid>
+                <Grid Margin="0,2">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="30" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <Label x:Name="selectionText"
-                           Margin="0,0,0,0"
+                    <TextBlock x:Name="selectionText"
                            HorizontalAlignment="Center"
-                           Content=""
                            FontWeight="Bold"
-                           Foreground="#4F4F4F" />
+                           Foreground="#4F4F4F" FontFamily="Segoe UI Semibold" VerticalAlignment="Top" LineStackingStrategy="BlockLineHeight" />
                     <Grid x:Name="middleBtnPanel"
                           Grid.Row="1"
                           MinWidth="320"
@@ -873,7 +862,7 @@
                                                                    Path=Items.Count,
                                                                    Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
-                                               Text="Create" />
+                                               Text="Create" FontFamily="Segoe UI Semibold" />
 
                         <local:ButtonImageText x:Name="btnAddToAlbum"
                                                Grid.Column="1"
@@ -886,7 +875,7 @@
                                                                    Path=Items.Count,
                                                                    Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
-                                               Text="Add" />
+                                               Text="Add" FontFamily="Segoe UI Semibold" />
 
                         <local:ButtonImageText x:Name="btnShare"
                                                Grid.Column="2"
@@ -899,7 +888,7 @@
                                                                    Path=Items.Count,
                                                                    Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
-                                               Text="Share" />
+                                               Text="Share" FontFamily="Segoe UI Semibold" />
 
                         <local:ButtonImageText x:Name="btnDelete"
                                                Grid.Column="3"
@@ -912,7 +901,7 @@
                                                                    Path=SelectedItems.Count,
                                                                    Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
-                                               Text="Delete" />
+                                               Text="Delete" FontFamily="Segoe UI Semibold" />
                     </Grid>
 
                 </Grid>
@@ -927,7 +916,7 @@
                                            ImagePressedUri="pack://application:,,,/Resource/bar2_push_2.png"
                                            ImageUri="pack://application:,,,/Resource/bar2_push_0.png"
                                            Style="{StaticResource toolbarBtnStyle}"
-                                           Text="Push to Devices" Click="btnPushToDevice_Click" />
+                                           Text="Push to Devices" Click="btnPushToDevice_Click" FontFamily="Segoe UI Semibold" />
                 </StackPanel>
 
                 <Popup x:Name="addToAlbumPopup"

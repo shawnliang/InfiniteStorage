@@ -1814,7 +1814,7 @@ namespace Waveface.Client
 		{
 			if (lbxContentContainer.SelectedItems.Count == 0)
 			{
-				selectionText.Content = "";
+				selectionText.Text = "";
 
 
 				//if (lbxContentContainer.Items.Count > 0)
@@ -1830,7 +1830,7 @@ namespace Waveface.Client
 			}
 			else
 			{
-				selectionText.Content = string.Format((string)FindResource("selection_text"), lbxContentContainer.SelectedItems.Count);
+                selectionText.Text = string.Format((string)FindResource("selection_text"), lbxContentContainer.SelectedItems.Count);
 				//addToCallout.SelectionText = string.Format((string)FindResource("addto_selection_text"), lbxContentContainer.SelectedItems.Count);
 				//shareCallout.SelectionText = string.Format((string)FindResource("share_selection_text"), lbxContentContainer.SelectedItems.Count);
 			}
