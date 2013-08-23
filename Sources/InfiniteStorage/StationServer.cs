@@ -86,6 +86,7 @@ namespace InfiniteStorage
 			InfiniteStorageWebSocketService.DeviceAccepted += m_uiChangeNotifyController.OnNewDevice;
 			InfiniteStorageWebSocketService.FileReceived += m_uiChangeNotifyController.OnFileReceived;
 
+			InfiniteStorageWebSocketService.FileReceiving += m_uiChangeNotifyController.NotifyRecvStatus_recving;
 			InfiniteStorageWebSocketService.FileReceived += m_uiChangeNotifyController.NotifyRecvStatus_recved;
 			InfiniteStorageWebSocketService.FileDropped += m_uiChangeNotifyController.NotifyRecvStatus_recved;
 			InfiniteStorageWebSocketService.DeviceDisconnected += m_uiChangeNotifyController.ClearRecvStatus;
@@ -113,6 +114,7 @@ namespace InfiniteStorage
 			rest_server.AddHandler("/manipulation/delete", new ManipulationDeleteApiHAndler());
 			rest_server.AddHandler("/manipulation/move", new ManipulationMoveApiHandler());
 			rest_server.AddHandler("/pairing/passcode", new PairingPasscodeApiHandler());
+			rest_server.AddHandler("/sync/set", new SyncSetApiHandler());
 
 			m_ReRegBonjourTimer = new NoReentrantTimer(reregisterBonjour, null, 60 * 1000, 60 * 1000);
 

@@ -508,9 +508,26 @@ CREATE INDEX [idx_Files_import_time_1] ON [Files](
 					schemaVersion = 18;
 				}
 
+				if (schemaVersion == 18)
+				{
+					using (var cmd = conn.CreateCommand())
+					{
+						cmd.CommandText = @"
+ALTER TABLE [Devices] Add Column [sync_disabled] BOOLEAN NULL;
+update [Devices] set [sync_disabled] = 0;
+";
+						cmd.ExecuteNonQuery();
+					}
+
+					updateDbSchemaVersion(conn, 19);
+					schemaVersion = 19;
+				}
+
+
+				
 				var curSchema = getDbSchemaVersion(conn);
 
-				if (curSchema > 18L)
+				if (curSchema > 19L)
 					throw new DBDowngradeException(string.Format("Existing db version {0} is newer than the installed version", curSchema));
 			}
 		}

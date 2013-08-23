@@ -23,9 +23,6 @@ namespace Waveface.Client
 		private WebSocket m_webSocket;
 		private BackgroundWorker m_bgworker = new BackgroundWorker();
 
-		private Dictionary<string, ConfirmSyncDialog> pairingSources = new Dictionary<string, ConfirmSyncDialog>();
-		private int openConfirmDialogCount = 0;
-
 		public List<pairing_request> PairedDevices { get; set; }
 
 
@@ -99,54 +96,14 @@ namespace Waveface.Client
 
 			if (req != null)
 			{
+				WS_accept(req.device_id, int.MaxValue);
+				PairedDevices.Add(req);
+
 				this.Dispatcher.Invoke(new MethodInvoker(() =>
 				{
-					var dialog = new ConfirmSyncDialog();
-
-					dialog.PairingRequest = req;
-					dialog.Owner = this;
-					dialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
-					dialog.Closing += dialog_Closing;
-					dialog.Show();
-					openConfirmDialogCount++;
-					pairingSources.Add(req.request_id, dialog);
+					Hide();
+					Close();
 				}));
-			}
-
-
-			if (thumb != null)
-			{
-				this.Dispatcher.Invoke(new MethodInvoker(() =>
-				{
-					if (pairingSources.ContainsKey(thumb.request_id))
-					{
-						var dialog = pairingSources[thumb.request_id];
-						dialog.Thumbnails.Add(new Uri(thumb.path, UriKind.Absolute));
-					}
-				}));
-			}
-		}
-
-		void dialog_Closing(object sender, CancelEventArgs e)
-		{
-			var dialog = (ConfirmSyncDialog)sender;
-
-			if (dialog.SyncNow)
-			{
-				WS_accept(dialog.PairingRequest.device_id, dialog.SyncAll ? int.MaxValue : 150);
-
-				PairedDevices.Add(dialog.PairingRequest);
-			}
-			else
-			{
-				WS_reject(dialog.PairingRequest.device_id);
-			}
-
-			--openConfirmDialogCount;
-
-			if (openConfirmDialogCount == 0)
-			{
-				Close();
 			}
 		}
 
