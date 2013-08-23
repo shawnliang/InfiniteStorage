@@ -713,6 +713,8 @@ namespace Waveface.Client
 								jumpToDeviceTimer.Stop();
 							}
 						}
+
+						break;
 					}
 				}
 			}
