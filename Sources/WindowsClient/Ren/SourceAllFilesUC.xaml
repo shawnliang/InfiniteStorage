@@ -36,24 +36,6 @@
             </Style.Triggers>
         </Style>
 
-        <ControlTemplate x:Key="ButtonBaseControlTemplate1" TargetType="{x:Type ButtonBase}">
-            <Border x:Name="border"
-                    Background="{TemplateBinding Background}"
-                    BorderBrush="White"
-                    BorderThickness="1"
-                    SnapsToDevicePixels="True">
-                <ContentPresenter x:Name="contentPresenter"
-                                  Margin="{TemplateBinding Padding}"
-                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                  Content="{TemplateBinding Content}"
-                                  ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                                  Focusable="False"
-                                  RecognizesAccessKey="True"
-                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-            </Border>
-        </ControlTemplate>
 
         <Style x:Key="SimpleListBoxItem" TargetType="ListBoxItem">
             <Setter Property="Template">
@@ -71,7 +53,7 @@
         </LinearGradientBrush>
     </UserControl.Resources>
 
-    <Grid Background="#303032">
+    <Grid Background="#4f4f4f">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0" />
             <ColumnDefinition Width="*" />
@@ -135,14 +117,13 @@
                               FontFamily="Segoe UI"
                               FontSize="14"
                               Foreground="White"
-                              Template="{DynamicResource ButtonBaseControlTemplate1}"
                               Unchecked="tbtnCloudSharing_Unchecked" />
             </Grid>
 
 
             <Grid Grid.Row="1">
                 <ListBox x:Name="listBoxEvent"
-                         Background="#3F3F3F"
+                         Background="#4f4f4f"
                          BorderThickness="0"
                          ItemContainerStyle="{StaticResource SimpleListBoxItem}"
                          ScrollViewer.CanContentScroll="false"
@@ -159,7 +140,7 @@
             <Grid x:Name="gridWaitingPanel"
                   Grid.Row="1"
                   Grid.RowSpan="2"
-                  Background="Black"
+                  Background="#4f4f4f"
                   Visibility="Collapsed">
 
                 <Image Width="200"

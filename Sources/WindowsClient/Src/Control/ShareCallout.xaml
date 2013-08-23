@@ -49,7 +49,7 @@
                                        ImagePressedUri="pack://application:,,,/Resource/pop_save.png"
                                        ImageUri="pack://application:,,,/Resource/pop_save.png"
                                        Style="{StaticResource buttonStyle}"
-                                       Text="Save To..." />
+                                       Text="Export To..." />
             </StackPanel>
         </StackPanel>
 
