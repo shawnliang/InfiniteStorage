@@ -1574,13 +1574,9 @@ namespace Waveface.Client
 			List<string> _fileIDs = _dialog.FileIDs;
 			_title = _dialog.TitleName;
 
-			foreach (IContentGroup _group in ClientFramework.Client.Default.GetFavorites(true))
+			while (IsNewFavoriteNameExist(_title))
 			{
-				if (_group.Name == _title)
-				{
-					_title += " (1) ";
-					break;
-				}
+				_title += " (1)";
 			}
 
 			_dialog = null;
@@ -1625,13 +1621,9 @@ namespace Waveface.Client
 			List<string> _fileIDs = _dialog.FileIDs;
 			_title = _dialog.TitleName;
 
-			foreach (IContentGroup _group in ClientFramework.Client.Default.GetFavorites(true))
+			while (IsNewFavoriteNameExist(_title))
 			{
-				if (_group.Name == _title)
-				{
-					_title += " [" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "]";
-					break;
-				}
+				_title += " (1)";
 			}
 
 			_dialog = null;
@@ -1650,6 +1642,19 @@ namespace Waveface.Client
 					TimelineShareTo(_contents, _title);
 				}
 			}
+		}
+
+		private bool IsNewFavoriteNameExist(string name)
+		{
+			foreach (IContentGroup _group in ClientFramework.Client.Default.GetFavorites(true))
+			{
+				if (_group.Name == name)
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		private void btnDelete_Click(object sender, RoutedEventArgs e)
