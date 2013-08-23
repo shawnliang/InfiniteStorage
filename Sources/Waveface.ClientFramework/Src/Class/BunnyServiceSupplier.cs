@@ -94,7 +94,8 @@ namespace Waveface.ClientFramework
 						{
 							var folderName = dr["folder_name"].ToString();
 							var deviceId = dr["device_id"].ToString();
-							services.Add(new BunnyService(this, folderName, deviceId));
+							var syncDisabled = (bool)dr["sync_disabled"];
+							services.Add(new BunnyService(this, folderName, deviceId, !syncDisabled));
 						}
 					}
 				}
@@ -240,17 +241,23 @@ namespace Waveface.ClientFramework
 				conn.Open();
 				using (var cmd = conn.CreateCommand())
 				{
-					cmd.CommandText = "select folder_name from [devices] where device_id = @dev";
+					cmd.CommandText = "select folder_name, sync_disabled from [devices] where device_id = @dev";
 					cmd.Parameters.Add(new SQLiteParameter("@dev", device_id));
-					var dev_folder = cmd.ExecuteScalar().ToString();
 
-					if (dev_folder != null)
+					using (var reader = cmd.ExecuteReader())
 					{
-						var service = new BunnyService(this, dev_folder.ToString(), device_id);
+						var dev_folder = reader["folder_name"].ToString();
+						var sync_disabled = (bool)reader["sync_disabled"];
 
-						syncContext.Post((dummy) => {
-							Services.Add(service);
-						}, null);
+						if (dev_folder != null)
+						{
+							var service = new BunnyService(this, dev_folder.ToString(), device_id, !sync_disabled);
+
+							syncContext.Post((dummy) =>
+							{
+								Services.Add(service);
+							}, null);
+						}
 					}
 				}
 			}
@@ -268,9 +275,8 @@ namespace Waveface.ClientFramework
 
 			foreach (BunnyService s in actives)
 			{
-				s.IsRecving = true;
 				var status = recving_devices.Where(x => x.DeviceId.Equals(s.ID, StringComparison.InvariantCultureIgnoreCase)).First();
-				s.RecvStatus.IsReceiving = status.IsReceiving;
+				s.RecvStatus.IsReceiving = s.IsRecving = status.IsReceiving;
 				s.RecvStatus.IsPreparing = status.IsPreparing;
 				s.RecvStatus.Total = status.Total;
 				s.RecvStatus.Received = status.Received;

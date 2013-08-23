@@ -76,6 +76,7 @@ namespace Waveface.Client
 			m_mainWindow = mainWindow;
 			m_currentDevice = device;
 
+			refreshTitleInfo();
 			m_startTimer.Start();
 
 		}
@@ -144,17 +145,34 @@ namespace Waveface.Client
 
 		private void refreshTitleInfo()
 		{
+
 			var service = (BunnyService)m_currentDevice;
 
-			if (service.RecvStatus.IsPreparing)
+
+			tbAutoImport.IsChecked = (m_currentDevice as BunnyService).SyncEnabled;
+
+			if (service.SyncEnabled)
 			{
-				imgCircleProgress.Visibility = System.Windows.Visibility.Visible;
-				tbTitleInfo.Text = "Scanning photos...";
-			}
-			else if (service.RecvStatus.IsReceiving)
-			{
-				imgCircleProgress.Visibility = System.Windows.Visibility.Visible;
-				tbTitleInfo.Text = string.Format("Importing... ({0} / {1})", service.RecvStatus.Received, service.RecvStatus.Total);
+
+				if (service.RecvStatus.IsPreparing)
+				{
+					imgCircleProgress.Visibility = System.Windows.Visibility.Visible;
+					tbTitleInfo.Text = "Scanning photos...";
+				}
+				else if (service.RecvStatus.IsReceiving)
+				{
+					imgCircleProgress.Visibility = System.Windows.Visibility.Visible;
+					tbTitleInfo.Text = string.Format("Importing... ({0} / {1})", service.RecvStatus.Received, service.RecvStatus.Total);
+				}
+				else
+				{
+					imgCircleProgress.Visibility = System.Windows.Visibility.Collapsed;
+
+					var lastImportTime = getLastImportTime();
+
+					if (lastImportTime.HasValue)
+						tbTitleInfo.Text = string.Format("Last import time: {0}", lastImportTime);
+				}
 			}
 			else
 			{
@@ -165,6 +183,7 @@ namespace Waveface.Client
 				if (lastImportTime.HasValue)
 					tbTitleInfo.Text = string.Format("Last import time: {0}", lastImportTime);
 			}
+			
 		}
 
 		private DateTime? getLastImportTime()
@@ -394,16 +413,18 @@ namespace Waveface.Client
 
 		private void tbtnCloudSharing_Checked(object sender, RoutedEventArgs e)
 		{
+			(m_currentDevice as BunnyService).SyncEnabled = true;
 			tbAutoImport.Background = m_solidColorBrush;
 			tbAutoImport.Content = "關閉自動匯入";
-			imgCircleProgress.Visibility = Visibility.Visible;
+			refreshTitleInfo();
 		}
 
 		private void tbtnCloudSharing_Unchecked(object sender, RoutedEventArgs e)
 		{
+			(m_currentDevice as BunnyService).SyncEnabled = false;
 			tbAutoImport.Background = Brushes.DodgerBlue;
 			tbAutoImport.Content = "開啟自動匯入";
-			imgCircleProgress.Visibility = Visibility.Collapsed;
+			refreshTitleInfo();
 		}
 
 		#region DoEvents

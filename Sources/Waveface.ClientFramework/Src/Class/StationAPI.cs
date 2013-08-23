@@ -212,5 +212,14 @@ namespace Waveface.ClientFramework
 
 			return response.passcode.Value.ToString();
 		}
+
+		public static void SetDeviceSyncOption(string device_id, bool enable)
+		{
+			var parameters = new NameValueCollection();
+			parameters.Add("device_id", device_id);
+			parameters.Add("enable", enable.ToString());
+			var uri = API_BASE_URL + "/sync/set";
+			Post(uri, parameters);
+		}
 	}
 }

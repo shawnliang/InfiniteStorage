@@ -41,8 +41,20 @@ namespace InfiniteStorage.WebsocketProtocol
 			}
 			else
 			{
-				ctx.device_folder_name = clientInfo.folder_name;
-				ReplyAcceptMsgToDevice(ctx, clientInfo, clientInfo.sync_init_count.HasValue ? (int)clientInfo.sync_init_count.Value : int.MaxValue);
+				if (clientInfo.sync_disabled)
+				{
+					ctx.SetState(new UnconnectedState());
+					log4net.LogManager.GetLogger("pairing").Debug("send denied because sync from this device is disabled, state = unconnected");
+
+					// do not send denied message so that client will retry.
+
+					ctx.Stop(WebSocketSharp.Frame.CloseStatusCode.POLICY_VIOLATION, "Sync disabled");
+				}
+				else
+				{
+					ctx.device_folder_name = clientInfo.folder_name;
+					ReplyAcceptMsgToDevice(ctx, clientInfo, clientInfo.sync_init_count.HasValue ? (int)clientInfo.sync_init_count.Value : int.MaxValue);
+				}
 			}
 		}
 

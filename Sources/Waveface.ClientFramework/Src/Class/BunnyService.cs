@@ -15,9 +15,9 @@ namespace Waveface.ClientFramework
 {
 	public class BunnyService : Service
 	{
-		private Timer timer;
-		private bool timerStarted;
 		private bool _isRecving;
+		private bool _syncEnabled;
+
 		private ReceivingStatus _recvStatus = new ReceivingStatus();
 
 		public bool IsRecving
@@ -47,11 +47,25 @@ namespace Waveface.ClientFramework
 			}
 		}
 
-		public BunnyService(IServiceSupplier supplier, string devFolderName, string deviceId)
+		public bool SyncEnabled
+		{
+			get { return _syncEnabled; }
+			set
+			{
+				if (_syncEnabled != value)
+				{
+					_syncEnabled = value;
+					StationAPI.SetDeviceSyncOption(ID, _syncEnabled);
+					OnPropertyChanged("SyncEnabled");
+				}
+			}
+		}
+
+		public BunnyService(IServiceSupplier supplier, string devFolderName, string deviceId, bool syncEnabled)
 			: base(deviceId, supplier, devFolderName)
 		{
-			timer = new Timer(refresh, null, Timeout.Infinite, Timeout.Infinite);
 			Uri = new Uri(Path.Combine(BunnyDB.ResourceFolder, devFolderName));
+			_syncEnabled = syncEnabled;
 			SetContents(PopulateContent);
 		}
 
@@ -79,12 +93,6 @@ namespace Waveface.ClientFramework
 					}
 				}
 			}
-
-			if (!timerStarted)
-			{
-				timer.Change(2000, Timeout.Infinite);
-				timerStarted = true;
-			}
 		}
 
 		public override void Refresh()
@@ -97,24 +105,6 @@ namespace Waveface.ClientFramework
 			// no way to truly comparing content groups.)
 			m_ObservableContents.Clear();
 			PopulateContent(m_ObservableContents);
-		}
-
-		private void refresh(object nil)
-		{
-			try
-			{
-				if (IsRecving)
-				{
-					//base.Refresh();
-				}
-			}
-			catch
-			{
-			}
-			finally
-			{
-				timer.Change(1000, Timeout.Infinite);
-			}
 		}
 
 		#region Public Method
