@@ -266,7 +266,9 @@ namespace Waveface.Client
 				EventUC _ctl = new EventUC
 								   {
 									   FileEntrys = _entries,
-									   YM = _entries[0].taken_time.ToString("yyyy-MM")
+									   YM = _entries[0].taken_time.ToString("yyyy-MM"),
+									   MyMainWindow = m_mainWindow,
+									   CurrentDevice = m_currentDevice
 								   };
 
 				_ctl.SetUI();
@@ -318,6 +320,8 @@ namespace Waveface.Client
 							   {
 								   FileEntrys = _entries,
 								   YM = _YM,
+								   MyMainWindow = m_mainWindow,
+								   CurrentDevice = m_currentDevice
 							   };
 
 					_ctl.Changed = true;
