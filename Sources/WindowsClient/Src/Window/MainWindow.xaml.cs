@@ -1598,7 +1598,7 @@ namespace Waveface.Client
 
 		private void btnCreateAlbum_Click(object sender, RoutedEventArgs e)
 		{
-			createNormalAlbum();
+			createNormalAlbum(true);
 		}
 
 		private void createNormalAlbum(bool noSelectMeansSelectAll = false)
