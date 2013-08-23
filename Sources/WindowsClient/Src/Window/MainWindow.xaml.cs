@@ -1,8 +1,10 @@
 ﻿
 #region
 
+using log4net;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -15,19 +17,15 @@ using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using TVM.SnailTools.lib;
 using Waveface.Client.Properties;
+using Waveface.Client.Src.Dialog;
 using Waveface.ClientFramework;
 using Waveface.Model;
-using log4net;
-using CommandLine;
-using System.Windows.Media.Imaging;
-using System.ComponentModel;
-using System.Windows.Data;
-using Waveface.Client.Src.Dialog;
-using TVM.SnailTools.lib;
 
 #endregion
 
@@ -632,13 +630,13 @@ namespace Waveface.Client
 
 								TreeViewItem folderNode = (TreeViewItem)devNode.ItemContainerGenerator.ContainerFromIndex(0);
 
-								if(!string.IsNullOrEmpty(folder))
+								if (!string.IsNullOrEmpty(folder))
 								{
-									for(int i=0; i<devNode.Items.Count; i++)
+									for (int i = 0; i < devNode.Items.Count; i++)
 									{
-										if(devNode.Items[i].ToString() == folder)
+										if (devNode.Items[i].ToString() == folder)
 										{
-											folderNode = (TreeViewItem) devNode.ItemContainerGenerator.ContainerFromIndex(i);
+											folderNode = (TreeViewItem)devNode.ItemContainerGenerator.ContainerFromIndex(i);
 											break;
 										}
 									}
@@ -1911,24 +1909,24 @@ namespace Waveface.Client
 			var dialog = new System.Windows.Forms.FolderBrowserDialog() { Description = string.Format("Select a folder to save {0} items", selected.Count()) };
 			var result = dialog.ShowDialog();
 
-            var targetFolder = Path.Combine(dialog.SelectedPath, DateTime.Now.ToString("Export_yyyyMMdd_HHmmss"));
-            Directory.CreateDirectory(targetFolder);
+			var targetFolder = Path.Combine(dialog.SelectedPath, DateTime.Now.ToString("Export_yyyyMMdd_HHmmss"));
+			Directory.CreateDirectory(targetFolder);
 
 			if (result == System.Windows.Forms.DialogResult.OK)
 			{
-                var sourceFiles = new List<string>();
-                var targetFiles = new List<string>();
+				var sourceFiles = new List<string>();
+				var targetFiles = new List<string>();
 
 				foreach (var item in selected)
 				{
 					var file_name = Path.GetFileName(item.Uri.LocalPath);
-                    
-                    sourceFiles.Add(item.Uri.LocalPath);
-                    targetFiles.Add(Path.Combine(targetFolder, file_name));
-                }
-                ShellFileOperation.Copy(sourceFiles, targetFiles);
 
-                string _arg = "\"" + targetFolder + "\"";
+					sourceFiles.Add(item.Uri.LocalPath);
+					targetFiles.Add(Path.Combine(targetFolder, file_name));
+				}
+				ShellFileOperation.Copy(sourceFiles, targetFiles);
+
+				string _arg = "\"" + targetFolder + "\"";
 				Process.Start("explorer.exe", _arg);
 			}
 

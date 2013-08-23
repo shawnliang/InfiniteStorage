@@ -34,7 +34,7 @@ namespace Waveface.Client
 				_urlConn = (HttpWebRequest)WebRequest.Create(sUrl);
 
 				//連線最大等待時間
-                _urlConn.Timeout = timeout;
+				_urlConn.Timeout = timeout;
 				_urlConn.Method = "POST";
 				//_urlConn.ServicePoint.Expect100Continue = false;
 

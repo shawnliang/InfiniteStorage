@@ -1,5 +1,7 @@
 ﻿#region
 
+using InfiniteStorage.Data;
+using Microsoft.Win32;
 using System;
 using System.Globalization;
 using System.IO;
@@ -8,8 +10,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media.Animation;
-using InfiniteStorage.Data;
-using Microsoft.Win32;
 using Waveface.Client.Properties;
 
 #endregion
@@ -24,8 +24,8 @@ namespace Waveface.Client
 		{
 			DeleteTempDirectory();
 
-			var cultureName = (string) Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "Culture", "");
-			
+			var cultureName = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "Culture", "");
+
 			if (!string.IsNullOrEmpty(cultureName))
 			{
 				var cultureInfo = new CultureInfo(cultureName);
@@ -55,7 +55,7 @@ namespace Waveface.Client
 				}
 			}
 
-			Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof (Timeline), new FrameworkPropertyMetadata {DefaultValue = 30});
+			Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata { DefaultValue = 30 });
 
 			m_wndMsgRecver = new InfiniteStorage.Win32.MessageReceiver(IPCData.UI_CLASS_NAME, null);
 			m_wndMsgRecver.AllowMessage((uint)NativeMethods.WM_COPYDATA);

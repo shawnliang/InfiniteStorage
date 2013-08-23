@@ -303,27 +303,27 @@ namespace Waveface.Client
 
 			MainWindow _mainWindow = (MainWindow)Tag;
 
-			_mainWindow.DeleteSourceContents(new[] {_contentEntity.ID}, false);
+			_mainWindow.DeleteSourceContents(new[] { _contentEntity.ID }, false);
 
-            if (lbImages.Items.Count > _index)
-            {
-                lbImages.SelectedIndex = _index;
-            }
-            else
-            {
-                if (lbImages.Items.Count > 0)
-                {
-                    lbImages.SelectedIndex = 0;
-                }
-                else
-                {
-                    vcViewerControl.PageNo = 0;
-                    vcViewerControl.PageCount = 0;
-                }
-            }
+			if (lbImages.Items.Count > _index)
+			{
+				lbImages.SelectedIndex = _index;
+			}
+			else
+			{
+				if (lbImages.Items.Count > 0)
+				{
+					lbImages.SelectedIndex = 0;
+				}
+				else
+				{
+					vcViewerControl.PageNo = 0;
+					vcViewerControl.PageCount = 0;
+				}
+			}
 
 			vcViewerControl.PageNo = lbImages.SelectedIndex + 1;
-            vcViewerControl.PageCount = lbImages.Items.Count;
+			vcViewerControl.PageCount = lbImages.Items.Count;
 		}
 	}
 }

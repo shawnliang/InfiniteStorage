@@ -88,9 +88,9 @@ namespace Waveface.Client
 			bool _isItem0 = false;
 			ListBoxItem _listBoxItem = GetNearestContainer(e.OriginalSource as UIElement);
 
-			if(_listBoxItem != null)
+			if (_listBoxItem != null)
 			{
-				if((Items[0]) == _listBoxItem.Content)
+				if ((Items[0]) == _listBoxItem.Content)
 				{
 					_isItem0 = true;
 				}

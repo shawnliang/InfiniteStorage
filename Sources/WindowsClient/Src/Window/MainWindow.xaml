@@ -30,26 +30,38 @@
                                                NoSelectionTemplate="{StaticResource addto_all_selection_text}"
                                                SelectionTemplate="{StaticResource addto_selection_text}" />
 
-        <local:ListBoxToSelectionTextConvertor x:Key="toolbarSelectionTextConvertor" SelectionTemplate="{StaticResource selection_text}" />
+        <local:ListBoxToSelectionTextConvertor x:Key="toolbarSelectionTextConvertor"
+                                               SelectionTemplate="{StaticResource selection_text}" />
 
 
 
 
-        <ContextMenu x:Key="SourceContentContextMenu" x:Name="SourceContentContextMenu">
-            <MenuItem Click="StarMenuItem_Click" Header="{DynamicResource menuitem_star}" />
-            <MenuItem Click="CreateFavoriteMenuItem_Click" Header="{DynamicResource menuitem_create_album}" />
-            <MenuItem Click="AddToFavoriteMenuItem_Click" Header="{DynamicResource menuitem_add_album}" />
+        <ContextMenu x:Key="SourceContentContextMenu"
+                     x:Name="SourceContentContextMenu">
+            <MenuItem Click="StarMenuItem_Click"
+                      Header="{DynamicResource menuitem_star}" />
+            <MenuItem Click="CreateFavoriteMenuItem_Click"
+                      Header="{DynamicResource menuitem_create_album}" />
+            <MenuItem Click="AddToFavoriteMenuItem_Click"
+                      Header="{DynamicResource menuitem_add_album}" />
             <Separator />
-            <MenuItem Click="miLocateOnDisk_Click" Header="{DynamicResource menuitem_locate}" />
-            <MenuItem Click="DeleteMenuItem_Click" Header="{DynamicResource menuitem_delete}" />
+            <MenuItem Click="miLocateOnDisk_Click"
+                      Header="{DynamicResource menuitem_locate}" />
+            <MenuItem Click="DeleteMenuItem_Click"
+                      Header="{DynamicResource menuitem_delete}" />
         </ContextMenu>
 
-        <ContextMenu x:Key="ContentContextMenu" x:Name="ContentContextMenu">
-            <MenuItem Click="CreateFavoriteMenuItem_Click" Header="{DynamicResource menuitem_create_album}" />
-            <MenuItem Click="AddToFavoriteMenuItem_Click" Header="{DynamicResource menuitem_add_album}" />
+        <ContextMenu x:Key="ContentContextMenu"
+                     x:Name="ContentContextMenu">
+            <MenuItem Click="CreateFavoriteMenuItem_Click"
+                      Header="{DynamicResource menuitem_create_album}" />
+            <MenuItem Click="AddToFavoriteMenuItem_Click"
+                      Header="{DynamicResource menuitem_add_album}" />
             <Separator />
-            <MenuItem Click="miLocateOnDisk_Click" Header="{DynamicResource menuitem_locate}" />
-            <MenuItem Click="UnTagMenuItem_Click" Header="{DynamicResource menuitem_delete}" />
+            <MenuItem Click="miLocateOnDisk_Click"
+                      Header="{DynamicResource menuitem_locate}" />
+            <MenuItem Click="UnTagMenuItem_Click"
+                      Header="{DynamicResource menuitem_delete}" />
         </ContextMenu>
 
         <LinearGradientBrush x:Key="PressedBrush" StartPoint="0,0" EndPoint="0,1">
@@ -63,11 +75,12 @@
             </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
 
-        <Style x:Key="toolbarBtnStyle" TargetType="local:ButtonImageText">
+        <Style x:Key="toolbarBtnStyle"
+               TargetType="local:ButtonImageText">
             <Setter Property="Foreground" Value="#525252" />
             <Setter Property="DisableForeground" Value="#989898" />
             <Setter Property="VerticalAlignment" Value="Bottom" />
-			 <Style.Triggers>
+            <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Foreground" Value="#272727" />
                 </Trigger>
@@ -89,7 +102,8 @@
         </DataTemplate>
 
         <!--  Main photo catalog view  -->
-        <Style x:Key="PhotoListBoxStyle" TargetType="{x:Type ListBox}">
+        <Style x:Key="PhotoListBoxStyle"
+               TargetType="{x:Type ListBox}">
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Template">
@@ -158,41 +172,60 @@
             </Setter>
         </Style>
 
-        <SolidColorBrush x:Key="TitleBarBackground" Color="#FF2E2E2E" />
-        <SolidColorBrush x:Key="ContentAreaBackground" Color="#FF4F4F4F" />
-        <SolidColorBrush x:Key="SidePanelBackground" Color="#434343" />
+        <SolidColorBrush x:Key="TitleBarBackground"
+                         Color="#FF2E2E2E" />
+        <SolidColorBrush x:Key="ContentAreaBackground"
+                         Color="#FF4F4F4F" />
+        <SolidColorBrush x:Key="SidePanelBackground"
+                         Color="#434343" />
 
-        <Style x:Key="ContentActionBarStyle" TargetType="local:ContentActionBar">
+        <Style x:Key="ContentActionBarStyle"
+               TargetType="local:ContentActionBar">
             <Setter Property="IsEnabled" Value="True" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding SelectedItem, ElementName=lbxContentContainer, IsAsync=True}" Value="{x:Null}">
+                <DataTrigger Binding="{Binding SelectedItem,
+                                               ElementName=lbxContentContainer,
+                                               IsAsync=True}"
+                             Value="{x:Null}">
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="CloudAlbumGroupStyle" TargetType="Grid">
+        <Style x:Key="CloudAlbumGroupStyle"
+               TargetType="Grid">
             <Setter Property="Visibility" Value="Visible" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Items.Count, ElementName=lbxCloudAlbums, IsAsync=True}" Value="0">
+                <DataTrigger Binding="{Binding Items.Count,
+                                               ElementName=lbxCloudAlbums,
+                                               IsAsync=True}"
+                             Value="0">
                     <Setter Property="Visibility" Value="Collapsed" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="LocalAlbumGroupStyle" TargetType="Grid">
+        <Style x:Key="LocalAlbumGroupStyle"
+               TargetType="Grid">
             <Setter Property="Visibility" Value="Visible" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Items.Count, ElementName=lbxFavorites, IsAsync=True}" Value="0">
+                <DataTrigger Binding="{Binding Items.Count,
+                                               ElementName=lbxFavorites,
+                                               IsAsync=True}"
+                             Value="0">
                     <Setter Property="Visibility" Value="Collapsed" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="SourceGroupStyle" TargetType="Grid">
+        <Style x:Key="SourceGroupStyle"
+               TargetType="Grid">
             <Setter Property="Visibility" Value="Visible" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Items.Count, ElementName=lbxDeviceContainer, IsAsync=True}" Value="0">
+                <DataTrigger Binding="{Binding Items.Count,
+                                               ElementName=lbxDeviceContainer,
+                                               IsAsync=True}"
+                             Value="0">
                     <Setter Property="Visibility" Value="Collapsed" />
                 </DataTrigger>
             </Style.Triggers>
@@ -201,19 +234,24 @@
         <Style TargetType="local:AddSourceTip">
             <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Items.Count, ElementName=lbxDeviceContainer, IsAsync=True}" Value="0">
+                <DataTrigger Binding="{Binding Items.Count,
+                                               ElementName=lbxDeviceContainer,
+                                               IsAsync=True}"
+                             Value="0">
                     <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="contextMenuStyle1" TargetType="{x:Type ContextMenu}">
+        <Style x:Key="contextMenuStyle1"
+               TargetType="{x:Type ContextMenu}">
             <Setter Property="Foreground" Value="#FFA8A8A8" />
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ContextMenu}">
-                        <Border Background="#FF181818" CornerRadius="4">
+                        <Border Background="#FF181818"
+                                CornerRadius="4">
                             <StackPanel Margin="5,5,5,5"
                                         ClipToBounds="True"
                                         IsItemsHost="True"
@@ -226,7 +264,8 @@
 
     </Window.Resources>
 
-    <Grid x:Name="gdMain" Background="{DynamicResource ContentAreaBackground}">
+    <Grid x:Name="gdMain"
+          Background="{DynamicResource ContentAreaBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="302*" />
@@ -238,7 +277,8 @@
                               MinWidth="215"
                               MaxWidth="400" />
             <ColumnDefinition />
-            <ColumnDefinition Width="200" MinWidth="200" />
+            <ColumnDefinition Width="200"
+                              MinWidth="200" />
         </Grid.ColumnDefinitions>
 
         <Grid x:Name="gdContentArea"
@@ -290,7 +330,8 @@
                                   ShadowDepth="1" />
             </Grid.Effect>
 
-            <Grid Grid.Row="0" Background="{DynamicResource TitleBarBackground}">
+            <Grid Grid.Row="0"
+                  Background="{DynamicResource TitleBarBackground}">
                 <DockPanel>
 
                     <WrapPanel Margin="10,0,0,0"
@@ -398,7 +439,8 @@
                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
                     </Grid>
 
-                    <Grid x:Name="gridCloudAlbumGroup" Style="{StaticResource CloudAlbumGroupStyle}">
+                    <Grid x:Name="gridCloudAlbumGroup"
+                          Style="{StaticResource CloudAlbumGroupStyle}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
@@ -422,7 +464,8 @@
                                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                ScrollViewer.VerticalScrollBarVisibility="Disabled" />
                     </Grid>
-                    <Grid x:Name="gridLocalAlbumGroup" Style="{StaticResource LocalAlbumGroupStyle}">
+                    <Grid x:Name="gridLocalAlbumGroup"
+                          Style="{StaticResource LocalAlbumGroupStyle}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
@@ -486,17 +529,19 @@
                                 Margin="1,0,0,0"
                                 Visibility="Collapsed" />
         <Grid x:Name="stackPanel"
-        	Grid.Row="2"
-        	Background="#d5d5d5">
-        	<local:ButtonImageText x:Name="btnAddDevice"
-        		HorizontalAlignment="Center"
-        		Click="btnAddNewSource_Click"
-        		ImageDisableUri="pack://application:,,,/Resource/bar2_source_3.png"
-        		ImageEnterUri="pack://application:,,,/Resource/bar2_source_1.png"
-        		ImagePressedUri="pack://application:,,,/Resource/bar2_source_2.png"
-        		ImageUri="pack://application:,,,/Resource/bar2_source_0.png"
-        		Style="{StaticResource toolbarBtnStyle}"
-        		Text="{DynamicResource AddDeviceIconText}" FontFamily="Segoe UI Semibold" Margin="0,0,0,2" />
+              Grid.Row="2"
+              Background="#d5d5d5">
+            <local:ButtonImageText x:Name="btnAddDevice"
+                                   Margin="0,0,0,2"
+                                   HorizontalAlignment="Center"
+                                   Click="btnAddNewSource_Click"
+                                   FontFamily="Segoe UI Semibold"
+                                   ImageDisableUri="pack://application:,,,/Resource/bar2_source_3.png"
+                                   ImageEnterUri="pack://application:,,,/Resource/bar2_source_1.png"
+                                   ImagePressedUri="pack://application:,,,/Resource/bar2_source_2.png"
+                                   ImageUri="pack://application:,,,/Resource/bar2_source_0.png"
+                                   Style="{StaticResource toolbarBtnStyle}"
+                                   Text="{DynamicResource AddDeviceIconText}" />
 
         </Grid>
 
@@ -523,9 +568,10 @@
                                Grid.Row="1"
                                Margin="0,0"
                                HorizontalAlignment="Center"
+                               FontFamily="Segoe UI Semibold"
                                FontSize="12"
                                Foreground="#4F4F4F"
-                               Text="Thumbnail Size" FontFamily="Segoe UI Semibold" />
+                               Text="Thumbnail Size" />
                 </StackPanel>
 
                 <Grid x:Name="helpPanel"
@@ -574,7 +620,8 @@
                            VerticalAlignment="Bottom"
                            Source="/Waveface.Client;component/Resource/ico_arrow_down.png" />
 
-                    <Grid Grid.Column="1" Margin="0, 16, 12, 8">
+                    <Grid Grid.Column="1"
+                          Margin="0, 16, 12, 8">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
@@ -594,7 +641,8 @@
                                    Text="點這裡" />
                     </Grid>
 
-                    <Grid Grid.Column="2" Margin="0, 16, 8, 8">
+                    <Grid Grid.Column="2"
+                          Margin="0, 16, 8, 8">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
@@ -668,13 +716,18 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock x:Name="selectionText"
-                           HorizontalAlignment="Center"
-                           FontWeight="Bold"
-                           Foreground="#4F4F4F" FontFamily="Segoe UI Semibold" VerticalAlignment="Top" LineStackingStrategy="BlockLineHeight">
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Top"
+                               FontFamily="Segoe UI Semibold"
+                               FontWeight="Bold"
+                               Foreground="#4F4F4F"
+                               LineStackingStrategy="BlockLineHeight">
                         <TextBlock.Text>
                             <MultiBinding Converter="{StaticResource toolbarSelectionTextConvertor}">
-                                <Binding ElementName="lbxContentContainer" Path="Items.Count" />
-                                <Binding ElementName="lbxContentContainer" Path="SelectedItems.Count" />
+                                <Binding ElementName="lbxContentContainer"
+                                         Path="Items.Count" />
+                                <Binding ElementName="lbxContentContainer"
+                                         Path="SelectedItems.Count" />
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
@@ -691,6 +744,7 @@
                         </Grid.ColumnDefinitions>
                         <local:ButtonImageText x:Name="btnCreateAlbum"
                                                Click="btnCreateAlbum_Click"
+                                               FontFamily="Segoe UI Semibold"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_create_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_create_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_create_2.png"
@@ -699,11 +753,12 @@
                                                                    Path=Items.Count,
                                                                    Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
-                                               Text="Create" FontFamily="Segoe UI Semibold" />
+                                               Text="Create" />
 
                         <local:ButtonImageText x:Name="btnAddToAlbum"
                                                Grid.Column="1"
                                                Click="btnAddToAlbum_Click_1"
+                                               FontFamily="Segoe UI Semibold"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_addto_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_addto_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_addto_2.png"
@@ -712,11 +767,12 @@
                                                                    Path=Items.Count,
                                                                    Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
-                                               Text="Add" FontFamily="Segoe UI Semibold" />
+                                               Text="Add" />
 
                         <local:ButtonImageText x:Name="btnShare"
                                                Grid.Column="2"
                                                Click="btnShare_Click"
+                                               FontFamily="Segoe UI Semibold"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_share_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_share_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_share_2.png"
@@ -725,11 +781,12 @@
                                                                    Path=Items.Count,
                                                                    Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
-                                               Text="Share" FontFamily="Segoe UI Semibold" />
+                                               Text="Share" />
 
                         <local:ButtonImageText x:Name="btnDelete"
                                                Grid.Column="3"
                                                Click="btnDelete_Click"
+                                               FontFamily="Segoe UI Semibold"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_trash_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_trash_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_trash_2.png"
@@ -738,22 +795,25 @@
                                                                    Path=SelectedItems.Count,
                                                                    Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
-                                               Text="Delete" FontFamily="Segoe UI Semibold" />
+                                               Text="Delete" />
                     </Grid>
 
                 </Grid>
 
 
 
-                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <StackPanel HorizontalAlignment="Right"
+                            Orientation="Horizontal">
                     <local:ButtonImageText x:Name="btnPushToDevice"
                                            Margin="0,0,20,0"
+                                           Click="btnPushToDevice_Click"
+                                           FontFamily="Segoe UI Semibold"
                                            ImageDisableUri="pack://application:,,,/Resource/bar2_push_3.png"
                                            ImageEnterUri="pack://application:,,,/Resource/bar2_push_1.png"
                                            ImagePressedUri="pack://application:,,,/Resource/bar2_push_2.png"
                                            ImageUri="pack://application:,,,/Resource/bar2_push_0.png"
                                            Style="{StaticResource toolbarBtnStyle}"
-                                           Text="Push to Devices" Click="btnPushToDevice_Click" FontFamily="Segoe UI Semibold" />
+                                           Text="Push to Devices" />
                 </StackPanel>
 
                 <Popup x:Name="addToAlbumPopup"
@@ -768,8 +828,10 @@
                     <local:AddToCallout AlbumClicked="AddToAlbum_AlbumClicked">
                         <local:AddToCallout.SelectionText>
                             <MultiBinding Converter="{StaticResource addToSelectionTextConvertor}">
-                                <Binding ElementName="lbxContentContainer" Path="Items.Count" />
-                                <Binding ElementName="lbxContentContainer" Path="SelectedItems.Count" />
+                                <Binding ElementName="lbxContentContainer"
+                                         Path="Items.Count" />
+                                <Binding ElementName="lbxContentContainer"
+                                         Path="SelectedItems.Count" />
                             </MultiBinding>
                         </local:AddToCallout.SelectionText>
                         <local:AddToCallout.Effect>
@@ -790,11 +852,14 @@
                        PopupAnimation="Fade"
                        StaysOpen="False"
                        VerticalOffset="-35">
-                    <local:ShareCallout CreateOnlineAlbumClicked="ShareCallout_CreateOnlineAlbumClicked_1" SaveToClicked="ShareCallout_SaveToClicked_1">
+                    <local:ShareCallout CreateOnlineAlbumClicked="ShareCallout_CreateOnlineAlbumClicked_1"
+                                        SaveToClicked="ShareCallout_SaveToClicked_1">
                         <local:ShareCallout.SelectionText>
                             <MultiBinding Converter="{StaticResource shareToSelectionTextConvertor}">
-                                <Binding ElementName="lbxContentContainer" Path="Items.Count" />
-                                <Binding ElementName="lbxContentContainer" Path="SelectedItems.Count" />
+                                <Binding ElementName="lbxContentContainer"
+                                         Path="Items.Count" />
+                                <Binding ElementName="lbxContentContainer"
+                                         Path="SelectedItems.Count" />
                             </MultiBinding>
                         </local:ShareCallout.SelectionText>
                         <local:ShareCallout.Effect>

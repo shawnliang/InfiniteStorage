@@ -3,11 +3,11 @@
 namespace Waveface.Client
 {
 	/// <summary>
-	/// Interaction logic for CalloutMenu.xaml
+	/// CreateButton.xaml 的互動邏輯
 	/// </summary>
-	public partial class CalloutMenu : UserControl
+	public partial class CreateButton : UserControl
 	{
-		public CalloutMenu()
+		public CreateButton()
 		{
 			this.InitializeComponent();
 		}

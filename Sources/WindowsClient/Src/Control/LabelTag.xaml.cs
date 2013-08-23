@@ -13,7 +13,7 @@ namespace Waveface.Client
 	{
 		#region Var
 
-		public static readonly DependencyProperty _tagged = DependencyProperty.Register("Tagged", typeof (bool), typeof (LabelTag), new UIPropertyMetadata(false, OnTaggedChanged));
+		public static readonly DependencyProperty _tagged = DependencyProperty.Register("Tagged", typeof(bool), typeof(LabelTag), new UIPropertyMetadata(false, OnTaggedChanged));
 
 		#endregion
 
@@ -21,7 +21,7 @@ namespace Waveface.Client
 
 		public bool Tagged
 		{
-			get { return (bool) GetValue(_tagged); }
+			get { return (bool)GetValue(_tagged); }
 			set { SetValue(_tagged, value); }
 		}
 
@@ -66,7 +66,7 @@ namespace Waveface.Client
 				return;
 
 			var labelTag = o as LabelTag;
-			labelTag.imgSelected.Visibility = (bool) e.NewValue ? Visibility.Visible : Visibility.Collapsed;
+			labelTag.imgSelected.Visibility = (bool)e.NewValue ? Visibility.Visible : Visibility.Collapsed;
 			labelTag.OnTagStatusChanged(EventArgs.Empty);
 		}
 
