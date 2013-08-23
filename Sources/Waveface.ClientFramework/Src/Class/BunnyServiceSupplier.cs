@@ -275,14 +275,6 @@ namespace Waveface.ClientFramework
 				s.RecvStatus.Total = status.Total;
 				s.RecvStatus.Received = status.Received;
 			}
-
-			var inactives = services.Except(actives);
-
-			foreach (BunnyService s in inactives)
-			{
-				s.IsRecving = false;
-				s.RecvStatus = new ReceivingStatus();
-			}
 		}
 
 		void ws_OnClose(object sender, CloseEventArgs e)

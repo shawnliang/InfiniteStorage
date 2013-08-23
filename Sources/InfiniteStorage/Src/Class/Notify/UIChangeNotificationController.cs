@@ -23,19 +23,99 @@ namespace InfiniteStorage.Notify
 
 		public void OnNewDevice(object sender, WebsocketEventArgs arg)
 		{
-			var msg = new NotificationMsg { new_device = arg.ctx.device_id };
-			UIChangeSubscriber.Instance.SendMsg(JsonConvert.SerializeObject(msg));
+			try
+			{
+				var msg = new NotificationMsg { new_device = arg.ctx.device_id };
+				UIChangeSubscriber.Instance.SendMsg(JsonConvert.SerializeObject(msg));
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("OnNewDevice failed", err);
+			}
 		}
 
 		public void OnFolderAdded(object sender, Manipulation.FolderEventArgs arg)
 		{
+			try
+			{
+
+				var msg = new NotificationMsg
+				{
+					new_folder = new folder_info
+					{
+						name = arg.name,
+						parent_folder = arg.parent_folder,
+						path = arg.path
+					}
+				};
+
+				UIChangeSubscriber.Instance.SendMsg(JsonConvert.SerializeObject(msg));
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("OnFolderAdded failed", err);
+			}
+		}
+
+		public void NotifyRecvStatus(object sender, WebsocketEventArgs arg)
+		{
+			try
+			{
+				if (arg.ctx.fileCtx == null || arg.ctx.fileCtx.is_thumbnail)
+					return;
+
+				var ctx = arg.ctx;
+
+				notifyRecvStatus(ctx);
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("NotifyRecvStatus failed", err);
+			}
+		}
+
+		public void ClearRecvStatus(object sender, WebsocketEventArgs arg)
+		{
+			try
+			{
+				var ctx = arg.ctx;
+
+				clearRecvStatus(ctx);
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("ClearRecvStatus failed", err);
+			}
+		}
+
+		private static void clearRecvStatus(ProtocolContext ctx)
+		{
 			var msg = new NotificationMsg
 			{
-				new_folder = new folder_info
+				recving_devices = new List<ReceivingStatus>()
 				{
-					name = arg.name,
-					parent_folder = arg.parent_folder,
-					path = arg.path
+					new ReceivingStatus {
+						DeviceId = ctx.device_id
+					}
+				}
+			};
+
+			UIChangeSubscriber.Instance.SendMsg(JsonConvert.SerializeObject(msg));
+		}
+
+		private static void notifyRecvStatus(ProtocolContext ctx)
+		{
+			var msg = new NotificationMsg
+			{
+				recving_devices = new List<ReceivingStatus>()
+				{
+					new ReceivingStatus {
+						DeviceId = ctx.device_id,
+						IsPreparing = ctx.IsPreparing,
+						IsReceiving = ctx.IsRecving,
+						Received = (int)ctx.recved_files,
+						Total = (int) (ctx.total_count - ctx.backup_count + ctx.recved_files)
+					}
 				}
 			};
 
@@ -44,25 +124,32 @@ namespace InfiniteStorage.Notify
 
 		public void OnFileReceived(object sender, WebsocketEventArgs arg)
 		{
-			if (arg.ctx.fileCtx.is_thumbnail)
-				return;
-
-			var file_id = arg.ctx.fileCtx.file_id;
-
-			Folder folder;
-			using (var db = new MyDbContext())
+			try
 			{
-				var q = from f in db.Object.Files
-						join dir in db.Object.Folders on f.parent_folder equals dir.path
-						where f.file_id == file_id
-						select dir;
-				folder = q.FirstOrDefault();
+				if (arg.ctx.fileCtx.is_thumbnail)
+					return;
+
+				var file_id = arg.ctx.fileCtx.file_id;
+
+				Folder folder;
+				using (var db = new MyDbContext())
+				{
+					var q = from f in db.Object.Files
+							join dir in db.Object.Folders on f.parent_folder equals dir.path
+							where f.file_id == file_id
+							select dir;
+					folder = q.FirstOrDefault();
+				}
+
+				if (folder == null)
+					return;
+
+				NotifyFolderUpdate(folder);
 			}
-
-			if (folder == null)
-				return;
-
-			NotifyFolderUpdate(folder);
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("OnFileReceived failed", err);
+			}
 		}
 
 		public static void NotifyFolderUpdate(Folder folder)

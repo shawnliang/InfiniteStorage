@@ -40,24 +40,6 @@ namespace InfiniteStorage.Notify
 
 				sendHomeSharing();
 			}
-
-			if (ctx.subscribe_devices)
-			{
-
-				var recv_status = from c in util.GetAllBackupConnections()
-								  where c.IsPreparing || c.IsRecving
-								  select new ReceivingStatus
-								  {
-									  DeviceId = c.device_id,
-									  IsPreparing = c.IsPreparing,
-									  IsReceiving = c.IsRecving,
-									  Received = (int)c.recved_files,
-									  Total = (int)(c.total_count - c.backup_count + c.recved_files),
-								  };
-
-				ctx.Send(
-					JsonConvert.SerializeObject(new NotificationMsg {  recving_devices = recv_status.ToList() }));
-			}
 		}
 
 		private void sendHomeSharing()

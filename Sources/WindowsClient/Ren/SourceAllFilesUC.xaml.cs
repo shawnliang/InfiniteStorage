@@ -77,6 +77,7 @@ namespace Waveface.Client
 			m_currentDevice = device;
 
 			m_startTimer.Start();
+
 		}
 
 		private void StartTimerOnTick(object sender, EventArgs e)
@@ -95,6 +96,8 @@ namespace Waveface.Client
 			gridWaitingPanel.Visibility = Visibility.Collapsed;
 
 			prepareData(_files);
+
+			refreshTitleInfo();
 
 			tbTitle.Visibility = Visibility.Visible;
 
@@ -127,27 +130,7 @@ namespace Waveface.Client
 				}
 
 
-				var service = (BunnyService)m_currentDevice;
-
-				if (service.RecvStatus.IsPreparing)
-				{
-					imgCircleProgress.Visibility = System.Windows.Visibility.Visible;
-					tbTitleInfo.Text = "Scanning photos...";
-				}
-				else if (service.RecvStatus.IsReceiving)
-				{
-					imgCircleProgress.Visibility = System.Windows.Visibility.Visible;
-					tbTitleInfo.Text = string.Format("Importing... ({0} / {1})", service.RecvStatus.Received, service.RecvStatus.Total);
-				}
-				else
-				{
-					imgCircleProgress.Visibility = System.Windows.Visibility.Collapsed;
-
-					var lastImportTime = getLastImportTime();
-
-					if (lastImportTime.HasValue)
-						tbTitleInfo.Text = string.Format("Last import time: {0}", lastImportTime);
-				}
+				refreshTitleInfo();
 			}
 			catch
 			{
@@ -158,12 +141,37 @@ namespace Waveface.Client
 			m_refreshTimer.Start();
 		}
 
+		private void refreshTitleInfo()
+		{
+			var service = (BunnyService)m_currentDevice;
+
+			if (service.RecvStatus.IsPreparing)
+			{
+				imgCircleProgress.Visibility = System.Windows.Visibility.Visible;
+				tbTitleInfo.Text = "Scanning photos...";
+			}
+			else if (service.RecvStatus.IsReceiving)
+			{
+				imgCircleProgress.Visibility = System.Windows.Visibility.Visible;
+				tbTitleInfo.Text = string.Format("Importing... ({0} / {1})", service.RecvStatus.Received, service.RecvStatus.Total);
+			}
+			else
+			{
+				imgCircleProgress.Visibility = System.Windows.Visibility.Collapsed;
+
+				var lastImportTime = getLastImportTime();
+
+				if (lastImportTime.HasValue)
+					tbTitleInfo.Text = string.Format("Last import time: {0}", lastImportTime);
+			}
+		}
+
 		private DateTime? getLastImportTime()
 		{
 			using (var db = new MyDbContext())
 			{
 				var q = from f in db.Object.Files
-						where f.import_time != null
+						where f.import_time != null && f.device_id == m_currentDevice.ID
 						select f.import_time;
 
 				return q.Max();
