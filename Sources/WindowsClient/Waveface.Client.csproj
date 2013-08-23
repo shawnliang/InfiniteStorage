@@ -142,6 +142,7 @@
     <Compile Include="Ren\Utility\FluidProgressBar.xaml.cs" />
     <Compile Include="Ren\Utility\ListBoxDropHighlighter.cs" />
     <Compile Include="Src\Class\Converter\ListBoxToSelectionTextConvertor.cs" />
+    <Compile Include="Src\Class\ShellFileOperation.cs" />
     <Compile Include="Src\Control\ShareCallout.xaml.cs">
       <DependentUpon>ShareCallout.xaml</DependentUpon>
     </Compile>
