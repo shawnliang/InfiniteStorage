@@ -105,7 +105,7 @@
                 >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
+                        <StackPanel Cursor="Hand">
                             <Border BorderThickness="0" Width="60" Height="60">
                                 <Grid>
                                     <Image Source="{Binding Path=MediaSource}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill"

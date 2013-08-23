@@ -289,21 +289,6 @@ namespace Waveface.Client
 			}
 		}
 
-		private void ListBox_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-		{
-			EventItem _eventItem = (EventItem)((ListBoxItem)sender).Content;
-
-			if (_eventItem != null)
-			{
-				if (_eventItem.IsMore || _eventItem.IsLess)
-				{
-					m_showMoreButton = !m_showMoreButton;
-
-					UpdateShowMoreUI();
-				}
-			}
-		}
-
 		private void SetInfor()
 		{
 			tbTitleMonth.Text = FileEntrys[0].taken_time.ToString("MMM");
@@ -345,6 +330,25 @@ namespace Waveface.Client
 				if (_file.has_origin)
 				{
 					m_hasOriginCount++;
+				}
+			}
+		}
+
+		private void ListBox_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			EventItem _eventItem = (EventItem)((ListBoxItem)sender).Content;
+
+			if (_eventItem != null)
+			{
+				if (_eventItem.IsMore || _eventItem.IsLess)
+				{
+					m_showMoreButton = !m_showMoreButton;
+
+					UpdateShowMoreUI();
+				}
+				else
+				{
+					MyMainWindow.JumpToDevice(CurrentDevice.ID, false, YM, _eventItem.FileID);
 				}
 			}
 		}

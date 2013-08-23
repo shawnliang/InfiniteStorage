@@ -251,7 +251,7 @@ namespace Waveface.Client
 			(lbxCloudAlbums.ItemsSource as ICollectionView).Refresh();
 			(lbxFavorites.ItemsSource as ICollectionView).Refresh();
 
-			System.Windows.Forms.Application.DoEvents();
+			DoEvents();
 
 			lbxCloudAlbums.SelectedItem = lbxFavorites.SelectedItem = GetCurrentContentGroup();
 		}
@@ -594,7 +594,7 @@ namespace Waveface.Client
 			}
 		}
 
-		public void JumpToDevice(string device_id, bool jumpToFirstChild = true, string folder = "")
+		public void JumpToDevice(string device_id, bool jumpToFirstChild = true, string folder = "", string fileID = "")
 		{
 			if (jumpToDeviceTimer != null)
 			{
@@ -603,69 +603,113 @@ namespace Waveface.Client
 
 			jumpToDeviceTimer = new DispatcherTimer();
 			jumpToDeviceTimer.Interval = TimeSpan.FromMilliseconds(500);
-			jumpToDeviceTimer.Tick += (s, e) => Timer_JumpToDevice(device_id, jumpToFirstChild, folder);
+			jumpToDeviceTimer.Tick += (s, e) => Timer_JumpToDevice(device_id, jumpToFirstChild, folder, fileID);
 			jumpToDeviceTimer.Start();
 		}
 
-		private void Timer_JumpToDevice(string device_id, bool jumpToFirstChild, string folder)
+		private void Timer_JumpToDevice(string device_id, bool jumpToFirstChild, string folder, string fileID)
 		{
 			try
 			{
-				var sourceTree = lbxDeviceContainer;
+				var _sourceTree = lbxDeviceContainer;
 
-				if (!sourceTree.HasItems)
+				if (!_sourceTree.HasItems)
 					return;
 
-				foreach (IService dev in sourceTree.Items)
+				foreach (IService _dev in _sourceTree.Items)
 				{
-					if (dev.ID.Equals(device_id, StringComparison.InvariantCultureIgnoreCase))
+					if (_dev.ID.Equals(device_id, StringComparison.InvariantCultureIgnoreCase))
 					{
-						TreeViewItem devNode = (TreeViewItem)sourceTree.ItemContainerGenerator.ContainerFromItem(dev);
+						TreeViewItem _devNode = (TreeViewItem)_sourceTree.ItemContainerGenerator.ContainerFromItem(_dev);
 
 						if (jumpToFirstChild || !string.IsNullOrEmpty(folder))
 						{
-							if (devNode != null && devNode.Items.Count > 0)
+							if (_devNode != null && _devNode.Items.Count > 0)
 							{
-								devNode.IsExpanded = true;
+								_devNode.IsExpanded = true;
 
-								TreeViewItem folderNode = (TreeViewItem)devNode.ItemContainerGenerator.ContainerFromIndex(0);
+								TreeViewItem _folderNode = (TreeViewItem)_devNode.ItemContainerGenerator.ContainerFromIndex(0);
+								int _tnIdx = 0;
 
 								if (!string.IsNullOrEmpty(folder))
 								{
-									for (int i = 0; i < devNode.Items.Count; i++)
+									for (int i = 0; i < _devNode.Items.Count; i++)
 									{
-										if (devNode.Items[i].ToString() == folder)
+										if (_devNode.Items[i].ToString() == folder)
 										{
-											folderNode = (TreeViewItem)devNode.ItemContainerGenerator.ContainerFromIndex(i);
+											_folderNode = (TreeViewItem)_devNode.ItemContainerGenerator.ContainerFromIndex(i);
+											_tnIdx = i;
 											break;
 										}
 									}
 								}
 
-								if (folderNode != null)
+								IContentGroup _group = null;
+
+								if (_folderNode != null)
 								{
-									folderNode.IsSelected = true;
+									_folderNode.IsSelected = true;
 									lbxRecent.SelectedIndex = -1;
 									lbxCloudAlbums.SelectedIndex = -1;
 									lbxFavorites.SelectedIndex = -1;
 
-									var group = (IContentGroup)devNode.Items[0];
+									_group = (IContentGroup)_devNode.Items[_tnIdx];
 
-									lbxContentContainer.DataContext = group.Contents;
+									lbxContentContainer.DataContext = _group.Contents;
+
+									DoEvents();
+
 									lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
-									lblContentLocation.DataContext = group;
+									lblContentLocation.DataContext = _group;
 
-									SetContentTypeCount(group);
+									SetContentTypeCount(_group);
 
 									jumpToDeviceTimer.Stop();
+								}
+
+								DoEvents();
+
+								if (!string.IsNullOrEmpty(fileID))
+								{
+									int _idx = -1;
+
+									for (int i = 0; i < _group.Contents.Count; i++)
+									{
+										if (_group.Contents[i].ID == fileID)
+										{
+											_idx = i;
+											break;
+										}
+									}
+
+									if (_idx != -1)
+									{
+										ListBox _listbox = lbxContentContainer;
+
+										ListBoxItem _lbi = (ListBoxItem)lbxContentContainer.ItemContainerGenerator.ContainerFromIndex(_idx);
+										_lbi.IsSelected = true;
+
+										DoEvents();
+
+										//Hack. 有時候UI就是不會顯示Selected... Orz
+										for (int j = 0; j < 5; j++)
+										{
+											_listbox.ScrollIntoView(_listbox.Items[_listbox.SelectedIndex]);
+											DoEvents();
+											_lbi.IsSelected = false;
+											DoEvents();
+											_lbi.IsSelected = true;
+											DoEvents();
+										}
+									}
 								}
 							}
 						}
 						else
 						{
-							if (devNode != null)
+							if (_devNode != null)
 							{
-								devNode.IsSelected = true;
+								_devNode.IsSelected = true;
 								jumpToDeviceTimer.Stop();
 							}
 						}
@@ -763,7 +807,7 @@ namespace Waveface.Client
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = null;
 
-			System.Windows.Forms.Application.DoEvents();
+			DoEvents();
 
 			lbxContentContainer.DataContext = group.Contents;
 			lbxContentContainer.SelectedIndex = -1;
@@ -820,7 +864,7 @@ namespace Waveface.Client
 				lblContentLocation.DataContext = null;
 				lbxContentContainer.DataContext = null;
 
-				System.Windows.Forms.Application.DoEvents();
+				DoEvents();
 
 				lbxContentContainer.DataContext = service.Contents;
 				lbxContentContainer.SelectedIndex = -1;
@@ -830,7 +874,7 @@ namespace Waveface.Client
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = null;
 
-			System.Windows.Forms.Application.DoEvents();
+			DoEvents();
 
 			lbxContentContainer.DataContext = (group as IContentGroup).Contents;
 			lbxContentContainer.SelectedIndex = -1;
@@ -865,6 +909,8 @@ namespace Waveface.Client
 			if (ti == null)
 				return;
 
+			allFilesUC.Stop();
+
 			lbxContentContainer.SelectedIndex = -1;
 			lbxCloudAlbums.SelectedIndex = -1;
 			lbxFavorites.SelectedIndex = -1;
@@ -896,6 +942,7 @@ namespace Waveface.Client
 			group.Refresh();
 
 			allFilesUC.Stop();
+
 			allFilesUC.Visibility = Visibility.Collapsed;
 			ContentAreaToolBar.Visibility = Visibility.Visible;
 			lbxContentContainer.Visibility = Visibility.Visible;
@@ -914,7 +961,7 @@ namespace Waveface.Client
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = null;
 
-			System.Windows.Forms.Application.DoEvents();
+			DoEvents();
 
 			lbxContentContainer.DataContext = group.Contents;
 
@@ -1020,7 +1067,7 @@ namespace Waveface.Client
 
 			lbxContentContainer.DataContext = null;
 
-			System.Windows.Forms.Application.DoEvents();
+			DoEvents();
 
 			lbxContentContainer.DataContext = group.Contents;
 			lbxContentContainer.SelectedIndex = -1;
@@ -1862,6 +1909,25 @@ namespace Waveface.Client
 			dialog.ShowDialog();
 		}
 
+		#region DoEvents
 
+		[SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+		public void DoEvents()
+		{
+			var _frame = new DispatcherFrame();
+
+			Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(ExitFrame), _frame);
+
+			Dispatcher.PushFrame(_frame);
+		}
+
+		public object ExitFrame(object f)
+		{
+			((DispatcherFrame)f).Continue = false;
+
+			return null;
+		}
+
+		#endregion
 	}
 }

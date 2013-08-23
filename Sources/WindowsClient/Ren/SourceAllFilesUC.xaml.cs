@@ -77,7 +77,6 @@ namespace Waveface.Client
 			m_currentDevice = device;
 
 			m_startTimer.Start();
-
 		}
 
 		private void StartTimerOnTick(object sender, EventArgs e)
