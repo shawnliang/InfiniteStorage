@@ -7,6 +7,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using Waveface.Model;
 
 #endregion
 
@@ -58,6 +59,8 @@ namespace Waveface.Client
 		public int VideosCount { get; set; }
 		public int PhotosCount { get; set; }
 		public bool Changed { get; set; }
+		public MainWindow MyMainWindow{ get; set; }
+		public IService CurrentDevice{ get; set; }
 
 		public List<FileEntry> FileEntrys
 		{
@@ -77,6 +80,7 @@ namespace Waveface.Client
 		private const int More = 100;
 		private bool m_showMoreButton;
 		private List<EventItem> m_eventItems;
+		private int m_hasOriginCount;
 
 		public EventUC()
 		{
@@ -124,7 +128,7 @@ namespace Waveface.Client
 									_path = _file.tiny_path;
 								}
 
-								if(_file.has_origin)
+								if (_file.has_origin)
 								{
 									_path = _file.tiny_path;
 								}
@@ -308,12 +312,24 @@ namespace Waveface.Client
 			tbTimeAgo.Visibility = Visibility.Collapsed;
 
 			tbTotalCount.Text = SourceAllFilesUC.GetCountsString(PhotosCount, VideosCount);
+
+			if (m_hasOriginCount == 0)
+			{
+				rectMonthAreaAll.Visibility = Visibility.Visible;
+				rectMonthAreaImage.Visibility = Visibility.Collapsed;
+			}
+			else
+			{
+				rectMonthAreaAll.Visibility = Visibility.Collapsed;
+				rectMonthAreaImage.Visibility = Visibility.Visible;
+			}
 		}
 
 		public void GetCounts()
 		{
 			VideosCount = 0;
 			PhotosCount = 0;
+			m_hasOriginCount = 0;
 
 			foreach (FileEntry _file in FileEntrys)
 			{
@@ -325,6 +341,20 @@ namespace Waveface.Client
 				{
 					VideosCount++;
 				}
+
+				if (_file.has_origin)
+				{
+					m_hasOriginCount++;
+				}
+			}
+		}
+
+		private void Grid_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			//已經有照片
+			if (m_hasOriginCount != 0)
+			{
+				MyMainWindow.JumpToDevice(CurrentDevice.ID, false, YM);
 			}
 		}
 	}
