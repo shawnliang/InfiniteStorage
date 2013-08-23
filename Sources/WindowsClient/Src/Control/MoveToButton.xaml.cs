@@ -3,11 +3,11 @@
 namespace Waveface.Client
 {
 	/// <summary>
-	/// Interaction logic for CalloutMenu.xaml
+	/// MoveToButton.xaml 的互動邏輯
 	/// </summary>
-	public partial class CalloutMenu : UserControl
+	public partial class MoveToButton : UserControl
 	{
-		public CalloutMenu()
+		public MoveToButton()
 		{
 			this.InitializeComponent();
 		}

@@ -126,10 +126,10 @@
       <DependentUpon>AddToButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="CmdLineOptions.cs" />
-    <Compile Include="CreateButton.xaml.cs">
+    <Compile Include="Src\Control\CreateButton.xaml.cs">
       <DependentUpon>CreateButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MoveToButton.xaml.cs">
+    <Compile Include="Src\Control\MoveToButton.xaml.cs">
       <DependentUpon>MoveToButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Ren\ButtonImageText.xaml.cs" />
@@ -296,7 +296,7 @@
     <Compile Include="Src\Control\ZoomSlider.xaml.cs">
       <DependentUpon>ZoomSlider.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StepPanel.xaml.cs">
+    <Compile Include="Src\Control\StepPanel.xaml.cs">
       <DependentUpon>StepPanel.xaml</DependentUpon>
     </Compile>
     <Page Include="Src\Dialog\HomeSharingDialog.xaml">
@@ -319,7 +319,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="StepPanel.xaml">
+    <Page Include="Src\Control\StepPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -413,11 +413,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="CreateButton.xaml">
+    <Page Include="Src\Control\CreateButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MoveToButton.xaml">
+    <Page Include="Src\Control\MoveToButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

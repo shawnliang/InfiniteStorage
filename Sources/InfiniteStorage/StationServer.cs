@@ -85,6 +85,11 @@ namespace InfiniteStorage
 			NotifyWebSocketService.Disconnected += m_uiChangeNotifyController.OnEndingSubscription;
 			InfiniteStorageWebSocketService.DeviceAccepted += m_uiChangeNotifyController.OnNewDevice;
 			InfiniteStorageWebSocketService.FileReceived += m_uiChangeNotifyController.OnFileReceived;
+
+			InfiniteStorageWebSocketService.FileReceived += m_uiChangeNotifyController.NotifyRecvStatus_recved;
+			InfiniteStorageWebSocketService.FileDropped += m_uiChangeNotifyController.NotifyRecvStatus_recved;
+			InfiniteStorageWebSocketService.DeviceDisconnected += m_uiChangeNotifyController.ClearRecvStatus;
+
 			Manipulation.Manipulation.FolderAdded += m_uiChangeNotifyController.OnFolderAdded;
 
 			// ----- rest server -----
@@ -288,29 +293,13 @@ namespace InfiniteStorage
 
 		void InfiniteStorageWebSocketService_FileReceived(object sender, WebsocketProtocol.WebsocketEventArgs e)
 		{
-			if (e.ctx.fileCtx.is_thumbnail)
+			if (e.ctx.fileCtx == null || e.ctx.fileCtx.is_thumbnail)
 				return;
 
 			SynchronizationContextHelper.PostMainSyncContext(() =>
 			{
 				try
 				{
-					InfiniteStorage.Model.FileAsset file;
-
-					using (var db = new InfiniteStorage.Model.MyDbContext())
-					{
-						var q = from f in db.Object.Files
-								where f.file_id == e.ctx.fileCtx.file_id
-								select f;
-
-						file = q.FirstOrDefault();
-					}
-
-					if (file == null)
-						return;
-
-					var file_path = Path.Combine(MyFileFolder.Photo, file.saved_path);
-
 					ProgressTooltip dialog = (ProgressTooltip)e.ctx.GetData(DATA_KEY_PROGRESS_DIALOG);
 
 					// +1 because when the last photo is received, backuped_count is (n-1) and total_count is (n).
