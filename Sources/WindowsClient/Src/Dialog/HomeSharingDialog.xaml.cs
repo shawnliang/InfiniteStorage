@@ -15,7 +15,7 @@ namespace Waveface.Client.Src.Dialog
 
 		private void Image_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
-			Process.Start("https://play.google.com/store/apps/details?id=com.waveface.uploader");
+			Process.Start("https://play.google.com/store/apps/details?id=com.waveface.favoriteplayer");
 		}
 
 		private void btnHelp_Click(object sender, System.Windows.RoutedEventArgs e)

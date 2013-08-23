@@ -88,10 +88,6 @@
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/ico_bar_moveto_off.png" />
 
-            <BitmapImage x:Key="AddDeviceArrowIcon"
-                         CacheOption="OnDemand"
-                         UriSource="pack://application:,,,/Resource/ico_arrow.png" />
-
             <BitmapImage x:Key="VideoContentPlaceHolder"
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/video_ph.png" />
@@ -147,13 +143,13 @@
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/menu_recent_0.png" />
 
-            <BitmapImage x:Key="UnSelectedPC"
+            <!--<BitmapImage x:Key="UnSelectedPC"
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/menu_pc_0.png" />
 
             <BitmapImage x:Key="SelectedPC"
                          CacheOption="OnDemand"
-                         UriSource="pack://application:,,,/Resource/menu_pc_1.png" />
+                         UriSource="pack://application:,,,/Resource/menu_pc_1.png" />-->
 
             <BitmapImage x:Key="UnSelectedMobile"
                          CacheOption="OnDemand"
