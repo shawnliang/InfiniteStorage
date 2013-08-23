@@ -57,7 +57,7 @@ namespace InfiniteStorage.Notify
 			}
 		}
 
-		public void NotifyRecvStatus(object sender, WebsocketEventArgs arg)
+		public void NotifyRecvStatus_recved(object sender, WebsocketEventArgs arg)
 		{
 			try
 			{
@@ -66,7 +66,7 @@ namespace InfiniteStorage.Notify
 
 				var ctx = arg.ctx;
 
-				notifyRecvStatus(ctx);
+				notifyRecvStatus_recved(ctx);
 			}
 			catch (Exception err)
 			{
@@ -103,20 +103,25 @@ namespace InfiniteStorage.Notify
 			UIChangeSubscriber.Instance.SendMsg(JsonConvert.SerializeObject(msg));
 		}
 
-		private static void notifyRecvStatus(ProtocolContext ctx)
+		private static void notifyRecvStatus_recved(ProtocolContext ctx)
 		{
+			var status = new ReceivingStatus
+			{
+				DeviceId = ctx.device_id,
+				IsPreparing = ctx.IsPreparing,
+				IsReceiving = ctx.IsRecving,
+				Received = (int)ctx.recved_files,
+				Total = (int)(ctx.total_count - ctx.backup_count + ctx.recved_files - 1)
+				// -1 because backup_count is not yet updated to the latest value in recved / droped state
+			};
+
+			if (status.Total == status.Received && status.Total > 0)
+				status.IsReceiving = status.IsPreparing = false;
+
+
 			var msg = new NotificationMsg
 			{
-				recving_devices = new List<ReceivingStatus>()
-				{
-					new ReceivingStatus {
-						DeviceId = ctx.device_id,
-						IsPreparing = ctx.IsPreparing,
-						IsReceiving = ctx.IsRecving,
-						Received = (int)ctx.recved_files,
-						Total = (int) (ctx.total_count - ctx.backup_count + ctx.recved_files)
-					}
-				}
+				recving_devices = new List<ReceivingStatus> { status }
 			};
 
 			UIChangeSubscriber.Instance.SendMsg(JsonConvert.SerializeObject(msg));
