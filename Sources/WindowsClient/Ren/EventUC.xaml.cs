@@ -59,8 +59,8 @@ namespace Waveface.Client
 		public int VideosCount { get; set; }
 		public int PhotosCount { get; set; }
 		public bool Changed { get; set; }
-		public MainWindow MyMainWindow{ get; set; }
-		public IService CurrentDevice{ get; set; }
+		public MainWindow MyMainWindow { get; set; }
+		public IService CurrentDevice { get; set; }
 
 		public List<FileEntry> FileEntrys
 		{

@@ -16,7 +16,7 @@ namespace Waveface.Client
 	{
 		#region Var
 
-		public static readonly DependencyProperty _isOn = DependencyProperty.Register("IsOn", typeof (bool), typeof (SwitchButton), new UIPropertyMetadata(false, OnIsOnChanged));
+		public static readonly DependencyProperty _isOn = DependencyProperty.Register("IsOn", typeof(bool), typeof(SwitchButton), new UIPropertyMetadata(false, OnIsOnChanged));
 
 		#endregion
 
@@ -36,7 +36,7 @@ namespace Waveface.Client
 
 		public bool IsOn
 		{
-			get { return (bool) GetValue(_isOn); }
+			get { return (bool)GetValue(_isOn); }
 			set
 			{
 				if (IsOn == value)
@@ -98,7 +98,7 @@ namespace Waveface.Client
 			if (o == null)
 				return;
 			var obj = o as SwitchButton;
-			obj.IsOn = (bool) e.NewValue;
+			obj.IsOn = (bool)e.NewValue;
 		}
 
 		private void epOffButton_MouseDown(object sender, MouseButtonEventArgs e)

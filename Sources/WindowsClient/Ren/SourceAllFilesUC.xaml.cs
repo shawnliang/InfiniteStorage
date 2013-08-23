@@ -1,5 +1,7 @@
 ﻿#region
 
+using InfiniteStorage.Model;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,10 +12,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
-using InfiniteStorage.Model;
-using Microsoft.Win32;
-using Waveface.Model;
 using Waveface.ClientFramework;
+using Waveface.Model;
 #endregion
 
 namespace Waveface.Client
