@@ -27,6 +27,7 @@ using System.Windows.Media.Imaging;
 using System.ComponentModel;
 using System.Windows.Data;
 using Waveface.Client.Src.Dialog;
+using TVM.SnailTools.lib;
 
 #endregion
 
@@ -1897,16 +1898,24 @@ namespace Waveface.Client
 			var dialog = new System.Windows.Forms.FolderBrowserDialog() { Description = string.Format("Select a folder to save {0} items", selected.Count()) };
 			var result = dialog.ShowDialog();
 
+            var targetFolder = Path.Combine(dialog.SelectedPath, DateTime.Now.ToString("Export_yyyyMMdd_HHmmss"));
+            Directory.CreateDirectory(targetFolder);
+
 			if (result == System.Windows.Forms.DialogResult.OK)
 			{
+                var sourceFiles = new List<string>();
+                var targetFiles = new List<string>();
+
 				foreach (var item in selected)
 				{
 					var file_name = Path.GetFileName(item.Uri.LocalPath);
-					File.Copy(item.Uri.LocalPath, Path.Combine(dialog.SelectedPath, file_name), true);
-				}
+                    
+                    sourceFiles.Add(item.Uri.LocalPath);
+                    targetFiles.Add(Path.Combine(targetFolder, file_name));
+                }
+                ShellFileOperation.Copy(sourceFiles, targetFiles);
 
-
-				string _arg = "\"" + dialog.SelectedPath + "\"";
+                string _arg = "\"" + targetFolder + "\"";
 				Process.Start("explorer.exe", _arg);
 			}
 
@@ -1921,6 +1930,7 @@ namespace Waveface.Client
 			};
 			dialog.ShowDialog();
 		}
+
 
 	}
 }
