@@ -1,5 +1,21 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="HighlightColor"
+           A="255"
+           B="229"
+           G="229"
+           R="229" />
+
+    <Color x:Key="PressedColor"
+           A="255"
+           B="215"
+           G="215"
+           R="215" />
+
+    <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource HighlightColor}" />
+
+    <SolidColorBrush x:Key="PressedBrush" Color="{StaticResource PressedColor}" />
+
 
     <Style TargetType="{x:Type Button}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
