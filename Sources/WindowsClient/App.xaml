@@ -12,6 +12,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="StringTable.xaml" />
+                <ResourceDictionary Source="Src/ResourceDictionary/ScrollBarResourceDictionary.xaml"/>
+                <ResourceDictionary Source="Src/ResourceDictionary/ButtonResourceDictionary.xaml"/>
                 <ResourceDictionary Source="Src/ResourceDictionary/ToggleButtonResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
@@ -195,42 +197,7 @@
                 <Setter Property="SnapsToDevicePixels" Value="True" />
             </Style>
 
-            <Style TargetType="{x:Type Button}">
-                <Setter Property="SnapsToDevicePixels" Value="True" />
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="BorderBrush" Value="#9B9B9B" />
-                <Setter Property="Foreground" Value="White" />
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="Height" Value="34" />
-                <Setter Property="OverridesDefaultStyle" Value="True" />
-                <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="0"
-                                    Padding="{TemplateBinding Padding}">
-                                <ContentControl HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Content="{TemplateBinding Content}" />
-                                <Border.Effect>
-                                    <DropShadowEffect ShadowDepth="0.1" />
-                                </Border.Effect>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="{StaticResource HighlightBrush}" />
-                    </Trigger>
-                    <Trigger Property="IsPressed" Value="True">
-                        <Setter Property="Background" Value="{StaticResource PressedBrush}" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
+ 
         </ResourceDictionary>
     </Application.Resources>
 </Application>

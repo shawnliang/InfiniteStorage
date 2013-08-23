@@ -36,24 +36,6 @@
             </Style.Triggers>
         </Style>
 
-        <ControlTemplate x:Key="ButtonBaseControlTemplate1" TargetType="{x:Type ButtonBase}">
-            <Border x:Name="border"
-                    Background="{TemplateBinding Background}"
-                    BorderBrush="White"
-                    BorderThickness="1"
-                    SnapsToDevicePixels="True">
-                <ContentPresenter x:Name="contentPresenter"
-                                  Margin="{TemplateBinding Padding}"
-                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                  Content="{TemplateBinding Content}"
-                                  ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                                  Focusable="False"
-                                  RecognizesAccessKey="True"
-                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-            </Border>
-        </ControlTemplate>
 
         <Style x:Key="SimpleListBoxItem" TargetType="ListBoxItem">
             <Setter Property="Template">
@@ -135,7 +117,6 @@
                               FontFamily="Segoe UI"
                               FontSize="14"
                               Foreground="White"
-                              Template="{DynamicResource ButtonBaseControlTemplate1}"
                               Unchecked="tbtnCloudSharing_Unchecked" />
             </Grid>
 
