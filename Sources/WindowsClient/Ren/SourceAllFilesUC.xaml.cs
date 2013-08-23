@@ -90,6 +90,7 @@ namespace Waveface.Client
 			{
 				tbTitle.Visibility = Visibility.Collapsed;
 
+				m_startTimer.Start();
 				return;
 			}
 
