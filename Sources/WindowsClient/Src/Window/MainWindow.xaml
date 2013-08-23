@@ -549,7 +549,7 @@
                     <local:ZoomSlider x:Name="zoomSlider"
                                       Width="104"
                                       Margin="0, 1, 0, 5"
-                                      Maximum="400"
+                                      Maximum="512"
                                       Minimum="150"
                                       Value="200" />
 

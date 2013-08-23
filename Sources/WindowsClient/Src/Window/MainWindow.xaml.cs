@@ -884,29 +884,10 @@ namespace Waveface.Client
 			SetContentTypeCount(group as IContentGroup);
 		}
 
-		private DependencyObject GetControlItem(ItemsControl itemsControl, object value)
-		{
-			foreach (var item in itemsControl.Items)
-			{
-				var dp = itemsControl.ItemContainerGenerator.ContainerFromItem(value);
-
-				if (dp != null)
-					return dp;
-
-				var currentTreeViewItem = itemsControl.ItemContainerGenerator.ContainerFromItem(item);
-
-				var childDp = GetControlItem(currentTreeViewItem as ItemsControl, value);
-
-				if (childDp != null)
-					return childDp;
-			}
-			return null;
-		}
-
 		private void TreeViewItem_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
 		{
 			var treeView = sender as TreeView;
-			var ti = GetControlItem(treeView, treeView.SelectedItem) as TreeViewItem;
+			var ti = treeView.ContainerFromSelectedItem<TreeViewItem>();
 
 			if (ti == null)
 				return;

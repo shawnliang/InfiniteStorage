@@ -1,47 +1,33 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace Waveface.Client
 {
 	public static class TreeViewExtension
 	{
-		public static void ClearSelection(this TreeView input)
+		public static void ClearSelection(this TreeView treeview)
 		{
-			var selected = input.SelectedItem;
+			var selectedItem = ContainerFromSelectedItem<TreeViewItem>(treeview);
 
-			if (selected == null) return;
+			if (selectedItem == null) return;
 
-			var tvi = input.ContainerFromItem(selected) as TreeViewItem;
-
-			if (tvi == null) return;
-
-			tvi.IsSelected = false;
+			selectedItem.IsSelected = false;
 
 		}
 
-		public static TreeViewItem ContainerFromItem(this TreeView treeView, object item)
+		public static DependencyObject ContainerFromSelectedItem(this TreeView treeview)
 		{
-			TreeViewItem containerThatMightContainItem = (TreeViewItem)treeView.ItemContainerGenerator.ContainerFromItem(item);
-			if (containerThatMightContainItem != null)
-				return containerThatMightContainItem;
-			else
-				return ContainerFromItem(treeView.ItemContainerGenerator, treeView.Items, item);
+			var selectedItem = treeview.SelectedItem;
+
+			if (selectedItem == null)
+				return null;
+
+			return treeview.ContainerFromItem(selectedItem);
 		}
 
-		private static TreeViewItem ContainerFromItem(ItemContainerGenerator parentItemContainerGenerator, ItemCollection itemCollection, object item)
+		public static T ContainerFromSelectedItem<T>(this TreeView treeview) where T : class
 		{
-			foreach (object curChildItem in itemCollection)
-			{
-				TreeViewItem parentContainer = (TreeViewItem)parentItemContainerGenerator.ContainerFromItem(curChildItem);
-				if (parentContainer == null)
-					return null;
-				TreeViewItem containerThatMightContainItem = (TreeViewItem)parentContainer.ItemContainerGenerator.ContainerFromItem(item);
-				if (containerThatMightContainItem != null)
-					return containerThatMightContainItem;
-				TreeViewItem recursionResult = ContainerFromItem(parentContainer.ItemContainerGenerator, parentContainer.Items, item);
-				if (recursionResult != null)
-					return recursionResult;
-			}
-			return null;
+			return ContainerFromSelectedItem(treeview) as T;
 		}
 	}
 }
