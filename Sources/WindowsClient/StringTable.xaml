@@ -104,6 +104,7 @@
     <system:String x:Key="share_selection_text">Share {0} items to</system:String>
     <system:String x:Key="addto_all_selection_text">Add all {0} items to</system:String>
     <system:String x:Key="share_all_selection_text">Share all {0} items to</system:String>
+    <system:String x:Key="selection_all_text">{0} files in this folder selected</system:String>
 
     <system:String x:Key="createAlbumDialogTitle">Create Album</system:String>
     <!--  end of need review  -->

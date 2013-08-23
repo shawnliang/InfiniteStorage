@@ -31,6 +31,7 @@
                                                SelectionTemplate="{StaticResource addto_selection_text}" />
 
         <local:ListBoxToSelectionTextConvertor x:Key="toolbarSelectionTextConvertor"
+                                               NoSelectionTemplate="{StaticResource selection_all_text}"
                                                SelectionTemplate="{StaticResource selection_text}" />
 
 
@@ -179,7 +180,7 @@
         <SolidColorBrush x:Key="SidePanelBackground"
                          Color="#434343" />
 
-     
+
 
         <Style x:Key="CloudAlbumGroupStyle"
                TargetType="Grid">
