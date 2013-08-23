@@ -182,6 +182,8 @@ namespace Waveface.Client
 
 				if (lastImportTime.HasValue)
 					tbTitleInfo.Text = string.Format("Last import time: {0}", lastImportTime);
+				else
+					tbTitleInfo.Text = "Sync is disabled";
 			}
 			
 		}

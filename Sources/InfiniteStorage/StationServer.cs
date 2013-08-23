@@ -86,6 +86,7 @@ namespace InfiniteStorage
 			InfiniteStorageWebSocketService.DeviceAccepted += m_uiChangeNotifyController.OnNewDevice;
 			InfiniteStorageWebSocketService.FileReceived += m_uiChangeNotifyController.OnFileReceived;
 
+			InfiniteStorageWebSocketService.FileReceiving += m_uiChangeNotifyController.NotifyRecvStatus_recving;
 			InfiniteStorageWebSocketService.FileReceived += m_uiChangeNotifyController.NotifyRecvStatus_recved;
 			InfiniteStorageWebSocketService.FileDropped += m_uiChangeNotifyController.NotifyRecvStatus_recved;
 			InfiniteStorageWebSocketService.DeviceDisconnected += m_uiChangeNotifyController.ClearRecvStatus;

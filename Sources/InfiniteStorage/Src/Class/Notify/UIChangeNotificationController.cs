@@ -57,6 +57,38 @@ namespace InfiniteStorage.Notify
 			}
 		}
 
+		public void NotifyRecvStatus_recving(object sender, WebsocketEventArgs arg)
+		{
+			try
+			{
+				var ctx = arg.ctx;
+
+				if (ctx.fileCtx == null)
+					return;
+
+				if (ctx.fileCtx.is_thumbnail)
+				{
+					notifyRecvStatus(new ReceivingStatus { DeviceId = ctx.device_id, IsPreparing = true });
+				}
+				else
+				{
+					notifyRecvStatus(new ReceivingStatus
+					{
+						DeviceId = ctx.device_id,
+						IsReceiving = true,
+						Total = (int)(ctx.total_count - ctx.backup_count + ctx.recved_files),
+						Received = (int)ctx.recved_files
+					});
+				}
+
+				
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("NotifyRecvStatus failed", err);
+			}
+		}
+
 		public void NotifyRecvStatus_recved(object sender, WebsocketEventArgs arg)
 		{
 			try
@@ -90,14 +122,14 @@ namespace InfiniteStorage.Notify
 
 		private static void clearRecvStatus(ProtocolContext ctx)
 		{
+			notifyRecvStatus(new ReceivingStatus() { DeviceId = ctx.device_id });
+		}
+
+		private static void notifyRecvStatus(ReceivingStatus status)
+		{
 			var msg = new NotificationMsg
 			{
-				recving_devices = new List<ReceivingStatus>()
-				{
-					new ReceivingStatus {
-						DeviceId = ctx.device_id
-					}
-				}
+				recving_devices = new List<ReceivingStatus> { status }
 			};
 
 			UIChangeSubscriber.Instance.SendMsg(JsonConvert.SerializeObject(msg));
@@ -119,13 +151,10 @@ namespace InfiniteStorage.Notify
 				status.IsReceiving = status.IsPreparing = false;
 
 
-			var msg = new NotificationMsg
-			{
-				recving_devices = new List<ReceivingStatus> { status }
-			};
-
-			UIChangeSubscriber.Instance.SendMsg(JsonConvert.SerializeObject(msg));
+			notifyRecvStatus(status);
 		}
+
+		
 
 		public void OnFileReceived(object sender, WebsocketEventArgs arg)
 		{
