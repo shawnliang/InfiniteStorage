@@ -703,9 +703,6 @@
     <Resource Include="Resource\ico_add_source.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resource\ico_arrow.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Ren\Images\qrcode.png" />
   </ItemGroup>
   <ItemGroup>

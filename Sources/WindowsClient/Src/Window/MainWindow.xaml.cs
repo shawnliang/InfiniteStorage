@@ -763,7 +763,7 @@ namespace Waveface.Client
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = null;
 
-			DoEvents();
+			System.Windows.Forms.Application.DoEvents();
 
 			lbxContentContainer.DataContext = group.Contents;
 			lbxContentContainer.SelectedIndex = -1;
@@ -820,7 +820,7 @@ namespace Waveface.Client
 				lblContentLocation.DataContext = null;
 				lbxContentContainer.DataContext = null;
 
-				DoEvents();
+				System.Windows.Forms.Application.DoEvents();
 
 				lbxContentContainer.DataContext = service.Contents;
 				lbxContentContainer.SelectedIndex = -1;
@@ -830,7 +830,7 @@ namespace Waveface.Client
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = null;
 
-			DoEvents();
+			System.Windows.Forms.Application.DoEvents();
 
 			lbxContentContainer.DataContext = (group as IContentGroup).Contents;
 			lbxContentContainer.SelectedIndex = -1;
@@ -914,7 +914,7 @@ namespace Waveface.Client
 			lblContentLocation.DataContext = group;
 			lbxContentContainer.DataContext = null;
 
-			DoEvents();
+			System.Windows.Forms.Application.DoEvents();
 
 			lbxContentContainer.DataContext = group.Contents;
 
@@ -922,70 +922,6 @@ namespace Waveface.Client
 
 			GC.Collect();
 		}
-
-		//private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, EventArgs e)
-		//    {
-		//        var ti = sender as TreeViewItem;
-
-		//        if (ti == null)
-		//            return;
-
-		//        lbxContentContainer.SelectedIndex = -1;
-		//        lbxCloudAlbums.SelectedIndex = -1;
-		//        lbxFavorites.SelectedIndex = -1;
-		//        lbxRecent.SelectedIndex = -1;
-
-		//        var group = ti.DataContext as IContentGroup;
-
-		//        if (group == null)
-		//        {
-		//            IService _service = ti.DataContext as IService;
-
-		//            if (_service == null)
-		//                return;
-
-		//            Cursor = Cursors.Wait;
-
-		//            ContentAreaToolBar.Visibility = Visibility.Collapsed;
-		//            lbxContentContainer.Visibility = Visibility.Collapsed;
-
-		//            allFilesUC.Visibility = Visibility.Visible;
-		//            allFilesUC.Load(_service, this);
-
-		//            Cursor = Cursors.Arrow;
-
-		//            return;
-		//        }
-
-		//        group.Refresh();
-
-		//        allFilesUC.Stop();
-		//        allFilesUC.Visibility = Visibility.Collapsed;
-		//        ContentAreaToolBar.Visibility = Visibility.Visible;
-		//        lbxContentContainer.Visibility = Visibility.Visible;
-
-		//        lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
-		//        //btnDelete.IsEnabled = false;
-		//        //btnCreateAlbum.IsEnabled = false;
-
-		//        Grid.SetColumnSpan(gdContentArea, 2);
-
-		//        gdRightSide.Visibility = Visibility.Collapsed;
-
-		//        rspRightSidePanel.Visibility = Visibility.Collapsed;
-		//        rspRightSidePane2.Visibility = Visibility.Collapsed;
-
-		//        lblContentLocation.DataContext = group;
-		//        lbxContentContainer.DataContext = null;
-
-		//        DoEvents();
-
-		//        lbxContentContainer.DataContext = group.Contents;
-
-		//        SetContentTypeCount(group);
-
-		//        GC.Collect();
-		//    }
 
 		private void lbxContentContainer_KeyDown(object sender, KeyEventArgs e)
 		{
@@ -1084,7 +1020,7 @@ namespace Waveface.Client
 
 			lbxContentContainer.DataContext = null;
 
-			DoEvents();
+			System.Windows.Forms.Application.DoEvents();
 
 			lbxContentContainer.DataContext = group.Contents;
 			lbxContentContainer.SelectedIndex = -1;
@@ -1600,27 +1536,6 @@ namespace Waveface.Client
 		private void btnHelpPanelClose_Click(object sender, RoutedEventArgs e)
 		{
 		}
-
-		#region DoEvents
-
-		[SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		public void DoEvents()
-		{
-			var _frame = new DispatcherFrame();
-
-			Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(ExitFrame), _frame);
-
-			Dispatcher.PushFrame(_frame);
-		}
-
-		public object ExitFrame(object f)
-		{
-			((DispatcherFrame)f).Continue = false;
-
-			return null;
-		}
-
-		#endregion
 
 		private IEnumerable<IContentEntity> GetContents()
 		{

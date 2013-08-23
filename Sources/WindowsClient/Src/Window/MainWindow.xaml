@@ -179,18 +179,7 @@
         <SolidColorBrush x:Key="SidePanelBackground"
                          Color="#434343" />
 
-        <Style x:Key="ContentActionBarStyle"
-               TargetType="local:ContentActionBar">
-            <Setter Property="IsEnabled" Value="True" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding SelectedItem,
-                                               ElementName=lbxContentContainer,
-                                               IsAsync=True}"
-                             Value="{x:Null}">
-                    <Setter Property="IsEnabled" Value="False" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+     
 
         <Style x:Key="CloudAlbumGroupStyle"
                TargetType="Grid">
@@ -531,8 +520,7 @@
         <Grid x:Name="stackPanel"
               Grid.Row="2"
               Background="#d5d5d5">
-            <local:ButtonImageText x:Name="btnAddDevice"
-                                   Margin="0,0,0,2"
+            <local:ButtonImageText Margin="0,0,0,2"
                                    HorizontalAlignment="Center"
                                    Click="btnAddNewSource_Click"
                                    FontFamily="Segoe UI Semibold"
