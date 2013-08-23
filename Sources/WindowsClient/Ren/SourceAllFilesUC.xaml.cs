@@ -85,13 +85,6 @@ namespace Waveface.Client
 
 			List<FileAsset> _files = GetFilesFromDB();
 
-			if (_files.Count == 0)
-			{
-				tbTitle.Visibility = Visibility.Collapsed;
-
-				return;
-			}
-
 			gridWaitingPanel.Visibility = Visibility.Collapsed;
 
 			prepareData(_files);
