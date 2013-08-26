@@ -7,15 +7,13 @@
         Height="660"
         MinWidth="900"
         MinHeight="660"
+        FontFamily="Segoe UI"
         Icon="/Waveface.Client;component/Resource/Bunnydesktop.ico"
         Loaded="Window_Loaded"
-        ResizeMode="CanResize"
-        
-        
-        SnapsToDevicePixels ="True"
-        TextOptions.TextFormattingMode ="Ideal"
+        ResizeMode="CanResizeWithGrip"
+        SnapsToDevicePixels="True"
+        TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        FontFamily="Segoe UI"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
 
@@ -26,7 +24,8 @@
                                              FalseValue="Visible"
                                              TrueValue="Hidden" />
 
-        <Style x:Key="SimpleListBoxItem" TargetType="ListBoxItem">
+        <Style x:Key="SimpleListBoxItem"
+               TargetType="ListBoxItem">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
@@ -118,7 +117,8 @@
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     SnapsToDevicePixels="true">
                                 <Border.BorderBrush>
-                                    <SolidColorBrush x:Name="BrBrush" Color="#ACACAC" />
+                                    <SolidColorBrush x:Name="BrBrush"
+                                                     Color="#ACACAC" />
                                 </Border.BorderBrush>
                                 <Border.Background>
                                     <LinearGradientBrush x:Name="BgBrush" StartPoint="0,0" EndPoint="0,1">
@@ -152,16 +152,31 @@
             <RowDefinition Height="56" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="28, 12" >
-            <TextBlock FontSize="18" VerticalAlignment="Center" Foreground="White" Text="選擇加至相簿的項目" />
-            <TextBlock FontSize="18" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 370, 0" Foreground="White" Text="相簿標題" />
-            <TextBox FontSize="18" x:Name="tbName" HorizontalAlignment="Right" VerticalAlignment="Center" Width="360"  />
+        <Grid Grid.Row="0"
+              Margin="28, 12">
+            <TextBlock VerticalAlignment="Center"
+                       FontSize="18"
+                       Foreground="White"
+                       Text="選擇加至相簿的項目" />
+            <TextBlock Margin="0, 0, 370, 0"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       FontSize="18"
+                       Foreground="White"
+                       Text="相簿標題" />
+            <TextBox x:Name="tbName"
+                     Width="360"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Center"
+                     FontSize="18" />
         </Grid>
 
-        <Grid Grid.Row="1" Margin="28, 0, 28, 0">
+        <Grid Grid.Row="1"
+              Margin="28, 0, 28, 0">
             <ListBox x:Name="lbItems"
                      Grid.Row="1"
-                     BorderThickness="0" Background="#262525"
+                     Background="#262525"
+                     BorderThickness="0"
                      ItemContainerStyle="{StaticResource SimpleListBoxItem}"
                      MouseDown="lbItems_MouseDown"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -210,7 +225,12 @@
                                        Visibility="{Binding Path=IsVideo,
                                                             Converter={StaticResource BoolToHiddenConverter}}" />
 
-                                <Rectangle Fill="#c0000000" Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=IsSelected}" />
+                                <Rectangle Fill="#c0000000"
+                                           Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter},
+                                                                RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                               AncestorType={x:Type ListBoxItem},
+                                                                                               AncestorLevel=1},
+                                                                Path=IsSelected}" />
 
                                 <Border BorderBrush="#5FB0E0E6"
                                         BorderThickness="5"
@@ -222,13 +242,17 @@
                                                                                             AncestorLevel=1},
                                                              Path=IsMouseOver}" />
 
-                                <Image  Width="48" Height="48" Stretch="UniformToFill" Source="/Waveface.Client;component/Resource/check_048_blue.png"
-                                        HorizontalAlignment="Left" VerticalAlignment="Top"
-                                        Visibility="{Binding Converter={StaticResource BoolToHiddenConverter},
-                                                             RelativeSource={RelativeSource Mode=FindAncestor,
-                                                                                            AncestorType={x:Type ListBoxItem},
-                                                                                            AncestorLevel=1},
-                                                             Path=IsSelected}" />
+                                <Image Width="48"
+                                       Height="48"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Source="/Waveface.Client;component/Resource/check_048_blue.png"
+                                       Stretch="UniformToFill"
+                                       Visibility="{Binding Converter={StaticResource BoolToHiddenConverter},
+                                                            RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                           AncestorType={x:Type ListBoxItem},
+                                                                                           AncestorLevel=1},
+                                                            Path=IsSelected}" />
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -241,37 +265,49 @@
             </ListBox>
         </Grid>
 
-        <Grid Grid.Row="2" Margin="28,0">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <Button x:Name="btnSelectAll"                                
-                    Click="btnSelectAll_Click"
-                    Content="選擇全部"
-                    FontSize="15"
-                    Padding="8,4" />
+        <Grid Grid.Row="2"
+              Margin="28,0">
+            <StackPanel HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                <Button x:Name="btnSelectAll"
+                        Click="btnSelectAll_Click"
+                        Content="選擇全部"
+                        FontSize="15"
+                        Padding="8,4" />
 
-                <Button x:Name="btnUnSelectAll" Margin="8, 0"
-                    Content="全部不選"
-                    FontSize="15"
-                    Click="btnUnSelectAll_Click"
-                    Padding="8,4" />
+                <Button x:Name="btnUnSelectAll"
+                        Margin="8, 0"
+                        Click="btnUnSelectAll_Click"
+                        Content="全部不選"
+                        FontSize="15"
+                        Padding="8,4" />
             </StackPanel>
 
-            <Label x:Name="selectionText" HorizontalAlignment="Center" VerticalAlignment="Center"  FontSize="18" FontWeight="SemiBold" Foreground="White"/>
+            <Label x:Name="selectionText"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="18"
+                   FontWeight="SemiBold"
+                   Foreground="White" />
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" >
-            <Button x:Name="btnNext"
-                    Click="btnNext_Click"
-                    Content="建立相簿"
-                    FontSize="15"
-                    Padding="16,4" />
+            <StackPanel HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                <Button x:Name="btnNext"
+                        Click="btnNext_Click"
+                        Content="建立相簿"
+                        FontSize="15"
+                        Padding="16,4" />
 
-                <Button x:Name="btnCancel" Margin="8, 0, 0, 0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Click="btnCancel_Click"
-                    Content="取消"
-                    FontSize="15"
-                    Padding="16,4" />
+                <Button x:Name="btnCancel"
+                        Margin="8, 0, 0, 0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Click="btnCancel_Click"
+                        Content="取消"
+                        FontSize="15"
+                        Padding="16,4" />
             </StackPanel>
         </Grid>
     </Grid>

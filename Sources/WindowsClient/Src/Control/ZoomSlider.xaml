@@ -304,14 +304,14 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Slider}">
                         <DockPanel>
-                            <Image Width="20"
+                            <Image Width="Auto"
                                    VerticalAlignment="Center"
                                    Source="{StaticResource SmallPhotoIcon}" />
-                            <Image Width="20"
+                            <Image Width="Auto"
                                    VerticalAlignment="Center"
                                    DockPanel.Dock="Right"
                                    Source="{StaticResource BigPhotoIcon}" />
-                            <Grid Width="60">
+                            <Grid Width="Auto">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto"
@@ -489,11 +489,8 @@
 
     <Grid x:Name="LayoutRoot">
         <Slider x:Name="slider"
-                Width="100"
                 Height="18"
-                HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                BorderThickness="10,0,0,0"
                 LargeChange="20"
                 Orientation="Horizontal"
                 SmallChange="5"

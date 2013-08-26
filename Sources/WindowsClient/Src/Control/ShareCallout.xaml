@@ -7,7 +7,10 @@
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <Style x:Key="buttonStyle" TargetType="local:ButtonImageText">
+        <Style x:Key="buttonStyle"
+               TargetType="local:ButtonImageText">
+            <Setter Property="Foreground" Value="#525252" />
+            <Setter Property="FontFamily" Value="Segoe UI Semibold" />
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="TextMargin" Value="1,10,1,1" />
@@ -25,12 +28,13 @@
     <local:CalloutMenu MaxWidth="280"
                        Background="#d5d5d5"
                        BorderBrush="#d5d5d5">
-        <StackPanel Margin="10, 5, 10, 20" Orientation="Vertical">
+        <StackPanel Margin="10, 5, 10, 20"
+                    Orientation="Vertical">
 
             <Label HorizontalAlignment="Center"
                    Content="{Binding RelativeSource={RelativeSource AncestorType=local:ShareCallout},
                                      Path=SelectionText}"
-                   FontSize="15"
+                   FontSize="16"
                    Foreground="#4d4d4d" />
             <StackPanel Orientation="Horizontal">
 
@@ -40,7 +44,7 @@
                                        ImagePressedUri="pack://application:,,,/Resource/pop_online.png"
                                        ImageUri="pack://application:,,,/Resource/pop_online.png"
                                        Style="{StaticResource buttonStyle}"
-                                       Text="Online Album..." />
+                                       Text="Online Album" />
 
 
                 <local:ButtonImageText Click="btnSaveTo_click"
@@ -49,7 +53,7 @@
                                        ImagePressedUri="pack://application:,,,/Resource/pop_save.png"
                                        ImageUri="pack://application:,,,/Resource/pop_save.png"
                                        Style="{StaticResource buttonStyle}"
-                                       Text="Export To..." />
+                                       Text="Export To" />
             </StackPanel>
         </StackPanel>
 

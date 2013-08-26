@@ -8,8 +8,26 @@
              mc:Ignorable="d">
 
     <UserControl.Resources>
+        <Style x:Key="buttonStyle"
+               TargetType="local:ButtonImageText">
+            <Setter Property="Foreground" Value="#525252" />
+            <Setter Property="FontFamily" Value="Segoe UI Semibold" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextMargin" Value="1,10,1,1" />
+            <Setter Property="Width" Value="120" />
+            <Setter Property="Height" Value="120" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#98bebf" />
+                </Trigger>
+            </Style.Triggers>
 
-        <Style x:Key="albumStyle" TargetType="local:AlbumItem">
+        </Style>
+
+        <Style x:Key="albumStyle"
+               TargetType="local:AlbumItem">
+            <Setter Property="FontFamily" Value="Segoe UI Semibold" />
             <Setter Property="Width" Value="120" />
             <Setter Property="Height" Value="120" />
             <Setter Property="Margin" Value="5" />
@@ -27,17 +45,27 @@
         <DataTemplate DataType="{x:Type wvmodel:ContentGroup}">
             <local:AlbumItem Style="{StaticResource albumStyle}" />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type local:CreateNewAlbumContentEntity}">
+            <local:ButtonImageText ImageDisableUri="pack://application:,,,/Resource/addalbum_80.png"
+                                   ImageEnterUri="pack://application:,,,/Resource/addalbum_80.png"
+                                   ImagePressedUri="pack://application:,,,/Resource/addalbum_80.png"
+                                   ImageUri="pack://application:,,,/Resource/addalbum_80.png"
+                                   Style="{StaticResource buttonStyle}"
+                                   Text="{Binding Name}" />
+        </DataTemplate>
     </UserControl.Resources>
 
     <local:CalloutMenu MaxWidth="460"
                        Background="#d5d5d5"
                        BorderBrush="#d5d5d5">
-        <StackPanel Margin="10, 5, 10, 20" Orientation="Vertical">
+        <StackPanel Margin="10, 5, 10, 20"
+                    Orientation="Vertical">
 
             <Label HorizontalAlignment="Center"
                    Content="{Binding RelativeSource={RelativeSource AncestorType=local:AddToCallout},
                                      Path=SelectionText}"
-                   FontSize="15"
+                   FontSize="16"
                    Foreground="#4d4d4d" />
             <ScrollViewer MaxHeight="280">
                 <ItemsControl Background="{x:Null}"

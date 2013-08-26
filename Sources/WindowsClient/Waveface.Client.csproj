@@ -126,6 +126,7 @@
       <DependentUpon>AddToButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="CmdLineOptions.cs" />
+    <Compile Include="Src\Class\CreateNewAlbumContentEntity.cs" />
     <Compile Include="Src\Control\CreateButton.xaml.cs">
       <DependentUpon>CreateButton.xaml</DependentUpon>
     </Compile>
@@ -147,7 +148,6 @@
       <DependentUpon>ShareCallout.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Class\Converter\IntToBoolConvertor.cs" />
-    <Compile Include="Src\Class\CreateNewAlbumContentEntity.cs" />
     <Compile Include="Src\Control\AddToCallout.xaml.cs">
       <DependentUpon>AddToCallout.xaml</DependentUpon>
     </Compile>
@@ -406,6 +406,7 @@
     <Resource Include="Resource\pop_online.png" />
     <Resource Include="Resource\pop_save.png" />
     <Resource Include="Resource\check_048_blue.png" />
+    <Resource Include="Resource\addalbum_80.png" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

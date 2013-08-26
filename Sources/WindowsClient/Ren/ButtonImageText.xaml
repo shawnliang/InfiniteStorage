@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Waveface.Client.ButtonImageText"
+﻿<UserControl x:Name="userControl" x:Class="Waveface.Client.ButtonImageText"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,25 +9,31 @@
 
     <UserControl.Resources>
 
-        <Style x:Key="ButtonImageTextImageStyle" TargetType="Image">
+        <Style x:Key="ButtonImageTextImageStyle"
+               TargetType="Image">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="Margin" Value="0, 0, 0, -3" />
             <!--  <Setter Property="Source" Value="file:///C:/Users/shawnliang/workspace/InfiniteStorage/Sources/WindowsClient/Resource/bar2_share_0.png" />  -->
-            <Setter Property="Source" Value="{Binding Path=ImageUri}" />
+            <Setter Property="Source" Value="{Binding Path=ImageUri, ElementName=userControl}" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsMouseOver}" Value="True">
-                    <Setter Property="Source" Value="{Binding Path=ImageEnterUri}" />
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button},
+                                               Path=IsMouseOver}"
+                             Value="True">
+                    <Setter Property="Source" Value="{Binding Path=ImageEnterUri, ElementName=userControl}" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsPressed}" Value="True">
-                    <Setter Property="Source" Value="{Binding Path=ImagePressedUri}" />
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button},
+                                               Path=IsPressed}"
+                             Value="True">
+                    <Setter Property="Source" Value="{Binding Path=ImagePressedUri, ElementName=userControl}" />
                 </DataTrigger>
                 <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Source" Value="{Binding Path=ImageDisableUri}" />
+                    <Setter Property="Source" Value="{Binding Path=ImageDisableUri, ElementName=userControl}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="ButtonImageTextTextBlockStyle" TargetType="TextBlock">
+        <Style x:Key="ButtonImageTextTextBlockStyle"
+               TargetType="TextBlock">
             <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1}, Path=TextMargin}" />
             <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1}, Path=Foreground}" />
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -35,7 +41,7 @@
             <Setter Property="FontSize" Value="12" />
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Foreground" Value="{Binding Path=DisableForeground}" />
+                    <Setter Property="Foreground" Value="{Binding Path=DisableForeground, ElementName=userControl}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -72,7 +78,7 @@
                 <TextBlock x:Name="tbText"
                            Grid.Row="1"
                            Style="{StaticResource ButtonImageTextTextBlockStyle}"
-                           Text="{Binding Path=Text}" />
+                           Text="{Binding Text, ElementName=userControl}" />
             </Grid>
 
             <Button.Template>
