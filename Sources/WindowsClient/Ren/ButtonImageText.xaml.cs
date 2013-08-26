@@ -113,7 +113,7 @@ namespace Waveface.Client
 		{
 			InitializeComponent();
 
-			DataContext = this;
+			//DataContext = this;
 		}
 
 		#region Click Event Procedure
