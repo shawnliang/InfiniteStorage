@@ -284,7 +284,6 @@
             <ScrollViewer x:Name="svContentContainer"
                           Grid.Row="0"
                           HorizontalScrollBarVisibility="Disabled"
-                          IsDeferredScrollingEnabled="True"
                           ScrollChanged="svContentContainer_ScrollChanged"
                           VerticalScrollBarVisibility="Auto">
 
@@ -374,7 +373,6 @@
                                   ShadowDepth="1" />
             </Grid.Effect>
             <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                          IsDeferredScrollingEnabled="True"
                           VerticalScrollBarVisibility="Auto">
                 <StackPanel>
 
