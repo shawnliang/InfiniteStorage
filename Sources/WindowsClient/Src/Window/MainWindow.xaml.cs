@@ -633,14 +633,22 @@ namespace Waveface.Client
 
 								if (!string.IsNullOrEmpty(folder))
 								{
+									bool _folderFound = false;
+
 									for (int i = 0; i < _devNode.Items.Count; i++)
 									{
 										if (_devNode.Items[i].ToString() == folder)
 										{
 											_folderNode = (TreeViewItem)_devNode.ItemContainerGenerator.ContainerFromIndex(i);
 											_tnIdx = i;
+											_folderFound = true;
 											break;
 										}
+									}
+
+									if(!_folderFound)
+									{
+										return;
 									}
 								}
 

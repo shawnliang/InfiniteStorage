@@ -49,6 +49,7 @@
         </Style>
 
         <PendingUI:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
+        <PendingUI:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" TrueValue="Hidden" FalseValue="Visible" />
     </UserControl.Resources>
 
     <Grid x:Name="gridMain" Background="#4f4f4f">
@@ -62,11 +63,11 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
-            <Border BorderThickness="0" Margin="4, 8" BorderBrush="#f0f0f0" Cursor="Hand" VerticalAlignment="Top">
+            <Border BorderThickness="0" Margin="4, 9" BorderBrush="#f0f0f0" Cursor="Hand" VerticalAlignment="Top">
                 <Grid>
                     <Image x:Name="imgHead" Width="120" Height="120" Stretch="UniformToFill">
                         <Image.Effect>
-                            <BlurEffect Radius="6"/>
+                            <BlurEffect Radius="5"/>
                         </Image.Effect>
                     </Image>
 
@@ -79,9 +80,11 @@
                 <TextBlock x:Name="tbTitleYear" Foreground="#ffffff" TextAlignment="Center"  TextWrapping="Wrap" Text="1999" FontSize="28"/>         
             </StackPanel>
 
-            <Rectangle x:Name="rectMonthAreaAll" Margin="4, 8" Fill="#90000000" Width="120" Height="120" VerticalAlignment="Top" Visibility="Collapsed"/>
+            <Rectangle x:Name="rectMonthAreaAll" Margin="4, 9" Fill="#90000000" Width="120" Height="120" VerticalAlignment="Top" Visibility="Collapsed"/>
 
-            <TextBlock x:Name="tbTotalCount" Margin="0, 134, 0, 0" Foreground="#aaaaaa" TextAlignment="Center" TextWrapping="Wrap" Text="99 Photos" FontSize="12" />
+            <Border Margin="3, 8" BorderThickness="1" BorderBrush="#70eeeeee" Width="121" Height="121" VerticalAlignment="Top"/>
+            
+            <TextBlock x:Name="tbTotalCount" Margin="0, 132, 0, 0" Foreground="#aaaaaa" TextAlignment="Center" TextWrapping="Wrap" Text="99 Photos" FontSize="12" />
         </Grid>
 
         <Grid Grid.Column="1">
@@ -121,7 +124,7 @@
                                     <Image Source="{Binding Path=BitmapImage}" Width="48" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Bottom"
                                     Height="36" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" Stretch="UniformToFill" />
 
-                                    <Rectangle Fill="#cc000000" Visibility="{Binding Path=HasOrigin, Converter={StaticResource BoolToHiddenConverter}}" />
+                                    <Rectangle Fill="#cc000000" Visibility="{Binding Path=HasOrigin, Converter={StaticResource boolToVisibilityConverter}}" />
 
                                     <Border Cursor="Hand" Width="60" Height="60" Background="#313131" Visibility="{Binding Path=IsMore, Converter={StaticResource BoolToHiddenConverter}}" >
                                         <TextBlock Margin="10, 0" Foreground="White" Text="{Binding MoreText}" TextAlignment="Center" TextWrapping="Wrap" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center" VerticalAlignment="Center"/>

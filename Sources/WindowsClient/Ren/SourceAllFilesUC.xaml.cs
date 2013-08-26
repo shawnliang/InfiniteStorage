@@ -1,7 +1,5 @@
 ﻿#region
 
-using InfiniteStorage.Model;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,8 +10,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
+using InfiniteStorage.Model;
+using Microsoft.Win32;
 using Waveface.ClientFramework;
 using Waveface.Model;
+
 #endregion
 
 namespace Waveface.Client
@@ -58,7 +59,7 @@ namespace Waveface.Client
 
 			m_refreshTimer = new DispatcherTimer();
 			m_refreshTimer.Tick += RefreshTimerOnTick;
-			m_refreshTimer.Interval = new TimeSpan(0, 0, 0, 0, 1500);
+			m_refreshTimer.Interval = new TimeSpan(0, 0, 0, 0, 2000);
 		}
 
 		public void Stop()
@@ -109,7 +110,7 @@ namespace Waveface.Client
 			m_refreshTimer.Start();
 		}
 
-		void RefreshTimerOnTick(object sender, EventArgs e)
+		private void RefreshTimerOnTick(object sender, EventArgs e)
 		{
 			m_refreshTimer.Stop();
 
@@ -121,7 +122,6 @@ namespace Waveface.Client
 				if ((_hasOriginCount == m_hasOriginCount) && (_files.Count == m_fileEntries.Count))
 				{
 					// 同步完成?!
-
 				}
 				else
 				{
@@ -144,28 +144,25 @@ namespace Waveface.Client
 
 		private void refreshTitleInfo()
 		{
-
 			var service = (BunnyService)m_currentDevice;
-
 
 			tbAutoImport.IsChecked = (m_currentDevice as BunnyService).SyncEnabled;
 
 			if (service.SyncEnabled)
 			{
-
 				if (service.RecvStatus.IsPreparing)
 				{
-					imgCircleProgress.Visibility = System.Windows.Visibility.Visible;
+					imgCircleProgress.Visibility = Visibility.Visible;
 					tbTitleInfo.Text = "Scanning photos...";
 				}
 				else if (service.RecvStatus.IsReceiving)
 				{
-					imgCircleProgress.Visibility = System.Windows.Visibility.Visible;
+					imgCircleProgress.Visibility = Visibility.Visible;
 					tbTitleInfo.Text = string.Format("Importing... ({0} / {1})", service.RecvStatus.Received, service.RecvStatus.Total);
 				}
 				else
 				{
-					imgCircleProgress.Visibility = System.Windows.Visibility.Collapsed;
+					imgCircleProgress.Visibility = Visibility.Collapsed;
 
 					var lastImportTime = getLastImportTime();
 
@@ -175,7 +172,7 @@ namespace Waveface.Client
 			}
 			else
 			{
-				imgCircleProgress.Visibility = System.Windows.Visibility.Collapsed;
+				imgCircleProgress.Visibility = Visibility.Collapsed;
 
 				var lastImportTime = getLastImportTime();
 
@@ -184,7 +181,6 @@ namespace Waveface.Client
 				else
 					tbTitleInfo.Text = "Sync is disabled";
 			}
-			
 		}
 
 		private DateTime? getLastImportTime()
@@ -216,14 +212,14 @@ namespace Waveface.Client
 			m_fileEntries = new List<FileEntry>();
 
 			List<FileEntry> _fCs = files.Select(x => new FileEntry
-			{
-				id = x.file_id.ToString(),
-				tiny_path = Path.Combine(m_thumbsPath, x.file_id + ".tiny.thumb"),
-				s92_path = Path.Combine(m_thumbsPath, x.file_id + ".s92.thumb"),
-				taken_time = x.event_time,
-				type = x.type,
-				has_origin = x.has_origin
-			}).ToList();
+														 {
+															 id = x.file_id.ToString(),
+															 tiny_path = Path.Combine(m_thumbsPath, x.file_id + ".tiny.thumb"),
+															 s92_path = Path.Combine(m_thumbsPath, x.file_id + ".s92.thumb"),
+															 taken_time = x.event_time,
+															 type = x.type,
+															 has_origin = x.has_origin
+														 }).ToList();
 
 			m_fileEntries = _fCs.OrderBy(o => o.taken_time).ToList();
 

@@ -138,7 +138,7 @@ namespace Waveface.Client
 															   FileID = _file.id,
 															   IsVideo = false,
 															   IsPhoto = true,
-															   HasOrigin = !_file.has_origin
+															   HasOrigin = _file.has_origin
 														   };
 
 								try
@@ -150,7 +150,7 @@ namespace Waveface.Client
 
 									_eventItem.BitmapImage = _bi;
 
-									if (_idx == 0)
+									if (_idx == FileEntrys.Count - 1)
 									{
 										string _sPath = _file.tiny_path.Replace(".tiny.", ".small.");
 
@@ -180,7 +180,7 @@ namespace Waveface.Client
 															   FileID = _file.id,
 															   IsVideo = true,
 															   IsPhoto = false,
-															   HasOrigin = !_file.has_origin
+															   HasOrigin = _file.has_origin
 														   };
 
 								try
@@ -242,7 +242,7 @@ namespace Waveface.Client
 				foreach (EventItem _item in m_eventItems)
 				{
 					if (!string.IsNullOrEmpty(_item.FileID)) //排除有可能More跟Less
-						_item.HasOrigin = !_id_FileEntrys[_item.FileID].has_origin;
+						_item.HasOrigin = _id_FileEntrys[_item.FileID].has_origin;
 				}
 
 				return;
@@ -348,7 +348,10 @@ namespace Waveface.Client
 				}
 				else
 				{
-					MyMainWindow.JumpToDevice(CurrentDevice.ID, false, YM, _eventItem.FileID);
+					if (_eventItem.HasOrigin)
+					{
+						MyMainWindow.JumpToDevice(CurrentDevice.ID, false, YM, _eventItem.FileID);
+					}
 				}
 			}
 		}

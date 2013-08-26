@@ -146,7 +146,7 @@
                 <Image Width="200"
                        Height="200"
                        Margin="0, 0, 100, 0"
-                       HorizontalAlignment="Right"
+                       HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        gif:ImageBehavior.AnimatedSource="/Waveface.Client;component/Resource/loading_logo.gif" />
             </Grid>
