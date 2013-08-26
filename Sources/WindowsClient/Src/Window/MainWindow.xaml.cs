@@ -1859,7 +1859,7 @@ namespace Waveface.Client
 			var dialog = new System.Windows.Forms.FolderBrowserDialog() { Description = string.Format("Select a folder to save {0} items", selected.Count()) };
 			var result = dialog.ShowDialog();
 
-			var targetFolder = Path.Combine(dialog.SelectedPath, DateTime.Now.ToString("Export_yyyyMMdd_HHmmss"));
+			var targetFolder = Path.Combine(dialog.SelectedPath, string.Format("Export_{0}", DateTime.Now.ToString("yyyyMMdd_HHmmss")));
 			Directory.CreateDirectory(targetFolder);
 
 			if (result == System.Windows.Forms.DialogResult.OK)
