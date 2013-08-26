@@ -29,11 +29,14 @@ namespace Waveface.Client
 		}
 		#endregion
 
+		#region Constructor
 		public WrapperControl()
 		{
 			InitializeComponent();
-		}
+		} 
+		#endregion
 
+		#region Public Method
 		public void Display()
 		{
 			if (m_IsInited)
@@ -47,6 +50,7 @@ namespace Waveface.Client
 			this.Content = element;
 
 			m_IsInited = true;
-		}
+		} 
+		#endregion
 	}
 }

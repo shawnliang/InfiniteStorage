@@ -13,6 +13,7 @@
         FontFamily="Segoe UI"
         Icon="/Waveface.Client;component/Resource/Bunnydesktop.ico"
         Loaded="Window_Loaded"
+        ResizeMode="CanResizeWithGrip"
         SnapsToDevicePixels="True"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
@@ -547,9 +548,9 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom">
                     <local:ZoomSlider x:Name="zoomSlider"
-                                      Width="104"
+                                      Width="144"
                                       Margin="0, 1, 0, 5"
-                                      Maximum="512"
+                                      Maximum="760"
                                       Minimum="150"
                                       Value="200" />
 
