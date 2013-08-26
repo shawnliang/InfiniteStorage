@@ -1476,16 +1476,20 @@ namespace Waveface.Client
 
 		private void svContentContainer_ScrollChanged(object sender, ScrollChangedEventArgs e)
 		{
-			var scrollViewer = (FrameworkElement)sender;
+			TryDisplayVisibleContentControls<WrapperControl>(sender as ScrollViewer, lbxContentContainer, (control) => control.Display());
+		}
+
+		private void TryDisplayVisibleContentControls<T>(ScrollViewer scrollViewer, ItemsControl itemsControl, Action<T> displayAction, int prepareInvisibleContentControlCount = 15) where T : Visual
+		{
 			var visibleAreaEntered = false;
 			var visibleAreaLeft = false;
 			var invisibleItemDisplayed = 0;
 
-			foreach (var item in lbxContentContainer.Items)
+			foreach (var item in itemsControl.Items)
 			{
-				var listBoxItem = (FrameworkElement)lbxContentContainer.ItemContainerGenerator.ContainerFromItem(item);
+				var itemContainer = (FrameworkElement)itemsControl.ItemContainerGenerator.ContainerFromItem(item);
 
-				if (visibleAreaLeft == false && IsFullyOrPartiallyVisible(listBoxItem, scrollViewer))
+				if (visibleAreaLeft == false && IsContentControlVisible(itemContainer, scrollViewer))
 				{
 					visibleAreaEntered = true;
 				}
@@ -1496,18 +1500,17 @@ namespace Waveface.Client
 
 				if (visibleAreaEntered)
 				{
-					if (visibleAreaLeft && ++invisibleItemDisplayed > 10)
+					if (visibleAreaLeft && ++invisibleItemDisplayed > prepareInvisibleContentControlCount)
 						break;
 
-					ContentPresenter contentPresenter = FindVisualChild<ContentPresenter>(listBoxItem);
+					ContentPresenter contentPresenter = FindVisualChild<ContentPresenter>(itemContainer);
 
-					var control = GetVisualChild<WrapperControl>(contentPresenter);
-					control.Display();
+					displayAction(GetVisualChild<T>(contentPresenter));
 				}
 			}
 		}
 
-		protected bool IsFullyOrPartiallyVisible(FrameworkElement child, FrameworkElement scrollViewer)
+		protected bool IsContentControlVisible(FrameworkElement child, ScrollViewer scrollViewer)
 		{
 			var childTransform = child.TransformToAncestor(scrollViewer);
 			var childRectangle = childTransform.TransformBounds(new Rect(new Point(0, 0), child.RenderSize));
