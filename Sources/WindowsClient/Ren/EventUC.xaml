@@ -1,41 +1,24 @@
-﻿<UserControl x:Class="Waveface.Client.EventUC"
+<UserControl x:Class="Waveface.Client.EventUC"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:PendingUI="clr-namespace:Waveface.Client"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             d:DesignWidth="800"
-             mc:Ignorable="d">
+             xmlns:PendingUI="clr-namespace:Waveface.Client" mc:Ignorable="d"
+             d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
-        <!--  Flat Button Style  -->
-        <Color x:Key="DefaultColor"
-               A="255"
-               B="240"
-               G="240"
-               R="240" />
-        <Color x:Key="HighlightColor"
-               A="255"
-               B="229"
-               G="229"
-               R="229" />
-        <Color x:Key="PressedColor"
-               A="255"
-               B="215"
-               G="215"
-               R="215" />
+        <!-- Flat Button Style -->
+        <Color x:Key="DefaultColor" A="255" R="240" G ="240" B="240"/>
+        <Color x:Key="HighlightColor" A="255" R="229" G ="229" B="229"/>
+        <Color x:Key="PressedColor" A="255" R="215" G ="215" B="215"/>
 
-        <SolidColorBrush x:Key="DefaultBrush"
-                         Color="#4F4F4F" />
-        <SolidColorBrush x:Key="HighlightBrush"
-                         Color="{StaticResource HighlightColor}" />
-        <SolidColorBrush x:Key="PressedBrush"
-                         Color="{StaticResource PressedColor}" />
+        <SolidColorBrush x:Key="DefaultBrush" Color="#4F4F4F" />
+        <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource HighlightColor}" />
+        <SolidColorBrush x:Key="PressedBrush" Color="{StaticResource PressedColor}" />
 
-        <Style x:Key="FlatButtonStyle"
-               TargetType="Button">
+        <Style TargetType="Button" x:Key="FlatButtonStyle">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
             <Setter Property="BorderThickness" Value="2" />
@@ -43,14 +26,14 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="0"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentControl HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Content="{TemplateBinding Content}" />
+                        <Border BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    Background="{TemplateBinding Background}"
+                    Padding="{TemplateBinding Padding}"
+                                
+                    CornerRadius="0">
+                            <ContentControl Content="{TemplateBinding Content}" HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -65,92 +48,43 @@
             </Style.Triggers>
         </Style>
 
-        <PendingUI:BoolToVisibilityConverter x:Key="BoolToHiddenConverter"
-                                             FalseValue="Hidden"
-                                             TrueValue="Visible" />
-        <PendingUI:BoolToVisibilityConverter x:Key="boolToVisibilityConverter"
-                                             FalseValue="Visible"
-                                             TrueValue="Hidden" />
+        <PendingUI:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
+        <PendingUI:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" TrueValue="Hidden" FalseValue="Visible" />
     </UserControl.Resources>
 
-    <Grid x:Name="gridMain"
-          Background="#4f4f4f">
+    <Grid x:Name="gridMain" Background="#4f4f4f">
         <i:Interaction.Behaviors>
             <PendingUI:IgnoreMouseWheelBehavior />
         </i:Interaction.Behaviors>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="140" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="260"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0"
-              MouseLeftButtonDown="Grid_MouseLeftButtonDown">
-            <Border Margin="4, 9"
-                    VerticalAlignment="Top"
-                    BorderBrush="#f0f0f0"
-                    BorderThickness="0"
-                    Cursor="Hand">
+        <Grid Grid.Column="0" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+            <Border BorderThickness="0" Margin="4, 9" BorderBrush="#f0f0f0" Cursor="Hand" VerticalAlignment="Top">
                 <Grid>
-                    <Image x:Name="imgHead"
-                           Width="120"
-                           Height="120"
-                           Stretch="UniformToFill">
+                    <Image x:Name="imgHead" Width="240" Height="240" Stretch="UniformToFill">
                         <Image.Effect>
-                            <BlurEffect Radius="5" />
+                            <BlurEffect Radius="5"/>
                         </Image.Effect>
                     </Image>
 
-                    <Rectangle x:Name="rectMonthAreaImage"
-                               Width="120"
-                               Height="120"
-                               Fill="#90000000"
-                               Visibility="Collapsed" />
+                    <Rectangle x:Name="rectMonthAreaImage" Fill="#30000000" Width="240" Height="240" Visibility="Collapsed"/>                                  
                 </Grid>
             </Border>
 
-            <StackPanel Width="120"
-                        Height="120"
-                        Margin="4, 24, 4, 8"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Top"
-                        Cursor="Hand">
-                <TextBlock x:Name="tbTitleMonth"
-                           FontSize="36"
-                           Foreground="#ffffff"
-                           Text="12"
-                           TextAlignment="Center"
-                           TextWrapping="Wrap" />
-                <TextBlock x:Name="tbTitleYear"
-                           FontSize="28"
-                           Foreground="#ffffff"
-                           Text="1999"
-                           TextAlignment="Center"
-                           TextWrapping="Wrap" />
+            <StackPanel Cursor="Hand" Margin="4, 24, 4, 8" Width="240" Height="240" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <TextBlock x:Name="tbTitleMonth" Foreground="#F0F0F0" TextAlignment="Center"  TextWrapping="Wrap" Text="12" FontSize="36"/>
+                <TextBlock x:Name="tbTitleYear" Foreground="#F0F0F0" TextAlignment="Center"  TextWrapping="Wrap" Text="1999" FontSize="28"/>
             </StackPanel>
 
-            <Rectangle x:Name="rectMonthAreaAll"
-                       Width="120"
-                       Height="120"
-                       Margin="4, 9"
-                       VerticalAlignment="Top"
-                       Fill="#90000000"
-                       Visibility="Collapsed" />
+            <Rectangle x:Name="rectMonthAreaAll" Margin="4, 9" Fill="#90000000" Width="240" Height="240" VerticalAlignment="Top" Visibility="Collapsed"/>
 
-            <Border Width="121"
-                    Height="121"
-                    Margin="3, 8"
-                    VerticalAlignment="Top"
-                    BorderBrush="#70eeeeee"
-                    BorderThickness="1" />
-
-            <TextBlock x:Name="tbTotalCount"
-                       Margin="0, 132, 0, 0"
-                       FontSize="12"
-                       Foreground="#aaaaaa"
-                       Text="99 Photos"
-                       TextAlignment="Center"
-                       TextWrapping="Wrap" />
+            <Border Margin="3, 8" BorderThickness="1" BorderBrush="#70eeeeee" Width="241" Height="241" VerticalAlignment="Top"/>
+            
+            <TextBlock x:Name="tbTotalCount" Margin="0, 222, 0, 0" Foreground="#aaaaaa" TextAlignment="Center" TextWrapping="Wrap" Text="99 Photos" FontSize="12" />
         </Grid>
 
         <Grid Grid.Column="1">
@@ -160,110 +94,65 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="tbTimeAgo"
-                           Margin="12,0,0,0"
-                           VerticalAlignment="Bottom"
-                           FontSize="16"
-                           Foreground="#929292"
-                           Text="Yesterday" />
-                <!--  TextBlock x:Name="tbTotalCount" Foreground="#929292" Margin="12,0,0,0" VerticalAlignment="Bottom" Text="99 Photos" FontSize="16" /  -->
+                <TextBlock x:Name="tbTimeAgo" Foreground="#929292" Margin="12,0,0,0" VerticalAlignment="Bottom" Text="Yesterday" FontSize="16" />
+                <!--TextBlock x:Name="tbTotalCount" Foreground="#929292" Margin="12,0,0,0" VerticalAlignment="Bottom" Text="99 Photos" FontSize="16" /-->
             </StackPanel>
 
-            <ListBox x:Name="lbEvent"
-                     Grid.Row="1"
-                     Margin="0, 8, 0, 40"
-                     Background="#4f4f4f"
-                     BorderThickness="0"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     SelectionMode="Extended">
+            <ListBox BorderThickness="0" 
+                     Margin="0, 8, 4, 40" 
+                     Background="#4f4f4f" 
+                     Grid.Row="1" 
+                     x:Name="lbEvent" 
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"                  
+                     SelectionMode="Extended"
+                >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Cursor="Hand">
-                            <Border Width="60"
-                                    Height="60"
-                                    BorderThickness="0">
+                        <StackPanel>
+                            <Border BorderThickness="0" Width="60" Height="60">
                                 <Grid>
-                                    <Image HorizontalAlignment="Stretch"
-                                           VerticalAlignment="Stretch"
-                                           Source="{Binding Path=MediaSource}"
-                                           Stretch="UniformToFill"
-                                           Visibility="{Binding Path=IsVideo,
-                                                                Converter={StaticResource BoolToHiddenConverter}}" />
+                                    <Image Source="{Binding Path=MediaSource}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill"
+                                    Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}"/>
 
-                                    <Image HorizontalAlignment="Left"
-                                           VerticalAlignment="Top"
-                                           RenderTransformOrigin="0.5,0.5"
-                                           Source="{Binding Path=BitmapImage}"
-                                           Stretch="UniformToFill"
-                                           Visibility="{Binding Path=IsPhoto,
-                                                                Converter={StaticResource BoolToHiddenConverter}}">
-                                        <!--
-                                            Image.Effect>
+                                    <Image Source="{Binding Path=BitmapImage}" HorizontalAlignment="Left"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top"  Stretch="UniformToFill"
+                                    Visibility="{Binding Path=IsPhoto, Converter={StaticResource BoolToHiddenConverter}}">
+                                        <!-- Image.Effect>
                                             <BlurEffect Radius="2"/>
-                                            </Image.Effect
-                                        -->
+                                        </Image.Effect -->
                                     </Image>
+                                        
+                                    <Image Source="{Binding Path=BitmapImage}" Margin="1" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                                    Height="36" Visibility="{Binding Path=IsVideo, Converter={StaticResource BoolToHiddenConverter}}" Stretch="UniformToFill" />
 
-                                    <Image Width="48"
-                                           Height="36"
-                                           Margin="1"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Bottom"
-                                           Source="{Binding Path=BitmapImage}"
-                                           Stretch="UniformToFill"
-                                           Visibility="{Binding Path=IsVideo,
-                                                                Converter={StaticResource BoolToHiddenConverter}}" />
+                                    <Rectangle Fill="#cc000000" Visibility="{Binding Path=HasOrigin, Converter={StaticResource boolToVisibilityConverter}}" />
 
-                                    <Rectangle Fill="#cc000000"
-                                               Visibility="{Binding Path=HasOrigin,
-                                                                    Converter={StaticResource boolToVisibilityConverter}}" />
-
-                                    <Border Width="60"
-                                            Height="60"
-                                            Background="#313131"
-                                            Cursor="Hand"
-                                            Visibility="{Binding Path=IsMore,
-                                                                 Converter={StaticResource BoolToHiddenConverter}}">
-                                        <TextBlock Margin="10, 0"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   FontSize="16"
-                                                   FontWeight="SemiBold"
-                                                   Foreground="White"
-                                                   Text="{Binding MoreText}"
-                                                   TextAlignment="Center"
-                                                   TextWrapping="Wrap" />
+                                    <Border Background="#313131" Visibility="{Binding Path=IsMore, Converter={StaticResource BoolToHiddenConverter}}" >
+                                        <TextBlock Margin="10, 0" Foreground="#F0F0F0" Text="{Binding MoreText}" TextAlignment="Center" TextWrapping="Wrap" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    
+                                    <Border Background="#313131" Visibility="{Binding Path=IsLess, Converter={StaticResource BoolToHiddenConverter}}">
+                                        <TextBlock Margin="10, 0"  Foreground="#F0F0F0" Text="Less" TextAlignment="Center" TextWrapping="Wrap" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
 
-                                    <Border Width="60"
-                                            Height="60"
-                                            Background="#313131"
-                                            Cursor="Hand"
-                                            Visibility="{Binding Path=IsLess,
-                                                                 Converter={StaticResource BoolToHiddenConverter}}">
-                                        <TextBlock Margin="10, 0"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   FontSize="16"
-                                                   FontWeight="SemiBold"
-                                                   Foreground="White"
-                                                   Text="Less"
-                                                   TextAlignment="Center"
-                                                   TextWrapping="Wrap" />
-                                    </Border>
+                                    <Border x:Name="bdMouseOver" BorderThickness="3" BorderBrush="#b0ffffff" Visibility="Collapsed"/>
                                 </Grid>
                             </Border>
                         </StackPanel>
+
+                        <DataTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bdMouseOver" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </DataTemplate.Triggers>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}">
-                        <EventSetter Event="PreviewMouseLeftButtonDown"
-                                     Handler="ListBox_MouseLeftButtonDown" />
+                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListBox_MouseLeftButtonDown" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
-                                    <ContentPresenter x:Name="contentPresenter" />
+                                    <ContentPresenter x:Name="contentPresenter"/>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
@@ -271,7 +160,7 @@
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
+                        <WrapPanel Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
             </ListBox>

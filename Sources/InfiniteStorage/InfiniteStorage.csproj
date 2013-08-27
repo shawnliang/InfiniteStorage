@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\Bunnydesktop.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Appicon_PC_256.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
@@ -419,6 +419,7 @@
     <None Include="Resources\380.gif" />
     <None Include="Resources\back.png" />
     <None Include="Resources\check.png" />
+    <None Include="Resources\Appicon_PC_256.ico" />
     <Content Include="Resources\Empty.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

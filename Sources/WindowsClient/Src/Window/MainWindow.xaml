@@ -11,7 +11,7 @@
         MinWidth="1010"
         MinHeight="640"
         
-        Icon="/Waveface.Client;component/Resource/Bunnydesktop.ico"
+        Icon="/Waveface.Client;component/Resource/Appicon_PC_256.ico"
         Loaded="Window_Loaded"
         ResizeMode="CanResizeWithGrip"
         SnapsToDevicePixels="True"

@@ -147,7 +147,7 @@ namespace InfiniteStorage.Notify
 				// -1 because backup_count is not yet updated to the latest value in recved / droped state
 			};
 
-			if (status.Total == status.Received && status.Total > 0)
+			if (status.Total == status.Received && status.IsReceiving)
 				status.IsReceiving = status.IsPreparing = false;
 
 

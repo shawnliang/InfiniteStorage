@@ -88,7 +88,7 @@ namespace UnitTest
 			temp.Setup(x => x.Path).Returns("path1").Verifiable();
 			storage.Setup(x => x.MoveToStorage("path1", ctx.fileCtx)).Returns(@"fff\rrr").Verifiable();
 			util.Setup(x => x.GetNextSeq()).Returns(112345).Verifiable();
-			util.Setup(x => x.QueryFileId(ctx.device_id, Path.Combine(ctx.fileCtx.folder, ctx.fileCtx.file_name))).Returns(file_id).Verifiable();
+			util.Setup(x => x.QueryFileId(ctx.device_id, Path.Combine(ctx.fileCtx.folder, ctx.fileCtx.file_name), ctx)).Returns(file_id).Verifiable();
 			util.Setup(x => x.SaveFileRecord(It.Is<FileAsset>(
 				f =>
 					f.file_id == file_id &&

@@ -9,11 +9,13 @@ using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using InfiniteStorage.Model;
 using Microsoft.Win32;
 using Waveface.ClientFramework;
 using Waveface.Model;
+using WpfAnimatedGif;
 
 #endregion
 
@@ -55,7 +57,7 @@ namespace Waveface.Client
 		{
 			m_startTimer = new DispatcherTimer();
 			m_startTimer.Tick += StartTimerOnTick;
-			m_startTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);
+			m_startTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
 
 			m_refreshTimer = new DispatcherTimer();
 			m_refreshTimer.Tick += RefreshTimerOnTick;
@@ -73,11 +75,17 @@ namespace Waveface.Client
 		public void Load(IService device, MainWindow mainWindow)
 		{
 			gridWaitingPanel.Visibility = Visibility.Visible;
+			BitmapImage _biWaiting = new BitmapImage();
+			_biWaiting.BeginInit();
+			_biWaiting.UriSource = new Uri("pack://application:,,,/Resource/loading_GIF_120.gif");
+			_biWaiting.EndInit();
+			ImageBehavior.SetAnimatedSource(imgWaiting, _biWaiting);
 
 			m_mainWindow = mainWindow;
 			m_currentDevice = device;
 
 			refreshTitleInfo();
+
 			m_startTimer.Start();
 		}
 
@@ -95,8 +103,6 @@ namespace Waveface.Client
 				return;
 			}
 
-			gridWaitingPanel.Visibility = Visibility.Collapsed;
-
 			prepareData(_files);
 
 			refreshTitleInfo();
@@ -106,6 +112,8 @@ namespace Waveface.Client
 			tbTitle.Text = m_currentDevice.Name;
 
 			ShowEvents_Init();
+
+			gridWaitingPanel.Visibility = Visibility.Collapsed;
 
 			m_refreshTimer.Start();
 		}
@@ -129,7 +137,6 @@ namespace Waveface.Client
 
 					ShowEvents();
 				}
-
 
 				refreshTitleInfo();
 			}
@@ -305,8 +312,6 @@ namespace Waveface.Client
 
 				DoEvents();
 			}
-
-			ShowInfor();
 		}
 
 		private void ShowEvents()
@@ -363,20 +368,6 @@ namespace Waveface.Client
 			}
 
 			m_YM_Files = _YM_Files;
-
-			ShowInfor();
-		}
-
-		private void ShowInfor()
-		{
-			if (m_eventUCs.Count == 0)
-			{
-				gridWaitingPanel.Visibility = Visibility.Visible;
-			}
-			else
-			{
-				gridWaitingPanel.Visibility = Visibility.Collapsed;
-			}
 		}
 
 		public static string GetCountsString(int photosCount, int videosCount)

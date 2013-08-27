@@ -73,7 +73,6 @@
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
                            FontSize="20"
-                           FontWeight="Bold"
                            Foreground="White"
                            Text="" />
 
@@ -108,7 +107,6 @@
                               HorizontalAlignment="Right"
                               Checked="tbtnCloudSharing_Checked"
                               Content="開啟自動匯入"
-                              Cursor="Hand"
                               Unchecked="tbtnCloudSharing_Unchecked" />
             </Grid>
 
@@ -135,12 +133,7 @@
                   Background="#4f4f4f"
                   Visibility="Collapsed">
 
-                <Image Width="200"
-                       Height="200"
-                       Margin="0, 0, 100, 0"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       gif:ImageBehavior.AnimatedSource="/Waveface.Client;component/Resource/loading_logo.gif" />
+                <Image x:Name="imgWaiting" Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
         </Grid>
     </Grid>

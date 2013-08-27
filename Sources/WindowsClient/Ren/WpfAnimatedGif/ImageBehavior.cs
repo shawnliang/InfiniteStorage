@@ -703,11 +703,13 @@ namespace WpfAnimatedGif
 			else
 			{
 				RoutedEventHandler handler = null;
+
 				handler = (sender, e) =>
 				{
 					element.Loaded -= handler;
 					action(element);
 				};
+
 				element.Loaded += handler;
 			}
 		}
