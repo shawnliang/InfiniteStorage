@@ -646,7 +646,7 @@ namespace Waveface.Client
 										}
 									}
 
-									if(!_folderFound)
+									if (!_folderFound)
 									{
 										return;
 									}
@@ -916,16 +916,16 @@ namespace Waveface.Client
 				if (_service == null)
 					return;
 
-				Cursor = Cursors.Wait;
-
 				ContentAreaToolBar.Visibility = Visibility.Collapsed;
 				lbxContentContainer.Visibility = Visibility.Collapsed;
 
-				allFilesUC.DataContext = _service;
 				allFilesUC.Visibility = Visibility.Visible;
+
+				DoEvents();
+
 				allFilesUC.Load(_service, this);
 
-				Cursor = Cursors.Arrow;
+				DoEvents();
 
 				return;
 			}
@@ -1901,6 +1901,12 @@ namespace Waveface.Client
 				Owner = this
 			};
 			dialog.ShowDialog();
+		}
+
+
+		private void set_lblContentLocationDataContext_ToDeveiceNode(object dataContext)
+		{
+			lblContentLocation.DataContext = dataContext;
 		}
 
 		#region DoEvents

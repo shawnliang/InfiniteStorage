@@ -150,9 +150,9 @@ namespace Waveface.Client
 
 									_eventItem.BitmapImage = _bi;
 
-									if (_idx == FileEntrys.Count - 1)
+									if (_idx == 0)
 									{
-										string _sPath = _file.tiny_path.Replace(".tiny.", ".small.");
+										string _sPath = _file.tiny_path.Replace(".tiny.", ".medium.");
 
 										if (File.Exists(_sPath))
 										{

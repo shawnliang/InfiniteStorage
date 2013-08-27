@@ -74,7 +74,6 @@
                            VerticalAlignment="Center"
                            FontFamily="Segoe UI"
                            FontSize="20"
-                           FontWeight="Bold"
                            Foreground="White"
                            Text="" />
 
@@ -143,12 +142,7 @@
                   Background="#4f4f4f"
                   Visibility="Collapsed">
 
-                <Image Width="200"
-                       Height="200"
-                       Margin="0, 0, 100, 0"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       gif:ImageBehavior.AnimatedSource="/Waveface.Client;component/Resource/loading_logo.gif" />
+                <Image x:Name="imgWaiting" Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
         </Grid>
     </Grid>

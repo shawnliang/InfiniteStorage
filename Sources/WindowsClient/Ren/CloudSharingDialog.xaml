@@ -8,7 +8,7 @@
         MinWidth="900"
         MinHeight="660"
         FontFamily="Segoe UI"
-        Icon="/Waveface.Client;component/Resource/Bunnydesktop.ico"
+        Icon="/Waveface.Client;component/Resource/Appicon_PC_256.ico"
         Loaded="Window_Loaded"
         ResizeMode="CanResizeWithGrip"
         SnapsToDevicePixels="True"

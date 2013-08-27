@@ -41,8 +41,7 @@
     <StartupObject>Waveface.Client.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Resource\Appicon_PC_256.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
@@ -383,7 +382,6 @@
     <Resource Include="Resource\bar2_trash_1.png" />
     <Resource Include="Resource\bar2_trash_2.png" />
     <Resource Include="Resource\bar2_trash_3.png" />
-    <Resource Include="Resource\loading_logo.gif" />
     <Resource Include="Resource\ico_fav_unselect.png" />
     <Resource Include="Resource\ico_fav_select.png" />
     <Resource Include="Resource\ico_cloud_album_normal.png" />
@@ -407,6 +405,8 @@
     <Resource Include="Resource\pop_save.png" />
     <Resource Include="Resource\check_048_blue.png" />
     <Resource Include="Resource\addalbum_80.png" />
+    <Resource Include="Resource\loading_GIF_120.gif" />
+    <Resource Include="Resource\Appicon_PC_256.ico" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
