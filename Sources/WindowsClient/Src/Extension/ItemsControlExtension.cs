@@ -9,13 +9,13 @@ public static class ItemsControlExtension
 {
 	public static DependencyObject ContainerFromItem(this ItemsControl itemsControl, object value)
 	{
+		var dp = itemsControl.ItemContainerGenerator.ContainerFromItem(value);
+
+		if (dp != null)
+			return dp;
+
 		foreach (var item in itemsControl.Items)
 		{
-			var dp = itemsControl.ItemContainerGenerator.ContainerFromItem(value);
-
-			if (dp != null)
-				return dp;
-
 			var currentTreeViewItem = itemsControl.ItemContainerGenerator.ContainerFromItem(item);
 
 			var childDp = ContainerFromItem(currentTreeViewItem as ItemsControl, value);
