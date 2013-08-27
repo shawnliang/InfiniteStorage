@@ -9,7 +9,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		bool HasDuplicateFile(FileContext file, string device_id);
 		long GetNextSeq();
 
-		Guid? QueryFileId(string device_id, string file_path);
+		Guid? QueryFileId(string device_id, string file_path, ProtocolContext ctx);
 	}
 
 	public class SavedPath

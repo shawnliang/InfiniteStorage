@@ -88,15 +88,33 @@ namespace InfiniteStorage.WebsocketProtocol
 		}
 
 
-		public Guid? QueryFileId(string device_id, string file_path)
+		public Guid? QueryFileId(string device_id, string file_path, ProtocolContext ctx)
 		{
-			using (var db = new MyDbContext())
+			var cs = ctx.GetData(BULK_INSERT_QUEUE_CS);
+			lock (cs)
 			{
-				var file = from f in db.Object.Files
-							  where f.file_path.Equals(file_path, StringComparison.InvariantCultureIgnoreCase) && f.device_id == device_id
-							  select new { file_id = f.file_id };
+				using (var db = new MyDbContext())
+				{
+					var file = from f in db.Object.Files
+							   where f.file_path.Equals(file_path, StringComparison.InvariantCultureIgnoreCase) && f.device_id == device_id
+							   select new { file_id = f.file_id };
 
-				return file.Any() ? file.First().file_id : (Guid?)null;
+					if (file.Any())
+						return file.First().file_id;
+
+
+
+					if (ctx.ContainsData(BULK_INSERT_QUEUE))
+					{
+						var queue = ctx.GetData(BULK_INSERT_QUEUE) as List<FileAsset>;
+						var qfile = queue.Where(x => x.file_path.Equals(file_path, StringComparison.InvariantCultureIgnoreCase) && x.device_id == device_id);
+
+						if (qfile.Any())
+							return qfile.First().file_id;
+					}
+
+					return (Guid?)null;
+				}
 			}
 		}
 
