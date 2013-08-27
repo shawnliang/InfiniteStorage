@@ -15,7 +15,7 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="Margin" Value="0, 0, 0, -3" />
             <!--  <Setter Property="Source" Value="file:///C:/Users/shawnliang/workspace/InfiniteStorage/Sources/WindowsClient/Resource/bar2_share_0.png" />  -->
-            <Setter Property="Source" Value="{Binding Path=ImageUri}" />
+            <Setter Property="Source" Value="{Binding Path=ImageUri, ElementName=userControl}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button},
                                                Path=IsMouseOver}"
