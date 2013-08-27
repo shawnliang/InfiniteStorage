@@ -66,7 +66,7 @@
 			this.tabControlEx1.HideTabs = true;
 			this.tabControlEx1.Multiline = true;
 			this.tabControlEx1.Name = "tabControlEx1";
-			this.tabControlEx1.PageIndex = 2;
+			this.tabControlEx1.PageIndex = 1;
 			this.tabControlEx1.SelectedIndex = 0;
 			// 
 			// tabProgress
@@ -77,11 +77,13 @@
 			this.tabProgress.Controls.Add(this.progressText);
 			resources.ApplyResources(this.tabProgress, "tabProgress");
 			this.tabProgress.Name = "tabProgress";
+			this.tabProgress.DoubleClick += new System.EventHandler(this.onDoubleClick);
 			// 
 			// devname
 			// 
 			resources.ApplyResources(this.devname, "devname");
 			this.devname.Name = "devname";
+			this.devname.DoubleClick += new System.EventHandler(this.onDoubleClick);
 			// 
 			// progressBar1
 			// 
@@ -92,6 +94,7 @@
 			// 
 			resources.ApplyResources(this.progressText, "progressText");
 			this.progressText.Name = "progressText";
+			this.progressText.DoubleClick += new System.EventHandler(this.onDoubleClick);
 			// 
 			// tabDisconnected
 			// 

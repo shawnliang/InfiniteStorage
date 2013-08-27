@@ -99,7 +99,7 @@ namespace Waveface.Client
 					{
 						case CopyDataType.JUMP_TO_DEVICE_NODE:
 							var window = (MainWindow)Application.Current.MainWindow;
-							window.JumpToDevice(data.lpData);
+							window.JumpToDevice(data.lpData, false);
 							break;
 						default:
 							break;
