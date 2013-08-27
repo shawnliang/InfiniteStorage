@@ -301,7 +301,8 @@ namespace Waveface.Client
 			if (MessageBox.Show(Application.Current.MainWindow, "Are you sure you want to delete?", "Confirm", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
 				return;
 
-			MainWindow _mainWindow = (MainWindow)Tag;
+			var parentWindow = Tag as Window;
+			MainWindow _mainWindow = (MainWindow)parentWindow.Owner;
 
 			_mainWindow.DeleteSourceContents(new[] { _contentEntity.ID }, false);
 
@@ -324,6 +325,8 @@ namespace Waveface.Client
 
 			vcViewerControl.PageNo = lbImages.SelectedIndex + 1;
 			vcViewerControl.PageCount = lbImages.Items.Count;
+
+			parentWindow.Activate();
 		}
 	}
 }

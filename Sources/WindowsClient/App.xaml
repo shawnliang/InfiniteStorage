@@ -19,7 +19,8 @@
 
 
 
-            <SolidColorBrush x:Key="DefaultBrush" Color="#4F4F4F" />
+            <SolidColorBrush x:Key="DefaultBrush"
+                             Color="#4F4F4F" />
 
             <BitmapImage x:Key="lb_right_img_normal"
                          CacheOption="OnDemand"
@@ -176,10 +177,12 @@
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/LB_delete_1.png" />
 
-            <!--<Style TargetType="{x:Type Image}">
+            <!--
+                <Style TargetType="{x:Type Image}">
                 <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />
                 <Setter Property="SnapsToDevicePixels" Value="True" />
-            </Style>-->
+                </Style>
+            -->
 
 
         </ResourceDictionary>

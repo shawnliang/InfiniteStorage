@@ -72,7 +72,6 @@
                            Margin="12,0,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
-                           FontFamily="Segoe UI"
                            FontSize="20"
                            Foreground="White"
                            Text="" />
@@ -90,7 +89,6 @@
                     <TextBlock x:Name="tbTitleInfo"
                                Margin="8, 0, 0, 0"
                                VerticalAlignment="Center"
-                               FontFamily="Segoe UI"
                                FontSize="16"
                                Foreground="White"
                                Text="" />
@@ -105,17 +103,10 @@
                 </StackPanel>
 
                 <ToggleButton x:Name="tbAutoImport"
-                              Width="128"
-                              Height="26"
-                              Margin="10,4,10,0"
+                              Margin="0,0,10,0"
                               HorizontalAlignment="Right"
-                              Background="DodgerBlue"
                               Checked="tbtnCloudSharing_Checked"
                               Content="開啟自動匯入"
-                              Cursor="Hand"
-                              FontFamily="Segoe UI"
-                              FontSize="14"
-                              Foreground="White"
                               Unchecked="tbtnCloudSharing_Unchecked" />
             </Grid>
 

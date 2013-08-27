@@ -267,7 +267,6 @@
                            VerticalAlignment="Top"
                            Background="#FFF9F9F9"
                            Content="Debug"
-                           FontFamily="Monotype Corsiva"
                            FontSize="8"
                            Foreground="#FFF10707"
                            MouseDown="Label_MouseDown"

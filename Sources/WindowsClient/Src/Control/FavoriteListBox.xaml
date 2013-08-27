@@ -6,7 +6,7 @@
          x:Name="UserControl"
          Background="{x:Null}"
          BorderBrush="{x:Null}"
-         FontFamily="Segoe UI"
+         
          ItemsSource="{Binding IsAsync=True}"
          IsSynchronizedWithCurrentItem ="False"
          PreviewKeyDown="UserControl_PreviewKeyDown"

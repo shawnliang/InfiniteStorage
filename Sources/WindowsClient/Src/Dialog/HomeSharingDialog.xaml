@@ -66,16 +66,10 @@
                        Text="快送：已關閉" />
             <ToggleButton x:Name="tbtnSwitch"
                           Width="113.833"
-                          Height="40"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Center"
-                          BorderBrush="White"
                           Checked="tbtnSwitch_Checked"
                           Content="開啟快送"
-                          Cursor="Hand"
-                          FontFamily="Segoe UI"
-                          FontSize="16"
-                          Foreground="White"
                           Unchecked="tbtnSwitch_Unchecked" />
         </StackPanel>
         <Button x:Name="btnHelp"

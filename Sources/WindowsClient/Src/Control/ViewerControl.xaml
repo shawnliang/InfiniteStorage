@@ -55,7 +55,7 @@
                        HorizontalContentAlignment="Center"
                        VerticalContentAlignment="Center"
                        Content="0"
-                       FontFamily="Segoe UI"
+                       
                        FontSize="14.667"
                        Foreground="White" />
 
@@ -63,14 +63,14 @@
                        HorizontalContentAlignment="Center"
                        VerticalContentAlignment="Center"
                        Content="/"
-                       FontFamily="Segoe UI"
+                       
                        Foreground="White" />
 
                 <Label x:Name="lblPageCount"
                        HorizontalContentAlignment="Center"
                        VerticalContentAlignment="Center"
                        Content="0"
-                       FontFamily="Segoe UI"
+                       
                        FontSize="14.667"
                        Foreground="White" />
 

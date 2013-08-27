@@ -113,9 +113,7 @@ namespace InfiniteStorage
 
 		private void onDoubleClick(object sender, EventArgs e)
 		{
-			if (tabControlEx1.SelectedTab == tabComplete || 
-				tabControlEx1.SelectedTab == tabDisconnected)
-				MainUIWrapper.Instance.StartViewer(device_id);
+			MainUIWrapper.Instance.StartViewer(device_id);
 		}
 	}
 

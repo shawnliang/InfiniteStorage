@@ -35,7 +35,7 @@ namespace Waveface.Client
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			pvcViewer.Tag = Owner;
+			pvcViewer.Tag = this; //TODO: 重構
 		}
 
 		private void Window_KeyDown(object sender, KeyEventArgs e)

@@ -130,7 +130,7 @@ namespace Waveface.Client
 									_path = _file.tiny_path;
 								}
 
-								if (_file.has_origin)
+								if (_file.has_origin && File.Exists(_file.tiny_path))
 								{
 									_path = _file.tiny_path;
 								}

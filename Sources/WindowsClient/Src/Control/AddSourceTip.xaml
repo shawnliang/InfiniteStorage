@@ -41,7 +41,7 @@
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-300, 100, 0, 0">
 
             <StackPanel  Orientation="Vertical" Width="390">
-                <TextBlock FontFamily="Segoe UI" FontSize="24" Text="To Get Started, you can ..." HorizontalAlignment="Center" FontWeight="ExtraBold" Margin="0, 8"/>
+                <TextBlock  FontSize="24" Text="To Get Started, you can ..." HorizontalAlignment="Center" FontWeight="ExtraBold" Margin="0, 8"/>
 
                 <Grid Margin="12, 8">
                     <Grid.ColumnDefinitions>
@@ -49,8 +49,8 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" FontFamily="Segoe UI" FontSize="18" FontWeight="SemiBold" Text="1. " HorizontalAlignment ="Left" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Column="1" x:Name="tbHelpItem1" Cursor="Hand" FontFamily="Segoe UI" FontSize="18" FontWeight="SemiBold" HorizontalAlignment ="Left" TextWrapping="Wrap" MouseDown="tbHelpItem1_MouseDown">
+                    <TextBlock Grid.Column="0"  FontSize="18" FontWeight="SemiBold" Text="1. " HorizontalAlignment ="Left" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Column="1" x:Name="tbHelpItem1" Cursor="Hand"  FontSize="18" FontWeight="SemiBold" HorizontalAlignment ="Left" TextWrapping="Wrap" MouseDown="tbHelpItem1_MouseDown">
                         <Run>Get our mobile apps and enable auto sync over same Wi-Fi.</Run> <InlineUIContainer> <Image Margin="0, 8, 0, -4" Source="/Waveface.Client;component/Resource/arrow_right.png" Height="20"></Image> </InlineUIContainer>
                     </TextBlock>
                 </Grid>
@@ -61,8 +61,8 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" FontFamily="Segoe UI" FontSize="18" FontWeight="SemiBold" Text="2. " HorizontalAlignment ="Left" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Column="1" FontFamily="Segoe UI" FontSize="18" FontWeight="SemiBold" Text="Plug in digital camera via USB." HorizontalAlignment ="Left" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Column="0"  FontSize="18" FontWeight="SemiBold" Text="2. " HorizontalAlignment ="Left" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Column="1"  FontSize="18" FontWeight="SemiBold" Text="Plug in digital camera via USB." HorizontalAlignment ="Left" TextWrapping="Wrap"/>
                 </Grid>
 
                 <Grid Margin="12, 8 , 12, 16">
@@ -71,8 +71,8 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" FontFamily="Segoe UI" FontSize="18" FontWeight="SemiBold" Text="3. " HorizontalAlignment ="Left" TextWrapping="Wrap"/>
-                    <TextBlock Grid.Column="1" x:Name="tbHelpItem3" Cursor="Hand" FontFamily="Segoe UI" FontSize="18" FontWeight="SemiBold" HorizontalAlignment ="Left" TextWrapping="Wrap" MouseDown="tbHelpItem3_MouseDown">
+                    <TextBlock Grid.Column="0"  FontSize="18" FontWeight="SemiBold" Text="3. " HorizontalAlignment ="Left" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Column="1" x:Name="tbHelpItem3" Cursor="Hand"  FontSize="18" FontWeight="SemiBold" HorizontalAlignment ="Left" TextWrapping="Wrap" MouseDown="tbHelpItem3_MouseDown">
                         <Run>Get our Player app to enjoy Home Sharing for all albums created.</Run> <InlineUIContainer> <Image Margin="0, 8, 0, -4" Source="/Waveface.Client;component/Resource/arrow_right.png" Height="20"></Image> </InlineUIContainer>
                     </TextBlock>
                 </Grid>

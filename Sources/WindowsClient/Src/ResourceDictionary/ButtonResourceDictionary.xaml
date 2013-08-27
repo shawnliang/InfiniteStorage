@@ -20,10 +20,11 @@
     <Style TargetType="{x:Type Button}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="BorderBrush" Value="#9B9B9B" />
+        <Setter Property="BorderBrush" Value="White" />
         <Setter Property="Foreground" Value="White" />
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontSize" Value="16" />
         <Setter Property="Height" Value="34" />
+		 <Setter Property="Cursor" Value="Hand" />
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Background" Value="#4F4F4F" />
         <Setter Property="Template">
@@ -37,19 +38,19 @@
                         <ContentControl HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         Content="{TemplateBinding Content}" />
-                        <Border.Effect>
-                            <DropShadowEffect ShadowDepth="0.1" />
-                        </Border.Effect>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="Padding" Value="15,0"/>
+        <Setter Property="MinWidth" Value="90"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource HighlightBrush}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{StaticResource PressedBrush}" />
+            	<Setter Property="Background">
+            		<Setter.Value>
+            			<SolidColorBrush Color="Black"/>
+            		</Setter.Value>
+            	</Setter>
             </Trigger>
         </Style.Triggers>
     </Style>

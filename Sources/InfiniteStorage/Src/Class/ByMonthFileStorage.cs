@@ -58,6 +58,9 @@ namespace InfiniteStorage
 		{
 			devName = name;
 			devFolderPath = Path.Combine(MyFileFolder.Photo, name);
+
+			if (!Directory.Exists(devFolderPath))
+				Directory.CreateDirectory(devFolderPath);
 		}
 	}
 }

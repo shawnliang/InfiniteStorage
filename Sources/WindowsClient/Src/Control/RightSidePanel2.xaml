@@ -5,43 +5,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:WPFSpark="clr-namespace:WPFSpark" x:Name="UserControl"
              Height="557.25"
-             
+              Background="#1B1B1B"
              d:DesignWidth="170"
              mc:Ignorable="d">
-    <UserControl.Resources>     
-        <Style TargetType="Button">
-            <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
-            <Setter Property="BorderThickness" Value="2" />
-            <Setter Property="BorderBrush" Value="#9B9B9B" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border BorderThickness="{TemplateBinding BorderThickness}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    Background="{TemplateBinding Background}"
-                    Padding="{TemplateBinding Padding}"
-                                
-                    CornerRadius="0">
-                            <ContentControl Content="{TemplateBinding Content}" HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource HighlightBrush}" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="{StaticResource PressedBrush}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+  
 
-    </UserControl.Resources>
-
-    <StackPanel x:Name="LayoutRoot" Background="#1B1B1B">
+    <StackPanel x:Name="LayoutRoot">
 
         <TextBox x:Name="tbxName"
                  Height="36"
@@ -50,17 +19,16 @@
                  HorizontalContentAlignment="Center"
                  VerticalContentAlignment="Center"
                  Background="Black"
-                 FontFamily="Segoe UI"
+                 
                  FontSize="20"
                  BorderThickness="0"
-                 FontWeight="Bold"
                  Foreground="White"
                  Text="[Favorite Name]"
                  TextChanged="tbxName_TextChanged" />
 
         <StackPanel x:Name="sbCloudSharing" Visibility="Collapsed">
 
-            <TextBlock Text="{DynamicResource SeeFavoriteTitle}" TextWrapping="Wrap" Margin="12,20,12,0" Foreground="White" />
+            <TextBlock Text="{DynamicResource SeeFavoriteTitle}" TextWrapping="Wrap" Margin="12,20,12,0" Foreground="#FFA8A8A8" />
 
             <TextBox x:Name="tbxShareLink"
                      Height="23"
@@ -71,35 +39,27 @@
 
             <Button x:Name="btnCopyShareLink"
                     Foreground="White"
-                    Height="26"
                     Width="128"
                     Margin="10,20,10,0"
-                    FontFamily="Segoe UI"
-                    FontSize="16"
                     Content="{DynamicResource CopyButtonText}" />
 
-            <Button Height="26"
+            <Button 
                     Width="128"
                     Foreground="White"
                     Margin="10,20,10,0"
-                    FontFamily="Segoe UI"
-                    FontSize="16"
                     Click="btnEmail_Click"
                     Content="{DynamicResource EmailButtonText}" />
 
             <Button x:Name="btnOpenShareLink"
                     Foreground="White"
-                    Height="26"
                     Width="128"
                     Margin="10,20,10,0"
-                    FontFamily="Segoe UI"
-                    FontSize="16"
                     Content="開啟網頁" />
         </StackPanel>
 
         <StackPanel x:Name="spProgressBar" Margin="12, 32, 12, 8">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,8" HorizontalAlignment="Center">
-                <TextBlock Text="正在上傳資料..." FontSize="14" Foreground="White" />
+                <TextBlock Text="正在上傳資料..." FontSize="14" Foreground="White"/>
                 <TextBlock Text="" x:Name="tbProgress" Margin="4,0,0,0" FontSize="14" Foreground="White" />
             </StackPanel>
 
@@ -112,15 +72,17 @@
         </StackPanel>
 
         <ToggleButton x:Name="tbtnCloudSharing"
-                      Height="26"
                       Width="128"
                       Margin="10,4,10,0"
-                      FontFamily="Segoe UI"
-                      FontSize="16"
                       Foreground="White"
                       Cursor="Hand"
                       Content="開啟"                      
                       Checked="tbtnCloudSharing_Checked"
                       Unchecked="tbtnCloudSharing_Unchecked" BorderBrush="White" />
+
+					  <TextBlock x:Name="tipText" Margin="20,30,20,0" Foreground="#FFA8A8A8" TextWrapping="Wrap"  TextAlignment="Center" >
+						上傳至waveface.com<LineBreak/>
+						讓遠方的親友線上觀賞
+					  </TextBlock>
     </StackPanel>
 </UserControl>

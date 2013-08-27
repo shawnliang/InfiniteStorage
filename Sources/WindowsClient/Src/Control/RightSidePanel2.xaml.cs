@@ -144,6 +144,7 @@ namespace Waveface.Client
 			tbtnCloudSharing.Content = "關閉";
 			sbCloudSharing.Visibility = Visibility.Visible;
 			tbLinkOpenClose.Text = "已開啟";
+			tipText.Visibility = Visibility.Collapsed;
 		}
 
 		private void tbtnCloudSharing_Unchecked(object sender, RoutedEventArgs e)
@@ -153,6 +154,7 @@ namespace Waveface.Client
 			sbCloudSharing.Visibility = Visibility.Collapsed;
 			spProgressBar.Visibility = Visibility.Collapsed;
 			tbLinkOpenClose.Text = "已關閉";
+			tipText.Visibility = Visibility.Visible;
 		}
 	}
 }

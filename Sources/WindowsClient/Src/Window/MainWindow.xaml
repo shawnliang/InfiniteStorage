@@ -1,4 +1,4 @@
-<Window x:Class="Waveface.Client.MainWindow"
+﻿<Window x:Class="Waveface.Client.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,7 +10,7 @@
         Height="498.5"
         MinWidth="1010"
         MinHeight="640"
-        FontFamily="Segoe UI"
+        
         Icon="/Waveface.Client;component/Resource/Appicon_PC_256.ico"
         Loaded="Window_Loaded"
         ResizeMode="CanResizeWithGrip"
@@ -106,7 +106,6 @@
         <!--  Main photo catalog view  -->
         <Style x:Key="PhotoListBoxStyle"
                TargetType="{x:Type ListBox}">
-            <Setter Property="Foreground" Value="White" />
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -337,15 +336,14 @@
                         <Label x:Name="lblContentLocation"
                                Content="{Binding Name}"
                                DataContextChanged="lblContentLocation_DataContextChanged"
-                               FontFamily="Segoe UI"
+                               
                                FontSize="18.667"
-                               Foreground="White" />
+                               Foreground="White" VerticalContentAlignment="Bottom" />
                         <Label x:Name="lblContentTypeCount"
-                               VerticalContentAlignment="Center"
                                Content="0 photos 0 videos"
-                               FontFamily="Segoe UI"
-                               FontSize="15"
-                               Foreground="#FFA8A8A8" />
+                               
+                               FontSize="14"
+                               Foreground="#FFA8A8A8" VerticalContentAlignment="Bottom" />
                     </WrapPanel>
 
                 </DockPanel>
@@ -385,7 +383,7 @@
                         <Label Grid.Row="0"
                                VerticalContentAlignment="Bottom"
                                Content="{DynamicResource SourceGroupTitle}"
-                               FontFamily="Segoe UI"
+                               
                                FontWeight="Bold"
                                Foreground="#FFA8A8A8"
                                Padding="5,0,0,5" />
@@ -415,7 +413,7 @@
                                Height="30"
                                VerticalContentAlignment="Bottom"
                                Content="{DynamicResource RecentGroupTitle}"
-                               FontFamily="Segoe UI"
+                               
                                FontWeight="Bold"
                                Foreground="#FFA8A8A8"
                                Padding="5,0,0,5" />
@@ -439,7 +437,7 @@
                                Margin="5,0,0,5"
                                VerticalContentAlignment="Bottom"
                                Content="ONLINE ALBUM"
-                               FontFamily="Segoe UI"
+                               
                                FontWeight="Bold"
                                Foreground="#FFA8A8A8"
                                Padding="0,0,0,2" />
@@ -464,7 +462,7 @@
                                Margin="5,0,0,5"
                                VerticalContentAlignment="Bottom"
                                Content="{DynamicResource FavoritesGroupTitle}"
-                               FontFamily="Segoe UI"
+                               
                                FontWeight="Bold"
                                Foreground="#FFA8A8A8"
                                Padding="0,0,0,2" />
@@ -493,13 +491,11 @@
               Background="{DynamicResource SidePanelBackground}"
               Visibility="Collapsed">
             <local:RightSidePanel1 x:Name="rspRightSidePanel"
-                                   Margin="10,10,10,5"
                                    AddToFavorite="rspRightSidePanel_AddToFavorite"
                                    SaveToFavorite="rspRightSidePanel_SaveToFavorite" />
 
             <local:RightSidePanel2 x:Name="rspRightSidePane2"
                                    Height="Auto"
-                                   Margin="0,0,0,0"
                                    CloudSharingClick="rspRightSidePane2_CloudSharingClick"
                                    DeleteButtonClick="rspRightSidePane2_DeleteButtonClick"
                                    FavoriteName="{Binding Name,
@@ -523,7 +519,6 @@
             <local:ButtonImageText Margin="0,0,0,2"
                                    HorizontalAlignment="Center"
                                    Click="btnAddNewSource_Click"
-                                   FontFamily="Segoe UI Semibold"
                                    ImageDisableUri="pack://application:,,,/Resource/bar2_source_3.png"
                                    ImageEnterUri="pack://application:,,,/Resource/bar2_source_1.png"
                                    ImagePressedUri="pack://application:,,,/Resource/bar2_source_2.png"
@@ -556,7 +551,6 @@
                                Grid.Row="1"
                                Margin="0,0"
                                HorizontalAlignment="Center"
-                               FontFamily="Segoe UI Semibold"
                                FontSize="12"
                                Foreground="#4F4F4F"
                                Text="Thumbnail Size" />
@@ -706,7 +700,6 @@
                     <TextBlock x:Name="selectionText"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Top"
-                               FontFamily="Segoe UI Semibold"
                                FontWeight="Bold"
                                Foreground="#4F4F4F"
                                LineStackingStrategy="BlockLineHeight">
@@ -732,7 +725,6 @@
                         </Grid.ColumnDefinitions>
                         <local:ButtonImageText x:Name="btnCreateAlbum"
                                                Click="btnCreateAlbum_Click"
-                                               FontFamily="Segoe UI Semibold"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_create_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_create_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_create_2.png"
@@ -746,7 +738,6 @@
                         <local:ButtonImageText x:Name="btnAddToAlbum"
                                                Grid.Column="1"
                                                Click="btnAddToAlbum_Click_1"
-                                               FontFamily="Segoe UI Semibold"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_addto_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_addto_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_addto_2.png"
@@ -760,7 +751,6 @@
                         <local:ButtonImageText x:Name="btnShare"
                                                Grid.Column="2"
                                                Click="btnShare_Click"
-                                               FontFamily="Segoe UI Semibold"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_share_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_share_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_share_2.png"
@@ -774,7 +764,6 @@
                         <local:ButtonImageText x:Name="btnDelete"
                                                Grid.Column="3"
                                                Click="btnDelete_Click"
-                                               FontFamily="Segoe UI Semibold"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_trash_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_trash_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_trash_2.png"
@@ -795,7 +784,6 @@
                     <local:ButtonImageText x:Name="btnPushToDevice"
                                            Margin="0,0,20,0"
                                            Click="btnPushToDevice_Click"
-                                           FontFamily="Segoe UI Semibold"
                                            ImageDisableUri="pack://application:,,,/Resource/bar2_push_3.png"
                                            ImageEnterUri="pack://application:,,,/Resource/bar2_push_1.png"
                                            ImagePressedUri="pack://application:,,,/Resource/bar2_push_2.png"
