@@ -147,28 +147,33 @@ namespace InfiniteStorage.WebsocketProtocol
 			}
 		}
 
-		public void FlushFileRecords(ProtocolContext ctx)
+		public ICollection<FileAsset> FlushFileRecords(ProtocolContext ctx)
 		{
 			var cs = ctx.GetData(BULK_INSERT_QUEUE_CS);
 			lock (cs)
 			{
-				flushFileRecords_noLock(ctx);
+				return flushFileRecords_noLock(ctx);
 			}
 		}
 
-		private void flushFileRecords_noLock(ProtocolContext ctx)
+		private ICollection<FileAsset> flushFileRecords_noLock(ProtocolContext ctx)
 		{
+			var flushed = new List<FileAsset>();
+
 			if (ctx.ContainsData(BULK_INSERT_QUEUE))
 			{
 				var queue = (List<FileAsset>)ctx.GetData(BULK_INSERT_QUEUE);
 				this.SaveFileRecords(queue);
 
+				flushed.AddRange(queue);
 				queue.Clear();
 				ctx.SetData(BULK_INSERT_LAST_FLUSH_TIME, DateTime.Now);
 			}
+
+			return flushed;
 		}
 
-		public void FlushFileRecordsIfNoFlushedForXSec(int sec, ProtocolContext ctx)
+		public ICollection<FileAsset> FlushFileRecordsIfNoFlushedForXSec(int sec, ProtocolContext ctx)
 		{
 			var cs = ctx.GetData(BULK_INSERT_QUEUE_CS);
 			lock (cs)
@@ -181,9 +186,11 @@ namespace InfiniteStorage.WebsocketProtocol
 
 					if (noFlushPeriod > TimeSpan.FromSeconds(BULK_INSERT_BATCH_SECONDS * 2))
 					{
-						flushFileRecords_noLock(ctx);
+						return flushFileRecords_noLock(ctx);
 					}
 				}
+
+				return new List<FileAsset>();
 			}
 		}
 	}

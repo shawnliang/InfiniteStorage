@@ -8,6 +8,8 @@ using System.Diagnostics;
 using InfiniteStorage.Model;
 using System.Collections.Generic;
 using Waveface.Common;
+using System.Linq;
+using InfiniteStorage.Notify;
 
 namespace InfiniteStorage
 {
@@ -121,7 +123,9 @@ namespace InfiniteStorage
 			try
 			{
 				var util = new TransmitUtility();
-				util.FlushFileRecords(handler.ctx as ProtocolContext);
+				var flushed = util.FlushFileRecords(handler.ctx as ProtocolContext);
+
+				notifyAffectedFolder(flushed);
 
 				handler.Clear();
 				flushTimer.Stop();
@@ -136,6 +140,15 @@ namespace InfiniteStorage
 			}
 		}
 
+		private static void notifyAffectedFolder(ICollection<FileAsset> flushed)
+		{
+			var affected_folders = flushed.Select(x => x.parent_folder).Distinct();
+			foreach (var folder in affected_folders)
+			{
+				UIChangeNotificationController.NotifyFolderUpdate(new Folder { name = Path.GetFileName(folder), parent_folder = Path.GetDirectoryName(folder), path = Path.Combine(MyFileFolder.Photo, folder) });
+			}
+		}
+
 		private void flushFileQueueIfRequired(object nothing)
 		{
 			try
@@ -143,7 +156,11 @@ namespace InfiniteStorage
 				var ctx = this.handler.ctx as ProtocolContext;
 
 				var util = new TransmitUtility();
-				util.FlushFileRecordsIfNoFlushedForXSec(TransmitUtility.BULK_INSERT_BATCH_SECONDS * 2, ctx);
+				var flushed = util.FlushFileRecordsIfNoFlushedForXSec(TransmitUtility.BULK_INSERT_BATCH_SECONDS * 2, ctx);
+
+
+				if (flushed.Any())
+					notifyAffectedFolder(flushed);
 			}
 			catch (Exception err)
 			{
