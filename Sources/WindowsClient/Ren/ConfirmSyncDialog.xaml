@@ -7,7 +7,7 @@
         SizeToContent="WidthAndHeight"
         TextOptions.TextFormattingMode ="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        FontFamily="Segoe UI"
+        
         WindowStartupLocation="CenterOwner">
 
     <Window.Resources>

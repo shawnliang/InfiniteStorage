@@ -13,7 +13,7 @@
         SnapsToDevicePixels ="True"
         TextOptions.TextFormattingMode ="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        FontFamily="Segoe UI"
+        
         WindowStyle="ToolWindow">
 
     <Grid x:Name="LayoutRoot">
@@ -35,14 +35,14 @@
                  Padding="5,0,0,0"
                  TabIndex="0"
                  TextWrapping="Wrap" />
-        <Button Width="82"
-                Margin="0,0,99,10"
+        <Button 
+                Margin="0,0,105,10"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Click="Button_Click_1"
                 Content="{DynamicResource OkButtonText}"
                 TabIndex="1" />
-        <Button Width="82"
+        <Button 
                 Margin="0,0,10,10"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"

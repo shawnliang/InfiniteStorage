@@ -6,7 +6,7 @@
           x:Name="UserControl"
           Background="{x:Null}"
           BorderBrush="{x:Null}"
-          FontFamily="Segoe UI"
+          
           Grid.IsSharedSizeScope="True"
           ItemContainerStyle="{DynamicResource TreeViewItemStyle1}"
           ItemsSource="{Binding IsAsync=True}"

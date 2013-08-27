@@ -1,33 +1,30 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Waveface.Client
+public static class TreeViewExtension
 {
-	public static class TreeViewExtension
+	public static void ClearSelection(this TreeView treeview)
 	{
-		public static void ClearSelection(this TreeView treeview)
-		{
-			var selectedItem = ContainerFromSelectedItem<TreeViewItem>(treeview);
+		var selectedItem = ContainerFromSelectedItem<TreeViewItem>(treeview);
 
-			if (selectedItem == null) return;
+		if (selectedItem == null) return;
 
-			selectedItem.IsSelected = false;
+		selectedItem.IsSelected = false;
 
-		}
+	}
 
-		public static DependencyObject ContainerFromSelectedItem(this TreeView treeview)
-		{
-			var selectedItem = treeview.SelectedItem;
+	public static DependencyObject ContainerFromSelectedItem(this TreeView treeview)
+	{
+		var selectedItem = treeview.SelectedItem;
 
-			if (selectedItem == null)
-				return null;
+		if (selectedItem == null)
+			return null;
 
-			return treeview.ContainerFromItem(selectedItem);
-		}
+		return treeview.ContainerFromItem(selectedItem);
+	}
 
-		public static T ContainerFromSelectedItem<T>(this TreeView treeview) where T : class
-		{
-			return ContainerFromSelectedItem(treeview) as T;
-		}
+	public static T ContainerFromSelectedItem<T>(this TreeView treeview) where T : class
+	{
+		return ContainerFromSelectedItem(treeview) as T;
 	}
 }
