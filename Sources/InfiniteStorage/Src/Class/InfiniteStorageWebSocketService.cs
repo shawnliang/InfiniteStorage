@@ -7,6 +7,7 @@ using WebSocketSharp.Server;
 using System.Diagnostics;
 using InfiniteStorage.Model;
 using System.Collections.Generic;
+using Waveface.Common;
 
 namespace InfiniteStorage
 {
@@ -14,6 +15,8 @@ namespace InfiniteStorage
 	{
 		private static ILog logger = LogManager.GetLogger("WebsocketService");
 		private ProtocolHanlder handler;
+		private NoReentrantTimer flushTimer;
+
 
 		public static event EventHandler<WebsocketEventArgs> DeviceAccepted;
 		public static event EventHandler<WebsocketEventArgs> DeviceDisconnected;
@@ -53,8 +56,13 @@ namespace InfiniteStorage
 			ctx.OnFileEnding += FileEnding;
 			ctx.OnFileDropped += FileDropped;
 			ctx.OnThumbnailReceived += ThumbnailReceived;
-			
+
+			ctx.SetData(TransmitUtility.BULK_INSERT_QUEUE_CS, new object());
+
 			handler = new ProtocolHanlder(ctx);
+
+			flushTimer = new NoReentrantTimer(flushFileQueueIfRequired, null, 4000, 4000);
+			flushTimer.Start();
 		}
 
 		private void raiseDeviceDisconnectedEvent(WebsocketEventArgs e)
@@ -116,6 +124,7 @@ namespace InfiniteStorage
 				util.FlushFileRecords(handler.ctx as ProtocolContext);
 
 				handler.Clear();
+				flushTimer.Stop();
 			}
 			catch (Exception err)
 			{
@@ -124,6 +133,21 @@ namespace InfiniteStorage
 			finally
 			{
 				raiseDeviceDisconnectedEvent(new WebsocketEventArgs((ProtocolContext)handler.ctx));
+			}
+		}
+
+		private void flushFileQueueIfRequired(object nothing)
+		{
+			try
+			{
+				var ctx = this.handler.ctx as ProtocolContext;
+
+				var util = new TransmitUtility();
+				util.FlushFileRecordsIfNoFlushedForXSec(TransmitUtility.BULK_INSERT_BATCH_SECONDS * 2, ctx);
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger(GetType()).Warn("periodically flush file queue failed", err);
 			}
 		}
 	}
