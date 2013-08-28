@@ -1225,10 +1225,20 @@ namespace Waveface.Client
 			showWaitForPairingDialog();
 		}
 
+		Boolean _clickOnContentArea = false;
 		private void List_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			var now = DateTime.Now;
+
+			_clickOnContentArea = true;
 			ListBoxItem item = FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
+
+			if (item == null)
+			{
+				lbxContentContainer.UnselectAll();
+				return;
+			}
+
 
 			var dataContext = item.DataContext;
 
@@ -1929,5 +1939,12 @@ namespace Waveface.Client
 		}
 
 		#endregion
+
+		private void svContentContainer_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			if (!_clickOnContentArea)
+				lbxContentContainer.UnselectAll(); 
+			_clickOnContentArea = false;
+		}
 	}
 }
