@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Waveface.ClientFramework;
+using Waveface.Model;
 
 #endregion
 
@@ -21,11 +22,13 @@ namespace Waveface.Client
 		private DispatcherTimer m_progressBarTimer;
 		private BunnyLabelContentGroup m_bunnyLabelContentGroup;
 
+		private string m_oldName;
+		private string m_oldFavoriteID;
+
 		#region FavoriteName
 
 		public static readonly DependencyProperty _favoriteName = DependencyProperty.Register("FavoriteName", typeof(string), typeof(RightSidePanel2),
 																							  new UIPropertyMetadata(string.Empty, OnFavoriteNameChanged));
-
 		public string FavoriteName
 		{
 			get { return (string)GetValue(_favoriteName); }
@@ -59,6 +62,9 @@ namespace Waveface.Client
 			tbxShareLink.Text = labelGroup.ShareURL;
 
 			CheckUploadProgress();
+
+			m_oldName = FavoriteName;
+			m_oldFavoriteID = labelGroup.ID;
 		}
 
 		void m_progressBarTimer_Tick(object sender, EventArgs e)
@@ -155,6 +161,36 @@ namespace Waveface.Client
 			spProgressBar.Visibility = Visibility.Collapsed;
 			tbLinkOpenClose.Text = "已關閉";
 			tipText.Visibility = Visibility.Visible;
+		}
+
+		private void tbxName_LostFocus(object sender, RoutedEventArgs e)
+		{
+			if (m_oldName != tbxName.Text)
+			{
+				string _name = tbxName.Text;
+
+				while (IsNewFavoriteNameExist(_name))
+				{
+					_name += " (1)";
+				}
+
+				StationAPI.RenameLabel(m_oldFavoriteID, _name);
+
+				tbxName.Text = _name;
+			}
+		}
+
+		private bool IsNewFavoriteNameExist(string name)
+		{
+			foreach (IContentGroup _group in ClientFramework.Client.Default.GetFavorites(true))
+			{
+				if (_group.Name == name)
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 	}
 }
