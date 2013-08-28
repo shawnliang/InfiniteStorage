@@ -23,8 +23,9 @@
                  FontSize="20"
                  BorderThickness="0"
                  Foreground="White"
-                 Text="[Favorite Name]"
-                 TextChanged="tbxName_TextChanged" />
+                 TextChanged="tbxName_TextChanged"
+                 LostFocus="tbxName_LostFocus"
+                 />
 
         <StackPanel x:Name="sbCloudSharing" Visibility="Collapsed">
 

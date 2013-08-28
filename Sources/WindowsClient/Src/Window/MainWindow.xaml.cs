@@ -1391,13 +1391,9 @@ namespace Waveface.Client
 		{
 			if (contents.Any())
 			{
-				var service = contents.First().Service;
-
 				ClientFramework.Client.Default.Move(contents.Select(x => x.ID), targetFullPath);
 
 				RefreshContentArea();
-
-				service.Refresh();
 			}
 		}
 
