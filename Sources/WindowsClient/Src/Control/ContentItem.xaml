@@ -48,10 +48,9 @@
     </UserControl.Triggers>
 
     <Grid x:Name="LayoutRoot">
-        <Image HorizontalAlignment="Center"
-               VerticalAlignment="Center"
+        <Image
                OpacityMask="Black"
-               RenderTransformOrigin="0.5,0.5"
+               RenderTransformOrigin="0.5,0.25"
                Source="{Binding ThumbnailSource,
                                 IsAsync=True}"
                Stretch="UniformToFill">
