@@ -59,6 +59,7 @@
     <Compile Include="Src\Enum\ContentType.cs" />
     <Compile Include="Src\Event\ContentPropertyChangeEventArgs.cs" />
     <Compile Include="Src\Extension\CollectionExtension.cs" />
+    <Compile Include="Src\Extension\ObservableCollectionExtension.cs" />
     <Compile Include="Src\Interface\IContent.cs" />
     <Compile Include="Src\Interface\IContentEntity.cs" />
     <Compile Include="Src\Interface\IContentGroup.cs" />

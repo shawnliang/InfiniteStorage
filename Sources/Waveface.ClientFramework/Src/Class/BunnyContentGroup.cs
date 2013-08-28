@@ -65,7 +65,7 @@ namespace Waveface.ClientFramework
 			using (var cmd = conn.CreateCommand())
 			{
 				cmd.CommandText =
-				   "select file_id, file_name, type from Files " +
+				   "select file_id, file_name, type, event_time from Files " +
 				   "where parent_folder = @parent and device_id = @dev and deleted = 0 and has_origin = 1 " +
 				   "order by event_time";
 
@@ -80,7 +80,9 @@ namespace Waveface.ClientFramework
 
 						var type = ((long)reader["type"] == 0L) ? ContentType.Photo : ContentType.Video;
 
-						contents.Add(new BunnyContent(new Uri(file_path), reader["file_id"].ToString(), type)
+						var event_time = (DateTime)reader["event_time"];
+
+						contents.Add(new BunnyContent(new Uri(file_path), reader["file_id"].ToString(), type, event_time)
 						{
 							EnableTag = true
 						});
@@ -93,29 +95,32 @@ namespace Waveface.ClientFramework
 
 
 		#region Public Method
-		//public override bool Equals(object obj)
-		//{
-		//	//檢查參數是否為null
-		//	if (obj == null)
-		//		return false;
+		public override void Refresh()
+		{
+			base.Refresh();
 
-		//	//檢查是否與自身是相同物件
-		//	if (object.ReferenceEquals(this, obj))
-		//		return true;
-
-		//	//檢查是否型態相等
-		//	var value = obj as BunnyContentGroup;
-		//	if (value == null)
-		//		return false;
-
-		//	//比較內容是否相等
-		//	return this.ID == value.ID && this.Name == value.Name && this.ContentCount == value.ContentCount;
-		//}
-
-		//public override int GetHashCode()
-		//{
-		//	return this.Name.GetHashCode();
-		//}
+			m_ObservableContents.Sort(
+				(x, y) => {
+					if (x is BunnyContent && y is BunnyContent)
+					{
+						return (x as BunnyContent).EventTime.CompareTo((y as BunnyContent).EventTime);
+					}
+					else if (x is BunnyContent && y is BunnyContentGroup)
+					{
+						return 1; // x > y
+					}
+					else if (x is BunnyContentGroup && y is BunnyContent)
+					{
+						return -1;
+					}
+					else if (x is BunnyContentGroup && y is BunnyContentGroup)
+					{
+						return (x as BunnyContentGroup).Name.CompareTo((y as BunnyContentGroup).Name);
+					}
+					else
+						throw new InvalidDataException("Not supported combination: " + x.GetType() + " and " + y.GetType());
+				});
+		}
 		#endregion
 	}
 }

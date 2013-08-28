@@ -28,7 +28,7 @@ namespace Waveface.Model
 		/// Gets the m_ observable contents.
 		/// </summary>
 		/// <value>The m_ observable contents.</value>
-		private ObservableCollection<IContentEntity> m_ObservableContents
+		protected ObservableCollection<IContentEntity> m_ObservableContents
 		{
 			get
 			{

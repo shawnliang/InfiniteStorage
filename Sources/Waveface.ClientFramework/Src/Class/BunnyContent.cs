@@ -135,6 +135,8 @@ namespace Waveface.ClientFramework
 				base.Liked = value;
 			}
 		}
+
+		public DateTime EventTime { get; private set; }
 		#endregion
 
 
@@ -148,6 +150,13 @@ namespace Waveface.ClientFramework
 			: base(file_id, uri)
 		{
 			_type = type;
+		}
+
+		public BunnyContent(Uri uri, string file_id, ContentType type, DateTime event_time)
+			: base(file_id, uri)
+		{
+			_type = type;
+			EventTime = event_time;
 		}
 		#endregion
 

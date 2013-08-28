@@ -94,9 +94,9 @@ namespace Waveface.ClientFramework
 							//var deviceID = dr2["device_id"].ToString();
 							var savedPath = dr2["saved_path"].ToString();
 							var file = Path.Combine(BunnyDB.ResourceFolder, savedPath);
-
+							var event_time = (DateTime)dr2["event_time"];
 							var type = ((long)dr2["type"] == 0) ? ContentType.Photo : ContentType.Video;
-							contents.Add(new BunnyContent(new Uri(file), dr2["file_id"].ToString(), type));
+							contents.Add(new BunnyContent(new Uri(file), dr2["file_id"].ToString(), type, event_time));
 						}
 					}
 				}
