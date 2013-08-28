@@ -124,8 +124,8 @@
         </Style>
 
 
-        <!--  Style for an individual generic item  -->
-        <Style TargetType="{x:Type ListBoxItem}">
+        <Style x:Key="CommonListBoxItemStyle"
+               TargetType="{x:Type ListBoxItem}">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -170,6 +170,16 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <Style BasedOn="{StaticResource CommonListBoxItemStyle}"
+               TargetType="{x:Type ListBoxItem}" />
+
+        <Style x:Key="ContentAreaContentContainerStyle"
+               BasedOn="{StaticResource CommonListBoxItemStyle}"
+               TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Margin"
+                    Value="5"/>
         </Style>
 
         <SolidColorBrush x:Key="TitleBarBackground"
@@ -298,6 +308,7 @@
                          PreviewMouseMove="List_MouseMove"
                          SelectionMode="Extended"
                          Style="{StaticResource PhotoListBoxStyle}"
+                         ItemContainerStyle="{StaticResource ContentAreaContentContainerStyle}"
                          VirtualizingStackPanel.IsVirtualizing="True"
                          VirtualizingStackPanel.VirtualizationMode="Recycling" />
             </ScrollViewer>
