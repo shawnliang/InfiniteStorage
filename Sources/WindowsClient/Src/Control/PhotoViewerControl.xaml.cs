@@ -115,6 +115,9 @@ namespace Waveface.Client
 
 		private void ImgThumb_DragDelta(object sender, DragDeltaEventArgs e)
 		{
+			if(Grid.GetRowSpan(viewbox)==1)
+				return;
+			
 			double left = Canvas.GetLeft(ImgContentCtrl);
 			double top = Canvas.GetTop(ImgContentCtrl);
 
