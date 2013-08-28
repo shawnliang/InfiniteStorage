@@ -1233,13 +1233,6 @@ namespace Waveface.Client
 			_clickOnContentArea = true;
 			ListBoxItem item = FindAnchestor<ListBoxItem>((DependencyObject)e.OriginalSource);
 
-			if (item == null)
-			{
-				lbxContentContainer.UnselectAll();
-				return;
-			}
-
-
 			var dataContext = item.DataContext;
 
 			if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Control) && !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) && lbxContentContainer.SelectedItems.Contains(dataContext))
