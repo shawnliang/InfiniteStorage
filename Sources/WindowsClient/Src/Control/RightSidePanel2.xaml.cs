@@ -76,7 +76,7 @@ namespace Waveface.Client
 
 		private void CheckUploadProgress()
 		{
-			int _uploadFilesCount = m_bunnyLabelContentGroup.QueryAlbumUploadFilesCount(m_bunnyLabelContentGroup.Name);
+			int _uploadFilesCount = m_bunnyLabelContentGroup.QueryAlbumUploadFilesCount(m_bunnyLabelContentGroup.ID);
 
 			int _total = m_bunnyLabelContentGroup.Contents.Count;
 
