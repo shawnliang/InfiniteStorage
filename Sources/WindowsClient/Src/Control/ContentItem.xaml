@@ -49,20 +49,9 @@
 
     <Grid x:Name="LayoutRoot">
         <Image
-               OpacityMask="Black"
-               RenderTransformOrigin="0.5,0.25"
                Source="{Binding ThumbnailSource,
                                 IsAsync=True}"
-               Stretch="UniformToFill">
-            <Image.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform />
-                    <SkewTransform />
-                    <RotateTransform />
-                    <TranslateTransform />
-                </TransformGroup>
-            </Image.RenderTransform>
-        </Image>
+               Stretch="UniformToFill" HorizontalAlignment="Center" MinWidth="{Binding ActualWidth, ElementName=LayoutRoot}" MinHeight="{Binding ActualHeight, ElementName=LayoutRoot}"/>
 
         <l:ContentItemInfo x:Name="photoInfo"
                            Height="37"
