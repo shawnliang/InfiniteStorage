@@ -233,15 +233,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="contactData.cs" />
-    <Compile Include="FileUtility.cs" />
     <Compile Include="iniParser.cs" />
     <Compile Include="labelCommand.cs" />
     <Compile Include="MultiPartClass.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="NativeApplicationClass.cs" />
-    <Compile Include="PaintEventArgs.cs" />
-    <Compile Include="RegexMatchTimeoutException.cs" />
     <Compile Include="watermarkClass.cs" />
     <Compile Include="Wdata.cs" />
     <Compile Include="WebPostHelper.cs" />

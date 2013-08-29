@@ -119,7 +119,7 @@ namespace Waveface.ClientFramework
 			refreshRecipients();
 		}
 
-		public int QueryAlbumUploadFilesCount(string name)
+		public int QueryAlbumUploadFilesCount(string label_id)
 		{
 			try
 			{
@@ -129,12 +129,12 @@ namespace Waveface.ClientFramework
 
 					using (var cmd = conn.CreateCommand())
 					{
-						cmd.CommandText = "select count(1) from labels lb, labelFiles lf, Files f where lb.name = '" + name + "' and lb.label_id = lf.label_id and lf.file_id = f.file_id and f.on_cloud = 1";
+						cmd.CommandText = "select count(1) from labelFiles lf, Files f " +
+										  "where lf.label_id = @label_id and " +
+										  "      lf.file_id = f.file_id and f.on_cloud = 1";
 
-						using (var reader = cmd.ExecuteReader())
-						{
-							return int.Parse(reader[0].ToString());
-						}
+						cmd.Parameters.Add(new SQLiteParameter("@label_id", new Guid(label_id)));
+						return (int)(long)cmd.ExecuteScalar();
 					}
 				}
 			}

@@ -80,6 +80,7 @@ namespace Waveface.Client
 		{
 			try
 			{
+				Hide();
 				WS_close_byUser();
 				m_webSocket.Close();
 			}
