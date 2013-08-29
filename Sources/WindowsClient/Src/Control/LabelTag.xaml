@@ -5,8 +5,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Name="UserControl"
              PreviewMouseLeftButtonDown="UserControl_PreviewMouseLeftButtonDown"
-             d:DesignHeight="44"
-             d:DesignWidth="44"
              mc:Ignorable="d">
     <UserControl.Resources>
         <Storyboard x:Key="MouseOver">
