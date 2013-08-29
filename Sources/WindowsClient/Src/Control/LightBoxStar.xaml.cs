@@ -9,11 +9,11 @@ using System.Windows.Input;
 
 namespace Waveface.Client
 {
-	public partial class LabelTag : UserControl
+	public partial class LightBoxStar : UserControl
 	{
 		#region Var
 
-		public static readonly DependencyProperty _tagged = DependencyProperty.Register("Tagged", typeof(bool), typeof(LabelTag), new UIPropertyMetadata(false, OnTaggedChanged));
+		public static readonly DependencyProperty _tagged = DependencyProperty.Register("Tagged", typeof(bool), typeof(LightBoxStar), new UIPropertyMetadata(false, OnTaggedChanged));
 
 		#endregion
 
@@ -35,7 +35,7 @@ namespace Waveface.Client
 
 		#region Constructor
 
-		public LabelTag()
+		public LightBoxStar()
 		{
 			InitializeComponent();
 		}
@@ -65,8 +65,7 @@ namespace Waveface.Client
 			if (o == null)
 				return;
 
-			var labelTag = o as LabelTag;
-			labelTag.imgSelected.Visibility = (bool)e.NewValue ? Visibility.Visible : Visibility.Collapsed;
+			var labelTag = o as LightBoxStar;
 			labelTag.OnTagStatusChanged(EventArgs.Empty);
 		}
 

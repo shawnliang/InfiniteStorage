@@ -15,7 +15,9 @@
         WindowState="Maximized"
         WindowStyle="None">
     <Grid>
-        <Rectangle Fill="#FF000000" Opacity="0.85" />
-        <local:PhotoViewerControl x:Name="pvcViewer" Close="pvcViewer_Close" />
+        <Rectangle Fill="#FF000000"
+                   Opacity="0.85" />
+        <local:PhotoViewerControl x:Name="pvcViewer"
+                                  Close="pvcViewer_Close" />
     </Grid>
 </Window>

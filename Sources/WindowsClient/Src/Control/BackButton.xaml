@@ -9,7 +9,7 @@
         Style="{DynamicResource arrowBack}"
         mc:Ignorable="d">
     <Button.Resources>
-   
+
         <Style x:Key="arrowBack"
                TargetType="{x:Type Button}">
             <Setter Property="Template">

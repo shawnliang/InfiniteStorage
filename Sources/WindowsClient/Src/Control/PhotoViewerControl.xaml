@@ -13,17 +13,22 @@
         <Style TargetType="MediaElement">
             <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="Video">
+                <DataTrigger Binding="{Binding Type,
+                                               IsAsync=True}"
+                             Value="Video">
                     <Setter Property="Visibility" Value="Visible" />
                     <Setter Property="Source" Value="{Binding Uri, IsAsync=True}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="imgStyle" TargetType="Image">
+        <Style x:Key="imgStyle"
+               TargetType="Image">
             <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="Photo">
+                <DataTrigger Binding="{Binding Type,
+                                               IsAsync=True}"
+                             Value="Photo">
                     <Setter Property="Visibility" Value="Visible" />
                     <Setter Property="Source" Value="{Binding ImageSource, IsAsync=True}" />
                 </DataTrigger>
@@ -31,10 +36,12 @@
         </Style>
 
         <ItemsPanelTemplate x:Key="ItemsPanelTemplate1">
-            <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal" />
+            <VirtualizingStackPanel IsItemsHost="True"
+                                    Orientation="Horizontal" />
         </ItemsPanelTemplate>
 
-        <Style x:Key="ListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+        <Style x:Key="ListBoxItemStyle"
+               TargetType="{x:Type ListBoxItem}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -67,7 +74,8 @@
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
 
-        <Viewbox x:Name="viewbox" Stretch="UniformToFill">
+        <Viewbox x:Name="viewbox"
+                 Stretch="UniformToFill">
             <Canvas x:Name="ImgCanvas"
                     Width="602"
                     Height="371"
@@ -75,8 +83,10 @@
                 <ContentControl x:Name="ImgContentCtrl"
                                 Canvas.Left="0"
                                 Canvas.Top="1"
-                                Width="{Binding ActualWidth, ElementName=ImgCanvas}"
-                                Height="{Binding ActualHeight, ElementName=ImgCanvas}"
+                                Width="{Binding ActualWidth,
+                                                ElementName=ImgCanvas}"
+                                Height="{Binding ActualHeight,
+                                                 ElementName=ImgCanvas}"
                                 Cursor="Arrow"
                                 MouseDoubleClick="ImgContentCtrl_MouseDoubleClick">
                     <Grid x:Name="ImgGrid">
@@ -113,7 +123,6 @@
                Content="{Binding SelectedItem.Name,
                                  ElementName=lbImages,
                                  IsAsync=True}"
-               
                FontSize="16"
                Foreground="White"
                Opacity="0.6" />
@@ -159,10 +168,10 @@
                          DataContext="{Binding SelectedItem,
                                                ElementName=lbImages,
                                                IsAsync=True}"
+                         DeletePic="VcViewerControl_OnDeletePic"
                          EnableStar="{Binding EnableTag}"
                          Next="ViewerControl_Next"
                          Previous="ViewerControl_Previous"
-                         DeletePic="VcViewerControl_OnDeletePic"
                          Stared="{Binding SelectedItem.Liked,
                                           ElementName=lbImages,
                                           Mode=OneWay,

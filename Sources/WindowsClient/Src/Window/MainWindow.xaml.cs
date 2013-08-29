@@ -68,7 +68,7 @@ namespace Waveface.Client
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			lbxDeviceContainer.DataContext = ClientFramework.Client.Default.Services;
-
+		
 			ICollectionView cloudAlbums = new ListCollectionView(ClientFramework.Client.Default.Favorites);
 			cloudAlbums.Filter = CloudAlbumFilter;
 

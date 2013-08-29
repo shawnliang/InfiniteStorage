@@ -6,48 +6,49 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              x:Name="UserControl"
              Width="Auto"
-			  Background="#1B1B1B"
+             Background="#1B1B1B"
              d:DesignHeight="402"
              d:DesignWidth="150"
              mc:Ignorable="d">
-	<UserControl.Resources>
+    <UserControl.Resources>
 
 
-		<Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
-			<Setter Property="SnapsToDevicePixels" Value="True" />
-			<Setter Property="BorderThickness" Value="1" />
-			<Setter Property="BorderBrush" Value="White" />
-			<Setter Property="Foreground" Value="White" />
-			<Setter Property="Padding" Value="15,0"/>
-			<Setter Property="MinWidth" Value="90"/>
-			<Setter Property="FontSize" Value="16" />
-			<Setter Property="Height" Value="34" />
-			<Setter Property="Cursor" Value="Hand" />
-			<Setter Property="OverridesDefaultStyle" Value="True" />
-			<Setter Property="Background" Value="#FF960101" />
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="{x:Type Button}">
-						<Border Background="{TemplateBinding Background}"
-							BorderBrush="{TemplateBinding BorderBrush}"
-							BorderThickness="{TemplateBinding BorderThickness}"
-							CornerRadius="0"
-							Padding="{TemplateBinding Padding}">
-							<ContentControl HorizontalAlignment="Center"
-								VerticalAlignment="Center"
-								Content="{TemplateBinding Content}" />
-						</Border>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-			<Style.Triggers>
-				<Trigger Property="IsMouseOver" Value="True">
-					<Setter Property="Background" Value="#FFDC0000"/>
-				</Trigger>
-			</Style.Triggers>
-		</Style>
-	</UserControl.Resources>
-	
+        <Style x:Key="ButtonStyle1"
+               TargetType="{x:Type Button}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="White" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Padding" Value="15,0" />
+            <Setter Property="MinWidth" Value="90" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Height" Value="34" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Background" Value="#FF960101" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="0"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentControl HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Content="{TemplateBinding Content}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFDC0000" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
     <Grid x:Name="LayoutRoot">
         <Button Width="163"
                 Margin="0,267,0,0"
@@ -65,14 +66,16 @@
                 VerticalAlignment="Top"
                 Content="{DynamicResource ClearAllButtonText}"
                 Cursor="Hand"
-                Foreground="White" Style="{DynamicResource ButtonStyle1}"/>
+                Foreground="White"
+                Style="{DynamicResource ButtonStyle1}" />
         <local:LabeledContentInfo x:Name="LabeledCount"
+                                  Margin="0,20,0,0"
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Top"
                                   PhotoCount="{Binding PhotoCount,
                                                        ElementName=UserControl}"
                                   VideoCount="{Binding VideoCount,
-                                                       ElementName=UserControl}" Margin="0,20,0,0" />
+                                                       ElementName=UserControl}" />
         <Button Width="163"
                 Margin="0,223,0,0"
                 HorizontalAlignment="Center"
@@ -83,10 +86,15 @@
                 Foreground="White"
                 Visibility="Collapsed" />
 
-				<TextBlock Margin="10,229,10,0" Foreground="#FFA8A8A8" TextWrapping="WrapWithOverflow" TextAlignment="Center" >
-				點擊圖片上的星號圖示<LineBreak/>
-				或拖曳至側欄的星號區<LineBreak/>
-				來標示該圖片
-				</TextBlock>
+        <TextBlock Margin="10,229,10,0"
+                   Foreground="#FFA8A8A8"
+                   TextAlignment="Center"
+                   TextWrapping="WrapWithOverflow">
+            點擊圖片上的星號圖示
+            <LineBreak />
+            或拖曳至側欄的星號區
+            <LineBreak />
+            來標示該圖片
+        </TextBlock>
     </Grid>
 </UserControl>

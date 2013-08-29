@@ -68,7 +68,7 @@
                Style="{StaticResource VideoIconStyle}" />
 
         <Grid Visibility="{Binding EnableTag, Converter={StaticResource BooleanToVisibilityConverter}, IsAsync=True}">
-            <l:LabelTag x:Name="ltTag"
+            <l:ContentStar x:Name="ltTag"
                         Width="30"
                         Height="30"
                         Margin="2,2,0,0"

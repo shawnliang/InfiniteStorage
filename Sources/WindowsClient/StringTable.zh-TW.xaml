@@ -3,7 +3,7 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <system:String x:Key="AppTitle">Waveface Albums</system:String>
-    
+
     <system:String x:Key="AddDeviceIconText">新增裝置</system:String>
     <system:String x:Key="SourceGroupTitle">裝置來源</system:String>
     <system:String x:Key="FavoritesGroupTitle">我的最愛</system:String>
@@ -83,11 +83,11 @@
     <system:String x:Key="ANS_allowSelected">Allow selected</system:String>
     <system:String x:Key="ANS_disallowAll">Disallow all</system:String>
     <system:String x:Key="ANS_deviceAdded">Device {0} is successfully added to this PC.</system:String>
-    <system:String x:Key="ANS_deviveNotFound" xml:space="preserve">
-Favorite is unable to find a connectable device. Please make sure Favorite is running on your device and the device and this PC are on the same WIFI.
-
-Do you want to search for available device again?
-Press 'Yes' to search again. Press 'No' to quit pairing mode.
+    <system:String x:Key="ANS_deviveNotFound"
+                   xml:space="preserve">
+        Favorite is unable to find a connectable device. Please make sure Favorite is running on your device and the device and this PC are on the same WIFI.
+        Do you want to search for available device again?
+        Press 'Yes' to search again. Press 'No' to quit pairing mode.
     </system:String>
     <system:String x:Key="ANS_deviveNotFound_title">Device Not Found</system:String>
 
@@ -100,7 +100,7 @@ Press 'Yes' to search again. Press 'No' to quit pairing mode.
     <system:String x:Key="MoveTo">移動至</system:String>
     <system:String x:Key="Create">新增至</system:String>
     <system:String x:Key="Create2">建立</system:String>
-    
+
     <system:String x:Key="Share">分享</system:String>
     <system:String x:Key="ShareEvent">分享事件</system:String>
 

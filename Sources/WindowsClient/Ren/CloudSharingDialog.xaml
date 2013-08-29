@@ -7,7 +7,6 @@
         Height="660"
         MinWidth="900"
         MinHeight="660"
-        
         Icon="/Waveface.Client;component/Resource/Appicon_PC_256.ico"
         Loaded="Window_Loaded"
         ResizeMode="CanResizeWithGrip"
@@ -35,38 +34,39 @@
             </Setter>
         </Style>
 
-    		<Style x:Key="ButtonStyle2" TargetType="{x:Type Button}">
-			<Setter Property="SnapsToDevicePixels" Value="True" />
+        <Style x:Key="ButtonStyle2"
+               TargetType="{x:Type Button}">
+            <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="BorderThickness" Value="1" />
-			<Setter Property="BorderBrush" Value="White" />
-			<Setter Property="Foreground" Value="White" />
-			<Setter Property="FontSize" Value="16" />
-			<Setter Property="Padding" Value="15,0"/>
-			<Setter Property="MinWidth" Value="90"/>
-			<Setter Property="Height" Value="34" />
-			<Setter Property="Cursor" Value="Hand" />
-			<Setter Property="OverridesDefaultStyle" Value="True" />
-			<Setter Property="Background" Value="#FF003296" />
+            <Setter Property="BorderBrush" Value="White" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Padding" Value="15,0" />
+            <Setter Property="MinWidth" Value="90" />
+            <Setter Property="Height" Value="34" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Background" Value="#FF003296" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-						<Border Background="{TemplateBinding Background}"
-							BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-							CornerRadius="0"
-							Padding="{TemplateBinding Padding}">
-							<ContentControl HorizontalAlignment="Center"
-								VerticalAlignment="Center"
-								Content="{TemplateBinding Content}" />
-                            </Border>
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="0"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentControl HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Content="{TemplateBinding Content}" />
+                        </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-			<Style.Triggers>
-				<Trigger Property="IsMouseOver" Value="True">
-					<Setter Property="Background" Value="#FF0056FF"/>
-				</Trigger>
-			</Style.Triggers>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF0056FF" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
     </Window.Resources>
@@ -203,7 +203,7 @@
                 <Button x:Name="btnUnSelectAll"
                         Margin="8, 0"
                         Click="btnUnSelectAll_Click"
-                        Content="全部不選"/>
+                        Content="全部不選" />
             </StackPanel>
 
             <Label x:Name="selectionText"
@@ -219,14 +219,14 @@
                 <Button x:Name="btnNext"
                         Click="btnNext_Click"
                         Content="建立相簿"
-						 Style="{DynamicResource ButtonStyle2}"/>
+                        Style="{DynamicResource ButtonStyle2}" />
 
                 <Button x:Name="btnCancel"
                         Margin="8, 0, 0, 0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         Click="btnCancel_Click"
-                        Content="取消"/>
+                        Content="取消" />
             </StackPanel>
         </Grid>
     </Grid>

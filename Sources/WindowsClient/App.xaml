@@ -83,12 +83,25 @@
 
 
 
-            <BitmapImage x:Key="FavoriteContentFlag"
+            <BitmapImage x:Key="ContentStar_Selected"
                          CacheOption="OnDemand"
-                         UriSource="pack://application:,,,/Resource/favoriteicon.png" />
-            <BitmapImage x:Key="UnFavoriteContentFlag"
+                         UriSource="pack://application:,,,/Resource/star_100.png" />
+            <BitmapImage x:Key="ContentStar_Over"
                          CacheOption="OnDemand"
-                         UriSource="pack://application:,,,/Resource/notfavoriteicon.png" />
+                         UriSource="pack://application:,,,/Resource/star_50.png" />
+            <BitmapImage x:Key="ContentStar_Normal"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/star_20.png" />
+
+            <BitmapImage x:Key="LightBoxStar_Selected"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_star_2.png" />
+            <BitmapImage x:Key="LightBoxStar_Over"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_star_1.png" />
+            <BitmapImage x:Key="LightBoxStar_Normal"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_star_0.png" />
 
             <BitmapImage x:Key="SelectedFav"
                          CacheOption="OnDemand"

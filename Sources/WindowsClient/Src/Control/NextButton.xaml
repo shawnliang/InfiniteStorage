@@ -9,7 +9,8 @@
 
     <UserControl.Resources>
 
-        <Style x:Key="LBimgBtnStyle" TargetType="Image">
+        <Style x:Key="LBimgBtnStyle"
+               TargetType="Image">
             <Setter Property="Source" Value="{StaticResource lb_right_img_normal}" />
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">

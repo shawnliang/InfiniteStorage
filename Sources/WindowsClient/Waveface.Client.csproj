@@ -126,6 +126,9 @@
     </Compile>
     <Compile Include="CmdLineOptions.cs" />
     <Compile Include="Src\Class\CreateNewAlbumContentEntity.cs" />
+    <Compile Include="Src\Control\LightBoxStar.xaml.cs">
+      <DependentUpon>LightBoxStar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Control\CreateButton.xaml.cs">
       <DependentUpon>CreateButton.xaml</DependentUpon>
     </Compile>
@@ -229,8 +232,8 @@
     <Compile Include="Src\Control\LabeledContentInfo.xaml.cs">
       <DependentUpon>LabeledContentInfo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Src\Control\LabelTag.xaml.cs">
-      <DependentUpon>LabelTag.xaml</DependentUpon>
+    <Compile Include="Src\Control\ContentStar.xaml.cs">
+      <DependentUpon>ContentStar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Control\NextButton.xaml.cs">
       <DependentUpon>NextButton.xaml</DependentUpon>
@@ -300,6 +303,10 @@
     <Compile Include="Src\Control\StepPanel.xaml.cs">
       <DependentUpon>StepPanel.xaml</DependentUpon>
     </Compile>
+    <Page Include="Src\Control\LightBoxStar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Src\Dialog\HomeSharingDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -405,6 +412,12 @@
     <Resource Include="Resource\addalbum_80.png" />
     <Resource Include="Resource\loading_GIF_120.gif" />
     <Resource Include="Resource\Appicon_PC_256.ico" />
+    <Resource Include="Resource\star_100.png" />
+    <Resource Include="Resource\star_20.png" />
+    <Resource Include="Resource\star_50.png" />
+    <Resource Include="Resource\LB_star_0.png" />
+    <Resource Include="Resource\LB_star_1.png" />
+    <Resource Include="Resource\LB_star_2.png" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -521,7 +534,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Src\Control\LabelTag.xaml">
+    <Page Include="Src\Control\ContentStar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -676,12 +689,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\arrow_circle_double.png" />
-    <Resource Include="Resource\favoriteicon.png" />
     <Resource Include="Resource\ico_unsort_select.png" />
     <Resource Include="Resource\ico_unsort_unselect.png" />
     <Resource Include="Resource\video_ph.png" />
     <Resource Include="Resource\uppressed.png" />
-    <Resource Include="Resource\notfavoriteicon.png" />
     <Resource Include="Resource\pplaceholder.png" />
     <Resource Include="Ren\Images\add_folder.png" />
     <Resource Include="Ren\Images\android.png" />

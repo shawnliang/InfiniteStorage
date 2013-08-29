@@ -7,7 +7,6 @@
              x:Name="UserControl"
              Width="79.667"
              Height="27.001"
-             
              mc:Ignorable="d">
 
     <Grid x:Name="LayoutRoot">
@@ -23,31 +22,40 @@
                  Fill="#FF818181" />
         <Rectangle Grid.Column="1"
                    Grid.ColumnSpan="3"
-                   Fill="#FF818181" MouseDown="Rectangle_MouseDown" />
+                   Fill="#FF818181"
+                   MouseDown="Rectangle_MouseDown" />
         <Ellipse Grid.Column="3"
                  Grid.ColumnSpan="2"
                  Fill="#FF818181" />
 
-        <Ellipse x:Name="epOffButton" Grid.Column="0"
+        <Ellipse x:Name="epOffButton"
+                 Grid.Column="0"
                  Grid.ColumnSpan="2"
-                 Fill="#FFBBBBBB" MouseDown="epOffButton_MouseDown" />
-        <Label x:Name="lblOffText" Grid.Column="1"
+                 Fill="#FFBBBBBB"
+                 MouseDown="epOffButton_MouseDown" />
+        <Label x:Name="lblOffText"
+               Grid.Column="1"
                Grid.ColumnSpan="4"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
                Content="Off"
-               Foreground="White" MouseDown="lblOffText_MouseDown" />
+               Foreground="White"
+               MouseDown="lblOffText_MouseDown" />
 
-        <Ellipse x:Name="epOnButton" Grid.Column="3"
+        <Ellipse x:Name="epOnButton"
+                 Grid.Column="3"
                  Grid.ColumnSpan="2"
                  Fill="#FFBBBBBB"
-                 Visibility="Collapsed" MouseDown="epOnButton_MouseDown" />
-        <Label x:Name="lblOnText" Grid.Column="0"
+                 MouseDown="epOnButton_MouseDown"
+                 Visibility="Collapsed" />
+        <Label x:Name="lblOnText"
+               Grid.Column="0"
                Grid.ColumnSpan="4"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
                Content="On"
                Foreground="White"
-               Visibility="Collapsed" MouseDown="lblOnText_MouseDown" />
+               MouseDown="lblOnText_MouseDown"
+               Visibility="Collapsed" />
     </Grid>
 </UserControl>
