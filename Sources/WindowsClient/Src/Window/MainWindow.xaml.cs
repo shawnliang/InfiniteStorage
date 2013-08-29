@@ -256,16 +256,6 @@ namespace Waveface.Client
 			lbxCloudAlbums.SelectedItem = lbxFavorites.SelectedItem = GetCurrentContentGroup();
 		}
 
-		private IContentGroup GetSelectedFavoriteGroup()
-		{
-			return lbxFavorites.SelectedItem as IContentGroup;
-		}
-
-		private void RefreshSelectedFavorite()
-		{
-			RefreshFavorite(GetSelectedFavoriteGroup());
-		}
-
 		private void RefreshContentArea()
 		{
 			var group = GetCurrentContentGroup();
@@ -765,7 +755,7 @@ namespace Waveface.Client
 		{
 			ClientFramework.Client.Default.ClearTaggedContents();
 			RefreshContentArea();
-			RefreshSelectedFavorite();
+			RefreshContentArea();
 			TryUpdateRightSidePanelContentCount();
 		}
 
@@ -786,7 +776,7 @@ namespace Waveface.Client
 		{
 			try
 			{
-				StationAPI.RenameLabel(GetSelectedFavoriteGroup().ID, rspRightSidePane2.tbxName.Text);
+				StationAPI.RenameLabel(GetCurrentContentGroup().ID, rspRightSidePane2.tbxName.Text);
 			}
 			catch (Exception)
 			{

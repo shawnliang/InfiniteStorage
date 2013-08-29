@@ -71,7 +71,7 @@
             <l:LabelTag x:Name="ltTag"
                         Width="30"
                         Height="30"
-                        Margin="2"
+                        Margin="2,2,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Tagged="{Binding Liked,

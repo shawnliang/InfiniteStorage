@@ -356,8 +356,6 @@
     <Resource Include="Resource\LB_left_1.png" />
     <Resource Include="Resource\LB_right_0.png" />
     <Resource Include="Resource\LB_right_1.png" />
-    <Resource Include="Resource\LB_star_0.png" />
-    <Resource Include="Resource\LB_unstar_0.png" />
     <Resource Include="Resource\bar2_addto_0.png" />
     <Resource Include="Resource\bar2_create_0.png" />
     <Resource Include="Resource\bar2_push_0.png" />

@@ -163,34 +163,34 @@ namespace Waveface.Client
 			tipText.Visibility = Visibility.Visible;
 		}
 
-		private void tbxName_LostFocus(object sender, RoutedEventArgs e)
-		{
-			if (m_oldName != tbxName.Text)
-			{
-				string _name = tbxName.Text;
+		//private void tbxName_LostFocus(object sender, RoutedEventArgs e)
+		//{
+		//	if (m_oldName != tbxName.Text)
+		//	{
+		//		string _name = tbxName.Text;
 
-				while (IsNewFavoriteNameExist(_name))
-				{
-					_name += " (1)";
-				}
+		//		while (IsNewFavoriteNameExist(_name))
+		//		{
+		//			_name += " (1)";
+		//		}
 
-				StationAPI.RenameLabel(m_oldFavoriteID, _name);
+		//		StationAPI.RenameLabel(m_oldFavoriteID, _name);
 
-				tbxName.Text = _name;
-			}
-		}
+		//		tbxName.Text = _name;
+		//	}
+		//}
 
-		private bool IsNewFavoriteNameExist(string name)
-		{
-			foreach (IContentGroup _group in ClientFramework.Client.Default.GetFavorites(true))
-			{
-				if (_group.Name == name)
-				{
-					return true;
-				}
-			}
+		//private bool IsNewFavoriteNameExist(string name)
+		//{
+		//	foreach (IContentGroup _group in ClientFramework.Client.Default.GetFavorites(true))
+		//	{
+		//		if (_group.Name == name)
+		//		{
+		//			return true;
+		//		}
+		//	}
 
-			return false;
-		}
+		//	return false;
+		//}
 	}
 }
