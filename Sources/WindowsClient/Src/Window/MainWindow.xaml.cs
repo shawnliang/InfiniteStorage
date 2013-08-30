@@ -115,8 +115,7 @@ namespace Waveface.Client
 			h => lbxDeviceContainer.SelectedItemChanged += h,
 			h => lbxDeviceContainer.SelectedItemChanged -= h
 			)
-			.Window(TimeSpan.FromMilliseconds(50))
-			.SelectMany(x => x.TakeLast(1))
+			.Throttle(TimeSpan.FromMilliseconds(50))
 			.SubscribeOn(ThreadPoolScheduler.Instance)
 			.ObserveOn(DispatcherScheduler.Current)
 			.Subscribe(ex => TreeViewItem_SelectedItemChanged(ex.OriginalSource, ex));
@@ -126,8 +125,7 @@ namespace Waveface.Client
 			h => lbxCloudAlbums.SelectionChanged += h,
 			h => lbxCloudAlbums.SelectionChanged -= h
 			)
-			.Window(TimeSpan.FromMilliseconds(50))
-			.SelectMany(x => x.TakeLast(1))
+			.Throttle(TimeSpan.FromMilliseconds(50))
 			.SubscribeOn(ThreadPoolScheduler.Instance)
 			.ObserveOn(DispatcherScheduler.Current)
 			.Subscribe(ex => lbxFavorites_SelectionChanged(lbxCloudAlbums, ex));
@@ -137,8 +135,7 @@ namespace Waveface.Client
 				h => lbxFavorites.SelectionChanged += h,
 				h => lbxFavorites.SelectionChanged -= h
 				)
-				.Window(TimeSpan.FromMilliseconds(50))
-				.SelectMany(x => x.TakeLast(1))
+				.Throttle(TimeSpan.FromMilliseconds(50))
 				.SubscribeOn(ThreadPoolScheduler.Instance)
 				.ObserveOn(DispatcherScheduler.Current)
 				.Subscribe(ex => lbxFavorites_SelectionChanged(lbxFavorites, ex));
@@ -148,8 +145,7 @@ namespace Waveface.Client
 				h => lbxRecent.SelectionChanged += h,
 				h => lbxRecent.SelectionChanged -= h
 				)
-				.Window(TimeSpan.FromMilliseconds(50))
-				.SelectMany(x => x.TakeLast(1))
+				.Throttle(TimeSpan.FromMilliseconds(50))
 				.SubscribeOn(ThreadPoolScheduler.Instance)
 				.ObserveOn(DispatcherScheduler.Current)
 				.Subscribe(ex => lbxRecent_SelectionChanged(lbxRecent, ex));

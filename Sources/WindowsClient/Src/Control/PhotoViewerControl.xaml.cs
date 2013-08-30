@@ -3,12 +3,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Waveface.ClientFramework;
 using Waveface.Model;
 
 #endregion
@@ -40,6 +44,31 @@ namespace Waveface.Client
 		public PhotoViewerControl()
 		{
 			InitializeComponent();
+
+			Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
+				handler => (s, ex) => handler(ex),
+				h => lbImages.SelectionChanged += h,
+				h => lbImages.SelectionChanged -= h)
+				.Throttle(TimeSpan.FromMilliseconds(100))
+				.SubscribeOn(ThreadPoolScheduler.Instance)
+				.ObserveOn(DispatcherScheduler.Current)
+				.Subscribe(ex =>
+				{
+					TryDisplayOriginalPhoto();
+				});
+		}
+
+		private void TryDisplayOriginalPhoto()
+		{
+			var content = (lbImages.SelectedItem as BunnyContent);
+
+			if (content == null)
+				return;
+
+			if (content.Type != ContentType.Photo)
+				return;
+
+			ImgObject.Source = content.ImageSource;
 		}
 
 		public int SelectedIndex
@@ -111,6 +140,8 @@ namespace Waveface.Client
 		{
 			ImgContentCtrl.RenderTransform = myScale;
 			ImgContentCtrl.BorderBrush = Brushes.White;
+
+			TryDisplayOriginalPhoto();
 		}
 
 		private void ImgThumb_DragDelta(object sender, DragDeltaEventArgs e)
@@ -254,7 +285,7 @@ namespace Waveface.Client
 
 		private void lbImages_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			var content = (lbImages.SelectedItem as IContent);
+			var content = (lbImages.SelectedItem as BunnyContent);
 
 			if (content == null)
 				return;
@@ -269,6 +300,9 @@ namespace Waveface.Client
 			else
 			{
 				vcVideoControl.Visibility = Visibility.Collapsed;
+
+				ImgObject.Source = content.ThumbnailSource;
+
 			}
 		}
 

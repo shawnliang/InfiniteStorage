@@ -10,11 +10,11 @@
              Opacity="0.87"
              mc:Ignorable="d">
     <UserControl.Resources>
-      <ResourceDictionary>
+        <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Src/ResourceDictionary/SliderResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
-			 </ResourceDictionary>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <UserControl.Background>

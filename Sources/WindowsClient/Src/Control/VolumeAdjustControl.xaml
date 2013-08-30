@@ -9,11 +9,11 @@
              d:DesignWidth="42.698"
              mc:Ignorable="d">
     <UserControl.Resources>
-         <ResourceDictionary>
+        <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Src/ResourceDictionary/SliderResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
-			 </ResourceDictionary>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot">

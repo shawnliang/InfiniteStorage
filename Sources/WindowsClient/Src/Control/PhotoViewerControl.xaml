@@ -30,7 +30,7 @@
                                                IsAsync=True}"
                              Value="Photo">
                     <Setter Property="Visibility" Value="Visible" />
-                    <Setter Property="Source" Value="{Binding ImageSource, IsAsync=True}" />
+                    <!--  <Setter Property="Source" Value="{Binding ImageSource, IsAsync=True}" />  -->
                 </DataTrigger>
             </Style.Triggers>
         </Style>

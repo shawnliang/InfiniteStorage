@@ -69,11 +69,11 @@
                                FontWeight="SemiBold"
                                MouseDown="tbHelpItem1_MouseDown"
                                TextWrapping="Wrap">
-                        <Run>Get our mobile apps and enable auto sync over same Wi-Fi.</Run> 
-                        <InlineUIContainer> 
+                        <Run>Get our mobile apps and enable auto sync over same Wi-Fi.</Run>
+                        <InlineUIContainer>
                             <Image Height="20"
                                    Margin="0, 8, 0, -4"
-                                   Source="/Waveface.Client;component/Resource/arrow_right.png" /> 
+                                   Source="/Waveface.Client;component/Resource/arrow_right.png" />
                         </InlineUIContainer>
                     </TextBlock>
                 </Grid>
@@ -118,11 +118,11 @@
                                FontWeight="SemiBold"
                                MouseDown="tbHelpItem3_MouseDown"
                                TextWrapping="Wrap">
-                        <Run>Get our Player app to enjoy Home Sharing for all albums created.</Run> 
-                        <InlineUIContainer> 
+                        <Run>Get our Player app to enjoy Home Sharing for all albums created.</Run>
+                        <InlineUIContainer>
                             <Image Height="20"
                                    Margin="0, 8, 0, -4"
-                                   Source="/Waveface.Client;component/Resource/arrow_right.png" /> 
+                                   Source="/Waveface.Client;component/Resource/arrow_right.png" />
                         </InlineUIContainer>
                     </TextBlock>
                 </Grid>
