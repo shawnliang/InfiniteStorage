@@ -55,7 +55,7 @@ namespace Waveface.Client
 				SetValue(_enableStar, value);
 
 				staredControl.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
-				pvDelete.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+				image.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
 			}
 		}
 
