@@ -125,6 +125,12 @@
       <DependentUpon>AddToButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="CmdLineOptions.cs" />
+    <Compile Include="Ren\Piary\P_ItemUC.xaml.cs">
+      <DependentUpon>P_ItemUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ren\Piary\P_SourceAllFilesUC.xaml.cs">
+      <DependentUpon>P_SourceAllFilesUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Class\CreateNewAlbumContentEntity.cs" />
     <Compile Include="Src\Control\LightBoxStar.xaml.cs">
       <DependentUpon>LightBoxStar.xaml</DependentUpon>
@@ -303,6 +309,14 @@
     <Compile Include="Src\Control\StepPanel.xaml.cs">
       <DependentUpon>StepPanel.xaml</DependentUpon>
     </Compile>
+    <Page Include="Ren\Piary\P_ItemUC.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Ren\Piary\P_SourceAllFilesUC.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Src\Control\LightBoxStar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
