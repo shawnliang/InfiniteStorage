@@ -115,6 +115,7 @@ namespace InfiniteStorage
 			rest_server.AddHandler("/manipulation/move", new ManipulationMoveApiHandler());
 			rest_server.AddHandler("/pairing/passcode", new PairingPasscodeApiHandler());
 			rest_server.AddHandler("/sync/set", new SyncSetApiHandler());
+			rest_server.AddHandler("/event_sync/update", new EventSyncUpdateApiHandler());
 
 			m_ReRegBonjourTimer = new NoReentrantTimer(reregisterBonjour, null, 60 * 1000, 60 * 1000);
 

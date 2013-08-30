@@ -536,8 +536,12 @@ CREATE TABLE [Events] (
 [end] TIMESTAMP  NULL,
 [short_address] NVARCHAR  NULL,
 [cover] GUID  NULL,
-[deleted] BOOLEAN  NULL
+[deleted] BOOLEAN  NULL,
+[device_id] NVARCHAR(36) NOT NULL
 );
+
+CREATE INDEX [idx_Events_deviceId_1] ON [Events](
+[device_id]  desc);
 
 CREATE TABLE [EventFiles] (
 [event_id] GUID  NOT NULL,
