@@ -510,7 +510,7 @@
 
         </Grid>
 
-        <local:SourceAllFilesUC x:Name="allFilesUC"
+        <local:P_SourceAllFilesUC x:Name="allFilesUC"
                                 Grid.Row="0"
                                 Grid.RowSpan="3"
                                 Grid.Column="1"
