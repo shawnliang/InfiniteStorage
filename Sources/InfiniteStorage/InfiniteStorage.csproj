@@ -98,6 +98,7 @@
     <Compile Include="Src\Class\Manipulation\FolderEventArgs.cs" />
     <Compile Include="Src\Class\Notify\UIChangeNotificationController.cs" />
     <Compile Include="Src\Class\Notify\UIChangeSubscriber.cs" />
+    <Compile Include="Src\Class\REST\EventSyncDeleteApiHandler.cs" />
     <Compile Include="Src\Class\REST\EventSyncUpdateApiHandler.cs" />
     <Compile Include="Src\Class\REST\PairingPasscodeApiHandler.cs" />
     <Compile Include="Src\Class\REST\SyncSetApiHandler.cs" />
