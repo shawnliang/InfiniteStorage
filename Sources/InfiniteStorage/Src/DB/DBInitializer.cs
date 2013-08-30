@@ -524,10 +524,39 @@ update [Devices] set [sync_disabled] = 0;
 				}
 
 
+				if (schemaVersion == 19)
+				{
+					using (var cmd = conn.CreateCommand())
+					{
+						cmd.CommandText = @"
+CREATE TABLE [Events] (
+[event_id] GUID  PRIMARY KEY NOT NULL,
+[content] NVARCHAR  NULL,
+[start] TIMESTAMP  NULL,
+[end] TIMESTAMP  NULL,
+[short_address] NVARCHAR  NULL,
+[cover] GUID  NULL,
+[deleted] BOOLEAN  NULL
+);
+
+CREATE TABLE [EventFiles] (
+[event_id] GUID  NOT NULL,
+[file_id] GUID  NOT NULL,
+PRIMARY KEY ([event_id],[file_id])
+);
+
+";
+						cmd.ExecuteNonQuery();
+					}
+
+					updateDbSchemaVersion(conn, 20);
+					schemaVersion = 20;
+				}
+
 				
 				var curSchema = getDbSchemaVersion(conn);
 
-				if (curSchema > 19L)
+				if (curSchema > 20L)
 					throw new DBDowngradeException(string.Format("Existing db version {0} is newer than the installed version", curSchema));
 			}
 		}

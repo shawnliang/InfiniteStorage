@@ -127,6 +127,35 @@ namespace InfiniteStorage.Model
 		public Guid file_id { get; set; }
 	}
 
+	public class Event
+	{
+		[Key]
+		public Guid event_id { get; set; }
+
+		public string content { get; set; }
+
+		public DateTime start { get; set; }
+
+		public DateTime end { get; set; }
+
+		public string short_address { get; set; }
+
+		public Guid? cover { get; set; }
+
+		public bool deleted { get; set; }
+	}
+
+	public class EventFile
+	{
+		[Key]
+		[Column(Order = 0)]
+		public Guid event_id { get; set; }
+
+		[Key]
+		[Column(Order = 1)]
+		public Guid file_id { get; set; }
+	}
+
 	[Table("LabelShareTo")]
 	public class ShareRecipient
 	{
