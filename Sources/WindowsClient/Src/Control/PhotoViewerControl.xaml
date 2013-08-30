@@ -144,7 +144,7 @@
                  Visibility="Collapsed" />
 
         <l:VideoControl x:Name="vcVideoControl"
-                        Width="300"
+                        Width="{Binding ActualWidth, ElementName=vcViewerControl}"
                         Height="22"
                         Margin="0"
                         HorizontalAlignment="Center"
@@ -160,7 +160,6 @@
 
         <l:ViewerControl x:Name="vcViewerControl"
                          Grid.Row="1"
-                         Width="300"
                          Height="40"
                          HorizontalAlignment="Center"
                          VerticalAlignment="Bottom"
