@@ -29,12 +29,11 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    <Grid x:Name="LayoutRoot"       
-			Width="300"
+    <Grid x:Name="LayoutRoot"  
           Height="40">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="230" />
-            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
 
         <Rectangle Opacity="0.87" Grid.ColumnSpan="2">
@@ -104,7 +103,7 @@
         	Content="{DynamicResource ExitButtonText}"
         	Cursor="Hand"
         	MouseDown="CloseButton_MouseDown"
-        	Style="{StaticResource ExitButtonStyle}" Grid.Column="1" />
+        	Style="{StaticResource ExitButtonStyle}" Grid.Column="1" Margin="10,0" />
 
     </Grid>
 </UserControl>
