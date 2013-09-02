@@ -3,25 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:PendingUI="clr-namespace:Waveface.Client"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
+    <PendingUI:Planerator RotationZ="-.5" RotationY=".5" RotationX=".5">
+        <Grid x:Name="gridMain" Background ="White" Width="299" Height="253" Margin="16">
+            <Grid.Effect>
+                <DropShadowEffect ShadowDepth="2.5"/>
+            </Grid.Effect>
 
-    <Grid x:Name="gridMain" Background ="White" Width="312" Height="264" Margin="10">
-        <Grid.Effect>
-            <DropShadowEffect/>
-        </Grid.Effect>
-        
-        <i:Interaction.Behaviors>
-            <PendingUI:IgnoreMouseWheelBehavior />
-        </i:Interaction.Behaviors>      
-        
-        <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="12, 12, 12, 48" BorderBrush="#80000000"  BorderThickness="2" RenderTransformOrigin="0.5,0.5">
-            <Grid>
-                <Image x:Name="image" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" MouseMove="image_MouseMove" MouseEnter="image_MouseEnter"/>
-            
-                <Rectangle x:Name="rectMask" Fill="#d0000000" MouseMove="image_MouseMove"/>
-            </Grid>                   
-        </Border>
+            <i:Interaction.Behaviors>
+                <PendingUI:IgnoreMouseWheelBehavior />
+            </i:Interaction.Behaviors>
 
-        <TextBlock x:Name="tbTitle" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="12, 14" FontFamily="Comic Sans MS" FontSize="16" FontStyle="Italic" FontWeight="Bold"/>
-        <TextBlock x:Name="tbCount" HorizontalAlignment="Right"  VerticalAlignment="Bottom" Margin="2" FontSize="8"/>
-    </Grid>
+            <Border VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="12, 12, 12, 48" BorderBrush="#80000000"  BorderThickness="2" RenderTransformOrigin="0.5,0.5">
+                <Grid>
+                    <Image x:Name="image" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" MouseMove="image_MouseMove" MouseEnter="image_MouseEnter"/>
+
+                    <Rectangle x:Name="rectMask" Fill="#d0000000" MouseMove="image_MouseMove"/>
+                </Grid>
+            </Border>
+
+            <TextBlock x:Name="tbTitle" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="12, 14" FontFamily="Comic Sans MS" FontSize="16" FontStyle="Italic" FontWeight="Bold"/>
+            <TextBlock x:Name="tbCount" HorizontalAlignment="Right"  VerticalAlignment="Bottom" Margin="2" FontSize="8"/>
+        </Grid>
+    </PendingUI:Planerator>
 </UserControl>

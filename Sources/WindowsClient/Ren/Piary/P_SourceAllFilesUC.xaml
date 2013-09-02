@@ -112,7 +112,7 @@
 
 
             <Grid Grid.Row="1">
-                <ListBox x:Name="listBoxEvent"
+                <ListBox x:Name="listBoxEvent" Margin="6, 0, 0, 0"
                          Background="#4f4f4f"
                          BorderThickness="0"
                          ItemContainerStyle="{StaticResource SimpleListBoxItem}"

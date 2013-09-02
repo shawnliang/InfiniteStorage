@@ -134,6 +134,7 @@
     <Compile Include="Ren\Piary\P_SourceAllFilesUC.xaml.cs">
       <DependentUpon>P_SourceAllFilesUC.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Ren\Utility\Planerator.cs" />
     <Compile Include="Src\Class\CreateNewAlbumContentEntity.cs" />
     <Compile Include="Src\Class\Helper\ScrollViewerOnDemandHelper.cs" />
     <Compile Include="Src\Control\LightBoxStar.xaml.cs">
