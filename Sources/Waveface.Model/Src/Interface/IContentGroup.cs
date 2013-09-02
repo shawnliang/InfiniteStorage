@@ -13,7 +13,7 @@ namespace Waveface.Model
 
 		ReadOnlyObservableCollection<IContentEntity> Contents { get; }
 
-		int ContentCount { get; }
+		Int32 ContentCount { get; }
 
 		#endregion
 

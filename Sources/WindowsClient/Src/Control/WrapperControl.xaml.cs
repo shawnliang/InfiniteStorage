@@ -33,7 +33,7 @@ namespace Waveface.Client
 		public WrapperControl()
 		{
 			InitializeComponent();
-		} 
+		}
 		#endregion
 
 		#region Public Method
@@ -50,7 +50,7 @@ namespace Waveface.Client
 			this.Content = element;
 
 			m_IsInited = true;
-		} 
+		}
 		#endregion
 	}
 }

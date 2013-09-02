@@ -125,6 +125,9 @@
       <DependentUpon>AddToButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="CmdLineOptions.cs" />
+    <Compile Include="Ren\CloudSharingContentItem.xaml.cs">
+      <DependentUpon>CloudSharingContentItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Ren\Piary\P_ItemUC.xaml.cs">
       <DependentUpon>P_ItemUC.xaml</DependentUpon>
     </Compile>
@@ -133,6 +136,7 @@
     </Compile>
     <Compile Include="Ren\Utility\Planerator.cs" />
     <Compile Include="Src\Class\CreateNewAlbumContentEntity.cs" />
+    <Compile Include="Src\Class\Helper\ScrollViewerOnDemandHelper.cs" />
     <Compile Include="Src\Control\LightBoxStar.xaml.cs">
       <DependentUpon>LightBoxStar.xaml</DependentUpon>
     </Compile>
@@ -310,6 +314,10 @@
     <Compile Include="Src\Control\StepPanel.xaml.cs">
       <DependentUpon>StepPanel.xaml</DependentUpon>
     </Compile>
+    <Page Include="Ren\CloudSharingContentItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Ren\Piary\P_ItemUC.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

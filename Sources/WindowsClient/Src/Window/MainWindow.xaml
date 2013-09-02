@@ -292,8 +292,7 @@
                           Grid.Row="0"
                           HorizontalScrollBarVisibility="Disabled"
                           MouseLeftButtonUp="svContentContainer_MouseLeftButtonUp"
-                          ScrollChanged="svContentContainer_ScrollChanged"
-                          VerticalScrollBarVisibility="Auto">
+                          VerticalScrollBarVisibility="Auto" ScrollChanged="svContentContainer_ScrollChanged">
 
                 <ListBox x:Name="lbxContentContainer"
                          Background="{x:Null}"
@@ -511,14 +510,14 @@
         </Grid>
 
         <local:P_SourceAllFilesUC x:Name="allFilesUC"
-                                Grid.Row="0"
-                                Grid.RowSpan="3"
-                                Grid.Column="1"
-                                Grid.ColumnSpan="2"
-                                Width="Auto"
-                                Height="Auto"
-                                Margin="1,0,0,0"
-                                Visibility="Collapsed" />
+                                  Grid.Row="0"
+                                  Grid.RowSpan="3"
+                                  Grid.Column="1"
+                                  Grid.ColumnSpan="2"
+                                  Width="Auto"
+                                  Height="Auto"
+                                  Margin="1,0,0,0"
+                                  Visibility="Collapsed" />
         <Grid x:Name="stackPanel"
               Grid.Row="2"
               Background="#d5d5d5">
