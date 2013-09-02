@@ -41,6 +41,8 @@ namespace Waveface.Client
 		private List<List<FileEntry>> m_days;
 		private ObservableCollection<P_ItemUC> m_eventUCs;
 
+		private static Random m_rnd = new Random();
+
 		public P_SourceAllFilesUC()
 		{
 			InitializeComponent();
@@ -230,6 +232,23 @@ namespace Waveface.Client
 			return _YMD_Files;
 		}
 
+		public static double GetRandom(bool includeNagtive = true, double r = 1.618)
+		{
+			if (includeNagtive)
+			{
+				if (m_rnd.NextDouble() > 0.5)
+				{
+					return r * m_rnd.NextDouble();
+				}
+				else
+				{
+					return (-1) * r * m_rnd.NextDouble();
+				}
+			}
+
+			return r * m_rnd.NextDouble();
+		}
+
 		#region Show
 
 		private void ShowEvents_Init()
@@ -250,7 +269,10 @@ namespace Waveface.Client
 									   FileEntrys = _entries,
 									   YMD = _entries[0].taken_time.ToString("yyyy-MM-dd"),
 									   MyMainWindow = m_mainWindow,
-									   CurrentDevice = m_currentDevice
+									   CurrentDevice = m_currentDevice,
+									   RotationX = GetRandom(),
+									   RotationY = GetRandom(),
+									   RotationZ = GetRandom(),
 								   };
 
 				_ctl.SetUI();
@@ -301,7 +323,10 @@ namespace Waveface.Client
 								   FileEntrys = _entries,
 								   YMD = _YMD,
 								   MyMainWindow = m_mainWindow,
-								   CurrentDevice = m_currentDevice
+								   CurrentDevice = m_currentDevice,
+								   RotationX = GetRandom(),
+								   RotationY = GetRandom(),
+								   RotationZ = GetRandom(),
 							   };
 
 					_ctl.Changed = true;

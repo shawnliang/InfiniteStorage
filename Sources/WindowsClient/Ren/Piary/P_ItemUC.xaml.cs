@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,7 +13,7 @@ using Waveface.Model;
 
 namespace Waveface.Client
 {
-	public partial class P_ItemUC : UserControl
+	public partial class P_ItemUC : UserControl, INotifyPropertyChanged
 	{
 		public string YMD { get; set; }
 		public int VideosCount { get; set; }
@@ -20,6 +21,40 @@ namespace Waveface.Client
 		public bool Changed { get; set; }
 		public MainWindow MyMainWindow { get; set; }
 		public IService CurrentDevice { get; set; }
+
+		public double RotationX
+		{
+			get { return m_rotationX; }
+			set
+			{
+				m_rotationX = value;
+				OnPropertyChanged("RotationX");
+			}
+		}
+
+		public double RotationY
+		{
+			get { return m_rotationY; }
+			set
+			{
+				m_rotationY = value;
+				OnPropertyChanged("RotationY");
+			}
+		}
+
+		public double RotationZ
+		{
+			get { return m_rotationZ; }
+			set
+			{
+				m_rotationZ = value;
+				OnPropertyChanged("RotationZ");
+			}
+		}
+
+		public double m_rotationX;
+		public double m_rotationY;
+		public double m_rotationZ;
 
 		private int m_currentIndex;
 
@@ -161,5 +196,33 @@ namespace Waveface.Client
 		{
 			//m_delayMouseMoveCount = 0;
 		}
+
+		private void Planerator_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+		{
+			RotationX = 0;
+			RotationY = 0;
+			RotationZ = 0;
+		}
+
+		private void Planerator_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+		{
+			RotationX = P_SourceAllFilesUC.GetRandom();
+			RotationY = P_SourceAllFilesUC.GetRandom();
+			RotationZ = P_SourceAllFilesUC.GetRandom();
+		}
+
+		#region INotifyPropertyChanged Members
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		protected void OnPropertyChanged(string name)
+		{
+			if (PropertyChanged != null)
+			{
+				PropertyChanged(this, new PropertyChangedEventArgs(name));
+			}
+		}
+
+		#endregion
 	}
 }

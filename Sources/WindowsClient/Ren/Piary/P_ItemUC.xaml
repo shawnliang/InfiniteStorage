@@ -3,10 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:PendingUI="clr-namespace:Waveface.Client"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
-    <PendingUI:Planerator RotationZ="-.5" RotationY=".5" RotationX=".5">
+    <PendingUI:Planerator RotationZ="{Binding RotationZ}" RotationY="{Binding RotationY}" RotationX="{Binding RotationX}" MouseEnter="Planerator_MouseEnter" MouseLeave="Planerator_MouseLeave">
         <Grid x:Name="gridMain" Background ="White" Width="299" Height="253" Margin="16">
             <Grid.Effect>
-                <DropShadowEffect ShadowDepth="2.5"/>
+                <DropShadowEffect ShadowDepth="2.71828"/>
             </Grid.Effect>
 
             <i:Interaction.Behaviors>
