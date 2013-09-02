@@ -1,9 +1,10 @@
-﻿namespace Waveface.Model
+﻿using System;
+namespace Waveface.Model
 {
 	public interface IContent : IContentEntity
 	{
 		ContentType Type { get; }
 
-		bool Liked { get; set; }
+		Boolean Liked { get; set; }
 	}
 }

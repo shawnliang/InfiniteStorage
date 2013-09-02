@@ -223,5 +223,10 @@ namespace Waveface.Client
 		{
 			lbItems.UnselectAll();
 		}
+
+		private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+		{
+			ScrollViewerOnDemandHelper.TryDisplayVisibleContentControls<WrapperControl>(sender as ScrollViewer, lbItems, (itemControl) => { itemControl.Display(); });
+		}
 	}
 }

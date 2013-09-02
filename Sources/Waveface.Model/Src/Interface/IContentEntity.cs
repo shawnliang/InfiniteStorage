@@ -26,7 +26,7 @@ namespace Waveface.Model
 		/// <value>
 		/// The name.
 		/// </value>
-		string Name { get; }
+		String Name { get; }
 
 		/// <summary>
 		/// Gets the URI.
@@ -52,7 +52,7 @@ namespace Waveface.Model
 		/// <value>
 		/// The content path.
 		/// </value>
-		string ContentPath { get; }
+		String ContentPath { get; }
 
 		/// <summary>
 		/// Gets the image.
@@ -76,7 +76,7 @@ namespace Waveface.Model
 		/// <value>
 		/// The size.
 		/// </value>
-		long Size { get; }
+		Int64 Size { get; }
 
 		/// <summary>
 		/// Gets the create time.
