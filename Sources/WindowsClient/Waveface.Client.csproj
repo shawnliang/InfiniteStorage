@@ -362,6 +362,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="StringTable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Resource Include="Resource\ico_bar_addto_mo.png" />
     <Resource Include="Resource\ico_bar_addto_off.png" />
     <Resource Include="Resource\ico_bar_addto_on.png" />
@@ -440,11 +444,6 @@
     <Resource Include="Resource\LB_star_2.png" />
     <Resource Include="Resource\menu_event_0.png" />
     <Resource Include="Resource\menu_event_1.png" />
-    <Content Include="StringTable.zh-TW.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Page Include="Src\Control\AddToButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -640,11 +639,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Content Include="StringTable.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
