@@ -170,9 +170,6 @@
     <Compile Include="Src\Control\CalloutMenu.xaml.cs">
       <DependentUpon>CalloutMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Src\Control\ContentActionBar.xaml.cs">
-      <DependentUpon>ContentActionBar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Src\Control\ContentItemInfo.xaml.cs">
       <DependentUpon>ContentItemInfo.xaml</DependentUpon>
     </Compile>
@@ -496,10 +493,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Src\Control\CalloutMenu.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Src\Control\ContentActionBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
