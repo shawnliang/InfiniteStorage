@@ -19,7 +19,8 @@
         </Style>
     </UserControl.Resources>
 
-    <Image Style="{StaticResource LBimgBtnStyle}" Stretch="None" />
+    <Image Stretch="None"
+           Style="{StaticResource LBimgBtnStyle}" />
     <!--
         <ed:BlockArrow Cursor="Hand"
         Fill="#FFF3F3F7"

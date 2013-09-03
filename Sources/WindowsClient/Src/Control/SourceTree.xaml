@@ -225,8 +225,8 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Source="{StaticResource UnSelectedMobile}"
-                       Style="{StaticResource ClearImageStyle}"
-                       Stretch="None" />
+                       Stretch="None"
+                       Style="{StaticResource ClearImageStyle}" />
 
                 <Label x:Name="item"
                        Content="{Binding Name}"

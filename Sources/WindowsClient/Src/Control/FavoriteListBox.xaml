@@ -78,8 +78,8 @@
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Source="{StaticResource UnSelectedFav}"
-                           Style="{StaticResource ClearImageStyle}"
-                           Stretch="None" />
+                           Stretch="None"
+                           Style="{StaticResource ClearImageStyle}" />
                     <Label x:Name="sourceName"
                            VerticalAlignment="Center"
                            VerticalContentAlignment="Center"

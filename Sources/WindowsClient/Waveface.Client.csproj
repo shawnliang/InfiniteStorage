@@ -366,6 +366,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="StringTable.zh-TW.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Resource Include="Resource\ico_bar_addto_mo.png" />
     <Resource Include="Resource\ico_bar_addto_off.png" />
     <Resource Include="Resource\ico_bar_addto_on.png" />

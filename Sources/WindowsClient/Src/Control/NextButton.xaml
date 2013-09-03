@@ -20,5 +20,6 @@
         </Style>
     </UserControl.Resources>
 
-    <Image Style="{StaticResource LBimgBtnStyle}" Stretch="None" />
+    <Image Stretch="None"
+           Style="{StaticResource LBimgBtnStyle}" />
 </UserControl>

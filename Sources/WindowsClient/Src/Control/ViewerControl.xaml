@@ -29,14 +29,15 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    <Grid x:Name="LayoutRoot"  
+    <Grid x:Name="LayoutRoot"
           Height="40">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
 
-        <Rectangle Opacity="0.87" Grid.ColumnSpan="2">
+        <Rectangle Grid.ColumnSpan="2"
+                   Opacity="0.87">
             <Rectangle.Fill>
                 <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                     <GradientStop Offset="0" Color="#FF403E3E" />
@@ -45,65 +46,71 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <StackPanel
-                    Orientation="Horizontal" >
-            <local:PreviousButton
-        		Background="Transparent"
-        		Cursor="Hand"
-        		MouseDown="PreviousButton_MouseDown" Margin="15,0,8,0" />
+        <StackPanel Orientation="Horizontal">
+            <local:PreviousButton Margin="15,0,8,0"
+                                  Background="Transparent"
+                                  Cursor="Hand"
+                                  MouseDown="PreviousButton_MouseDown" />
 
-        	<Label x:Name="lblPageNo"
-        		HorizontalContentAlignment="Center"
-        		VerticalContentAlignment="Center"
-        		Content="0"
-        		FontSize="14.667"
-        		Foreground="#FFB4B4B4" />
+            <Label x:Name="lblPageNo"
+                   HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center"
+                   Content="0"
+                   FontSize="14.667"
+                   Foreground="#FFB4B4B4" />
 
-        	<Label Height="26.42"
-        		HorizontalContentAlignment="Center"
-        		VerticalContentAlignment="Center"
-        		Content="/"
-        		Foreground="#FFB4B4B4" />
+            <Label Height="26.42"
+                   HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center"
+                   Content="/"
+                   Foreground="#FFB4B4B4" />
 
-        	<Label x:Name="lblPageCount"
-        		HorizontalContentAlignment="Center"
-        		VerticalContentAlignment="Center"
-        		Content="0"
-        		FontSize="14.667"
-        		Foreground="#FFB4B4B4" />
+            <Label x:Name="lblPageCount"
+                   HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center"
+                   Content="0"
+                   FontSize="14.667"
+                   Foreground="#FFB4B4B4" />
 
-        	<local:NextButton
-        		Margin="8, 0, 0, 0"
-        		Background="Transparent"
-        		Cursor="Hand"
-        		MouseDown="NextButton_MouseDown" />
-        	<local:LightBoxStar x:Name="staredControl"
-        		Margin="10,0,0,0"
-        		HorizontalAlignment="Center"
-        		VerticalAlignment="Center"
-        		Background="Transparent"
-        		Cursor="Hand"
-        		Tagged="{Binding Liked, IsAsync=True, Mode=TwoWay}" />
-        		<Image x:Name="image"
-        			Cursor="Hand" MouseDown="pvDelete_MouseDown"
-        			Style="{StaticResource LBDeleteImageStyle}" Stretch="None" Margin="8,0,10,0" />
+            <local:NextButton Margin="8, 0, 0, 0"
+                              Background="Transparent"
+                              Cursor="Hand"
+                              MouseDown="NextButton_MouseDown" />
+            <local:LightBoxStar x:Name="staredControl"
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Background="Transparent"
+                                Cursor="Hand"
+                                Tagged="{Binding Liked,
+                                                 IsAsync=True,
+                                                 Mode=TwoWay}" />
+            <Image x:Name="image"
+                   Margin="8,0,10,0"
+                   Cursor="Hand"
+                   MouseDown="pvDelete_MouseDown"
+                   Stretch="None"
+                   Style="{StaticResource LBDeleteImageStyle}" />
 
         </StackPanel>
-        <Rectangle Width="0.872"
-        	Height="40"
-        	HorizontalAlignment="Left"
-        	VerticalAlignment="Center"
-        	Stretch="Fill"
-        	Stroke="#FF646262"
-        	StrokeThickness="0.5" Grid.Column="1" Margin="1.003,0,0,0" />
-        <Label
-        	HorizontalAlignment="Center"
-        	VerticalAlignment="Center"
-        	Background="Transparent"
-        	Content="{DynamicResource ExitButtonText}"
-        	Cursor="Hand"
-        	MouseDown="CloseButton_MouseDown"
-        	Style="{StaticResource ExitButtonStyle}" Grid.Column="1" Margin="10,0" />
+        <Rectangle Grid.Column="1"
+                   Width="0.872"
+                   Height="40"
+                   Margin="1.003,0,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Stretch="Fill"
+                   Stroke="#FF646262"
+                   StrokeThickness="0.5" />
+        <Label Grid.Column="1"
+               Margin="10,0"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Background="Transparent"
+               Content="{DynamicResource ExitButtonText}"
+               Cursor="Hand"
+               MouseDown="CloseButton_MouseDown"
+               Style="{StaticResource ExitButtonStyle}" />
 
     </Grid>
 </UserControl>

@@ -6,14 +6,11 @@
         Width="415"
         Height="183"
         Background="#FF595959"
-        WindowStyle="ToolWindow"
-        
-        
-        SnapsToDevicePixels ="True"
-        TextOptions.TextFormattingMode ="Ideal"
+        Loaded="Window_Loaded"
+        SnapsToDevicePixels="True"
+        TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        
-        Loaded="Window_Loaded">
+        WindowStyle="ToolWindow">
 
     <Grid x:Name="LayoutRoot">
         <Label Height="25"
@@ -31,15 +28,13 @@
                   VerticalContentAlignment="Center"
                   Padding="5,0,0,0"
                   TabIndex="0" />
-        <Button 
-                Margin="0,0,105,10"
+        <Button Margin="0,0,105,10"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Click="Button_Click_1"
                 Content="{DynamicResource OkButtonText}"
                 TabIndex="1" />
-        <Button 
-                Margin="0,0,10,10"
+        <Button Margin="0,0,10,10"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Click="Button_Click"

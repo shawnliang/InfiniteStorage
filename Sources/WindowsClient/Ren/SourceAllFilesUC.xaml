@@ -6,7 +6,8 @@
              Height="768">
 
     <UserControl.Resources>
-        <Style x:Key="FlatButtonStyle" TargetType="Button">
+        <Style x:Key="FlatButtonStyle"
+               TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Background" Value="{StaticResource DefaultBrush}" />
             <Setter Property="BorderThickness" Value="2" />
@@ -37,7 +38,8 @@
         </Style>
 
 
-        <Style x:Key="SimpleListBoxItem" TargetType="ListBoxItem">
+        <Style x:Key="SimpleListBoxItem"
+               TargetType="ListBoxItem">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
@@ -67,7 +69,8 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Background="{DynamicResource TitleBarBackground}">
+            <Grid Grid.Row="0"
+                  Background="{DynamicResource TitleBarBackground}">
                 <TextBlock x:Name="tbTitle"
                            Margin="12,0,0,0"
                            HorizontalAlignment="Left"
@@ -94,10 +97,14 @@
                                Text="" />
 
                     <Grid Visibility="Collapsed">
-                        <Label Content="{Binding RecvStatus.IsPreparing}" Foreground="white" />
-                        <Label Content="{Binding RecvStatus.IsReceiving}" Foreground="white" />
-                        <Label Content="{Binding RecvStatus.Received}" Foreground="white" />
-                        <Label Content="{Binding RecvStatus.Total}" Foreground="white" />
+                        <Label Content="{Binding RecvStatus.IsPreparing}"
+                               Foreground="white" />
+                        <Label Content="{Binding RecvStatus.IsReceiving}"
+                               Foreground="white" />
+                        <Label Content="{Binding RecvStatus.Received}"
+                               Foreground="white" />
+                        <Label Content="{Binding RecvStatus.Total}"
+                               Foreground="white" />
                     </Grid>
 
                 </StackPanel>
@@ -133,7 +140,11 @@
                   Background="#4f4f4f"
                   Visibility="Collapsed">
 
-                <Image x:Name="imgWaiting" Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Image x:Name="imgWaiting"
+                       Width="120"
+                       Height="120"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
             </Grid>
         </Grid>
     </Grid>
