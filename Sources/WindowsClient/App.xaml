@@ -141,6 +141,14 @@
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/menu_recent_0.png" />
 
+            <BitmapImage x:Key="SelectedEvent"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/menu_event_1.png" />
+
+            <BitmapImage x:Key="UnSelectedEvent"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/menu_event_0.png" />
+
             <!--
                 <BitmapImage x:Key="UnSelectedPC"
                 CacheOption="OnDemand"

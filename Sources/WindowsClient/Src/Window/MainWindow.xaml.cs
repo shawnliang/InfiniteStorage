@@ -131,6 +131,16 @@ namespace Waveface.Client
 			.Subscribe(ex => lbxFavorites_SelectionChanged(lbxCloudAlbums, ex));
 
 			Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
+	handler => (s, ex) => handler(ex),
+	h => lbxPhotoDiary.SelectionChanged += h,
+	h => lbxPhotoDiary.SelectionChanged -= h
+	)
+	.Throttle(TimeSpan.FromMilliseconds(50))
+	.SubscribeOn(ThreadPoolScheduler.Instance)
+	.ObserveOn(DispatcherScheduler.Current)
+	.Subscribe(ex => lbxPhotoDiary_SelectionChanged(lbxPhotoDiary, ex));
+
+			Observable.FromEvent<SelectionChangedEventHandler, SelectionChangedEventArgs>(
 				handler => (s, ex) => handler(ex),
 				h => lbxFavorites.SelectionChanged += h,
 				h => lbxFavorites.SelectionChanged -= h
@@ -892,6 +902,8 @@ namespace Waveface.Client
 			lbxCloudAlbums.SelectedIndex = -1;
 			lbxFavorites.SelectedIndex = -1;
 			lbxRecent.SelectedIndex = -1;
+			lbxPhotoDiary.SelectedItem = null;
+
 
 			var group = ti.DataContext as IContentGroup;
 
@@ -973,6 +985,19 @@ namespace Waveface.Client
 
 				((listbox == lbxCloudAlbums) ? lbxFavorites : lbxCloudAlbums).SelectedItem = null;
 				lbxRecent.SelectedItem = null;
+				lbxPhotoDiary.SelectedItem = null;
+			}
+		}
+
+		private void lbxPhotoDiary_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			var listbox = sender as ListBox;
+			if (listbox.SelectedIndex >= 0)
+			{
+				lbxDeviceContainer.ClearSelection();
+				lbxFavorites.SelectedItem = null;
+				lbxCloudAlbums.SelectedItem = null;
+				lbxRecent.SelectedItem = null;
 			}
 		}
 
@@ -984,6 +1009,8 @@ namespace Waveface.Client
 
 				lbxCloudAlbums.SelectedItem = null;
 				lbxFavorites.SelectedItem = null;
+				lbxPhotoDiary.SelectedItem = null;
+
 			}
 		}
 

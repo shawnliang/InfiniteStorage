@@ -1,0 +1,97 @@
+﻿<ListBox x:Class="Waveface.Client.PhotoDiaryListBox"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         x:Name="UserControl"
+         Background="{x:Null}"
+         BorderBrush="{x:Null}"
+         IsSynchronizedWithCurrentItem="False"
+         ItemsSource="{Binding IsAsync=True}"
+         Style="{DynamicResource ListBoxStyle1}"
+         VirtualizingStackPanel.IsVirtualizing="True"
+         VirtualizingStackPanel.VirtualizationMode="Recycling"
+         d:DesignHeight="109"
+         d:DesignWidth="400"
+         mc:Ignorable="d">
+
+    <ListBox.Resources>
+        <SolidColorBrush x:Key="ListBorder"
+                         Color="#828790" />
+        <Style x:Key="ListBoxStyle1"
+               TargetType="{x:Type ListBox}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Setter Property="BorderBrush" Value="{StaticResource ListBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="1"
+                                SnapsToDevicePixels="true">
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            </Trigger>
+                            <Trigger Property="IsGrouping" Value="true">
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ListBox.Resources>
+
+    <ListBox.ItemTemplate>
+        <DataTemplate>
+            <Grid x:Name="item"
+                  Height="25">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Row="0"
+                            Grid.Column="0"
+                            Orientation="Horizontal">
+                    <Image x:Name="icon"
+                           Margin="10, 2, 0, 0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Source="{StaticResource UnSelectedEvent}"
+                           Stretch="None" />
+                    <Label x:Name="sourceName"
+                           VerticalAlignment="Center"
+                           VerticalContentAlignment="Center"
+                           Content="{Binding Name}"
+                           Foreground="#a8a8a8" />
+                </StackPanel>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem},
+                                               Path=IsSelected}"
+                             Value="True">
+                    <Setter TargetName="icon" Property="Source" Value="{StaticResource SelectedEvent}" />
+                    <Setter TargetName="item" Property="Background" Value="#d5d5d5" />
+                    <Setter TargetName="sourceName" Property="Foreground" Value="Black" />
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding ShareEnabled}"
+                             Value="true">
+                    <Setter TargetName="icon" Property="Source" Value="{StaticResource UnSelectedEvent}" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </ListBox.ItemTemplate>
+</ListBox>

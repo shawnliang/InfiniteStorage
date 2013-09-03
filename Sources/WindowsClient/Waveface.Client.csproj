@@ -137,6 +137,9 @@
     <Compile Include="Ren\Utility\Planerator.cs" />
     <Compile Include="Src\Class\CreateNewAlbumContentEntity.cs" />
     <Compile Include="Src\Class\Helper\ScrollViewerOnDemandHelper.cs" />
+    <Compile Include="Src\Control\PhotoDiaryListBox.xaml.cs">
+      <DependentUpon>PhotoDiaryListBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Control\LightBoxStar.xaml.cs">
       <DependentUpon>LightBoxStar.xaml</DependentUpon>
     </Compile>
@@ -326,6 +329,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Src\Control\PhotoDiaryListBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Src\Control\LightBoxStar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -445,6 +452,8 @@
     <Resource Include="Resource\LB_star_0.png" />
     <Resource Include="Resource\LB_star_1.png" />
     <Resource Include="Resource\LB_star_2.png" />
+    <Resource Include="Resource\menu_event_0.png" />
+    <Resource Include="Resource\menu_event_1.png" />
     <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
