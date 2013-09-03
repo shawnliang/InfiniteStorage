@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -850,7 +851,14 @@ namespace Waveface.Client
 
 		private void BackButton_Click(object sender, RoutedEventArgs e)
 		{
-			Back();
+			if (lbxPhotoDiary.SelectedItem != null)
+			{
+				ToPhotoDiary();
+			}
+			else
+			{
+				Back();
+			}
 		}
 
 		private void Back()
@@ -899,6 +907,7 @@ namespace Waveface.Client
 				return;
 
 			allFilesUC.Stop();
+			photoDiaryUC.Stop();
 
 			lbxContentContainer.SelectedIndex = -1;
 			lbxCloudAlbums.SelectedIndex = -1;
@@ -941,8 +950,6 @@ namespace Waveface.Client
 			lbxContentContainer.Visibility = Visibility.Visible;
 
 			lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
-			//btnDelete.IsEnabled = false;
-			//btnCreateAlbum.IsEnabled = false;
 
 			Grid.SetColumnSpan(gdContentArea, 2);
 
@@ -1009,11 +1016,7 @@ namespace Waveface.Client
 					if (m_tempCurrentService == null)
 						return;
 
-					ContentAreaToolBar.Visibility = Visibility.Collapsed;
-					lbxContentContainer.Visibility = Visibility.Collapsed;
-					allFilesUC.Visibility = Visibility.Collapsed;
-
-					photoDiaryUC.Visibility = Visibility.Visible;
+					ToPhotoDiary();
 
 					DoEvents();
 
@@ -1022,6 +1025,14 @@ namespace Waveface.Client
 					DoEvents();
 				}
 			}
+		}
+
+		private void ToPhotoDiary()
+		{
+			ContentAreaToolBar.Visibility = Visibility.Collapsed;
+			lbxContentContainer.Visibility = Visibility.Collapsed;
+			allFilesUC.Visibility = Visibility.Collapsed;
+			photoDiaryUC.Visibility = Visibility.Visible;
 		}
 
 		private void lbxRecent_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1758,6 +1769,7 @@ namespace Waveface.Client
 							 {
 								 Owner = this
 							 };
+
 			dialog.ShowDialog();
 		}
 
@@ -1765,6 +1777,7 @@ namespace Waveface.Client
 		{
 			if (!m_clickOnContentArea)
 				lbxContentContainer.UnselectAll();
+
 			m_clickOnContentArea = false;
 		}
 
@@ -1793,5 +1806,43 @@ namespace Waveface.Client
 		}
 
 		#endregion
+
+		public void ToPhotoDiary2ndLevel(ReadOnlyObservableCollection<IContentEntity> contents, string title, string pvCount)
+		{
+			allFilesUC.Stop();
+			photoDiaryUC.Stop();
+
+			lbxContentContainer.SelectedIndex = -1;
+			lbxCloudAlbums.SelectedIndex = -1;
+			lbxFavorites.SelectedIndex = -1;
+			lbxRecent.SelectedIndex = -1;
+
+			allFilesUC.Visibility = Visibility.Collapsed;
+			photoDiaryUC.Visibility = Visibility.Collapsed;
+
+			ContentAreaToolBar.Visibility = Visibility.Visible;
+			lbxContentContainer.Visibility = Visibility.Visible;
+
+			lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
+
+			Grid.SetColumnSpan(gdContentArea, 2);
+
+			gdRightSide.Visibility = Visibility.Collapsed;
+
+			rspRightSidePanel.Visibility = Visibility.Collapsed;
+			rspRightSidePane2.Visibility = Visibility.Collapsed;
+
+			lblContentLocation.Content = title;
+
+			btnBack.Visibility = Visibility.Visible;
+
+			lbxContentContainer.DataContext = null;
+			DoEvents();
+			lbxContentContainer.DataContext = contents;
+
+			lblContentTypeCount.Content = pvCount;
+
+			GC.Collect();
+		}
 	}
 }

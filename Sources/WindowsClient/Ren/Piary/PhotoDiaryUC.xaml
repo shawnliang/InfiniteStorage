@@ -116,7 +116,9 @@
                          Background="#4f4f4f"
                          BorderThickness="0"
                          ItemContainerStyle="{StaticResource SimpleListBoxItem}"
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         SelectionChanged="listBoxEvent_SelectionChanged"
+                         >
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal" />
