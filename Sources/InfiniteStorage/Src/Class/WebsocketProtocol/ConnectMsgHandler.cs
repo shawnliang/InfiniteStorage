@@ -1,6 +1,6 @@
 ﻿using InfiniteStorage.Model;
-using System;
 using InfiniteStorage.Properties;
+using System;
 
 namespace InfiniteStorage.WebsocketProtocol
 {

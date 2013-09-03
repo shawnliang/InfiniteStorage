@@ -32,7 +32,7 @@ namespace InfiniteStorage.Notify
 
 			lock (cs)
 			{
-				if (!senders.Where(x=>x.ctx == arg.Ctx).Any())
+				if (!senders.Where(x => x.ctx == arg.Ctx).Any())
 					senders.Add(channel);
 			}
 		}

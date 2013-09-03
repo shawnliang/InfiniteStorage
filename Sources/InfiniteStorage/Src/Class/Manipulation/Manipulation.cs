@@ -1,9 +1,9 @@
-﻿using System;
+﻿using InfiniteStorage.Model;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
-using InfiniteStorage.Model;
 
 namespace InfiniteStorage.Manipulation
 {
@@ -121,7 +121,7 @@ namespace InfiniteStorage.Manipulation
 		public static ICollection<Guid> RemoveLabelFiles(IEnumerable<Guid> file_ids)
 		{
 			var affectedLabels = queryAffectedLabels(file_ids);
-			
+
 			if (affectedLabels.Any())
 			{
 				deleteLabelFiles(file_ids);

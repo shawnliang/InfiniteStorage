@@ -1,11 +1,9 @@
-﻿using System;
+﻿using InfiniteStorage.Data.Pairing;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using WebSocketSharp.Server;
-using Newtonsoft.Json;
-using InfiniteStorage.Data.Pairing;
-using InfiniteStorage.Pair;
 
 namespace InfiniteStorage.Pair
 {

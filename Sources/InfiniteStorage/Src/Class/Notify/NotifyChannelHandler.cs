@@ -1,9 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using InfiniteStorage.Data.Notify;
+using Newtonsoft.Json;
 using System;
 using WebSocketSharp;
 using WebSocketSharp.Server;
-using Newtonsoft.Json;
-using InfiniteStorage.Data.Notify;
 
 namespace InfiniteStorage.Notify
 {

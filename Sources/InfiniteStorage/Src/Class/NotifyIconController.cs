@@ -207,7 +207,7 @@ namespace InfiniteStorage
 					}
 				}
 			}
-			catch(Exception err)
+			catch (Exception err)
 			{
 				log4net.LogManager.GetLogger(GetType()).Warn("Unable to update tray icon status", err);
 			}

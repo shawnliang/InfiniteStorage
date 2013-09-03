@@ -1,10 +1,8 @@
-﻿using System;
+﻿using InfiniteStorage.Model;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using InfiniteStorage.Model;
-using Newtonsoft.Json;
 using Wammer.Station;
 
 namespace InfiniteStorage.REST
@@ -58,7 +56,7 @@ namespace InfiniteStorage.REST
 						del.Parameters.AddWithValue("@eventId", data.event_id);
 						del.ExecuteNonQuery();
 
-						foreach(var file in data.files)
+						foreach (var file in data.files)
 						{
 							ins.Parameters.Clear();
 							ins.Parameters.AddWithValue("@eventId", data.event_id);

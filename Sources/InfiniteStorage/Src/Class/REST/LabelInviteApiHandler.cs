@@ -1,14 +1,11 @@
-﻿using System;
+﻿using InfiniteStorage.Model;
+using InfiniteStorage.Properties;
+using Newtonsoft.Json;
+using postServiceLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Wammer.Station;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Data.SQLite;
-using InfiniteStorage.Model;
-using InfiniteStorage.Properties;
-using postServiceLibrary;
 
 namespace InfiniteStorage.REST
 {
@@ -70,7 +67,7 @@ namespace InfiniteStorage.REST
 			postServiceLibrary.postServiceClass.sendFavoriteEmail(
 				Cloud.CloudService.SessionToken,
 				Cloud.CloudService.APIKey,
-				recipients.Select(x=>x.email).ToList(),
+				recipients.Select(x => x.email).ToList(),
 				label.share_code,
 				sender,
 				label.name,

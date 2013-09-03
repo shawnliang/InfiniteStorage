@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using postServiceLibrary;
-using InfiniteStorage.Cloud;
-using InfiniteStorage.Properties;
-using InfiniteStorage.Model;
-using System.IO;
-
-using Microsoft.WindowsAPICodePack.Shell;
+﻿using InfiniteStorage.Cloud;
 using InfiniteStorage.Common;
+using InfiniteStorage.Model;
+using InfiniteStorage.Properties;
+using Microsoft.WindowsAPICodePack.Shell;
+using postServiceLibrary;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace InfiniteStorage.Share
 {
@@ -84,11 +82,11 @@ namespace InfiniteStorage.Share
 
 		private byte[] getAppropriateThumbnail(FileAsset file)
 		{
-			var large = Path.Combine(MyFileFolder.Thumbs, file.file_id.ToString() +".large.thumb");
+			var large = Path.Combine(MyFileFolder.Thumbs, file.file_id.ToString() + ".large.thumb");
 			if (File.Exists(large))
 				return File.ReadAllBytes(large);
 
-			var medium = Path.Combine(MyFileFolder.Thumbs, file.file_id.ToString() +".medium.thumb");
+			var medium = Path.Combine(MyFileFolder.Thumbs, file.file_id.ToString() + ".medium.thumb");
 			if (File.Exists(medium))
 				return File.ReadAllBytes(medium);
 
@@ -130,7 +128,7 @@ namespace InfiniteStorage.Share
 				label.share_post_id,
 				files.Select(x => x.file_id.ToString()).ToList(),
 				lastUpdateTime,
-				recipients.Select(x=>x.email).ToList(),
+				recipients.Select(x => x.email).ToList(),
 				label.name,
 				""
 				);

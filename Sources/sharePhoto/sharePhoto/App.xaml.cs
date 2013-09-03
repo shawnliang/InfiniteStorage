@@ -1,21 +1,17 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Wpf_testHTTP
 {
-    /// <summary>
-    /// App.xaml 的互動邏輯
-    /// </summary>
-    public partial class App : Application
-    {
+	/// <summary>
+	/// App.xaml 的互動邏輯
+	/// </summary>
+	public partial class App : Application
+	{
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
 			var cultureName = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "Culture", "");

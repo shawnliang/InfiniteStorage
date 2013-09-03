@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -146,9 +145,9 @@ namespace Waveface.Client
 
 		private void ImgThumb_DragDelta(object sender, DragDeltaEventArgs e)
 		{
-			if(Grid.GetRowSpan(viewbox)==1)
+			if (Grid.GetRowSpan(viewbox) == 1)
 				return;
-			
+
 			double left = Canvas.GetLeft(ImgContentCtrl);
 			double top = Canvas.GetTop(ImgContentCtrl);
 

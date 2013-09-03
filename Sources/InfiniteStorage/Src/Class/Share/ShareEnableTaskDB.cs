@@ -1,9 +1,7 @@
-﻿using System;
+﻿using InfiniteStorage.Model;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using InfiniteStorage.Model;
 using System.Data.SQLite;
+using System.Linq;
 
 namespace InfiniteStorage.Share
 {

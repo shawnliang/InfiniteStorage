@@ -100,7 +100,8 @@ namespace Waveface.ClientFramework
 			base.Refresh();
 
 			m_ObservableContents.Sort(
-				(x, y) => {
+				(x, y) =>
+				{
 					if (x is BunnyContent && y is BunnyContent)
 					{
 						return (x as BunnyContent).EventTime.CompareTo((y as BunnyContent).EventTime);

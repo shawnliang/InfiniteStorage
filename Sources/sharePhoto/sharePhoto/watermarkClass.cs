@@ -13,19 +13,19 @@ namespace Wpf_testHTTP
 	public class WatermarkTextBehavior : Behavior<AutoCompleteBox>
 	{
 		public static readonly DependencyProperty TextProperty =
-			DependencyProperty.Register("Text", typeof (string), typeof (WatermarkTextBehavior),
-			                            new FrameworkPropertyMetadata(string.Empty));
+			DependencyProperty.Register("Text", typeof(string), typeof(WatermarkTextBehavior),
+										new FrameworkPropertyMetadata(string.Empty));
 
 
 		private static readonly DependencyPropertyKey IsWatermarkedPropertyKey =
-			DependencyProperty.RegisterAttachedReadOnly("IsWatermarked", typeof (bool), typeof (WatermarkTextBehavior),
-			                                            new FrameworkPropertyMetadata(false));
+			DependencyProperty.RegisterAttachedReadOnly("IsWatermarked", typeof(bool), typeof(WatermarkTextBehavior),
+														new FrameworkPropertyMetadata(false));
 
 		public static readonly DependencyProperty IsWatermarkedProperty = IsWatermarkedPropertyKey.DependencyProperty;
 
 		public static bool GetIsWatermarked(AutoCompleteBox tb)
 		{
-			return (bool) tb.GetValue(IsWatermarkedProperty);
+			return (bool)tb.GetValue(IsWatermarkedProperty);
 		}
 
 		public bool IsWatermarked
@@ -37,7 +37,7 @@ namespace Wpf_testHTTP
 
 		public string Text
 		{
-			get { return (string) GetValue(TextProperty); }
+			get { return (string)GetValue(TextProperty); }
 
 			set { SetValue(TextProperty, value); }
 		}

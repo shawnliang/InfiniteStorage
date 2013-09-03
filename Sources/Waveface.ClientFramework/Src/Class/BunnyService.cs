@@ -5,8 +5,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.SQLite;
 using System.IO;
-using System.Linq;
-using System.Threading;
 using Waveface.Model;
 
 #endregion
@@ -78,8 +76,8 @@ namespace Waveface.ClientFramework
 				using (var cmd = conn.CreateCommand())
 				{
 					cmd.CommandText = "select [name] from [Folders] " +
-					                  "where parent_folder = @parent " +
-					                  "order by name desc";
+									  "where parent_folder = @parent " +
+									  "order by name desc";
 
 					cmd.Parameters.Add(new SQLiteParameter("@parent", Name));
 
@@ -149,7 +147,7 @@ namespace Waveface.ClientFramework
 		public int Total
 		{
 			get { return _total; }
-			set 
+			set
 			{
 				if (_total != value)
 				{

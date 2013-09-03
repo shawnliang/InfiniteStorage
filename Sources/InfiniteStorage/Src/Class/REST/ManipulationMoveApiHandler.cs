@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 
 namespace InfiniteStorage.REST
 {
@@ -21,7 +17,8 @@ namespace InfiniteStorage.REST
 
 			var result = Manipulation.Manipulation.Move(file_ids, full_target_path);
 
-			respondSuccess(new {
+			respondSuccess(new
+			{
 				api_ret_code = 0,
 				api_ret_message = "success",
 				status = 200,

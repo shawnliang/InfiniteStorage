@@ -1,17 +1,13 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Management;
+using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using WIA;
-using System.Management;
-using System.IO;
-using log4net;
-using System.Security.Cryptography;
 
 
 namespace readCamera
@@ -19,7 +15,7 @@ namespace readCamera
 	public partial class camerAccess : Form
 	{
 		private static readonly ILog log = LogManager.GetLogger(typeof(camerAccess));
-		
+
 		const string wiaFormatPNG = "{B96B3CAF-0728-11D3-9D7B-0000F81EF32E}";
 		const string wiaFormatBMP = "{B96B3CAB-0728-11D3-9D7B-0000F81EF32E}";
 		const string wiaFormatJPEG = "{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}";
@@ -83,7 +79,7 @@ namespace readCamera
 			var args = new CameraDetectedEventArgs(device.Name, device.UID);
 			handler(this, args);
 
-			if(args.DoImport)
+			if (args.DoImport)
 				GetPictures(device);
 		}
 
@@ -267,7 +263,7 @@ namespace readCamera
 		public string Root { get; set; }
 		public string PictureTaken { get; set; }
 		public IDeviceInfo DeviceInfo { get; set; }
-		
+
 
 		public override string ToString()
 		{
@@ -281,7 +277,7 @@ namespace readCamera
 
 		public override bool Equals(object obj)
 		{
-			if (object.ReferenceEquals(obj,this))
+			if (object.ReferenceEquals(obj, this))
 				return true;
 
 			var rhs = obj as _deviceInfo;

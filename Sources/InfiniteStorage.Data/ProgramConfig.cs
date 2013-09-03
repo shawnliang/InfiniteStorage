@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
+using System;
 
 namespace InfiniteStorage.Data
 {
@@ -37,7 +34,7 @@ namespace InfiniteStorage.Data
 			var url = b.ToString();
 
 			if (url.EndsWith("/"))
-				return url.Substring(0, url.Length-1);
+				return url.Substring(0, url.Length - 1);
 			else
 				return url;
 		}

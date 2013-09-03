@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Waveface.Common;
 
 namespace InfiniteStorage.Share
@@ -44,7 +41,7 @@ namespace InfiniteStorage.Share
 		public void Run()
 		{
 			var labels = db.QueryLabelsNeedingProcess();
-			
+
 			foreach (var label in labels)
 			{
 				IShareTask task;

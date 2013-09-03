@@ -2,14 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Wammer.Utility;
 using Waveface.Common;
-using System.Diagnostics;
-using System.Reflection;
 
 namespace InfiniteStorage
 {
@@ -100,11 +100,12 @@ namespace InfiniteStorage
 
 		private void deleteFile(FileAsset file)
 		{
-			try{
+			try
+			{
 				var file_path = Path.Combine(MyFileFolder.Photo, file.saved_path);
 				File.Delete(file_path);
 			}
-			catch(Exception err)
+			catch (Exception err)
 			{
 				log4net.LogManager.GetLogger(GetType()).Warn("Unable to delete a file", err);
 			}

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
-using InfiniteStorage.Model;
-using System.Linq;
 
 namespace InfiniteStorage
 {
@@ -43,7 +41,7 @@ namespace InfiniteStorage
 			{
 				conn.Open();
 				using (var transaction = conn.BeginTransaction())
-				using(var cmd = conn.CreateCommand())
+				using (var cmd = conn.CreateCommand())
 				{
 					var i = 0;
 					var pars = new List<string>();

@@ -3,8 +3,8 @@ using InfiniteStorage.Model;
 using InfiniteStorage.WebsocketProtocol;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using Newtonsoft.Json;
+using System;
 
 namespace UnitTest
 {

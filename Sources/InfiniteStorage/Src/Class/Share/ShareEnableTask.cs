@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace InfiniteStorage.Share
 {
@@ -28,7 +25,7 @@ namespace InfiniteStorage.Share
 
 			var OnCloudFiles = files.Where(x => x.on_cloud.HasValue && x.on_cloud.Value).ToList();
 
-			foreach (var file in files.Where(x=>!x.on_cloud.HasValue || !x.on_cloud.Value))
+			foreach (var file in files.Where(x => !x.on_cloud.HasValue || !x.on_cloud.Value))
 			{
 				api.UploadAttachment(file);
 				db.UpdateFileOnCloud(file);

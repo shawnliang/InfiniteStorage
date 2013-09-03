@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CommandLine;
+﻿using CommandLine;
 using CommandLine.Text;
-using System.Threading;
+using System;
 
 namespace BonjourAgent
 {
@@ -45,7 +41,7 @@ namespace BonjourAgent
 		[Option("server-name", Required = true)]
 		public string server_name { get; set; }
 
-		[Option("server-id", Required=true)]
+		[Option("server-id", Required = true)]
 		public string server_id { get; set; }
 
 		[Option("backup-port", Required = true)]
@@ -60,7 +56,7 @@ namespace BonjourAgent
 		[Option("passcode", Required = true)]
 		public string passcode { get; set; }
 
-		[Option("is-accepting", DefaultValue=false)]
+		[Option("is-accepting", DefaultValue = false)]
 		public bool is_accepting { get; set; }
 
 		[Option("home-sharing", DefaultValue = false)]

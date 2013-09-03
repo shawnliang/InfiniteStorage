@@ -1,11 +1,6 @@
-﻿using InfiniteStorage.Model;
-using InfiniteStorage.Properties;
-using InfiniteStorage.WebsocketProtocol;
-using InfiniteStorage.Win32;
+﻿using InfiniteStorage.Properties;
 using System;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace InfiniteStorage

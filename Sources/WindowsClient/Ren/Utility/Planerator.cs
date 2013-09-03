@@ -25,41 +25,41 @@ namespace Waveface.Client
 		#region Dependency Properties
 
 		public static readonly DependencyProperty RotationXProperty =
-			DependencyProperty.Register("RotationX", typeof (double), typeof (Planerator), new UIPropertyMetadata(0.0, (d, args) => ((Planerator) d).UpdateRotation()));
+			DependencyProperty.Register("RotationX", typeof(double), typeof(Planerator), new UIPropertyMetadata(0.0, (d, args) => ((Planerator)d).UpdateRotation()));
 
 		public static readonly DependencyProperty RotationYProperty =
-			DependencyProperty.Register("RotationY", typeof (double), typeof (Planerator), new UIPropertyMetadata(0.0, (d, args) => ((Planerator) d).UpdateRotation()));
+			DependencyProperty.Register("RotationY", typeof(double), typeof(Planerator), new UIPropertyMetadata(0.0, (d, args) => ((Planerator)d).UpdateRotation()));
 
 		public static readonly DependencyProperty RotationZProperty =
-			DependencyProperty.Register("RotationZ", typeof (double), typeof (Planerator), new UIPropertyMetadata(0.0, (d, args) => ((Planerator) d).UpdateRotation()));
+			DependencyProperty.Register("RotationZ", typeof(double), typeof(Planerator), new UIPropertyMetadata(0.0, (d, args) => ((Planerator)d).UpdateRotation()));
 
 		public static readonly DependencyProperty FieldOfViewProperty =
-			DependencyProperty.Register("FieldOfView", typeof (double), typeof (Planerator), new UIPropertyMetadata(45.0, (d, args) => ((Planerator) d).Update3D(),
-			                                                                                                        (d, val) => Math.Min(Math.Max((double) val, 0.5), 179.9)));
-		                                          // clamp to a meaningful range
+			DependencyProperty.Register("FieldOfView", typeof(double), typeof(Planerator), new UIPropertyMetadata(45.0, (d, args) => ((Planerator)d).Update3D(),
+																													(d, val) => Math.Min(Math.Max((double)val, 0.5), 179.9)));
+		// clamp to a meaningful range
 
 
 		public double RotationX
 		{
-			get { return (double) GetValue(RotationXProperty); }
+			get { return (double)GetValue(RotationXProperty); }
 			set { SetValue(RotationXProperty, value); }
 		}
 
 		public double RotationY
 		{
-			get { return (double) GetValue(RotationYProperty); }
+			get { return (double)GetValue(RotationYProperty); }
 			set { SetValue(RotationYProperty, value); }
 		}
 
 		public double RotationZ
 		{
-			get { return (double) GetValue(RotationZProperty); }
+			get { return (double)GetValue(RotationZProperty); }
 			set { SetValue(RotationZProperty, value); }
 		}
 
 		public double FieldOfView
 		{
-			get { return (double) GetValue(FieldOfViewProperty); }
+			get { return (double)GetValue(FieldOfViewProperty); }
 			set { SetValue(FieldOfViewProperty, value); }
 		}
 
@@ -77,7 +77,7 @@ namespace Waveface.Client
 
 					// Wrap child with special decorator that catches layout invalidations. 
 					_originalChild = value;
-					_logicalChild = new LayoutInvalidationCatcher {Child = _originalChild};
+					_logicalChild = new LayoutInvalidationCatcher { Child = _originalChild };
 					_visualChild = CreateVisualChild();
 
 					AddVisualChild(_visualChild);
@@ -140,11 +140,11 @@ namespace Waveface.Client
 		private FrameworkElement CreateVisualChild()
 		{
 			MeshGeometry3D simpleQuad = new MeshGeometry3D
-				                            {
-					                            Positions = new Point3DCollection(_mesh),
-					                            TextureCoordinates = new PointCollection(_texCoords),
-					                            TriangleIndices = new Int32Collection(_indices)
-				                            };
+											{
+												Positions = new Point3DCollection(_mesh),
+												TextureCoordinates = new PointCollection(_texCoords),
+												TriangleIndices = new Int32Collection(_indices)
+											};
 
 			// Front material is interactive, back material is not.
 			Material frontMaterial = new DiffuseMaterial(Brushes.White);
@@ -155,30 +155,30 @@ namespace Waveface.Client
 			Material backMaterial = new DiffuseMaterial(vb);
 
 			_rotationTransform.Rotation = _quaternionRotation;
-			var xfGroup = new Transform3DGroup {Children = {_scaleTransform, _rotationTransform}};
+			var xfGroup = new Transform3DGroup { Children = { _scaleTransform, _rotationTransform } };
 
-			GeometryModel3D backModel = new GeometryModel3D {Geometry = simpleQuad, Transform = xfGroup, BackMaterial = backMaterial};
+			GeometryModel3D backModel = new GeometryModel3D { Geometry = simpleQuad, Transform = xfGroup, BackMaterial = backMaterial };
 			Model3DGroup m3dGroup = new Model3DGroup
-				                        {
-					                        Children =
+										{
+											Children =
 						                        {
 							                        new DirectionalLight(Colors.White, new Vector3D(0, 0, -1)),
 							                        new DirectionalLight(Colors.White, new Vector3D(0.1, -0.1, 1)),
 							                        backModel
 						                        }
-				                        };
+										};
 
 			// Non-interactive Visual3D consisting of the backside, and two lights.
-			ModelVisual3D mv3d = new ModelVisual3D {Content = m3dGroup};
+			ModelVisual3D mv3d = new ModelVisual3D { Content = m3dGroup };
 
 			// Interactive frontside Visual3D
-			Viewport2DVisual3D frontModel = new Viewport2DVisual3D {Geometry = simpleQuad, Visual = _logicalChild, Material = frontMaterial, Transform = xfGroup};
+			Viewport2DVisual3D frontModel = new Viewport2DVisual3D { Geometry = simpleQuad, Visual = _logicalChild, Material = frontMaterial, Transform = xfGroup };
 
 			// Cache the brush in the VP2V3 by setting caching on it.  Big perf wins.
 			SetCachingForObject(frontModel);
 
 			// Scene consists of both the above Visual3D's.
-			_viewport3d = new Viewport3D {ClipToBounds = false, Children = {mv3d, frontModel}};
+			_viewport3d = new Viewport3D { ClipToBounds = false, Children = { mv3d, frontModel } };
 
 			UpdateRotation();
 
@@ -198,7 +198,7 @@ namespace Waveface.Client
 			Quaternion qy = new Quaternion(_yAxis, RotationY);
 			Quaternion qz = new Quaternion(_zAxis, RotationZ);
 
-			_quaternionRotation.Quaternion = qx*qy*qz;
+			_quaternionRotation.Quaternion = qx * qy * qz;
 		}
 
 		private void Update3D()
@@ -213,18 +213,18 @@ namespace Waveface.Client
 			// and back along Z the right distance based on the field-of-view is the same projected size as the 2D content
 			// that it's looking at.  See http://blogs.msdn.com/greg_schechter/archive/2007/04/03/camera-construction-in-parallaxui.aspx
 			// for derivation of this camera.
-			double fovInRadians = FieldOfView*(Math.PI/180);
-			double zValue = w/Math.Tan(fovInRadians/2)/2;
-			_viewport3d.Camera = new PerspectiveCamera(new Point3D(w/2, h/2, zValue),
-			                                           - _zAxis,
-			                                           _yAxis,
-			                                           FieldOfView);
+			double fovInRadians = FieldOfView * (Math.PI / 180);
+			double zValue = w / Math.Tan(fovInRadians / 2) / 2;
+			_viewport3d.Camera = new PerspectiveCamera(new Point3D(w / 2, h / 2, zValue),
+													   -_zAxis,
+													   _yAxis,
+													   FieldOfView);
 
 
 			_scaleTransform.ScaleX = w;
 			_scaleTransform.ScaleY = h;
-			_rotationTransform.CenterX = w/2;
-			_rotationTransform.CenterY = h/2;
+			_rotationTransform.CenterX = w / 2;
+			_rotationTransform.CenterY = h / 2;
 		}
 
 		#endregion
@@ -275,9 +275,9 @@ namespace Waveface.Client
 		private ScaleTransform3D _scaleTransform = new ScaleTransform3D();
 
 		// Static data
-		private static readonly Point3D[] _mesh = new[] {new Point3D(0, 0, 0), new Point3D(0, 1, 0), new Point3D(1, 1, 0), new Point3D(1, 0, 0)};
-		private static readonly Point[] _texCoords = new[] {new Point(0, 1), new Point(0, 0), new Point(1, 0), new Point(1, 1)};
-		private static readonly int[] _indices = new[] {0, 2, 1, 0, 3, 2};
+		private static readonly Point3D[] _mesh = new[] { new Point3D(0, 0, 0), new Point3D(0, 1, 0), new Point3D(1, 1, 0), new Point3D(1, 0, 0) };
+		private static readonly Point[] _texCoords = new[] { new Point(0, 1), new Point(0, 0), new Point(1, 0), new Point(1, 1) };
+		private static readonly int[] _indices = new[] { 0, 2, 1, 0, 3, 2 };
 		private static readonly Vector3D _xAxis = new Vector3D(1, 0, 0);
 		private static readonly Vector3D _yAxis = new Vector3D(0, 1, 0);
 		private static readonly Vector3D _zAxis = new Vector3D(0, 0, 1);

@@ -154,7 +154,7 @@ namespace InfiniteStorage.WebsocketProtocol
 				handler(this, new WebsocketEventArgs(this));
 			}
 		}
-		
+
 		public void raiseOnThumbnailReceived(string thumbPath, int transferCount)
 		{
 			var handler = OnThumbnailReceived;
