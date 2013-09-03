@@ -198,12 +198,12 @@
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/LB_delete_1.png" />
 
-            <!--
-                <Style TargetType="{x:Type Image}">
+
+            <Style x:Key="ClearImageStyle"
+                   TargetType="{x:Type Image}">
                 <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />
                 <Setter Property="SnapsToDevicePixels" Value="True" />
-                </Style>
-            -->
+            </Style>
 
 
         </ResourceDictionary>

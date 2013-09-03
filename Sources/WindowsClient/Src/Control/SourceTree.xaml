@@ -225,6 +225,7 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Source="{StaticResource UnSelectedMobile}"
+                       Style="{StaticResource ClearImageStyle}"
                        Stretch="None" />
 
                 <Label x:Name="item"
@@ -234,6 +235,7 @@
                 <Image x:Name="recvingIcon"
                        IsVisibleChanged="recvingIcon_IsVisibleChanged"
                        Source="{StaticResource CycleIcon}"
+                       Style="{StaticResource ClearImageStyle}"
                        Visibility="{Binding IsRecving,
                                             Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>

@@ -55,8 +55,7 @@
 
     <ListBox.ItemTemplate>
         <DataTemplate>
-            <Grid x:Name="item"
-                  Height="25">
+            <Grid x:Name="item">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
@@ -66,10 +65,11 @@
                             Grid.Column="0"
                             Orientation="Horizontal">
                     <Image x:Name="icon"
-                           Margin="10, 2, 0, 0"
+                           Margin="10, 0, 0, 0"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Source="{StaticResource UnSelectedEvent}"
+                           Style="{StaticResource ClearImageStyle}"
                            Stretch="None" />
                     <Label x:Name="sourceName"
                            VerticalAlignment="Center"
