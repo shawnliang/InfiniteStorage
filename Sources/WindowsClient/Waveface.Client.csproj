@@ -362,9 +362,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Resource Include="Ren\Images\selectAll.png" />
-    <Resource Include="Ren\Images\unselectAll.png" />
-    <Resource Include="Resource\ico_bar_addto.png" />
     <Resource Include="Resource\ico_bar_addto_mo.png" />
     <Resource Include="Resource\ico_bar_addto_off.png" />
     <Resource Include="Resource\ico_bar_addto_on.png" />
@@ -374,12 +371,6 @@
     <Resource Include="Resource\ico_bar_moveto_mo.png" />
     <Resource Include="Resource\ico_bar_moveto_off.png" />
     <Resource Include="Resource\ico_bar_moveto_on.png" />
-    <Resource Include="Resource\ico_bar_play_mo.png" />
-    <Resource Include="Resource\ico_bar_play_off.png" />
-    <Resource Include="Resource\ico_bar_play_on.png" />
-    <Resource Include="Resource\ico_bar_share_mo.png" />
-    <Resource Include="Resource\ico_bar_share_off.png" />
-    <Resource Include="Resource\ico_bar_share_on.png" />
     <Resource Include="Resource\PC_wifi.png" />
     <Resource Include="Resource\getstarted.png" />
     <Resource Include="Resource\arrow_right.png" />
@@ -387,7 +378,6 @@
     <Resource Include="Resource\ico_sand.png" />
     <Resource Include="Resource\ico_arrow_down.png" />
     <Resource Include="Resource\Bunnydesktop.ico" />
-    <Resource Include="Resource\Discard.png" />
     <Resource Include="Resource\LB_delete_0.png" />
     <Resource Include="Resource\LB_delete_1.png" />
     <Resource Include="Resource\LB_left_0.png" />
@@ -434,7 +424,6 @@
     <Resource Include="Resource\ico_star_unselect.png" />
     <Resource Include="Resource\ico_fav_star_unselect.png" />
     <Resource Include="Resource\ico_fav_star_select.png" />
-    <Resource Include="Resource\video.png" />
     <Resource Include="Resource\circleProgress.gif" />
     <Resource Include="Resource\Push_Nexus7.png" />
     <Resource Include="Resource\pop_online.png" />
@@ -723,12 +712,6 @@
     <Resource Include="Resource\video_ph.png" />
     <Resource Include="Resource\uppressed.png" />
     <Resource Include="Resource\pplaceholder.png" />
-    <Resource Include="Ren\Images\add_folder.png" />
-    <Resource Include="Ren\Images\android.png" />
-    <Resource Include="Ren\Images\checkmark.png" />
-    <Resource Include="Ren\Images\clock.png" />
-    <Resource Include="Ren\Images\folder.png" />
-    <Resource Include="Ren\Images\video.png" />
     <Resource Include="Ren\Images\video_130x110.png" />
     <Resource Include="Resource\sliderbarbigphotoicon.png" />
     <Resource Include="Resource\sliderbarsmallphotoicon.png" />
@@ -739,15 +722,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\en_generic_rgb_wo_60.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resource\ico_add_source.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Ren\Images\qrcode.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resource\mf_progress_radar.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\.NETFramework\v4.5\Microsoft.Expression.Blend.WPF.targets" />
