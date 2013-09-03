@@ -504,7 +504,7 @@
 
         </Grid>
 
-        <local:P_SourceAllFilesUC x:Name="allFilesUC"
+        <local:SourceAllFilesUC x:Name="allFilesUC"
                                   Grid.Row="0"
                                   Grid.RowSpan="3"
                                   Grid.Column="1"
@@ -513,6 +513,17 @@
                                   Height="Auto"
                                   Margin="1,0,0,0"
                                   Visibility="Collapsed" />
+
+        <local:PhotoDiaryUC x:Name="photoDiaryUC"
+                                  Grid.Row="0"
+                                  Grid.RowSpan="2"
+                                  Grid.Column="1"
+                                  Grid.ColumnSpan="2"
+                                  Width="Auto"
+                                  Height="Auto"
+                                  Margin="1,0,0,0"
+                                  Visibility="Collapsed" />
+        
         <Grid x:Name="stackPanel"
               Grid.Row="2"
               Background="#d5d5d5">

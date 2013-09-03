@@ -206,9 +206,9 @@ namespace Waveface.Client
 
 		private void Planerator_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
 		{
-			RotationX = P_SourceAllFilesUC.GetRandom();
-			RotationY = P_SourceAllFilesUC.GetRandom();
-			RotationZ = P_SourceAllFilesUC.GetRandom();
+			RotationX = PhotoDiaryUC.GetRandom();
+			RotationY = PhotoDiaryUC.GetRandom();
+			RotationZ = PhotoDiaryUC.GetRandom();
 		}
 
 		#region INotifyPropertyChanged Members
