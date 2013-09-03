@@ -7,7 +7,7 @@ namespace Waveface.Client
 {
 	class CreateNewAlbumContentEntity : ContentGroup
 	{
-		public CreateNewAlbumContentEntity(string name)
+		public CreateNewAlbumContentEntity(String name)
 			: base("CreateNewAlbumContentEntity", name, new Uri(@"C:\"))
 		{
 			SetContents(new List<IContentEntity> { new NewAlbumContentEntity() });

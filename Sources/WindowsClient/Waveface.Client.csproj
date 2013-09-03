@@ -121,7 +121,7 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Compile Include="AddToButton.xaml.cs">
+    <Compile Include="Src\Control\AddToButton.xaml.cs">
       <DependentUpon>AddToButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="CmdLineOptions.cs" />
@@ -445,7 +445,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Page Include="AddToButton.xaml">
+    <Page Include="Src\Control\AddToButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -31,7 +31,7 @@ namespace Waveface.Client
 			InitializeComponent();
 		}
 
-		private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		private void TreeViewItem_PreviewMouseLeftButtonDown(Object sender, MouseButtonEventArgs e)
 		{
 			if (TreeViewItemClick == null)
 				return;
@@ -42,7 +42,7 @@ namespace Waveface.Client
 			TreeViewItemClick(sender, EventArgs.Empty);
 		}
 
-		private void recvingIcon_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+		private void recvingIcon_IsVisibleChanged(Object sender, DependencyPropertyChangedEventArgs e)
 		{
 			var recvIcon = (Image)sender;
 
@@ -69,7 +69,7 @@ namespace Waveface.Client
 			}
 		}
 
-		private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
+		private void UserControl_MouseUp(Object sender, MouseButtonEventArgs e)
 		{
 			//if (e.ChangedButton != MouseButton.Left)
 			//    return;
@@ -84,7 +84,7 @@ namespace Waveface.Client
 			//e.Handled = true;
 		}
 
-		private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
+		private void UserControl_PreviewKeyDown(Object sender, KeyEventArgs e)
 		{
 			e.Handled = true;
 		}
@@ -121,32 +121,32 @@ namespace Waveface.Client
 			DeleteSourceInvoked(this, e);
 		}
 
-		private void miStar_Click(object sender, RoutedEventArgs e)
+		private void miStar_Click(Object sender, RoutedEventArgs e)
 		{
 			OnStarInvoked(EventArgs.Empty);
 		}
 
-		private void miCreateFavorite_Click(object sender, RoutedEventArgs e)
+		private void miCreateFavorite_Click(Object sender, RoutedEventArgs e)
 		{
 			OnCreateFavoriteInvoked(EventArgs.Empty);
 		}
 
-		private void miAddToFavorite_Click(object sender, RoutedEventArgs e)
+		private void miAddToFavorite_Click(Object sender, RoutedEventArgs e)
 		{
 			OnAddToFavoriteInvoked(EventArgs.Empty);
 		}
 
-		private void miDelete_Click(object sender, RoutedEventArgs e)
+		private void miDelete_Click(Object sender, RoutedEventArgs e)
 		{
 			OnDeleteSourceInvoked(EventArgs.Empty);
 		}
 
-		private void UserControl_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		private void UserControl_PreviewMouseLeftButtonDown(Object sender, MouseButtonEventArgs e)
 		{
 			m_startPoint = e.GetPosition(null);
 		}
 
-		private void UserControl_MouseMove(object sender, MouseEventArgs e)
+		private void UserControl_MouseMove(Object sender, MouseEventArgs e)
 		{
 			Point _mousePos = e.GetPosition(null);
 			Vector _diff = m_startPoint - _mousePos;
@@ -161,7 +161,7 @@ namespace Waveface.Client
 
 					if (_entity != null)
 					{
-						string[] _files = new string[1];
+						String[] _files = new String[1];
 						_files[0] = _entity.Uri.LocalPath;
 
 						DataObject _dragData = new DataObject();
@@ -172,7 +172,7 @@ namespace Waveface.Client
 			}
 		}
 
-		private void miLocateOnDisk_Click(object sender, RoutedEventArgs e)
+		private void miLocateOnDisk_Click(Object sender, RoutedEventArgs e)
 		{
 			if (SelectedItem != null)
 			{
@@ -180,8 +180,8 @@ namespace Waveface.Client
 
 				if (_entity != null)
 				{
-					string _dir = _entity.Uri.LocalPath;
-					string _arg = @"/select, " + _dir;
+					String _dir = _entity.Uri.LocalPath;
+					String _arg = @"/select, " + _dir;
 					System.Diagnostics.Process.Start("explorer.exe", _arg);
 				}
 			}

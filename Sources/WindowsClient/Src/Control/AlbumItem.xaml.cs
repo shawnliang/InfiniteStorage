@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -11,22 +12,22 @@ namespace Waveface.Client
 	{
 		#region CoverWidth
 		public static readonly DependencyProperty CoverWidthProperty = DependencyProperty.Register(
-			"CoverWidth", typeof(int), typeof(AlbumItem), new PropertyMetadata(100));
+			"CoverWidth", typeof(Int32), typeof(AlbumItem), new PropertyMetadata(100));
 
-		public int CoverWidth
+		public Int32 CoverWidth
 		{
-			get { return (int)GetValue(CoverWidthProperty); }
+			get { return (Int32)GetValue(CoverWidthProperty); }
 			set { SetValue(CoverWidthProperty, value); }
 		}
 		#endregion
 
 		#region CoverHeight
 		public static readonly DependencyProperty CoverHeightProperty = DependencyProperty.Register(
-			"CoverHeight", typeof(int), typeof(AlbumItem), new PropertyMetadata(100));
+			"CoverHeight", typeof(Int32), typeof(AlbumItem), new PropertyMetadata(100));
 
-		public int CoverHeight
+		public Int32 CoverHeight
 		{
-			get { return (int)GetValue(CoverHeightProperty); }
+			get { return (Int32)GetValue(CoverHeightProperty); }
 			set { SetValue(CoverHeightProperty, value); }
 		}
 		#endregion
@@ -44,11 +45,11 @@ namespace Waveface.Client
 
 		#region CoverBorderThickness
 		public static readonly DependencyProperty CoverBorderThicknessProperty = DependencyProperty.Register(
-			"CoverBorderThickness", typeof(int), typeof(AlbumItem), new PropertyMetadata(4));
+			"CoverBorderThickness", typeof(Int32), typeof(AlbumItem), new PropertyMetadata(4));
 
-		public int CoverBorderThickness
+		public Int32 CoverBorderThickness
 		{
-			get { return (int)GetValue(CoverBorderThicknessProperty); }
+			get { return (Int32)GetValue(CoverBorderThicknessProperty); }
 			set { SetValue(CoverBorderThicknessProperty, value); }
 		}
 		#endregion

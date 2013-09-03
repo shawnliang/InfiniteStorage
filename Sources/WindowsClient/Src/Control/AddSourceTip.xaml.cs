@@ -18,14 +18,14 @@ namespace Waveface.Client
 			InitializeComponent();
 		}
 
-		private void tbHelpItem3_MouseDown(object sender, MouseButtonEventArgs e)
+		private void tbHelpItem3_MouseDown(Object sender, MouseButtonEventArgs e)
 		{
 			var handler = TipThreeMouseDown;
 			if (handler != null)
 				handler(this, e);
 		}
 
-		private void tbHelpItem1_MouseDown(object sender, MouseButtonEventArgs e)
+		private void tbHelpItem1_MouseDown(Object sender, MouseButtonEventArgs e)
 		{
 			var handler = TipOneMouseDown;
 			if (handler != null)

@@ -29,17 +29,17 @@ namespace Waveface.Client
 			DeleteFavoriteInvoked(this, e);
 		}
 
-		private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
+		private void UserControl_PreviewKeyDown(Object sender, KeyEventArgs e)
 		{
 			e.Handled = true;
 		}
 
-		private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
+		private void DeleteMenuItem_Click(Object sender, RoutedEventArgs e)
 		{
 			OnDeleteFavoriteInvoked(EventArgs.Empty);
 		}
 
-		private void UserControl_MouseMove(object sender, MouseEventArgs e)
+		private void UserControl_MouseMove(Object sender, MouseEventArgs e)
 		{
 			Point _mousePos = e.GetPosition(null);
 			Vector _diff = m_startPoint - _mousePos;
@@ -56,8 +56,8 @@ namespace Waveface.Client
 					{
 						try
 						{
-							string _tempPathBase = Path.GetTempPath() + "Waveface Photos" + "\\";
-							string _path = _tempPathBase + "\\" + Regex.Replace(_contentGroup.Name, @"[?:\/*""<>|]", "") + "\\";
+							String _tempPathBase = Path.GetTempPath() + "Waveface Photos" + "\\";
+							String _path = _tempPathBase + "\\" + Regex.Replace(_contentGroup.Name, @"[?:\/*""<>|]", "") + "\\";
 
 							DirectoryInfo _dir = Directory.CreateDirectory(_path);
 

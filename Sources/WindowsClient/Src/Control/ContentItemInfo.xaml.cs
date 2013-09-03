@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Waveface.Client
@@ -9,15 +10,15 @@ namespace Waveface.Client
 	public partial class ContentItemInfo : UserControl
 	{
 		#region Var
-		public static readonly DependencyProperty _fileName = DependencyProperty.Register("FileName", typeof(string), typeof(ContentItemInfo), new UIPropertyMetadata(string.Empty, new PropertyChangedCallback(OnFileNameChanged)));
+		public static readonly DependencyProperty _fileName = DependencyProperty.Register("FileName", typeof(String), typeof(ContentItemInfo), new UIPropertyMetadata(String.Empty, new PropertyChangedCallback(OnFileNameChanged)));
 		#endregion
 
 		#region Property
-		public string FileName
+		public String FileName
 		{
 			get
 			{
-				return (string)GetValue(_fileName);
+				return (String)GetValue(_fileName);
 			}
 			set
 			{
@@ -37,7 +38,7 @@ namespace Waveface.Client
 			if (o == null)
 				return;
 			var obj = o as ContentItemInfo;
-			obj.FileName = (string)e.NewValue;
+			obj.FileName = (String)e.NewValue;
 		}
 	}
 }

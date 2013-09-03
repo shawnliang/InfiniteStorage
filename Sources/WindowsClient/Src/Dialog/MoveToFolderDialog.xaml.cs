@@ -1,4 +1,5 @@
-﻿#region
+﻿using System;
+#region
 
 using System.Collections;
 using System.Windows;
@@ -21,13 +22,13 @@ namespace Waveface.Client
 			}
 		}
 
-		public object SelectedItem
+		public Object SelectedItem
 		{
 			get { return cbxFolderName.SelectedItem; }
 			set { cbxFolderName.SelectedItem = value; }
 		}
 
-		public int SelectedIndex
+		public Int32 SelectedIndex
 		{
 			get { return cbxFolderName.SelectedIndex; }
 			set { cbxFolderName.SelectedIndex = value; }
@@ -38,17 +39,17 @@ namespace Waveface.Client
 			InitializeComponent();
 		}
 
-		private void Button_Click(object sender, RoutedEventArgs e)
+		private void Button_Click(Object sender, RoutedEventArgs e)
 		{
 			DialogResult = false;
 		}
 
-		private void Button_Click_1(object sender, RoutedEventArgs e)
+		private void Button_Click_1(Object sender, RoutedEventArgs e)
 		{
 			DialogResult = true;
 		}
 
-		private void Window_Loaded(object sender, RoutedEventArgs e)
+		private void Window_Loaded(Object sender, RoutedEventArgs e)
 		{
 			cbxFolderName.Focus();
 		}

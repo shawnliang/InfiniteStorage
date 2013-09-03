@@ -10,13 +10,13 @@ namespace Waveface.Client
 {
 	public partial class PhotoViewer : Window
 	{
-		public int SelectedIndex
+		public Int32 SelectedIndex
 		{
 			get { return pvcViewer.SelectedIndex; }
 			set { pvcViewer.SelectedIndex = value; }
 		}
 
-		public object SelectedItem
+		public Object SelectedItem
 		{
 			get { return pvcViewer.SelectedItem; }
 			set { pvcViewer.SelectedItem = value; }
@@ -33,12 +33,12 @@ namespace Waveface.Client
 			InitializeComponent();
 		}
 
-		private void Window_Loaded(object sender, RoutedEventArgs e)
+		private void Window_Loaded(Object sender, RoutedEventArgs e)
 		{
 			pvcViewer.Tag = this; //TODO: 重構
 		}
 
-		private void Window_KeyDown(object sender, KeyEventArgs e)
+		private void Window_KeyDown(Object sender, KeyEventArgs e)
 		{
 			switch (e.Key)
 			{
@@ -65,12 +65,12 @@ namespace Waveface.Client
 			}
 		}
 
-		private void Window_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+		private void Window_MouseRightButtonUp(Object sender, MouseButtonEventArgs e)
 		{
 			Close();
 		}
 
-		private void pvcViewer_Close(object sender, EventArgs e)
+		private void pvcViewer_Close(Object sender, EventArgs e)
 		{
 			Close();
 		}

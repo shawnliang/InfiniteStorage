@@ -13,15 +13,15 @@ namespace Waveface.Client
 	{
 		#region Var
 
-		public static readonly DependencyProperty _tagged = DependencyProperty.Register("Tagged", typeof(bool), typeof(LightBoxStar), new UIPropertyMetadata(false, OnTaggedChanged));
+		public static readonly DependencyProperty _tagged = DependencyProperty.Register("Tagged", typeof(Boolean), typeof(LightBoxStar), new UIPropertyMetadata(false, OnTaggedChanged));
 
 		#endregion
 
 		#region Property
 
-		public bool Tagged
+		public Boolean Tagged
 		{
-			get { return (bool)GetValue(_tagged); }
+			get { return (Boolean)GetValue(_tagged); }
 			set { SetValue(_tagged, value); }
 		}
 
@@ -69,7 +69,7 @@ namespace Waveface.Client
 			labelTag.OnTagStatusChanged(EventArgs.Empty);
 		}
 
-		private void UserControl_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		private void UserControl_PreviewMouseLeftButtonDown(Object sender, MouseButtonEventArgs e)
 		{
 			Tagged = !Tagged;
 			e.Handled = true;

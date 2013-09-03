@@ -1,9 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 public static class ItemsControlExtension
 {
-	public static DependencyObject ContainerFromItem(this ItemsControl itemsControl, object value)
+	public static DependencyObject ContainerFromItem(this ItemsControl itemsControl, Object value)
 	{
 		var dp = itemsControl.ItemContainerGenerator.ContainerFromItem(value);
 
@@ -22,7 +23,7 @@ public static class ItemsControlExtension
 		return null;
 	}
 
-	public static T ContainerFromItem<T>(this ItemsControl itemsControl, object value) where T : class
+	public static T ContainerFromItem<T>(this ItemsControl itemsControl, Object value) where T : class
 	{
 		return ContainerFromItem(itemsControl, value) as T;
 	}

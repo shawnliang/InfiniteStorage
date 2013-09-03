@@ -70,7 +70,7 @@ namespace Waveface.Client
 			ImgObject.Source = content.ImageSource;
 		}
 
-		public int SelectedIndex
+		public Int32 SelectedIndex
 		{
 			get { return lbImages.SelectedIndex; }
 			set
@@ -80,7 +80,7 @@ namespace Waveface.Client
 			}
 		}
 
-		public object SelectedItem
+		public Object SelectedItem
 		{
 			get { return lbImages.SelectedItem; }
 			set { lbImages.SelectedItem = value; }
@@ -135,7 +135,7 @@ namespace Waveface.Client
 			vcViewerControl.PageNo = lbImages.SelectedIndex + 1;
 		}
 
-		private void WindowLoaded(object sender, RoutedEventArgs e)
+		private void WindowLoaded(Object sender, RoutedEventArgs e)
 		{
 			ImgContentCtrl.RenderTransform = myScale;
 			ImgContentCtrl.BorderBrush = Brushes.White;
@@ -143,13 +143,13 @@ namespace Waveface.Client
 			TryDisplayOriginalPhoto();
 		}
 
-		private void ImgThumb_DragDelta(object sender, DragDeltaEventArgs e)
+		private void ImgThumb_DragDelta(Object sender, DragDeltaEventArgs e)
 		{
 			if (Grid.GetRowSpan(viewbox) == 1)
 				return;
 
-			double left = Canvas.GetLeft(ImgContentCtrl);
-			double top = Canvas.GetTop(ImgContentCtrl);
+			Double left = Canvas.GetLeft(ImgContentCtrl);
+			Double top = Canvas.GetTop(ImgContentCtrl);
 
 			left += e.HorizontalChange;
 			top += e.VerticalChange;
@@ -158,12 +158,12 @@ namespace Waveface.Client
 			Canvas.SetTop(ImgContentCtrl, top);
 		}
 
-		private void ImgThumb_MouseWheel(object sender, MouseWheelEventArgs e)
+		private void ImgThumb_MouseWheel(Object sender, MouseWheelEventArgs e)
 		{
 			Grid.SetRowSpan(viewbox, 2);
 
 			//  Variable for holding the mouse's delta value.
-			int deltaValue;
+			Int32 deltaValue;
 			deltaValue = e.Delta;
 
 			//  Set the center point of the ScaleTransform object
@@ -206,22 +206,22 @@ namespace Waveface.Client
 			myScale.ScaleY = myScale.ScaleX;
 		}
 
-		private void ViewerControl_Next(object sender, EventArgs e)
+		private void ViewerControl_Next(Object sender, EventArgs e)
 		{
 			Next();
 		}
 
-		private void ViewerControl_Previous(object sender, EventArgs e)
+		private void ViewerControl_Previous(Object sender, EventArgs e)
 		{
 			Previous();
 		}
 
-		private void ViewerControl_Close(object sender, EventArgs e)
+		private void ViewerControl_Close(Object sender, EventArgs e)
 		{
 			OnClose(EventArgs.Empty);
 		}
 
-		private void ImgContentCtrl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		private void ImgContentCtrl_MouseDoubleClick(Object sender, MouseButtonEventArgs e)
 		{
 			if (e.ChangedButton != MouseButton.Left)
 				return;
@@ -229,18 +229,18 @@ namespace Waveface.Client
 			OnClose(EventArgs.Empty);
 		}
 
-		private void meVideo_MediaOpened(object sender, RoutedEventArgs e)
+		private void meVideo_MediaOpened(Object sender, RoutedEventArgs e)
 		{
 			vcVideoControl.Duration = meVideo.NaturalDuration.TimeSpan.TotalMilliseconds;
 			vcVideoControl.Volume = meVideo.Volume;
 		}
 
-		private void _timer_Tick(object sender, EventArgs e)
+		private void _timer_Tick(Object sender, EventArgs e)
 		{
 			vcVideoControl.Position = meVideo.Position.TotalMilliseconds;
 		}
 
-		private void meVideo_MediaEnded(object sender, RoutedEventArgs e)
+		private void meVideo_MediaEnded(Object sender, RoutedEventArgs e)
 		{
 			StopVideo();
 			meVideo.Position = TimeSpan.FromMilliseconds(0);
@@ -253,13 +253,13 @@ namespace Waveface.Client
 			vcVideoControl.IsPlaying = false;
 		}
 
-		private void meVideo_MediaFailed(object sender, ExceptionRoutedEventArgs e)
+		private void meVideo_MediaFailed(Object sender, ExceptionRoutedEventArgs e)
 		{
 			StopVideo();
 			meVideo.Position = TimeSpan.FromMilliseconds(0);
 		}
 
-		private void vcVideoControl_PlayButtonClick(object sender, EventArgs e)
+		private void vcVideoControl_PlayButtonClick(Object sender, EventArgs e)
 		{
 			PlayVideo();
 		}
@@ -271,7 +271,7 @@ namespace Waveface.Client
 			vcVideoControl.IsPlaying = true;
 		}
 
-		private void vcVideoControl_PauseButtonClick(object sender, EventArgs e)
+		private void vcVideoControl_PauseButtonClick(Object sender, EventArgs e)
 		{
 			PauseVideo();
 		}
@@ -282,7 +282,7 @@ namespace Waveface.Client
 			vcVideoControl.IsPlaying = false;
 		}
 
-		private void lbImages_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private void lbImages_SelectionChanged(Object sender, SelectionChangedEventArgs e)
 		{
 			var content = (lbImages.SelectedItem as BunnyContent);
 
@@ -316,21 +316,21 @@ namespace Waveface.Client
 			Grid.SetRowSpan(viewbox, 1);
 		}
 
-		private void vcVideoControl_VolumeChanged(object sender, EventArgs e)
+		private void vcVideoControl_VolumeChanged(Object sender, EventArgs e)
 		{
 			meVideo.Volume = vcVideoControl.Volume;
 		}
 
-		private void vcVideoControl_SeekPosition(object sender, EventArgs e)
+		private void vcVideoControl_SeekPosition(Object sender, EventArgs e)
 		{
 			PauseVideo();
 			meVideo.Position = TimeSpan.FromMilliseconds(vcVideoControl.Position);
 			PlayVideo();
 		}
 
-		private void VcViewerControl_OnDeletePic(object sender, EventArgs e)
+		private void VcViewerControl_OnDeletePic(Object sender, EventArgs e)
 		{
-			int _index = lbImages.SelectedIndex;
+			Int32 _index = lbImages.SelectedIndex;
 
 			IContentEntity _contentEntity = (IContentEntity)lbImages.SelectedItem;
 

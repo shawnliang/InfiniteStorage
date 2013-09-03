@@ -16,17 +16,17 @@ namespace TVM.SnailTools.lib
 		/// <param name="lpFileOp"></param>
 		/// <returns></returns>
 		[DllImport("shell32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-		private static extern int SHFileOperation(SHFILEOPSTRUCT lpFileOp);
+		private static extern Int32 SHFileOperation(SHFILEOPSTRUCT lpFileOp);
 
 		/// <summary>
 		/// 错误码映射表
 		/// </summary>
-		private static Dictionary<string, string> ErrorMap = null;
+		private static Dictionary<String, String> ErrorMap = null;
 
 		/// <summary>
 		/// 多个文件路径的分隔符
 		/// </summary>
-		private const string FILE_SPLITER = "\0";
+		private const String FILE_SPLITER = "\0";
 
 		/// <summary>
 		/// 复制单个文件
@@ -34,9 +34,9 @@ namespace TVM.SnailTools.lib
 		/// <param name="sourceFile">要复制的文件路径</param>
 		/// <param name="targetFile">目标文件路径</param>
 		/// <returns>0表示成功，其余为错误码，可通过GetErrorString()方法获取错误内容</returns>
-		public static int Copy(string sourceFile, string targetFile)
+		public static Int32 Copy(String sourceFile, String targetFile)
 		{
-			return Copy(new string[] { sourceFile }, new string[] { targetFile });
+			return Copy(new String[] { sourceFile }, new String[] { targetFile });
 		}
 
 		/// <summary>
@@ -45,7 +45,7 @@ namespace TVM.SnailTools.lib
 		/// <param name="sourceFiles">要复制的文件路径列表</param>
 		/// <param name="targetFiles">目标文件路径列表</param>
 		/// <returns>0表示成功，其余为错误码，可通过GetErrorString()方法获取错误内容</returns>
-		public static int Copy(IEnumerable<string> sourceFiles, IEnumerable<string> targetFiles)
+		public static Int32 Copy(IEnumerable<String> sourceFiles, IEnumerable<String> targetFiles)
 		{
 			return Copy(sourceFiles, targetFiles, false);
 		}
@@ -57,7 +57,7 @@ namespace TVM.SnailTools.lib
 		/// <param name="targetFiles">目标文件路径列表</param>
 		/// <param name="targetFiles">是否删除源文件，为true时使用“移动”而非“复制”</param>
 		/// <returns>0表示成功，其余为错误码，可通过GetErrorString()方法获取错误内容</returns>
-		public static int Copy(IEnumerable<string> sourceFiles, IEnumerable<string> targetFiles, bool deleteSourceFile)
+		public static Int32 Copy(IEnumerable<String> sourceFiles, IEnumerable<String> targetFiles, Boolean deleteSourceFile)
 		{
 			if (sourceFiles.Count() != targetFiles.Count())
 			{
@@ -76,12 +76,12 @@ namespace TVM.SnailTools.lib
 			}
 			pm.pFrom = "";
 			pm.pTo = "";
-			foreach (string file in sourceFiles)
+			foreach (String file in sourceFiles)
 			{
 				pm.pFrom += file + FILE_SPLITER;
 			}
 			pm.pFrom += FILE_SPLITER;
-			foreach (string file in targetFiles)
+			foreach (String file in targetFiles)
 			{
 				pm.pTo += file + FILE_SPLITER;
 			}
@@ -97,9 +97,9 @@ namespace TVM.SnailTools.lib
 		/// <param name="sourceFile">要移动的文件路径</param>
 		/// <param name="targetFile">目标文件路径</param>
 		/// <returns>0表示成功，其余为错误码，可通过GetErrorString()方法获取错误内容</returns>
-		public static int Move(string sourceFile, string targetFile)
+		public static Int32 Move(String sourceFile, String targetFile)
 		{
-			return Move(new string[] { sourceFile }, new string[] { targetFile });
+			return Move(new String[] { sourceFile }, new String[] { targetFile });
 		}
 
 		/// <summary>
@@ -108,7 +108,7 @@ namespace TVM.SnailTools.lib
 		/// <param name="sourceFiles">要移动的文件路径列表</param>
 		/// <param name="targetFiles">目标文件路径列表</param>
 		/// <returns>0表示成功，其余为错误码，可通过GetErrorString()方法获取错误内容</returns>
-		public static int Move(IEnumerable<string> sourceFiles, IEnumerable<string> targetFiles)
+		public static Int32 Move(IEnumerable<String> sourceFiles, IEnumerable<String> targetFiles)
 		{
 			return Copy(sourceFiles, targetFiles, true);
 		}
@@ -118,7 +118,7 @@ namespace TVM.SnailTools.lib
 		/// </summary>
 		/// <param name="filePath">文件路径</param>
 		/// <returns>0表示成功，其余为错误码，可通过GetErrorString()方法获取错误内容</returns>
-		public static int Delete(string filePath)
+		public static Int32 Delete(String filePath)
 		{
 			return Delete(filePath, true);
 		}
@@ -129,7 +129,7 @@ namespace TVM.SnailTools.lib
 		/// <param name="filePath">文件路径</param>
 		/// <param name="allowUndo">是否允许撤销</param>
 		/// <returns>0表示成功，其余为错误码，可通过GetErrorString()方法获取错误内容</returns>
-		public static int Delete(string filePath, bool allowUndo)
+		public static Int32 Delete(String filePath, Boolean allowUndo)
 		{
 			SHFILEOPSTRUCT lpFileOp = new SHFILEOPSTRUCT();
 			lpFileOp.wFunc = wFunc.FO_DELETE;
@@ -157,11 +157,11 @@ namespace TVM.SnailTools.lib
 			/// <summary>
 			/// 源文件路径
 			/// </summary>
-			public string pFrom;
+			public String pFrom;
 			/// <summary>
 			/// 目标文件路径
 			/// </summary>
-			public string pTo;
+			public String pTo;
 			/// <summary>
 			/// 允许恢复
 			/// </summary>
@@ -169,12 +169,12 @@ namespace TVM.SnailTools.lib
 			/// <summary>
 			/// 监测有无中止
 			/// </summary>
-			public bool fAnyOperationsAborted;
+			public Boolean fAnyOperationsAborted;
 			public IntPtr hNameMappings;
 			/// <summary>
 			/// 设置标题
 			/// </summary>
-			public string lpszProgressTitle;
+			public String lpszProgressTitle;
 		}
 
 		/// <summary>
@@ -293,18 +293,18 @@ namespace TVM.SnailTools.lib
 		/// </summary>
 		/// <param name="n"></param>
 		/// <returns></returns>
-		public static string GetErrorString(int n)
+		public static String GetErrorString(Int32 n)
 		{
 			if (n == 0)
 			{
-				return string.Empty;
+				return String.Empty;
 			}
 			if (ErrorMap == null)
 			{
 				InitErrorMap();
 			}
 
-			string code = n.ToString("X").ToUpper();
+			String code = n.ToString("X").ToUpper();
 
 			if (ErrorMap.ContainsKey(code))
 			{
@@ -321,7 +321,7 @@ namespace TVM.SnailTools.lib
 		/// </summary>
 		private static void InitErrorMap()
 		{
-			ErrorMap = new Dictionary<string, string>();
+			ErrorMap = new Dictionary<String, String>();
 			ErrorMap.Add("71", "DE_SAMEFILE : The source and destination files are the same file.");
 			ErrorMap.Add("72", "DE_MANYSRC1DEST : Multiple file paths were specified in the source buffer, but only one destination file path.");
 			ErrorMap.Add("73", "DE_DIFFDIR : Rename operation was specified but the destination path is a different directory. Use the move operation instead.");

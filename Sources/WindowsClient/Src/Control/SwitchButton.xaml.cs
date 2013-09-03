@@ -16,27 +16,27 @@ namespace Waveface.Client
 	{
 		#region Var
 
-		public static readonly DependencyProperty _isOn = DependencyProperty.Register("IsOn", typeof(bool), typeof(SwitchButton), new UIPropertyMetadata(false, OnIsOnChanged));
+		public static readonly DependencyProperty _isOn = DependencyProperty.Register("IsOn", typeof(Boolean), typeof(SwitchButton), new UIPropertyMetadata(false, OnIsOnChanged));
 
 		#endregion
 
 		#region Property
 
-		public string OffText
+		public String OffText
 		{
 			set { lblOffText.Content = value; }
 			get { return lblOffText.Content.ToString(); }
 		}
 
-		public string OnText
+		public String OnText
 		{
 			set { lblOnText.Content = value; }
 			get { return lblOnText.Content.ToString(); }
 		}
 
-		public bool IsOn
+		public Boolean IsOn
 		{
-			get { return (bool)GetValue(_isOn); }
+			get { return (Boolean)GetValue(_isOn); }
 			set
 			{
 				if (IsOn == value)
@@ -98,30 +98,30 @@ namespace Waveface.Client
 			if (o == null)
 				return;
 			var obj = o as SwitchButton;
-			obj.IsOn = (bool)e.NewValue;
+			obj.IsOn = (Boolean)e.NewValue;
 		}
 
-		private void epOffButton_MouseDown(object sender, MouseButtonEventArgs e)
+		private void epOffButton_MouseDown(Object sender, MouseButtonEventArgs e)
 		{
 			Toggle();
 		}
 
-		private void epOnButton_MouseDown(object sender, MouseButtonEventArgs e)
+		private void epOnButton_MouseDown(Object sender, MouseButtonEventArgs e)
 		{
 			Toggle();
 		}
 
-		private void Rectangle_MouseDown(object sender, MouseButtonEventArgs e)
+		private void Rectangle_MouseDown(Object sender, MouseButtonEventArgs e)
 		{
 			Toggle();
 		}
 
-		private void lblOffText_MouseDown(object sender, MouseButtonEventArgs e)
+		private void lblOffText_MouseDown(Object sender, MouseButtonEventArgs e)
 		{
 			Toggle();
 		}
 
-		private void lblOnText_MouseDown(object sender, MouseButtonEventArgs e)
+		private void lblOnText_MouseDown(Object sender, MouseButtonEventArgs e)
 		{
 			Toggle();
 		}

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Waveface.Client
@@ -14,7 +15,7 @@ namespace Waveface.Client
 			this.InitializeComponent();
 		}
 
-		private void Button_Click(object sender, RoutedEventArgs e)
+		private void Button_Click(Object sender, RoutedEventArgs e)
 		{
 			var handler = Click;
 			if (handler != null)

@@ -10,14 +10,14 @@ namespace Waveface.Client
 	/// </summary>
 	public partial class AddToCallout : UserControl
 	{
-		public string SelectionText
+		public String SelectionText
 		{
-			get { return (string)GetValue(SelectionTextProperty); }
+			get { return (String)GetValue(SelectionTextProperty); }
 			set { SetValue(SelectionTextProperty, value); }
 		}
 
 		public static readonly DependencyProperty SelectionTextProperty =
-			DependencyProperty.Register("SelectionText", typeof(string), typeof(AddToCallout), null);
+			DependencyProperty.Register("SelectionText", typeof(String), typeof(AddToCallout), null);
 
 		public event EventHandler<AlbumClickedEventArgs> AlbumClicked;
 
@@ -26,7 +26,7 @@ namespace Waveface.Client
 			InitializeComponent();
 		}
 
-		private void Border_MouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
+		private void Border_MouseLeftButtonDown_1(Object sender, MouseButtonEventArgs e)
 		{
 			var handler = AlbumClicked;
 			if (handler != null)
@@ -42,7 +42,7 @@ namespace Waveface.Client
 
 	public class AlbumClickedEventArgs : EventArgs
 	{
-		public object DataContext { get; set; }
+		public Object DataContext { get; set; }
 
 		public AlbumClickedEventArgs()
 		{

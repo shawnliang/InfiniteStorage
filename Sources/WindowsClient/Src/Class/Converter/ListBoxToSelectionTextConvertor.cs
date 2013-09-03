@@ -6,28 +6,28 @@ namespace Waveface.Client
 {
 	public class ListBoxToSelectionTextConvertor : IMultiValueConverter
 	{
-		public string SelectionTemplate { get; set; }
-		public string NoSelectionTemplate { get; set; }
-		public string NoItemTemplate { get; set; }
+		public String SelectionTemplate { get; set; }
+		public String NoSelectionTemplate { get; set; }
+		public String NoItemTemplate { get; set; }
 
 		public ListBoxToSelectionTextConvertor()
 		{
 			NoItemTemplate = NoSelectionTemplate = SelectionTemplate = "";
 		}
 
-		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+		public Object Convert(object[] values, Type targetType, Object parameter, CultureInfo culture)
 		{
 			try
 			{
-				var total = (int)values[0];
-				var selected = (int)values[1];
+				var total = (Int32)values[0];
+				var selected = (Int32)values[1];
 
 				if (total == 0)
 					return NoItemTemplate;
 				else if (selected > 0)
-					return string.Format(SelectionTemplate, selected);
+					return String.Format(SelectionTemplate, selected);
 				else
-					return string.Format(NoSelectionTemplate, total);
+					return String.Format(NoSelectionTemplate, total);
 			}
 			catch
 			{
@@ -35,7 +35,7 @@ namespace Waveface.Client
 			}
 		}
 
-		public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+		public Object[] ConvertBack(Object value, Type[] targetTypes, Object parameter, CultureInfo culture)
 		{
 			throw new NotSupportedException();
 		}
