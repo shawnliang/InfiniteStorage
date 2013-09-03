@@ -9,14 +9,11 @@
         Background="#FF595959"
         ResizeMode="NoResize"
         SizeToContent="WidthAndHeight"
+        SnapsToDevicePixels="True"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
         WindowStartupLocation="CenterOwner"
         WindowStyle="ToolWindow"
-        
-        
-        SnapsToDevicePixels ="True"
-        TextOptions.TextFormattingMode ="Ideal"
-        TextOptions.TextRenderingMode="Auto"
-        
         mc:Ignorable="d">
     <StackPanel>
         <Grid HorizontalAlignment="Stretch">
@@ -29,7 +26,7 @@
                    MinWidth="45"
                    MinHeight="45"
                    Margin="10"
-                   Source="pack://application:,,,/Resource/favoriteicon.png" />
+                   Source="{StaticResource ContentStar_Selected}" />
             <TextBlock x:Name="msgBox"
                        Grid.Column="1"
                        Margin="10"
