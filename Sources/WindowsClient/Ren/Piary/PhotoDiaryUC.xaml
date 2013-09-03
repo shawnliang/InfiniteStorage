@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Waveface.Client.P_SourceAllFilesUC"
+﻿<UserControl x:Class="Waveface.Client.PhotoDiaryUC"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:gif="clr-namespace:WpfAnimatedGif"

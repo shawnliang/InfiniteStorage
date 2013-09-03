@@ -131,8 +131,8 @@
     <Compile Include="Ren\Piary\P_ItemUC.xaml.cs">
       <DependentUpon>P_ItemUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Ren\Piary\P_SourceAllFilesUC.xaml.cs">
-      <DependentUpon>P_SourceAllFilesUC.xaml</DependentUpon>
+    <Compile Include="Ren\Piary\PhotoDiaryUC.xaml.cs">
+      <DependentUpon>PhotoDiaryUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="Ren\Utility\Planerator.cs" />
     <Compile Include="Src\Class\CreateNewAlbumContentEntity.cs" />
@@ -322,7 +322,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Ren\Piary\P_SourceAllFilesUC.xaml">
+    <Page Include="Ren\Piary\PhotoDiaryUC.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -20,7 +20,7 @@ using WpfAnimatedGif;
 
 namespace Waveface.Client
 {
-	public partial class P_SourceAllFilesUC : UserControl
+	public partial class PhotoDiaryUC : UserControl
 	{
 		private IService m_currentDevice;
 		private MainWindow m_mainWindow;
@@ -43,7 +43,7 @@ namespace Waveface.Client
 
 		private static Random m_rnd = new Random();
 
-		public P_SourceAllFilesUC()
+		public PhotoDiaryUC()
 		{
 			InitializeComponent();
 
