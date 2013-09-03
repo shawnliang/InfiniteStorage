@@ -16,7 +16,7 @@
                                              TrueValue="Hidden" />
 	</UserControl.Resources>
 
-    <Border>
+    <Border Margin="8" RenderTransformOrigin="0.5,0.5">
         <Grid>
             <Image HorizontalAlignment="Stretch"
                    VerticalAlignment="Stretch"

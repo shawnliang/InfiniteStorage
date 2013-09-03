@@ -59,7 +59,7 @@
     <ListBox.ItemTemplate>
         <DataTemplate>
             <Grid x:Name="item"
-                  Height="25">
+                  Height="Auto">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
@@ -73,6 +73,7 @@
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Source="{StaticResource UnSelectedRecent}"
+                           Style="{StaticResource ClearImageStyle}"
                            Stretch="None" />
                     <Label x:Name="sourceName"
                            VerticalAlignment="Center"
