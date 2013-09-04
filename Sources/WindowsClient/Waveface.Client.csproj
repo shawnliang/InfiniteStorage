@@ -121,6 +121,7 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Src\Class\Converter\MultiLineStringConvertor.cs" />
     <Compile Include="Src\Control\AddToButton.xaml.cs">
       <DependentUpon>AddToButton.xaml</DependentUpon>
     </Compile>

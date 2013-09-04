@@ -43,6 +43,15 @@
     <system:String x:Key="photos">張照片</system:String>
     <system:String x:Key="RecentGroupTitle">最近</system:String>
     <system:String x:Key="Refresh">按此觀看更新內容</system:String>
+    <system:String x:Key="RigntSidePanel_HowToCloudSharingTutorial">
+        上傳至waveface.com\r\n
+        讓遠方的親友線上觀賞
+    </system:String>
+    <system:String x:Key="RigntSidePanel_HowToStarTutorial">
+        點擊圖片上的星號圖示\r\n
+        或拖曳至側欄的星號區\r\n
+        來標示該圖片
+    </system:String>
     <system:String x:Key="SeeFavoriteTitle">任何人只要有以下連結就可以看到您的相簿:</system:String>
     <system:String x:Key="SelectAll">全選</system:String>
     <system:String x:Key="SendButtonText">傳送</system:String>
