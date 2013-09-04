@@ -363,16 +363,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="StringTable.xaml">
+    <Content Include="StringTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Page>
-    <Page Include="StringTable.zh-TW.xaml">
+    </Content>
+    <Content Include="StringTable.zh-TW.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Page>
+    </Content>
     <Resource Include="Resource\ico_bar_addto_mo.png" />
     <Resource Include="Resource\ico_bar_addto_off.png" />
     <Resource Include="Resource\ico_bar_addto_on.png" />
