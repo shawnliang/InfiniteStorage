@@ -716,7 +716,6 @@
     <Resource Include="Resource\sliderbarbigphotoicon.png" />
     <Resource Include="Resource\sliderbarsmallphotoicon.png" />
     <Resource Include="Resource\star_selected.png" />
-    <Resource Include="Resource\star_noitem.png" />
     <Resource Include="Resource\up.png" />
     <Resource Include="Resource\updis.png" />
   </ItemGroup>

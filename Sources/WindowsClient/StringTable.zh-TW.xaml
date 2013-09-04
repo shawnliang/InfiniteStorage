@@ -8,18 +8,6 @@
     <system:String x:Key="AddToFavorite">加入至最愛相簿</system:String>
     <system:String x:Key="AddToFavoriteButtonText">加入現有相簿</system:String>
     <system:String x:Key="ANS_9">I need more information?</system:String>
-    <system:String x:Key="ANS_allowSelected">Allow selected</system:String>
-    <system:String x:Key="ANS_deviceAdded">Device {0} is successfully added to this PC.</system:String>
-    <system:String x:Key="ANS_deviveNotFound"
-                   xml:space="preserve">
-        Favorite is unable to find a connectable device. Please make sure Favorite is running on your device and the device and this PC are on the same WIFI.
-        Do you want to search for available device again?
-        Press 'Yes' to search again. Press 'No' to quit pairing mode.
-    </system:String>
-    <system:String x:Key="ANS_deviveNotFound_title">Device Not Found</system:String>
-    <system:String x:Key="ANS_disallowAll">Disallow all</system:String>
-    <system:String x:Key="ANS_findDev">Finding device...</system:String>
-    <system:String x:Key="ANS_importQuestion">Do you want to allow following devices to auto import their photos and videos to this PC?</system:String>
     <system:String x:Key="ANS_step1_1">Install Favorite on your mobile device</system:String>
     <system:String x:Key="ANS_step1_2">and turn it on.</system:String>
     <system:String x:Key="ANS_step2">Make sure your device and this PC are on the same Wifi network.</system:String>
@@ -40,7 +28,6 @@
     <system:String x:Key="Day">同一天</system:String>
     <system:String x:Key="DefaultFavoriteName">未命名的相簿</system:String>
     <system:String x:Key="EmailButtonText">Email給...</system:String>
-    <system:String x:Key="EventInterval">事件區分:</system:String>
     <system:String x:Key="ExistingFolder">現有目錄</system:String>
     <system:String x:Key="ExitButtonText">離開</system:String>
     <system:String x:Key="Favorite">最愛相簿</system:String>

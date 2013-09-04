@@ -163,9 +163,6 @@
             <BitmapImage x:Key="SelectedMobile"
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/menu_phone_1.png" />
-            <BitmapImage x:Key="NormalStarBox"
-                         CacheOption="OnDemand"
-                         UriSource="pack://application:,,,/Resource/star_noitem.png" />
             <BitmapImage x:Key="SelectedStarBox"
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/star_selected.png" />
