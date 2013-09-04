@@ -32,7 +32,12 @@ namespace InfiniteStorage.WebsocketProtocol
 
 				var file_id = Util.QueryFileId(ctx.device_id, Path.Combine(ctx.fileCtx.folder, ctx.fileCtx.file_name), ctx);
 				if (file_id == null)
-					file_id = Guid.NewGuid();
+				{
+					if (ctx.fileCtx.file_id != Guid.Empty)
+						file_id = ctx.fileCtx.file_id;
+					else
+						file_id = Guid.NewGuid();
+				}
 
 				ctx.fileCtx.file_id = file_id.Value;
 
