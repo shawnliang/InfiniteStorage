@@ -102,6 +102,7 @@
     <Compile Include="Src\Class\REST\EventSyncUpdateApiHandler.cs" />
     <Compile Include="Src\Class\REST\PairingPasscodeApiHandler.cs" />
     <Compile Include="Src\Class\REST\SyncSetApiHandler.cs" />
+    <Compile Include="Src\Class\Share\PreviewData.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ThumbnailReceivedEventArgs.cs" />
     <Compile Include="Src\Class\WebsocketProtocol\ThumbnailStartedState.cs" />
     <Compile Include="Src\Dialog\MigratingDataDialog.cs">

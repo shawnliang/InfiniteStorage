@@ -48,5 +48,37 @@ namespace InfiniteStorage.Common
 				proc.WaitForExit();
 			}
 		}
+
+		public static void ExtractStillIamge(string video_path, int duration, int framerate, string folder, int width)
+		{
+			var outputFile = Path.Combine(folder, "image-%3d.jpg");
+
+			using (var proc = new Process())
+			{
+				proc.StartInfo = new ProcessStartInfo
+				{
+					FileName = program_path,
+					Arguments = string.Format(
+						"-i \"{0}\" -vf \"scale={1}:trunc(ow/a/2)*2\" -r {2} -t {3} -y \"{4}\"",
+						video_path, width, framerate, duration, outputFile),
+					CreateNoWindow = true,
+					WindowStyle = ProcessWindowStyle.Hidden
+				};
+				proc.Start();
+				
+				
+				try
+				{
+					proc.PriorityClass = ProcessPriorityClass.BelowNormal;
+				}
+				catch
+				{
+					// sometimes the process exit too soo so that setting priority class throws exception.
+					// just catch it.
+				}
+
+				proc.WaitForExit();
+			}
+		}
 	}
 }
