@@ -31,8 +31,7 @@
                        Grid.Column="1"
                        Margin="10"
                        Foreground="White"
-                       TextWrapping="WrapWithOverflow">
-                Import photos is the first step. Check out a couple basic tips to get started.
+                       TextWrapping="WrapWithOverflow" Text="{DynamicResource res_takeATour}">                
             </TextBlock>
         </Grid>
 

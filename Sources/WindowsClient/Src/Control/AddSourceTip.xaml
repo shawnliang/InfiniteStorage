@@ -47,7 +47,7 @@
                            HorizontalAlignment="Center"
                            FontSize="24"
                            FontWeight="ExtraBold"
-                           Text="To Get Started, you can ..." />
+                           Text="{DynamicResource res_getStartedTitle}" />
 
                 <Grid Margin="12, 8">
                     <Grid.ColumnDefinitions>
@@ -69,7 +69,7 @@
                                FontWeight="SemiBold"
                                MouseDown="tbHelpItem1_MouseDown"
                                TextWrapping="Wrap">
-                        <Run>Get our mobile apps and enable auto sync over same Wi-Fi.</Run>
+                        <Run Text="{DynamicResource res_getStartedTip1}"/>
                         <InlineUIContainer>
                             <Image Height="20"
                                    Margin="0, 8, 0, -4"
@@ -94,7 +94,7 @@
                                HorizontalAlignment="Left"
                                FontSize="18"
                                FontWeight="SemiBold"
-                               Text="Plug in digital camera via USB."
+                               Text="{DynamicResource res_getStartedTip2}"
                                TextWrapping="Wrap" />
                 </Grid>
 
@@ -118,7 +118,7 @@
                                FontWeight="SemiBold"
                                MouseDown="tbHelpItem3_MouseDown"
                                TextWrapping="Wrap">
-                        <Run>Get our Player app to enjoy Home Sharing for all albums created.</Run>
+                        <Run Text="{DynamicResource res_getStartedTip3}"/>
                         <InlineUIContainer>
                             <Image Height="20"
                                    Margin="0, 8, 0, -4"

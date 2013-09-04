@@ -1,4 +1,5 @@
-﻿<UserControl x:Class="Waveface.Client.SwitchButton"
+﻿
+<UserControl x:Class="Waveface.Client.SwitchButton"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,7 +9,6 @@
              Width="79.667"
              Height="27.001"
              mc:Ignorable="d">
-
     <Grid x:Name="LayoutRoot">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -27,7 +27,6 @@
         <Ellipse Grid.Column="3"
                  Grid.ColumnSpan="2"
                  Fill="#FF818181" />
-
         <Ellipse x:Name="epOffButton"
                  Grid.Column="0"
                  Grid.ColumnSpan="2"
@@ -38,10 +37,9 @@
                Grid.ColumnSpan="4"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
-               Content="Off"
+               Content="{StaticResource res_34}"
                Foreground="White"
                MouseDown="lblOffText_MouseDown" />
-
         <Ellipse x:Name="epOnButton"
                  Grid.Column="3"
                  Grid.ColumnSpan="2"
@@ -53,7 +51,7 @@
                Grid.ColumnSpan="4"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
-               Content="On"
+               Content="{StaticResource res_35}"
                Foreground="White"
                MouseDown="lblOnText_MouseDown"
                Visibility="Collapsed" />
