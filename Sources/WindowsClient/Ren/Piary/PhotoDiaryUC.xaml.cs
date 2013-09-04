@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Waveface.ClientFramework;
 using Waveface.Model;
 using WpfAnimatedGif;
 
@@ -170,15 +171,30 @@ namespace Waveface.Client
 		{
 			m_fileEntries = new List<FileEntry>();
 
-			List<FileEntry> _fCs = files.Select(x => new FileEntry
-														 {
-															 id = x.file_id.ToString(),
-															 tiny_path = Path.Combine(m_thumbsPath, x.file_id + ".tiny.thumb"),
-															 s92_path = Path.Combine(m_thumbsPath, x.file_id + ".s92.thumb"),
-															 taken_time = x.event_time,
-															 type = x.type,
-															 has_origin = x.has_origin
-														 }).ToList();
+			List<FileEntry> _fCs = new List<FileEntry>();
+
+			foreach (FileAsset x in files)
+			{
+				FileEntry _fe = new FileEntry();
+
+				_fe.id = x.file_id.ToString();
+				_fe.tiny_path = Path.Combine(m_thumbsPath, x.file_id + ".tiny.thumb");
+				_fe.s92_path = Path.Combine(m_thumbsPath, x.file_id + ".s92.thumb");
+				_fe.taken_time = x.event_time;
+				_fe.type = x.type;
+				_fe.has_origin = x.has_origin;
+
+				if(string.IsNullOrEmpty(x.saved_path))
+				{
+					_fe.saved_path = "";
+				}
+				else
+				{
+					_fe.saved_path = Path.Combine(m_basePath, x.saved_path);
+				}
+
+				_fCs.Add(_fe);
+			}
 
 			m_fileEntries = _fCs.OrderBy(o => o.taken_time).ToList();
 
@@ -394,5 +410,26 @@ namespace Waveface.Client
 		}
 
 		#endregion
+
+		private void listBoxEvent_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (listBoxEvent.SelectedItem != null)
+			{
+				ObservableCollection<IContentEntity> _contents = new ObservableCollection<IContentEntity>();
+				List<FileEntry> _files = m_days[listBoxEvent.SelectedIndex];
+
+				foreach (FileEntry _fe in _files)
+				{
+					Content _ce = new BunnyContent(new Uri(_fe.saved_path), _fe.id, ContentType.Photo);
+
+					_contents.Add(_ce);
+				}
+
+				ContentGroup gropup = new ContentGroup(Guid.NewGuid().ToString(), "event", new Uri(@"c:\"), _contents);
+
+				
+				m_mainWindow.ToPhotoDiary2ndLevel(gropup.Contents, "TITLE", "COUNT");
+			}
+		}
 	}
 }

@@ -12,6 +12,7 @@ namespace Waveface.Client
 		public string id;
 		public string tiny_path;
 		public string s92_path;
+		public string saved_path;
 		public DateTime taken_time;
 		public int type;
 		public bool has_origin;
