@@ -6,7 +6,9 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DesignWidth="800"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             Margin="4, 12"
+             >
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
@@ -73,147 +75,69 @@
                                              TrueValue="Hidden" />
     </UserControl.Resources>
 
-    <Grid x:Name="gridMain"
-          Background="#4f4f4f">
+    <Grid x:Name="gridMain" Background="#313131" HorizontalAlignment="Center">
         <i:Interaction.Behaviors>
             <PendingUI:IgnoreMouseWheelBehavior />
         </i:Interaction.Behaviors>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0"
-              MouseLeftButtonDown="Grid_MouseLeftButtonDown">
-            <Border Margin="4, 9"
-                    VerticalAlignment="Top"
-                    BorderBrush="#f0f0f0"
-                    BorderThickness="0"
-                    Cursor="Hand"
-                    RenderTransformOrigin="0.5,0.5">
-                <Grid>
-                    <Image x:Name="imgHead"
-                           Width="180"
-                           Height="180"
-                           Stretch="UniformToFill"
-                           Visibility="Collapsed">
-                        <Image.Effect>
-                            <BlurEffect Radius="5" />
-                        </Image.Effect>
-                    </Image>
+        <Grid Grid.Column="1" Grid.RowSpan="2" Background="#4f4f4f"/>
+        
+        
+        <Grid Grid.Row="0" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
 
-                    <Rectangle Width="172"
-                               Height="172"
-                               Margin="4"
-                               RadiusX="5"
-                               RadiusY="5">
-                        <Rectangle.Fill>
-                            <ImageBrush ImageSource="{Binding Path=Source,
-                                                              ElementName=imgHead}"
-                                        Stretch="UniformToFill" />
-                        </Rectangle.Fill>
-                        <Rectangle.Effect>
-                            <BlurEffect Radius="8" />
-                        </Rectangle.Effect>
-                    </Rectangle>
+            <StackPanel  HorizontalAlignment ="Left"  VerticalAlignment="Center" Cursor="Hand" Orientation="Horizontal">
+                <Image Width="24" Margin="12, 0, 0, 0" Height="24" Source = "pack://application:,,,/Resource/folder.png" HorizontalAlignment="Center"/>
 
-                    <Image x:Name="imgHead2"
-                           Width="180"
-                           Height="126"
-                           Margin="8, 2, 7, 0"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Top"
-                           Stretch="UniformToFill" />
-
-                    <Rectangle x:Name="rectMonthAreaImage"
-                               Width="180"
-                               Height="180"
-                               Fill="#80000000"
-                               RadiusX="5"
-                               RadiusY="5"
-                               Visibility="Collapsed" />
-                </Grid>
-            </Border>
-
-            <StackPanel Height="60"
-                        Margin="4, 140, 4, 8"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Top"
-                        Cursor="Hand"
-                        Orientation="Horizontal">
                 <TextBlock x:Name="tbTitleMonth"
+                           Margin="8, 4, 0, 0"
                            FontSize="16"
                            Foreground="#F0F0F0"
                            Text="12"
                            TextAlignment="Center"
                            TextWrapping="Wrap" />
+
                 <TextBlock x:Name="tbTitleYear"
-                           Margin="8, 0, 0, 0"
+                           Margin="6, 4, 0, 0"
                            FontSize="16"
                            Foreground="#F0F0F0"
                            Text="1999"
                            TextAlignment="Center"
                            TextWrapping="Wrap" />
-            </StackPanel>
 
-            <Rectangle x:Name="rectMonthAreaAll"
-                       Width="180"
-                       Height="180"
-                       Margin="4, 9"
-                       VerticalAlignment="Top"
-                       Fill="#90000000"
-                       RadiusX="5"
-                       RadiusY="5"
-                       Visibility="Collapsed" />
-
-            <Rectangle Width="181"
-                       Height="181"
-                       Margin="3, 8"
-                       VerticalAlignment="Top"
-                       RadiusX="5"
-                       RadiusY="5"
-                       Stroke="#70eeeeee"
-                       StrokeThickness="1" />
-
-            <TextBlock x:Name="tbTotalCount"
-                       Margin="0, 162, 0, 0"
+                <TextBlock x:Name="tbTotalCount"
+                       Margin="16, 8, 0, 0"
                        FontSize="12"
                        Foreground="#aaaaaa"
                        Text="99 Photos"
                        TextAlignment="Center"
                        TextWrapping="Wrap" />
-        </Grid>
-
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="tbTimeAgo"
-                           Margin="12,0,0,0"
-                           VerticalAlignment="Bottom"
-                           FontSize="16"
-                           Foreground="#929292"
-                           Text="Yesterday" />
-                <!--  TextBlock x:Name="tbTotalCount" Foreground="#929292" Margin="12,0,0,0" VerticalAlignment="Bottom" Text="99 Photos" FontSize="16" /  -->
             </StackPanel>
 
+        </Grid>
+
+        <Grid Grid.Row="1">
             <ListBox x:Name="lbEvent"
-                     Grid.Row="1"
-                     Margin="0, 8, 4, 40"
-                     Background="#4f4f4f"
+                     Background="#313131"
                      BorderThickness="0"
+                     HorizontalAlignment="Left"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      SelectionMode="Extended">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
+                        <StackPanel Background="#4f4f4f">
                             <Border Width="60"
                                     Height="60"
-                                    BorderThickness="0">
+                                    BorderThickness="0" Padding="1">
                                 <Grid>
                                     <Image HorizontalAlignment="Stretch"
                                            VerticalAlignment="Stretch"
@@ -222,8 +146,8 @@
                                            Visibility="{Binding Path=IsVideo,
                                                                 Converter={StaticResource BoolToHiddenConverter}}" />
 
-                                    <Image HorizontalAlignment="Left"
-                                           VerticalAlignment="Top"
+                                    <Image HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
                                            RenderTransformOrigin="0.5,0.5"
                                            Source="{Binding Path=BitmapImage}"
                                            Stretch="UniformToFill"
@@ -250,17 +174,20 @@
                                                                     Converter={StaticResource boolToVisibilityConverter}}" />
 
                                     <Border Background="#313131"
-                                            Visibility="{Binding Path=IsMore,
-                                                                 Converter={StaticResource BoolToHiddenConverter}}">
-                                        <TextBlock Margin="10, 0"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
+                                            Visibility="{Binding Path=IsMore, Converter={StaticResource BoolToHiddenConverter}}">
+                                        
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock                                                                                               
                                                    FontSize="16"
                                                    FontWeight="SemiBold"
                                                    Foreground="#F0F0F0"
                                                    Text="{Binding MoreText}"
                                                    TextAlignment="Center"
                                                    TextWrapping="Wrap" />
+
+                                            <Image Width="16" Margin="4, 0, 0, 0" Height="16" Source = "pack://application:,,,/Resource/arrow_right1.png" HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                        
                                     </Border>
 
                                     <Border Background="#313131"

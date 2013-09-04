@@ -523,12 +523,11 @@
 
         <local:PhotoDiaryUC x:Name="photoDiaryUC"
                             Grid.Row="0"
-                            Grid.RowSpan="2"
+                            Grid.RowSpan="3"
                             Grid.Column="1"
                             Grid.ColumnSpan="2"
                             Width="Auto"
                             Height="Auto"
-                            Margin="1,0,0,0"
                             Visibility="Collapsed" />
 
         <Grid x:Name="stackPanel"

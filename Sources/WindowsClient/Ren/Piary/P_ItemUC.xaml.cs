@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Waveface.Model;
 
@@ -22,39 +23,39 @@ namespace Waveface.Client
 		public MainWindow MyMainWindow { get; set; }
 		public IService CurrentDevice { get; set; }
 
-		public double RotationX
+		public double MyWidth
 		{
-			get { return m_rotationX; }
+			get { return m_myWidth; }
 			set
 			{
-				m_rotationX = value;
-				OnPropertyChanged("RotationX");
+				m_myWidth = value;
+				OnPropertyChanged("MyWidth");
 			}
 		}
 
-		public double RotationY
+		public double MyHeight
 		{
-			get { return m_rotationY; }
+			get { return m_myHeight; }
 			set
 			{
-				m_rotationY = value;
-				OnPropertyChanged("RotationY");
+				m_myHeight = value;
+				OnPropertyChanged("MyHeight");
 			}
 		}
 
-		public double RotationZ
+		public double MySquare
 		{
-			get { return m_rotationZ; }
+			get { return m_mySquare; }
 			set
 			{
-				m_rotationZ = value;
-				OnPropertyChanged("RotationZ");
+				m_mySquare = value;
+				OnPropertyChanged("MySquare");
 			}
 		}
 
-		public double m_rotationX;
-		public double m_rotationY;
-		public double m_rotationZ;
+		public double m_myWidth;
+		public double m_myHeight;
+		public double m_mySquare; 
 
 		private int m_currentIndex;
 
@@ -75,14 +76,23 @@ namespace Waveface.Client
 		private List<FileEntry> m_fileEntrys = new List<FileEntry>();
 		private int m_delayMouseMoveCount;
 		private int DELAY = 22;
+		private bool m_updateUI;
 
 		public P_ItemUC()
 		{
 			InitializeComponent();
 		}
 
-		public void SetUI()
+		public void SetUI(double myWidth, double myHeight)
 		{
+			m_updateUI = true;
+
+			m_currentIndex = 0;
+
+			MyWidth = myWidth;
+			MyHeight = myHeight;
+			MySquare = MyWidth - 16;
+
 			GetCounts();
 
 			SetInfor();
@@ -90,12 +100,14 @@ namespace Waveface.Client
 			FileEntrys.Reverse();
 
 			SetImage(m_currentIndex);
+
+			m_updateUI = false;
 		}
 
 		private void SetImage(int index)
 		{
 			tbTitle.Text = YMD;
-			tbCount.Text = (index + 1) + "/" + FileEntrys.Count;
+			tbCount.Text = "" + FileEntrys.Count;
 
 			FileEntry _fileEntry = FileEntrys[index];
 
@@ -186,29 +198,23 @@ namespace Waveface.Client
 
 		private void image_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
 		{
-			if (((++m_delayMouseMoveCount) % DELAY) == 0)
+			if (!m_updateUI)
 			{
-				SetImage((++m_currentIndex) % FileEntrys.Count);
+				if (((++m_delayMouseMoveCount) % DELAY) == 0)
+				{
+					SetImage((++m_currentIndex) % FileEntrys.Count);
+				}
 			}
 		}
 
 		private void image_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
 		{
-			//m_delayMouseMoveCount = 0;
+			image.Stretch = Stretch.Uniform;
 		}
 
-		private void Planerator_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+		private void image_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
 		{
-			RotationX = 0;
-			RotationY = 0;
-			RotationZ = 0;
-		}
-
-		private void Planerator_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-		{
-			RotationX = PhotoDiaryUC.GetRandom();
-			RotationY = PhotoDiaryUC.GetRandom();
-			RotationZ = PhotoDiaryUC.GetRandom();
+			image.Stretch = Stretch.UniformToFill;
 		}
 
 		#region INotifyPropertyChanged Members

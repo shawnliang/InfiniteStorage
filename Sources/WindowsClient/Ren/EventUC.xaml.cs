@@ -61,6 +61,7 @@ namespace Waveface.Client
 		public bool Changed { get; set; }
 		public MainWindow MyMainWindow { get; set; }
 		public IService CurrentDevice { get; set; }
+		public int More { get; set; }
 
 		public List<FileEntry> FileEntrys
 		{
@@ -77,7 +78,7 @@ namespace Waveface.Client
 
 		private int m_oldFileEntrysCount;
 		private List<FileEntry> m_fileEntrys = new List<FileEntry>();
-		private const int More = 100;
+
 		private bool m_showMoreButton;
 		private List<EventItem> m_eventItems;
 		private int m_hasOriginCount;
@@ -89,20 +90,22 @@ namespace Waveface.Client
 			m_showMoreButton = true;
 		}
 
-		public void SetUI()
+		public void SetUI(int countPerLine, bool forceChange)
 		{
+			More = countPerLine * 4 - 1;
+
+			lbEvent.Width = countPerLine * 60 + 2;
+
 			GetCounts();
 
 			SetInfor();
 
 			FileEntrys.Reverse();
 
-			SetHeadImage();
-
 			List<EventItem> _ctlItems = new List<EventItem>();
 
 			// 若改變項目個數, 則重新產生UI
-			if (Changed)
+			if (Changed || forceChange)
 			{
 				int _idx = 0;
 
@@ -113,7 +116,7 @@ namespace Waveface.Client
 						EventItem _eventItem = new EventItem
 												   {
 													   IsMore = true,
-													   MoreText = FileEntrys.Count - 100 + " More"
+													   MoreText = "" + (FileEntrys.Count - More)
 												   };
 
 						_ctlItems.Add(_eventItem);
@@ -244,59 +247,6 @@ namespace Waveface.Client
 			}
 		}
 
-		private void SetHeadImage()
-		{
-			FileEntry _fileEntry = FileEntrys[0];
-
-			switch (_fileEntry.type)
-			{
-				case 0:
-					{
-						string _sPath = _fileEntry.tiny_path.Replace(".tiny.", ".medium.");
-
-						if (!File.Exists(_sPath))
-						{
-							_sPath = _fileEntry.s92_path;
-						}
-
-						BitmapImage _bi = new BitmapImage();
-						_bi.BeginInit();
-						_bi.UriSource = new Uri(_sPath, UriKind.Absolute);
-						_bi.EndInit();
-
-						imgHead.Source = _bi;
-						imgHead2.Source = _bi;
-					}
-
-					break;
-				case 1:
-					{
-						BitmapImage _vidoeThumb = new BitmapImage();
-						_vidoeThumb.BeginInit();
-
-						if (File.Exists(_fileEntry.s92_path))
-						{
-							_vidoeThumb.UriSource = new Uri(_fileEntry.s92_path, UriKind.Absolute);
-						}
-						else if (File.Exists(_fileEntry.tiny_path))
-						{
-							_vidoeThumb.UriSource = new Uri(_fileEntry.tiny_path, UriKind.Absolute);
-						}
-						else
-						{
-							_vidoeThumb.UriSource = new Uri("pack://application:,,,/Ren/Images/video_130x110.png");
-						}
-
-						_vidoeThumb.EndInit();
-
-						imgHead.Source = _vidoeThumb;
-						imgHead2.Source = _vidoeThumb;
-					}
-
-					break;
-			}
-		}
-
 		private void UpdateShowMoreUI()
 		{
 			if (m_showMoreButton)
@@ -329,20 +279,7 @@ namespace Waveface.Client
 			tbTitleMonth.Text = FileEntrys[0].taken_time.ToString("MMMM").ToUpper();
 			tbTitleYear.Text = FileEntrys[0].taken_time.ToString("yyyy");
 
-			tbTimeAgo.Visibility = Visibility.Collapsed;
-
 			tbTotalCount.Text = SourceAllFilesUC.GetCountsString(PhotosCount, VideosCount);
-
-			if (m_hasOriginCount == 0)
-			{
-				rectMonthAreaAll.Visibility = Visibility.Visible;
-				rectMonthAreaImage.Visibility = Visibility.Collapsed;
-			}
-			else
-			{
-				rectMonthAreaAll.Visibility = Visibility.Collapsed;
-				rectMonthAreaImage.Visibility = Visibility.Visible;
-			}
 		}
 
 		public void GetCounts()

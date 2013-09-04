@@ -28,6 +28,7 @@ namespace Waveface.Client
 
 		private DispatcherTimer m_startTimer;
 		private DispatcherTimer m_refreshTimer;
+		private DispatcherTimer m_sizeChangedDelayTimer;
 
 		private int m_videosCount;
 		private int m_photosCount;
@@ -41,6 +42,9 @@ namespace Waveface.Client
 		private Dictionary<string, List<FileEntry>> m_YM_Files;
 		private List<List<FileEntry>> m_months;
 		private ObservableCollection<EventUC> m_eventUCs;
+		private int m_countPerLine;
+
+		private bool m_inited;
 
 		public SourceAllFilesUC()
 		{
@@ -51,6 +55,8 @@ namespace Waveface.Client
 			m_solidColorBrush = new SolidColorBrush(Color.FromArgb(255, 120, 0, 34));
 
 			InitTimer();
+
+			SizeChanged += SourceAllFilesUC_SizeChanged;
 		}
 
 		private void InitTimer()
@@ -62,6 +68,37 @@ namespace Waveface.Client
 			m_refreshTimer = new DispatcherTimer();
 			m_refreshTimer.Tick += RefreshTimerOnTick;
 			m_refreshTimer.Interval = new TimeSpan(0, 0, 0, 0, 2000);
+
+			m_sizeChangedDelayTimer = new DispatcherTimer();
+			m_sizeChangedDelayTimer.Tick += SizeChangedDelayTimer_Tick;
+			m_sizeChangedDelayTimer.Interval = new TimeSpan(0, 0, 0, 0, 500);
+		}
+
+		private void SourceAllFilesUC_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			if (m_inited)
+			{
+				m_sizeChangedDelayTimer.Stop();
+
+				m_sizeChangedDelayTimer.Start();
+			}
+		}
+
+		private void getCountPerLine(double width)
+		{
+			m_countPerLine = (int)((width - 8) / (60 + 1.5));
+		}
+
+		void SizeChangedDelayTimer_Tick(object sender, EventArgs e)
+		{
+			m_sizeChangedDelayTimer.Stop();
+
+			if (m_inited)
+			{
+				getCountPerLine(ActualWidth);
+
+				ShowEvents(true);
+			}
 		}
 
 		public void Stop()
@@ -74,6 +111,8 @@ namespace Waveface.Client
 
 		public void Load(IService device, MainWindow mainWindow)
 		{
+			m_inited = false;
+
 			gridWaitingPanel.Visibility = Visibility.Visible;
 			BitmapImage _biWaiting = new BitmapImage();
 			_biWaiting.BeginInit();
@@ -116,6 +155,8 @@ namespace Waveface.Client
 			gridWaitingPanel.Visibility = Visibility.Collapsed;
 
 			m_refreshTimer.Start();
+
+			m_inited = true;
 		}
 
 		private void RefreshTimerOnTick(object sender, EventArgs e)
@@ -135,7 +176,7 @@ namespace Waveface.Client
 				{
 					prepareData(_files);
 
-					ShowEvents();
+					ShowEvents(false);
 				}
 
 				refreshTitleInfo();
@@ -216,6 +257,8 @@ namespace Waveface.Client
 
 		public void prepareData(List<FileAsset> files)
 		{
+			getCountPerLine(ActualWidth);
+
 			m_fileEntries = new List<FileEntry>();
 
 			List<FileEntry> _fCs = files.Select(x => new FileEntry
@@ -300,10 +343,10 @@ namespace Waveface.Client
 									   FileEntrys = _entries,
 									   YM = _entries[0].taken_time.ToString("yyyy-MM"),
 									   MyMainWindow = m_mainWindow,
-									   CurrentDevice = m_currentDevice
+									   CurrentDevice = m_currentDevice,
 								   };
 
-				_ctl.SetUI();
+				_ctl.SetUI(m_countPerLine, true);
 
 				m_photosCount += _ctl.PhotosCount;
 				m_videosCount += _ctl.VideosCount;
@@ -314,7 +357,7 @@ namespace Waveface.Client
 			}
 		}
 
-		private void ShowEvents()
+		private void ShowEvents(bool forceChange)
 		{
 			m_photosCount = 0;
 			m_videosCount = 0;
@@ -351,7 +394,7 @@ namespace Waveface.Client
 								   FileEntrys = _entries,
 								   YM = _YM,
 								   MyMainWindow = m_mainWindow,
-								   CurrentDevice = m_currentDevice
+								   CurrentDevice = m_currentDevice,
 							   };
 
 					_ctl.Changed = true;
@@ -359,7 +402,7 @@ namespace Waveface.Client
 					m_eventUCs.Add(_ctl);
 				}
 
-				_ctl.SetUI();
+				_ctl.SetUI(m_countPerLine, forceChange);
 
 				m_photosCount += _ctl.PhotosCount;
 				m_videosCount += _ctl.VideosCount;

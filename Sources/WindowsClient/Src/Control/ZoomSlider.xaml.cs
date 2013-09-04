@@ -10,6 +10,8 @@ namespace Waveface.Client
 {
 	public partial class ZoomSlider : UserControl
 	{
+		public event RoutedPropertyChangedEventHandler<double> ValueChanged;
+
 		#region Var
 
 		public static readonly DependencyProperty _minimum = DependencyProperty.Register("Minimum", typeof(Double), typeof(ZoomSlider), new UIPropertyMetadata(0.0, OnMinimumChanged));
@@ -88,6 +90,11 @@ namespace Waveface.Client
 		private void slider_ValueChanged(Object sender, RoutedPropertyChangedEventArgs<Double> e)
 		{
 			Value = slider.Value;
+
+			if(ValueChanged != null)
+			{
+				ValueChanged(this, e);
+			}
 		}
 	}
 }

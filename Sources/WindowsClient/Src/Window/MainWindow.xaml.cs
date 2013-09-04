@@ -1807,7 +1807,7 @@ namespace Waveface.Client
 
 		#endregion
 
-		public void ToPhotoDiary2ndLevel(ReadOnlyObservableCollection<IContentEntity> contents, string title, string pvCount)
+		public void ToPhotoDiary2ndLevel(IContentGroup contentGroup)
 		{
 			allFilesUC.Stop();
 			photoDiaryUC.Stop();
@@ -1832,15 +1832,15 @@ namespace Waveface.Client
 			rspRightSidePanel.Visibility = Visibility.Collapsed;
 			rspRightSidePane2.Visibility = Visibility.Collapsed;
 
-			lblContentLocation.Content = title;
+			lblContentLocation.DataContext = contentGroup;
 
 			btnBack.Visibility = Visibility.Visible;
 
 			lbxContentContainer.DataContext = null;
 			DoEvents();
-			lbxContentContainer.DataContext = contents;
+			lbxContentContainer.DataContext = contentGroup.Contents;
 
-			lblContentTypeCount.Content = pvCount;
+			SetContentTypeCount(contentGroup);
 
 			GC.Collect();
 		}

@@ -28,6 +28,7 @@ namespace Waveface.Client
 
 		private DispatcherTimer m_startTimer;
 		private DispatcherTimer m_refreshTimer;
+		private DispatcherTimer m_sizeChangedDelayTimer;
 
 		private int m_videosCount;
 		private int m_photosCount;
@@ -43,6 +44,9 @@ namespace Waveface.Client
 		private ObservableCollection<P_ItemUC> m_eventUCs;
 
 		private static Random m_rnd = new Random();
+		private double m_myWidth;
+		private double m_myHeight;
+		private bool m_inited;
 
 		public PhotoDiaryUC()
 		{
@@ -53,6 +57,8 @@ namespace Waveface.Client
 			m_solidColorBrush = new SolidColorBrush(Color.FromArgb(255, 120, 0, 34));
 
 			InitTimer();
+
+			setWH(240);
 		}
 
 		private void InitTimer()
@@ -64,6 +70,20 @@ namespace Waveface.Client
 			m_refreshTimer = new DispatcherTimer();
 			m_refreshTimer.Tick += RefreshTimerOnTick;
 			m_refreshTimer.Interval = new TimeSpan(0, 0, 0, 0, 3000);
+
+			m_sizeChangedDelayTimer = new DispatcherTimer();
+			m_sizeChangedDelayTimer.Tick += SizeChangedDelayTimer_Tick;
+			m_sizeChangedDelayTimer.Interval = new TimeSpan(0, 0, 0, 0, 500);
+		}
+
+		void SizeChangedDelayTimer_Tick(object sender, EventArgs e)
+		{
+			m_sizeChangedDelayTimer.Stop();
+
+			if (m_inited)
+			{
+				ShowEvents();
+			}
 		}
 
 		public void Stop()
@@ -76,6 +96,8 @@ namespace Waveface.Client
 
 		public void Load(IService device, MainWindow mainWindow)
 		{
+			m_inited = false;
+
 			gridWaitingPanel.Visibility = Visibility.Visible;
 			BitmapImage _biWaiting = new BitmapImage();
 			_biWaiting.BeginInit();
@@ -118,6 +140,8 @@ namespace Waveface.Client
 			gridWaitingPanel.Visibility = Visibility.Collapsed;
 
 			m_refreshTimer.Start();
+
+			m_inited = true;
 		}
 
 		private void RefreshTimerOnTick(object sender, EventArgs e)
@@ -184,7 +208,7 @@ namespace Waveface.Client
 				_fe.type = x.type;
 				_fe.has_origin = x.has_origin;
 
-				if(string.IsNullOrEmpty(x.saved_path))
+				if (string.IsNullOrEmpty(x.saved_path))
 				{
 					_fe.saved_path = "";
 				}
@@ -286,12 +310,9 @@ namespace Waveface.Client
 									   YMD = _entries[0].taken_time.ToString("yyyy-MM-dd"),
 									   MyMainWindow = m_mainWindow,
 									   CurrentDevice = m_currentDevice,
-									   RotationX = GetRandom(),
-									   RotationY = GetRandom(),
-									   RotationZ = GetRandom(),
 								   };
 
-				_ctl.SetUI();
+				_ctl.SetUI(m_myWidth, m_myHeight);
 
 				m_photosCount += _ctl.PhotosCount;
 				m_videosCount += _ctl.VideosCount;
@@ -340,9 +361,6 @@ namespace Waveface.Client
 								   YMD = _YMD,
 								   MyMainWindow = m_mainWindow,
 								   CurrentDevice = m_currentDevice,
-								   RotationX = GetRandom(),
-								   RotationY = GetRandom(),
-								   RotationZ = GetRandom(),
 							   };
 
 					_ctl.Changed = true;
@@ -350,7 +368,7 @@ namespace Waveface.Client
 					m_eventUCs.Add(_ctl);
 				}
 
-				_ctl.SetUI();
+				_ctl.SetUI(m_myWidth, m_myHeight);
 
 				m_photosCount += _ctl.PhotosCount;
 				m_videosCount += _ctl.VideosCount;
@@ -420,16 +438,35 @@ namespace Waveface.Client
 
 				foreach (FileEntry _fe in _files)
 				{
-					Content _ce = new BunnyContent(new Uri(_fe.saved_path), _fe.id, ContentType.Photo);
-
-					_contents.Add(_ce);
+					if (File.Exists(_fe.saved_path))
+					{
+						Content _ce = new BunnyContent(new Uri(_fe.saved_path), _fe.id, ContentType.Photo);
+						_contents.Add(_ce);
+					}
 				}
 
-				ContentGroup gropup = new ContentGroup(Guid.NewGuid().ToString(), "event", new Uri(@"c:\"), _contents);
+				ContentGroup gropup = new ContentGroup(Guid.NewGuid().ToString(), "Event", new Uri(@"c:\"), _contents);
 
-				
-				m_mainWindow.ToPhotoDiary2ndLevel(gropup.Contents, "TITLE", "COUNT");
+				m_mainWindow.ToPhotoDiary2ndLevel(gropup);
 			}
+		}
+
+		private void zoomSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			setWH(e.NewValue);
+
+			if(m_inited)
+			{
+				m_sizeChangedDelayTimer.Stop();
+
+				m_sizeChangedDelayTimer.Start();
+			}
+		}
+
+		private void setWH(double value)
+		{
+			m_myWidth = value;
+			m_myHeight = m_myWidth + 64;
 		}
 	}
 }
