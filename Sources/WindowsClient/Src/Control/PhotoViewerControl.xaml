@@ -144,7 +144,8 @@
                  Visibility="Collapsed" />
 
         <l:VideoControl x:Name="vcVideoControl"
-                        Width="{Binding ActualWidth, ElementName=vcViewerControl}"
+                        Width="{Binding ActualWidth,
+                                        ElementName=vcViewerControl}"
                         Height="22"
                         Margin="0"
                         HorizontalAlignment="Center"

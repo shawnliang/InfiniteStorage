@@ -1,11 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using InfiniteStorage.Model;
 using InfiniteStorage.Share;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using InfiniteStorage.Model;
+using System;
+using System.Collections.Generic;
 
 namespace UnitTest.share
 {
@@ -28,7 +26,7 @@ namespace UnitTest.share
 		[TestMethod]
 		public void testEnableShare()
 		{
-			var label = new Label { label_id = Guid.NewGuid(), share_enabled = true, share_proc_seq = 100, seq = 200, deleted = false, auto_type = 0, name = "test"};
+			var label = new Label { label_id = Guid.NewGuid(), share_enabled = true, share_proc_seq = 100, seq = 200, deleted = false, auto_type = 0, name = "test" };
 			db.Setup(x => x.QueryLabelsNeedingProcess()).Returns(new List<Label> { 
 				label
 			});

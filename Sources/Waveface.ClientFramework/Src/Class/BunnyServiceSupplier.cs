@@ -1,17 +1,13 @@
-﻿using System;
+﻿using InfiniteStorage.Data.Notify;
+using Microsoft.Win32;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.IO;
 using System.Linq;
+using System.Threading;
 using Waveface.Model;
 using WebSocketSharp;
-using Newtonsoft.Json;
-using System.Threading.Tasks;
-using System.Reactive.Linq;
-using System.Reactive.Concurrency;
-using System.Threading;
-using InfiniteStorage.Data.Notify;
-using Microsoft.Win32;
 
 namespace Waveface.ClientFramework
 {
@@ -106,7 +102,8 @@ namespace Waveface.ClientFramework
 
 		private void subscribeActiveDeviceAsync()
 		{
-			System.Threading.Tasks.Task t = new System.Threading.Tasks.Task(() => {
+			System.Threading.Tasks.Task t = new System.Threading.Tasks.Task(() =>
+			{
 
 				var port = Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "notify_port", "13995");
 
@@ -133,7 +130,8 @@ namespace Waveface.ClientFramework
 					device_id = Guid.NewGuid().ToString(),
 					device_name = "MainUI"
 				},
-				subscribe = new {
+				subscribe = new
+				{
 					devices = true
 				}
 			};
@@ -146,7 +144,8 @@ namespace Waveface.ClientFramework
 			if (e.Type != WebSocketSharp.Frame.Opcode.TEXT)
 				return;
 
-			try{
+			try
+			{
 				var notify = JsonConvert.DeserializeObject<NotificationMsg>(e.Data);
 
 				if (notify.recving_devices != null)
@@ -169,9 +168,9 @@ namespace Waveface.ClientFramework
 					refreshFolder(notify.update_folder);
 				}
 			}
-			catch(Exception err)
+			catch (Exception err)
 			{
-			
+
 			}
 		}
 
@@ -229,13 +228,13 @@ namespace Waveface.ClientFramework
 		private void addNewDevice(string device_id)
 		{
 			var q = from s in Services
-				where s.ID == device_id
-				select 1;
+					where s.ID == device_id
+					select 1;
 
 			if (q.Any())
 				return;
 
-			
+
 			using (var conn = BunnyDB.CreateConnection())
 			{
 				conn.Open();

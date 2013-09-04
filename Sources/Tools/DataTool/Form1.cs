@@ -2,11 +2,11 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Windows.Forms;
 using WebSocketSharp;
-using System.Collections.Generic;
 
 namespace DataTool
 {
@@ -176,7 +176,8 @@ namespace DataTool
 		{
 			WebSocket ws = new WebSocket("ws://127.0.0.1:13895/", new string[] { });
 
-			ws.OnOpen += (s, arg) => {
+			ws.OnOpen += (s, arg) =>
+			{
 				var cmd = JsonConvert.SerializeObject(new
 				{
 					action = "connect",

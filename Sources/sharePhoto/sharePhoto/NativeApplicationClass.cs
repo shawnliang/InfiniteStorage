@@ -1,8 +1,8 @@
 ﻿#region
 
+using DotNetOpenAuth.OAuth2;
 using System;
 using System.Collections.Generic;
-using DotNetOpenAuth.OAuth2;
 
 #endregion
 

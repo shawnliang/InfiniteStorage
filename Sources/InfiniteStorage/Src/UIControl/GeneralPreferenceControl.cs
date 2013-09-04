@@ -1,6 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using InfiniteStorage.Properties;
 using System;
-using InfiniteStorage.Properties;
+using System.Windows.Forms;
 
 namespace InfiniteStorage
 {

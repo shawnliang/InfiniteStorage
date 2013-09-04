@@ -1,12 +1,12 @@
 ﻿#region
 
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Data.SQLite;
 using System.Linq;
-using Microsoft.Win32;
 using Waveface.Model;
 
 #endregion
@@ -124,7 +124,7 @@ namespace Waveface.ClientFramework
 
 				using (var cmd = conn.CreateCommand())
 				{
-					if(all)
+					if (all)
 					{
 						cmd.CommandText = "SELECT * FROM Labels where auto_type == 0";
 					}
@@ -132,7 +132,7 @@ namespace Waveface.ClientFramework
 					{
 						cmd.CommandText = "SELECT * FROM Labels where auto_type == 0 and deleted == 0";
 					}
-					
+
 
 					using (var dr = cmd.ExecuteReader())
 					{
@@ -140,7 +140,7 @@ namespace Waveface.ClientFramework
 						{
 							var labelID = dr["label_id"].ToString();
 							var labelName = dr["name"].ToString();
-							var share_enabled = (bool) dr["share_enabled"];
+							var share_enabled = (bool)dr["share_enabled"];
 							var share_code = dr["share_code"].ToString();
 
 							if (labelID != "00000000-0000-0000-0000-000000000000")
@@ -170,7 +170,7 @@ namespace Waveface.ClientFramework
 						{
 							var labelID = dr["label_id"].ToString();
 							var labelName = dr["name"].ToString();
-							var share_enabled = (bool) dr["share_enabled"];
+							var share_enabled = (bool)dr["share_enabled"];
 							var share_code = dr["share_code"].ToString();
 
 							yield return new BunnyLabelContentGroup(labelID, labelName, share_enabled, share_code);
@@ -274,7 +274,7 @@ namespace Waveface.ClientFramework
 
 			if (content.Liked)
 			{
-				Tag(new[] {content}, StarredLabelId);
+				Tag(new[] { content }, StarredLabelId);
 			}
 			else
 			{
@@ -294,7 +294,7 @@ namespace Waveface.ClientFramework
 					cmd.Parameters.Add(new SQLiteParameter("@label", new Guid(group.ID)));
 					var on_air = cmd.ExecuteScalar();
 
-					return on_air != null && (bool) on_air;
+					return on_air != null && (bool)on_air;
 				}
 			}
 		}
@@ -302,7 +302,7 @@ namespace Waveface.ClientFramework
 		public bool HomeSharingEnabled
 		{
 			get { return Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", "true").ToString().Equals("true", StringComparison.CurrentCultureIgnoreCase); }
-            set { Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", value.ToString()); }
+			set { Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", value.ToString()); }
 		}
 	}
 }

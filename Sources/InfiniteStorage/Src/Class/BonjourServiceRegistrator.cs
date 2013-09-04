@@ -1,10 +1,10 @@
 ﻿using InfiniteStorage.Properties;
 using System;
-using System.Linq;
-using System.Threading;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Threading;
 
 namespace InfiniteStorage
 {
@@ -51,7 +51,7 @@ namespace InfiniteStorage
 		{
 			lock (cs)
 			{
-				
+
 				if (isAccepting.HasValue)
 					is_accepting = isAccepting.Value;
 
@@ -65,7 +65,7 @@ namespace InfiniteStorage
 				}
 
 				var procs = Process.GetProcessesByName("BonjourAgent");
-				if (procs!=null && procs.Any())
+				if (procs != null && procs.Any())
 					killProc(procs);
 
 
@@ -89,7 +89,7 @@ namespace InfiniteStorage
 				};
 
 				agentProcess.Start();
-				
+
 			}
 		}
 

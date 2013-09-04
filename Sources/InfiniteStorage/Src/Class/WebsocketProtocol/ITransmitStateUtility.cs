@@ -1,5 +1,5 @@
-﻿using System;
-using InfiniteStorage.Model;
+﻿using InfiniteStorage.Model;
+using System;
 
 namespace InfiniteStorage.WebsocketProtocol
 {

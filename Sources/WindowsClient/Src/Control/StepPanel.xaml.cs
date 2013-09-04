@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Waveface.Client
@@ -11,14 +12,14 @@ namespace Waveface.Client
 
 		#region Var
 
-		public static readonly DependencyProperty _stepNo = DependencyProperty.Register("StepNo", typeof(int), typeof(StepPanel), null);
+		public static readonly DependencyProperty _stepNo = DependencyProperty.Register("StepNo", typeof(Int32), typeof(StepPanel), null);
 
 		#endregion
 
 		#region Property
-		public int StepNo
+		public Int32 StepNo
 		{
-			get { return (int)GetValue(_stepNo); }
+			get { return (Int32)GetValue(_stepNo); }
 			set { SetValue(_stepNo, value); }
 		}
 		#endregion

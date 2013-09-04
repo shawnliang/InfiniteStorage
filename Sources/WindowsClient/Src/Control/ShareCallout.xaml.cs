@@ -9,14 +9,14 @@ namespace Waveface.Client
 	/// </summary>
 	public partial class ShareCallout : UserControl
 	{
-		public string SelectionText
+		public String SelectionText
 		{
-			get { return (string)GetValue(SelectionTextProperty); }
+			get { return (String)GetValue(SelectionTextProperty); }
 			set { SetValue(SelectionTextProperty, value); }
 		}
 
 		public static readonly DependencyProperty SelectionTextProperty =
-			DependencyProperty.Register("SelectionText", typeof(string), typeof(ShareCallout), null);
+			DependencyProperty.Register("SelectionText", typeof(String), typeof(ShareCallout), null);
 
 
 		public event EventHandler CreateOnlineAlbumClicked;
@@ -27,14 +27,14 @@ namespace Waveface.Client
 			InitializeComponent();
 		}
 
-		private void btnOnlineAlbum_click(object sender, RoutedEventArgs e)
+		private void btnOnlineAlbum_click(Object sender, RoutedEventArgs e)
 		{
 			var handler = CreateOnlineAlbumClicked;
 			if (handler != null)
 				handler(this, EventArgs.Empty);
 		}
 
-		private void btnSaveTo_click(object sender, RoutedEventArgs e)
+		private void btnSaveTo_click(Object sender, RoutedEventArgs e)
 		{
 			var handler = SaveToClicked;
 			if (handler != null)

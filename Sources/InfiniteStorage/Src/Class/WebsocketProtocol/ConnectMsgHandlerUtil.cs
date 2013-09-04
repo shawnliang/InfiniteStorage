@@ -1,6 +1,5 @@
 ﻿using InfiniteStorage.Model;
 using InfiniteStorage.Properties;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -41,8 +40,8 @@ namespace InfiniteStorage.WebsocketProtocol
 			using (var db = new MyDbContext())
 			{
 				var existingDev = (from dev in db.Object.Devices
-							 where dev.device_id == clientInfo.device_id
-							 select dev).FirstOrDefault();
+								   where dev.device_id == clientInfo.device_id
+								   select dev).FirstOrDefault();
 
 				if (existingDev != null)
 				{
@@ -85,7 +84,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		public string GetUniqueDeviceFolder(string device_name)
 		{
 			return DeviceUtility.GetUniqueDeviceFolder(device_name);
-			
+
 		}
 
 		public bool RejectUnpairedDevices

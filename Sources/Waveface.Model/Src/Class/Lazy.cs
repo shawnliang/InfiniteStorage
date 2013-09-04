@@ -66,29 +66,29 @@ namespace Waveface.Model
 				if (_backgroundInitThread == null)
 				{
 					_backgroundInitThread = new Thread(() =>
-						                                   {
-							                                   while (true)
-							                                   {
-								                                   ILazy lazyObj = m_UnInitLazys.FirstOrDefault();
-								                                   if (lazyObj != null)
-								                                   {
-									                                   try
-									                                   {
-										                                   lazyObj.Init();
-									                                   }
-									                                   catch (Exception)
-									                                   {
-										                                   m_UnInitLazys.Remove(lazyObj);
-										                                   m_UnInitLazys.Add(lazyObj);
-									                                   }
-								                                   }
-								                                   //else
-								                                   //{
-								                                   Thread.Sleep(100);
-								                                   Application.DoEvents();
-								                                   //}
-							                                   }
-						                                   }) {IsBackground = true, Priority = ThreadPriority.Lowest};
+														   {
+															   while (true)
+															   {
+																   ILazy lazyObj = m_UnInitLazys.FirstOrDefault();
+																   if (lazyObj != null)
+																   {
+																	   try
+																	   {
+																		   lazyObj.Init();
+																	   }
+																	   catch (Exception)
+																	   {
+																		   m_UnInitLazys.Remove(lazyObj);
+																		   m_UnInitLazys.Add(lazyObj);
+																	   }
+																   }
+																   //else
+																   //{
+																   Thread.Sleep(100);
+																   Application.DoEvents();
+																   //}
+															   }
+														   }) { IsBackground = true, Priority = ThreadPriority.Lowest };
 				}
 				return _backgroundInitThread;
 			}
@@ -241,19 +241,19 @@ namespace Waveface.Model
 				if (_initThread == null)
 				{
 					_initThread = new Thread(() =>
-						                         {
-							                         try
-							                         {
-								                         Init();
-							                         }
-							                         catch
-							                         {
-								                         m_Result = default(T);
-								                         IsValueCreated = false;
-								                         IsIniting = false;
-								                         _initThread = null;
-							                         }
-						                         });
+												 {
+													 try
+													 {
+														 Init();
+													 }
+													 catch
+													 {
+														 m_Result = default(T);
+														 IsValueCreated = false;
+														 IsIniting = false;
+														 _initThread = null;
+													 }
+												 });
 					_initThread.Priority = ThreadPriority.Highest;
 				}
 				return _initThread;
@@ -441,7 +441,7 @@ namespace Waveface.Model
 		/// <param name="o">The o.</param>
 		private void PostSyncContext<T>(Action<T> target, Object o)
 		{
-			m_SyncContext.Post((obj) => target((T) obj), o);
+			m_SyncContext.Post((obj) => target((T)obj), o);
 		}
 
 		/// <summary>

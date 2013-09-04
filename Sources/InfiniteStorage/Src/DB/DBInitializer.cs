@@ -1,10 +1,10 @@
-﻿using InfiniteStorage.Properties;
+﻿using InfiniteStorage.DB;
+using InfiniteStorage.Properties;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Data.SQLite;
 using System.IO;
-using InfiniteStorage.DB;
+using System.Linq;
 
 namespace InfiniteStorage.Model
 {
@@ -557,7 +557,7 @@ PRIMARY KEY ([event_id],[file_id])
 					schemaVersion = 20;
 				}
 
-				
+
 				var curSchema = getDbSchemaVersion(conn);
 
 				if (curSchema > 20L)
@@ -590,7 +590,7 @@ PRIMARY KEY ([event_id],[file_id])
 	class DBDowngradeException : Exception
 	{
 		public DBDowngradeException(string err)
-			:base(err)
+			: base(err)
 		{
 		}
 	}

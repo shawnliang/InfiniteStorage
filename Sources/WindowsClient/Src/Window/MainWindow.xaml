@@ -92,7 +92,8 @@
         </DataTemplate>
 
         <!--  Main photo catalog view  -->
-        <Style x:Key="PhotoListBoxStyle" TargetType="{x:Type ListBox}">
+        <Style x:Key="PhotoListBoxStyle"
+               TargetType="{x:Type ListBox}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBox}">
@@ -101,15 +102,18 @@
                                    VerticalAlignment="Top"
                                    Background="{TemplateBinding Background}"
                                    IsItemsHost="True"
-                                   ItemHeight="{Binding Value, ElementName=zoomSlider}"
-                                   ItemWidth="{Binding Value, ElementName=zoomSlider}"
+                                   ItemHeight="{Binding Value,
+                                                        ElementName=zoomSlider}"
+                                   ItemWidth="{Binding Value,
+                                                       ElementName=zoomSlider}"
                                    Orientation="Horizontal" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <Style x:Key="CommonListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+        <Style x:Key="CommonListBoxItemStyle"
+               TargetType="{x:Type ListBoxItem}">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -149,7 +153,7 @@
                                 <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
                                 </Trigger
                             -->
-                            
+
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -165,9 +169,12 @@
             <Setter Property="Margin" Value="5" />
         </Style>
 
-        <SolidColorBrush x:Key="TitleBarBackground" Color="#FF2E2E2E" />
-        <SolidColorBrush x:Key="ContentAreaBackground" Color="#FF4F4F4F" />
-        <SolidColorBrush x:Key="SidePanelBackground" Color="#434343" />
+        <SolidColorBrush x:Key="TitleBarBackground"
+                         Color="#FF2E2E2E" />
+        <SolidColorBrush x:Key="ContentAreaBackground"
+                         Color="#FF4F4F4F" />
+        <SolidColorBrush x:Key="SidePanelBackground"
+                         Color="#434343" />
 
         <Style x:Key="CloudAlbumGroupStyle"
                TargetType="Grid">
@@ -195,7 +202,7 @@
             </Style.Triggers>
         </Style>
 
-		  <Style x:Key="PhotoDiaryGroupStyle"
+        <Style x:Key="PhotoDiaryGroupStyle"
                TargetType="Grid">
             <Setter Property="Visibility" Value="Visible" />
             <Style.Triggers>
@@ -232,10 +239,11 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        
+
     </Window.Resources>
 
-    <Grid x:Name="gdMain"  Background="{DynamicResource ContentAreaBackground}">
+    <Grid x:Name="gdMain"
+          Background="{DynamicResource ContentAreaBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="302*" />
@@ -264,7 +272,8 @@
                           Grid.Row="0"
                           HorizontalScrollBarVisibility="Disabled"
                           MouseLeftButtonUp="svContentContainer_MouseLeftButtonUp"
-                          VerticalScrollBarVisibility="Auto" ScrollChanged="svContentContainer_ScrollChanged">
+                          ScrollChanged="svContentContainer_ScrollChanged"
+                          VerticalScrollBarVisibility="Auto">
 
                 <ListBox x:Name="lbxContentContainer"
                          Background="{x:Null}"
@@ -356,32 +365,30 @@
                 <StackPanel>
 
                     <Grid Style="{StaticResource PhotoDiaryGroupStyle}">
-                    	<Grid.RowDefinitions>
-                    		<RowDefinition Height="30" />
-                    		<RowDefinition Height="*" />
-                    	</Grid.RowDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                    	<Label
-						
-						Grid.Row="0"
-                    		VerticalContentAlignment="Bottom"
-                    		Content="相片日記"
-                    		FontWeight="Bold"
-                    		Foreground="#FFA8A8A8"
-                    		Padding="5,0,0,5" />
+                        <Label Grid.Row="0"
+                               VerticalContentAlignment="Bottom"
+                               Content="相片日記"
+                               FontWeight="Bold"
+                               Foreground="#FFA8A8A8"
+                               Padding="5,0,0,5" />
 
-                    	 <local:PhotoDiaryListBox 
-						 x:Name="lbxPhotoDiary" 
-                                             Grid.Row="1"
-                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
-                            <wvmodel:ContentGroup ID="event" Name="焦點動態"/>
-                    	 </local:PhotoDiaryListBox>
+                        <local:PhotoDiaryListBox x:Name="lbxPhotoDiary"
+                                                 Grid.Row="1"
+                                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <wvmodel:ContentGroup Name="焦點動態"
+                                                  ID="event" />
+                        </local:PhotoDiaryListBox>
                     </Grid>
 
                     <Grid Style="{StaticResource SourceGroupStyle}">
                         <Grid.RowDefinitions>
-                        	<RowDefinition Height="30" />
-                        	<RowDefinition Height="*" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0"
@@ -408,8 +415,8 @@
 
                     <Grid>
                         <Grid.RowDefinitions>
-                        	<RowDefinition Height="30" />
-                        	<RowDefinition Height="*" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0"
@@ -431,8 +438,8 @@
                     <Grid x:Name="gridCloudAlbumGroup"
                           Style="{StaticResource CloudAlbumGroupStyle}">
                         <Grid.RowDefinitions>
-                        	<RowDefinition Height="30" />
-                        	<RowDefinition Height="*" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0"
@@ -455,8 +462,8 @@
                     <Grid x:Name="gridLocalAlbumGroup"
                           Style="{StaticResource LocalAlbumGroupStyle}">
                         <Grid.RowDefinitions>
-                        	<RowDefinition Height="30" />
-                        	<RowDefinition Height="*" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0"
@@ -505,25 +512,25 @@
         </Grid>
 
         <local:SourceAllFilesUC x:Name="allFilesUC"
-                                  Grid.Row="0"
-                                  Grid.RowSpan="3"
-                                  Grid.Column="1"
-                                  Grid.ColumnSpan="2"
-                                  Width="Auto"
-                                  Height="Auto"
-                                  Margin="1,0,0,0"
-                                  Visibility="Collapsed" />
+                                Grid.Row="0"
+                                Grid.RowSpan="3"
+                                Grid.Column="1"
+                                Grid.ColumnSpan="2"
+                                Width="Auto"
+                                Height="Auto"
+                                Margin="1,0,0,0"
+                                Visibility="Collapsed" />
 
         <local:PhotoDiaryUC x:Name="photoDiaryUC"
-                                  Grid.Row="0"
-                                  Grid.RowSpan="2"
-                                  Grid.Column="1"
-                                  Grid.ColumnSpan="2"
-                                  Width="Auto"
-                                  Height="Auto"
-                                  Margin="1,0,0,0"
-                                  Visibility="Collapsed" />
-        
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Width="Auto"
+                            Height="Auto"
+                            Margin="1,0,0,0"
+                            Visibility="Collapsed" />
+
         <Grid x:Name="stackPanel"
               Grid.Row="2"
               Background="#d5d5d5">

@@ -16,7 +16,8 @@ namespace InfiniteStorage.Notify
 		IEnumerable<IConnectionStatus> GetAllBackupConnections();
 	}
 
-	public enum Orientation {
+	public enum Orientation
+	{
 		portrait,
 		landscape,
 	}

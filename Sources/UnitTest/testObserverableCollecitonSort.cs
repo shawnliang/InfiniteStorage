@@ -1,7 +1,5 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.ObjectModel;
-using System.Collections.Generic;
 using Waveface.Model;
 
 namespace UnitTest
@@ -49,7 +47,7 @@ namespace UnitTest
 		[TestMethod]
 		public void sort3()
 		{
-			var col = new ObservableCollection<string>(new string[] { "b"});
+			var col = new ObservableCollection<string>(new string[] { "b" });
 
 
 			col.Sort((x, y) => x.CompareTo(y));

@@ -6,13 +6,13 @@ namespace Waveface.Client
 {
 	public class IntToBoolConvertor : IValueConverter
 	{
-		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		public Object Convert(Object value, Type targetType, Object parameter, CultureInfo culture)
 		{
 			try
 			{
-				if (value is int)
+				if (value is Int32)
 				{
-					var count = (int)value;
+					var count = (Int32)value;
 
 					return count != 0;
 				}
@@ -25,8 +25,8 @@ namespace Waveface.Client
 			}
 		}
 
-		public object ConvertBack(object value, Type targetType,
-			object parameter, CultureInfo culture)
+		public Object ConvertBack(Object value, Type targetType,
+			Object parameter, CultureInfo culture)
 		{
 			throw new NotImplementedException();
 		}

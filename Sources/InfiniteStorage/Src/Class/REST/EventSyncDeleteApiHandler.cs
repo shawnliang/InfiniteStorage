@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using InfiniteStorage.Model;
+using System;
 using System.Data.SQLite;
 using System.Linq;
-using System.Text;
-using InfiniteStorage.Model;
 using Wammer.Station;
 
 namespace InfiniteStorage.REST
@@ -14,7 +12,7 @@ namespace InfiniteStorage.REST
 		{
 			CheckParameter("event_ids");
 
-			var event_ids = Parameters["event_ids"].Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(x=>new Guid(x));
+			var event_ids = Parameters["event_ids"].Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(x => new Guid(x));
 
 			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
 			{

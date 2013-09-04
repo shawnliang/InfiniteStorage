@@ -1,10 +1,10 @@
 ﻿#region
 
+using InfiniteStorage.Data;
 using System;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
 using System.IO;
-using InfiniteStorage.Data;
 using Waveface.Model;
 
 #endregion

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Waveface.Client
@@ -9,16 +10,16 @@ namespace Waveface.Client
 	public partial class LabeledContentInfo : UserControl
 	{
 		#region Var
-		public static readonly DependencyProperty _photoCount = DependencyProperty.Register("PhotoCount", typeof(int), typeof(LabeledContentInfo), new UIPropertyMetadata(0, new PropertyChangedCallback(OnPhotoCountChanged)));
-		public static readonly DependencyProperty _videoCount = DependencyProperty.Register("VideoCount", typeof(int), typeof(LabeledContentInfo), new UIPropertyMetadata(0, new PropertyChangedCallback(OnVideoCountChanged)));
+		public static readonly DependencyProperty _photoCount = DependencyProperty.Register("PhotoCount", typeof(Int32), typeof(LabeledContentInfo), new UIPropertyMetadata(0, new PropertyChangedCallback(OnPhotoCountChanged)));
+		public static readonly DependencyProperty _videoCount = DependencyProperty.Register("VideoCount", typeof(Int32), typeof(LabeledContentInfo), new UIPropertyMetadata(0, new PropertyChangedCallback(OnVideoCountChanged)));
 		#endregion
 
 		#region Property
-		public int PhotoCount
+		public Int32 PhotoCount
 		{
 			get
 			{
-				return (int)GetValue(_photoCount);
+				return (Int32)GetValue(_photoCount);
 			}
 			set
 			{
@@ -26,11 +27,11 @@ namespace Waveface.Client
 			}
 		}
 
-		public int VideoCount
+		public Int32 VideoCount
 		{
 			get
 			{
-				return (int)GetValue(_videoCount);
+				return (Int32)GetValue(_videoCount);
 			}
 			set
 			{
@@ -49,7 +50,7 @@ namespace Waveface.Client
 			if (o == null)
 				return;
 			var control = o as LabeledContentInfo;
-			control.PhotoCount = (int)e.NewValue;
+			control.PhotoCount = (Int32)e.NewValue;
 		}
 
 		private static void OnVideoCountChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
@@ -57,7 +58,7 @@ namespace Waveface.Client
 			if (o == null)
 				return;
 			var control = o as LabeledContentInfo;
-			control.VideoCount = (int)e.NewValue;
+			control.VideoCount = (Int32)e.NewValue;
 		}
 	}
 }

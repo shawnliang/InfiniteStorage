@@ -14,7 +14,7 @@ namespace UnitTest
 				Directory.Delete("dev", true);
 
 			Directory.CreateDirectory("dev");
-			
+
 
 			using (var f = new StreamWriter(@"dev\a.jpg"))
 			{

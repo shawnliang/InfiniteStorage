@@ -1,11 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using InfiniteStorage.Model;
+﻿using InfiniteStorage.Model;
 using InfiniteStorage.Share;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
 
 
 namespace UnitTest.share
@@ -33,7 +31,7 @@ namespace UnitTest.share
 		[TestMethod]
 		public void upload_not_on_cloud_file_assets()
 		{
-			var label = new Label{ label_id = Guid.NewGuid(), seq = 500, share_proc_seq = 100 };
+			var label = new Label { label_id = Guid.NewGuid(), seq = 500, share_proc_seq = 100 };
 
 			var file1 = new FileAsset { file_id = Guid.NewGuid() };
 			var file2 = new FileAsset { file_id = Guid.NewGuid(), on_cloud = false };

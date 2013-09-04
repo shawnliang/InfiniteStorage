@@ -1,9 +1,9 @@
 ﻿using InfiniteStorage.Model;
 using System;
+using System.Collections.Generic;
+using System.Data.SQLite;
 using System.IO;
 using System.Linq;
-using System.Data.SQLite;
-using System.Collections.Generic;
 
 namespace InfiniteStorage.WebsocketProtocol
 {
@@ -71,8 +71,9 @@ namespace InfiniteStorage.WebsocketProtocol
 			{
 				var saved_file = from f in db.Object.Files
 								 where f.file_path.Equals(full_path, StringComparison.InvariantCultureIgnoreCase) && f.device_id == device_id
-								 select new { 
-									has_origin = f.has_origin
+								 select new
+								 {
+									 has_origin = f.has_origin
 								 };
 
 				if (file.is_thumbnail)

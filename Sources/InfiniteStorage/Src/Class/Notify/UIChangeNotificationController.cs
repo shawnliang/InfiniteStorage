@@ -1,11 +1,10 @@
-﻿using System;
+﻿using InfiniteStorage.Data.Notify;
+using InfiniteStorage.Model;
+using InfiniteStorage.WebsocketProtocol;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using InfiniteStorage.WebsocketProtocol;
-using InfiniteStorage.Data.Notify;
-using Newtonsoft.Json;
-using InfiniteStorage.Model;
 
 namespace InfiniteStorage.Notify
 {
@@ -81,7 +80,7 @@ namespace InfiniteStorage.Notify
 					});
 				}
 
-				
+
 			}
 			catch (Exception err)
 			{
@@ -154,7 +153,7 @@ namespace InfiniteStorage.Notify
 			notifyRecvStatus(status);
 		}
 
-		
+
 
 		public void OnFileReceived(object sender, WebsocketEventArgs arg)
 		{

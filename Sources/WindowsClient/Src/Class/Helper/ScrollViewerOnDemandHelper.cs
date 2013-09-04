@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -11,7 +8,7 @@ namespace Waveface.Client
 	public static class ScrollViewerOnDemandHelper
 	{
 		#region Private Static Method
-		private static bool IsContentControlVisible(FrameworkElement child, ScrollViewer scrollViewer)
+		private static Boolean IsContentControlVisible(FrameworkElement child, ScrollViewer scrollViewer)
 		{
 			var childTransform = child.TransformToAncestor(scrollViewer);
 			var childRectangle = childTransform.TransformBounds(new Rect(new Point(0, 0), child.RenderSize));
@@ -22,9 +19,9 @@ namespace Waveface.Client
 		private static T GetVisualChild<T>(DependencyObject parent) where T : Visual
 		{
 			T child = default(T);
-			int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
+			Int32 numVisuals = VisualTreeHelper.GetChildrenCount(parent);
 
-			for (int i = 0; i < numVisuals; i++)
+			for (Int32 i = 0; i < numVisuals; i++)
 			{
 				Visual v = (Visual)VisualTreeHelper.GetChild(parent, i);
 				child = v as T;
@@ -45,7 +42,7 @@ namespace Waveface.Client
 		private static ChildControl FindVisualChild<ChildControl>(DependencyObject DependencyObj)
 			   where ChildControl : DependencyObject
 		{
-			for (int i = 0; i < VisualTreeHelper.GetChildrenCount(DependencyObj); i++)
+			for (Int32 i = 0; i < VisualTreeHelper.GetChildrenCount(DependencyObj); i++)
 			{
 				DependencyObject Child = VisualTreeHelper.GetChild(DependencyObj, i);
 
@@ -69,7 +66,7 @@ namespace Waveface.Client
 		#endregion
 
 		#region Public Static Method
-		public static void TryDisplayVisibleContentControls<T>(ScrollViewer scrollViewer, ItemsControl itemsControl, Action<T> displayAction, int prepareInvisibleContentControlCount = 15) where T : Visual
+		public static void TryDisplayVisibleContentControls<T>(ScrollViewer scrollViewer, ItemsControl itemsControl, Action<T> displayAction, Int32 prepareInvisibleContentControlCount = 15) where T : Visual
 		{
 			var visibleAreaEntered = false;
 			var visibleAreaLeft = false;
@@ -98,7 +95,7 @@ namespace Waveface.Client
 					displayAction(GetVisualChild<T>(contentPresenter));
 				}
 			}
-		} 
+		}
 		#endregion
 	}
 }

@@ -9,7 +9,7 @@ namespace Waveface.Client
 	/// </summary>
 	public partial class VolumeAdjustControl : UserControl
 	{
-		public double Volume
+		public Double Volume
 		{
 			get
 			{
@@ -38,7 +38,7 @@ namespace Waveface.Client
 			VolumeChanged(this, e);
 		}
 
-		private void VolumeProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		private void VolumeProgress_ValueChanged(Object sender, RoutedPropertyChangedEventArgs<Double> e)
 		{
 			OnVolumeChanged(EventArgs.Empty);
 		}

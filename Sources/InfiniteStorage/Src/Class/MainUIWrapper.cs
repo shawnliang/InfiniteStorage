@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using InfiniteStorage.Data;
+using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using InfiniteStorage.Data;
 
 namespace InfiniteStorage
 {
@@ -97,7 +94,7 @@ namespace InfiniteStorage
 					instructUiToGoToDevice(device_id);
 				}
 			}
-			catch(Exception err)
+			catch (Exception err)
 			{
 				log4net.LogManager.GetLogger(GetType()).Warn("Unable to activate UI", err);
 			}

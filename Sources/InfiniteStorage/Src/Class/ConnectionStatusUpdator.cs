@@ -1,6 +1,4 @@
-﻿using InfiniteStorage.Properties;
-using System;
-using System.IO;
+﻿using System;
 using System.Linq;
 
 namespace InfiniteStorage

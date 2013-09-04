@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using Waveface.Common;
-using WebSocketSharp.Server;
-using Wammer.Station;
+﻿using InfiniteStorage.Data;
+using InfiniteStorage.Model;
 using InfiniteStorage.Notify;
 using InfiniteStorage.Properties;
-using System.Drawing;
 using InfiniteStorage.REST;
-using System.IO;
-using Microsoft.Win32;
 using InfiniteStorage.Share;
-using InfiniteStorage.Data;
 using InfiniteStorage.Win32;
-using InfiniteStorage.Model;
+using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
+using Wammer.Station;
+using Waveface.Common;
+using WebSocketSharp.Server;
 
 namespace InfiniteStorage
 {
@@ -122,7 +121,7 @@ namespace InfiniteStorage
 			m_ReRegBonjourTimer = new NoReentrantTimer(reregisterBonjour, null, 60 * 1000, 60 * 1000);
 
 			// ----- remove out of date labels ----
-			m_recentLabelTimer = new NoReentrantTimer(removeOutOfDateLabels, null, 5000, 10 * 60 * 1000);	
+			m_recentLabelTimer = new NoReentrantTimer(removeOutOfDateLabels, null, 5000, 10 * 60 * 1000);
 
 			// ----- ConnectedClientCollection -----
 			InfiniteStorageWebSocketService.DeviceAccepted += (s, e) => { ConnectedClientCollection.Instance.Add(e.ctx); };
@@ -147,7 +146,7 @@ namespace InfiniteStorage
 			cameraImport = new readCamera.camerAccess();
 			cameraImport.CameraDetected += _fm1_CameraDetected;
 			cameraImport.ImportService = new Camera.ImportService();
-			
+
 		}
 
 		void InfiniteStorageWebSocketService_FileDropped(object sender, WebsocketProtocol.WebsocketEventArgs e)
@@ -333,7 +332,7 @@ namespace InfiniteStorage
 			}
 		}
 
-		
+
 		void InfiniteStorageWebSocketService_PairingRequesting(object sender, WebsocketProtocol.WebsocketEventArgs e)
 		{
 			var requestID = Guid.NewGuid().ToString();
@@ -341,7 +340,7 @@ namespace InfiniteStorage
 
 			var pairingSubscribers = Pair.PairWebSocketService.GetAllSubscribers();
 
-			if (!pairingSubscribers.Any() || 
+			if (!pairingSubscribers.Any() ||
 				!string.IsNullOrEmpty(e.ctx.passcode) && BonjourServiceRegistrator.Instance.Passcode != e.ctx.passcode)
 			{
 				e.ctx.handleDisapprove();
@@ -429,7 +428,7 @@ namespace InfiniteStorage
 				}
 
 				var dialog = new AskCameraImportDialog(e.Camera, e.DeviceId);
-				
+
 				e.DoImport = dialog.ShowDialog() == DialogResult.OK;
 			});
 		}
@@ -439,7 +438,7 @@ namespace InfiniteStorage
 			m_NotifyTimer.Start();
 			m_pingTimer.Start();
 			m_notifier.Start();
-			
+
 			rest_server.Start();
 			var backup_port = initWebsocketServer<InfiniteStorageWebSocketService>(out backup_server, 13895);
 			var notify_port = initWebsocketServer<NotifyWebSocketService>(out notify_server, 13995);
@@ -471,7 +470,7 @@ namespace InfiniteStorage
 			m_autoUpdate.Stop();
 			m_ReRegBonjourTimer.Stop();
 			m_shareMonitor.Stop();
-			
+
 			backup_server.Stop();
 			notify_server.Stop();
 			pair_server.Stop();

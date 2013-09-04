@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Waveface.ClientFramework;
-using Waveface.Model;
+
 
 #endregion
 
@@ -22,16 +22,16 @@ namespace Waveface.Client
 		private DispatcherTimer m_progressBarTimer;
 		private BunnyLabelContentGroup m_bunnyLabelContentGroup;
 
-		private string m_oldName;
-		private string m_oldFavoriteID;
+		private String m_oldName;
+		private String m_oldFavoriteID;
 
 		#region FavoriteName
 
-		public static readonly DependencyProperty _favoriteName = DependencyProperty.Register("FavoriteName", typeof(string), typeof(RightSidePanel2),
-																							  new UIPropertyMetadata(string.Empty, OnFavoriteNameChanged));
-		public string FavoriteName
+		public static readonly DependencyProperty _favoriteName = DependencyProperty.Register("FavoriteName", typeof(String), typeof(RightSidePanel2),
+																							  new UIPropertyMetadata(String.Empty, OnFavoriteNameChanged));
+		public String FavoriteName
 		{
-			get { return (string)GetValue(_favoriteName); }
+			get { return (String)GetValue(_favoriteName); }
 			set
 			{
 				SetValue(_favoriteName, value);
@@ -67,7 +67,7 @@ namespace Waveface.Client
 			m_oldFavoriteID = labelGroup.ID;
 		}
 
-		void m_progressBarTimer_Tick(object sender, EventArgs e)
+		void m_progressBarTimer_Tick(Object sender, EventArgs e)
 		{
 			m_progressBarTimer.Stop();
 
@@ -76,9 +76,9 @@ namespace Waveface.Client
 
 		private void CheckUploadProgress()
 		{
-			int _uploadFilesCount = m_bunnyLabelContentGroup.QueryAlbumUploadFilesCount(m_bunnyLabelContentGroup.ID);
+			Int32 _uploadFilesCount = m_bunnyLabelContentGroup.QueryAlbumUploadFilesCount(m_bunnyLabelContentGroup.ID);
 
-			int _total = m_bunnyLabelContentGroup.Contents.Count;
+			Int32 _total = m_bunnyLabelContentGroup.Contents.Count;
 
 			if (_uploadFilesCount == _total)
 			{
@@ -131,20 +131,20 @@ namespace Waveface.Client
 				return;
 
 			var control = o as RightSidePanel2;
-			control.FavoriteName = (string)e.NewValue;
+			control.FavoriteName = (String)e.NewValue;
 		}
 
-		private void tbxName_TextChanged(object sender, TextChangedEventArgs e)
+		private void tbxName_TextChanged(Object sender, TextChangedEventArgs e)
 		{
 			FavoriteName = tbxName.Text;
 		}
 
-		private void btnEmail_Click(object sender, RoutedEventArgs e)
+		private void btnEmail_Click(Object sender, RoutedEventArgs e)
 		{
 			OnCloudSharingClick(EventArgs.Empty);
 		}
 
-		private void tbtnCloudSharing_Checked(object sender, RoutedEventArgs e)
+		private void tbtnCloudSharing_Checked(Object sender, RoutedEventArgs e)
 		{
 			tbtnCloudSharing.Background = m_solidColorBrush;
 			tbtnCloudSharing.Content = "關閉";
@@ -153,7 +153,7 @@ namespace Waveface.Client
 			tipText.Visibility = Visibility.Collapsed;
 		}
 
-		private void tbtnCloudSharing_Unchecked(object sender, RoutedEventArgs e)
+		private void tbtnCloudSharing_Unchecked(Object sender, RoutedEventArgs e)
 		{
 			tbtnCloudSharing.Background = Brushes.DodgerBlue;
 			tbtnCloudSharing.Content = "開啟";

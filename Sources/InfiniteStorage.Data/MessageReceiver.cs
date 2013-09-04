@@ -109,7 +109,7 @@ namespace InfiniteStorage.Win32
 			if (m_Hwnd == IntPtr.Zero)
 				return;
 
-			m_ReceiverPool[m_Hwnd] = this;			
+			m_ReceiverPool[m_Hwnd] = this;
 		}
 		#endregion
 

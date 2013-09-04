@@ -10,16 +10,16 @@ namespace Waveface.Client
 	public partial class RightSidePanel1 : UserControl
 	{
 		#region Var
-		public static readonly DependencyProperty _photoCount = DependencyProperty.Register("PhotoCount", typeof(int), typeof(RightSidePanel1), new UIPropertyMetadata(0, new PropertyChangedCallback(OnPhotoCountChanged)));
-		public static readonly DependencyProperty _videoCount = DependencyProperty.Register("VideoCount", typeof(int), typeof(RightSidePanel1), new UIPropertyMetadata(0, new PropertyChangedCallback(OnVideoCountChanged)));
+		public static readonly DependencyProperty _photoCount = DependencyProperty.Register("PhotoCount", typeof(Int32), typeof(RightSidePanel1), new UIPropertyMetadata(0, new PropertyChangedCallback(OnPhotoCountChanged)));
+		public static readonly DependencyProperty _videoCount = DependencyProperty.Register("VideoCount", typeof(Int32), typeof(RightSidePanel1), new UIPropertyMetadata(0, new PropertyChangedCallback(OnVideoCountChanged)));
 		#endregion
 
 		#region Property
-		public int PhotoCount
+		public Int32 PhotoCount
 		{
 			get
 			{
-				return (int)GetValue(_photoCount);
+				return (Int32)GetValue(_photoCount);
 			}
 			set
 			{
@@ -28,11 +28,11 @@ namespace Waveface.Client
 			}
 		}
 
-		public int VideoCount
+		public Int32 VideoCount
 		{
 			get
 			{
-				return (int)GetValue(_videoCount);
+				return (Int32)GetValue(_videoCount);
 			}
 			set
 			{
@@ -77,7 +77,7 @@ namespace Waveface.Client
 			if (o == null)
 				return;
 			var control = o as RightSidePanel1;
-			control.PhotoCount = (int)e.NewValue;
+			control.PhotoCount = (Int32)e.NewValue;
 		}
 
 		private static void OnVideoCountChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
@@ -85,15 +85,15 @@ namespace Waveface.Client
 			if (o == null)
 				return;
 			var control = o as RightSidePanel1;
-			control.VideoCount = (int)e.NewValue;
+			control.VideoCount = (Int32)e.NewValue;
 		}
 
-		private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+		private void Button_Click(Object sender, System.Windows.RoutedEventArgs e)
 		{
 			OnAddToFavorite(EventArgs.Empty);
 		}
 
-		private void Button_Click_1(object sender, System.Windows.RoutedEventArgs e)
+		private void Button_Click_1(Object sender, System.Windows.RoutedEventArgs e)
 		{
 			OnSaveToFavorite(EventArgs.Empty);
 		}

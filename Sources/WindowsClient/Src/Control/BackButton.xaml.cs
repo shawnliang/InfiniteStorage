@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Waveface.Client
@@ -9,15 +10,15 @@ namespace Waveface.Client
 	public partial class BackButton : Button
 	{
 		#region Var
-		public static readonly DependencyProperty _enabled = DependencyProperty.Register("Enabled", typeof(bool), typeof(BackButton), new UIPropertyMetadata(false, new PropertyChangedCallback(OnEnableChanged)));
+		public static readonly DependencyProperty _enabled = DependencyProperty.Register("Enabled", typeof(Boolean), typeof(BackButton), new UIPropertyMetadata(false, new PropertyChangedCallback(OnEnableChanged)));
 		#endregion
 
 		#region Property
-		public bool Enabled
+		public Boolean Enabled
 		{
 			get
 			{
-				return (bool)GetValue(_enabled);
+				return (Boolean)GetValue(_enabled);
 			}
 			set
 			{
@@ -36,7 +37,7 @@ namespace Waveface.Client
 			if (o == null)
 				return;
 			var obj = o as BackButton;
-			obj.Enabled = (bool)e.NewValue;
+			obj.Enabled = (Boolean)e.NewValue;
 		}
 	}
 }

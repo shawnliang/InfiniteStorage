@@ -141,13 +141,13 @@ namespace Waveface.Model
 		protected void SetContents(Action<ObservableCollection<IContentEntity>> func)
 		{
 			_setContentAction = (contents) =>
-				                    {
-					                    contents.Clear();
-					                    func(contents);
+									{
+										contents.Clear();
+										func(contents);
 
-					                    foreach (var content in contents)
-						                    (content as ContentEntity).Service = Service;
-				                    };
+										foreach (var content in contents)
+											(content as ContentEntity).Service = Service;
+									};
 		}
 
 		protected void SetContents(IEnumerable<IContentEntity> values)

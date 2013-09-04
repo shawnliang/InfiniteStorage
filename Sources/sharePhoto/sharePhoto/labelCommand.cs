@@ -40,9 +40,9 @@ namespace Wpf_testHTTP
 			string _label_id = HttpUtility.UrlEncode(label_id);
 			string _name = HttpUtility.UrlEncode(name);
 			string _parms = "msg" + "=" + message + "&" +
-			                "label_id" + "=" + _label_id + "&" +
-			                "recipients" + "=" + recipients_json + "&" +
-			                "sender" + "=" + _name;
+							"label_id" + "=" + _label_id + "&" +
+							"recipients" + "=" + recipients_json + "&" +
+							"sender" + "=" + _name;
 
 			WebPostHelper _webPos = new WebPostHelper();
 			bool _isOK = _webPos.doPost(_url, _parms, null);

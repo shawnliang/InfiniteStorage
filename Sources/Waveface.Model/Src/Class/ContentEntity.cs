@@ -177,8 +177,8 @@ namespace Waveface.Model
 		private string GetContentPath()
 		{
 			return (Parent == null)
-				       ? string.Format(@"{0}", Name)
-				       : string.Format(@"{0}\{1}", Parent.ContentPath, Name);
+					   ? string.Format(@"{0}", Name)
+					   : string.Format(@"{0}\{1}", Parent.ContentPath, Name);
 		}
 
 		#endregion

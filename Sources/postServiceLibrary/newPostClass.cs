@@ -1,16 +1,9 @@
-﻿using System;
+﻿using log4net;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Net;
-using Newtonsoft.Json;
-using System.Collections.Specialized;
-using System.Drawing;
 using System.Web;
-using log4net;
-using Newtonsoft;
 
 
 namespace postServiceLibrary
@@ -46,7 +39,7 @@ namespace postServiceLibrary
 			sender = HttpUtility.UrlEncode(sender);
 			title = HttpUtility.UrlEncode(title);
 
-            string _url = postServiceClass.serverBaseUrl + "/pio_posts/update";
+			string _url = postServiceClass.serverBaseUrl + "/pio_posts/update";
 			DateTime _update = DateTime.UtcNow;
 			string _dateStr = _update.ToString(@"yyyy-MM-ddTHH\:mm\:ssZ");
 
@@ -54,11 +47,11 @@ namespace postServiceLibrary
 				"apikey" + "=" + APIKEY + "&" +
 				"session_token" + "=" + session_token + "&" +
 				"type" + "=" + type + "&" +
-				"group_id=" + group_id + "&" + 
+				"group_id=" + group_id + "&" +
 				"favorite" + "=" + favorite + "&" +
 				"update_time" + "=" + _dateStr + "&" +
-				"event_type" + "=" + event_type + "&" + 
-				"last_update_time" + "=" + lastUpdateTime + "&" + 
+				"event_type" + "=" + event_type + "&" +
+				"last_update_time" + "=" + lastUpdateTime + "&" +
 				"shared_email_list" + "=" + emailList + "&";
 
 
@@ -96,7 +89,7 @@ namespace postServiceLibrary
 			favorite = System.Web.HttpUtility.UrlEncode(favorite);
 			title = System.Web.HttpUtility.UrlEncode(title);
 
-            string _url = postServiceClass.serverBaseUrl + "/pio_posts/new";
+			string _url = postServiceClass.serverBaseUrl + "/pio_posts/new";
 
 			string _parms = "post_id" + "=" + post_id + "&" +
 				"apikey" + "=" + APIKEY + "&" +
@@ -131,7 +124,7 @@ namespace postServiceLibrary
 
 			WebPostHelper _webPos = new WebPostHelper();
 			return _webPos.doPost(_url, _parms, null);
-			
+
 		}
 		#endregion
 
@@ -156,7 +149,7 @@ namespace postServiceLibrary
 						   "&password=" + password;
 
 
-			string uri =postServiceClass.serverBaseUrl+"/pio_auth/login";
+			string uri = postServiceClass.serverBaseUrl + "/pio_auth/login";
 
 			var post = new WebPostHelper();
 			post.doPost(uri, postData, "");

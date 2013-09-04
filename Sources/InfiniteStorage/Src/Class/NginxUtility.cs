@@ -1,8 +1,8 @@
-﻿using System;
+﻿using InfiniteStorage.Properties;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using InfiniteStorage.Properties;
 
 namespace InfiniteStorage
 {
@@ -73,7 +73,7 @@ namespace InfiniteStorage
 
 					if (Settings.Default.HomeSharingPasswordRequired)
 					{
-						line = line.Replace("#auth_basic123",            "auth_basic                \"Restricted\";");
+						line = line.Replace("#auth_basic123", "auth_basic                \"Restricted\";");
 						line = line.Replace("#auth_basic_user_file", "auth_basic_user_file      nginx.pwd;");
 					}
 

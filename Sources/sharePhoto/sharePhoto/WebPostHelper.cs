@@ -32,7 +32,7 @@ namespace Wpf_testHTTP
 
 			try
 			{
-				_urlConn = (HttpWebRequest) WebRequest.Create(sUrl);
+				_urlConn = (HttpWebRequest)WebRequest.Create(sUrl);
 
 				//連線最大等待時間
 				//_urlConn.Timeout = 10000;

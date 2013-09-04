@@ -1,5 +1,7 @@
 ﻿#region
 
+using CommandLine;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,13 +22,11 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using CommandLine;
 using TVM.SnailTools.lib;
 using Waveface.Client.Properties;
 using Waveface.Client.Src.Dialog;
 using Waveface.ClientFramework;
 using Waveface.Model;
-using log4net;
 using Application = System.Windows.Application;
 using Clipboard = System.Windows.Clipboard;
 using ContextMenu = System.Windows.Controls.ContextMenu;

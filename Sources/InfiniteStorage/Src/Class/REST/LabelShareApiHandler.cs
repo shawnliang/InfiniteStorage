@@ -1,9 +1,8 @@
-﻿using System;
+﻿using InfiniteStorage.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Wammer.Station;
-using InfiniteStorage.Model;
 
 namespace InfiniteStorage.REST
 {
@@ -27,8 +26,8 @@ namespace InfiniteStorage.REST
 				if (label == null)
 					throw new Exception("no such label_id:" + label_id.ToString());
 
-				
-				
+
+
 
 				if (enabled)
 				{
@@ -82,8 +81,8 @@ namespace InfiniteStorage.REST
 		private static bool isShareEnabled(Label label)
 		{
 			return
-				label.share_enabled.HasValue && 
-				label.share_enabled.Value && 
+				label.share_enabled.HasValue &&
+				label.share_enabled.Value &&
 				!string.IsNullOrEmpty(label.share_post_id) &&
 				!string.IsNullOrEmpty(label.share_code);
 		}

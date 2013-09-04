@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using InfiniteStorage.Model;
-using System.IO;
+﻿using InfiniteStorage.Model;
+using InfiniteStorage.Notify;
 using InfiniteStorage.WebsocketProtocol;
 using InfiniteStorage.Win32;
-using InfiniteStorage.Notify;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace InfiniteStorage.Camera
 {
@@ -59,7 +58,8 @@ namespace InfiniteStorage.Camera
 				{
 					folder = DeviceUtility.GetUniqueDeviceFolder(deviceName);
 					db.Object.Devices.Add(
-						new Device {
+						new Device
+						{
 							device_id = deviceId,
 							device_name = deviceName,
 							folder_name = folder
@@ -161,7 +161,8 @@ namespace InfiniteStorage.Camera
 
 		public string TempFolder
 		{
-			get {
+			get
+			{
 				return MyFileFolder.Temp;
 			}
 		}
@@ -169,7 +170,8 @@ namespace InfiniteStorage.Camera
 
 		public void Connecting()
 		{
-			SynchronizationContextHelper.SendMainSyncContext(() => {
+			SynchronizationContextHelper.SendMainSyncContext(() =>
+			{
 				progress = new ProgressTooltip(device_folder, device_id);
 			});
 

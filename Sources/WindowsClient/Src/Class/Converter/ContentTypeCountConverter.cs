@@ -9,8 +9,8 @@ namespace Waveface.Client
 {
 	public class ContentTypeCountConverter : IValueConverter
 	{
-		public object Convert(object value, Type targetType,
-	object parameter, CultureInfo culture)
+		public Object Convert(Object value, Type targetType,
+	Object parameter, CultureInfo culture)
 		{
 			try
 			{
@@ -36,8 +36,8 @@ namespace Waveface.Client
 			}
 		}
 
-		public object ConvertBack(object value, Type targetType,
-			object parameter, CultureInfo culture)
+		public Object ConvertBack(Object value, Type targetType,
+			Object parameter, CultureInfo culture)
 		{
 			throw new NotImplementedException();
 		}

@@ -1,5 +1,9 @@
 ﻿#region
 
+using DotNetOpenAuth.OAuth2;
+using Limilabs.Client.Authentication.Google;
+using log4net;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,10 +14,6 @@ using System.Windows.Input;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 using System.Xml;
-using DotNetOpenAuth.OAuth2;
-using Limilabs.Client.Authentication.Google;
-using Newtonsoft.Json;
-using log4net;
 
 #endregion
 
@@ -31,7 +31,7 @@ namespace Wpf_testHTTP
 		public string sender_name = "";
 		public string sender_msg = "";
 
-		private static readonly ILog log = LogManager.GetLogger(typeof (MainWindow));
+		private static readonly ILog log = LogManager.GetLogger(typeof(MainWindow));
 
 		public void setLabelId(string labelid)
 		{
@@ -157,9 +157,9 @@ namespace Wpf_testHTTP
 			string _url = "https://accounts.google.com/o/oauth2/token";
 
 			string _parms = "refresh_token" + "=" + RefreshKey_real + "&" +
-			                "client_id" + "=" + clientID + "&" +
-			                "client_secret" + "=" + clientSecret + "&" +
-			                "grant_type" + "=" + "refresh_token";
+							"client_id" + "=" + clientID + "&" +
+							"client_secret" + "=" + clientSecret + "&" +
+							"grant_type" + "=" + "refresh_token";
 
 
 			WebPostHelper _webPos = new WebPostHelper();
@@ -282,7 +282,7 @@ namespace Wpf_testHTTP
 			{
 				AutoCompleteBox.Text = email;
 			}
-			char[] delimiterChars = {'~'};
+			char[] delimiterChars = { '~' };
 			arr = filename.Split(delimiterChars);
 			no_of_attachments = arr.Length;
 
@@ -354,7 +354,7 @@ namespace Wpf_testHTTP
 
 				if (AutoCompleteBox.Text == "Invite more people...")
 					AutoCompleteBox.Text = "";
-				char[] delimiterChars0 = {';'};
+				char[] delimiterChars0 = { ';' };
 				// 0 get email setup
 				string _emailStr = setup_emailList();
 				if (email_list.Items.Count <= 0 && _emailStr != "")
@@ -594,11 +594,11 @@ namespace Wpf_testHTTP
 		private const string clientSecret = "xJdRvYwEGED18wk-I5Ou2_SN"; // Secret key
 
 		private AuthorizationServerDescription server = new AuthorizationServerDescription
-			                                                {
-				                                                AuthorizationEndpoint = new Uri("https://accounts.google.com/o/oauth2/auth"),
-				                                                TokenEndpoint = new Uri("https://accounts.google.com/o/oauth2/token"),
-				                                                ProtocolVersion = ProtocolVersion.V20,
-			                                                };
+															{
+																AuthorizationEndpoint = new Uri("https://accounts.google.com/o/oauth2/auth"),
+																TokenEndpoint = new Uri("https://accounts.google.com/o/oauth2/token"),
+																ProtocolVersion = ProtocolVersion.V20,
+															};
 
 		/*
 		private List<string> scope1 = new List<string>

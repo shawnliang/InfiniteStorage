@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using InfiniteStorage.Properties;
-using System.Security.Cryptography;
-using Waveface.Common;
+﻿using InfiniteStorage.Properties;
 using postServiceLibrary;
+using System;
+using System.Security.Cryptography;
+using System.Text;
+using Waveface.Common;
 
 namespace InfiniteStorage.Cloud
 {
@@ -82,7 +81,7 @@ namespace InfiniteStorage.Cloud
 						_session_token = post.callLogin(UserEmail, Password);
 					}
 				}
-				
+
 				return _session_token;
 			}
 		}

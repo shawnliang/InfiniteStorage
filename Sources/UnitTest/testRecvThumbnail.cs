@@ -1,7 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using InfiniteStorage;
 using InfiniteStorage.WebsocketProtocol;
-using InfiniteStorage;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace UnitTest
@@ -29,7 +28,7 @@ namespace UnitTest
 			var state = new WaitForApproveState();
 			var ctx = new ProtocolContext(fac.Object, storage.Object, state);
 			var cmd = new TextCommand { action = "thumbnail-start", transfer_count = 50 };
-			
+
 			state.handleThumbStartCmd(ctx, cmd);
 
 			Assert.IsTrue(ctx.GetState() is ThumbnailStartedState);
@@ -55,7 +54,7 @@ namespace UnitTest
 			var state = new ThumbnailStartedState();
 			var ctx = new ProtocolContext(fac.Object, storage.Object, state);
 
-			tempFile.Setup(x=>x.Write(data)).Verifiable();
+			tempFile.Setup(x => x.Write(data)).Verifiable();
 			ctx.SetData(ThumbnailStartedState.TEMP_FILE_KEY, tempFile.Object);
 
 

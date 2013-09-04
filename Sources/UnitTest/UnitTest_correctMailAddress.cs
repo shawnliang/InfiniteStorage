@@ -1,7 +1,5 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Wpf_testHTTP;
-using System.Xaml;
 
 namespace UnitTest
 {
@@ -16,7 +14,7 @@ namespace UnitTest
 			bool _result = false;
 			string _phone = "Kimi.Chiu@waveface.com";
 			Wpf_testHTTP.MainWindow _sharePhoto = new MainWindow();
-			_result=_sharePhoto.IsValidEmail(_phone);
+			_result = _sharePhoto.IsValidEmail(_phone);
 			Assert.IsTrue(_result);
 
 			_phone = "Kimi.Chiu@waveface";

@@ -154,24 +154,24 @@ namespace Waveface.Model
 			//m_populateFunc = func;
 
 			m_Contents = new Lazy<IEnumerable<IContentEntity>>(() =>
-				                                                   {
-					                                                   //m_ObservableContents.Clear();
+																   {
+																	   //m_ObservableContents.Clear();
 
-					                                                   if (m_NeedRefresh)
-					                                                   {
-						                                                   var newContents = new ObservableCollection<IContentEntity>();
-						                                                   func(newContents);
+																	   if (m_NeedRefresh)
+																	   {
+																		   var newContents = new ObservableCollection<IContentEntity>();
+																		   func(newContents);
 
-						                                                   m_ObservableContents.RefreshTo(newContents);
+																		   m_ObservableContents.RefreshTo(newContents);
 
-						                                                   m_NeedRefresh = false;
-					                                                   }
+																		   m_NeedRefresh = false;
+																	   }
 
-					                                                   foreach (var content in m_ObservableContents)
-						                                                   (content as ContentEntity).Service = this;
+																	   foreach (var content in m_ObservableContents)
+																		   (content as ContentEntity).Service = this;
 
-					                                                   return m_ObservableContents;
-				                                                   });
+																	   return m_ObservableContents;
+																   });
 		}
 
 		public void SetContents(IEnumerable<IContentEntity> values)
@@ -240,7 +240,7 @@ namespace Waveface.Model
 		protected void OnPropertyChanged(string name)
 		{
 			var handler = PropertyChanged;
-			
+
 			if (handler != null)
 			{
 				handler(this, new PropertyChangedEventArgs(name));

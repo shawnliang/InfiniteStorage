@@ -1,10 +1,10 @@
-﻿using System;
+﻿using InfiniteStorage.Manipulation;
+using InfiniteStorage.Model;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
-using InfiniteStorage.Manipulation;
-using InfiniteStorage.Model;
 
 namespace InfiniteStorage.REST
 {
@@ -24,7 +24,7 @@ namespace InfiniteStorage.REST
 
 			markAsDeleted(pendingDeleteFiles);
 
-			var affectedLabels = Manipulation.Manipulation.RemoveLabelFiles(pendingDeleteFiles.Select(x=>x.file_id));
+			var affectedLabels = Manipulation.Manipulation.RemoveLabelFiles(pendingDeleteFiles.Select(x => x.file_id));
 			var deletedFolders = deleteFoldersIfEmpty(folders);
 			deleteFolderRecords(deletedFolders);
 
@@ -160,7 +160,7 @@ namespace InfiniteStorage.REST
 					else
 					{
 						pendingDeleteItems.Add(file);
-					}					
+					}
 				}
 				catch (Exception err)
 				{
@@ -173,9 +173,9 @@ namespace InfiniteStorage.REST
 	}
 
 
-	
 
 
-	
+
+
 
 }

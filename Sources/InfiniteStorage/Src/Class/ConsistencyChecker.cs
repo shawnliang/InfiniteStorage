@@ -1,9 +1,7 @@
-﻿using System;
+﻿using InfiniteStorage.Model;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using InfiniteStorage.Model;
 
 namespace InfiniteStorage
 {
@@ -14,7 +12,7 @@ namespace InfiniteStorage
 			var missingFiles = markMissingFilesAsDeleted();
 
 			if (missingFiles.Any())
-				Manipulation.Manipulation.RemoveLabelFiles(missingFiles.Select(x=>x.file_id));
+				Manipulation.Manipulation.RemoveLabelFiles(missingFiles.Select(x => x.file_id));
 		}
 
 		public static void RemoveMissingFoldersFromDB()

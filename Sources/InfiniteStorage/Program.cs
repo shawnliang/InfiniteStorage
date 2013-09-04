@@ -1,25 +1,18 @@
 ﻿using InfiniteStorage.Model;
-using InfiniteStorage.Notify;
 using InfiniteStorage.Properties;
-using InfiniteStorage.REST;
 using InfiniteStorage.Win32;
 using Microsoft.Win32;
 using System;
-using System.Drawing;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Management;
 using System.Security.Cryptography;
 using System.Text;
-using System.Windows.Forms;
-using Wammer.Station;
-using WebSocketSharp.Server;
-using Waveface.Common;
-using System.Globalization;
 using System.Threading;
-using System.Diagnostics;
-using readCamera;
-using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace InfiniteStorage
 {
@@ -230,7 +223,7 @@ namespace InfiniteStorage
 					retry--;
 				}
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				log4net.LogManager.GetLogger("uninstall").Warn("stop nginx error: ", e);
 			}

@@ -89,7 +89,7 @@ namespace Wpf_testHTTP
 
 					// Add just the first part of this param, since we will write the file data directly to the Stream
 					string _header = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n", boundary, param.Key,
-					                               fileName.Equals("") ? param.Key : fileName, mimeType.Equals("") ? "application/octet-stream" : mimeType);
+												   fileName.Equals("") ? param.Key : fileName, mimeType.Equals("") ? "application/octet-stream" : mimeType);
 
 					//formDataStream.Write(encoding.GetBytes(_header), 0, _header.Length);
 
@@ -171,7 +171,7 @@ namespace Wpf_testHTTP
 			try
 			{
 				// Open a connection
-				HttpWebRequest _httpWebRequest = (HttpWebRequest) WebRequest.Create(url);
+				HttpWebRequest _httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
 
 				_httpWebRequest.AllowWriteStreamBuffering = true;
 
@@ -216,7 +216,7 @@ namespace Wpf_testHTTP
 			try
 			{
 				// Open a connection
-				HttpWebRequest _httpWebRequest = (HttpWebRequest) WebRequest.Create(url);
+				HttpWebRequest _httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
 
 				// You can also specify additional header values like the user agent or the referer: (Optional)
 				_httpWebRequest.UserAgent = "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)";

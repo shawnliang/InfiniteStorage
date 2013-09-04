@@ -11,7 +11,7 @@ namespace Waveface.Client
 	{
 		#region Property
 
-		public bool Tagged
+		public Boolean Tagged
 		{
 			get { return ltTag.Tagged; }
 			set { ltTag.Tagged = value; }
@@ -53,7 +53,7 @@ namespace Waveface.Client
 
 		#region Event Process
 
-		private void ltTag_TagStatusChanged(object sender, EventArgs e)
+		private void ltTag_TagStatusChanged(Object sender, EventArgs e)
 		{
 			OnTagStatusChanged(EventArgs.Empty);
 		}

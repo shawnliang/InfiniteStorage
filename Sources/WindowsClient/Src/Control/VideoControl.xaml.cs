@@ -10,14 +10,14 @@ namespace Waveface.Client
 	/// </summary>
 	public partial class VideoControl : UserControl
 	{
-		public static readonly DependencyProperty _isPlaying = DependencyProperty.Register("IsPlaying", typeof(bool), typeof(VideoControl), new UIPropertyMetadata(false, new PropertyChangedCallback(OnIsPlayingChanged)));
-		public static readonly DependencyProperty _duration = DependencyProperty.Register("Duration", typeof(double), typeof(VideoControl), new UIPropertyMetadata(0.0, new PropertyChangedCallback(OnDurationChanged)));
+		public static readonly DependencyProperty _isPlaying = DependencyProperty.Register("IsPlaying", typeof(Boolean), typeof(VideoControl), new UIPropertyMetadata(false, new PropertyChangedCallback(OnIsPlayingChanged)));
+		public static readonly DependencyProperty _duration = DependencyProperty.Register("Duration", typeof(Double), typeof(VideoControl), new UIPropertyMetadata(0.0, new PropertyChangedCallback(OnDurationChanged)));
 
-		public bool IsPlaying
+		public Boolean IsPlaying
 		{
 			get
 			{
-				return (bool)GetValue(_isPlaying);
+				return (Boolean)GetValue(_isPlaying);
 			}
 			set
 			{
@@ -28,7 +28,7 @@ namespace Waveface.Client
 		}
 
 
-		public double Position
+		public Double Position
 		{
 			get
 			{
@@ -40,11 +40,11 @@ namespace Waveface.Client
 			}
 		}
 
-		public double Duration
+		public Double Duration
 		{
 			get
 			{
-				return (double)GetValue(_duration);
+				return (Double)GetValue(_duration);
 			}
 			set
 			{
@@ -53,7 +53,7 @@ namespace Waveface.Client
 			}
 		}
 
-		public double Volume
+		public Double Volume
 		{
 			get
 			{
@@ -121,7 +121,7 @@ namespace Waveface.Client
 
 
 
-		private void PlayProgress_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		private void PlayProgress_ValueChanged(Object sender, RoutedPropertyChangedEventArgs<Double> e)
 		{
 			if (Mouse.LeftButton == MouseButtonState.Pressed)
 				OnSeekPosition(EventArgs.Empty);
@@ -134,7 +134,7 @@ namespace Waveface.Client
 			if (o == null)
 				return;
 			var obj = o as VideoControl;
-			obj.Duration = (double)e.NewValue;
+			obj.Duration = (Double)e.NewValue;
 		}
 
 
@@ -143,21 +143,21 @@ namespace Waveface.Client
 			if (o == null)
 				return;
 			var obj = o as VideoControl;
-			obj.IsPlaying = (bool)e.NewValue;
+			obj.IsPlaying = (Boolean)e.NewValue;
 		}
 
 
-		private void PlayButton_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void PlayButton_MouseDown(Object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			OnPlayButtonClick(EventArgs.Empty);
 		}
 
-		private void PauseButton_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void PauseButton_MouseDown(Object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			OnPauseButtonClick(EventArgs.Empty);
 		}
 
-		private void vcVolumeController_VolumeChanged(object sender, EventArgs e)
+		private void vcVolumeController_VolumeChanged(Object sender, EventArgs e)
 		{
 			OnVolumeChanged(EventArgs.Empty);
 		}

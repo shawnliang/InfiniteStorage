@@ -25,8 +25,8 @@ namespace Waveface.Model
 				if (!_type.HasValue)
 				{
 					_type = (Uri.LocalPath.EndsWith(".jpg", StringComparison.CurrentCultureIgnoreCase) || Uri.LocalPath.EndsWith(".gif", StringComparison.CurrentCultureIgnoreCase))
-						        ? ContentType.Photo
-						        : ContentType.Video;
+								? ContentType.Photo
+								: ContentType.Video;
 				}
 
 				return _type.Value;

@@ -13,23 +13,23 @@ namespace Waveface.Client
 	{
 		#region Var
 
-		public static readonly DependencyProperty _pageNo = DependencyProperty.Register("PageNo", typeof(int), typeof(ViewerControl), new UIPropertyMetadata(0, OnPageNoChanged));
+		public static readonly DependencyProperty _pageNo = DependencyProperty.Register("PageNo", typeof(Int32), typeof(ViewerControl), new UIPropertyMetadata(0, OnPageNoChanged));
 
-		public static readonly DependencyProperty _pageCount = DependencyProperty.Register("PageCount", typeof(int), typeof(ViewerControl),
+		public static readonly DependencyProperty _pageCount = DependencyProperty.Register("PageCount", typeof(Int32), typeof(ViewerControl),
 																						   new UIPropertyMetadata(0, OnPageCountChanged));
 
-		public static readonly DependencyProperty _enableStar = DependencyProperty.Register("EnableStar", typeof(bool), typeof(ViewerControl),
+		public static readonly DependencyProperty _enableStar = DependencyProperty.Register("EnableStar", typeof(Boolean), typeof(ViewerControl),
 																							new UIPropertyMetadata(true, OnEnableStarChanged));
 
-		public static readonly DependencyProperty _stared = DependencyProperty.Register("Stared", typeof(bool), typeof(ViewerControl), new UIPropertyMetadata(false, OnStaredChanged));
+		public static readonly DependencyProperty _stared = DependencyProperty.Register("Stared", typeof(Boolean), typeof(ViewerControl), new UIPropertyMetadata(false, OnStaredChanged));
 
 		#endregion
 
 		#region Property
 
-		public int PageNo
+		public Int32 PageNo
 		{
-			get { return (int)GetValue(_pageNo); }
+			get { return (Int32)GetValue(_pageNo); }
 			set
 			{
 				SetValue(_pageNo, value);
@@ -37,9 +37,9 @@ namespace Waveface.Client
 			}
 		}
 
-		public int PageCount
+		public Int32 PageCount
 		{
-			get { return (int)GetValue(_pageCount); }
+			get { return (Int32)GetValue(_pageCount); }
 			set
 			{
 				SetValue(_pageCount, value);
@@ -47,9 +47,9 @@ namespace Waveface.Client
 			}
 		}
 
-		public bool EnableStar
+		public Boolean EnableStar
 		{
-			get { return (bool)GetValue(_enableStar); }
+			get { return (Boolean)GetValue(_enableStar); }
 			set
 			{
 				SetValue(_enableStar, value);
@@ -59,9 +59,9 @@ namespace Waveface.Client
 			}
 		}
 
-		public bool Stared
+		public Boolean Stared
 		{
-			get { return (bool)GetValue(_stared); }
+			get { return (Boolean)GetValue(_stared); }
 			set { SetValue(_stared, value); }
 		}
 
@@ -115,7 +115,7 @@ namespace Waveface.Client
 				return;
 
 			var obj = o as ViewerControl;
-			obj.PageNo = (int)e.NewValue;
+			obj.PageNo = (Int32)e.NewValue;
 		}
 
 		private static void OnPageCountChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
@@ -124,7 +124,7 @@ namespace Waveface.Client
 				return;
 
 			var obj = o as ViewerControl;
-			obj.PageCount = (int)e.NewValue;
+			obj.PageCount = (Int32)e.NewValue;
 		}
 
 		private static void OnEnableStarChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
@@ -133,7 +133,7 @@ namespace Waveface.Client
 				return;
 
 			var obj = o as ViewerControl;
-			obj.EnableStar = (bool)e.NewValue;
+			obj.EnableStar = (Boolean)e.NewValue;
 		}
 
 		private static void OnStaredChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
@@ -142,25 +142,25 @@ namespace Waveface.Client
 				return;
 
 			var obj = o as ViewerControl;
-			obj.Stared = (bool)e.NewValue;
+			obj.Stared = (Boolean)e.NewValue;
 		}
 
-		private void NextButton_MouseDown(object sender, MouseButtonEventArgs e)
+		private void NextButton_MouseDown(Object sender, MouseButtonEventArgs e)
 		{
 			OnNext(EventArgs.Empty);
 		}
 
-		private void PreviousButton_MouseDown(object sender, MouseButtonEventArgs e)
+		private void PreviousButton_MouseDown(Object sender, MouseButtonEventArgs e)
 		{
 			OnPrevious(EventArgs.Empty);
 		}
 
-		private void CloseButton_MouseDown(object sender, MouseButtonEventArgs e)
+		private void CloseButton_MouseDown(Object sender, MouseButtonEventArgs e)
 		{
 			OnClose(EventArgs.Empty);
 		}
 
-		private void pvDelete_MouseDown(object sender, MouseButtonEventArgs e)
+		private void pvDelete_MouseDown(Object sender, MouseButtonEventArgs e)
 		{
 			if (DeletePic != null)
 			{

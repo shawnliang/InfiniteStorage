@@ -8,12 +8,9 @@
         Background="#FF595959"
         IsTabStop="False"
         Loaded="Window_Loaded"
-        
-        
-        SnapsToDevicePixels ="True"
-        TextOptions.TextFormattingMode ="Ideal"
+        SnapsToDevicePixels="True"
+        TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        
         WindowStyle="ToolWindow">
 
     <Grid x:Name="LayoutRoot">

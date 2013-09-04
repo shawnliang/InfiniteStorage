@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using InfiniteStorage.Data.Notify;
 
 namespace InfiniteStorage.Notify
 {
@@ -48,7 +47,8 @@ namespace InfiniteStorage.Notify
 
 			if (curHomeSharingEnabled != this.home_sharing_enabled)
 			{
-				ctx.Send(JsonConvert.SerializeObject(new {
+				ctx.Send(JsonConvert.SerializeObject(new
+				{
 					home_sharing = curHomeSharingEnabled
 				}));
 

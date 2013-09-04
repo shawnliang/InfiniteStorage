@@ -5,7 +5,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using System.IO;
 
 
 namespace InfiniteStorage
@@ -28,7 +27,7 @@ namespace InfiniteStorage
 		}
 
 		public PreferenceDialog(StationServer station)
-			:this()
+			: this()
 		{
 			generalPreferenceControl1.Station = station;
 		}
@@ -151,7 +150,7 @@ namespace InfiniteStorage
 			if (!deviceListControl.DeletedDevices.Any())
 				return;
 
-			var deviceIds = deviceListControl.DeletedDevices.Select(x=>x.device_id).ToList();
+			var deviceIds = deviceListControl.DeletedDevices.Select(x => x.device_id).ToList();
 			using (var db = new MyDbContext())
 			{
 				var query = from dev in db.Object.Devices
