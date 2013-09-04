@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace InfiniteStorage.Share
 {
@@ -39,7 +41,50 @@ namespace InfiniteStorage.Share
 				}
 
 				postServiceClass.attachments_upload(file_data, CloudService.SessionToken, Settings.Default.GroupId, file.file_name + ".mp4", "", "", "video", "medium", file.file_id.ToString(), null, CloudService.APIKey, file.event_time);
+
+
+				uploadStillImagePreviews(file);
 			}
+		}
+
+		private static void uploadStillImagePreviews(Model.FileAsset file)
+		{
+			var video_path = Path.Combine(MyFileFolder.Photo, file.saved_path);
+			var folder = Path.Combine(MyFileFolder.Temp, file.file_id + ".video_previews");
+
+			if (Directory.Exists(folder))
+				Directory.Delete(folder, true);
+
+			Directory.CreateDirectory(folder);
+
+			FFmpegHelper.ExtractStillIamge(video_path, 5, 2, folder, 128);
+
+			var preview_files = Directory.GetFiles(folder).ToList();
+			preview_files.Sort();
+
+
+			var previewData = new PreviewData
+			{
+				fps = 2,
+				seq = new List<PreviewFrame>()
+			};
+
+			foreach (var prv_file in preview_files)
+			{
+				var b64 = Convert.ToBase64String(File.ReadAllBytes(prv_file));
+
+				var frame = new PreviewFrame
+				{
+					duration = 0.5f,
+					url = "data:image/jpeg;base64," + b64
+				};
+
+				previewData.seq.Add(frame);
+			}
+
+			var payload = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(previewData));
+			postServiceClass.attachments_upload(payload, CloudService.SessionToken, Settings.Default.GroupId, file.file_name + ".mp4", "", "", "video", "square", file.file_id.ToString(), null, CloudService.APIKey, file.event_time);
+
 		}
 
 		private byte[] getVideoThumbnail(FileAsset file)
