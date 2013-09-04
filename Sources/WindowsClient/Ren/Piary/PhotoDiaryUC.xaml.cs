@@ -13,12 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-<<<<<<< HEAD
-using InfiniteStorage.Model;
-using Microsoft.Win32;
 using Waveface.ClientFramework;
-=======
->>>>>>> 87651ce7abd298dd4eb1547c1dfb77df0d461a2b
 using Waveface.Model;
 using WpfAnimatedGif;
 
