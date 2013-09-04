@@ -48,5 +48,7 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			return "thumbnail-end".Equals(action);
 		}
+
+		public string object_id { get; set; }
 	}
 }

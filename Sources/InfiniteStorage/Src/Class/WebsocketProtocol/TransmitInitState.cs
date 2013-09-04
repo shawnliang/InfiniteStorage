@@ -50,6 +50,9 @@ namespace InfiniteStorage.WebsocketProtocol
 				type = type
 			};
 
+			if (!string.IsNullOrEmpty(cmd.object_id))
+				fileCtx.file_id = new Guid(cmd.object_id);
+
 			if (!fileCtx.is_thumbnail && util.HasDuplicateFile(fileCtx, ctx.device_id))
 			{
 				ctx.fileCtx = null;

@@ -9,10 +9,7 @@
              Background="#1B1B1B"
              d:DesignWidth="170"
              mc:Ignorable="d">
-
-
     <StackPanel x:Name="LayoutRoot">
-
         <TextBox x:Name="tbxName"
                  Height="36"
                  HorizontalAlignment="Stretch"
@@ -24,91 +21,76 @@
                  FontSize="20"
                  Foreground="White"
                  TextChanged="tbxName_TextChanged" />
-
-        <StackPanel x:Name="sbCloudSharing"
-                    Visibility="Collapsed">
-
+        <StackPanel x:Name="sbCloudSharing" Visibility="Collapsed">
             <TextBlock Margin="12,20,12,0"
                        Foreground="#FFA8A8A8"
                        Text="{DynamicResource SeeFavoriteTitle}"
                        TextWrapping="Wrap" />
-
             <TextBox x:Name="tbxShareLink"
                      Height="23"
                      Margin="12, 8, 12, 0"
                      VerticalAlignment="Top"
                      VerticalContentAlignment="Center"
                      IsReadOnly="True" />
-
             <Button x:Name="btnCopyShareLink"
                     Width="128"
                     Margin="10,20,10,0"
                     Content="{DynamicResource CopyButtonText}"
                     Foreground="White" />
-
             <Button Width="128"
                     Margin="10,20,10,0"
                     Click="btnEmail_Click"
                     Content="{DynamicResource EmailButtonText}"
                     Foreground="White" />
-
             <Button x:Name="btnOpenShareLink"
                     Width="128"
                     Margin="10,20,10,0"
-                    Content="開啟網頁"
+                    Content="{StaticResource res_30}"
                     Foreground="White" />
         </StackPanel>
-
-        <StackPanel x:Name="spProgressBar"
-                    Margin="12, 32, 12, 8">
+        <StackPanel x:Name="spProgressBar" Margin="12, 32, 12, 8">
             <StackPanel Margin="0,0,0,8"
                         HorizontalAlignment="Center"
                         Orientation="Horizontal">
                 <TextBlock FontSize="14"
                            Foreground="White"
-                           Text="正在上傳資料..." />
+                           Text="{StaticResource res_31}" />
                 <TextBlock x:Name="tbProgress"
                            Margin="4,0,0,0"
                            FontSize="14"
                            Foreground="White"
                            Text="" />
             </StackPanel>
-
             <ProgressBar x:Name="progressBar"
                          Height="8"
                          Foreground="DodgerBlue"
                          IsIndeterminate="True" />
         </StackPanel>
-
         <StackPanel Margin="8,20,8,0"
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
             <TextBlock FontSize="14"
                        Foreground="#FFA8A8A8"
-                       Text="公開網址" />
+                       Text="{StaticResource res_32}" />
             <TextBlock x:Name="tbLinkOpenClose"
                        FontSize="14"
                        Foreground="White" />
         </StackPanel>
-
         <ToggleButton x:Name="tbtnCloudSharing"
                       Width="128"
                       Margin="10,4,10,0"
                       BorderBrush="White"
                       Checked="tbtnCloudSharing_Checked"
-                      Content="開啟"
+                      Content="{StaticResource res_33}"
                       Cursor="Hand"
                       Foreground="White"
                       Unchecked="tbtnCloudSharing_Unchecked" />
-
         <TextBlock x:Name="tipText"
                    Margin="20,30,20,0"
                    Foreground="#FFA8A8A8"
+                   Text="{Binding Source={StaticResource RigntSidePanel_HowToCloudSharingTutorial},
+                                  Converter={StaticResource MultiLineStringConvertor}}"
                    TextAlignment="Center"
-                   TextWrapping="Wrap">
-            上傳至waveface.com
-            <LineBreak />
-            讓遠方的親友線上觀賞
-        </TextBlock>
+                   TextWrapping="Wrap" />
     </StackPanel>
 </UserControl>
