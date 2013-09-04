@@ -11,8 +11,9 @@
              d:DesignWidth="150"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <Style x:Key="ButtonStyle1"
-               TargetType="{x:Type Button}">
+
+
+        <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
             <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="BorderBrush" Value="White" />
