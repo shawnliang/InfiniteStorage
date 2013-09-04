@@ -121,6 +121,7 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Src\Class\Converter\MultiLineStringConvertor.cs" />
     <Compile Include="Src\Control\AddToButton.xaml.cs">
       <DependentUpon>AddToButton.xaml</DependentUpon>
     </Compile>
@@ -716,7 +717,6 @@
     <Resource Include="Resource\sliderbarbigphotoicon.png" />
     <Resource Include="Resource\sliderbarsmallphotoicon.png" />
     <Resource Include="Resource\star_selected.png" />
-    <Resource Include="Resource\star_noitem.png" />
     <Resource Include="Resource\up.png" />
     <Resource Include="Resource\updis.png" />
   </ItemGroup>
