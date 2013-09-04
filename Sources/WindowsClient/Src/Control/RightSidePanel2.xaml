@@ -104,7 +104,7 @@
         <TextBlock x:Name="tipText"
                    Margin="20,30,20,0"
                    Foreground="#FFA8A8A8"
-				   Text="{Binding Source={DynamicResource RigntSidePanel_HowToCloudSharingTutorial},
+				   Text="{Binding Source={StaticResource RigntSidePanel_HowToCloudSharingTutorial},
                                   Converter={StaticResource MultiLineStringConvertor}}"
                    TextAlignment="Center"
                    TextWrapping="Wrap"/>
