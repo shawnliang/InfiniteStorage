@@ -13,8 +13,7 @@
     <UserControl.Resources>
 
 
-        <Style x:Key="ButtonStyle1"
-               TargetType="{x:Type Button}">
+        <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
             <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="BorderBrush" Value="White" />
@@ -87,8 +86,10 @@
                 Visibility="Collapsed" />
 
         <TextBlock Margin="10,229,10,0"
-        	Foreground="#FFA8A8A8"
-        	TextAlignment="Center"
-        	TextWrapping="WrapWithOverflow" Text="{DynamicResource res_startDesc}"/>
+                   Foreground="#FFA8A8A8"
+                   Text="{Binding Source={StaticResource RigntSidePanel_HowToStarTutorial},
+                                  Converter={StaticResource MultiLineStringConvertor}}"
+                   TextAlignment="Center"
+                   TextWrapping="WrapWithOverflow" />
     </Grid>
 </UserControl>

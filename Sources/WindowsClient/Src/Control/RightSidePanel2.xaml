@@ -1,5 +1,4 @@
-﻿﻿
-<UserControl x:Class="Waveface.Client.RightSidePanel2"
+﻿<UserControl x:Class="Waveface.Client.RightSidePanel2"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:WPFSpark="clr-namespace:WPFSpark"
@@ -87,9 +86,11 @@
                       Foreground="White"
                       Unchecked="tbtnCloudSharing_Unchecked" />
         <TextBlock x:Name="tipText"
-        	Margin="20,30,20,0"
-        	Foreground="#FFA8A8A8"
-        	TextAlignment="Center"
-        	TextWrapping="Wrap" Text="{DynamicResource res_onlineAlbumDesc}"/>
+                   Margin="20,30,20,0"
+                   Foreground="#FFA8A8A8"
+                   Text="{Binding Source={StaticResource RigntSidePanel_HowToCloudSharingTutorial},
+                                  Converter={StaticResource MultiLineStringConvertor}}"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap" />
     </StackPanel>
 </UserControl>

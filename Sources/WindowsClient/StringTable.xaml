@@ -1,5 +1,4 @@
-﻿﻿
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="AddDeviceIconText">Add Device</system:String>
@@ -120,11 +119,18 @@
     <system:String x:Key="res_34">Off</system:String>
     <system:String x:Key="res_35">On</system:String>
     <system:String x:Key="res_36">焦點動態</system:String>
-    <system:String x:Key="res_takeATour">Import photos is the first step. Check out a couple basic tips to get started.</system:String>
-    <system:String x:Key="res_startDesc">點擊圖片上的星號圖示或拖曳至側欄的星號區來標示該圖片</system:String>
-    <system:String x:Key="res_onlineAlbumDesc">上傳至waveface.com讓遠方的親友線上觀賞</system:String>
+    <system:String x:Key="res_takeATour">Import photos is the first step. Check out a couple basic tips to get started.</system:String>  
     <system:String x:Key="res_getStartedTip1">Get our mobile apps and enable auto sync over same Wi-Fi.</system:String>
     <system:String x:Key="res_getStartedTip2">Plug in digital camera via USB.</system:String>
     <system:String x:Key="res_getStartedTip3">Get our Player app to enjoy Home Sharing for all albums created.</system:String>
     <system:String x:Key="res_getStartedTitle">To Get Started, you can ...</system:String>
+    <system:String x:Key="RigntSidePanel_HowToCloudSharingTutorial">
+        上傳至waveface.com\r\n
+        讓遠方的親友線上觀賞
+    </system:String>
+    <system:String x:Key="RigntSidePanel_HowToStarTutorial">
+        點擊圖片上的星號圖示\r\n
+        或拖曳至側欄的星號區\r\n
+        來標示該圖片
+    </system:String>
 </ResourceDictionary>
