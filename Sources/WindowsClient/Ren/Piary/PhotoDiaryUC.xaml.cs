@@ -1,21 +1,21 @@
 ﻿#region
 
-using InfiniteStorage.Model;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using InfiniteStorage.Model;
+using Microsoft.Win32;
 using Waveface.ClientFramework;
 using Waveface.Model;
 using WpfAnimatedGif;
+using Application = System.Windows.Forms.Application;
 
 #endregion
 
@@ -52,7 +52,7 @@ namespace Waveface.Client
 		{
 			InitializeComponent();
 
-			m_basePath = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", "");
+			m_basePath = (string) Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", "");
 			m_thumbsPath = Path.Combine(m_basePath, ".thumbs");
 			m_solidColorBrush = new SolidColorBrush(Color.FromArgb(255, 120, 0, 34));
 
@@ -76,7 +76,7 @@ namespace Waveface.Client
 			m_sizeChangedDelayTimer.Interval = new TimeSpan(0, 0, 0, 0, 500);
 		}
 
-		void SizeChangedDelayTimer_Tick(object sender, EventArgs e)
+		private void SizeChangedDelayTimer_Tick(object sender, EventArgs e)
 		{
 			m_sizeChangedDelayTimer.Stop();
 
@@ -184,8 +184,8 @@ namespace Waveface.Client
 			using (var _db = new MyDbContext())
 			{
 				IQueryable<FileAsset> _q = from _f in _db.Object.Files
-										   where _f.device_id == m_currentDevice.ID && !_f.deleted
-										   select _f;
+				                           where _f.device_id == m_currentDevice.ID && !_f.deleted
+				                           select _f;
 
 				return _q.ToList();
 			}
@@ -278,15 +278,15 @@ namespace Waveface.Client
 			{
 				if (m_rnd.NextDouble() > 0.5)
 				{
-					return r * m_rnd.NextDouble();
+					return r*m_rnd.NextDouble();
 				}
 				else
 				{
-					return (-1) * r * m_rnd.NextDouble();
+					return (-1)*r*m_rnd.NextDouble();
 				}
 			}
 
-			return r * m_rnd.NextDouble();
+			return r*m_rnd.NextDouble();
 		}
 
 		#region Show
@@ -305,12 +305,12 @@ namespace Waveface.Client
 			foreach (List<FileEntry> _entries in m_days)
 			{
 				P_ItemUC _ctl = new P_ItemUC
-								   {
-									   FileEntrys = _entries,
-									   YMD = _entries[0].taken_time.ToString("yyyy-MM-dd"),
-									   PhotoDiaryUC = this,
-									   CurrentDevice = m_currentDevice,
-								   };
+					                {
+						                FileEntrys = _entries,
+						                YMD = _entries[0].taken_time.ToString("yyyy-MM-dd"),
+						                PhotoDiaryUC = this,
+						                CurrentDevice = m_currentDevice,
+					                };
 
 				_ctl.SetUI(m_myWidth, m_myHeight);
 
@@ -319,7 +319,7 @@ namespace Waveface.Client
 
 				m_eventUCs.Add(_ctl);
 
-				DoEvents();
+				Application.DoEvents();
 			}
 		}
 
@@ -356,12 +356,12 @@ namespace Waveface.Client
 				else
 				{
 					_ctl = new P_ItemUC
-							   {
-								   FileEntrys = _entries,
-								   YMD = _YMD,
-								   PhotoDiaryUC = this,
-								   CurrentDevice = m_currentDevice,
-							   };
+						       {
+							       FileEntrys = _entries,
+							       YMD = _YMD,
+							       PhotoDiaryUC = this,
+							       CurrentDevice = m_currentDevice,
+						       };
 
 					_ctl.Changed = true;
 
@@ -373,7 +373,7 @@ namespace Waveface.Client
 				m_photosCount += _ctl.PhotosCount;
 				m_videosCount += _ctl.VideosCount;
 
-				DoEvents();
+				Application.DoEvents();
 			}
 
 			m_YMD_Files = _YMD_Files;
@@ -383,10 +383,10 @@ namespace Waveface.Client
 		{
 			string _c = string.Empty;
 
-			string _photo = " " + (string)Application.Current.FindResource("photo");
-			string _photos = " " + (string)Application.Current.FindResource("photos");
-			string _video = " " + (string)Application.Current.FindResource("video");
-			string _videos = " " + (string)Application.Current.FindResource("videos");
+			string _photo = " " + (string) System.Windows.Application.Current.FindResource("photo");
+			string _photos = " " + (string) System.Windows.Application.Current.FindResource("photos");
+			string _video = " " + (string) System.Windows.Application.Current.FindResource("video");
+			string _videos = " " + (string) System.Windows.Application.Current.FindResource("videos");
 
 			if (photosCount > 0)
 			{
@@ -408,32 +408,10 @@ namespace Waveface.Client
 
 		#endregion
 
-		#region DoEvents
-
-		[SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		public void DoEvents()
-		{
-			var _frame = new DispatcherFrame();
-
-			Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new DispatcherOperationCallback(ExitFrame), _frame);
-
-			Dispatcher.PushFrame(_frame);
-		}
-
-		public object ExitFrame(object f)
-		{
-			((DispatcherFrame)f).Continue = false;
-
-			return null;
-		}
-
-		#endregion
-
 		private void listBoxEvent_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			if (listBoxEvent.SelectedItem != null)
 			{
-
 			}
 		}
 
@@ -474,7 +452,6 @@ namespace Waveface.Client
 		}
 
 
-
 		// ----------------
 
 		private void CreateNormalAlbum(IEnumerable<IContentEntity> allEntities, IEnumerable<IContentEntity> selectedEntities, string title)
@@ -502,9 +479,9 @@ namespace Waveface.Client
 			addToAlbumPopup.IsOpen = true;
 
 			var _albums = new List<IContentEntity>
-				             {
-					             new CreateNewAlbumContentEntity((string) FindResource("CreateFavorite"))
-				             };
+				              {
+					              new CreateNewAlbumContentEntity((string) FindResource("CreateFavorite"))
+				              };
 
 			_albums.AddRange(ClientFramework.Client.Default.Favorites.OrderBy(x => x.Name));
 

@@ -63,39 +63,6 @@
                            FontSize="20"
                            Foreground="White"
                            Text="" />
-
-            <!--StackPanel HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Orientation="Horizontal">
-                    <Image x:Name="imgCircleProgress"
-                           Width="32"
-                           Height="32"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center"
-                           Visibility="Collapsed"
-                           gif:ImageBehavior.AnimatedSource="/Waveface.Client;component/Resource/circleProgress.gif" />
-                    <TextBlock x:Name="tbTitleInfo"
-                               Margin="8, 0, 0, 0"
-                               VerticalAlignment="Center"
-                               FontSize="16"
-                               Foreground="White"
-                               Text="" />
-
-                    <Grid Visibility="Collapsed">
-                        <Label Content="{Binding RecvStatus.IsPreparing}" Foreground="white" />
-                        <Label Content="{Binding RecvStatus.IsReceiving}" Foreground="white" />
-                        <Label Content="{Binding RecvStatus.Received}" Foreground="white" />
-                        <Label Content="{Binding RecvStatus.Total}" Foreground="white" />
-                    </Grid>
-
-                </StackPanel>
-
-                <ToggleButton x:Name="tbAutoImport"
-                              Margin="0,0,10,0"
-                              HorizontalAlignment="Right"
-                              Checked="tbtnCloudSharing_Checked"
-                              Content="開啟自動匯入"
-                              Unchecked="tbtnCloudSharing_Unchecked" /-->
         </Grid>
 
         <Grid Grid.Row="1">
