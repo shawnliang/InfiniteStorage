@@ -363,6 +363,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Resource Include="Resource\arrow_right1.png" />
+    <Resource Include="Resource\folder.png" />
     <Content Include="StringTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

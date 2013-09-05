@@ -308,7 +308,7 @@ namespace Waveface.Client
 								   {
 									   FileEntrys = _entries,
 									   YMD = _entries[0].taken_time.ToString("yyyy-MM-dd"),
-									   MyMainWindow = m_mainWindow,
+									   PhotoDiaryUC = this,
 									   CurrentDevice = m_currentDevice,
 								   };
 
@@ -359,7 +359,7 @@ namespace Waveface.Client
 							   {
 								   FileEntrys = _entries,
 								   YMD = _YMD,
-								   MyMainWindow = m_mainWindow,
+								   PhotoDiaryUC = this,
 								   CurrentDevice = m_currentDevice,
 							   };
 
@@ -433,29 +433,33 @@ namespace Waveface.Client
 		{
 			if (listBoxEvent.SelectedItem != null)
 			{
-				ObservableCollection<IContentEntity> _contents = new ObservableCollection<IContentEntity>();
-				List<FileEntry> _files = m_days[listBoxEvent.SelectedIndex];
 
-				foreach (FileEntry _fe in _files)
-				{
-					if (File.Exists(_fe.saved_path))
-					{
-						Content _ce = new BunnyContent(new Uri(_fe.saved_path), _fe.id, ContentType.Photo);
-						_contents.Add(_ce);
-					}
-				}
-
-				ContentGroup gropup = new ContentGroup(Guid.NewGuid().ToString(), "Event", new Uri(@"c:\"), _contents);
-
-				m_mainWindow.ToPhotoDiary2ndLevel(gropup);
 			}
+		}
+
+		public void ToPhotoDiary2ndLevel(List<FileEntry> fileEntrys, string title)
+		{
+			ObservableCollection<IContentEntity> _contents = new ObservableCollection<IContentEntity>();
+
+			foreach (FileEntry _fe in fileEntrys)
+			{
+				if (File.Exists(_fe.saved_path))
+				{
+					Content _ce = new BunnyContent(new Uri(_fe.saved_path), _fe.id, ContentType.Photo);
+					_contents.Add(_ce);
+				}
+			}
+
+			ContentGroup gropup = new ContentGroup(Guid.NewGuid().ToString(), title, new Uri(@"c:\"), _contents);
+
+			m_mainWindow.ToPhotoDiary2ndLevel(gropup);
 		}
 
 		private void zoomSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
 			setWH(e.NewValue);
 
-			if(m_inited)
+			if (m_inited)
 			{
 				m_sizeChangedDelayTimer.Stop();
 
@@ -467,6 +471,82 @@ namespace Waveface.Client
 		{
 			m_myWidth = value;
 			m_myHeight = m_myWidth + 64;
+		}
+
+
+
+		// ----------------
+
+		private void CreateNormalAlbum(IEnumerable<IContentEntity> allEntities, IEnumerable<IContentEntity> selectedEntities, string title)
+		{
+			m_mainWindow.CreateNormalAlbum(allEntities, selectedEntities, title);
+		}
+
+		private void btnPushToDevice_Click(object sender, RoutedEventArgs e)
+		{
+			m_mainWindow.PushToDevice();
+		}
+
+		private void btnShare_Click(object sender, RoutedEventArgs e)
+		{
+			sharePopup.IsOpen = true;
+		}
+
+		private void ShareCallout_SaveToClicked(object sender, EventArgs e)
+		{
+			m_mainWindow.SaveTo(new List<IContentEntity>());
+		}
+
+		private void btnAddToAlbum_Click(object sender, RoutedEventArgs e)
+		{
+			addToAlbumPopup.IsOpen = true;
+
+			var _albums = new List<IContentEntity>
+				             {
+					             new CreateNewAlbumContentEntity((string) FindResource("CreateFavorite"))
+				             };
+
+			_albums.AddRange(ClientFramework.Client.Default.Favorites.OrderBy(x => x.Name));
+
+			addToAlbumPopup.DataContext = _albums;
+		}
+
+		private void ShareCallout_CreateOnlineAlbumClicked(object sender, EventArgs e)
+		{
+			//Todo:
+
+			m_mainWindow.CreateCloudAlbum(new List<ContentEntity>(), new List<ContentEntity>(), "Hello World OnLine");
+		}
+
+		private void btnCreateAlbum_Click(object sender, RoutedEventArgs e)
+		{
+			//Todo:
+
+			CreateNormalAlbum(new List<ContentEntity>(), new List<ContentEntity>(), "Hello World");
+		}
+
+
+		private void AddToAlbum_AlbumClicked(object sender, AlbumClickedEventArgs e)
+		{
+			if (e.DataContext is CreateNewAlbumContentEntity)
+			{
+				//Todo:
+
+
+				CreateNormalAlbum(new List<ContentEntity>(), new List<ContentEntity>(), "Hello World");
+			}
+			else
+			{
+				//ToDo:
+
+				IContentGroup _album = e.DataContext as IContentGroup;
+
+				List<IContentEntity> selectedEntities = new List<IContentEntity>();
+
+				m_mainWindow.AddToFavorite(_album.ID, selectedEntities);
+			}
+
+			addToAlbumPopup.IsOpen = false;
 		}
 	}
 }

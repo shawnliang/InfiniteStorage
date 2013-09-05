@@ -177,6 +177,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <local:ButtonImageText x:Name="btnCreateAlbum"
+                                               Click="btnCreateAlbum_Click"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_create_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_create_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_create_2.png"
@@ -188,6 +189,7 @@
                                                Text="Create" />
 
                     <local:ButtonImageText x:Name="btnAddToAlbum"
+                                               Click="btnAddToAlbum_Click"
                                                Grid.Column="1"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_addto_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_addto_1.png"
@@ -200,6 +202,7 @@
                                                Text="Add" />
 
                     <local:ButtonImageText x:Name="btnShare"
+                                               Click="btnShare_Click"
                                                Grid.Column="2"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_share_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_share_1.png"
@@ -231,6 +234,7 @@
             <StackPanel HorizontalAlignment="Right"
                             Orientation="Horizontal">
                 <local:ButtonImageText x:Name="btnPushToDevice"
+                                           Click="btnPushToDevice_Click"
                                            Margin="0,0,20,0"
                                            ImageDisableUri="pack://application:,,,/Resource/bar2_push_3.png"
                                            ImageEnterUri="pack://application:,,,/Resource/bar2_push_1.png"
@@ -249,7 +253,7 @@
                        StaysOpen="False"
                        VerticalOffset="-35">
 
-                <local:AddToCallout >
+                <local:AddToCallout AlbumClicked="AddToAlbum_AlbumClicked">
                     <local:AddToCallout.SelectionText>
                         <MultiBinding Converter="{StaticResource addToSelectionTextConvertor}">
                             <Binding ElementName="lbxContentContainer"
@@ -268,7 +272,7 @@
 
             </Popup>
 
-            <Popup x:Name="sharePopup"
+            <Popup x:Name="sharePopup" 
                        AllowsTransparency="True"
                        HorizontalOffset="-85"
                        Placement="Top"
@@ -276,7 +280,7 @@
                        PopupAnimation="Fade"
                        StaysOpen="False"
                        VerticalOffset="-35">
-                <local:ShareCallout>
+                <local:ShareCallout CreateOnlineAlbumClicked="ShareCallout_CreateOnlineAlbumClicked" SaveToClicked="ShareCallout_SaveToClicked" >
                     <local:ShareCallout.SelectionText>
                         <MultiBinding Converter="{StaticResource shareToSelectionTextConvertor}">
                             <Binding ElementName="lbxContentContainer"

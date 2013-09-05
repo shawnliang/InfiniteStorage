@@ -313,23 +313,6 @@ namespace Waveface.Client
 			return true;
 		}
 
-		private void AddToFavorite(string favoriteID, IEnumerable<IContentEntity> contents)
-		{
-			var favorites = ClientFramework.Client.Default.Favorites;
-
-			if (!favorites.Any())
-			{
-				string text = (string)Application.Current.FindResource("NoExistingFavoriteMessageText");
-
-				MessageBox.Show(Application.Current.MainWindow, text);
-				return;
-			}
-
-			ClientFramework.Client.Default.AddToFavorite(contents, favoriteID);
-
-			(GetFavorite(favoriteID) as IContentGroup).Refresh();
-		}
-
 		private void SelectToStarFavorite()
 		{
 			SelectToFavorite("00000000-0000-0000-0000-000000000000");
@@ -1331,8 +1314,8 @@ namespace Waveface.Client
 
 		private void List_MouseMove(object sender, MouseEventArgs e)
 		{
-            if (isDraggingSelectionRect)
-                return;
+			if (isDraggingSelectionRect)
+				return;
 
 			// Get the current mouse position
 			Point mousePos = e.GetPosition(null);
@@ -1550,37 +1533,7 @@ namespace Waveface.Client
 
 			string _title = lblContentLocation.Content.ToString();
 
-			CloudSharingDialog _dialog = new CloudSharingDialog(_allEntities, _selectedEntities, _title)
-											 {
-												 Owner = this
-											 };
-			_dialog.Title = (string)FindResource("createAlbumDialogTitle");
-			_dialog.ShowDialog();
-
-			List<string> _fileIDs = _dialog.FileIDs;
-			_title = _dialog.TitleName;
-
-			while (IsNewFavoriteNameExist(_title))
-			{
-				_title += " (1)";
-			}
-
-			_dialog = null;
-
-			if ((_fileIDs != null) && (_title != string.Empty))
-			{
-				List<Content> _contents = new List<Content>();
-
-				foreach (string _fileID in _fileIDs)
-				{
-					_contents.Add(new Content { ID = _fileID, });
-				}
-
-				if (_contents.Count > 0)
-				{
-					SaveToFavorite(_contents, _title);
-				}
-			}
+			CreateNormalAlbum(_allEntities, _selectedEntities, _title);
 		}
 
 		private void createCloudAlbum(bool noSelectMeansSelectAll = false)
@@ -1593,36 +1546,7 @@ namespace Waveface.Client
 
 			string _title = lblContentLocation.Content.ToString();
 
-			CloudSharingDialog _dialog = new CloudSharingDialog(_allEntities, _selectedEntities, _title)
-											 {
-												 Owner = this
-											 };
-			_dialog.ShowDialog();
-
-			List<string> _fileIDs = _dialog.FileIDs;
-			_title = _dialog.TitleName;
-
-			while (IsNewFavoriteNameExist(_title))
-			{
-				_title += " (1)";
-			}
-
-			_dialog = null;
-
-			if ((_fileIDs != null) && (_title != string.Empty))
-			{
-				List<Content> _contents = new List<Content>();
-
-				foreach (string _fileID in _fileIDs)
-				{
-					_contents.Add(new Content { ID = _fileID, });
-				}
-
-				if (_contents.Count > 0)
-				{
-					TimelineShareTo(_contents, _title);
-				}
-			}
+			CreateCloudAlbum(_allEntities, _selectedEntities, _title);
 		}
 
 		private bool IsNewFavoriteNameExist(string name)
@@ -1725,9 +1649,10 @@ namespace Waveface.Client
 			createCloudAlbum(true);
 		}
 
-		private void ShareCallout_SaveToClicked_1(object sender, EventArgs e)
+		private void ShareCallout_SaveToClicked(object sender, EventArgs e)
 		{
-			var selected = GetSelectedContents();
+			IEnumerable<IContentEntity> selected = GetSelectedContents();
+
 			if (!selected.Any())
 			{
 				selected = lbxContentContainer.Items.OfType<IContentEntity>().ToArray();
@@ -1736,39 +1661,12 @@ namespace Waveface.Client
 					return;
 			}
 
-			var dialog = new FolderBrowserDialog { Description = string.Format("Select a folder to save {0} items", selected.Count()) };
-			var result = dialog.ShowDialog();
-
-			var targetFolder = Path.Combine(dialog.SelectedPath, string.Format("Export_{0}", DateTime.Now.ToString("yyyyMMdd_HHmmss")));
-			Directory.CreateDirectory(targetFolder);
-
-			if (result == System.Windows.Forms.DialogResult.OK)
-			{
-				var sourceFiles = new List<string>();
-				var targetFiles = new List<string>();
-
-				foreach (var item in selected)
-				{
-					var file_name = Path.GetFileName(item.Uri.LocalPath);
-
-					sourceFiles.Add(item.Uri.LocalPath);
-					targetFiles.Add(Path.Combine(targetFolder, file_name));
-				}
-				ShellFileOperation.Copy(sourceFiles, targetFiles);
-
-				string _arg = "\"" + targetFolder + "\"";
-				Process.Start("explorer.exe", _arg);
-			}
+			SaveTo(selected);
 		}
 
 		private void btnPushToDevice_Click(object sender, RoutedEventArgs e)
 		{
-			var dialog = new HomeSharingDialog
-							 {
-								 Owner = this
-							 };
-
-			dialog.ShowDialog();
+			PushToDevice();
 		}
 
 		private void svContentContainer_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -1840,210 +1738,342 @@ namespace Waveface.Client
 
 			SetContentTypeCount(contentGroup);
 
+			lbxContentContainer.UnselectAll();
+
 			GC.Collect();
 		}
 
 
-        /// <summary>
-        /// Set to 'true' when the left mouse-button is down.
-        /// </summary>
-        private bool isLeftMouseButtonDownOnWindow = false;
+		/// <summary>
+		/// Set to 'true' when the left mouse-button is down.
+		/// </summary>
+		private bool isLeftMouseButtonDownOnWindow = false;
 
-        /// <summary>
-        /// Set to 'true' when dragging the 'selection rectangle'.
-        /// Dragging of the selection rectangle only starts when the left mouse-button is held down and the mouse-cursor
-        /// is moved more than a threshold distance.
-        /// </summary>
-        private bool isDraggingSelectionRect = false;
+		/// <summary>
+		/// Set to 'true' when dragging the 'selection rectangle'.
+		/// Dragging of the selection rectangle only starts when the left mouse-button is held down and the mouse-cursor
+		/// is moved more than a threshold distance.
+		/// </summary>
+		private bool isDraggingSelectionRect = false;
 
-        /// <summary>
-        /// Records the location of the mouse (relative to the window) when the left-mouse button has pressed down.
-        /// </summary>
-        private Point origMouseDownPoint;
+		/// <summary>
+		/// Records the location of the mouse (relative to the window) when the left-mouse button has pressed down.
+		/// </summary>
+		private Point origMouseDownPoint;
 
-        /// <summary>
-        /// The threshold distance the mouse-cursor must move before drag-selection begins.
-        /// </summary>
-        private static readonly double DragThreshold = 5;
-
-
-        /// <summary>
-        /// Event raised when the user presses down the left mouse-button.
-        /// </summary>
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                isLeftMouseButtonDownOnWindow = true;
-                origMouseDownPoint = e.GetPosition(lbxContentContainer);
-
-                //this.CaptureMouse();
-
-                //e.Handled = true;
-            }
-        }
+		/// <summary>
+		/// The threshold distance the mouse-cursor must move before drag-selection begins.
+		/// </summary>
+		private static readonly double DragThreshold = 5;
 
 
-        /// <summary>
-        /// Event raised when the user releases the left mouse-button.
-        /// </summary>
-        private void Window_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                if (isDraggingSelectionRect)
-                {
-                    //
-                    // Drag selection has ended, apply the 'selection rectangle'.
-                    //
+		/// <summary>
+		/// Event raised when the user presses down the left mouse-button.
+		/// </summary>
+		private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			if (e.ChangedButton == MouseButton.Left)
+			{
+				isLeftMouseButtonDownOnWindow = true;
+				origMouseDownPoint = e.GetPosition(lbxContentContainer);
 
-                    isDraggingSelectionRect = false;
-                    ApplyDragSelectionRect();
+				//this.CaptureMouse();
 
-                    e.Handled = true;
-                }
+				//e.Handled = true;
+			}
+		}
 
-                if (isLeftMouseButtonDownOnWindow)
-                {
-                    isLeftMouseButtonDownOnWindow = false;
-                    //this.ReleaseMouseCapture();
 
-                    e.Handled = true;
-                }
-            }
-        }
+		/// <summary>
+		/// Event raised when the user releases the left mouse-button.
+		/// </summary>
+		private void Window_MouseUp(object sender, MouseButtonEventArgs e)
+		{
+			if (e.ChangedButton == MouseButton.Left)
+			{
+				if (isDraggingSelectionRect)
+				{
+					//
+					// Drag selection has ended, apply the 'selection rectangle'.
+					//
 
-        private void Window_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (isDraggingSelectionRect)
-            {
-                //
-                // Drag selection is in progress.
-                //
-                Point curMouseDownPoint = e.GetPosition(lbxContentContainer);
-                UpdateDragSelectionRect(origMouseDownPoint, curMouseDownPoint);
+					isDraggingSelectionRect = false;
+					ApplyDragSelectionRect();
 
-                e.Handled = true;
-            }
-            else if (isLeftMouseButtonDownOnWindow)
-            {
-                //
-                // The user is left-dragging the mouse,
-                // but don't initiate drag selection until
-                // they have dragged past the threshold value.
-                //
-                Point curMouseDownPoint = e.GetPosition(lbxContentContainer);
-                var dragDelta = curMouseDownPoint - origMouseDownPoint;
-                double dragDistance = Math.Abs(dragDelta.Length);
-                if (dragDistance > DragThreshold)
-                {
-                    //
-                    // When the mouse has been dragged more than the threshold value commence drag selection.
-                    //
-                    isDraggingSelectionRect = true;
+					e.Handled = true;
+				}
 
-                    //
-                    //  Clear selection immediately when starting drag selection.
-                    //
-                    lbxContentContainer.SelectedItems.Clear();
+				if (isLeftMouseButtonDownOnWindow)
+				{
+					isLeftMouseButtonDownOnWindow = false;
+					//this.ReleaseMouseCapture();
 
-                    InitDragSelectionRect(origMouseDownPoint, curMouseDownPoint);
-                }
+					e.Handled = true;
+				}
+			}
+		}
 
-                e.Handled = true;
-            }
-        }
+		private void Window_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (isDraggingSelectionRect)
+			{
+				//
+				// Drag selection is in progress.
+				//
+				Point curMouseDownPoint = e.GetPosition(lbxContentContainer);
+				UpdateDragSelectionRect(origMouseDownPoint, curMouseDownPoint);
 
-        /// <summary>
-        /// Initialize the rectangle used for drag selection.
-        /// </summary>
-        private void InitDragSelectionRect(Point pt1, Point pt2)
-        {
-            UpdateDragSelectionRect(pt1, pt2);
+				e.Handled = true;
+			}
+			else if (isLeftMouseButtonDownOnWindow)
+			{
+				//
+				// The user is left-dragging the mouse,
+				// but don't initiate drag selection until
+				// they have dragged past the threshold value.
+				//
+				Point curMouseDownPoint = e.GetPosition(lbxContentContainer);
+				var dragDelta = curMouseDownPoint - origMouseDownPoint;
+				double dragDistance = Math.Abs(dragDelta.Length);
+				if (dragDistance > DragThreshold)
+				{
+					//
+					// When the mouse has been dragged more than the threshold value commence drag selection.
+					//
+					isDraggingSelectionRect = true;
 
-            dragSelectionCanvas.Visibility = Visibility.Visible;
-        }
+					//
+					//  Clear selection immediately when starting drag selection.
+					//
+					lbxContentContainer.SelectedItems.Clear();
 
-        /// <summary>
-        /// Update the position and size of the rectangle used for drag selection.
-        /// </summary>
-        private void UpdateDragSelectionRect(Point pt1, Point pt2)
-        {
-            double x, y, width, height;
+					InitDragSelectionRect(origMouseDownPoint, curMouseDownPoint);
+				}
 
-            //
-            // Determine x,y,width and height of the rect inverting the points if necessary.
-            // 
+				e.Handled = true;
+			}
+		}
 
-            if (pt2.X < pt1.X)
-            {
-                x = pt2.X;
-                width = pt1.X - pt2.X;
-            }
-            else
-            {
-                x = pt1.X;
-                width = pt2.X - pt1.X;
-            }
+		/// <summary>
+		/// Initialize the rectangle used for drag selection.
+		/// </summary>
+		private void InitDragSelectionRect(Point pt1, Point pt2)
+		{
+			UpdateDragSelectionRect(pt1, pt2);
 
-            if (pt2.Y < pt1.Y)
-            {
-                y = pt2.Y;
-                height = pt1.Y - pt2.Y;
-            }
-            else
-            {
-                y = pt1.Y;
-                height = pt2.Y - pt1.Y;
-            }
+			dragSelectionCanvas.Visibility = Visibility.Visible;
+		}
 
-            //
-            // Update the coordinates of the rectangle used for drag selection.
-            //
-            Canvas.SetLeft(dragSelectionBorder, x);
-            Canvas.SetTop(dragSelectionBorder, y);
-            dragSelectionBorder.Width = width;
-            dragSelectionBorder.Height = height;
-        }
+		/// <summary>
+		/// Update the position and size of the rectangle used for drag selection.
+		/// </summary>
+		private void UpdateDragSelectionRect(Point pt1, Point pt2)
+		{
+			double x, y, width, height;
 
-        /// <summary>
-        /// Select all nodes that are in the drag selection rectangle.
-        /// </summary>
-        private void ApplyDragSelectionRect()
-        {
-            dragSelectionCanvas.Visibility = Visibility.Collapsed;
+			//
+			// Determine x,y,width and height of the rect inverting the points if necessary.
+			// 
 
-            double x = Canvas.GetLeft(dragSelectionBorder);
-            double y = Canvas.GetTop(dragSelectionBorder);
-            double width = dragSelectionBorder.Width;
-            double height = dragSelectionBorder.Height;
-            Rect dragRect = new Rect(x, y, width, height);
+			if (pt2.X < pt1.X)
+			{
+				x = pt2.X;
+				width = pt1.X - pt2.X;
+			}
+			else
+			{
+				x = pt1.X;
+				width = pt2.X - pt1.X;
+			}
 
-            //
-            // Inflate the drag selection-rectangle by 1/10 of its size to 
-            // make sure the intended item is selected.
-            //
-            dragRect.Inflate(width / 10, height / 10);
+			if (pt2.Y < pt1.Y)
+			{
+				y = pt2.Y;
+				height = pt1.Y - pt2.Y;
+			}
+			else
+			{
+				y = pt1.Y;
+				height = pt2.Y - pt1.Y;
+			}
 
-            //
-            // Clear the current selection.
-            //
-            lbxContentContainer.SelectedItems.Clear();
+			//
+			// Update the coordinates of the rectangle used for drag selection.
+			//
+			Canvas.SetLeft(dragSelectionBorder, x);
+			Canvas.SetTop(dragSelectionBorder, y);
+			dragSelectionBorder.Width = width;
+			dragSelectionBorder.Height = height;
+		}
 
-            //
-            // Find and select all the list box items.
-            //
-            foreach (var item in lbxContentContainer.Items)
-            {
-                var itemContainer = lbxContentContainer.ItemContainerGenerator.ContainerFromItem(item) as FrameworkElement;
-                var itemTransform = itemContainer.TransformToAncestor(svContentContainer);
-                var itemRectangle = itemTransform.TransformBounds(new Rect(new Point(0, 0), itemContainer.RenderSize));
+		/// <summary>
+		/// Select all nodes that are in the drag selection rectangle.
+		/// </summary>
+		private void ApplyDragSelectionRect()
+		{
+			dragSelectionCanvas.Visibility = Visibility.Collapsed;
 
-                if (dragRect.Contains(itemRectangle))
-                {
-                    lbxContentContainer.SelectedItems.Add(item);
-                }
-            }
-        }
+			double x = Canvas.GetLeft(dragSelectionBorder);
+			double y = Canvas.GetTop(dragSelectionBorder);
+			double width = dragSelectionBorder.Width;
+			double height = dragSelectionBorder.Height;
+			Rect dragRect = new Rect(x, y, width, height);
+
+			//
+			// Inflate the drag selection-rectangle by 1/10 of its size to 
+			// make sure the intended item is selected.
+			//
+			dragRect.Inflate(width / 10, height / 10);
+
+			//
+			// Clear the current selection.
+			//
+			lbxContentContainer.SelectedItems.Clear();
+
+			//
+			// Find and select all the list box items.
+			//
+			foreach (var item in lbxContentContainer.Items)
+			{
+				var itemContainer = lbxContentContainer.ItemContainerGenerator.ContainerFromItem(item) as FrameworkElement;
+				var itemTransform = itemContainer.TransformToAncestor(svContentContainer);
+				var itemRectangle = itemTransform.TransformBounds(new Rect(new Point(0, 0), itemContainer.RenderSize));
+
+				if (dragRect.Contains(itemRectangle))
+				{
+					lbxContentContainer.SelectedItems.Add(item);
+				}
+			}
+		}
+
+		#region ContentAreaToolBar Action
+
+		public void AddToFavorite(string favoriteID, IEnumerable<IContentEntity> contents)
+		{
+			var favorites = ClientFramework.Client.Default.Favorites;
+
+			if (!favorites.Any())
+			{
+				string text = (string)Application.Current.FindResource("NoExistingFavoriteMessageText");
+
+				MessageBox.Show(Application.Current.MainWindow, text);
+				return;
+			}
+
+			ClientFramework.Client.Default.AddToFavorite(contents, favoriteID);
+
+			(GetFavorite(favoriteID) as IContentGroup).Refresh();
+		}
+
+		public void CreateNormalAlbum(IEnumerable<IContentEntity> allEntities, IEnumerable<IContentEntity> selectedEntities, string title)
+		{
+			CloudSharingDialog _dialog = new CloudSharingDialog(allEntities, selectedEntities, title)
+			{
+				Owner = this
+			};
+
+			_dialog.Title = (string)FindResource("createAlbumDialogTitle");
+			_dialog.ShowDialog();
+
+			List<string> _fileIDs = _dialog.FileIDs;
+			title = _dialog.TitleName;
+
+			while (IsNewFavoriteNameExist(title))
+			{
+				title += " (1)";
+			}
+
+			_dialog = null;
+
+			if ((_fileIDs != null) && (title != string.Empty))
+			{
+				List<Content> _contents = new List<Content>();
+
+				foreach (string _fileID in _fileIDs)
+				{
+					_contents.Add(new Content { ID = _fileID, });
+				}
+
+				if (_contents.Count > 0)
+				{
+					SaveToFavorite(_contents, title);
+				}
+			}
+		}
+
+		public void CreateCloudAlbum(IEnumerable<IContentEntity> allEntities, IEnumerable<IContentEntity> selectedEntities, string title)
+		{
+			CloudSharingDialog _dialog = new CloudSharingDialog(allEntities, selectedEntities, title)
+			{
+				Owner = this
+			};
+
+			_dialog.ShowDialog();
+
+			List<string> _fileIDs = _dialog.FileIDs;
+			title = _dialog.TitleName;
+
+			while (IsNewFavoriteNameExist(title))
+			{
+				title += " (1)";
+			}
+
+			_dialog = null;
+
+			if ((_fileIDs != null) && (title != string.Empty))
+			{
+				List<Content> _contents = new List<Content>();
+
+				foreach (string _fileID in _fileIDs)
+				{
+					_contents.Add(new Content { ID = _fileID, });
+				}
+
+				if (_contents.Count > 0)
+				{
+					TimelineShareTo(_contents, title);
+				}
+			}
+		}
+
+		public void PushToDevice()
+		{
+			var _dialog = new HomeSharingDialog
+			{
+				Owner = this
+			};
+
+			_dialog.ShowDialog();
+		}
+
+		public void SaveTo(IEnumerable<IContentEntity> contents)
+		{
+			FolderBrowserDialog _dialog = new FolderBrowserDialog { Description = string.Format("Select a folder to save {0} items", contents.Count()) };
+			DialogResult _result = _dialog.ShowDialog();
+
+			string _targetFolder = Path.Combine(_dialog.SelectedPath, string.Format("Export_{0}", DateTime.Now.ToString("yyyyMMdd_HHmmss")));
+			Directory.CreateDirectory(_targetFolder);
+
+			if (_result == System.Windows.Forms.DialogResult.OK)
+			{
+				List<string> _sourceFiles = new List<string>();
+				List<string> _targetFiles = new List<string>();
+
+				foreach (IContentEntity _item in contents)
+				{
+					string _fileName = Path.GetFileName(_item.Uri.LocalPath);
+
+					_sourceFiles.Add(_item.Uri.LocalPath);
+					_targetFiles.Add(Path.Combine(_targetFolder, _fileName));
+				}
+
+				ShellFileOperation.Copy(_sourceFiles, _targetFiles);
+
+				string _arg = "\"" + _targetFolder + "\"";
+				Process.Start("explorer.exe", _arg);
+			}
+		}
+
+		#endregion
 	}
 }

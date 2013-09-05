@@ -20,7 +20,7 @@ namespace Waveface.Client
 		public int VideosCount { get; set; }
 		public int PhotosCount { get; set; }
 		public bool Changed { get; set; }
-		public MainWindow MyMainWindow { get; set; }
+		public PhotoDiaryUC PhotoDiaryUC { get; set; }
 		public IService CurrentDevice { get; set; }
 
 		public double MyWidth
@@ -230,5 +230,11 @@ namespace Waveface.Client
 		}
 
 		#endregion
+
+		private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{
+			//Todo:
+			PhotoDiaryUC.ToPhotoDiary2ndLevel(FileEntrys, YMD);
+		}
 	}
 }

@@ -728,7 +728,7 @@
                        PopupAnimation="Fade"
                        StaysOpen="False"
                        VerticalOffset="-35">
-                    <local:ShareCallout CreateOnlineAlbumClicked="ShareCallout_CreateOnlineAlbumClicked_1" SaveToClicked="ShareCallout_SaveToClicked_1">
+                    <local:ShareCallout CreateOnlineAlbumClicked="ShareCallout_CreateOnlineAlbumClicked_1" SaveToClicked="ShareCallout_SaveToClicked">
                         <local:ShareCallout.SelectionText>
                             <MultiBinding Converter="{StaticResource shareToSelectionTextConvertor}">
                                 <Binding ElementName="lbxContentContainer" Path="Items.Count" />
