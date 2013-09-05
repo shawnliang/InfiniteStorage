@@ -40,7 +40,7 @@ namespace InfiniteStorage.Share
 					return;
 				}
 
-				postServiceClass.attachments_upload(file_data, CloudService.SessionToken, Settings.Default.GroupId, file.file_name + ".mp4", "", "", "video", "medium", file.file_id.ToString(), null, CloudService.APIKey, file.event_time);
+				postServiceClass.attachments_upload(file_data, CloudService.SessionToken, Settings.Default.GroupId, file.file_name + ".mp4", "", "", "video", "origin", file.file_id.ToString(), null, CloudService.APIKey, file.event_time);
 
 
 				uploadStillImagePreviews(file);

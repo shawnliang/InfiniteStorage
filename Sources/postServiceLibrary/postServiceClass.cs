@@ -254,8 +254,7 @@ namespace postServiceLibrary
 			_dic.Add("description", description);
 			_dic.Add("type", type);
 
-			if (type == "image")
-				_dic.Add("image_meta", image_meta);
+			_dic.Add("image_meta", image_meta);
 
 			if (!string.IsNullOrEmpty(object_id))
 				_dic.Add("object_id", object_id);
