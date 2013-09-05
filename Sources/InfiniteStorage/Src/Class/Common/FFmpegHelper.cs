@@ -43,7 +43,13 @@ namespace InfiniteStorage.Common
 					WindowStyle = ProcessWindowStyle.Hidden
 				};
 				proc.Start();
-				proc.PriorityClass = ProcessPriorityClass.BelowNormal;
+				try
+				{
+					proc.PriorityClass = ProcessPriorityClass.BelowNormal;
+				}
+				catch
+				{
+				}
 
 				proc.WaitForExit();
 			}

@@ -10,6 +10,8 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Text;
+using Wammer.Utility;
+using System.Drawing;
 
 namespace InfiniteStorage.Share
 {
@@ -57,11 +59,10 @@ namespace InfiniteStorage.Share
 
 			Directory.CreateDirectory(folder);
 
-			FFmpegHelper.ExtractStillIamge(video_path, 5, 2, folder, 128);
+			FFmpegHelper.ExtractStillIamge(video_path, 5, 2, folder, 256);
 
 			var preview_files = Directory.GetFiles(folder).ToList();
-			preview_files.Sort();
-
+			preview_files = cropTo128Sqaure(preview_files);
 
 			var previewData = new PreviewData
 			{
@@ -85,6 +86,28 @@ namespace InfiniteStorage.Share
 			var payload = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(previewData));
 			postServiceClass.attachments_upload(payload, CloudService.SessionToken, Settings.Default.GroupId, file.file_name + ".mp4", "", "", "video", "square", file.file_id.ToString(), null, CloudService.APIKey, file.event_time);
 
+		}
+
+		private static List<string> cropTo128Sqaure(List<string> preview_files)
+		{
+			foreach (var prev in preview_files)
+			{
+				using (var img = new Bitmap(prev))
+				{
+					var tmpImage = ImageHelper.ScaleBasedOnShortSide(img, 128);
+					int shortSize = ImageHelper.ShortSizeLength(tmpImage);
+
+					int x = (tmpImage.Width - shortSize) / 2;
+					int y = (tmpImage.Height - shortSize) / 2;
+
+					tmpImage = ImageHelper.Crop(tmpImage, x, y, shortSize);
+					tmpImage.Save(prev + ".square.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+				}
+			}
+
+			preview_files = preview_files.Select(x => x + ".square.jpg").ToList();
+			preview_files.Sort();
+			return preview_files;
 		}
 
 		private byte[] getVideoThumbnail(FileAsset file)
