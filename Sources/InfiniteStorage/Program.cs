@@ -123,6 +123,7 @@ namespace InfiniteStorage
 				ConsistencyChecker.RemoveMissingFilesFromDB();
 				ConsistencyChecker.RemoveMissingFoldersFromDB();
 				ConsistencyChecker.RemoveMissingDevicesFromDB();
+				removeTempFiles();
 			};
 			bg.RunWorkerCompleted += (s, e) =>
 			{
@@ -146,6 +147,26 @@ namespace InfiniteStorage
 				MainUIWrapper.Instance.StartViewer();
 
 			Application.Run();
+		}
+
+		private static void removeTempFiles()
+		{
+			try
+			{
+				var tmpFolder = new DirectoryInfo(MyFileFolder.Temp);
+				if (!tmpFolder.Exists)
+					return;
+
+				foreach (var file in tmpFolder.GetFiles())
+					file.Delete();
+
+				foreach (var dir in tmpFolder.GetDirectories())
+					dir.Delete(true);
+			}
+			catch (Exception err)
+			{
+				log4net.LogManager.GetLogger("main").Warn("Delete temp files not success", err);
+			}
 		}
 
 		private static string generateSameServerIdForSameUserOnSamePC()
