@@ -219,17 +219,22 @@ namespace InfiniteStorage
 			if (e.ctx.fileCtx == null)
 				return;	// duplicate file
 
-			var file_path = Path.Combine(e.ctx.fileCtx.folder, e.ctx.fileCtx.file_name);
-			var file_id = "";
-			using (var db = new MyDbContext())
-			{
-				var q = from f in db.Object.Files
-						where f.file_path == file_path
-						select f;
+			var file_id = e.ctx.fileCtx.file_id;
 
-				var file = q.FirstOrDefault();
-				if (file != null)
-					file_id = file.file_id.ToString();
+			if (file_id == Guid.Empty)
+			{
+				var file_path = Path.Combine(e.ctx.fileCtx.folder, e.ctx.fileCtx.file_name);
+
+				using (var db = new MyDbContext())
+				{
+					var q = from f in db.Object.Files
+							where f.file_path == file_path && f.device_id == e.ctx.device_id
+							select f;
+
+					var file = q.FirstOrDefault();
+					if (file != null)
+						file_id = file.file_id;
+				}
 			}
 
 
@@ -249,7 +254,7 @@ namespace InfiniteStorage
 						e.ctx.SetData(DATA_KEY_PROGRESS_DIALOG, dialog);
 					}
 
-					if (!string.IsNullOrEmpty(file_id))
+					if (file_id != Guid.Empty)
 					{
 						var s92Path = Path.Combine(MyFileFolder.Thumbs, file_id.ToString() + ".s92.thumb");
 						if (File.Exists(s92Path))
