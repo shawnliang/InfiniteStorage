@@ -8,6 +8,9 @@ using System.Linq;
 using System.Threading;
 using Waveface.Model;
 using WebSocketSharp;
+using System.Reactive.Linq;
+using System.Reactive.Concurrency;
+using System.Diagnostics;
 
 namespace Waveface.ClientFramework
 {
@@ -115,6 +118,34 @@ namespace Waveface.ClientFramework
 				ws.OnMessage += new EventHandler<MessageEventArgs>(ws_OnMessage);
 
 
+				Observable.FromEvent<EventHandler<MessageEventArgs>, MessageEventArgs>(
+				handler => (s, ex) => handler(ex),
+				h => ws.OnMessage += h,
+				h => ws.OnMessage -= h
+				)
+				.Where(ex =>
+				{
+					var notify = JsonConvert.DeserializeObject<NotificationMsg>(ex.Data);
+					return notify.update_folder != null;
+				})
+				.Window(TimeSpan.FromMilliseconds(5 * 1000))
+				.Subscribe((events) =>
+				{
+					events
+						.Distinct(ex =>
+						{
+							var notify = JsonConvert.DeserializeObject<NotificationMsg>(ex.Data);
+							return notify.update_folder.path;
+						})
+						.Subscribe(ex =>
+						{
+							var notify = JsonConvert.DeserializeObject<NotificationMsg>(ex.Data);
+
+							refreshFolder(notify.update_folder);
+						});
+				});
+
+
 				System.Threading.Thread.Sleep(1000);
 				ws.Connect();
 			});
@@ -165,7 +196,7 @@ namespace Waveface.ClientFramework
 
 				if (notify.update_folder != null)
 				{
-					refreshFolder(notify.update_folder);
+					// moved to subscribeActiveDeviceAsync()
 				}
 			}
 			catch (Exception err)
