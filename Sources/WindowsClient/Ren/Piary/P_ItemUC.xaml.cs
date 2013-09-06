@@ -72,6 +72,8 @@ namespace Waveface.Client
 
 				m_item = value;
 
+				m_item.Files.Sort((ev1, ev2) => ev2.taken_time.CompareTo(ev1.taken_time));
+
 				Changed = m_oldFileEntrysCount != m_item.Files.Count;
 			}
 		}

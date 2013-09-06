@@ -263,6 +263,8 @@ namespace Waveface.Client
 
 			List<Event> _events = GetEventsFromDB();
 
+			_events.Sort((ev1, ev2) => ev2.start.CompareTo(ev1.start));
+
 			foreach (Event _event in _events)
 			{
 				string _eventID = _event.event_id.ToString();
