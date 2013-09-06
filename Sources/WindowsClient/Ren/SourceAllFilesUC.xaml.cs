@@ -347,7 +347,7 @@ namespace Waveface.Client
 
 				m_eventUCs.Add(_ctl);
 
-				Application.DoEvents();
+				//Application.DoEvents();
 			}
 		}
 
@@ -403,7 +403,7 @@ namespace Waveface.Client
 				m_photosCount += _ctl.PhotosCount;
 				m_videosCount += _ctl.VideosCount;
 
-				Application.DoEvents();
+				//Application.DoEvents();
 			}
 
 			m_YM_Files = _YM_Files;
