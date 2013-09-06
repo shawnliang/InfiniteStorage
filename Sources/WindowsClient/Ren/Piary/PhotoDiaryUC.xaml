@@ -2,6 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Waveface.Client" Width="1024"
+             SnapsToDevicePixels="True"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
              Height="768">
 
     <UserControl.Resources>
@@ -97,8 +100,8 @@
                                       Width="144"
                                       Margin="0, 1, 0, 5"
                                       Maximum="512"
-                                      Minimum="192"
-                                      Value="256"
+                                      Minimum="240"
+                                      Value="280"
                                       ValueChanged="zoomSlider_ValueChanged"
                                   />
 

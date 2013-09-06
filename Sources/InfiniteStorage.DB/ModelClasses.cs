@@ -248,6 +248,10 @@ namespace InfiniteStorage.Model
 
 		public DbSet<ShareRecipient> ShareRecipients { get; set; }
 
+		public DbSet<Event> Events { get; set; }
+
+		public DbSet<EventFile> EventFiles { get; set; }
+
 		public InfiniteStorageContext(DbConnection conn, bool contextOwnsConnection)
 			: base(conn, contextOwnsConnection)
 		{

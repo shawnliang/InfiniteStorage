@@ -32,18 +32,18 @@ namespace Waveface.Client
 
 		private int m_videosCount;
 		private int m_photosCount;
-		private int m_hasOriginCount;
 
 		private string m_basePath;
 		private string m_thumbsPath;
 		private SolidColorBrush m_solidColorBrush;
-		private List<FileEntry> m_fileEntries { get; set; }
 
-		private Dictionary<string, List<FileEntry>> m_YMD_Files;
-		private List<List<FileEntry>> m_days;
+		private int m_oldEventFilesCount;
+
+		private Dictionary<string, EventEntry> m_eventID_Events;
+		private Dictionary<string, List<FileEntry>> m_eventID_FileEntrys;
+
 		private ObservableCollection<P_ItemUC> m_eventUCs;
 
-		private static Random m_rnd = new Random();
 		private double m_myWidth;
 		private double m_myHeight;
 		private bool m_inited;
@@ -52,13 +52,13 @@ namespace Waveface.Client
 		{
 			InitializeComponent();
 
-			m_basePath = (string) Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", "");
+			m_basePath = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", "");
 			m_thumbsPath = Path.Combine(m_basePath, ".thumbs");
 			m_solidColorBrush = new SolidColorBrush(Color.FromArgb(255, 120, 0, 34));
 
 			InitTimer();
 
-			setWH(240);
+			setWH(280);
 		}
 
 		private void InitTimer()
@@ -117,9 +117,9 @@ namespace Waveface.Client
 		{
 			m_startTimer.Stop();
 
-			List<FileAsset> _files = GetFilesFromDB();
+			List<EventFile> _eventsFiles = GetEventFilesFromDB();
 
-			if (_files.Count == 0)
+			if (_eventsFiles.Count == 0)
 			{
 				tbTitle.Visibility = Visibility.Collapsed;
 
@@ -127,13 +127,13 @@ namespace Waveface.Client
 				return;
 			}
 
-			prepareData(_files);
+			prepareData(_eventsFiles);
 
 			refreshTitleInfo();
 
 			tbTitle.Visibility = Visibility.Visible;
 
-			tbTitle.Text = m_currentDevice.Name;
+			tbTitle.Text = "焦點動態";
 
 			ShowEvents_Init();
 
@@ -150,21 +150,14 @@ namespace Waveface.Client
 
 			try
 			{
-				List<FileAsset> _files = GetFilesFromDB();
-				int _hasOriginCount = GetHasOriginCount(_files);
+				List<EventFile> _eventFiles = GetEventFilesFromDB();
 
-				if ((_hasOriginCount == m_hasOriginCount) && (_files.Count == m_fileEntries.Count))
+				if (_eventFiles.Count != m_oldEventFilesCount)
 				{
-					// 同步完成?!
-				}
-				else
-				{
-					prepareData(_files);
+					prepareData(_eventFiles);
 
 					ShowEvents();
 				}
-
-				refreshTitleInfo();
 			}
 			catch
 			{
@@ -179,114 +172,106 @@ namespace Waveface.Client
 		{
 		}
 
+		#region DB
+
 		private List<FileAsset> GetFilesFromDB()
 		{
 			using (var _db = new MyDbContext())
 			{
-				IQueryable<FileAsset> _q = from _f in _db.Object.Files
-				                           where _f.device_id == m_currentDevice.ID && !_f.deleted
-				                           select _f;
+				IQueryable<FileAsset> _q = from _f in _db.Object.Files select _f;
 
 				return _q.ToList();
 			}
 		}
 
-		public void prepareData(List<FileAsset> files)
+		private List<Event> GetEventsFromDB()
 		{
-			m_fileEntries = new List<FileEntry>();
-
-			List<FileEntry> _fCs = new List<FileEntry>();
-
-			foreach (FileAsset x in files)
+			using (var _db = new MyDbContext())
 			{
-				FileEntry _fe = new FileEntry();
+				IQueryable<Event> _q = from _f in _db.Object.Events select _f;
 
-				_fe.id = x.file_id.ToString();
-				_fe.tiny_path = Path.Combine(m_thumbsPath, x.file_id + ".tiny.thumb");
-				_fe.s92_path = Path.Combine(m_thumbsPath, x.file_id + ".s92.thumb");
-				_fe.taken_time = x.event_time;
-				_fe.type = x.type;
-				_fe.has_origin = x.has_origin;
-
-				if (string.IsNullOrEmpty(x.saved_path))
-				{
-					_fe.saved_path = "";
-				}
-				else
-				{
-					_fe.saved_path = Path.Combine(m_basePath, x.saved_path);
-				}
-
-				_fCs.Add(_fe);
+				return _q.ToList();
 			}
-
-			m_fileEntries = _fCs.OrderBy(o => o.taken_time).ToList();
-
-			m_hasOriginCount = GetHasOriginCount(files);
 		}
 
-		private int GetHasOriginCount(List<FileAsset> files)
+		private List<EventFile> GetEventFilesFromDB()
 		{
-			int _hasOriginCount = 0;
-
-			foreach (var _entry in files)
+			using (var _db = new MyDbContext())
 			{
-				if (_entry.has_origin)
-				{
-					_hasOriginCount++;
-				}
-			}
+				IQueryable<EventFile> _q = from _f in _db.Object.EventFiles select _f;
 
-			return _hasOriginCount;
+				return _q.ToList();
+			}
 		}
 
-		public Dictionary<string, List<FileEntry>> GroupingByDay()
+		#endregion
+
+		public void prepareData(List<EventFile> eventFiles)
 		{
-			Dictionary<string, List<FileEntry>> _YMD_Files = new Dictionary<string, List<FileEntry>>();
+			m_oldEventFilesCount = eventFiles.Count;
 
-			m_days = new List<List<FileEntry>>();
+			List<FileAsset> _filesFromDB = GetFilesFromDB();
 
-			foreach (FileEntry _item in m_fileEntries)
+			m_eventID_FileEntrys = new Dictionary<string, List<FileEntry>>();
+
+			foreach (EventFile _eventFile in eventFiles)
 			{
-				DateTime _dt = _item.taken_time;
+				FileAsset _fa = _filesFromDB.First(f => f.file_id == _eventFile.file_id);
 
-				string _by = _dt.ToString("yyyy-MM-dd");
-
-				if (!_YMD_Files.ContainsKey(_by))
+				if (_fa != null)
 				{
-					_YMD_Files.Add(_by, new List<FileEntry>());
+					FileEntry _fe = new FileEntry
+						                {
+							                id = _fa.file_id.ToString(),
+							                tiny_path = Path.Combine(m_thumbsPath, _fa.file_id + ".tiny.thumb"),
+							                s92_path = Path.Combine(m_thumbsPath, _fa.file_id + ".s92.thumb"),
+							                taken_time = _fa.event_time,
+							                type = _fa.type,
+							                has_origin = _fa.has_origin
+						                };
+
+					if (string.IsNullOrEmpty(_fa.saved_path))
+					{
+						_fe.saved_path = "";
+					}
+					else
+					{
+						_fe.saved_path = Path.Combine(m_basePath, _fa.saved_path);
+					}
+
+					string _event_id = _eventFile.event_id.ToString();
+
+					if (!m_eventID_FileEntrys.ContainsKey(_event_id))
+					{
+						m_eventID_FileEntrys.Add(_event_id, new List<FileEntry>());
+					}
+
+					m_eventID_FileEntrys[_event_id].Add(_fe);
 				}
-
-				_YMD_Files[_by].Add(_item);
 			}
-
-			_YMD_Files.Keys.ToList().Sort();
-
-			foreach (string _day in _YMD_Files.Keys)
-			{
-				m_days.Add(_YMD_Files[_day]);
-			}
-
-			m_days.Reverse();
-
-			return _YMD_Files;
 		}
 
-		public static double GetRandom(bool includeNagtive = true, double r = 1.618)
+		public Dictionary<string, EventEntry> GetEvents()
 		{
-			if (includeNagtive)
+			Dictionary<string, EventEntry> _id_event_s = new Dictionary<string, EventEntry>();
+
+			List<Event> _events = GetEventsFromDB();
+
+			foreach (Event _event in _events)
 			{
-				if (m_rnd.NextDouble() > 0.5)
-				{
-					return r*m_rnd.NextDouble();
-				}
-				else
-				{
-					return (-1)*r*m_rnd.NextDouble();
-				}
+				string _eventID = _event.event_id.ToString();
+
+				EventEntry _eventEntry = new EventEntry
+									 {
+										 event_id = _eventID,
+										 Event = _event,
+										 Files = m_eventID_FileEntrys[_eventID]
+									 };
+
+				_id_event_s.Add(_eventID, _eventEntry);
 			}
 
-			return r*m_rnd.NextDouble();
+			return _id_event_s;
 		}
 
 		#region Show
@@ -297,20 +282,17 @@ namespace Waveface.Client
 			m_videosCount = 0;
 
 			m_eventUCs = new ObservableCollection<P_ItemUC>();
-
 			listBoxEvent.ItemsSource = m_eventUCs;
 
-			m_YMD_Files = GroupingByDay();
+			m_eventID_Events = GetEvents();
 
-			foreach (List<FileEntry> _entries in m_days)
+			foreach (KeyValuePair<string, EventEntry> _pair in m_eventID_Events)
 			{
 				P_ItemUC _ctl = new P_ItemUC
-					                {
-						                FileEntrys = _entries,
-						                YMD = _entries[0].taken_time.ToString("yyyy-MM-dd"),
-						                PhotoDiaryUC = this,
-						                CurrentDevice = m_currentDevice,
-					                };
+									{
+										Item = _pair.Value,
+										PhotoDiaryUC = this,
+									};
 
 				_ctl.SetUI(m_myWidth, m_myHeight);
 
@@ -328,18 +310,17 @@ namespace Waveface.Client
 			m_photosCount = 0;
 			m_videosCount = 0;
 
-			Dictionary<string, List<FileEntry>> _YMD_Files = GroupingByDay();
+			Dictionary<string, EventEntry> _id_event_s = GetEvents();
 
-			foreach (List<FileEntry> _entries in m_days)
+			foreach (KeyValuePair<string, EventEntry> _pair in _id_event_s)
 			{
 				P_ItemUC _ctl = null;
-				string _YMD = _entries[0].taken_time.ToString("yyyy-MM-dd");
 
-				if (m_YMD_Files.Keys.Contains(_YMD))
+				if (m_eventID_Events.Keys.Contains(_pair.Key))
 				{
 					foreach (P_ItemUC _eventUc in m_eventUCs)
 					{
-						if (_eventUc.YMD == _YMD)
+						if (_eventUc.Item.Event.event_id.ToString() == _pair.Key)
 						{
 							_ctl = _eventUc;
 							break;
@@ -351,17 +332,15 @@ namespace Waveface.Client
 						continue;
 					}
 
-					_ctl.FileEntrys = _entries;
+					_ctl.Item = _pair.Value;
 				}
 				else
 				{
 					_ctl = new P_ItemUC
-						       {
-							       FileEntrys = _entries,
-							       YMD = _YMD,
-							       PhotoDiaryUC = this,
-							       CurrentDevice = m_currentDevice,
-						       };
+							   {
+								   Item = _pair.Value,
+								   PhotoDiaryUC = this,
+							   };
 
 					_ctl.Changed = true;
 
@@ -376,17 +355,17 @@ namespace Waveface.Client
 				Application.DoEvents();
 			}
 
-			m_YMD_Files = _YMD_Files;
+			m_eventID_Events = _id_event_s;
 		}
 
 		public static string GetCountsString(int photosCount, int videosCount)
 		{
 			string _c = string.Empty;
 
-			string _photo = " " + (string) System.Windows.Application.Current.FindResource("photo");
-			string _photos = " " + (string) System.Windows.Application.Current.FindResource("photos");
-			string _video = " " + (string) System.Windows.Application.Current.FindResource("video");
-			string _videos = " " + (string) System.Windows.Application.Current.FindResource("videos");
+			string _photo = " " + (string)System.Windows.Application.Current.FindResource("photo");
+			string _photos = " " + (string)System.Windows.Application.Current.FindResource("photos");
+			string _video = " " + (string)System.Windows.Application.Current.FindResource("video");
+			string _videos = " " + (string)System.Windows.Application.Current.FindResource("videos");
 
 			if (photosCount > 0)
 			{

@@ -4,7 +4,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:gif="clr-namespace:WpfAnimatedGif"
              Width="1024"
-             Height="768">
+             Height="768"
+             SnapsToDevicePixels="True"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             >
     <UserControl.Resources>
         <Style x:Key="FlatButtonStyle" TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />

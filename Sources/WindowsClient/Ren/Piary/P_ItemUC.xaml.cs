@@ -1,14 +1,12 @@
 ﻿#region
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Waveface.Model;
 
 #endregion
 
@@ -16,12 +14,24 @@ namespace Waveface.Client
 {
 	public partial class P_ItemUC : UserControl, INotifyPropertyChanged
 	{
-		public string YMD { get; set; }
+		public double m_myWidth;
+		public double m_myHeight;
+		public double m_mySquare;
+		private int m_currentIndex;
+		private int m_oldFileEntrysCount;
+		private EventEntry m_item = new EventEntry();
+		private bool m_updateUI;
+		private int m_oldIndex;
+		private bool m_mouseLeave;
+		private int m_delayMouseMoveCount;
+		private int DELAY_MOVE = 1;
+
+		#region Property
+
 		public int VideosCount { get; set; }
 		public int PhotosCount { get; set; }
 		public bool Changed { get; set; }
 		public PhotoDiaryUC PhotoDiaryUC { get; set; }
-		public IService CurrentDevice { get; set; }
 
 		public double MyWidth
 		{
@@ -53,30 +63,20 @@ namespace Waveface.Client
 			}
 		}
 
-		public double m_myWidth;
-		public double m_myHeight;
-		public double m_mySquare; 
-
-		private int m_currentIndex;
-
-		public List<FileEntry> FileEntrys
+		public EventEntry Item
 		{
-			get { return m_fileEntrys; }
+			get { return m_item; }
 			set
 			{
-				m_oldFileEntrysCount = m_fileEntrys.Count;
+				m_oldFileEntrysCount = m_item.Files.Count;
 
-				m_fileEntrys = value;
+				m_item = value;
 
-				Changed = m_oldFileEntrysCount != m_fileEntrys.Count;
+				Changed = m_oldFileEntrysCount != m_item.Files.Count;
 			}
 		}
 
-		private int m_oldFileEntrysCount;
-		private List<FileEntry> m_fileEntrys = new List<FileEntry>();
-		private int m_delayMouseMoveCount;
-		private int DELAY = 22;
-		private bool m_updateUI;
+		#endregion
 
 		public P_ItemUC()
 		{
@@ -87,7 +87,7 @@ namespace Waveface.Client
 		{
 			m_updateUI = true;
 
-			m_currentIndex = 0;
+			m_currentIndex = GetCoverIndex();
 
 			MyWidth = myWidth;
 			MyHeight = myHeight;
@@ -95,21 +95,37 @@ namespace Waveface.Client
 
 			GetCounts();
 
-			SetInfor();
-
-			FileEntrys.Reverse();
+			tbTitle.Text = Item.Event.content;
+			tbTime.Text = Item.Event.start.ToString("yyyy-MM-dd HH-mm");
+			tbLocation.Text = Item.Event.short_address;
 
 			SetImage(m_currentIndex);
 
 			m_updateUI = false;
 		}
 
+		private int GetCoverIndex()
+		{
+			string _coverID = Item.Event.cover.ToString();
+
+			for (int i = 0; i < Item.Files.Count; i++)
+			{
+				if (Item.Files[i].id == _coverID)
+				{
+					return i;
+				}
+			}
+
+			return 0;
+		}
+
 		private void SetImage(int index)
 		{
-			tbTitle.Text = YMD;
-			tbCount.Text = "" + FileEntrys.Count;
+			m_oldIndex = index;
 
-			FileEntry _fileEntry = FileEntrys[index];
+			UpdateCountText();
+
+			FileEntry _fileEntry = Item.Files[index];
 
 			rectMask.Visibility = Visibility.Collapsed;
 
@@ -174,8 +190,16 @@ namespace Waveface.Client
 			}
 		}
 
-		private void SetInfor()
+		private void UpdateCountText()
 		{
+			if (m_mouseLeave)
+			{
+				tbCount.Text = "" + Item.Files.Count;
+			}
+			else
+			{
+				tbCount.Text = (m_oldIndex + 1) + "/" + Item.Files.Count;
+			}
 		}
 
 		public void GetCounts()
@@ -183,7 +207,7 @@ namespace Waveface.Client
 			VideosCount = 0;
 			PhotosCount = 0;
 
-			foreach (FileEntry _file in FileEntrys)
+			foreach (FileEntry _file in Item.Files)
 			{
 				if (_file.type == 0)
 				{
@@ -200,21 +224,45 @@ namespace Waveface.Client
 		{
 			if (!m_updateUI)
 			{
-				if (((++m_delayMouseMoveCount) % DELAY) == 0)
+				if (((++m_delayMouseMoveCount) % DELAY_MOVE) == 0)
 				{
-					SetImage((++m_currentIndex) % FileEntrys.Count);
+					double _dw = Item.Files.Count/imageArea.ActualWidth;
+					int _index = (int) (e.GetPosition(imageArea).X*_dw);
+
+					if (_index < 0)
+					{
+						_index = 0;
+					}
+
+					if (_index >= Item.Files.Count)
+					{
+						_index = Item.Files.Count - 1;
+					}
+
+					if (_index != m_oldIndex)
+					{
+						SetImage(_index);
+					}
 				}
 			}
 		}
 
 		private void image_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
 		{
+			m_mouseLeave = false;
+
 			image.Stretch = Stretch.Uniform;
+
+			UpdateCountText();
 		}
 
 		private void image_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
 		{
+			m_mouseLeave = true;
+
 			image.Stretch = Stretch.UniformToFill;
+
+			UpdateCountText();
 		}
 
 		#region INotifyPropertyChanged Members
@@ -234,7 +282,7 @@ namespace Waveface.Client
 		private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			//Todo:
-			PhotoDiaryUC.ToPhotoDiary2ndLevel(FileEntrys, YMD);
+			PhotoDiaryUC.ToPhotoDiary2ndLevel(Item.Files, Item.Event.content);
 		}
 	}
 }
