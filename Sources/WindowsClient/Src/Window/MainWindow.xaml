@@ -13,12 +13,12 @@
         MinHeight="640"
         Icon="/Waveface.Client;component/Resource/Appicon_PC_256.ico"
         Loaded="Window_Loaded"
+        MouseMove="Window_MouseMove"
+        MouseUp="Window_MouseUp"
         ResizeMode="CanResizeWithGrip"
         SnapsToDevicePixels="True"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-                                MouseMove="Window_MouseMove"
-                          MouseUp="Window_MouseUp"
         WindowState="Maximized"
         mc:Ignorable="d">
     <Window.Resources>
@@ -206,40 +206,35 @@
             <ScrollViewer x:Name="svContentContainer"
                           Grid.Row="0"
                           HorizontalScrollBarVisibility="Disabled"
-                          PreviewMouseDown="Window_MouseDown"
                           MouseLeftButtonUp="svContentContainer_MouseLeftButtonUp"
+                          PreviewMouseDown="Window_MouseDown"
                           ScrollChanged="svContentContainer_ScrollChanged"
                           VerticalScrollBarVisibility="Auto">
 
                 <Grid>
-                <ListBox x:Name="lbxContentContainer"
-                         Background="{x:Null}"
-                         BorderBrush="{x:Null}"
-                         Foreground="{x:Null}"
-                         ItemContainerStyle="{StaticResource ContentAreaContentContainerStyle}"
-                         ItemsSource="{Binding IsAsync=True}"
-                         KeyDown="lbxContentContainer_KeyDown"
-                         PreviewMouseLeftButtonDown="List_PreviewMouseLeftButtonDown"
-                         PreviewMouseLeftButtonUp="lbxContentContainer_PreviewMouseLeftButtonUp"
-                         PreviewMouseMove="List_MouseMove"
-                         SelectionMode="Extended"
-                         Style="{StaticResource PhotoListBoxStyle}"
-                         VirtualizingStackPanel.IsVirtualizing="True"
-                         VirtualizingStackPanel.VirtualizationMode="Recycling" />
+                    <ListBox x:Name="lbxContentContainer"
+                             Background="{x:Null}"
+                             BorderBrush="{x:Null}"
+                             Foreground="{x:Null}"
+                             ItemContainerStyle="{StaticResource ContentAreaContentContainerStyle}"
+                             ItemsSource="{Binding IsAsync=True}"
+                             KeyDown="lbxContentContainer_KeyDown"
+                             PreviewMouseLeftButtonDown="List_PreviewMouseLeftButtonDown"
+                             PreviewMouseLeftButtonUp="lbxContentContainer_PreviewMouseLeftButtonUp"
+                             PreviewMouseMove="List_MouseMove"
+                             SelectionMode="Extended"
+                             Style="{StaticResource PhotoListBoxStyle}"
+                             VirtualizingStackPanel.IsVirtualizing="True"
+                             VirtualizingStackPanel.VirtualizationMode="Recycling" />
 
-                <Canvas
-            x:Name="dragSelectionCanvas"
-                    Visibility="Collapsed"
-            >
-                    <Border 
-                x:Name="dragSelectionBorder"
-                BorderBrush="Blue"
-                BorderThickness="1"
-                Background="LightBlue"
-                CornerRadius="1"
-                Opacity="0.5"
-                />
-                </Canvas>
+                    <Canvas x:Name="dragSelectionCanvas" Visibility="Collapsed">
+                        <Border x:Name="dragSelectionBorder"
+                                Background="LightBlue"
+                                BorderBrush="Blue"
+                                BorderThickness="1"
+                                CornerRadius="1"
+                                Opacity="0.5" />
+                    </Canvas>
                 </Grid>
             </ScrollViewer>
             <local:AddSourceTip Grid.Row="0"
@@ -474,7 +469,7 @@
                     <local:ZoomSlider x:Name="zoomSlider"
                                       Width="144"
                                       Margin="0, 1, 0, 5"
-                                      Maximum="760"
+                                      Maximum="512"
                                       Minimum="150"
                                       Value="200" />
                     <TextBlock x:Name="tbText"
