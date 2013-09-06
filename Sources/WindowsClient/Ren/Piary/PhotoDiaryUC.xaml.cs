@@ -216,37 +216,43 @@ namespace Waveface.Client
 
 			foreach (EventFile _eventFile in eventFiles)
 			{
-				FileAsset _fa = _filesFromDB.First(f => f.file_id == _eventFile.file_id);
-
-				if (_fa != null)
+				try
 				{
-					FileEntry _fe = new FileEntry
-						                {
-							                id = _fa.file_id.ToString(),
-							                tiny_path = Path.Combine(m_thumbsPath, _fa.file_id + ".tiny.thumb"),
-							                s92_path = Path.Combine(m_thumbsPath, _fa.file_id + ".s92.thumb"),
-							                taken_time = _fa.event_time,
-							                type = _fa.type,
-							                has_origin = _fa.has_origin
-						                };
+					FileAsset _fa = _filesFromDB.First(f => f.file_id == _eventFile.file_id);
 
-					if (string.IsNullOrEmpty(_fa.saved_path))
+					if (_fa != null)
 					{
-						_fe.saved_path = "";
-					}
-					else
-					{
-						_fe.saved_path = Path.Combine(m_basePath, _fa.saved_path);
-					}
+						FileEntry _fe = new FileEntry
+											{
+												id = _fa.file_id.ToString(),
+												tiny_path = Path.Combine(m_thumbsPath, _fa.file_id + ".tiny.thumb"),
+												s92_path = Path.Combine(m_thumbsPath, _fa.file_id + ".s92.thumb"),
+												taken_time = _fa.event_time,
+												type = _fa.type,
+												has_origin = _fa.has_origin
+											};
 
-					string _event_id = _eventFile.event_id.ToString();
+						if (string.IsNullOrEmpty(_fa.saved_path))
+						{
+							_fe.saved_path = "";
+						}
+						else
+						{
+							_fe.saved_path = Path.Combine(m_basePath, _fa.saved_path);
+						}
 
-					if (!m_eventID_FileEntrys.ContainsKey(_event_id))
-					{
-						m_eventID_FileEntrys.Add(_event_id, new List<FileEntry>());
+						string _event_id = _eventFile.event_id.ToString();
+
+						if (!m_eventID_FileEntrys.ContainsKey(_event_id))
+						{
+							m_eventID_FileEntrys.Add(_event_id, new List<FileEntry>());
+						}
+
+						m_eventID_FileEntrys[_event_id].Add(_fe);
 					}
-
-					m_eventID_FileEntrys[_event_id].Add(_fe);
+				}
+				catch
+				{
 				}
 			}
 		}
