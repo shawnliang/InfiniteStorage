@@ -251,6 +251,8 @@ namespace InfiniteStorage
 					else
 					{
 						dialog = new ProgressTooltip(e.ctx.device_name, e.ctx.device_id);
+
+						ProgressTooltip.RemoveDialog(e.ctx.device_id);
 						e.ctx.SetData(DATA_KEY_PROGRESS_DIALOG, dialog);
 					}
 

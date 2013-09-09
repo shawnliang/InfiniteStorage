@@ -153,6 +153,126 @@
   <data name="tabControlEx1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="&gt;&gt;tabProgress.Name" xml:space="preserve">
+    <value>tabProgress</value>
+  </data>
+  <data name="&gt;&gt;tabProgress.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabProgress.Parent" xml:space="preserve">
+    <value>tabControlEx1</value>
+  </data>
+  <data name="&gt;&gt;tabProgress.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tabDisconnected.Name" xml:space="preserve">
+    <value>tabDisconnected</value>
+  </data>
+  <data name="&gt;&gt;tabDisconnected.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabDisconnected.Parent" xml:space="preserve">
+    <value>tabControlEx1</value>
+  </data>
+  <data name="&gt;&gt;tabDisconnected.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tabComplete.Name" xml:space="preserve">
+    <value>tabComplete</value>
+  </data>
+  <data name="&gt;&gt;tabComplete.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabComplete.Parent" xml:space="preserve">
+    <value>tabControlEx1</value>
+  </data>
+  <data name="&gt;&gt;tabComplete.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tabControlEx1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>88, 9</value>
+  </data>
+  <data name="tabControlEx1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 86</value>
+  </data>
+  <data name="tabControlEx1.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;tabControlEx1.Name" xml:space="preserve">
+    <value>tabControlEx1</value>
+  </data>
+  <data name="&gt;&gt;tabControlEx1.Type" xml:space="preserve">
+    <value>InfiniteStorage.TabControlEx, InfiniteStorage, Version=0.5.0.4, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;tabControlEx1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tabControlEx1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;devname.Name" xml:space="preserve">
+    <value>devname</value>
+  </data>
+  <data name="&gt;&gt;devname.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;devname.Parent" xml:space="preserve">
+    <value>tabProgress</value>
+  </data>
+  <data name="&gt;&gt;devname.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;progressBar1.Name" xml:space="preserve">
+    <value>progressBar1</value>
+  </data>
+  <data name="&gt;&gt;progressBar1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;progressBar1.Parent" xml:space="preserve">
+    <value>tabProgress</value>
+  </data>
+  <data name="&gt;&gt;progressBar1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;progressText.Name" xml:space="preserve">
+    <value>progressText</value>
+  </data>
+  <data name="&gt;&gt;progressText.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;progressText.Parent" xml:space="preserve">
+    <value>tabProgress</value>
+  </data>
+  <data name="&gt;&gt;progressText.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tabProgress.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="tabProgress.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabProgress.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 86</value>
+  </data>
+  <data name="tabProgress.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="tabProgress.Text" xml:space="preserve">
+    <value>tabPage1</value>
+  </data>
+  <data name="&gt;&gt;tabProgress.Name" xml:space="preserve">
+    <value>tabProgress</value>
+  </data>
+  <data name="&gt;&gt;tabProgress.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabProgress.Parent" xml:space="preserve">
+    <value>tabControlEx1</value>
+  </data>
+  <data name="&gt;&gt;tabProgress.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="devname.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -240,32 +360,68 @@
   <data name="&gt;&gt;progressText.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="tabProgress.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="&gt;&gt;devname3.Name" xml:space="preserve">
+    <value>devname3</value>
+  </data>
+  <data name="&gt;&gt;devname3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;devname3.Parent" xml:space="preserve">
+    <value>tabDisconnected</value>
+  </data>
+  <data name="&gt;&gt;devname3.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;disconnectedText.Name" xml:space="preserve">
+    <value>disconnectedText</value>
+  </data>
+  <data name="&gt;&gt;disconnectedText.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;disconnectedText.Parent" xml:space="preserve">
+    <value>tabDisconnected</value>
+  </data>
+  <data name="&gt;&gt;disconnectedText.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;disconnect_desc.Name" xml:space="preserve">
+    <value>disconnect_desc</value>
+  </data>
+  <data name="&gt;&gt;disconnect_desc.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;disconnect_desc.Parent" xml:space="preserve">
+    <value>tabDisconnected</value>
+  </data>
+  <data name="&gt;&gt;disconnect_desc.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tabDisconnected.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="tabProgress.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="tabDisconnected.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="tabProgress.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tabDisconnected.Size" type="System.Drawing.Size, System.Drawing">
     <value>221, 86</value>
   </data>
-  <data name="tabProgress.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="tabDisconnected.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="tabProgress.Text" xml:space="preserve">
-    <value>tabPage1</value>
+  <data name="tabDisconnected.Text" xml:space="preserve">
+    <value>tabPage2</value>
   </data>
-  <data name="&gt;&gt;tabProgress.Name" xml:space="preserve">
-    <value>tabProgress</value>
+  <data name="&gt;&gt;tabDisconnected.Name" xml:space="preserve">
+    <value>tabDisconnected</value>
   </data>
-  <data name="&gt;&gt;tabProgress.Type" xml:space="preserve">
+  <data name="&gt;&gt;tabDisconnected.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tabProgress.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tabDisconnected.Parent" xml:space="preserve">
     <value>tabControlEx1</value>
   </data>
-  <data name="&gt;&gt;tabProgress.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;tabDisconnected.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="devname3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -357,32 +513,56 @@
   <data name="&gt;&gt;disconnect_desc.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="tabDisconnected.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="&gt;&gt;importCompleteText.Name" xml:space="preserve">
+    <value>importCompleteText</value>
+  </data>
+  <data name="&gt;&gt;importCompleteText.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;importCompleteText.Parent" xml:space="preserve">
+    <value>tabComplete</value>
+  </data>
+  <data name="&gt;&gt;importCompleteText.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;devname2.Name" xml:space="preserve">
+    <value>devname2</value>
+  </data>
+  <data name="&gt;&gt;devname2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;devname2.Parent" xml:space="preserve">
+    <value>tabComplete</value>
+  </data>
+  <data name="&gt;&gt;devname2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tabComplete.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="tabDisconnected.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="tabComplete.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="tabDisconnected.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tabComplete.Size" type="System.Drawing.Size, System.Drawing">
     <value>221, 86</value>
   </data>
-  <data name="tabDisconnected.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="tabComplete.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="tabDisconnected.Text" xml:space="preserve">
-    <value>tabPage2</value>
+  <data name="tabComplete.Text" xml:space="preserve">
+    <value>tabPage1</value>
   </data>
-  <data name="&gt;&gt;tabDisconnected.Name" xml:space="preserve">
-    <value>tabDisconnected</value>
+  <data name="&gt;&gt;tabComplete.Name" xml:space="preserve">
+    <value>tabComplete</value>
   </data>
-  <data name="&gt;&gt;tabDisconnected.Type" xml:space="preserve">
+  <data name="&gt;&gt;tabComplete.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tabDisconnected.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tabComplete.Parent" xml:space="preserve">
     <value>tabControlEx1</value>
   </data>
-  <data name="&gt;&gt;tabDisconnected.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;tabComplete.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="importCompleteText.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -443,54 +623,6 @@
   </data>
   <data name="&gt;&gt;devname2.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="tabComplete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="tabComplete.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="tabComplete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>221, 86</value>
-  </data>
-  <data name="tabComplete.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="tabComplete.Text" xml:space="preserve">
-    <value>tabPage1</value>
-  </data>
-  <data name="&gt;&gt;tabComplete.Name" xml:space="preserve">
-    <value>tabComplete</value>
-  </data>
-  <data name="&gt;&gt;tabComplete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabComplete.Parent" xml:space="preserve">
-    <value>tabControlEx1</value>
-  </data>
-  <data name="&gt;&gt;tabComplete.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="tabControlEx1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 9</value>
-  </data>
-  <data name="tabControlEx1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>221, 86</value>
-  </data>
-  <data name="tabControlEx1.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;tabControlEx1.Name" xml:space="preserve">
-    <value>tabControlEx1</value>
-  </data>
-  <data name="&gt;&gt;tabControlEx1.Type" xml:space="preserve">
-    <value>InfiniteStorage.TabControlEx, InfiniteStorage, Version=0.5.0.4, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;tabControlEx1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tabControlEx1.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
