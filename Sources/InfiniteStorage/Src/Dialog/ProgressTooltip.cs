@@ -1,18 +1,21 @@
 ﻿using InfiniteStorage.Properties;
 using System;
+using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace InfiniteStorage
 {
 	public partial class ProgressTooltip : Form
 	{
 		private string device_id;
-
 		private bool inCompleteState;
+		private static List<ProgressTooltip> dialogs = new List<ProgressTooltip>();
+
 		public bool UserHide { get; set; }
 
-		public ProgressTooltip()
+		private ProgressTooltip()
 		{
 			InitializeComponent();
 			this.progressText.Text = Resources.MenuItem_Preparing;
@@ -109,6 +112,29 @@ namespace InfiniteStorage
 		private void onDoubleClick(object sender, EventArgs e)
 		{
 			MainUIWrapper.Instance.StartViewer(device_id);
+		}
+
+		private void ProgressTooltip_Shown(object sender, EventArgs e)
+		{
+			dialogs.Add(this);
+		}
+
+		private void ProgressTooltip_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			dialogs.Remove(this);
+		}
+
+		public static void RemoveDialog(string deviceId)
+		{
+			var toRemove = (from d in dialogs
+							where d.device_id == deviceId
+							select d).ToList();
+
+			foreach(var del in toRemove)
+			{
+				del.Close();
+				dialogs.Remove(del);
+			}
 		}
 	}
 

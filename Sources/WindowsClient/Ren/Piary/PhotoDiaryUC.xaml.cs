@@ -275,11 +275,19 @@ namespace Waveface.Client
 				string _eventID = _event.event_id.ToString();
 
 				EventEntry _eventEntry = new EventEntry
+<<<<<<< HEAD
 											 {
 												 event_id = _eventID,
 												 Event = _event,
 												 Files = m_eventID_FileEntrys[_eventID]
 											 };
+=======
+									 {
+										 event_id = _eventID,
+										 Event = _event,
+										 Files = m_eventID_FileEntrys.ContainsKey(_eventID) ? m_eventID_FileEntrys[_eventID] : new List<FileEntry>()
+									 };
+>>>>>>> 866c518358c2c7ecc05338c97d02bead5f3863c4
 
 				_id_event_s.Add(_eventID, _eventEntry);
 			}

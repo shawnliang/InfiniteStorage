@@ -158,7 +158,9 @@
 			this.ShowInTaskbar = false;
 			this.TopMost = true;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProgressTooltip_FormClosing);
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ProgressTooltip_FormClosed);
 			this.Load += new System.EventHandler(this.ProgressTooltip_Load);
+			this.Shown += new System.EventHandler(this.ProgressTooltip_Shown);
 			this.DoubleClick += new System.EventHandler(this.onDoubleClick);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.tabControlEx1.ResumeLayout(false);
