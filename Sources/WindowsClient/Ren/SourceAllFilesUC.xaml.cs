@@ -194,33 +194,111 @@ namespace Waveface.Client
 				if (service.RecvStatus.IsPreparing)
 				{
 					imgCircleProgress.Visibility = Visibility.Visible;
-					tbTitleInfo.Text = "Scanning photos...";
+					
+					header_title.Text = FindResource("header_title_indexing") as string;
+					header_subtitle.Text = FindResource("header_subtitle_indexing") as string;
 				}
 				else if (service.RecvStatus.IsReceiving)
 				{
 					imgCircleProgress.Visibility = Visibility.Visible;
-					tbTitleInfo.Text = string.Format("Importing... ({0} / {1})", service.RecvStatus.Received, service.RecvStatus.Total);
+					//tbTitleInfo.Text = string.Format("Importing... ({0} / {1})", service.RecvStatus.Received, service.RecvStatus.Total);
+
+					var remaining_items =  service.RecvStatus.Total - service.RecvStatus.Received;
+					var remaining_minute = (int)((remaining_items * 1.5) / 60);
+
+					if (remaining_minute <= 0)
+						remaining_minute = 1;
+
+					header_title.Text = string.Format(FindResource("header_title_importing") as string, service.RecvStatus.Total);
+					header_subtitle.Text = string.Format(FindResource("header_subtitle_importing") as string, service.RecvStatus.Received, remaining_minute);
 				}
 				else
 				{
 					imgCircleProgress.Visibility = Visibility.Collapsed;
 
-					var lastImportTime = getLastImportTime();
 
-					if (lastImportTime.HasValue)
-						tbTitleInfo.Text = string.Format("Last import time: {0}", lastImportTime);
+					if (isImportComplete())
+					{
+						var lastImportInfo = getLastImportInfo();
+
+						header_title.Text = string.Format(FindResource("header_title_complete") as string,
+							lastImportInfo.count,
+							lastImportInfo.x_days_ago > 0 ?
+								string.Format(FindResource("x_days_ago") as string, lastImportInfo.x_days_ago) :
+								FindResource("0_days_ago") as string);
+						header_subtitle.Text = FindResource("header_subtitle_complete") as string;
+					}
+					else
+					{
+						header_title.Text = string.Format(FindResource("header_title_stopped") as string, getRemainCount());
+						header_subtitle.Text = FindResource("header_subtitle_stopped") as string;
+					}
 				}
 			}
 			else
 			{
 				imgCircleProgress.Visibility = Visibility.Collapsed;
 
-				var lastImportTime = getLastImportTime();
+				header_title.Text = FindResource("header_title_paused") as string;
+				header_subtitle.Text = FindResource("header_subtitle_paused") as string;
+			}
+		}
 
-				if (lastImportTime.HasValue)
-					tbTitleInfo.Text = string.Format("Last import time: {0}", lastImportTime);
+		private int getRemainCount()
+		{
+			using (var db = new MyDbContext())
+			{
+				var q = from f in db.Object.Files
+						where !f.has_origin && f.device_id == m_currentDevice.ID
+						select f;
+
+				return q.Count();
+			}
+		}
+
+		private bool isImportComplete()
+		{
+			using (var db = new MyDbContext())
+			{
+				var q = from f in db.Object.Files
+						where !f.has_origin && f.device_id == m_currentDevice.ID
+						select f;
+
+				return !q.Any();
+			}
+		}
+
+		private LastImportInfo getLastImportInfo()
+		{
+			using (var db = new MyDbContext())
+			{
+				var q = from f in db.Object.Files
+						where f.import_time != null && f.device_id == m_currentDevice.ID
+						select f.import_time;
+
+				var lastImportTime = q.Max();
+
+				if (lastImportTime != null)
+				{
+					var start = new DateTime(lastImportTime.Value.Year, lastImportTime.Value.Month, lastImportTime.Value.Day);
+					var end = start.AddDays(1.0);
+
+					var q2 = from f in db.Object.Files
+							 where f.import_time != null && f.import_time >= start && f.import_time < end && f.device_id == m_currentDevice.ID
+							 select 1;
+					var today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+
+
+					return new LastImportInfo
+					{
+						x_days_ago = (int)(today - start).TotalDays,
+						count = q2.Count()
+					};
+				}
 				else
-					tbTitleInfo.Text = "Sync is disabled";
+				{
+					return new LastImportInfo();
+				}
 			}
 		}
 
@@ -452,5 +530,12 @@ namespace Waveface.Client
 			tbAutoImport.Content = "開啟自動匯入";
 			refreshTitleInfo();
 		}
+	}
+
+
+	class LastImportInfo
+	{
+		public int count { get; set; }
+		public int x_days_ago { get; set; }
 	}
 }
