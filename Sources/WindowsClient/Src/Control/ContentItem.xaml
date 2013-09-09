@@ -64,6 +64,7 @@
                MinHeight="{Binding ActualHeight,
                                    ElementName=LayoutRoot}"
                HorizontalAlignment="Center"
+               VerticalAlignment="Center"
                Source="{Binding ThumbnailSource,
                                 IsAsync=True}"
                Stretch="UniformToFill" />

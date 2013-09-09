@@ -6,6 +6,10 @@
              SnapsToDevicePixels="True"
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto">
+    <UserControl.Resources>
+        <PendingUI:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
+    </UserControl.Resources>
+    
     <Grid x:Name="gridMain" Background ="White" Width="{Binding MyWidth}" Height="{Binding MyHeight}" Margin="16">
         <Grid.Effect>
             <DropShadowEffect ShadowDepth="2.71828"/>
@@ -36,5 +40,6 @@
             <TextBlock x:Name="tbTime" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="8, 4" FontSize="10"/>
         </Grid>
 
+        <Border Grid.RowSpan="2" BorderBrush="#E0427FED" BorderThickness="4" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/>
     </Grid>
 </UserControl>

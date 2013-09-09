@@ -85,7 +85,7 @@ namespace Waveface.Client
 			InitializeComponent();
 		}
 
-		public void SetUI(double myWidth, double myHeight)
+		public void SetUI(double myWidth, double myHeight, bool forceShow)
 		{
 			m_updateUI = true;
 
@@ -104,6 +104,24 @@ namespace Waveface.Client
 			SetImage(m_currentIndex);
 
 			m_updateUI = false;
+
+			if (forceShow)
+			{
+				Visibility = Visibility.Visible;
+			}
+			else
+			{
+				Visibility = Visibility.Visible;
+
+				foreach (FileEntry _fileEntry in Item.Files)
+				{
+					if (!_fileEntry.has_origin)
+					{
+						Visibility = Visibility.Collapsed;
+						return;
+					}
+				}
+			}
 		}
 
 		private int GetCoverIndex()
@@ -228,8 +246,8 @@ namespace Waveface.Client
 			{
 				if (((++m_delayMouseMoveCount) % DELAY_MOVE) == 0)
 				{
-					double _dw = Item.Files.Count/imageArea.ActualWidth;
-					int _index = (int) (e.GetPosition(imageArea).X*_dw);
+					double _dw = Item.Files.Count / imageArea.ActualWidth;
+					int _index = (int)(e.GetPosition(imageArea).X * _dw);
 
 					if (_index < 0)
 					{

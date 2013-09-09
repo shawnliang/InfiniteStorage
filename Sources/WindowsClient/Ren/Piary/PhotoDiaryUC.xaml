@@ -65,16 +65,19 @@
                            VerticalAlignment="Center"
                            FontSize="20"
                            Foreground="White"
+                           MouseDown="tbTitle_MouseDown"
                            Text="" />
         </Grid>
 
         <Grid Grid.Row="1">
             <ListBox x:Name="listBoxEvent" Margin="6, 0, 0, 0"
+                         SelectionMode="Extended"
                          Background="#4f4f4f"
                          BorderThickness="0"
                          ItemContainerStyle="{StaticResource SimpleListBoxItem}"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                          SelectionChanged="listBoxEvent_SelectionChanged"
+                         MouseDown="listBoxEvent_MouseDown"
                          >
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -99,7 +102,7 @@
                 <local:ZoomSlider x:Name="zoomSlider"
                                       Width="144"
                                       Margin="0, 1, 0, 5"
-                                      Maximum="512"
+                                      Maximum="480"
                                       Minimum="240"
                                       Value="280"
                                       ValueChanged="zoomSlider_ValueChanged"
@@ -147,52 +150,44 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <local:ButtonImageText x:Name="btnCreateAlbum"
+                                               IsEnabled="False"
                                                Click="btnCreateAlbum_Click"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_create_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_create_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_create_2.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_create_0.png"
-                                               IsEnabled="{Binding ElementName=lbxContentContainer,
-                                                                   Path=Items.Count,
-                                                                   Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
                                                Text="Create" />
 
                     <local:ButtonImageText x:Name="btnAddToAlbum"
+                                               IsEnabled="False"
                                                Click="btnAddToAlbum_Click"
                                                Grid.Column="1"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_addto_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_addto_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_addto_2.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_addto_0.png"
-                                               IsEnabled="{Binding ElementName=lbxContentContainer,
-                                                                   Path=Items.Count,
-                                                                   Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
                                                Text="Add" />
 
                     <local:ButtonImageText x:Name="btnShare"
+                                               IsEnabled="False"
                                                Click="btnShare_Click"
                                                Grid.Column="2"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_share_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_share_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_share_2.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_share_0.png"
-                                               IsEnabled="{Binding ElementName=lbxContentContainer,
-                                                                   Path=Items.Count,
-                                                                   Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
                                                Text="Share" />
 
                     <local:ButtonImageText x:Name="btnDelete"
+                                               IsEnabled="False"
                                                Grid.Column="3"
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_trash_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_trash_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_trash_2.png"
                                                ImageUri="pack://application:,,,/Resource/bar2_trash_0.png"
-                                               IsEnabled="{Binding ElementName=lbxContentContainer,
-                                                                   Path=SelectedItems.Count,
-                                                                   Converter={StaticResource Int2ToBoolConverter}}"
                                                Style="{StaticResource toolbarBtnStyle}"
                                                Text="Delete" />
                 </Grid>

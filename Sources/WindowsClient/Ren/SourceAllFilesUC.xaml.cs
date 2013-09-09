@@ -15,7 +15,6 @@ using Microsoft.Win32;
 using Waveface.ClientFramework;
 using Waveface.Model;
 using WpfAnimatedGif;
-using Application = System.Windows.Forms.Application;
 
 #endregion
 
@@ -413,10 +412,10 @@ namespace Waveface.Client
 		{
 			string _c = string.Empty;
 
-			string _photo = " " + (string) System.Windows.Application.Current.FindResource("photo");
-			string _photos = " " + (string) System.Windows.Application.Current.FindResource("photos");
-			string _video = " " + (string) System.Windows.Application.Current.FindResource("video");
-			string _videos = " " + (string) System.Windows.Application.Current.FindResource("videos");
+			string _photo = " " + (string) Application.Current.FindResource("photo");
+			string _photos = " " + (string) Application.Current.FindResource("photos");
+			string _video = " " + (string) Application.Current.FindResource("video");
+			string _videos = " " + (string) Application.Current.FindResource("videos");
 
 			if (photosCount > 0)
 			{

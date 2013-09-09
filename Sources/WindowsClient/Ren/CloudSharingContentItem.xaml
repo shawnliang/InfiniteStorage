@@ -34,8 +34,8 @@
                                                                    AncestorType={x:Type ListBoxItem},
                                                                    AncestorLevel=1},
                                     Path=Height}"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
                    RenderTransformOrigin="0.5,0.5"
                    Source="{Binding Path=BitmapImage}"
                    Stretch="UniformToFill"

@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -15,7 +16,6 @@ using Microsoft.Win32;
 using Waveface.ClientFramework;
 using Waveface.Model;
 using WpfAnimatedGif;
-using Application = System.Windows.Forms.Application;
 
 #endregion
 
@@ -47,6 +47,11 @@ namespace Waveface.Client
 		private double m_myWidth;
 		private double m_myHeight;
 		private bool m_inited;
+
+		private List<IContentEntity> m_allEntities_LBIs;
+		private List<IContentEntity> m_selectedEntities_LBIs;
+		private string m_title_LBIs;
+		private bool m_forceShowAllEvent;
 
 		public PhotoDiaryUC()
 		{
@@ -270,11 +275,11 @@ namespace Waveface.Client
 				string _eventID = _event.event_id.ToString();
 
 				EventEntry _eventEntry = new EventEntry
-									 {
-										 event_id = _eventID,
-										 Event = _event,
-										 Files = m_eventID_FileEntrys[_eventID]
-									 };
+											 {
+												 event_id = _eventID,
+												 Event = _event,
+												 Files = m_eventID_FileEntrys[_eventID]
+											 };
 
 				_id_event_s.Add(_eventID, _eventEntry);
 			}
@@ -302,7 +307,7 @@ namespace Waveface.Client
 										PhotoDiaryUC = this,
 									};
 
-				_ctl.SetUI(m_myWidth, m_myHeight);
+				_ctl.SetUI(m_myWidth, m_myHeight, m_forceShowAllEvent);
 
 				m_photosCount += _ctl.PhotosCount;
 				m_videosCount += _ctl.VideosCount;
@@ -355,7 +360,7 @@ namespace Waveface.Client
 					m_eventUCs.Add(_ctl);
 				}
 
-				_ctl.SetUI(m_myWidth, m_myHeight);
+				_ctl.SetUI(m_myWidth, m_myHeight, m_forceShowAllEvent);
 
 				m_photosCount += _ctl.PhotosCount;
 				m_videosCount += _ctl.VideosCount;
@@ -370,10 +375,10 @@ namespace Waveface.Client
 		{
 			string _c = string.Empty;
 
-			string _photo = " " + (string)System.Windows.Application.Current.FindResource("photo");
-			string _photos = " " + (string)System.Windows.Application.Current.FindResource("photos");
-			string _video = " " + (string)System.Windows.Application.Current.FindResource("video");
-			string _videos = " " + (string)System.Windows.Application.Current.FindResource("videos");
+			string _photo = " " + (string)Application.Current.FindResource("photo");
+			string _photos = " " + (string)Application.Current.FindResource("photos");
+			string _video = " " + (string)Application.Current.FindResource("video");
+			string _videos = " " + (string)Application.Current.FindResource("videos");
 
 			if (photosCount > 0)
 			{
@@ -397,8 +402,18 @@ namespace Waveface.Client
 
 		private void listBoxEvent_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (listBoxEvent.SelectedItem != null)
+			if (listBoxEvent.SelectedItem == null)
 			{
+				btnCreateAlbum.IsEnabled = false;
+				btnAddToAlbum.IsEnabled = false;
+				btnShare.IsEnabled = false;
+				btnDelete.IsEnabled = false;
+			}
+			else
+			{
+				btnCreateAlbum.IsEnabled = true;
+				btnAddToAlbum.IsEnabled = true;
+				btnShare.IsEnabled = true;
 			}
 		}
 
@@ -438,8 +453,42 @@ namespace Waveface.Client
 			m_myHeight = m_myWidth + 64;
 		}
 
+		private void listBoxEvent_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			listBoxEvent.UnselectAll();
+		}
 
-		// ----------------
+		#region ToolBar
+
+		private void GetSelectedListBoxItems()
+		{
+			m_allEntities_LBIs = new List<IContentEntity>();
+			m_selectedEntities_LBIs = new List<IContentEntity>();
+			m_title_LBIs = string.Empty;
+
+			for (int i = 0; i < m_eventUCs.Count; i++)
+			{
+				ListBoxItem _lbi = listBoxEvent.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
+
+				if (_lbi.IsSelected)
+				{
+					P_ItemUC _pItemUc = (P_ItemUC)_lbi.Content;
+
+					m_title_LBIs += _pItemUc.Item.Event.content + " ";
+
+					foreach (FileEntry _fe in _pItemUc.Item.Files)
+					{
+						if (!string.IsNullOrEmpty(_fe.saved_path))
+						{
+							BunnyContent _bunnyContent = new BunnyContent(new Uri(_fe.saved_path), _fe.id, (_fe.type == 0 ? ContentType.Photo : ContentType.Video));
+
+							m_allEntities_LBIs.Add(_bunnyContent);
+							m_selectedEntities_LBIs.Add(_bunnyContent);
+						}
+					}
+				}
+			}
+		}
 
 		private void CreateNormalAlbum(IEnumerable<IContentEntity> allEntities, IEnumerable<IContentEntity> selectedEntities, string title)
 		{
@@ -458,7 +507,9 @@ namespace Waveface.Client
 
 		private void ShareCallout_SaveToClicked(object sender, EventArgs e)
 		{
-			m_mainWindow.SaveTo(new List<IContentEntity>());
+			GetSelectedListBoxItems();
+
+			m_mainWindow.SaveTo(m_allEntities_LBIs);
 		}
 
 		private void btnAddToAlbum_Click(object sender, RoutedEventArgs e)
@@ -477,40 +528,45 @@ namespace Waveface.Client
 
 		private void ShareCallout_CreateOnlineAlbumClicked(object sender, EventArgs e)
 		{
-			//Todo:
+			GetSelectedListBoxItems();
 
-			m_mainWindow.CreateCloudAlbum(new List<ContentEntity>(), new List<ContentEntity>(), "Hello World OnLine");
+			m_mainWindow.CreateCloudAlbum(m_allEntities_LBIs, m_selectedEntities_LBIs, m_title_LBIs);
 		}
 
 		private void btnCreateAlbum_Click(object sender, RoutedEventArgs e)
 		{
-			//Todo:
+			GetSelectedListBoxItems();
 
-			CreateNormalAlbum(new List<ContentEntity>(), new List<ContentEntity>(), "Hello World");
+			CreateNormalAlbum(m_allEntities_LBIs, m_selectedEntities_LBIs, m_title_LBIs);
 		}
-
 
 		private void AddToAlbum_AlbumClicked(object sender, AlbumClickedEventArgs e)
 		{
 			if (e.DataContext is CreateNewAlbumContentEntity)
 			{
-				//Todo:
+				GetSelectedListBoxItems();
 
-
-				CreateNormalAlbum(new List<ContentEntity>(), new List<ContentEntity>(), "Hello World");
+				CreateNormalAlbum(m_allEntities_LBIs, m_selectedEntities_LBIs, m_title_LBIs);
 			}
 			else
 			{
-				//ToDo:
-
 				IContentGroup _album = e.DataContext as IContentGroup;
 
-				List<IContentEntity> selectedEntities = new List<IContentEntity>();
+				GetSelectedListBoxItems();
 
-				m_mainWindow.AddToFavorite(_album.ID, selectedEntities);
+				m_mainWindow.AddToFavorite(_album.ID, m_allEntities_LBIs);
 			}
 
 			addToAlbumPopup.IsOpen = false;
+		}
+
+		#endregion
+
+		private void tbTitle_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			m_forceShowAllEvent = !m_forceShowAllEvent;
+
+			ShowEvents();
 		}
 	}
 }
