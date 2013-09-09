@@ -1706,6 +1706,7 @@ namespace Waveface.Client
 			GC.Collect();
 		}
 
+		#region Multi Select
 
 		/// <summary>
 		/// Set to 'true' when the left mouse-button is down.
@@ -1908,6 +1909,8 @@ namespace Waveface.Client
 				}
 			}
 		}
+
+		#endregion
 
 		#region ContentAreaToolBar Action
 

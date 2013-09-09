@@ -23,7 +23,7 @@
         <Border Grid.Row="0" Margin="0, 8, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="{Binding MySquare}" Height="{Binding MySquare}" 
                 BorderBrush="#80000000"  BorderThickness="2" MouseDown="Border_MouseDown" Cursor="Hand" RenderTransformOrigin="0.5,0.5">
             <Grid x:Name="imageArea" Background="Black" MouseMove="image_MouseMove" MouseEnter="image_MouseEnter" MouseLeave="image_MouseLeave">
-                <Image x:Name="image" Stretch="UniformToFill"/>
+                <Image x:Name="image" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill"/>
 
                 <Rectangle x:Name="rectMask" Fill="#d0000000"/>
             </Grid>
