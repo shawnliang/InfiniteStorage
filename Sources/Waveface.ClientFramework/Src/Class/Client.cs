@@ -299,6 +299,20 @@ namespace Waveface.ClientFramework
 			}
 		}
 
+		public string GetLastImportDevice()
+		{
+			using (var conn = BunnyDB.CreateConnection())
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "select device_id from files where import_time in (select max(import_time) from files)";
+					var device_id = cmd.ExecuteScalar();
+					return (device_id != null) ? device_id.ToString() : null;
+				}
+			}
+		}
+
 		public bool HomeSharingEnabled
 		{
 			get { return Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", "true").ToString().Equals("true", StringComparison.CurrentCultureIgnoreCase); }

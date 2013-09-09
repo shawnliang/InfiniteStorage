@@ -7,8 +7,7 @@
              Height="768"
              SnapsToDevicePixels="True"
              TextOptions.TextFormattingMode="Ideal"
-             TextOptions.TextRenderingMode="Auto"
-             >
+             TextOptions.TextRenderingMode="Auto">
     <UserControl.Resources>
         <Style x:Key="FlatButtonStyle" TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />
@@ -87,14 +86,11 @@
                                Margin="8, 0, 0, 0"
                                VerticalAlignment="Center"
                                FontSize="16"
-                               Foreground="White"
-                               Text="" />
-                    <Grid Visibility="Collapsed">
-                        <Label Content="{Binding RecvStatus.IsPreparing}" Foreground="white" />
-                        <Label Content="{Binding RecvStatus.IsReceiving}" Foreground="white" />
-                        <Label Content="{Binding RecvStatus.Received}" Foreground="white" />
-                        <Label Content="{Binding RecvStatus.Total}" Foreground="white" />
-                    </Grid>
+                               Foreground="White">
+                        <Run x:Name="header_title" />
+                        <LineBreak />
+                        <Run x:Name="header_subtitle" />
+                    </TextBlock>
                 </StackPanel>
                 <ToggleButton x:Name="tbAutoImport"
                               Margin="0,0,10,0"

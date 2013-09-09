@@ -119,7 +119,7 @@
     <system:String x:Key="res_34">Off</system:String>
     <system:String x:Key="res_35">On</system:String>
     <system:String x:Key="res_36">焦點動態</system:String>
-    <system:String x:Key="res_takeATour">Import photos is the first step. Check out a couple basic tips to get started.</system:String>  
+    <system:String x:Key="res_takeATour">Import photos is the first step. Check out a couple basic tips to get started.</system:String>
     <system:String x:Key="res_getStartedTip1">Get our mobile apps and enable auto sync over same Wi-Fi.</system:String>
     <system:String x:Key="res_getStartedTip2">Plug in digital camera via USB.</system:String>
     <system:String x:Key="res_getStartedTip3">Get our Player app to enjoy Home Sharing for all albums created.</system:String>
@@ -133,4 +133,25 @@
         或拖曳至側欄的星號區\r\n
         來標示該圖片
     </system:String>
+
+    <system:String x:Key="header_title_indexing">裝置已連接</system:String>
+    <system:String x:Key="header_subtitle_indexing">正在建立索引...</system:String>
+
+
+    <system:String x:Key="header_title_importing">裝置內共有{0}個新項目</system:String>
+    <system:String x:Key="header_subtitle_importing">正在匯入第{0}個項目，剩餘時間約{1}分鐘</system:String>
+
+    <system:String x:Key="header_title_stopped">裝置內尚有{0}個項目未匯入</system:String>
+    <system:String x:Key="header_subtitle_stopped">請將裝置接上與PC相同的區域網路以開始自動同步</system:String>
+
+    <system:String x:Key="header_title_complete">上次從裝置匯入{0}個項目於{1}</system:String>
+    <system:String x:Key="header_subtitle_complete">按此檢視新增項目</system:String>
+
+    <system:String x:Key="header_title_paused">已暫停</system:String>
+    <system:String x:Key="header_subtitle_paused">按右邊按鈕繼續</system:String>
+
+
+    <system:String x:Key="0_days_ago">今日</system:String>
+    <system:String x:Key="x_days_ago">{x}日前</system:String>
+
 </ResourceDictionary>

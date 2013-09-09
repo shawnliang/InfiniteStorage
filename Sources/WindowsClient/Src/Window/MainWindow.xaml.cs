@@ -186,7 +186,7 @@ namespace Waveface.Client
 			if (!string.IsNullOrEmpty(options.select_device))
 				JumpToDevice(options.select_device, false);
 			else if (ClientFramework.Client.Default.Services.Any())
-				JumpToDevice(ClientFramework.Client.Default.Services.First().ID);
+				JumpToDevice(ClientFramework.Client.Default.GetLastImportDevice(), false);
 		}
 
 		#region Private Method
