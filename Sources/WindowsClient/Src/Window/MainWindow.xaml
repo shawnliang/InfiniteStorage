@@ -220,6 +220,7 @@
                              PreviewMouseLeftButtonDown="List_PreviewMouseLeftButtonDown"
                              PreviewMouseLeftButtonUp="lbxContentContainer_PreviewMouseLeftButtonUp"
                              PreviewMouseMove="List_MouseMove"
+                             SelectionChanged="lbxContentContainer_SelectionChanged"
                              SelectionMode="Extended"
                              Style="{StaticResource PhotoListBoxStyle}"
                              VirtualizingStackPanel.IsVirtualizing="True"
@@ -687,10 +688,7 @@
                                                ImageDisableUri="pack://application:,,,/Resource/bar2_trash_3.png"
                                                ImageEnterUri="pack://application:,,,/Resource/bar2_trash_1.png"
                                                ImagePressedUri="pack://application:,,,/Resource/bar2_trash_2.png"
-                                               ImageUri="pack://application:,,,/Resource/bar2_trash_0.png"
-                                               IsEnabled="{Binding ElementName=lbxContentContainer,
-                                                                   Path=SelectedItems.Count,
-                                                                   Converter={StaticResource Int2ToBoolConverter}}"
+                                               ImageUri="pack://application:,,,/Resource/bar2_trash_0.png"                                   
                                                Style="{StaticResource toolbarBtnStyle}"
                                                Text="{StaticResource res_25}" />
                     </Grid>

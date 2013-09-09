@@ -6,11 +6,8 @@
              SnapsToDevicePixels="True"
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto">
-    <UserControl.Resources>
-        <PendingUI:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
-    </UserControl.Resources>
     
-    <Grid x:Name="gridMain" Background ="White" Width="{Binding MyWidth}" Height="{Binding MyHeight}" Margin="16">
+    <Grid x:Name="gridMain" Background ="White" Width="{Binding MyWidth}" Height="{Binding MyHeight}">
         <Grid.Effect>
             <DropShadowEffect ShadowDepth="2.71828"/>
         </Grid.Effect>
@@ -35,11 +32,9 @@
 
         <Grid Grid.Row="1">
             <TextBlock x:Name="tbTitle" HorizontalAlignment="Center" TextAlignment="Center"  Height="24" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"  Margin="12, 8, 12, 8" FontSize="20" FontWeight="Bold"/>
-            <TextBlock x:Name="tbLocation" HorizontalAlignment="Center" Margin="12, 36, 12, 0"  Foreground="Gray" FontSize="14"/>
+            <TextBlock x:Name="tbLocation" HorizontalAlignment="Center" Margin="12, 38, 12, 0"  Foreground="Gray" FontSize="14"/>
             <TextBlock x:Name="tbCount" HorizontalAlignment="Right"  VerticalAlignment="Bottom" Margin="8, 4" FontSize="10"/>
             <TextBlock x:Name="tbTime" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="8, 4" FontSize="10"/>
         </Grid>
-
-        <Border Grid.RowSpan="2" BorderBrush="#E0427FED" BorderThickness="4" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/>
     </Grid>
 </UserControl>

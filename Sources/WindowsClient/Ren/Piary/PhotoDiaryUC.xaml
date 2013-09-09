@@ -8,6 +8,7 @@
              Height="768">
 
     <UserControl.Resources>
+        <local:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" TrueValue="Visible" FalseValue="Hidden" />
 
         <local:IntToBoolConvertor x:Key="Int2ToBoolConverter" />
 
@@ -39,7 +40,10 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
-                        <ContentPresenter x:Name="contentPresenter" />
+                        <Grid>
+                            <ContentPresenter Margin="8" x:Name="contentPresenter" />
+                            <Border Margin="8" BorderBrush="#427FED" BorderThickness="6" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/>
+                        </Grid>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -102,9 +106,9 @@
                 <local:ZoomSlider x:Name="zoomSlider"
                                       Width="144"
                                       Margin="0, 1, 0, 5"
-                                      Maximum="480"
-                                      Minimum="240"
-                                      Value="280"
+                                      Maximum="360"
+                                      Minimum="160"
+                                      Value="212"
                                       ValueChanged="zoomSlider_ValueChanged"
                                   />
 

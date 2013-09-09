@@ -76,7 +76,7 @@ namespace Waveface.Client
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			tbName.Text = m_describeText;
+			tbName.Text = m_describeText.Trim();
 
 			InitUI();
 
@@ -181,8 +181,6 @@ namespace Waveface.Client
 			m_videosCount = _v;
 
 			selectionText.Content = string.Format((string)FindResource("selection_text"), m_photosCount + m_videosCount);
-
-			btnNext.IsEnabled = !((m_photosCount == 0) && (m_videosCount == 0));
 		}
 
 		private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -192,6 +190,13 @@ namespace Waveface.Client
 
 		private void btnNext_Click(object sender, RoutedEventArgs e)
 		{
+			if(((m_photosCount + m_videosCount) == 0) || (string.IsNullOrEmpty(tbName.Text.Trim())))
+			{
+				//ToDo:
+
+				return;
+			}
+
 			FileIDs = new List<string>();
 
 			for (int i = 0; i < lbItems.Items.Count; i++)

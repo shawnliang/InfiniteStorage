@@ -897,12 +897,10 @@ namespace Waveface.Client
 				if (m_tempCurrentService == null)
 					return;
 
-				ContentAreaToolBar.Visibility = Visibility.Collapsed;
-				lbxContentContainer.Visibility = Visibility.Collapsed;
-
 				allFilesUC.Visibility = Visibility.Visible;
 
-				Application.DoEvents();
+				ContentAreaToolBar.Visibility = Visibility.Collapsed;
+				lbxContentContainer.Visibility = Visibility.Collapsed;
 
 				allFilesUC.Load(m_tempCurrentService, this);
 
@@ -979,14 +977,12 @@ namespace Waveface.Client
 
 			if (listbox.SelectedIndex >= 0)
 			{
+				ToPhotoDiary();
+
 				lbxDeviceContainer.ClearSelection();
 				lbxFavorites.SelectedItem = null;
 				lbxCloudAlbums.SelectedItem = null;
 				lbxRecent.SelectedItem = null;
-
-				ToPhotoDiary();
-
-				Application.DoEvents();
 
 				photoDiaryUC.Load(m_tempCurrentService, this);
 
@@ -996,10 +992,10 @@ namespace Waveface.Client
 
 		private void ToPhotoDiary()
 		{
+			photoDiaryUC.Visibility = Visibility.Visible;
 			ContentAreaToolBar.Visibility = Visibility.Collapsed;
 			lbxContentContainer.Visibility = Visibility.Collapsed;
 			allFilesUC.Visibility = Visibility.Collapsed;
-			photoDiaryUC.Visibility = Visibility.Visible;
 		}
 
 		private void lbxRecent_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1703,7 +1699,21 @@ namespace Waveface.Client
 
 			lbxContentContainer.UnselectAll();
 
+			btnDelete.IsEnabled = false;
+
 			GC.Collect();
+		}
+
+		private void lbxContentContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (lbxPhotoDiary.SelectedItem == null)
+			{
+				btnDelete.IsEnabled = lbxContentContainer.SelectedItems.Count > 0;
+			}
+			else
+			{
+				btnDelete.IsEnabled = false;
+			}
 		}
 
 		#region Multi Select

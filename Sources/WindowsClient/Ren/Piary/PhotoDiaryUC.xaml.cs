@@ -52,6 +52,7 @@ namespace Waveface.Client
 		private List<IContentEntity> m_selectedEntities_LBIs;
 		private string m_title_LBIs;
 		private bool m_forceShowAllEvent;
+		private int m_hasOriginCount;
 
 		public PhotoDiaryUC()
 		{
@@ -63,7 +64,7 @@ namespace Waveface.Client
 
 			InitTimer();
 
-			setWH(280);
+			setWH(212);
 		}
 
 		private void InitTimer()
@@ -74,7 +75,7 @@ namespace Waveface.Client
 
 			m_refreshTimer = new DispatcherTimer();
 			m_refreshTimer.Tick += RefreshTimerOnTick;
-			m_refreshTimer.Interval = new TimeSpan(0, 0, 0, 0, 3000);
+			m_refreshTimer.Interval = new TimeSpan(0, 0, 0, 0, 4000);
 
 			m_sizeChangedDelayTimer = new DispatcherTimer();
 			m_sizeChangedDelayTimer.Tick += SizeChangedDelayTimer_Tick;
@@ -132,7 +133,9 @@ namespace Waveface.Client
 				return;
 			}
 
-			prepareData(_eventsFiles);
+			List<FileAsset> _filesFromDB = GetFilesFromDB();
+
+			prepareData(_eventsFiles, _filesFromDB);
 
 			refreshTitleInfo();
 
@@ -153,13 +156,25 @@ namespace Waveface.Client
 		{
 			m_refreshTimer.Stop();
 
+			int _hasOriginCount = 0;
+
 			try
 			{
+				List<FileAsset> _filesFromDB = GetFilesFromDB();
+
+				foreach (FileAsset _fileAsset in _filesFromDB)
+				{
+					if (_fileAsset.has_origin)
+					{
+						_hasOriginCount++;
+					}
+				}
+
 				List<EventFile> _eventFiles = GetEventFilesFromDB();
 
-				if (_eventFiles.Count != m_oldEventFilesCount)
+				if ((_hasOriginCount != m_hasOriginCount) || (m_oldEventFilesCount != _eventFiles.Count))
 				{
-					prepareData(_eventFiles);
+					prepareData(_eventFiles, _filesFromDB);
 
 					ShowEvents();
 				}
@@ -167,6 +182,8 @@ namespace Waveface.Client
 			catch
 			{
 			}
+
+			m_hasOriginCount = _hasOriginCount;
 
 			GC.Collect();
 
@@ -211,11 +228,9 @@ namespace Waveface.Client
 
 		#endregion
 
-		public void prepareData(List<EventFile> eventFiles)
+		public void prepareData(List<EventFile> eventFiles, List<FileAsset> filesFromDB)
 		{
 			m_oldEventFilesCount = eventFiles.Count;
-
-			List<FileAsset> _filesFromDB = GetFilesFromDB();
 
 			m_eventID_FileEntrys = new Dictionary<string, List<FileEntry>>();
 
@@ -223,7 +238,7 @@ namespace Waveface.Client
 			{
 				try
 				{
-					FileAsset _fa = _filesFromDB.First(f => f.file_id == _eventFile.file_id);
+					FileAsset _fa = filesFromDB.First(f => f.file_id == _eventFile.file_id);
 
 					if (_fa != null)
 					{
@@ -314,7 +329,7 @@ namespace Waveface.Client
 
 				m_eventUCs.Add(_ctl);
 
-				//Application.DoEvents();
+				System.Windows.Forms.Application.DoEvents();
 			}
 		}
 
@@ -365,7 +380,7 @@ namespace Waveface.Client
 				m_photosCount += _ctl.PhotosCount;
 				m_videosCount += _ctl.VideosCount;
 
-				//Application.DoEvents();
+				System.Windows.Forms.Application.DoEvents();
 			}
 
 			m_eventID_Events = _id_event_s;
@@ -408,12 +423,41 @@ namespace Waveface.Client
 				btnAddToAlbum.IsEnabled = false;
 				btnShare.IsEnabled = false;
 				btnDelete.IsEnabled = false;
+
+				selectionText.Text = "";
 			}
 			else
 			{
 				btnCreateAlbum.IsEnabled = true;
 				btnAddToAlbum.IsEnabled = true;
 				btnShare.IsEnabled = true;
+
+				int _ps = 0;
+				int _vs = 0;
+
+				for (int i = 0; i < m_eventUCs.Count; i++)
+				{
+					ListBoxItem _lbi = listBoxEvent.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
+
+					if (_lbi.IsSelected)
+					{
+						P_ItemUC _pItemUc = (P_ItemUC)_lbi.Content;
+
+						foreach (FileEntry _fe in _pItemUc.Item.Files)
+						{
+							if (_fe.type == 0)
+							{
+								_ps++;
+							}
+							else
+							{
+								_vs++;
+							}
+						}
+					}
+				}
+
+				selectionText.Text = "已選取" + listBoxEvent.SelectedItems.Count + "個事件 (" + GetCountsString(_ps, _vs) + ")";
 			}
 		}
 

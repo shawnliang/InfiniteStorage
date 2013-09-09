@@ -87,24 +87,6 @@ namespace Waveface.Client
 
 		public void SetUI(double myWidth, double myHeight, bool forceShow)
 		{
-			m_updateUI = true;
-
-			m_currentIndex = GetCoverIndex();
-
-			MyWidth = myWidth;
-			MyHeight = myHeight;
-			MySquare = MyWidth - 16;
-
-			GetCounts();
-
-			tbTitle.Text = Item.Event.content;
-			tbTime.Text = Item.Event.start.ToString("yyyy-MM-dd HH-mm");
-			tbLocation.Text = Item.Event.short_address;
-
-			SetImage(m_currentIndex);
-
-			m_updateUI = false;
-
 			if (forceShow)
 			{
 				Visibility = Visibility.Visible;
@@ -118,10 +100,28 @@ namespace Waveface.Client
 					if (!_fileEntry.has_origin)
 					{
 						Visibility = Visibility.Collapsed;
-						return;
+						break;
 					}
 				}
 			}
+
+			m_updateUI = true;
+
+			m_currentIndex = GetCoverIndex();
+
+			MyWidth = myWidth;
+			MyHeight = myHeight;
+			MySquare = MyWidth - 16;
+
+			GetCounts();
+
+			tbTitle.Text = Item.Event.content;
+			tbTime.Text = Item.Event.start.ToString("yyyy/MM/dd HH:mm");
+			tbLocation.Text = Item.Event.short_address;
+
+			SetImage(m_currentIndex);
+
+			m_updateUI = false;
 		}
 
 		private int GetCoverIndex()
@@ -144,6 +144,11 @@ namespace Waveface.Client
 			m_oldIndex = index;
 
 			UpdateCountText();
+
+			if(Item.Files.Count == 0)
+			{
+				return;
+			}
 
 			FileEntry _fileEntry = Item.Files[index];
 
