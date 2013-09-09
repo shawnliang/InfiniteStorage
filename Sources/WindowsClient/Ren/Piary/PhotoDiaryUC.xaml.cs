@@ -273,7 +273,7 @@ namespace Waveface.Client
 									 {
 										 event_id = _eventID,
 										 Event = _event,
-										 Files = m_eventID_FileEntrys[_eventID]
+										 Files = m_eventID_FileEntrys.ContainsKey(_eventID) ? m_eventID_FileEntrys[_eventID] : new List<FileEntry>()
 									 };
 
 				_id_event_s.Add(_eventID, _eventEntry);
