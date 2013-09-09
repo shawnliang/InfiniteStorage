@@ -303,6 +303,7 @@
                             <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
+                        
                         <Label Grid.Row="0"
                                VerticalContentAlignment="Bottom"
                                Content="{StaticResource res_14}"
@@ -315,17 +316,20 @@
                             <wvmodel:ContentGroup Name="{StaticResource res_36}" ID="event" />
                         </local:PhotoDiaryListBox>
                     </Grid>
+                    
                     <Grid Style="{StaticResource SourceGroupStyle}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
+                        
                         <Label Grid.Row="0"
                                VerticalContentAlignment="Bottom"
                                Content="{DynamicResource SourceGroupTitle}"
                                FontWeight="Bold"
                                Foreground="#FFA8A8A8"
                                Padding="5,0,0,5" />
+                        
                         <local:SourceTree x:Name="lbxDeviceContainer"
                                           Grid.Row="1"
                                           AddToFavoriteInvoked="lbxDeviceContainer_AddToFavoriteInvoked"
@@ -340,11 +344,13 @@
                                           VirtualizingStackPanel.IsVirtualizing="True"
                                           VirtualizingStackPanel.VirtualizationMode="Recycling" />
                     </Grid>
+                    
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
+                        
                         <Label Grid.Row="0"
                                Height="30"
                                VerticalContentAlignment="Bottom"
@@ -352,6 +358,7 @@
                                FontWeight="Bold"
                                Foreground="#FFA8A8A8"
                                Padding="5,0,0,5" />
+                        
                         <local:RecentListBox x:Name="lbxRecent"
                                              Grid.Row="1"
                                              AllowDrop="True"
@@ -359,11 +366,13 @@
                                              Drop="Recent_Drop"
                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
                     </Grid>
+                    
                     <Grid x:Name="gridCloudAlbumGroup" Style="{StaticResource CloudAlbumGroupStyle}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
+                        
                         <Label Grid.Row="0"
                                Margin="5,0,0,5"
                                VerticalContentAlignment="Bottom"
@@ -371,6 +380,7 @@
                                FontWeight="Bold"
                                Foreground="#FFA8A8A8"
                                Padding="0,0,0,2" />
+                        
                         <local:FavoriteListBox x:Name="lbxCloudAlbums"
                                                Grid.Row="1"
                                                AllowDrop="True"
@@ -380,11 +390,13 @@
                                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                ScrollViewer.VerticalScrollBarVisibility="Disabled" />
                     </Grid>
+                    
                     <Grid x:Name="gridLocalAlbumGroup" Style="{StaticResource LocalAlbumGroupStyle}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
+                        
                         <Label Grid.Row="0"
                                Margin="5,0,0,5"
                                VerticalContentAlignment="Bottom"
@@ -392,6 +404,7 @@
                                FontWeight="Bold"
                                Foreground="#FFA8A8A8"
                                Padding="0,0,0,2" />
+                        
                         <local:FavoriteListBox x:Name="lbxFavorites"
                                                Grid.Row="1"
                                                AllowDrop="True"
@@ -404,6 +417,7 @@
                 </StackPanel>
             </ScrollViewer>
         </Grid>
+        
         <GridSplitter Grid.Row="1"
                       Grid.Column="0"
                       Width="5"
@@ -423,6 +437,15 @@
                                    FavoriteName="{Binding Name,
                                                           Mode=TwoWay}" />
         </Grid>
+        <local:PhotoDiaryUC x:Name="photoDiaryUC"
+                            Grid.Row="0"
+                            Grid.RowSpan="3"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Width="Auto"
+                            Height="Auto"
+                            Visibility="Collapsed" />
+        
         <local:SourceAllFilesUC x:Name="allFilesUC"
                                 Grid.Row="0"
                                 Grid.RowSpan="3"
@@ -432,14 +455,7 @@
                                 Height="Auto"
                                 Margin="1,0,0,0"
                                 Visibility="Collapsed" />
-        <local:PhotoDiaryUC x:Name="photoDiaryUC"
-                            Grid.Row="0"
-                            Grid.RowSpan="3"
-                            Grid.Column="1"
-                            Grid.ColumnSpan="2"
-                            Width="Auto"
-                            Height="Auto"
-                            Visibility="Collapsed" />
+        
         <Grid x:Name="stackPanel"
               Grid.Row="2"
               Background="#d5d5d5">

@@ -1730,7 +1730,6 @@ namespace Waveface.Client
 		/// </summary>
 		private static readonly double DragThreshold = 5;
 
-
 		/// <summary>
 		/// Event raised when the user presses down the left mouse-button.
 		/// </summary>
