@@ -145,7 +145,7 @@ namespace InfiniteStorage
 			var affected_folders = flushed.Select(x => x.parent_folder).Distinct();
 			foreach (var folder in affected_folders)
 			{
-				UIChangeNotificationController.NotifyFolderUpdate(new Folder { name = Path.GetFileName(folder), parent_folder = Path.GetDirectoryName(folder), path = Path.Combine(MyFileFolder.Photo, folder) });
+				UIChangeNotificationController.NotifyFolderUpdate(new Folder { name = Path.GetFileName(folder), parent_folder = folder });
 			}
 		}
 

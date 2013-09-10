@@ -210,6 +210,7 @@ namespace Waveface.ClientFramework
 			// wrap the following find-and-modify logic in syncContext to avoid locking
 			syncContext.Post((dummy) =>
 			{
+
 				// This is not always true in multi-level folder hiararchy.
 				// But currently we have only two level hiararchy (device and folder),
 				// So this is valid currently.
