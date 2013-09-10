@@ -118,33 +118,21 @@ namespace Waveface.ClientFramework
 				ws.OnMessage += new EventHandler<MessageEventArgs>(ws_OnMessage);
 
 
-				Observable.FromEvent<EventHandler<MessageEventArgs>, MessageEventArgs>(
+				var eventStream = Observable.FromEvent<EventHandler<MessageEventArgs>, MessageEventArgs>(
 				handler => (s, ex) => handler(ex),
 				h => ws.OnMessage += h,
 				h => ws.OnMessage -= h
-				)
-				.Where(ex =>
-				{
-					var notify = JsonConvert.DeserializeObject<NotificationMsg>(ex.Data);
-					return notify.update_folder != null;
-				})
-				.Window(TimeSpan.FromMilliseconds(5 * 1000))
-				.Subscribe((events) =>
-				{
-					events
-						.Distinct(ex =>
-						{
-							var notify = JsonConvert.DeserializeObject<NotificationMsg>(ex.Data);
-							return notify.update_folder.path;
-						})
-						.Subscribe(ex =>
-						{
-							var notify = JsonConvert.DeserializeObject<NotificationMsg>(ex.Data);
+				);
 
-							refreshFolder(notify.update_folder);
-						});
+				var query = from evt in eventStream
+							let evtData = JsonConvert.DeserializeObject<NotificationMsg>(evt.Data)
+							where evtData.update_folder != null
+							select evtData.update_folder;
+
+				query.Window(TimeSpan.FromSeconds(5), 20).Subscribe(itemsInWindow =>
+				{
+					itemsInWindow.Distinct(folder => folder.path).Subscribe(ev => refreshFolder(ev));
 				});
-
 
 				System.Threading.Thread.Sleep(1000);
 				ws.Connect();

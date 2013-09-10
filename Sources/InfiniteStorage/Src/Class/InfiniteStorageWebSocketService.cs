@@ -142,10 +142,16 @@ namespace InfiniteStorage
 
 		private static void notifyAffectedFolder(ICollection<FileAsset> flushed)
 		{
-			var affected_folders = flushed.Select(x => x.parent_folder).Distinct();
+			var affected_folders = flushed.Where(x=>x.has_origin).Select(x => x.parent_folder).Distinct();
 			foreach (var folder in affected_folders)
 			{
-				UIChangeNotificationController.NotifyFolderUpdate(new Folder { name = Path.GetFileName(folder), parent_folder = folder });
+				UIChangeNotificationController.NotifyFolderUpdate(
+					new Folder
+					{
+						path = folder,
+						name = Path.GetFileName(folder),
+						parent_folder = Path.GetDirectoryName(folder)
+					});
 			}
 		}
 
