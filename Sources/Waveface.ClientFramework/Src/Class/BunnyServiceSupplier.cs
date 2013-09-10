@@ -129,10 +129,20 @@ namespace Waveface.ClientFramework
 							where evtData.update_folder != null
 							select evtData.update_folder;
 
-				query.Window(TimeSpan.FromSeconds(5), 20).Subscribe(itemsInWindow =>
+				var comparer = new UpdateFolderComparer();
+
+				query.Buffer(TimeSpan.FromSeconds(5), 5).Subscribe(folders =>
 				{
-					itemsInWindow.Distinct(folder => folder.path).Subscribe(ev => refreshFolder(ev));
+					try
+					{
+						foreach (var folder in folders.Distinct(comparer))
+							refreshFolder(folder);
+					}
+					catch
+					{
+					}
 				});
+
 
 				System.Threading.Thread.Sleep(1000);
 				ws.Connect();
@@ -187,9 +197,8 @@ namespace Waveface.ClientFramework
 					// moved to subscribeActiveDeviceAsync()
 				}
 			}
-			catch (Exception err)
+			catch
 			{
-
 			}
 		}
 
@@ -307,5 +316,20 @@ namespace Waveface.ClientFramework
 			subscribeActiveDeviceAsync();
 		}
 		#endregion
+	}
+
+
+	class UpdateFolderComparer: IEqualityComparer<folder_info>
+	{
+
+		public bool Equals(folder_info x, folder_info y)
+		{
+			return x.path.Equals(y.path);
+		}
+
+		public int GetHashCode(folder_info obj)
+		{
+			return obj.path.GetHashCode();
+		}
 	}
 }

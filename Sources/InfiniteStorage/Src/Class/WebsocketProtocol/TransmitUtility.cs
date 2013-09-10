@@ -15,6 +15,10 @@ namespace InfiniteStorage.WebsocketProtocol
 		public const int BULK_INSERT_BATCH_SIZE = 100;
 		public const int BULK_INSERT_BATCH_SECONDS = 2;
 
+
+		public static event EventHandler<FilesFlushedEventArgs> FilesFlushedToDB;
+
+
 		public void SaveFileRecord(Model.FileAsset file)
 		{
 			SaveFileRecords(new List<FileAsset> { file });
@@ -169,6 +173,8 @@ namespace InfiniteStorage.WebsocketProtocol
 				flushed.AddRange(queue);
 				queue.Clear();
 				ctx.SetData(BULK_INSERT_LAST_FLUSH_TIME, DateTime.Now);
+
+				raiseFilesFlushedEvent(this, flushed);
 			}
 
 			return flushed;
@@ -193,6 +199,26 @@ namespace InfiniteStorage.WebsocketProtocol
 
 				return new List<FileAsset>();
 			}
+		}
+
+		private static void raiseFilesFlushedEvent(object sender, ICollection<FileAsset> files)
+		{
+			if (files.Any())
+			{
+				var handler = FilesFlushedToDB;
+				if (handler != null)
+					handler(sender, new FilesFlushedEventArgs(files));
+			}
+		}
+	}
+
+	class FilesFlushedEventArgs : EventArgs
+	{
+		public ICollection<FileAsset> files { get; private set; }
+
+		public FilesFlushedEventArgs(ICollection<FileAsset> files)
+		{
+			this.files = files;
 		}
 	}
 }

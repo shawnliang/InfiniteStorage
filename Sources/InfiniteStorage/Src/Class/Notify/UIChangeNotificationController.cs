@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 namespace InfiniteStorage.Notify
 {
@@ -153,35 +154,23 @@ namespace InfiniteStorage.Notify
 			notifyRecvStatus(status);
 		}
 
-
-
-		public void OnFileReceived(object sender, WebsocketEventArgs arg)
+		public void OnFilesFlushedToDB(object sender, FilesFlushedEventArgs arg)
 		{
 			try
 			{
-				if (arg.ctx.fileCtx.is_thumbnail)
-					return;
-
-				var file_id = arg.ctx.fileCtx.file_id;
-
-				Folder folder;
-				using (var db = new MyDbContext())
+				var folders = arg.files.Where(x => x.has_origin).Select(x => x.parent_folder).Distinct().Select(x => new Folder
 				{
-					var q = from f in db.Object.Files
-							join dir in db.Object.Folders on f.parent_folder equals dir.path
-							where f.file_id == file_id
-							select dir;
-					folder = q.FirstOrDefault();
-				}
+					path = x,
+					name = Path.GetFileName(x),
+					parent_folder = Path.GetDirectoryName(x)
+				});
 
-				if (folder == null)
-					return;
-
-				NotifyFolderUpdate(folder);
+				foreach (var folder in folders)
+					NotifyFolderUpdate(folder);
 			}
 			catch (Exception err)
 			{
-				log4net.LogManager.GetLogger(GetType()).Warn("OnFileReceived failed", err);
+				log4net.LogManager.GetLogger(GetType()).Warn("OnFilesFlushedToDB failed", err);
 			}
 		}
 

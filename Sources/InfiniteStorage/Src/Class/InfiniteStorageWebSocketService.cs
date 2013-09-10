@@ -123,9 +123,7 @@ namespace InfiniteStorage
 			try
 			{
 				var util = new TransmitUtility();
-				var flushed = util.FlushFileRecords(handler.ctx as ProtocolContext);
-
-				notifyAffectedFolder(flushed);
+				util.FlushFileRecords(handler.ctx as ProtocolContext);
 
 				handler.Clear();
 				flushTimer.Stop();
@@ -140,21 +138,6 @@ namespace InfiniteStorage
 			}
 		}
 
-		private static void notifyAffectedFolder(ICollection<FileAsset> flushed)
-		{
-			var affected_folders = flushed.Where(x=>x.has_origin).Select(x => x.parent_folder).Distinct();
-			foreach (var folder in affected_folders)
-			{
-				UIChangeNotificationController.NotifyFolderUpdate(
-					new Folder
-					{
-						path = folder,
-						name = Path.GetFileName(folder),
-						parent_folder = Path.GetDirectoryName(folder)
-					});
-			}
-		}
-
 		private void flushFileQueueIfRequired(object nothing)
 		{
 			try
@@ -162,11 +145,7 @@ namespace InfiniteStorage
 				var ctx = this.handler.ctx as ProtocolContext;
 
 				var util = new TransmitUtility();
-				var flushed = util.FlushFileRecordsIfNoFlushedForXSec(TransmitUtility.BULK_INSERT_BATCH_SECONDS * 2, ctx);
-
-
-				if (flushed.Any())
-					notifyAffectedFolder(flushed);
+				util.FlushFileRecordsIfNoFlushedForXSec(TransmitUtility.BULK_INSERT_BATCH_SECONDS * 2, ctx);
 			}
 			catch (Exception err)
 			{
