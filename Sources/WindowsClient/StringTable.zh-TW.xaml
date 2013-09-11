@@ -147,4 +147,23 @@
         或拖曳至側欄的星號區\r\n
         來標示該圖片
     </system:String>
+    
+    <system:String x:Key="header_title_indexing">裝置已連接</system:String>
+    <system:String x:Key="header_subtitle_indexing">正在為您的照片建立索引，請稍候...</system:String>
+
+    <system:String x:Key="header_title_importing">裝置內共有 {0} 個新項目</system:String>
+    <system:String x:Key="header_subtitle_importing">正在匯入第 {0} 個項目，剩餘時間約 {1} 分鐘</system:String>
+
+    <system:String x:Key="header_title_stopped">裝置內尚有 {0} 個項目未能匯入</system:String>
+    <system:String x:Key="header_subtitle_stopped">請將裝置連接到與PC相同的區域網路，自動同步會自動開始</system:String>
+
+    <system:String x:Key="header_title_complete">上次從裝置匯入了 {0} 個項目於{1}</system:String>
+    <system:String x:Key="header_subtitle_complete">按此檢視新增項目</system:String>
+
+    <system:String x:Key="header_title_paused">自動同步已暫停</system:String>
+    <system:String x:Key="header_subtitle_paused">請按右方按鈕繼續</system:String>
+
+
+    <system:String x:Key="0_days_ago">今日</system:String>
+    <system:String x:Key="x_days_ago">{0}日前</system:String>
 </ResourceDictionary>
