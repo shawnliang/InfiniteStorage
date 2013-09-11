@@ -152,6 +152,6 @@
 
 
     <system:String x:Key="0_days_ago">今日</system:String>
-    <system:String x:Key="x_days_ago">{x}日前</system:String>
+    <system:String x:Key="x_days_ago">{0}日前</system:String>
 
 </ResourceDictionary>
