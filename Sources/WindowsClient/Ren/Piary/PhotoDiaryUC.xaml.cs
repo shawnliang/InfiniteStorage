@@ -238,7 +238,7 @@ namespace Waveface.Client
 		{
 			using (var _db = new MyDbContext())
 			{
-				IQueryable<Event> _q = from _f in _db.Object.Events select _f;
+				IQueryable<Event> _q = from _f in _db.Object.Events where !_f.deleted select _f;
 
 				return _q.ToList();
 			}

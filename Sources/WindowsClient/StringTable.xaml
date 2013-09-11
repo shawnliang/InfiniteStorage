@@ -134,24 +134,24 @@
         來標示該圖片
     </system:String>
 
-    <system:String x:Key="header_title_indexing">裝置已連接</system:String>
-    <system:String x:Key="header_subtitle_indexing">正在建立索引...</system:String>
+    <system:String x:Key="header_title_indexing">Connected</system:String>
+    <system:String x:Key="header_subtitle_indexing">Indexing your photos, this won't take a minute...</system:String>
 
 
-    <system:String x:Key="header_title_importing">裝置內共有{0}個新項目</system:String>
-    <system:String x:Key="header_subtitle_importing">正在匯入第{0}個項目，剩餘時間約{1}分鐘</system:String>
+    <system:String x:Key="header_title_importing">You have {0} new items in your device.</system:String>
+    <system:String x:Key="header_subtitle_importing">Imported {0} items, {1} minutes until finish. Feel free to leave the application, the rest is automatic.</system:String>
 
-    <system:String x:Key="header_title_stopped">裝置內尚有{0}個項目未匯入</system:String>
-    <system:String x:Key="header_subtitle_stopped">請將裝置接上與PC相同的區域網路以開始自動同步</system:String>
+    <system:String x:Key="header_title_stopped">{0} items waiting to be imported.</system:String>
+    <system:String x:Key="header_subtitle_stopped">When you conntect your device to the same Wi-Fi network with your PC, importing will resume automatically.</system:String>
 
-    <system:String x:Key="header_title_complete">上次從裝置匯入{0}個項目於{1}</system:String>
-    <system:String x:Key="header_subtitle_complete">按此檢視新增項目</system:String>
+    <system:String x:Key="header_title_complete">You have imported {0} items at {1}.</system:String>
+    <system:String x:Key="header_subtitle_complete">Click HERE to view these items.</system:String>
 
-    <system:String x:Key="header_title_paused">已暫停</system:String>
-    <system:String x:Key="header_subtitle_paused">按右邊按鈕繼續</system:String>
+    <system:String x:Key="header_title_paused">Auto uploading paused.</system:String>
+    <system:String x:Key="header_subtitle_paused">To continue, click the button on the right.</system:String>
 
 
-    <system:String x:Key="0_days_ago">今日</system:String>
-    <system:String x:Key="x_days_ago">{0}日前</system:String>
+    <system:String x:Key="0_days_ago">Today</system:String>
+    <system:String x:Key="x_days_ago">{0} days ago</system:String>
 
 </ResourceDictionary>
