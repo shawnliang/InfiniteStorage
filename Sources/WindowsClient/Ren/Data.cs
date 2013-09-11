@@ -22,6 +22,7 @@ namespace Waveface.Client
 	public class EventEntry
 	{
 		public string event_id;
+		public string DeviceName;
 		public Event Event;
 		public List<FileEntry> Files = new List<FileEntry>();
 	}

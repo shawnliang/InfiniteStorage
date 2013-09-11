@@ -365,7 +365,9 @@
     </Page>
     <Resource Include="Resource\arrow_right1.png" />
     <Resource Include="Resource\folder.png" />
-    <Resource Include="Resource\loadinfo.gif" />
+    <Resource Include="Resource\loading.gif" />
+    <Resource Include="Resource\clock16.png" />
+    <Resource Include="Resource\map32.png" />
     <Content Include="StringTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -438,7 +440,6 @@
     <Resource Include="Resource\ico_star_unselect.png" />
     <Resource Include="Resource\ico_fav_star_unselect.png" />
     <Resource Include="Resource\ico_fav_star_select.png" />
-    <Resource Include="Resource\circleProgress.gif" />
     <Resource Include="Resource\Push_Nexus7.png" />
     <Resource Include="Resource\pop_online.png" />
     <Resource Include="Resource\pop_save.png" />

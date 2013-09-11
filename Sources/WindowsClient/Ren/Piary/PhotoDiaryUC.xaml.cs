@@ -8,7 +8,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using InfiniteStorage.Model;
@@ -35,7 +34,6 @@ namespace Waveface.Client
 
 		private string m_basePath;
 		private string m_thumbsPath;
-		private SolidColorBrush m_solidColorBrush;
 
 		private int m_oldEventFilesCount;
 
@@ -62,11 +60,10 @@ namespace Waveface.Client
 
 			m_basePath = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", "");
 			m_thumbsPath = Path.Combine(m_basePath, ".thumbs");
-			m_solidColorBrush = new SolidColorBrush(Color.FromArgb(255, 120, 0, 34));
 
 			InitTimer();
 
-			setWH(212);
+			setWH(256);
 		}
 
 		private void InitTimer()
@@ -109,7 +106,7 @@ namespace Waveface.Client
 			gridWaitingPanel.Visibility = Visibility.Visible;
 			BitmapImage _biWaiting = new BitmapImage();
 			_biWaiting.BeginInit();
-			_biWaiting.UriSource = new Uri("pack://application:,,,/Resource/loading_GIF_120.gif");
+			_biWaiting.UriSource = new Uri("pack://application:,,,/Resource/loading.gif");
 			_biWaiting.EndInit();
 			ImageBehavior.SetAnimatedSource(imgWaiting, _biWaiting);
 
@@ -165,7 +162,7 @@ namespace Waveface.Client
 				m_devices = _q.ToList();
 			}
 
-			if(m_devices.Count == 1)
+			if (m_devices.Count == 1)
 			{
 				cbxDevice.Visibility = Visibility.Collapsed;
 				m_last_cbxDevice_SelectedIndex = 0;
@@ -328,6 +325,7 @@ namespace Waveface.Client
 				EventEntry _eventEntry = new EventEntry
 											 {
 												 event_id = _eventID,
+												 DeviceName = GetDeviceName(_event.device_id),
 												 Event = _event,
 												 Files = m_eventID_FileEntrys.ContainsKey(_eventID) ? m_eventID_FileEntrys[_eventID] : new List<FileEntry>()
 											 };
@@ -346,6 +344,19 @@ namespace Waveface.Client
 			}
 
 			return deviceID == m_devices[m_last_cbxDevice_SelectedIndex - 1].device_id;
+		}
+
+		private string GetDeviceName(string deviceID)
+		{
+			foreach (Device _device in m_devices)
+			{
+				if(_device.device_id == deviceID)
+				{
+					return _device.device_name;
+				}
+			}
+
+			return "";
 		}
 
 		#region Show
@@ -471,6 +482,15 @@ namespace Waveface.Client
 				btnDelete.IsEnabled = false;
 
 				selectionText.Text = "";
+
+				for (int i = 0; i < m_eventUCs.Count; i++)
+				{
+					ListBoxItem _lbi = listBoxEvent.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
+
+					P_ItemUC _pItemUc = (P_ItemUC)_lbi.Content;
+
+					_pItemUc.IsSelected = false;
+				}
 			}
 			else
 			{
@@ -485,9 +505,13 @@ namespace Waveface.Client
 				{
 					ListBoxItem _lbi = listBoxEvent.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
 
+					P_ItemUC _pItemUc = (P_ItemUC)_lbi.Content;
+
+					_pItemUc.IsSelected = _lbi.IsSelected;
+
 					if (_lbi.IsSelected)
 					{
-						P_ItemUC _pItemUc = (P_ItemUC)_lbi.Content;
+						_pItemUc.IsSelected = true;
 
 						foreach (FileEntry _fe in _pItemUc.Item.Files)
 						{
@@ -540,7 +564,7 @@ namespace Waveface.Client
 		private void setWH(double value)
 		{
 			m_myWidth = value;
-			m_myHeight = m_myWidth + 64;
+			m_myHeight = m_myWidth + 80;
 		}
 
 		private void listBoxEvent_MouseDown(object sender, MouseButtonEventArgs e)

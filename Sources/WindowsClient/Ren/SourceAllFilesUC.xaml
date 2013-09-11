@@ -81,7 +81,7 @@
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center"
                            Visibility="Collapsed"
-                           gif:ImageBehavior.AnimatedSource="/Waveface.Client;component/Resource/circleProgress.gif" />
+                           gif:ImageBehavior.AnimatedSource="/Waveface.Client;component/Resource/loading.gif" />
                     <TextBlock x:Name="tbTitleInfo"
                                Margin="8, 0, 0, 0"
                                VerticalAlignment="Center"
@@ -119,9 +119,10 @@
                   Grid.RowSpan="2"
                   Background="#4f4f4f"
                   Visibility="Collapsed">
+ 
                 <Image x:Name="imgWaiting"
-                       Width="120"
-                       Height="120"
+                       Width="60"
+                       Height="60"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center" />
             </Grid>

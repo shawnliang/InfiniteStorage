@@ -40,9 +40,10 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
+
                         <Grid>
-                            <ContentPresenter Margin="8" x:Name="contentPresenter" />
-                            <Border Margin="8" BorderBrush="#427FED" BorderThickness="6" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/>
+                            <ContentPresenter Margin="6" x:Name="contentPresenter" />
+                            <Border Margin="1" BorderBrush="#427FED" BorderThickness="5" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -56,6 +57,7 @@
 
 
         <!-- ComboBox-->
+        
     </UserControl.Resources>
 
     <Grid Background="#4f4f4f">
@@ -74,7 +76,7 @@
                            Foreground="White"
                            MouseDown="tbTitle_MouseDown"
                            Text="" />
-            
+
             <ComboBox x:Name="cbxDevice" Width="140" HorizontalAlignment="Right" Height="22" Margin="16, 0" SelectionChanged="cbxDevice_SelectionChanged" Visibility="Collapsed"/>
         </Grid>
 
@@ -99,8 +101,7 @@
         <Grid x:Name="gridWaitingPanel"  Grid.Row="1" Grid.RowSpan="2"
                   Background="#4f4f4f"
                   Visibility="Collapsed">
-
-            <Image x:Name="imgWaiting" Width="120" Height="120" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Image x:Name="imgWaiting" Width="60" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
 
         <Grid x:Name="ContentAreaToolBar" Grid.Row="2" Background="#d5d5d5">
@@ -112,8 +113,8 @@
                                       Width="144"
                                       Margin="0, 1, 0, 5"
                                       Maximum="360"
-                                      Minimum="160"
-                                      Value="212"
+                                      Minimum="224"
+                                      Value="256"
                                       ValueChanged="zoomSlider_ValueChanged"
                                   />
 

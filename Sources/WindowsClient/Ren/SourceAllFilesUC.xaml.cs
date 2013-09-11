@@ -109,7 +109,7 @@ namespace Waveface.Client
 			gridWaitingPanel.Visibility = Visibility.Visible;
 			BitmapImage _biWaiting = new BitmapImage();
 			_biWaiting.BeginInit();
-			_biWaiting.UriSource = new Uri("pack://application:,,,/Resource/loading_GIF_120.gif");
+			_biWaiting.UriSource = new Uri("pack://application:,,,/Resource/loading.gif");
 			_biWaiting.EndInit();
 			ImageBehavior.SetAnimatedSource(imgWaiting, _biWaiting);
 
