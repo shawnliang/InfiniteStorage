@@ -6,6 +6,11 @@ public static class ItemsControlExtension
 {
 	public static DependencyObject ContainerFromItem(this ItemsControl itemsControl, Object value)
 	{
+		if(itemsControl == null)
+		{
+			return null;
+		}
+
 		var dp = itemsControl.ItemContainerGenerator.ContainerFromItem(value);
 
 		if (dp != null)
@@ -20,6 +25,7 @@ public static class ItemsControlExtension
 			if (childDp != null)
 				return childDp;
 		}
+
 		return null;
 	}
 

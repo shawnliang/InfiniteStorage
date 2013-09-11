@@ -31,8 +31,8 @@
         </Border>
 
         <Grid Grid.Row="1">
-            <TextBlock x:Name="tbTitle" HorizontalAlignment="Center" TextAlignment="Center"  Height="24" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"  Margin="12, 8, 12, 8" FontSize="20" FontWeight="Bold"/>
-            <TextBlock x:Name="tbLocation" HorizontalAlignment="Center" Margin="12, 38, 12, 0"  Foreground="Gray" FontSize="14"/>
+            <TextBlock x:Name="tbTitle" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Top" Height="24" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"  Margin="12, 8, 12, 8" FontSize="20" FontWeight="Bold"/>
+            <TextBlock x:Name="tbLocation" HorizontalAlignment="Center" Margin="12, 36, 12, 0"  Foreground="Gray" FontSize="12"/>
             <TextBlock x:Name="tbCount" HorizontalAlignment="Right"  VerticalAlignment="Bottom" Margin="8, 4" FontSize="10"/>
             <TextBlock x:Name="tbTime" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="8, 4" FontSize="10"/>
         </Grid>

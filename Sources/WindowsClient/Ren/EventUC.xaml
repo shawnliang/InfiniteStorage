@@ -194,10 +194,15 @@
                                                    TextAlignment="Center"
                                                    TextWrapping="Wrap" />
                                     </Border>
+
                                     <Border x:Name="bdMouseOver"
                                             BorderBrush="#b0ffffff"
                                             BorderThickness="3"
-                                            Visibility="Collapsed" />
+                                            Visibility="Collapsed">
+                                        <Grid Background="#a0000000">
+                                            <TextBlock FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="#ccffffff" Text="{Binding Day}"/>
+                                        </Grid>
+                                    </Border>
                                 </Grid>
                             </Border>
                         </StackPanel>

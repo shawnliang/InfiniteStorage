@@ -636,11 +636,11 @@ namespace Waveface.Client
 
 									_group = (IContentGroup)_devNode.Items[_tnIdx];
 
+									lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
 									lbxContentContainer.DataContext = _group.Contents;
 
 									Application.DoEvents();
 
-									lbxContentContainer.ContextMenu = Resources["SourceContentContextMenu"] as ContextMenu;
 									lblContentLocation.DataContext = _group;
 
 									SetContentTypeCount(_group);
@@ -824,51 +824,24 @@ namespace Waveface.Client
 
 		private void BackButton_Click(object sender, RoutedEventArgs e)
 		{
-			if (lbxPhotoDiary.SelectedItem != null)
+			if (lbxPhotoDiary.SelectedItem == null)
 			{
-				ToPhotoDiary();
+				Back();
 			}
 			else
 			{
-				Back();
+				ToPhotoDiary();
 			}
 		}
 
 		private void Back()
 		{
-			var group = lblContentLocation.DataContext as IContentEntity;
+			IContentEntity _group = lblContentLocation.DataContext as IContentEntity;
 
-			if (group == null)
+			if (_group == null)
 				return;
 
-			group = group.Parent;
-
-			if (group == null)
-			{
-				var service = lbxDeviceContainer.SelectedItem as IService;
-
-				if (service == null)
-					return;
-
-				lblContentLocation.DataContext = null;
-				lbxContentContainer.DataContext = null;
-
-				Application.DoEvents();
-
-				lbxContentContainer.DataContext = service.Contents;
-				lbxContentContainer.SelectedIndex = -1;
-				return;
-			}
-
-			lblContentLocation.DataContext = group;
-			lbxContentContainer.DataContext = null;
-
-			Application.DoEvents();
-
-			lbxContentContainer.DataContext = (group as IContentGroup).Contents;
-			lbxContentContainer.SelectedIndex = -1;
-
-			SetContentTypeCount(group as IContentGroup);
+			JumpToDevice(_group.Service.ID, false);
 		}
 
 		private void TreeViewItem_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -1022,6 +995,7 @@ namespace Waveface.Client
 			if (group == null)
 				return;
 
+			lbxContentContainer.ContextMenu = Resources["ContentContextMenu"] as ContextMenu;
 			lblContentLocation.DataContext = group;
 
 			if (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase))
@@ -1037,7 +1011,6 @@ namespace Waveface.Client
 
 			SetContentTypeCount(group);
 
-			lbxContentContainer.ContextMenu = Resources["ContentContextMenu"] as ContextMenu;
 			lbxContentContainer.ContextMenu.IsOpen = false;
 			lbxContentContainer.ContextMenu.Visibility = Visibility.Visible;
 
@@ -1225,9 +1198,14 @@ namespace Waveface.Client
 				return;
 			}
 
-			btnBack.Visibility = GetCurrentContentGroup().Parent == null
-									 ? Visibility.Collapsed
-									 : Visibility.Visible;
+			if (Equals(lbxContentContainer.ContextMenu, Resources["SourceContentContextMenu"] as ContextMenu))
+			{
+				btnBack.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				btnBack.Visibility = Visibility.Collapsed;
+			}
 		}
 
 		private void btnAddNewSource_Click(object sender, RoutedEventArgs e)

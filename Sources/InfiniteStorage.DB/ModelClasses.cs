@@ -143,6 +143,8 @@ namespace InfiniteStorage.Model
 		public Guid? cover { get; set; }
 
 		public bool deleted { get; set; }
+
+		public string device_id { get; set; }
 	}
 
 	public class EventFile

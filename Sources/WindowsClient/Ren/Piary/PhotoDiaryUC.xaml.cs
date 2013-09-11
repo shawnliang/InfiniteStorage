@@ -41,6 +41,7 @@ namespace Waveface.Client
 
 		private Dictionary<string, EventEntry> m_eventID_Events;
 		private Dictionary<string, List<FileEntry>> m_eventID_FileEntrys;
+		List<Device> m_devices;
 
 		private ObservableCollection<P_ItemUC> m_eventUCs;
 
@@ -53,6 +54,7 @@ namespace Waveface.Client
 		private string m_title_LBIs;
 		private bool m_forceShowAllEvent;
 		private int m_hasOriginCount;
+		private int m_last_cbxDevice_SelectedIndex;
 
 		public PhotoDiaryUC()
 		{
@@ -114,8 +116,6 @@ namespace Waveface.Client
 			m_mainWindow = mainWindow;
 			m_currentDevice = device;
 
-			refreshTitleInfo();
-
 			m_startTimer.Start();
 		}
 
@@ -133,11 +133,11 @@ namespace Waveface.Client
 				return;
 			}
 
+			InitDeviceComboBox();
+
 			List<FileAsset> _filesFromDB = GetFilesFromDB();
 
 			prepareData(_eventsFiles, _filesFromDB);
-
-			refreshTitleInfo();
 
 			tbTitle.Visibility = Visibility.Visible;
 
@@ -152,10 +152,47 @@ namespace Waveface.Client
 			m_inited = true;
 		}
 
+		private void InitDeviceComboBox()
+		{
+			cbxDevice.Visibility = Visibility.Visible;
+
+			cbxDevice.Items.Clear();
+
+			using (var _db = new MyDbContext())
+			{
+				IQueryable<Device> _q = from _f in _db.Object.Devices select _f;
+
+				m_devices = _q.ToList();
+			}
+
+			if(m_devices.Count == 1)
+			{
+				cbxDevice.Visibility = Visibility.Collapsed;
+				m_last_cbxDevice_SelectedIndex = 0;
+				return;
+			}
+
+			cbxDevice.Items.Add("所有");
+
+			foreach (Device _device in m_devices)
+			{
+				cbxDevice.Items.Add(_device.device_name);
+			}
+
+			cbxDevice.SelectedIndex = m_last_cbxDevice_SelectedIndex;
+		}
+
 		private void RefreshTimerOnTick(object sender, EventArgs e)
 		{
 			m_refreshTimer.Stop();
 
+			Refresh();
+
+			m_refreshTimer.Start();
+		}
+
+		private void Refresh()
+		{
 			int _hasOriginCount = 0;
 
 			try
@@ -186,12 +223,6 @@ namespace Waveface.Client
 			m_hasOriginCount = _hasOriginCount;
 
 			GC.Collect();
-
-			m_refreshTimer.Start();
-		}
-
-		private void refreshTitleInfo()
-		{
 		}
 
 		#region DB
@@ -287,6 +318,11 @@ namespace Waveface.Client
 
 			foreach (Event _event in _events)
 			{
+				if (!FilterEvents(_event.device_id))
+				{
+					continue;
+				}
+
 				string _eventID = _event.event_id.ToString();
 
 				EventEntry _eventEntry = new EventEntry
@@ -300,6 +336,16 @@ namespace Waveface.Client
 			}
 
 			return _id_event_s;
+		}
+
+		private bool FilterEvents(string deviceID)
+		{
+			if (m_last_cbxDevice_SelectedIndex == 0)
+			{
+				return true;
+			}
+
+			return deviceID == m_devices[m_last_cbxDevice_SelectedIndex - 1].device_id;
 		}
 
 		#region Show
@@ -611,6 +657,19 @@ namespace Waveface.Client
 			m_forceShowAllEvent = !m_forceShowAllEvent;
 
 			ShowEvents();
+		}
+
+		private void cbxDevice_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (m_inited)
+			{
+				if (cbxDevice.SelectedItem != null)
+				{
+					m_last_cbxDevice_SelectedIndex = cbxDevice.SelectedIndex;
+
+					ShowEvents_Init();
+				}
+			}
 		}
 	}
 }

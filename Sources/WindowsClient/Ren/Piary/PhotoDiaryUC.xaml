@@ -53,6 +53,9 @@
             <GradientStop Offset="1" Color="#FF1E1E1F" />
             <GradientStop Color="#FF323232" />
         </LinearGradientBrush>
+
+
+        <!-- ComboBox-->
     </UserControl.Resources>
 
     <Grid Background="#4f4f4f">
@@ -71,6 +74,8 @@
                            Foreground="White"
                            MouseDown="tbTitle_MouseDown"
                            Text="" />
+            
+            <ComboBox x:Name="cbxDevice" Width="140" HorizontalAlignment="Right" Height="22" Margin="16, 0" SelectionChanged="cbxDevice_SelectionChanged" Visibility="Collapsed"/>
         </Grid>
 
         <Grid Grid.Row="1">

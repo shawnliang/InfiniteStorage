@@ -17,12 +17,11 @@ namespace Waveface.Client
 		public double m_myWidth;
 		public double m_myHeight;
 		public double m_mySquare;
-		private int m_currentIndex;
 		private int m_oldFileEntrysCount;
 		private EventEntry m_item = new EventEntry();
 		private bool m_updateUI;
 		private int m_oldIndex;
-		private bool m_mouseLeave;
+		private bool m_mouseLeave = true;
 		private int m_delayMouseMoveCount;
 		private int DELAY_MOVE = 1;
 
@@ -107,8 +106,6 @@ namespace Waveface.Client
 
 			m_updateUI = true;
 
-			m_currentIndex = GetCoverIndex();
-
 			MyWidth = myWidth;
 			MyHeight = myHeight;
 			MySquare = MyWidth - 16;
@@ -119,7 +116,7 @@ namespace Waveface.Client
 			tbTime.Text = Item.Event.start.ToString("yyyy/MM/dd HH:mm");
 			tbLocation.Text = Item.Event.short_address;
 
-			SetImage(m_currentIndex);
+			SetImage(GetCoverIndex());
 
 			m_updateUI = false;
 		}
@@ -217,7 +214,7 @@ namespace Waveface.Client
 
 		private void UpdateCountText()
 		{
-			if (m_mouseLeave)
+			if (m_mouseLeave || (Item.Files.Count == 1))
 			{
 				tbCount.Text = "" + Item.Files.Count;
 			}
@@ -286,6 +283,8 @@ namespace Waveface.Client
 			m_mouseLeave = true;
 
 			image.Stretch = Stretch.UniformToFill;
+
+			SetImage(GetCoverIndex());
 
 			UpdateCountText();
 		}

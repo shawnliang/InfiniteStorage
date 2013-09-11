@@ -24,7 +24,7 @@ namespace Waveface.Client
 		public bool IsMore { get; set; }
 		public bool IsLess { get; set; }
 		public string MoreText { get; set; }
-
+		public string Day { get; set; }
 		public BitmapSource MediaSource { get; set; }
 		public string FileID { get; set; }
 
@@ -143,7 +143,8 @@ namespace Waveface.Client
 															   FileID = _file.id,
 															   IsVideo = false,
 															   IsPhoto = true,
-															   HasOrigin = _file.has_origin
+															   HasOrigin = _file.has_origin,
+															   Day = _file.taken_time.Day.ToString()
 														   };
 
 								try
@@ -170,7 +171,8 @@ namespace Waveface.Client
 															   FileID = _file.id,
 															   IsVideo = true,
 															   IsPhoto = false,
-															   HasOrigin = _file.has_origin
+															   HasOrigin = _file.has_origin,
+															   Day = _file.taken_time.Day.ToString()
 														   };
 
 								try
