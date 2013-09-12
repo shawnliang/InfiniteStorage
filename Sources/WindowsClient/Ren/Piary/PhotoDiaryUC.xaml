@@ -42,8 +42,8 @@
                     <ControlTemplate TargetType="ListBoxItem">
 
                         <Grid>
-                            <ContentPresenter Margin="6" x:Name="contentPresenter" />
-                            <Border Margin="1" BorderBrush="#427FED" BorderThickness="5" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/>
+                            <ContentPresenter Margin="10" x:Name="contentPresenter" />
+                            <Border Margin="4" BorderBrush="#427FED" BorderThickness="5" Visibility="{Binding Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1},Path=IsSelected}"/>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -113,7 +113,7 @@
                                       Width="144"
                                       Margin="0, 1, 0, 5"
                                       Maximum="360"
-                                      Minimum="224"
+                                      Minimum="256"
                                       Value="256"
                                       ValueChanged="zoomSlider_ValueChanged"
                                   />

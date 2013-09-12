@@ -6,8 +6,10 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Application = System.Windows.Forms.Application;
 
 #endregion
 
@@ -26,6 +28,9 @@ namespace Waveface.Client
 		private int DELAY_MOVE = 1;
 		private bool m_isSelected;
 		private bool m_mouseEnter;
+
+		private SolidColorBrush m_brush676767;
+		private SolidColorBrush m_brush808080;
 
 		#region Property
 
@@ -100,29 +105,60 @@ namespace Waveface.Client
 		public P_ItemUC()
 		{
 			InitializeComponent();
+
+			m_brush676767 = (SolidColorBrush)FindResource("Brush676767");
+			m_brush808080 = (SolidColorBrush)FindResource("Brush808080");
 		}
 
 		public void SetUI(double myWidth, double myHeight, bool forceShow)
 		{
+			m_updateUI = true;
+
+			bool _show;
+
 			if (forceShow)
 			{
-				Visibility = Visibility.Visible;
+				_show = true;
 			}
 			else
 			{
-				Visibility = Visibility.Visible;
+				_show = true;
 
 				foreach (FileEntry _fileEntry in Item.Files)
 				{
 					if (!_fileEntry.has_origin)
 					{
-						Visibility = Visibility.Collapsed;
+						_show = false;
 						break;
 					}
 				}
+
+				if (Item.Files.Count == 0)
+				{
+					_show = false;
+				}
 			}
 
-			m_updateUI = true;
+			if (_show)
+			{
+				if (Visibility != Visibility.Visible)
+				{
+					Visibility = Visibility.Visible;
+				}
+			}
+			else
+			{
+				if (Visibility != Visibility.Collapsed)
+				{
+					Visibility = Visibility.Collapsed;
+
+					m_updateUI = false;
+
+					Application.DoEvents();
+
+					return;
+				}
+			}
 
 			MyWidth = myWidth;
 			MyHeight = myHeight;
@@ -133,6 +169,8 @@ namespace Waveface.Client
 			RefreshUI();
 
 			SetImage(GetCoverIndex());
+
+			Application.DoEvents();
 
 			m_updateUI = false;
 		}
@@ -263,7 +301,7 @@ namespace Waveface.Client
 		{
 			if (string.IsNullOrEmpty(Item.Event.content))
 			{
-				tbTitle.Text = Item.Event.start.ToString("M/d, yyyy");
+				tbTitle.Text = Item.Event.start.ToString("MMMM dd, yyyy");
 			}
 			else
 			{
@@ -271,7 +309,7 @@ namespace Waveface.Client
 			}
 
 			tbCount.Text = Item.Files.Count + "個項目";
-			tbTime.Text = PrettyDate(Item.Event.start.ToString("yyyy/MM/dd HH:mm"), false);
+			tbTime.Text = PrettyDate(Item.Event.start);
 			tbLocation.Text = Item.Event.short_address;
 			tbDevice.Text = Item.DeviceName;
 
@@ -287,11 +325,11 @@ namespace Waveface.Client
 					imgLocation.Visibility = Visibility.Visible;
 				}
 
-				tbTime.Foreground = (Brush)FindResource("Brush676767");
-				tbLocation.Foreground = (Brush)FindResource("Brush676767");
+				tbTime.Foreground = m_brush676767;
+				tbLocation.Foreground = m_brush676767;
 				tbTitle.Foreground = Brushes.Black;
-				tbCount.Foreground = (Brush)FindResource("Brush808080");
-				tbDevice.Foreground = (Brush)FindResource("Brush808080");
+				tbCount.Foreground = m_brush808080;
+				tbDevice.Foreground = m_brush808080;
 
 				if (string.IsNullOrEmpty(Item.Event.content))
 				{
@@ -311,7 +349,12 @@ namespace Waveface.Client
 			}
 		}
 
-		private void image_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+		private void image_MouseMove(object sender, MouseEventArgs e)
+		{
+			MouseMove_ChangeImage(e);
+		}
+
+		private void MouseMove_ChangeImage(MouseEventArgs e)
 		{
 			if (!m_updateUI)
 			{
@@ -320,17 +363,17 @@ namespace Waveface.Client
 					double _dw = Item.Files.Count / imageArea.ActualWidth;
 					int _index = (int)(e.GetPosition(imageArea).X * _dw);
 
-					if (_index < 0)
-					{
-						_index = 0;
-					}
-
 					if (_index >= Item.Files.Count)
 					{
 						_index = Item.Files.Count - 1;
 					}
 
-					tbTime.Text = Item.Files[_index].taken_time.ToString("yyyy/M/d HH:mm");
+					if (_index < 0)
+					{
+						_index = 0;
+					}
+
+					tbTime.Text = PrettyDate(Item.Files[_index].taken_time);
 
 					if (_index != m_oldIndex)
 					{
@@ -340,18 +383,14 @@ namespace Waveface.Client
 			}
 		}
 
-		private void image_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+		private void image_MouseEnter(object sender, MouseEventArgs e)
 		{
 			image.Stretch = Stretch.Uniform;
 		}
 
-		private void image_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+		private void image_MouseLeave(object sender, MouseEventArgs e)
 		{
 			image.Stretch = Stretch.UniformToFill;
-
-			SetImage(GetCoverIndex());
-
-			tbTime.Text = PrettyDate(Item.Event.start.ToString("yyyy/M/d HH:mm"), false);
 		}
 
 		#region INotifyPropertyChanged Members
@@ -368,7 +407,7 @@ namespace Waveface.Client
 
 		#endregion
 
-		private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void ToPhotoDiary2ndLevel()
 		{
 			string _s;
 
@@ -384,113 +423,90 @@ namespace Waveface.Client
 			PhotoDiaryUC.ToPhotoDiary2ndLevel(Item.Files, _s);
 		}
 
-		public string PrettyDate(String timeSubmitted, bool shortFormat)
+		public string PrettyDate(DateTime dateTime)
 		{
-			// accepts standard DateTime: 5/12/2011 2:36:00 PM 
-			// returns: "# month(s)/week(s)/day(s)/hour(s)/minute(s)/second(s)) ago"
-			string _ret;
-
-			DateTime submittedDate = DateTime.Parse(timeSubmitted);
 			DateTime _now = DateTime.Now;
-			TimeSpan _diff = _now - submittedDate;
+			TimeSpan _diff = _now - dateTime;
 
-			if (shortFormat)
+			string _ret = dateTime.ToString("MMM dd, yyyy H:mm");
+
+			if (_diff.Days == 0)
 			{
-				timeSubmitted = submittedDate.ToString("yyyy-MM-dd");
+				string _today = FindResource("0_days_ago") as string;
+
+				_ret = _today + " " + dateTime.ToString("h:mm tt");
 			}
 
-			switch (CultureInfo.CurrentCulture.Name)
+			else if (_diff.Days == 1)
 			{
-				case "zh-TW":
-					{
-						if (_diff.Seconds <= 0)
-						{
-							_ret = timeSubmitted;
-						}
-						else if (_diff.Days > 30)
-						{
-							_ret = _diff.Days / 30 + " 個月前";
-						}
-						else if (_diff.Days > 7)
-						{
-							_ret = _diff.Days / 7 + " 星期前";
-						}
-						else if (_diff.Days >= 1)
-						{
-							if (_diff.Days < 7)
-								_ret = _diff.Days + "天前";
-							else
-								_ret = timeSubmitted;
-						}
-						else if (_diff.Hours >= 1)
-						{
-							_ret = _diff.Hours + "小時前";
-						}
-						else if (_diff.Minutes >= 1)
-						{
-							_ret = _diff.Minutes + "分鐘前";
-						}
-						else
-						{
-							_ret = _diff.Seconds + "秒前";
-						}
-					}
+				string _yesterday = FindResource("res_27") as string;
 
-					break;
+				_ret = _yesterday + " " + dateTime.ToString("h:mm tt");
+			}
 
-				default:
-					{
-						if (_diff.Seconds <= 0)
-						{
-							_ret = timeSubmitted;
-						}
-						else if (_diff.Days > 30)
-						{
-							_ret = _diff.Days / 30 + " month" + (_diff.Days / 30 >= 2 ? "s " : " ") + "ago";
-						}
-						else if (_diff.Days > 7)
-						{
-							_ret = _diff.Days / 7 + " week" + (_diff.Days / 7 >= 2 ? "s " : " ") + "ago";
-						}
-						else if (_diff.Days >= 1)
-						{
-							if (_diff.Days < 7)
-								_ret = _diff.Days + " day" + (_diff.Days >= 2 ? "s " : " ") + "ago";
-							else
-								_ret = timeSubmitted;
-						}
-						else if (_diff.Hours >= 1)
-						{
-							_ret = _diff.Hours + " hour" + (_diff.Hours >= 2 ? "s " : " ") + "ago";
-						}
-						else if (_diff.Minutes >= 1)
-						{
-							_ret = _diff.Minutes + " minute" + (_diff.Minutes >= 2 ? "s " : " ") + "ago";
-						}
-						else
-						{
-							_ret = _diff.Seconds + " second" + (_diff.Seconds >= 2 ? "s " : " ") + "ago";
-						}
-					}
+			if ((_diff.Days > 1) && (_diff.Days < 4))
+			{
+				string _x_days_ago = FindResource("x_days_ago") as string;
 
-					break;
+				_ret = string.Format(_x_days_ago, _diff.Days) + " " + dateTime.ToString("h:mm tt");
 			}
 
 			return _ret;
 		}
 
-		private void gridMain_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+		private void gridMain_MouseEnter(object sender, MouseEventArgs e)
 		{
 			m_mouseEnter = true;
 
 			RefreshUI();
 		}
 
-		private void gridMain_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+		private void gridMain_MouseLeave(object sender, MouseEventArgs e)
 		{
 			m_mouseEnter = false;
 
+			SetImage(GetCoverIndex());
+
 			RefreshUI();
+		}
+
+		private void gridMain_MouseMove(object sender, MouseEventArgs e)
+		{
+			MouseMove_ChangeImage(e);
+		}
+
+		private void gridMain_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			if (e.ClickCount == 2)
+			{
+				ToPhotoDiary2ndLevel();
+			}
+		}
+
+		private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			PhotoDiaryUC.ToPhotoViewer(Item.Files, m_oldIndex);
+		}
+
+		private void miToPhotoViewer_Click(object sender, RoutedEventArgs e)
+		{
+			PhotoDiaryUC.ToPhotoViewer(Item.Files, m_oldIndex);
+		}
+
+		private void image_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			OpenContextMenu(image);
+
+			e.Handled = true;
+		}
+
+		private void OpenContextMenu(FrameworkElement element)
+		{
+			if (element.ContextMenu != null)
+			{
+				element.ContextMenu.PlacementTarget = element;
+				element.ContextMenu.IsOpen = true;
+			}
 		}
 	}
 }

@@ -141,20 +141,15 @@
                                            Visibility="{Binding Path=IsVideo,
                                                                 Converter={StaticResource BoolToHiddenConverter}}" />
 
-                                    <Image HorizontalAlignment="Center"
+                                    <Image HorizontalAlignment="Center" Width="Auto" Height="Auto"
                                            VerticalAlignment="Center"
                                            RenderTransformOrigin="0.5,0.5"
                                            Source="{Binding Path=BitmapImage}"
                                            Stretch="UniformToFill"
                                            Visibility="{Binding Path=IsPhoto,
                                                                 Converter={StaticResource BoolToHiddenConverter}}">
-                                        <!--
-                                            Image.Effect>
-                                            <BlurEffect Radius="2"/>
-                                            </Image.Effect
-                                        -->
                                     </Image>
-                                    <Image Height="36"
+                                    <Image Height="36" 
                                            Margin="1"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Bottom"

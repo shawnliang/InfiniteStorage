@@ -49,7 +49,7 @@ namespace Waveface.Client
 		{
 			InitializeComponent();
 
-			m_basePath = (string) Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", "");
+			m_basePath = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", "");
 			m_thumbsPath = Path.Combine(m_basePath, ".thumbs");
 			m_solidColorBrush = new SolidColorBrush(Color.FromArgb(255, 120, 0, 34));
 
@@ -81,7 +81,7 @@ namespace Waveface.Client
 
 		private void getCountPerLine(double width)
 		{
-			m_countPerLine = (int) ((width - 8)/(60 + 1.5));
+			m_countPerLine = (int)((width - 8) / (60 + 1.5));
 		}
 
 		private void SizeChangedDelayTimer_Tick(object sender, EventArgs e)
@@ -90,7 +90,7 @@ namespace Waveface.Client
 
 			if (m_inited)
 			{
-				ShowEvents(true);
+				ShowMonths(true);
 			}
 		}
 
@@ -143,7 +143,7 @@ namespace Waveface.Client
 
 			tbTitle.Text = m_currentDevice.Name;
 
-			ShowEvents_Init();
+			ShowMonths_Init();
 
 			gridWaitingPanel.Visibility = Visibility.Collapsed;
 
@@ -169,7 +169,7 @@ namespace Waveface.Client
 				{
 					prepareData(_files);
 
-					ShowEvents(false);
+					ShowMonths(false);
 				}
 
 				refreshTitleInfo();
@@ -185,7 +185,7 @@ namespace Waveface.Client
 
 		private void refreshTitleInfo()
 		{
-			var service = (BunnyService) m_currentDevice;
+			var service = (BunnyService)m_currentDevice;
 
 			tbAutoImport.IsChecked = (m_currentDevice as BunnyService).SyncEnabled;
 
@@ -194,7 +194,7 @@ namespace Waveface.Client
 				if (service.RecvStatus.IsPreparing)
 				{
 					imgCircleProgress.Visibility = Visibility.Visible;
-					
+
 					header_title.Text = FindResource("header_title_indexing") as string;
 					header_subtitle.Text = FindResource("header_subtitle_indexing") as string;
 				}
@@ -203,7 +203,7 @@ namespace Waveface.Client
 					imgCircleProgress.Visibility = Visibility.Visible;
 					//tbTitleInfo.Text = string.Format("Importing... ({0} / {1})", service.RecvStatus.Received, service.RecvStatus.Total);
 
-					var remaining_items =  service.RecvStatus.Total - service.RecvStatus.Received;
+					var remaining_items = service.RecvStatus.Total - service.RecvStatus.Received;
 					var remaining_minute = (int)((remaining_items * 1.5) / 60);
 
 					if (remaining_minute <= 0)
@@ -307,8 +307,8 @@ namespace Waveface.Client
 			using (var db = new MyDbContext())
 			{
 				var q = from f in db.Object.Files
-				        where f.import_time != null && f.device_id == m_currentDevice.ID
-				        select f.import_time;
+						where f.import_time != null && f.device_id == m_currentDevice.ID
+						select f.import_time;
 
 				return q.Max();
 			}
@@ -319,8 +319,8 @@ namespace Waveface.Client
 			using (var _db = new MyDbContext())
 			{
 				IQueryable<FileAsset> _q = from _f in _db.Object.Files
-				                           where _f.device_id == m_currentDevice.ID && !_f.deleted
-				                           select _f;
+										   where _f.device_id == m_currentDevice.ID && !_f.deleted
+										   select _f;
 
 				return _q.ToList();
 			}
@@ -331,14 +331,14 @@ namespace Waveface.Client
 			m_fileEntries = new List<FileEntry>();
 
 			List<FileEntry> _fCs = files.Select(x => new FileEntry
-				                                         {
-					                                         id = x.file_id.ToString(),
-					                                         tiny_path = Path.Combine(m_thumbsPath, x.file_id + ".tiny.thumb"),
-					                                         s92_path = Path.Combine(m_thumbsPath, x.file_id + ".s92.thumb"),
-					                                         taken_time = x.event_time,
-					                                         type = x.type,
-					                                         has_origin = x.has_origin
-				                                         }).ToList();
+														 {
+															 id = x.file_id.ToString(),
+															 tiny_path = Path.Combine(m_thumbsPath, x.file_id + ".tiny.thumb"),
+															 s92_path = Path.Combine(m_thumbsPath, x.file_id + ".s92.thumb"),
+															 taken_time = x.event_time,
+															 type = x.type,
+															 has_origin = x.has_origin
+														 }).ToList();
 
 			m_fileEntries = _fCs.OrderBy(o => o.taken_time).ToList();
 
@@ -394,7 +394,7 @@ namespace Waveface.Client
 
 		#region Show
 
-		private void ShowEvents_Init()
+		private void ShowMonths_Init()
 		{
 			getCountPerLine(ActualWidth);
 
@@ -403,19 +403,19 @@ namespace Waveface.Client
 
 			m_eventUCs = new ObservableCollection<EventUC>();
 
-			listBoxEvent.ItemsSource = m_eventUCs;
+			listBoxEvent.ItemsSource = null;
 
 			m_YM_Files = GroupingByMonth();
 
 			foreach (List<FileEntry> _entries in m_months)
 			{
 				EventUC _ctl = new EventUC
-					               {
-						               FileEntrys = _entries,
-						               YM = _entries[0].taken_time.ToString("yyyy-MM"),
-						               MyMainWindow = m_mainWindow,
-						               CurrentDevice = m_currentDevice,
-					               };
+								   {
+									   FileEntrys = _entries,
+									   YM = _entries[0].taken_time.ToString("yyyy-MM"),
+									   MyMainWindow = m_mainWindow,
+									   CurrentDevice = m_currentDevice,
+								   };
 
 				_ctl.SetUI(m_countPerLine, true);
 
@@ -423,12 +423,14 @@ namespace Waveface.Client
 				m_videosCount += _ctl.VideosCount;
 
 				m_eventUCs.Add(_ctl);
-
-				System.Windows.Forms.Application.DoEvents();
 			}
+
+			System.Windows.Forms.Application.DoEvents();
+
+			listBoxEvent.ItemsSource = m_eventUCs;
 		}
 
-		private void ShowEvents(bool forceChange)
+		private void ShowMonths(bool forceChange)
 		{
 			getCountPerLine(ActualWidth);
 
@@ -463,12 +465,12 @@ namespace Waveface.Client
 				else
 				{
 					_ctl = new EventUC
-						       {
-							       FileEntrys = _entries,
-							       YM = _YM,
-							       MyMainWindow = m_mainWindow,
-							       CurrentDevice = m_currentDevice,
-						       };
+							   {
+								   FileEntrys = _entries,
+								   YM = _YM,
+								   MyMainWindow = m_mainWindow,
+								   CurrentDevice = m_currentDevice,
+							   };
 
 					_ctl.Changed = true;
 
@@ -479,9 +481,9 @@ namespace Waveface.Client
 
 				m_photosCount += _ctl.PhotosCount;
 				m_videosCount += _ctl.VideosCount;
-
-				System.Windows.Forms.Application.DoEvents();
 			}
+
+			System.Windows.Forms.Application.DoEvents();
 
 			m_YM_Files = _YM_Files;
 		}
@@ -490,10 +492,10 @@ namespace Waveface.Client
 		{
 			string _c = string.Empty;
 
-			string _photo = " " + (string) Application.Current.FindResource("photo");
-			string _photos = " " + (string) Application.Current.FindResource("photos");
-			string _video = " " + (string) Application.Current.FindResource("video");
-			string _videos = " " + (string) Application.Current.FindResource("videos");
+			string _photo = " " + (string)Application.Current.FindResource("photo");
+			string _photos = " " + (string)Application.Current.FindResource("photos");
+			string _video = " " + (string)Application.Current.FindResource("video");
+			string _videos = " " + (string)Application.Current.FindResource("videos");
 
 			if (photosCount > 0)
 			{

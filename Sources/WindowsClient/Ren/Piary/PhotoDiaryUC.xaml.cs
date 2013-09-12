@@ -350,7 +350,7 @@ namespace Waveface.Client
 		{
 			foreach (Device _device in m_devices)
 			{
-				if(_device.device_id == deviceID)
+				if (_device.device_id == deviceID)
 				{
 					return _device.device_name;
 				}
@@ -366,8 +366,9 @@ namespace Waveface.Client
 			m_photosCount = 0;
 			m_videosCount = 0;
 
+			listBoxEvent.ItemsSource = null;
+
 			m_eventUCs = new ObservableCollection<P_ItemUC>();
-			listBoxEvent.ItemsSource = m_eventUCs;
 
 			m_eventID_Events = GetEvents();
 
@@ -385,9 +386,9 @@ namespace Waveface.Client
 				m_videosCount += _ctl.VideosCount;
 
 				m_eventUCs.Add(_ctl);
-
-				System.Windows.Forms.Application.DoEvents();
 			}
+
+			listBoxEvent.ItemsSource = m_eventUCs;
 		}
 
 		private void ShowEvents()
@@ -436,8 +437,6 @@ namespace Waveface.Client
 
 				m_photosCount += _ctl.PhotosCount;
 				m_videosCount += _ctl.VideosCount;
-
-				System.Windows.Forms.Application.DoEvents();
 			}
 
 			m_eventID_Events = _id_event_s;
@@ -547,6 +546,29 @@ namespace Waveface.Client
 			ContentGroup gropup = new ContentGroup(Guid.NewGuid().ToString(), title, new Uri(@"c:\"), _contents);
 
 			m_mainWindow.ToPhotoDiary2ndLevel(gropup);
+		}
+
+		public void ToPhotoViewer(List<FileEntry> fileEntrys, int index)
+		{
+			ObservableCollection<IContentEntity> _contents = new ObservableCollection<IContentEntity>();
+
+			foreach (FileEntry _fe in fileEntrys)
+			{
+				if (File.Exists(_fe.saved_path))
+				{
+					Content _ce = new BunnyContent(new Uri(_fe.saved_path), _fe.id, ContentType.Photo);
+					_contents.Add(_ce);
+				}
+			}
+
+			var _viewer = new PhotoViewer
+			{
+				Owner = m_mainWindow,
+				Source = _contents,
+				SelectedIndex = index
+			};
+
+			_viewer.ShowDialog();
 		}
 
 		private void zoomSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
