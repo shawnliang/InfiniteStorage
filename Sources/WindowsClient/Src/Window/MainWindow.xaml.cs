@@ -187,6 +187,10 @@ namespace Waveface.Client
 				JumpToDevice(options.select_device, false);
 			else if (ClientFramework.Client.Default.Services.Any())
 				JumpToDevice(ClientFramework.Client.Default.GetLastImportDevice(), false);
+
+
+			var win = new IntroStep5() { Owner = this };
+			win.Show();
 		}
 
 		#region Private Method

@@ -154,4 +154,8 @@
     <system:String x:Key="0_days_ago">Today</system:String>
     <system:String x:Key="x_days_ago">{0} days ago</system:String>
 
+    <system:String x:Key="intro_step5_desc">Congratulation! You've completed Piary Windows tutorial!!</system:String>
+    <system:String x:Key="intro_step5_rateUs">Rate Us</system:String>
+    <system:String x:Key="intro_step5_your_suggestion">Your suggestion...</system:String>
+    <system:String x:Key="intro_step5_submit">Submit</system:String>
 </ResourceDictionary>

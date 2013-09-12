@@ -138,6 +138,9 @@
     <Compile Include="Ren\Utility\Planerator.cs" />
     <Compile Include="Src\Class\CreateNewAlbumContentEntity.cs" />
     <Compile Include="Src\Class\Helper\ScrollViewerOnDemandHelper.cs" />
+    <Compile Include="Src\Control\IntroLayout.xaml.cs">
+      <DependentUpon>IntroLayout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Control\PhotoDiaryListBox.xaml.cs">
       <DependentUpon>PhotoDiaryListBox.xaml</DependentUpon>
     </Compile>
@@ -222,6 +225,9 @@
     </Compile>
     <Compile Include="Src\Dialog\HomeSharingDialog.xaml.cs">
       <DependentUpon>HomeSharingDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Src\Dialog\IntroStep5.xaml.cs">
+      <DependentUpon>IntroStep5.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Dialog\MoveToFolderDialog.xaml.cs">
       <DependentUpon>MoveToFolderDialog.xaml</DependentUpon>
@@ -327,6 +333,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Src\Control\IntroLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Src\Control\PhotoDiaryListBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -336,6 +346,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Src\Dialog\HomeSharingDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Src\Dialog\IntroStep5.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -368,6 +382,10 @@
     <Resource Include="Resource\loading.gif" />
     <Resource Include="Resource\clock16.png" />
     <Resource Include="Resource\map32.png" />
+    <Resource Include="Resource\5_graystar.png" />
+    <Resource Include="Resource\5_hat.png" />
+    <Resource Include="Resource\5_label.png" />
+    <Resource Include="Resource\5_yellowstar.png" />
     <Content Include="StringTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

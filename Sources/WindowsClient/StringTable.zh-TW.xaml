@@ -166,4 +166,9 @@
 
     <system:String x:Key="0_days_ago">今日</system:String>
     <system:String x:Key="x_days_ago">{0}日前</system:String>
+
+    <system:String x:Key="intro_step5_desc">恭喜你已經完成了 Piary Windows 的導覽!!</system:String>
+    <system:String x:Key="intro_step5_rateUs">給我們評價</system:String>
+    <system:String x:Key="intro_step5_your_suggestion">您的建議...</system:String>
+    <system:String x:Key="intro_step5_submit">送出</system:String>
 </ResourceDictionary>

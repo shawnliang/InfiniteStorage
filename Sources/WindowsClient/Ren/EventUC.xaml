@@ -5,13 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             Margin="4, 12"
              SnapsToDevicePixels="True"
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto"
              d:DesignWidth="800"
-             mc:Ignorable="d"
-             Margin="4, 12"
-             >
+             mc:Ignorable="d">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <!--  Flat Button Style  -->
@@ -70,7 +69,9 @@
                                              TrueValue="Hidden" />
     </UserControl.Resources>
 
-    <Grid x:Name="gridMain" Background="#313131" HorizontalAlignment="Center">
+    <Grid x:Name="gridMain"
+          HorizontalAlignment="Center"
+          Background="#313131">
         <i:Interaction.Behaviors>
             <PendingUI:IgnoreMouseWheelBehavior />
         </i:Interaction.Behaviors>
@@ -85,13 +86,22 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="1" Grid.RowSpan="2" Background="#4f4f4f"/>
+        <Grid Grid.RowSpan="2"
+              Grid.Column="1"
+              Background="#4f4f4f" />
 
 
         <Grid Grid.Row="0" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
 
-            <StackPanel  HorizontalAlignment ="Left"  VerticalAlignment="Center" Cursor="Hand" Orientation="Horizontal">
-                <Image Width="24" Margin="12, 0, 0, 0" Height="24" Source = "pack://application:,,,/Resource/folder.png" HorizontalAlignment="Center"/>
+            <StackPanel HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Cursor="Hand"
+                        Orientation="Horizontal">
+                <Image Width="24"
+                       Height="24"
+                       Margin="12, 0, 0, 0"
+                       HorizontalAlignment="Center"
+                       Source="pack://application:,,,/Resource/folder.png" />
 
                 <TextBlock x:Name="tbTitleMonth"
                            Margin="8, 4, 0, 0"
@@ -110,21 +120,21 @@
                            TextWrapping="Wrap" />
 
                 <TextBlock x:Name="tbTotalCount"
-                       Margin="16, 8, 0, 0"
-                       FontSize="12"
-                       Foreground="#aaaaaa"
-                       Text="99 Photos"
-                       TextAlignment="Center"
-                       TextWrapping="Wrap" />
+                           Margin="16, 8, 0, 0"
+                           FontSize="12"
+                           Foreground="#aaaaaa"
+                           Text="99 Photos"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap" />
             </StackPanel>
 
         </Grid>
 
         <Grid Grid.Row="1">
             <ListBox x:Name="lbEvent"
+                     HorizontalAlignment="Left"
                      Background="#313131"
                      BorderThickness="0"
-                     HorizontalAlignment="Left"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      SelectionMode="Extended">
                 <ListBox.ItemTemplate>
@@ -132,7 +142,8 @@
                         <StackPanel Background="#4f4f4f">
                             <Border Width="60"
                                     Height="60"
-                                    BorderThickness="0" Padding="1">
+                                    BorderThickness="0"
+                                    Padding="1">
                                 <Grid>
                                     <Image HorizontalAlignment="Stretch"
                                            VerticalAlignment="Stretch"
@@ -163,23 +174,25 @@
                                            Visibility="{Binding Path=IsVideo,
                                                                 Converter={StaticResource BoolToHiddenConverter}}" />
 
-                                    <Rectangle Fill="#cc000000"
-                                               Visibility="{Binding Path=HasOrigin,
-                                                                    Converter={StaticResource boolToVisibilityConverter}}" />
+                                    <Rectangle Fill="#cc000000" Visibility="{Binding Path=HasOrigin, Converter={StaticResource boolToVisibilityConverter}}" />
 
-                                    <Border Background="#313131"
-                                            Visibility="{Binding Path=IsMore, Converter={StaticResource BoolToHiddenConverter}}">
+                                    <Border Background="#313131" Visibility="{Binding Path=IsMore, Converter={StaticResource BoolToHiddenConverter}}">
 
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                            <TextBlock                                                                                               
-                                                   FontSize="16"
-                                                   FontWeight="SemiBold"
-                                                   Foreground="#F0F0F0"
-                                                   Text="{Binding MoreText}"
-                                                   TextAlignment="Center"
-                                                   TextWrapping="Wrap" />
+                                        <StackPanel HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Orientation="Horizontal">
+                                            <TextBlock FontSize="16"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="#F0F0F0"
+                                                       Text="{Binding MoreText}"
+                                                       TextAlignment="Center"
+                                                       TextWrapping="Wrap" />
 
-                                            <Image Width="16" Margin="4, 0, 0, 0" Height="16" Source = "pack://application:,,,/Resource/arrow_right1.png" HorizontalAlignment="Center"/>
+                                            <Image Width="16"
+                                                   Height="16"
+                                                   Margin="4, 0, 0, 0"
+                                                   HorizontalAlignment="Center"
+                                                   Source="pack://application:,,,/Resource/arrow_right1.png" />
                                         </StackPanel>
 
                                     </Border>
@@ -199,8 +212,14 @@
                                             BorderBrush="#b0ffffff"
                                             BorderThickness="3"
                                             Visibility="Collapsed">
-                                        <Grid Background="#a0000000" Height="27" VerticalAlignment="Bottom">
-                                            <TextBlock FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="#ccffffff" Text="{Binding Day}"/>
+                                        <Grid Height="27"
+                                              VerticalAlignment="Bottom"
+                                              Background="#a0000000">
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       FontSize="16"
+                                                       Foreground="#ccffffff"
+                                                       Text="{Binding Day}" />
                                         </Grid>
                                     </Border>
                                 </Grid>

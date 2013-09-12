@@ -17,10 +17,9 @@
                 <ResourceDictionary Source="Src/ResourceDictionary/ToggleButtonResourceDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-			<local:MultiLineStringConvertor x:Key="MultiLineStringConvertor" />
+            <local:MultiLineStringConvertor x:Key="MultiLineStringConvertor" />
 
-            <SolidColorBrush x:Key="DefaultBrush"
-                             Color="#4F4F4F" />
+            <SolidColorBrush x:Key="DefaultBrush" Color="#4F4F4F" />
             <BitmapImage x:Key="lb_right_img_normal"
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/LB_right_0.png" />
@@ -195,8 +194,7 @@
                          UriSource="pack://application:,,,/Resource/LB_delete_1.png" />
 
 
-            <Style x:Key="ClearImageStyle"
-                   TargetType="{x:Type Image}">
+            <Style x:Key="ClearImageStyle" TargetType="{x:Type Image}">
                 <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />
                 <Setter Property="SnapsToDevicePixels" Value="True" />
             </Style>
