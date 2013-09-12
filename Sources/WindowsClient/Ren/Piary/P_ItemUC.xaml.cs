@@ -31,6 +31,9 @@ namespace Waveface.Client
 
 		private SolidColorBrush m_brush676767;
 		private SolidColorBrush m_brush808080;
+		private SolidColorBrush m_brush1E1E1E;
+		private SolidColorBrush m_brush949494;
+		private bool m_openContextMenu;
 
 		#region Property
 
@@ -108,6 +111,8 @@ namespace Waveface.Client
 
 			m_brush676767 = (SolidColorBrush)FindResource("Brush676767");
 			m_brush808080 = (SolidColorBrush)FindResource("Brush808080");
+			m_brush1E1E1E = (SolidColorBrush)FindResource("Brush1E1E1E");
+			m_brush949494 = (SolidColorBrush)FindResource("Brush949494");
 		}
 
 		public void SetUI(double myWidth, double myHeight, bool forceShow)
@@ -169,8 +174,6 @@ namespace Waveface.Client
 			RefreshUI();
 
 			SetImage(GetCoverIndex());
-
-			Application.DoEvents();
 
 			m_updateUI = false;
 		}
@@ -344,53 +347,9 @@ namespace Waveface.Client
 				imgClock.Visibility = Visibility.Collapsed;
 				imgLocation.Visibility = Visibility.Collapsed;
 
-				tbTitle.Foreground = (Brush)FindResource("Brush1E1E1E");
-				tbCount.Foreground = (Brush)FindResource("Brush949494");
+				tbTitle.Foreground = m_brush1E1E1E;
+				tbCount.Foreground = m_brush949494;
 			}
-		}
-
-		private void image_MouseMove(object sender, MouseEventArgs e)
-		{
-			MouseMove_ChangeImage(e);
-		}
-
-		private void MouseMove_ChangeImage(MouseEventArgs e)
-		{
-			if (!m_updateUI)
-			{
-				if (((++m_delayMouseMoveCount) % DELAY_MOVE) == 0)
-				{
-					double _dw = Item.Files.Count / imageArea.ActualWidth;
-					int _index = (int)(e.GetPosition(imageArea).X * _dw);
-
-					if (_index >= Item.Files.Count)
-					{
-						_index = Item.Files.Count - 1;
-					}
-
-					if (_index < 0)
-					{
-						_index = 0;
-					}
-
-					tbTime.Text = PrettyDate(Item.Files[_index].taken_time);
-
-					if (_index != m_oldIndex)
-					{
-						SetImage(_index);
-					}
-				}
-			}
-		}
-
-		private void image_MouseEnter(object sender, MouseEventArgs e)
-		{
-			image.Stretch = Stretch.Uniform;
-		}
-
-		private void image_MouseLeave(object sender, MouseEventArgs e)
-		{
-			image.Stretch = Stretch.UniformToFill;
 		}
 
 		#region INotifyPropertyChanged Members
@@ -454,6 +413,55 @@ namespace Waveface.Client
 			return _ret;
 		}
 
+		private void MouseMove_ChangeImage(MouseEventArgs e)
+		{
+			if (m_updateUI)
+				return;
+
+			if (m_openContextMenu)
+				return;
+
+			if (((++m_delayMouseMoveCount) % DELAY_MOVE) == 0)
+			{
+				double _dw = Item.Files.Count / imageArea.ActualWidth;
+				int _index = (int)(e.GetPosition(imageArea).X * _dw);
+
+				if (_index >= Item.Files.Count)
+				{
+					_index = Item.Files.Count - 1;
+				}
+
+				if (_index < 0)
+				{
+					_index = 0;
+				}
+
+				tbTime.Text = PrettyDate(Item.Files[_index].taken_time);
+
+				if (_index != m_oldIndex)
+				{
+					SetImage(_index);
+				}
+			}
+		}
+
+		#region mouse
+
+		private void image_MouseEnter(object sender, MouseEventArgs e)
+		{
+			image.Stretch = Stretch.Uniform;
+		}
+
+		private void image_MouseLeave(object sender, MouseEventArgs e)
+		{
+			image.Stretch = Stretch.UniformToFill;
+		}
+
+		private void image_MouseMove(object sender, MouseEventArgs e)
+		{
+			MouseMove_ChangeImage(e);
+		}
+
 		private void gridMain_MouseEnter(object sender, MouseEventArgs e)
 		{
 			m_mouseEnter = true;
@@ -463,6 +471,11 @@ namespace Waveface.Client
 
 		private void gridMain_MouseLeave(object sender, MouseEventArgs e)
 		{
+			if (m_openContextMenu)
+			{
+				return;
+			}
+
 			m_mouseEnter = false;
 
 			SetImage(GetCoverIndex());
@@ -483,30 +496,31 @@ namespace Waveface.Client
 			}
 		}
 
-		private void Border_MouseDown(object sender, MouseButtonEventArgs e)
-		{
-			PhotoDiaryUC.ToPhotoViewer(Item.Files, m_oldIndex);
-		}
-
 		private void miToPhotoViewer_Click(object sender, RoutedEventArgs e)
 		{
 			PhotoDiaryUC.ToPhotoViewer(Item.Files, m_oldIndex);
+
+			m_openContextMenu = false;
 		}
 
-		private void image_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-		{
-			OpenContextMenu(image);
-
-			e.Handled = true;
-		}
+		#endregion
 
 		private void OpenContextMenu(FrameworkElement element)
 		{
+			m_openContextMenu = true;
+
 			if (element.ContextMenu != null)
 			{
 				element.ContextMenu.PlacementTarget = element;
 				element.ContextMenu.IsOpen = true;
 			}
+		}
+
+		private void gridMain_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			OpenContextMenu(this);
+
+			e.Handled = true;
 		}
 	}
 }

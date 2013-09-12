@@ -368,6 +368,7 @@
     <Resource Include="Resource\loading.gif" />
     <Resource Include="Resource\clock16.png" />
     <Resource Include="Resource\map16.png" />
+    <Resource Include="Resource\loading128.gif" />
     <Content Include="StringTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

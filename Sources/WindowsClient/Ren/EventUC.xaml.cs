@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using Waveface.Model;
 
 #endregion
@@ -86,6 +88,8 @@ namespace Waveface.Client
 		public EventUC()
 		{
 			InitializeComponent();
+
+			Visibility = Visibility.Collapsed;
 
 			m_showMoreButton = true;
 		}
@@ -247,6 +251,8 @@ namespace Waveface.Client
 				m_eventItems = _ctlItems;
 				UpdateShowMoreUI();
 			}
+
+			Visibility = Visibility.Visible;
 		}
 
 		private void UpdateShowMoreUI()

@@ -87,17 +87,16 @@
 
         <Grid Grid.Column="1" Grid.RowSpan="2" Background="#4f4f4f"/>
 
-
         <Grid Grid.Row="0" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
 
             <StackPanel  HorizontalAlignment ="Left"  VerticalAlignment="Center" Cursor="Hand" Orientation="Horizontal">
-                <Image Width="24" Margin="12, 0, 0, 0" Height="24" Source = "pack://application:,,,/Resource/folder.png" HorizontalAlignment="Center"/>
+                <Image x:Name="imgFolder" Visibility="Collapsed" Width="24" Margin="12, 0, 0, 0" Height="24" Source = "pack://application:,,,/Resource/folder.png" HorizontalAlignment="Center"/>
 
                 <TextBlock x:Name="tbTitleMonth"
                            Margin="8, 4, 0, 0"
                            FontSize="16"
                            Foreground="#F0F0F0"
-                           Text="12"
+                           Text=""
                            TextAlignment="Center"
                            TextWrapping="Wrap" />
 
@@ -105,7 +104,7 @@
                            Margin="6, 4, 0, 0"
                            FontSize="16"
                            Foreground="#F0F0F0"
-                           Text="1999"
+                           Text=""
                            TextAlignment="Center"
                            TextWrapping="Wrap" />
 
@@ -113,7 +112,7 @@
                        Margin="16, 8, 0, 0"
                        FontSize="12"
                        Foreground="#aaaaaa"
-                       Text="99 Photos"
+                       Text=""
                        TextAlignment="Center"
                        TextWrapping="Wrap" />
             </StackPanel>

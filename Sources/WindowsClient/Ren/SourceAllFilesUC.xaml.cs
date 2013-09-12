@@ -22,6 +22,8 @@ namespace Waveface.Client
 {
 	public partial class SourceAllFilesUC : UserControl
 	{
+		private delegate void SetUIDelegate(int countPerLine, bool forceChange);
+
 		private IService m_currentDevice;
 		private MainWindow m_mainWindow;
 
@@ -44,6 +46,7 @@ namespace Waveface.Client
 		private int m_countPerLine;
 
 		private bool m_inited;
+		private bool m_firstTime = true;
 
 		public SourceAllFilesUC()
 		{
@@ -109,7 +112,7 @@ namespace Waveface.Client
 			gridWaitingPanel.Visibility = Visibility.Visible;
 			BitmapImage _biWaiting = new BitmapImage();
 			_biWaiting.BeginInit();
-			_biWaiting.UriSource = new Uri("pack://application:,,,/Resource/loading.gif");
+			_biWaiting.UriSource = new Uri("pack://application:,,,/Resource/loading128.gif");
 			_biWaiting.EndInit();
 			ImageBehavior.SetAnimatedSource(imgWaiting, _biWaiting);
 
@@ -403,8 +406,6 @@ namespace Waveface.Client
 
 			m_eventUCs = new ObservableCollection<EventUC>();
 
-			listBoxEvent.ItemsSource = null;
-
 			m_YM_Files = GroupingByMonth();
 
 			foreach (List<FileEntry> _entries in m_months)
@@ -417,7 +418,14 @@ namespace Waveface.Client
 									   CurrentDevice = m_currentDevice,
 								   };
 
-				_ctl.SetUI(m_countPerLine, true);
+				if (m_firstTime)
+				{
+					Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new SetUIDelegate(_ctl.SetUI), m_countPerLine, true);				
+				}
+				else
+				{
+					Dispatcher.BeginInvoke(DispatcherPriority.Background, new SetUIDelegate(_ctl.SetUI), m_countPerLine, true);
+				}
 
 				m_photosCount += _ctl.PhotosCount;
 				m_videosCount += _ctl.VideosCount;
@@ -425,9 +433,9 @@ namespace Waveface.Client
 				m_eventUCs.Add(_ctl);
 			}
 
-			System.Windows.Forms.Application.DoEvents();
-
 			listBoxEvent.ItemsSource = m_eventUCs;
+
+			m_firstTime = false;
 		}
 
 		private void ShowMonths(bool forceChange)
