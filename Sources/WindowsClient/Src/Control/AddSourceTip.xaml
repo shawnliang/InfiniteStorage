@@ -11,8 +11,7 @@
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <Style x:Key="LinkButton"
-               TargetType="TextBlock">
+        <Style x:Key="LinkButton" TargetType="TextBlock">
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Margin" Value="0,0,10,0" />
             <Setter Property="TextDecorations" Value="Underline" />
@@ -41,13 +40,13 @@
               HorizontalAlignment="Center"
               VerticalAlignment="Center">
 
-            <StackPanel Width="390"
-                        Orientation="Vertical">
+            <StackPanel Width="390" Orientation="Vertical">
                 <TextBlock Margin="0, 8"
                            HorizontalAlignment="Center"
                            FontSize="24"
                            FontWeight="ExtraBold"
-                           Text="{DynamicResource res_getStartedTitle}" />
+                           Text="{DynamicResource res_getStartedTitle}"
+                           TextWrapping="WrapWithOverflow" />
 
                 <Grid Margin="12, 8">
                     <Grid.ColumnDefinitions>
@@ -69,7 +68,7 @@
                                FontWeight="SemiBold"
                                MouseDown="tbHelpItem1_MouseDown"
                                TextWrapping="Wrap">
-                        <Run Text="{DynamicResource res_getStartedTip1}"/>
+                        <Run Text="{DynamicResource res_getStartedTip1}" />
                         <InlineUIContainer>
                             <Image Height="20"
                                    Margin="0, 8, 0, -4"
@@ -118,7 +117,7 @@
                                FontWeight="SemiBold"
                                MouseDown="tbHelpItem3_MouseDown"
                                TextWrapping="Wrap">
-                        <Run Text="{DynamicResource res_getStartedTip3}"/>
+                        <Run Text="{DynamicResource res_getStartedTip3}" />
                         <InlineUIContainer>
                             <Image Height="20"
                                    Margin="0, 8, 0, -4"

@@ -104,7 +104,7 @@
     <system:String x:Key="res_34">關閉</system:String>
     <system:String x:Key="res_35">打開</system:String>
     <system:String x:Key="res_36">影像日記</system:String>
-    <system:String x:Key="res_4">在 Google Play 上搜尋"Waveface Player"或由此直接安裝到你的裝置</system:String>
+    <system:String x:Key="res_4">在 Google Play 上搜尋&quot;Waveface Player&quot;或由此直接安裝到你的裝置</system:String>
     <system:String x:Key="res_5">選擇加至相冊的項目</system:String>
     <system:String x:Key="res_6">相冊標題</system:String>
     <system:String x:Key="res_7">選取全部</system:String>
@@ -112,7 +112,7 @@
     <system:String x:Key="res_9">建立相冊</system:String>
     <system:String x:Key="res_getStartedTip1">在您的手機上安裝「Piary影像日記」App，將手機相片透過Wi-Fi自動同步到PC</system:String>
     <system:String x:Key="res_getStartedTip2">利用USB連接數位相機或iPhone，匯入影像內容</system:String>
-    <system:String x:Key="res_getStartedTip3"></system:String>
+    <system:String x:Key="res_getStartedTip3">下載 Player 程式，從平板上欣賞您的影像內容</system:String>
     <system:String x:Key="res_getStartedTitle">第一次使用嗎？請試試以下步驟加入照片及影片...</system:String>
     <system:String x:Key="res_takeATour">瞧瞧還有哪些好用的功能</system:String>
     <system:String x:Key="SeeFavoriteTitle">此為公開網站；但任何人必須使用下列連結才可以看到您的相冊:</system:String>
@@ -147,7 +147,7 @@
         或拖曳至側欄的星號區\r\n
         來標示該圖片
     </system:String>
-    
+
     <system:String x:Key="header_title_indexing">裝置已連接</system:String>
     <system:String x:Key="header_subtitle_indexing">正在為您的照片建立索引，請稍候...</system:String>
 
