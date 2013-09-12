@@ -53,6 +53,7 @@ namespace Waveface.Client
 		private bool m_forceShowAllEvent;
 		private int m_hasOriginCount;
 		private int m_last_cbxDevice_SelectedIndex;
+		private int m_oldEventsCount;
 
 		public PhotoDiaryUC()
 		{
@@ -74,7 +75,7 @@ namespace Waveface.Client
 
 			m_refreshTimer = new DispatcherTimer();
 			m_refreshTimer.Tick += RefreshTimerOnTick;
-			m_refreshTimer.Interval = new TimeSpan(0, 0, 0, 0, 4000);
+			m_refreshTimer.Interval = new TimeSpan(0, 0, 0, 0, 5000);
 
 			m_sizeChangedDelayTimer = new DispatcherTimer();
 			m_sizeChangedDelayTimer.Tick += SizeChangedDelayTimer_Tick;
@@ -205,8 +206,9 @@ namespace Waveface.Client
 				}
 
 				List<EventFile> _eventFiles = GetEventFilesFromDB();
+				List<Event> _events = GetEventsFromDB();
 
-				if ((_hasOriginCount != m_hasOriginCount) || (m_oldEventFilesCount != _eventFiles.Count))
+				if ((_hasOriginCount != m_hasOriginCount) || (m_oldEventFilesCount != _eventFiles.Count) || (_events.Count != m_oldEventsCount))
 				{
 					prepareData(_eventFiles, _filesFromDB);
 
@@ -310,6 +312,8 @@ namespace Waveface.Client
 			Dictionary<string, EventEntry> _id_event_s = new Dictionary<string, EventEntry>();
 
 			List<Event> _events = GetEventsFromDB();
+
+			m_oldEventsCount = _events.Count;
 
 			_events.Sort((ev1, ev2) => ev2.start.CompareTo(ev1.start));
 
@@ -486,6 +490,11 @@ namespace Waveface.Client
 				{
 					ListBoxItem _lbi = listBoxEvent.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
 
+					if(_lbi == null)
+					{
+						continue;
+					}
+
 					P_ItemUC _pItemUc = (P_ItemUC)_lbi.Content;
 
 					_pItemUc.IsSelected = false;
@@ -605,6 +614,11 @@ namespace Waveface.Client
 			for (int i = 0; i < m_eventUCs.Count; i++)
 			{
 				ListBoxItem _lbi = listBoxEvent.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
+
+				if (_lbi == null)
+				{
+					continue;
+				}
 
 				if (_lbi.IsSelected)
 				{
