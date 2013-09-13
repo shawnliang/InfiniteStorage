@@ -1,24 +1,25 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
+#endregion
+
 namespace Waveface.Client
 {
-	/// <summary>
-	/// Interaction logic for VideoControl.xaml
-	/// </summary>
 	public partial class VideoControl : UserControl
 	{
-		public static readonly DependencyProperty _isPlaying = DependencyProperty.Register("IsPlaying", typeof(Boolean), typeof(VideoControl), new UIPropertyMetadata(false, new PropertyChangedCallback(OnIsPlayingChanged)));
-		public static readonly DependencyProperty _duration = DependencyProperty.Register("Duration", typeof(Double), typeof(VideoControl), new UIPropertyMetadata(0.0, new PropertyChangedCallback(OnDurationChanged)));
+		public static readonly DependencyProperty _isPlaying = DependencyProperty.Register("IsPlaying", typeof (Boolean), typeof (VideoControl),
+		                                                                                   new UIPropertyMetadata(false, OnIsPlayingChanged));
+
+		public static readonly DependencyProperty _duration = DependencyProperty.Register("Duration", typeof (Double), typeof (VideoControl),
+		                                                                                  new UIPropertyMetadata(0.0, OnDurationChanged));
 
 		public Boolean IsPlaying
 		{
-			get
-			{
-				return (Boolean)GetValue(_isPlaying);
-			}
+			get { return (Boolean) GetValue(_isPlaying); }
 			set
 			{
 				SetValue(_isPlaying, value);
@@ -27,25 +28,15 @@ namespace Waveface.Client
 			}
 		}
 
-
 		public Double Position
 		{
-			get
-			{
-				return PlayProgress.Value;
-			}
-			set
-			{
-				PlayProgress.Value = value;
-			}
+			get { return PlayProgress.Value; }
+			set { PlayProgress.Value = value; }
 		}
 
 		public Double Duration
 		{
-			get
-			{
-				return (Double)GetValue(_duration);
-			}
+			get { return (Double) GetValue(_duration); }
 			set
 			{
 				SetValue(_duration, value);
@@ -55,37 +46,32 @@ namespace Waveface.Client
 
 		public Double Volume
 		{
-			get
-			{
-				return vcVolumeController.Volume;
-			}
-			set
-			{
-				vcVolumeController.Volume = value;
-			}
+			get { return vcVolumeController.Volume; }
+			set { vcVolumeController.Volume = value; }
 		}
 
-
-
 		#region Event
+
 		public event EventHandler PlayButtonClick;
 		public event EventHandler PauseButtonClick;
 		public event EventHandler PositionChanged;
 		public event EventHandler VolumeChanged;
 		public event EventHandler SeekPosition;
-		#endregion
 
+		#endregion
 
 		public VideoControl()
 		{
-			this.InitializeComponent();
+			InitializeComponent();
 		}
 
 		#region Protected Method
+
 		protected void OnVolumeChanged(EventArgs e)
 		{
 			if (VolumeChanged == null)
 				return;
+
 			VolumeChanged(this, e);
 		}
 
@@ -95,6 +81,7 @@ namespace Waveface.Client
 		{
 			if (PositionChanged == null)
 				return;
+
 			PositionChanged(this, e);
 		}
 
@@ -102,6 +89,7 @@ namespace Waveface.Client
 		{
 			if (PlayButtonClick == null)
 				return;
+
 			PlayButtonClick(this, e);
 		}
 
@@ -109,6 +97,7 @@ namespace Waveface.Client
 		{
 			if (PauseButtonClick == null)
 				return;
+
 			PauseButtonClick(this, e);
 		}
 
@@ -116,43 +105,42 @@ namespace Waveface.Client
 		{
 			if (SeekPosition == null)
 				return;
+
 			SeekPosition(this, e);
 		}
-
-
 
 		private void PlayProgress_ValueChanged(Object sender, RoutedPropertyChangedEventArgs<Double> e)
 		{
 			if (Mouse.LeftButton == MouseButtonState.Pressed)
 				OnSeekPosition(EventArgs.Empty);
+
 			OnPositionChanged(EventArgs.Empty);
 		}
-
 
 		private static void OnDurationChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (o == null)
 				return;
-			var obj = o as VideoControl;
-			obj.Duration = (Double)e.NewValue;
-		}
 
+			var obj = o as VideoControl;
+			obj.Duration = (Double) e.NewValue;
+		}
 
 		private static void OnIsPlayingChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (o == null)
 				return;
+
 			var obj = o as VideoControl;
-			obj.IsPlaying = (Boolean)e.NewValue;
+			obj.IsPlaying = (Boolean) e.NewValue;
 		}
 
-
-		private void PlayButton_MouseDown(Object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void PlayButton_MouseDown(Object sender, MouseButtonEventArgs e)
 		{
 			OnPlayButtonClick(EventArgs.Empty);
 		}
 
-		private void PauseButton_MouseDown(Object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private void PauseButton_MouseDown(Object sender, MouseButtonEventArgs e)
 		{
 			OnPauseButtonClick(EventArgs.Empty);
 		}

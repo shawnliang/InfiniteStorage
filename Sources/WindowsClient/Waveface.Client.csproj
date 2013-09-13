@@ -141,7 +141,25 @@
     <Compile Include="Src\Control\PhotoDiaryListBox.xaml.cs">
       <DependentUpon>PhotoDiaryListBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Src\Control\LightBoxStar.xaml.cs">
+    <Compile Include="Src\Control\ViewerControlButton\LB_ZoomIn_Button.xaml.cs">
+      <DependentUpon>LB_ZoomIn_Button.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Src\Control\ViewerControlButton\LB_ZoomOut_Button.xaml.cs">
+      <DependentUpon>LB_ZoomOut_Button.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Src\Control\ViewerControlButton\LB_Actual_Button.xaml.cs">
+      <DependentUpon>LB_Actual_Button.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Src\Control\ViewerControlButton\LB_CW_Button.xaml.cs">
+      <DependentUpon>LB_CW_Button.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Src\Control\ViewerControlButton\LB_CCW_Button.xaml.cs">
+      <DependentUpon>LB_CCW_Button.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Src\Control\ViewerControlButton\LB_Fit_Button.xaml.cs">
+      <DependentUpon>LB_Fit_Button.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Src\Control\ViewerControlButton\LightBoxStar.xaml.cs">
       <DependentUpon>LightBoxStar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Control\CreateButton.xaml.cs">
@@ -247,7 +265,7 @@
     <Compile Include="Src\Control\ContentStar.xaml.cs">
       <DependentUpon>ContentStar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Src\Control\NextButton.xaml.cs">
+    <Compile Include="Src\Control\ViewerControlButton\NextButton.xaml.cs">
       <DependentUpon>NextButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Control\PauseButton.xaml.cs">
@@ -262,7 +280,7 @@
     <Compile Include="Src\Control\PlayButton.xaml.cs">
       <DependentUpon>PlayButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Src\Control\PreviousButton.xaml.cs">
+    <Compile Include="Src\Control\ViewerControlButton\PreviousButton.xaml.cs">
       <DependentUpon>PreviousButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Ren\Data.cs" />
@@ -331,7 +349,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Src\Control\LightBoxStar.xaml">
+    <Page Include="Src\Control\ViewerControlButton\LB_ZoomIn_Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Src\Control\ViewerControlButton\LB_ZoomOut_Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Src\Control\ViewerControlButton\LB_Actual_Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Src\Control\ViewerControlButton\LB_CW_Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Src\Control\ViewerControlButton\LB_CCW_Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Src\Control\ViewerControlButton\LB_Fit_Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Src\Control\ViewerControlButton\LightBoxStar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -369,6 +411,18 @@
     <Resource Include="Resource\clock16.png" />
     <Resource Include="Resource\map16.png" />
     <Resource Include="Resource\loading128.gif" />
+    <Resource Include="Resource\LB_actual_0.png" />
+    <Resource Include="Resource\LB_actual_1.png" />
+    <Resource Include="Resource\LB_ccw_0.png" />
+    <Resource Include="Resource\LB_ccw_1.png" />
+    <Resource Include="Resource\LB_cw_0.png" />
+    <Resource Include="Resource\LB_cw_1.png" />
+    <Resource Include="Resource\LB_fit_0.png" />
+    <Resource Include="Resource\LB_fit_1.png" />
+    <Resource Include="Resource\LB_zoomin_0.png" />
+    <Resource Include="Resource\LB_zoomin_1.png" />
+    <Resource Include="Resource\LB_zoomout_0.png" />
+    <Resource Include="Resource\LB_zoomout_1.png" />
     <Content Include="StringTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -583,7 +637,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Src\Control\NextButton.xaml">
+    <Page Include="Src\Control\ViewerControlButton\NextButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -603,7 +657,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Src\Control\PreviousButton.xaml">
+    <Page Include="Src\Control\ViewerControlButton\PreviousButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

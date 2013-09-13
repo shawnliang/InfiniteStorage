@@ -64,7 +64,7 @@ namespace Waveface.Client
 
 			InitTimer();
 
-			setWH(256);
+			setWH(236);
 		}
 
 		private void InitTimer()
@@ -393,6 +393,8 @@ namespace Waveface.Client
 			}
 
 			listBoxEvent.ItemsSource = m_eventUCs;
+
+			listBoxEvent.UpdateLayout();
 		}
 
 		private void ShowEvents()
@@ -444,6 +446,8 @@ namespace Waveface.Client
 			}
 
 			m_eventID_Events = _id_event_s;
+
+			listBoxEvent.UpdateLayout();
 		}
 
 		public static string GetCountsString(int photosCount, int videosCount)
@@ -490,7 +494,7 @@ namespace Waveface.Client
 				{
 					ListBoxItem _lbi = listBoxEvent.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
 
-					if(_lbi == null)
+					if (_lbi == null)
 					{
 						continue;
 					}

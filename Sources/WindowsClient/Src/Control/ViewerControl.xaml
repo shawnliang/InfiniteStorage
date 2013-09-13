@@ -18,8 +18,7 @@
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="LBDeleteImageStyle"
-               TargetType="Image">
+        <Style x:Key="LBDeleteImageStyle" TargetType="Image">
             <Setter Property="SnapsToDevicePixels" Value="True" />
             <Setter Property="Source" Value="{StaticResource LB_delete_0}" />
             <Style.Triggers>
@@ -29,15 +28,16 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    <Grid x:Name="LayoutRoot"
-          Height="40">
+    
+    <Grid x:Name="LayoutRoot" Height="40">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />            
         </Grid.ColumnDefinitions>
 
-        <Rectangle Grid.ColumnSpan="2"
-                   Opacity="0.87">
+        <Rectangle Grid.Column="0" Grid.ColumnSpan="4"  Opacity="0.87">
             <Rectangle.Fill>
                 <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                     <GradientStop Offset="0" Color="#FF403E3E" />
@@ -46,7 +46,28 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Grid.Column="0" Orientation="Horizontal">
+            <local:LB_Fit_Button Margin="8,0,4,0" Background="Transparent" MouseDown="Fit_Button_MouseDown"/>
+            
+            <local:LB_ZoomOut_Button Margin="4,0" Background="Transparent" MouseDown="ZoomOut_Button_MouseDown"/>
+            
+            <local:LB_ZoomIn_Button Margin="4,0" Background="Transparent" MouseDown="ZoomIn_Button_MouseDown"/>
+            
+            <local:LB_Actual_Button x:Name="btnActual" Margin="4, 0, 8, 0" Background="Transparent" MouseDown="Actual_Button_MouseDown"/>
+            
+        </StackPanel>
+        
+        <Rectangle Grid.Column="1"
+                   Width="0.872"
+                   Height="40"
+                   Margin="1.003,0,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Stretch="Fill"
+                   Stroke="#FF646262"
+                   StrokeThickness="0.5" />
+        
+        <StackPanel Grid.Column="1" Orientation="Horizontal">
             <local:PreviousButton Margin="15,0,8,0"
                                   Background="Transparent"
                                   Cursor="Hand"
@@ -57,12 +78,14 @@
                    VerticalContentAlignment="Center"
                    Content="0"
                    FontSize="14.667"
+                   FontWeight="SemiBold"
                    Foreground="#FFB4B4B4" />
 
             <Label Height="26.42"
                    HorizontalContentAlignment="Center"
                    VerticalContentAlignment="Center"
                    Content="/"
+                   FontWeight="SemiBold"
                    Foreground="#FFB4B4B4" />
 
             <Label x:Name="lblPageCount"
@@ -70,30 +93,16 @@
                    VerticalContentAlignment="Center"
                    Content="0"
                    FontSize="14.667"
+                   FontWeight="SemiBold"
                    Foreground="#FFB4B4B4" />
 
             <local:NextButton Margin="8, 0, 0, 0"
                               Background="Transparent"
                               Cursor="Hand"
                               MouseDown="NextButton_MouseDown" />
-            <local:LightBoxStar x:Name="staredControl"
-                                Margin="10,0,0,0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Background="Transparent"
-                                Cursor="Hand"
-                                Tagged="{Binding Liked,
-                                                 IsAsync=True,
-                                                 Mode=TwoWay}" />
-            <Image x:Name="image"
-                   Margin="8,0,10,0"
-                   Cursor="Hand"
-                   MouseDown="pvDelete_MouseDown"
-                   Stretch="None"
-                   Style="{StaticResource LBDeleteImageStyle}" />
-
         </StackPanel>
-        <Rectangle Grid.Column="1"
+        
+        <Rectangle Grid.Column="2"
                    Width="0.872"
                    Height="40"
                    Margin="1.003,0,0,0"
@@ -102,15 +111,49 @@
                    Stretch="Fill"
                    Stroke="#FF646262"
                    StrokeThickness="0.5" />
-        <Label Grid.Column="1"
+
+        <StackPanel Grid.Column="2" Orientation="Horizontal">
+            <local:LB_CCW_Button Margin="8,0,4,0" Background="Transparent" MouseDown="CCW_Button_MouseDown"/>
+            
+            <local:LB_CW_Button Margin="4,0" Background="Transparent" MouseDown="CW_Button_MouseDown"/>
+            
+            <local:LightBoxStar x:Name="staredControl"
+                                Margin="4,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Background="Transparent"
+                                Cursor="Hand"
+                                Tagged="{Binding Liked,
+                                                 IsAsync=True,
+                                                 Mode=TwoWay}" />
+            <Image x:Name="image"
+                   Margin="4,0,8,0"
+                   Cursor="Hand"
+                   MouseDown="pvDelete_MouseDown"
+                   Stretch="None"
+                   Style="{StaticResource LBDeleteImageStyle}" />
+
+        </StackPanel>
+        
+        <Rectangle Grid.Column="3"
+                   Width="0.872"
+                   Height="40"
+                   Margin="1.003,0,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Stretch="Fill"
+                   Stroke="#FF646262"
+                   StrokeThickness="0.5" />
+        
+        <Label Grid.Column="3"
                Margin="10,0"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
                Background="Transparent"
                Content="{DynamicResource ExitButtonText}"
                Cursor="Hand"
+               FontWeight="SemiBold"
                MouseDown="CloseButton_MouseDown"
                Style="{StaticResource ExitButtonStyle}" />
-
     </Grid>
 </UserControl>

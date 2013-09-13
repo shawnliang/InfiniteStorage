@@ -112,9 +112,9 @@
                 <local:ZoomSlider x:Name="zoomSlider"
                                       Width="144"
                                       Margin="0, 1, 0, 5"
-                                      Maximum="360"
-                                      Minimum="256"
-                                      Value="256"
+                                      Maximum="512"
+                                      Minimum="236"
+                                      Value="236"
                                       ValueChanged="zoomSlider_ValueChanged"
                                   />
 
