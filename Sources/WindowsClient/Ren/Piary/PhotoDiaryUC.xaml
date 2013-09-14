@@ -44,8 +44,8 @@
                     <ControlTemplate TargetType="ListBoxItem">
 
                         <Grid>
-                            <ContentPresenter x:Name="contentPresenter" Margin="6" />
-                            <Border Margin="1"
+                            <ContentPresenter x:Name="contentPresenter" Margin="10" />
+                            <Border Margin="4"
                                     BorderBrush="#427FED"
                                     BorderThickness="5"
                                     Visibility="{Binding Converter={StaticResource BoolToHiddenConverter},
@@ -133,12 +133,13 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Bottom">
                 <local:ZoomSlider x:Name="zoomSlider"
-                                  Width="144"
-                                  Margin="0, 1, 0, 5"
-                                  Maximum="360"
-                                  Minimum="224"
-                                  ValueChanged="zoomSlider_ValueChanged"
-                                  Value="256" />
+                                      Width="144"
+                                      Margin="0, 1, 0, 5"
+                                      Maximum="512"
+                                      Minimum="236"
+                                      Value="236"
+                                      ValueChanged="zoomSlider_ValueChanged"
+                                  />
 
                 <TextBlock x:Name="tbText"
                            Grid.Row="1"

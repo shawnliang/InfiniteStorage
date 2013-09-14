@@ -1,5 +1,8 @@
-﻿using System;
+﻿#region
+
 using System.Windows.Controls;
+
+#endregion
 
 namespace Waveface.Client
 {
@@ -10,7 +13,7 @@ namespace Waveface.Client
 	{
 		public NextButton()
 		{
-			this.InitializeComponent();
+			InitializeComponent();
 		}
 	}
 }

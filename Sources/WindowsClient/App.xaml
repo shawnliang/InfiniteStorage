@@ -19,7 +19,56 @@
 
             <local:MultiLineStringConvertor x:Key="MultiLineStringConvertor" />
 
-            <SolidColorBrush x:Key="DefaultBrush" Color="#4F4F4F" />
+            <SolidColorBrush x:Key="DefaultBrush" Color="#4F4F4F"/>
+
+            <BitmapImage x:Key="lb_fit_img_normal"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_fit_0.png" />
+
+            <BitmapImage x:Key="lb_fit_img_mouseover"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_fit_1.png" />
+
+            <BitmapImage x:Key="lb_ccw_img_normal"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_ccw_0.png" />
+
+            <BitmapImage x:Key="lb_ccw_img_mouseover"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_ccw_1.png" />
+
+            <BitmapImage x:Key="lb_cw_img_normal"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_cw_0.png" />
+
+            <BitmapImage x:Key="lb_cw_img_mouseover"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_cw_1.png" />
+
+            <BitmapImage x:Key="lb_actual_img_normal"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_actual_0.png" />
+
+            <BitmapImage x:Key="lb_actual_img_mouseover"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_actual_1.png" />
+
+            <BitmapImage x:Key="lb_zoomout_img_normal"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_zoomout_0.png" />
+
+            <BitmapImage x:Key="lb_zoomout_img_mouseover"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_zoomout_1.png" />
+
+            <BitmapImage x:Key="lb_zoomin_img_normal"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_zoomin_0.png" />
+
+            <BitmapImage x:Key="lb_zoomin_img_mouseover"
+                         CacheOption="OnDemand"
+                         UriSource="pack://application:,,,/Resource/LB_zoomin_1.png" />
+
             <BitmapImage x:Key="lb_right_img_normal"
                          CacheOption="OnDemand"
                          UriSource="pack://application:,,,/Resource/LB_right_0.png" />

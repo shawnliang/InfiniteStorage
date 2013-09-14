@@ -13,7 +13,7 @@ namespace Waveface.Client
 	{
 		#region Var
 
-		public static readonly DependencyProperty _tagged = DependencyProperty.Register("Tagged", typeof(Boolean), typeof(LightBoxStar), new UIPropertyMetadata(false, OnTaggedChanged));
+		public static readonly DependencyProperty _tagged = DependencyProperty.Register("Tagged", typeof (Boolean), typeof (LightBoxStar), new UIPropertyMetadata(false, OnTaggedChanged));
 
 		#endregion
 
@@ -21,7 +21,7 @@ namespace Waveface.Client
 
 		public Boolean Tagged
 		{
-			get { return (Boolean)GetValue(_tagged); }
+			get { return (Boolean) GetValue(_tagged); }
 			set { SetValue(_tagged, value); }
 		}
 

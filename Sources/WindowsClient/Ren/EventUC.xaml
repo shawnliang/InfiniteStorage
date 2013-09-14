@@ -90,24 +90,16 @@
               Grid.Column="1"
               Background="#4f4f4f" />
 
-
         <Grid Grid.Row="0" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
 
-            <StackPanel HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Cursor="Hand"
-                        Orientation="Horizontal">
-                <Image Width="24"
-                       Height="24"
-                       Margin="12, 0, 0, 0"
-                       HorizontalAlignment="Center"
-                       Source="pack://application:,,,/Resource/folder.png" />
+            <StackPanel  HorizontalAlignment ="Left"  VerticalAlignment="Center" Cursor="Hand" Orientation="Horizontal">
+                <Image x:Name="imgFolder" Visibility="Collapsed" Width="24" Margin="12, 0, 0, 0" Height="24" Source = "pack://application:,,,/Resource/folder.png" HorizontalAlignment="Center"/>
 
                 <TextBlock x:Name="tbTitleMonth"
                            Margin="8, 4, 0, 0"
                            FontSize="16"
                            Foreground="#F0F0F0"
-                           Text="12"
+                           Text=""
                            TextAlignment="Center"
                            TextWrapping="Wrap" />
 
@@ -115,7 +107,7 @@
                            Margin="6, 4, 0, 0"
                            FontSize="16"
                            Foreground="#F0F0F0"
-                           Text="1999"
+                           Text=""
                            TextAlignment="Center"
                            TextWrapping="Wrap" />
 
@@ -123,7 +115,7 @@
                            Margin="16, 8, 0, 0"
                            FontSize="12"
                            Foreground="#aaaaaa"
-                           Text="99 Photos"
+                           Text=""
                            TextAlignment="Center"
                            TextWrapping="Wrap" />
             </StackPanel>
@@ -152,20 +144,15 @@
                                            Visibility="{Binding Path=IsVideo,
                                                                 Converter={StaticResource BoolToHiddenConverter}}" />
 
-                                    <Image HorizontalAlignment="Center"
+                                    <Image HorizontalAlignment="Center" Width="Auto" Height="Auto"
                                            VerticalAlignment="Center"
                                            RenderTransformOrigin="0.5,0.5"
                                            Source="{Binding Path=BitmapImage}"
                                            Stretch="UniformToFill"
                                            Visibility="{Binding Path=IsPhoto,
                                                                 Converter={StaticResource BoolToHiddenConverter}}">
-                                        <!--
-                                            Image.Effect>
-                                            <BlurEffect Radius="2"/>
-                                            </Image.Effect
-                                        -->
                                     </Image>
-                                    <Image Height="36"
+                                    <Image Height="36" 
                                            Margin="1"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Bottom"

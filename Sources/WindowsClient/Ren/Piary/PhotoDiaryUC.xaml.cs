@@ -53,6 +53,7 @@ namespace Waveface.Client
 		private bool m_forceShowAllEvent;
 		private int m_hasOriginCount;
 		private int m_last_cbxDevice_SelectedIndex;
+		private int m_oldEventsCount;
 
 		public PhotoDiaryUC()
 		{
@@ -63,7 +64,7 @@ namespace Waveface.Client
 
 			InitTimer();
 
-			setWH(256);
+			setWH(236);
 		}
 
 		private void InitTimer()
@@ -74,7 +75,7 @@ namespace Waveface.Client
 
 			m_refreshTimer = new DispatcherTimer();
 			m_refreshTimer.Tick += RefreshTimerOnTick;
-			m_refreshTimer.Interval = new TimeSpan(0, 0, 0, 0, 4000);
+			m_refreshTimer.Interval = new TimeSpan(0, 0, 0, 0, 5000);
 
 			m_sizeChangedDelayTimer = new DispatcherTimer();
 			m_sizeChangedDelayTimer.Tick += SizeChangedDelayTimer_Tick;
@@ -106,7 +107,7 @@ namespace Waveface.Client
 			gridWaitingPanel.Visibility = Visibility.Visible;
 			BitmapImage _biWaiting = new BitmapImage();
 			_biWaiting.BeginInit();
-			_biWaiting.UriSource = new Uri("pack://application:,,,/Resource/loading.gif");
+			_biWaiting.UriSource = new Uri("pack://application:,,,/Resource/loading128.gif");
 			_biWaiting.EndInit();
 			ImageBehavior.SetAnimatedSource(imgWaiting, _biWaiting);
 
@@ -205,8 +206,9 @@ namespace Waveface.Client
 				}
 
 				List<EventFile> _eventFiles = GetEventFilesFromDB();
+				List<Event> _events = GetEventsFromDB();
 
-				if ((_hasOriginCount != m_hasOriginCount) || (m_oldEventFilesCount != _eventFiles.Count))
+				if ((_hasOriginCount != m_hasOriginCount) || (m_oldEventFilesCount != _eventFiles.Count) || (_events.Count != m_oldEventsCount))
 				{
 					prepareData(_eventFiles, _filesFromDB);
 
@@ -311,6 +313,8 @@ namespace Waveface.Client
 
 			List<Event> _events = GetEventsFromDB();
 
+			m_oldEventsCount = _events.Count;
+
 			_events.Sort((ev1, ev2) => ev2.start.CompareTo(ev1.start));
 
 			foreach (Event _event in _events)
@@ -350,7 +354,7 @@ namespace Waveface.Client
 		{
 			foreach (Device _device in m_devices)
 			{
-				if(_device.device_id == deviceID)
+				if (_device.device_id == deviceID)
 				{
 					return _device.device_name;
 				}
@@ -366,8 +370,9 @@ namespace Waveface.Client
 			m_photosCount = 0;
 			m_videosCount = 0;
 
+			listBoxEvent.ItemsSource = null;
+
 			m_eventUCs = new ObservableCollection<P_ItemUC>();
-			listBoxEvent.ItemsSource = m_eventUCs;
 
 			m_eventID_Events = GetEvents();
 
@@ -385,9 +390,11 @@ namespace Waveface.Client
 				m_videosCount += _ctl.VideosCount;
 
 				m_eventUCs.Add(_ctl);
-
-				System.Windows.Forms.Application.DoEvents();
 			}
+
+			listBoxEvent.ItemsSource = m_eventUCs;
+
+			listBoxEvent.UpdateLayout();
 		}
 
 		private void ShowEvents()
@@ -436,11 +443,11 @@ namespace Waveface.Client
 
 				m_photosCount += _ctl.PhotosCount;
 				m_videosCount += _ctl.VideosCount;
-
-				System.Windows.Forms.Application.DoEvents();
 			}
 
 			m_eventID_Events = _id_event_s;
+
+			listBoxEvent.UpdateLayout();
 		}
 
 		public static string GetCountsString(int photosCount, int videosCount)
@@ -486,6 +493,11 @@ namespace Waveface.Client
 				for (int i = 0; i < m_eventUCs.Count; i++)
 				{
 					ListBoxItem _lbi = listBoxEvent.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
+
+					if (_lbi == null)
+					{
+						continue;
+					}
 
 					P_ItemUC _pItemUc = (P_ItemUC)_lbi.Content;
 
@@ -549,6 +561,29 @@ namespace Waveface.Client
 			m_mainWindow.ToPhotoDiary2ndLevel(gropup);
 		}
 
+		public void ToPhotoViewer(List<FileEntry> fileEntrys, int index)
+		{
+			ObservableCollection<IContentEntity> _contents = new ObservableCollection<IContentEntity>();
+
+			foreach (FileEntry _fe in fileEntrys)
+			{
+				if (File.Exists(_fe.saved_path))
+				{
+					Content _ce = new BunnyContent(new Uri(_fe.saved_path), _fe.id, ContentType.Photo);
+					_contents.Add(_ce);
+				}
+			}
+
+			var _viewer = new PhotoViewer
+			{
+				Owner = m_mainWindow,
+				Source = _contents,
+				SelectedIndex = index
+			};
+
+			_viewer.ShowDialog();
+		}
+
 		private void zoomSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
 			setWH(e.NewValue);
@@ -583,6 +618,11 @@ namespace Waveface.Client
 			for (int i = 0; i < m_eventUCs.Count; i++)
 			{
 				ListBoxItem _lbi = listBoxEvent.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
+
+				if (_lbi == null)
+				{
+					continue;
+				}
 
 				if (_lbi.IsSelected)
 				{

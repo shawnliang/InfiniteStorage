@@ -9,39 +9,32 @@
              d:DesignHeight="504"
              d:DesignWidth="760"
              mc:Ignorable="d">
+
     <UserControl.Resources>
         <Style TargetType="MediaElement">
             <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Type,
-                                               IsAsync=True}"
-                             Value="Video">
+                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="Video">
                     <Setter Property="Visibility" Value="Visible" />
                     <Setter Property="Source" Value="{Binding Uri, IsAsync=True}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="imgStyle"
-               TargetType="Image">
+        <Style x:Key="imgStyle" TargetType="Image">
             <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Type,
-                                               IsAsync=True}"
-                             Value="Photo">
+                <DataTrigger Binding="{Binding Type, IsAsync=True}" Value="Photo">
                     <Setter Property="Visibility" Value="Visible" />
-                    <!--  <Setter Property="Source" Value="{Binding ImageSource, IsAsync=True}" />  -->
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
         <ItemsPanelTemplate x:Key="ItemsPanelTemplate1">
-            <VirtualizingStackPanel IsItemsHost="True"
-                                    Orientation="Horizontal" />
+            <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal" />
         </ItemsPanelTemplate>
 
-        <Style x:Key="ListBoxItemStyle"
-               TargetType="{x:Type ListBoxItem}">
+        <Style x:Key="ListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -56,8 +49,7 @@
                             <Image x:Name="img"
                                    Width="64"
                                    Height="64"
-                                   Source="{Binding ThumbnailSource,
-                                                    IsAsync=True}"
+                                   Source="{Binding ThumbnailSource, IsAsync=True}"
                                    Stretch="Fill"
                                    Style="{StaticResource imgStyle}"
                                    ToolTipService.Placement="Top" />
@@ -74,62 +66,37 @@
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
 
-        <Viewbox x:Name="viewbox"
-                 Stretch="UniformToFill">
-            <Canvas x:Name="ImgCanvas"
-                    Width="602"
-                    Height="371"
-                    ClipToBounds="True">
-                <ContentControl x:Name="ImgContentCtrl"
-                                Canvas.Left="0"
-                                Canvas.Top="1"
-                                Width="{Binding ActualWidth,
-                                                ElementName=ImgCanvas}"
-                                Height="{Binding ActualHeight,
-                                                 ElementName=ImgCanvas}"
+        <Viewbox x:Name="viewbox" Stretch="UniformToFill">
+            <Canvas x:Name="ImgCanvas" Width="602" Height="371" ClipToBounds="True">
+
+                <ContentControl x:Name="ImgContentCtrl" Canvas.Left="0" Canvas.Top="1" RenderTransformOrigin=".5,.5"
+                                Width="{Binding ActualWidth, ElementName=ImgCanvas}"
+                                Height="{Binding ActualHeight,  ElementName=ImgCanvas}"
                                 Cursor="Arrow"
                                 MouseDoubleClick="ImgContentCtrl_MouseDoubleClick">
+                    
                     <Grid x:Name="ImgGrid">
                         <MediaElement x:Name="meVideo"
-                                      DataContext="{Binding SelectedItem,
-                                                            ElementName=lbImages,
-                                                            IsAsync=True}"
+                                      DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"
                                       LoadedBehavior="Manual"
                                       MediaEnded="meVideo_MediaEnded"
                                       MediaFailed="meVideo_MediaFailed"
                                       MediaOpened="meVideo_MediaOpened"
                                       ScrubbingEnabled="True" />
+                        
                         <Image x:Name="ImgObject"
-                               DataContext="{Binding SelectedItem,
-                                                     ElementName=lbImages,
-                                                     IsAsync=True}"
+                               DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"
                                Style="{StaticResource imgStyle}" />
-                        <Thumb x:Name="ImgThumb"
-                               DragDelta="ImgThumb_DragDelta"
-                               MouseWheel="ImgThumb_MouseWheel"
-                               Opacity="0" />
+                        
+                        <Thumb x:Name="ImgThumb" DragDelta="ImgThumb_DragDelta" MouseWheel="ImgThumb_MouseWheel" Opacity="0" />
                     </Grid>
                 </ContentControl>
             </Canvas>
         </Viewbox>
 
-        <Label x:Name="DateTaken"
-               Grid.Row="1"
-               Margin="0,0,8,0"
-               HorizontalAlignment="Right"
-               VerticalAlignment="Center"
-               HorizontalContentAlignment="Center"
-               VerticalContentAlignment="Center"
-               Content="{Binding SelectedItem.Name,
-                                 ElementName=lbImages,
-                                 IsAsync=True}"
-               FontSize="16"
-               Foreground="White"
-               Opacity="0.6" />
-
         <ListBox x:Name="lbImages"
                  HorizontalAlignment="Center"
-                 VerticalAlignment="Bottom"
+                 VerticalAlignment="Center"
                  Background="{x:Null}"
                  BorderBrush="{x:Null}"
                  ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
@@ -141,41 +108,40 @@
                  SelectionMode="Extended"
                  VirtualizingStackPanel.IsVirtualizing="True"
                  VirtualizingStackPanel.VirtualizationMode="Recycling"
-                 Visibility="Collapsed" />
+                 Visibility="Collapsed"
+                 />
 
-        <l:VideoControl x:Name="vcVideoControl"
-                        Width="{Binding ActualWidth,
-                                        ElementName=vcViewerControl}"
-                        Height="22"
-                        Margin="0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom"
-                        DataContext="{Binding SelectedItem,
-                                              ElementName=lbImages,
-                                              IsAsync=True}"
+        <l:VideoControl x:Name="vcVideoControl" Width="{Binding ActualWidth, ElementName=vcViewerControl}" Height="22"
+                        HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                        DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"
                         PauseButtonClick="vcVideoControl_PauseButtonClick"
                         PlayButtonClick="vcVideoControl_PlayButtonClick"
                         SeekPosition="vcVideoControl_SeekPosition"
-                        Visibility="Collapsed"
-                        VolumeChanged="vcVideoControl_VolumeChanged" />
+                        VolumeChanged="vcVideoControl_VolumeChanged"
+                        Visibility="Collapsed" />
 
-        <l:ViewerControl x:Name="vcViewerControl"
-                         Grid.Row="1"
-                         Height="40"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Bottom"
-                         Close="ViewerControl_Close"
-                         DataContext="{Binding SelectedItem,
-                                               ElementName=lbImages,
-                                               IsAsync=True}"
-                         DeletePic="VcViewerControl_OnDeletePic"
+        <l:ViewerControl x:Name="vcViewerControl" Grid.Row="1" Height="40" HorizontalAlignment="Center"  VerticalAlignment="Bottom"                        
+                         DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"                                      
                          EnableStar="{Binding EnableTag}"
-                         Next="ViewerControl_Next"
-                         Previous="ViewerControl_Previous"
-                         Stared="{Binding SelectedItem.Liked,
-                                          ElementName=lbImages,
-                                          Mode=OneWay,
-                                          IsAsync=True}" />
+                         Stared="{Binding SelectedItem.Liked, ElementName=lbImages, Mode=OneWay,IsAsync=True}" 
+                         Close="VC_Close"                         
+                         DeletePic="VC_OnDeletePic"
+                         Next="VC_Next"
+                         Previous="VC_Previous"                        
+                         FitScreen="VC_FitScreen"
+                         TurnCCW="VC_TurnCCW"
+                         TurnCW="VC_TurnCW"
+                         ActualSize="VC_ActualSize"
+                         ZoomIn="VC_ZoomIn"
+                         ZoomOut="VC_ZoomOut"
+                         />
 
+        <Label x:Name="DateTaken" Grid.Row="1" Margin="0,0,8,0"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center"
+               HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center"
+               Content="{Binding SelectedItem.Name, ElementName=lbImages, IsAsync=True}"
+               FontSize="16" Foreground="White" Opacity="0.6" />
     </Grid>
 </UserControl>

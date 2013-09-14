@@ -8,9 +8,15 @@
         <SolidColorBrush x:Key="Brush808080">#808080</SolidColorBrush>
         <SolidColorBrush x:Key="Brush1E1E1E">#1E1E1E</SolidColorBrush>
         <SolidColorBrush x:Key="Brush949494">#949494</SolidColorBrush>
+
+        <ContextMenu x:Key="contextMenu" x:Name="contextMenu">
+            <MenuItem Click="miToPhotoViewer_Click"  Header="{DynamicResource res_33}" />
+        </ContextMenu>
     </UserControl.Resources>
 
-    <Grid x:Name="gridMain" Background ="#F0F0F0" Width="{Binding MyWidth}" Height="{Binding MyHeight}" MouseEnter="gridMain_MouseEnter" MouseLeave="gridMain_MouseLeave" MouseRightButtonDown="Border_MouseDown"> 
+    <Grid x:Name="gridMain" Background ="#F0F0F0" Width="{Binding MyWidth}" Height="{Binding MyHeight}" ContextMenu="{DynamicResource contextMenu}" 
+          MouseRightButtonDown="gridMain_MouseRightButtonDown" MouseMove="gridMain_MouseMove" 
+          MouseEnter="gridMain_MouseEnter" MouseLeave="gridMain_MouseLeave" MouseDown="gridMain_MouseDown">
         <i:Interaction.Behaviors>
             <PendingUI:IgnoreMouseWheelBehavior />
         </i:Interaction.Behaviors>
@@ -21,11 +27,13 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Margin="0, 8, 0, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="{Binding MySquare}" Height="{Binding MySquare}" 
-                BorderBrush="#60848484"  BorderThickness="2" MouseDown="Border_MouseDown" RenderTransformOrigin="0.5,0.5">
+                BorderThickness="0" RenderTransformOrigin="0.5,0.5">
             <Grid x:Name="imageArea" Background="#202020" MouseMove="image_MouseMove" MouseEnter="image_MouseEnter" MouseLeave="image_MouseLeave">
                 <Image x:Name="image" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill"/>
 
                 <Rectangle x:Name="rectMask" Fill="#d0000000"/>
+
+                <Border BorderBrush="#40848484" BorderThickness="3" />
             </Grid>
         </Border>
 
@@ -33,15 +41,15 @@
             <TextBlock x:Name="tbTitle" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="8, 8, 8, 0" Foreground="#202020" TextAlignment="Center" Height="28" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" FontSize="18"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"  VerticalAlignment="Top"  Margin="8, 4">
-                <Image x:Name="imgClock" Width="16" Height="16" Margin="0,0,1,0" Source = "pack://application:,,,/Resource/clock16.png" VerticalAlignment="Center"/>
+                <Image x:Name="imgClock" Width="12" Height="12" Margin="0,0,1,0" Source = "pack://application:,,,/Resource/clock16.png" VerticalAlignment="Center"/>
                 <TextBlock x:Name="tbTime" Foreground="#676767" FontWeight="Bold" FontSize="12"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"  VerticalAlignment="Top"  Margin="8, 4">
-                <Image x:Name="imgLocation" Width="14" Height="14" Source = "pack://application:,,,/Resource/map32.png" VerticalAlignment="Center"/>
+                <Image x:Name="imgLocation" Width="12" Height="12" Source = "pack://application:,,,/Resource/map16.png" VerticalAlignment="Center"/>
                 <TextBlock x:Name="tbLocation" Foreground="#676767" FontWeight="Bold" FontSize="12"/>
-            </StackPanel>            
-                   
+            </StackPanel>
+
             <TextBlock x:Name="tbCount" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="8, 4"  FontSize="12"/>
             <TextBlock x:Name="tbDevice" HorizontalAlignment="Right"  VerticalAlignment="Bottom" Margin="8, 4" FontSize="12"/>
         </Grid>

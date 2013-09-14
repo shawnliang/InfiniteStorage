@@ -73,6 +73,12 @@ namespace Waveface.Client
 		public event EventHandler Next;
 		public event EventHandler Close;
 		public event EventHandler DeletePic;
+		public event EventHandler TurnCW;
+		public event EventHandler TurnCCW;
+		public event EventHandler ZoomIn;
+		public event EventHandler ZoomOut;
+		public event EventHandler ActualSize;
+		public event EventHandler FitScreen;
 
 		#endregion
 
@@ -105,6 +111,54 @@ namespace Waveface.Client
 				return;
 
 			Close(this, e);
+		}
+
+		protected void OnTurnCW(EventArgs e)
+		{
+			if (TurnCW == null)
+				return;
+
+			TurnCW(this, e);
+		}
+
+		protected void OnTurnCCW(EventArgs e)
+		{
+			if (TurnCCW == null)
+				return;
+
+			TurnCCW(this, e);
+		}
+		
+		protected void OnZoomIn(EventArgs e)
+		{
+			if (ZoomIn == null)
+				return;
+
+			ZoomIn(this, e);
+		}
+
+		protected void OnZoomOut(EventArgs e)
+		{
+			if (ZoomOut == null)
+				return;
+
+			ZoomOut(this, e);
+		}
+
+		protected void OnActualSize(EventArgs e)
+		{
+			if (ActualSize == null)
+				return;
+
+			ActualSize(this, e);
+		}
+
+		protected void OnFitScreen(EventArgs e)
+		{
+			if (FitScreen == null)
+				return;
+
+			FitScreen(this, e);
 		}
 
 		#endregion
@@ -145,16 +199,6 @@ namespace Waveface.Client
 			obj.Stared = (Boolean)e.NewValue;
 		}
 
-		private void NextButton_MouseDown(Object sender, MouseButtonEventArgs e)
-		{
-			OnNext(EventArgs.Empty);
-		}
-
-		private void PreviousButton_MouseDown(Object sender, MouseButtonEventArgs e)
-		{
-			OnPrevious(EventArgs.Empty);
-		}
-
 		private void CloseButton_MouseDown(Object sender, MouseButtonEventArgs e)
 		{
 			OnClose(EventArgs.Empty);
@@ -165,6 +209,58 @@ namespace Waveface.Client
 			if (DeletePic != null)
 			{
 				DeletePic(this, EventArgs.Empty);
+			}
+		}
+
+		private void NextButton_MouseDown(Object sender, MouseButtonEventArgs e)
+		{
+			OnNext(EventArgs.Empty);
+		}
+
+		private void PreviousButton_MouseDown(Object sender, MouseButtonEventArgs e)
+		{
+			OnPrevious(EventArgs.Empty);
+		}
+
+		private void Fit_Button_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			OnFitScreen(EventArgs.Empty);
+		}
+
+		private void ZoomOut_Button_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			OnZoomOut(EventArgs.Empty);
+		}
+
+		private void ZoomIn_Button_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			OnZoomIn(EventArgs.Empty);
+		}
+
+		private void Actual_Button_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			OnActualSize(EventArgs.Empty);
+		}
+
+		private void CCW_Button_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			OnTurnCCW(EventArgs.Empty);
+		}
+
+		private void CW_Button_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			OnTurnCW(EventArgs.Empty);
+		}
+
+		public void ShowActualButton(bool flag)
+		{
+			if(flag)
+			{
+				btnActual.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				btnActual.Visibility = Visibility.Collapsed;
 			}
 		}
 	}
