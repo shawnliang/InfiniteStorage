@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using GoogleAnalyticsTracker;
 
 namespace Waveface.Client
 {
@@ -104,6 +105,9 @@ namespace Waveface.Client
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
+			var googleAnalyticsTracker = new Tracker("UA-43968892-1", "waveface.com");
+			googleAnalyticsTracker.TrackPageViewAsync(string.Format("{0} Stars", num_of_star), "stars/" + num_of_star);
+
 			Close();
 		}
 	}

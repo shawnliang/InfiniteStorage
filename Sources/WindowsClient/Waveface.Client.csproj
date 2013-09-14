@@ -53,6 +53,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\EntityFramework.5.0.0\net40\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="GoogleAnalyticsTracker">
+      <HintPath>..\..\packages\GoogleAnalyticsTracker.1.7.08\lib\net40\GoogleAnalyticsTracker.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\log4net-1.2.11\log4net.dll</HintPath>
