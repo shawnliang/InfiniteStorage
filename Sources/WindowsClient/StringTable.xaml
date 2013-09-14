@@ -133,47 +133,37 @@
         或拖曳至側欄的星號區\r\n
         來標示該圖片
     </system:String>
-
     <system:String x:Key="header_title_indexing">Connected</system:String>
     <system:String x:Key="header_subtitle_indexing">Indexing your photos, this won't take a minute...</system:String>
-
-
     <system:String x:Key="header_title_importing">You have {0} new items in your device.</system:String>
     <system:String x:Key="header_subtitle_importing">Imported {0} items, {1} minutes until finish. Feel free to leave the application, the rest is automatic.</system:String>
-
     <system:String x:Key="header_title_stopped">{0} items waiting to be imported.</system:String>
     <system:String x:Key="header_subtitle_stopped">When you conntect your device to the same Wi-Fi network with your PC, importing will resume automatically.</system:String>
-
     <system:String x:Key="header_title_complete">You have imported {0} items at {1}.</system:String>
     <system:String x:Key="header_subtitle_complete">Click HERE to view these items.</system:String>
-
     <system:String x:Key="header_title_paused">Auto uploading paused.</system:String>
     <system:String x:Key="header_subtitle_paused">To continue, click the button on the right.</system:String>
-
-
     <system:String x:Key="0_days_ago">Today</system:String>
     <system:String x:Key="x_days_ago">{0} days ago</system:String>
-
     <system:String x:Key="intro_step5_desc">Please rate this app and feedback your comments</system:String>
     <system:String x:Key="intro_step5_rateUs">Rate Us</system:String>
     <system:String x:Key="intro_step5_your_suggestion">Your suggestion...</system:String>
     <system:String x:Key="intro_step5_submit">Submit</system:String>
     <system:String x:Key="intro_step5_no_stars">Please click on stars to rate us</system:String>
-
-
     <system:String x:Key="intro_step3_title">Oline album is generated and being uploaded</system:String>
     <system:String x:Key="intro_step3_desc1">Copy the album link and share it with your friends</system:String>
     <system:String x:Key="intro_step3_desc2">Click th button to browse it online</system:String>
     <system:String x:Key="intro_step3_button">Open Now</system:String>
-
     <system:String x:Key="intro_step2_title">Enjoy your precious moments</system:String>
     <system:String x:Key="intro_step2_desc1">Double click to view it on full screen</system:String>
     <system:String x:Key="intro_step2_desc2">One click to create online album</system:String>
     <system:String x:Key="intro_step2_button">Try Online Album Now</system:String>
-
     <system:String x:Key="intro_step1_title">Welcome to your photo journal</system:String>
     <system:String x:Key="intro_step1_desc1">Each card represents an event</system:String>
     <system:String x:Key="intro_step1_desc2">Double click on cards to enter your events</system:String>
     <system:String x:Key="intro_step1_button">OK</system:String>
-
+    <system:String x:Key="res_37">Developing...</system:String>
+    <system:String x:Key="Diary_title">Events</system:String>
+    <system:String x:Key="Diary_filter_all">All</system:String>
+    <system:String x:Key="Diary_selectionText">{0} events selected ({1})</system:String>
 </ResourceDictionary>

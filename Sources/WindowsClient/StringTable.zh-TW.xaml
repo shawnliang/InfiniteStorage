@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="0_days_ago">今日</system:String>
     <system:String x:Key="AddDeviceIconText">連接新裝置</system:String>
     <system:String x:Key="AddNewSource">Add a Phone</system:String>
     <system:String x:Key="AddStarredItemTitle">將選擇之項目加入相冊:</system:String>
@@ -10,7 +11,6 @@
     <system:String x:Key="AddToFavorite">加入至相簿</system:String>
     <system:String x:Key="AddToFavoriteButtonText">加入現有相簿</system:String>
     <system:String x:Key="ANS_9">I need more information?</system:String>
-    <system:String x:Key="ANS_deviceAdded">Device {0} is successfully added to this PC.</system:String>
     <system:String x:Key="ANS_deviveNotFound" xml:space="preserve">
         Favorite is unable to find a connectable device. Please make sure Favorite is running on your device and the device and this PC are on the same WIFI.
         Do you want to search for available device again?
@@ -58,7 +58,34 @@
     <system:String x:Key="ExitButtonText">離開</system:String>
     <system:String x:Key="Favorite">最愛相簿</system:String>
     <system:String x:Key="FavoritesGroupTitle">我的最愛</system:String>
+    <system:String x:Key="header_subtitle_complete">按此檢視新增項目</system:String>
+    <system:String x:Key="header_subtitle_importing">正在匯入第 {0} 個項目，剩餘時間約 {1} 分鐘</system:String>
+    <system:String x:Key="header_subtitle_indexing">正在為您的照片建立索引，請稍候...</system:String>
+    <system:String x:Key="header_subtitle_paused">請按右方按鈕繼續</system:String>
+    <system:String x:Key="header_subtitle_stopped">請將裝置連接到與PC相同的區域網路，自動同步會自動開始</system:String>
+    <system:String x:Key="header_title_complete">上次從裝置匯入了 {0} 個項目於{1}</system:String>
+    <system:String x:Key="header_title_importing">裝置內共有 {0} 個新項目</system:String>
+    <system:String x:Key="header_title_indexing">裝置已連接</system:String>
+    <system:String x:Key="header_title_paused">自動同步已暫停</system:String>
+    <system:String x:Key="header_title_stopped">裝置內尚有 {0} 個項目未能匯入</system:String>
     <system:String x:Key="ImportContactButtonText">匯入Gmail聯絡人</system:String>
+    <system:String x:Key="intro_step1_button">好</system:String>
+    <system:String x:Key="intro_step1_desc1">每張卡代表一個事件</system:String>
+    <system:String x:Key="intro_step1_desc2">雙擊卡片進入你的影像日記</system:String>
+    <system:String x:Key="intro_step1_title">歡迎來到你的相片日記</system:String>
+    <system:String x:Key="intro_step2_button">馬上試試看</system:String>
+    <system:String x:Key="intro_step2_desc1">雙擊圖片進行全螢幕瀏覽</system:String>
+    <system:String x:Key="intro_step2_desc2">由工具列一鑑建立雲相冊</system:String>
+    <system:String x:Key="intro_step2_title">瀏覽你的精采時刻</system:String>
+    <system:String x:Key="intro_step3_button">馬上開啟</system:String>
+    <system:String x:Key="intro_step3_desc1">複製連結寄送給親朋好友</system:String>
+    <system:String x:Key="intro_step3_desc2">按下開啟網頁來線上瀏覽</system:String>
+    <system:String x:Key="intro_step3_title">您的雲端相簿已產生，並在背景上傳中</system:String>
+    <system:String x:Key="intro_step5_desc">請給予我們評價及您寶貴的意見</system:String>
+    <system:String x:Key="intro_step5_no_stars">點選星星給我們評價</system:String>
+    <system:String x:Key="intro_step5_rateUs">點選星星給我們評價</system:String>
+    <system:String x:Key="intro_step5_submit">送出</system:String>
+    <system:String x:Key="intro_step5_your_suggestion">您的建議...</system:String>
     <system:String x:Key="LaterButtonText">下次再說</system:String>
     <system:String x:Key="menuitem_add_album">Add to an existing album...</system:String>
     <system:String x:Key="menuitem_create_album">Create a new album...</system:String>
@@ -104,6 +131,7 @@
     <system:String x:Key="res_34">關閉</system:String>
     <system:String x:Key="res_35">打開</system:String>
     <system:String x:Key="res_36">影像日記</system:String>
+    <system:String x:Key="res_37">Developing...</system:String>
     <system:String x:Key="res_4">在 Google Play 上搜尋&quot;Waveface Player&quot;或由此直接安裝到你的裝置</system:String>
     <system:String x:Key="res_5">選擇加至相冊的項目</system:String>
     <system:String x:Key="res_6">相冊標題</system:String>
@@ -115,6 +143,15 @@
     <system:String x:Key="res_getStartedTip3">下載 Player 程式，從平板上欣賞您的影像內容</system:String>
     <system:String x:Key="res_getStartedTitle">第一次使用嗎？請試試以下步驟加入照片及影片...</system:String>
     <system:String x:Key="res_takeATour">瞧瞧還有哪些好用的功能</system:String>
+    <system:String x:Key="RigntSidePanel_HowToCloudSharingTutorial">
+        一鍵上傳相冊所有內容到Waveface.com\r\n
+        您只要將連結寄送分享給親友就可以了
+    </system:String>
+    <system:String x:Key="RigntSidePanel_HowToStarTutorial">
+        點擊圖片上的星號圖示\r\n
+        或拖曳至側欄的星號區\r\n
+        來標示該圖片
+    </system:String>
     <system:String x:Key="SeeFavoriteTitle">此為公開網站；但任何人必須使用下列連結才可以看到您的相冊:</system:String>
     <system:String x:Key="SelectAll">全選</system:String>
     <system:String x:Key="selection_all_text">選取了整個資料夾共 {0} 個項目</system:String>
@@ -137,55 +174,8 @@
     <system:String x:Key="video">部影片</system:String>
     <system:String x:Key="videos">部影片</system:String>
     <system:String x:Key="WithoutContentMessageText">請先選擇一些項目</system:String>
-    <system:String x:Key="RigntSidePanel_HowToCloudSharingTutorial">
-        一鍵上傳相冊所有內容到Waveface.com\r\n
-        您只要將連結寄送分享給親友就可以了
-    </system:String>
-
-    <system:String x:Key="RigntSidePanel_HowToStarTutorial">
-        點擊圖片上的星號圖示\r\n
-        或拖曳至側欄的星號區\r\n
-        來標示該圖片
-    </system:String>
-
-    <system:String x:Key="header_title_indexing">裝置已連接</system:String>
-    <system:String x:Key="header_subtitle_indexing">正在為您的照片建立索引，請稍候...</system:String>
-
-    <system:String x:Key="header_title_importing">裝置內共有 {0} 個新項目</system:String>
-    <system:String x:Key="header_subtitle_importing">正在匯入第 {0} 個項目，剩餘時間約 {1} 分鐘</system:String>
-
-    <system:String x:Key="header_title_stopped">裝置內尚有 {0} 個項目未能匯入</system:String>
-    <system:String x:Key="header_subtitle_stopped">請將裝置連接到與PC相同的區域網路，自動同步會自動開始</system:String>
-
-    <system:String x:Key="header_title_complete">上次從裝置匯入了 {0} 個項目於{1}</system:String>
-    <system:String x:Key="header_subtitle_complete">按此檢視新增項目</system:String>
-
-    <system:String x:Key="header_title_paused">自動同步已暫停</system:String>
-    <system:String x:Key="header_subtitle_paused">請按右方按鈕繼續</system:String>
-
-
-    <system:String x:Key="0_days_ago">今日</system:String>
     <system:String x:Key="x_days_ago">{0}日前</system:String>
-
-    <system:String x:Key="intro_step5_desc">請給予我們評價及您寶貴的意見</system:String>
-    <system:String x:Key="intro_step5_rateUs">點選星星給我們評價</system:String>
-    <system:String x:Key="intro_step5_your_suggestion">您的建議...</system:String>
-    <system:String x:Key="intro_step5_submit">送出</system:String>
-    <system:String x:Key="intro_step5_no_stars">點選星星給我們評價</system:String>
-
-    <system:String x:Key="intro_step3_title">您的雲端相簿已產生，並在背景上傳中</system:String>
-    <system:String x:Key="intro_step3_desc1">複製連結寄送給親朋好友</system:String>
-    <system:String x:Key="intro_step3_desc2">按下開啟網頁來線上瀏覽</system:String>
-    <system:String x:Key="intro_step3_button">馬上開啟</system:String>
-
-    <system:String x:Key="intro_step2_title">瀏覽你的精采時刻</system:String>
-    <system:String x:Key="intro_step2_desc1">雙擊圖片進行全螢幕瀏覽</system:String>
-    <system:String x:Key="intro_step2_desc2">由工具列一鑑建立雲相冊</system:String>
-    <system:String x:Key="intro_step2_button">馬上試試看</system:String>
-
-    <system:String x:Key="intro_step1_title">歡迎來到你的相片日記</system:String>
-    <system:String x:Key="intro_step1_desc1">每張卡代表一個事件</system:String>
-    <system:String x:Key="intro_step1_desc2">雙擊卡片進入你的影像日記</system:String>
-    <system:String x:Key="intro_step1_button">好</system:String>
-
+    <system:String x:Key="Diary_title">焦點動態</system:String>
+    <system:String x:Key="Diary_filter_all">全部</system:String>
+    <system:String x:Key="Diary_selectionText">已選取{0}個事件 ({1})</system:String>
 </ResourceDictionary>

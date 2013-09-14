@@ -139,7 +139,7 @@ namespace Waveface.Client
 
 			tbTitle.Visibility = Visibility.Visible;
 
-			tbTitle.Text = "焦點動態";
+			tbTitle.Text = FindResource("Diary_title") as string;
 
 			ShowEvents_Init();
 
@@ -181,7 +181,7 @@ namespace Waveface.Client
 				return;
 			}
 
-			cbxDevice.Items.Add("所有");
+			cbxDevice.Items.Add(FindResource("Diary_filter_all"));
 
 			foreach (Device _device in m_devices)
 			{
@@ -568,7 +568,8 @@ namespace Waveface.Client
 				{
 					selectionText.Visibility = Visibility.Visible;
 
-					selectionText.Text = "已選取" + listBoxEvent.SelectedItems.Count + "個事件 (" + GetCountsString(_ps, _vs) + ")";
+					var template = FindResource("Diary_selectionText") as string;
+					selectionText.Text = string.Format(template, listBoxEvent.SelectedItems.Count, GetCountsString(_ps, _vs));
 				}
 			}
 		}
