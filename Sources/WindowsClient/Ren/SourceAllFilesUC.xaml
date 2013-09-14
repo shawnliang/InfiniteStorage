@@ -64,7 +64,7 @@
                 <RowDefinition Height="64" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Background="{DynamicResource TitleBarBackground}">
+            <Grid Grid.Row="0" x:Name="gridTitle" Background="{DynamicResource TitleBarBackground}" SizeChanged="gridTitle_SizeChanged">
                 <TextBlock x:Name="tbTitle"
                            Margin="12,0,0,0"
                            HorizontalAlignment="Left"
@@ -72,7 +72,7 @@
                            FontSize="20"
                            Foreground="White"
                            Text="" />
-                <StackPanel HorizontalAlignment="Center"
+                <StackPanel x:Name="spStatusArea" HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Orientation="Horizontal">
                     <Image x:Name="imgCircleProgress"
@@ -86,6 +86,8 @@
                                Margin="8, 0, 0, 0"
                                VerticalAlignment="Center"
                                FontSize="16"
+                               TextTrimming="WordEllipsis"
+                               TextWrapping="Wrap"
                                Foreground="White">
                         <Run x:Name="header_title" />
                         <LineBreak />

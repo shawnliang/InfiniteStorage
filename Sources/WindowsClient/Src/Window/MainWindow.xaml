@@ -1,5 +1,4 @@
-﻿
-<Window x:Class="Waveface.Client.MainWindow"
+﻿<Window x:Class="Waveface.Client.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -55,6 +54,7 @@
                 </GradientStopCollection>
             </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
+
         <Style x:Key="toolbarBtnStyle" TargetType="local:ButtonImageText">
             <Setter Property="Foreground" Value="#525252" />
             <Setter Property="DisableForeground" Value="#989898" />
@@ -65,11 +65,13 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
         <DataTemplate DataType="{x:Type wvmodel:Content}">
             <local:WrapperControl x:Name="wc"
                                   Padding="5"
                                   Type="{x:Type local:ContentItem}" />
         </DataTemplate>
+
         <!--  Main photo catalog view  -->
         <Style x:Key="PhotoListBoxStyle" TargetType="{x:Type ListBox}">
             <Setter Property="Template">
@@ -89,6 +91,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
         <Style x:Key="CommonListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Template">
@@ -180,29 +183,22 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
+
     <Grid x:Name="gdMain" Background="{DynamicResource ContentAreaBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
-            <RowDefinition Height="302*" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="75" />
         </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="215"
-                              MinWidth="215"
-                              MaxWidth="400" />
-            <ColumnDefinition />
-            <ColumnDefinition Width="200" MinWidth="200" />
+            <ColumnDefinition Width="215" MinWidth="215" MaxWidth="400" />
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
-        <Grid x:Name="gdContentArea"
-              Grid.Row="1"
-              Grid.Column="1"
-              Grid.ColumnSpan="2"
-              Margin="1,0,0,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+
+        <Grid x:Name="gdContentArea" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="1,0,0,0">
             <ScrollViewer x:Name="svContentContainer"
-                          Grid.Row="0"
                           HorizontalScrollBarVisibility="Disabled"
                           MouseLeftButtonUp="svContentContainer_MouseLeftButtonUp"
                           PreviewMouseDown="Window_MouseDown"
@@ -236,62 +232,40 @@
                     </Canvas>
                 </Grid>
             </ScrollViewer>
-            <local:AddSourceTip Grid.Row="0"
-                                Width="Auto"
-                                Height="Auto"
+
+            <local:AddSourceTip Width="Auto" Height="Auto"
                                 TipOneMouseDown="GettingStarted_Tip1Clicked"
                                 TipThreeMouseDown="GettingStarted_Tip3Clicked" />
         </Grid>
-        <Grid Grid.Row="0"
-              Grid.Column="1"
-              Margin="0,0,0,1"
-              Background="#FF5D5D5D">
-            <Grid.Effect>
-                <DropShadowEffect BlurRadius="1"
-                                  Direction="270"
-                                  ShadowDepth="1" />
-            </Grid.Effect>
-            <Grid Grid.Row="0" Background="{DynamicResource TitleBarBackground}">
-                <DockPanel>
-                    <WrapPanel Margin="10,0,0,0"
-                               VerticalAlignment="Center"
-                               DockPanel.Dock="Left">
-                        <local:BackButton x:Name="btnBack"
+
+        <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"  Margin="0,0,0,1" Background="{DynamicResource TitleBarBackground}">
+            <StackPanel Margin="10,0,0,0" Orientation="Horizontal">
+                <local:BackButton x:Name="btnBack"
                                           Width="28.666"
                                           Height="28.666"
                                           Margin="2"
                                           VerticalAlignment="Center"
                                           Click="BackButton_Click"
                                           Visibility="Collapsed" />
-                        <Label x:Name="lblContentLocation"
-                               VerticalContentAlignment="Bottom"
-                               Content="{Binding Name}"
+
+                <TextBlock x:Name="lblContentLocation"
+                               VerticalAlignment="Center"
+                               Text="{Binding Name}"
                                DataContextChanged="lblContentLocation_DataContextChanged"
-                               FontSize="18.667"
-                               Foreground="White" />
-                        <Label x:Name="lblContentTypeCount"
-                               VerticalContentAlignment="Bottom"
+                               FontSize="18"
+                               TextWrapping="NoWrap"
+                               TextTrimming="CharacterEllipsis"
+                               Foreground="White"/>
+
+                <Label x:Name="lblContentTypeCount"
+                               VerticalAlignment="Center"
                                Content="{StaticResource res_13}"
                                FontSize="14"
                                Foreground="#FFA8A8A8" />
-                    </WrapPanel>
-                </DockPanel>
-            </Grid>
+            </StackPanel>
         </Grid>
-        <Grid Grid.Row="0"
-              Grid.Column="2"
-              Margin="0,0,0,1"
-              Background="{DynamicResource TitleBarBackground}">
-            <Grid.Effect>
-                <DropShadowEffect BlurRadius="1"
-                                  Direction="270"
-                                  ShadowDepth="1" />
-            </Grid.Effect>
-        </Grid>
-        <Grid Grid.Row="0"
-              Grid.RowSpan="2"
-              Grid.Column="0"
-              Background="#FF151515">
+
+        <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Background="#FF151515">
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="1"
                                   Direction="0"
@@ -304,7 +278,7 @@
                             <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        
+
                         <Label Grid.Row="0"
                                VerticalContentAlignment="Bottom"
                                Content="{StaticResource res_14}"
@@ -317,20 +291,20 @@
                             <wvmodel:ContentGroup Name="{StaticResource res_36}" ID="event" />
                         </local:PhotoDiaryListBox>
                     </Grid>
-                    
+
                     <Grid Style="{StaticResource SourceGroupStyle}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        
+
                         <Label Grid.Row="0"
                                VerticalContentAlignment="Bottom"
                                Content="{DynamicResource SourceGroupTitle}"
                                FontWeight="Bold"
                                Foreground="#FFA8A8A8"
                                Padding="5,0,0,5" />
-                        
+
                         <local:SourceTree x:Name="lbxDeviceContainer"
                                           Grid.Row="1"
                                           AddToFavoriteInvoked="lbxDeviceContainer_AddToFavoriteInvoked"
@@ -345,13 +319,13 @@
                                           VirtualizingStackPanel.IsVirtualizing="True"
                                           VirtualizingStackPanel.VirtualizationMode="Recycling" />
                     </Grid>
-                    
+
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        
+
                         <Label Grid.Row="0"
                                Height="30"
                                VerticalContentAlignment="Bottom"
@@ -359,7 +333,7 @@
                                FontWeight="Bold"
                                Foreground="#FFA8A8A8"
                                Padding="5,0,0,5" />
-                        
+
                         <local:RecentListBox x:Name="lbxRecent"
                                              Grid.Row="1"
                                              AllowDrop="True"
@@ -367,13 +341,13 @@
                                              Drop="Recent_Drop"
                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
                     </Grid>
-                    
+
                     <Grid x:Name="gridCloudAlbumGroup" Style="{StaticResource CloudAlbumGroupStyle}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        
+
                         <Label Grid.Row="0"
                                Margin="5,0,0,5"
                                VerticalContentAlignment="Bottom"
@@ -381,7 +355,7 @@
                                FontWeight="Bold"
                                Foreground="#FFA8A8A8"
                                Padding="0,0,0,2" />
-                        
+
                         <local:FavoriteListBox x:Name="lbxCloudAlbums"
                                                Grid.Row="1"
                                                AllowDrop="True"
@@ -391,13 +365,13 @@
                                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                ScrollViewer.VerticalScrollBarVisibility="Disabled" />
                     </Grid>
-                    
+
                     <Grid x:Name="gridLocalAlbumGroup" Style="{StaticResource LocalAlbumGroupStyle}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        
+
                         <Label Grid.Row="0"
                                Margin="5,0,0,5"
                                VerticalContentAlignment="Bottom"
@@ -405,7 +379,7 @@
                                FontWeight="Bold"
                                Foreground="#FFA8A8A8"
                                Padding="0,0,0,2" />
-                        
+
                         <local:FavoriteListBox x:Name="lbxFavorites"
                                                Grid.Row="1"
                                                AllowDrop="True"
@@ -418,14 +392,10 @@
                 </StackPanel>
             </ScrollViewer>
         </Grid>
-        
-        <GridSplitter Grid.Row="1"
-                      Grid.Column="0"
-                      Width="5"
-                      Background="Transparent" />
-        <Grid x:Name="gdRightSide"
-              Grid.Row="1"
-              Grid.Column="2"
+
+        <GridSplitter Grid.Row="1" Grid.Column="0" Width="5" Background="Transparent" />
+
+        <Grid x:Name="gdRightSide" Grid.Row="1" Grid.Column="2"
               Background="{DynamicResource SidePanelBackground}"
               Visibility="Collapsed">
             <local:RightSidePanel1 x:Name="rspRightSidePanel"
@@ -438,28 +408,19 @@
                                    FavoriteName="{Binding Name,
                                                           Mode=TwoWay}" />
         </Grid>
-        <local:PhotoDiaryUC x:Name="photoDiaryUC"
-                            Grid.Row="0"
-                            Grid.RowSpan="3"
-                            Grid.Column="1"
-                            Grid.ColumnSpan="2"
+
+        <local:PhotoDiaryUC x:Name="photoDiaryUC" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Grid.ColumnSpan="2"
                             Width="Auto"
                             Height="Auto"
                             Visibility="Collapsed" />
-        
-        <local:SourceAllFilesUC x:Name="allFilesUC"
-                                Grid.Row="0"
-                                Grid.RowSpan="3"
-                                Grid.Column="1"
-                                Grid.ColumnSpan="2"
+
+        <local:SourceAllFilesUC x:Name="allFilesUC" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Grid.ColumnSpan="2"
                                 Width="Auto"
                                 Height="Auto"
                                 Margin="1,0,0,0"
                                 Visibility="Collapsed" />
-        
-        <Grid x:Name="stackPanel"
-              Grid.Row="2"
-              Background="#d5d5d5">
+
+        <Grid x:Name="stackPanel" Grid.Row="2" Background="#d5d5d5">
             <local:ButtonImageText Margin="0,0,0,2"
                                    HorizontalAlignment="Center"
                                    Click="btnAddNewSource_Click"
@@ -470,12 +431,8 @@
                                    Style="{StaticResource toolbarBtnStyle}"
                                    Text="{DynamicResource AddDeviceIconText}" />
         </Grid>
-        <Grid x:Name="ContentAreaToolBar"
-              Grid.Row="2"
-              Grid.Column="1"
-              Grid.ColumnSpan="2"
-              Margin="0,0,0,0"
-              Background="#d5d5d5">
+
+        <Grid x:Name="ContentAreaToolBar" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,0,0" Background="#d5d5d5">
             <Grid Margin="0">
                 <StackPanel x:Name="zoomPanel"
                             Margin="20, 4, 4, 3"

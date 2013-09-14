@@ -1489,7 +1489,7 @@ namespace Waveface.Client
 			if (noSelectMeansSelectAll && !_selectedEntities.Any())
 				_selectedEntities = _allEntities;
 
-			string _title = lblContentLocation.Content.ToString();
+			string _title = lblContentLocation.Text;
 
 			CreateNormalAlbum(_allEntities, _selectedEntities, _title);
 		}
@@ -1502,7 +1502,7 @@ namespace Waveface.Client
 			if (noSelectMeansSelectAll && !_selectedEntities.Any())
 				_selectedEntities = _allEntities;
 
-			string _title = lblContentLocation.Content.ToString();
+			string _title = lblContentLocation.Text;
 
 			CreateCloudAlbum(_allEntities, _selectedEntities, _title);
 		}

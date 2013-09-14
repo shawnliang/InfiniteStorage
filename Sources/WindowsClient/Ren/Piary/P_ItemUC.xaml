@@ -31,9 +31,12 @@
             <Grid x:Name="imageArea" Background="#202020" MouseMove="image_MouseMove" MouseEnter="image_MouseEnter" MouseLeave="image_MouseLeave">
                 <Image x:Name="image" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill"/>
 
-                <Rectangle x:Name="rectMask" Fill="#d0000000"/>
+                <Rectangle x:Name="rectMask" Fill="#e8B1AEBD"/>
 
                 <Border BorderBrush="#40848484" BorderThickness="3" />
+                
+                <TextBlock x:Name="tbWaiting" Text="Developing..." HorizontalAlignment="Center" VerticalAlignment="Center" 
+                          FontWeight="Bold" FontSize="14" Foreground="#333333"/>
             </Grid>
         </Border>
 

@@ -4,9 +4,6 @@ using System.Windows.Controls;
 
 namespace Waveface.Client
 {
-	/// <summary>
-	/// ShareCallout.xaml 的互動邏輯
-	/// </summary>
 	public partial class ShareCallout : UserControl
 	{
 		public String SelectionText
@@ -30,6 +27,7 @@ namespace Waveface.Client
 		private void btnOnlineAlbum_click(Object sender, RoutedEventArgs e)
 		{
 			var handler = CreateOnlineAlbumClicked;
+
 			if (handler != null)
 				handler(this, EventArgs.Empty);
 		}
@@ -37,6 +35,7 @@ namespace Waveface.Client
 		private void btnSaveTo_click(Object sender, RoutedEventArgs e)
 		{
 			var handler = SaveToClicked;
+
 			if (handler != null)
 				handler(this, EventArgs.Empty);
 		}

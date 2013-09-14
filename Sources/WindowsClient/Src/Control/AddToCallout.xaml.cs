@@ -5,9 +5,6 @@ using System.Windows.Input;
 
 namespace Waveface.Client
 {
-	/// <summary>
-	/// AddToCallout.xaml 的互動邏輯
-	/// </summary>
 	public partial class AddToCallout : UserControl
 	{
 		public String SelectionText
@@ -26,12 +23,14 @@ namespace Waveface.Client
 			InitializeComponent();
 		}
 
-		private void Border_MouseLeftButtonDown_1(Object sender, MouseButtonEventArgs e)
+		private void Border_MouseLeftButtonDown(Object sender, MouseButtonEventArgs e)
 		{
 			var handler = AlbumClicked;
+
 			if (handler != null)
 			{
 				var elem = e.OriginalSource as FrameworkElement;
+
 				if (elem == null)
 					return;
 

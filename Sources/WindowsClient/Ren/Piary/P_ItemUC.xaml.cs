@@ -2,14 +2,12 @@
 
 using System;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Application = System.Windows.Forms.Application;
 
 #endregion
 
@@ -103,6 +101,8 @@ namespace Waveface.Client
 			}
 		}
 
+		public bool IsAllImagesLoadOK { get; set; }
+
 		#endregion
 
 		public P_ItemUC()
@@ -113,56 +113,26 @@ namespace Waveface.Client
 			m_brush808080 = (SolidColorBrush)FindResource("Brush808080");
 			m_brush1E1E1E = (SolidColorBrush)FindResource("Brush1E1E1E");
 			m_brush949494 = (SolidColorBrush)FindResource("Brush949494");
+
+			IsAllImagesLoadOK = true;
 		}
 
-		public void SetUI(double myWidth, double myHeight, bool forceShow)
+		public void SetUI(double myWidth, double myHeight)
 		{
 			m_updateUI = true;
 
-			bool _show;
-
-			if (forceShow)
+			foreach (FileEntry _fileEntry in Item.Files)
 			{
-				_show = true;
-			}
-			else
-			{
-				_show = true;
-
-				foreach (FileEntry _fileEntry in Item.Files)
+				if (!_fileEntry.has_origin)
 				{
-					if (!_fileEntry.has_origin)
-					{
-						_show = false;
-						break;
-					}
-				}
-
-				if (Item.Files.Count == 0)
-				{
-					_show = false;
+					IsAllImagesLoadOK = false;
+					break;
 				}
 			}
 
-			if (_show)
+			if (Item.Files.Count == 0)
 			{
-				if (Visibility != Visibility.Visible)
-				{
-					Visibility = Visibility.Visible;
-				}
-			}
-			else
-			{
-				if (Visibility != Visibility.Collapsed)
-				{
-					Visibility = Visibility.Collapsed;
-
-					m_updateUI = false;
-
-					Application.DoEvents();
-
-					return;
-				}
+				IsAllImagesLoadOK = false;
 			}
 
 			MyWidth = myWidth;
@@ -189,8 +159,9 @@ namespace Waveface.Client
 
 			_ret = _ret.Replace("\r\n", " ");
 			_ret = _ret.Replace("\r", " ");
+			_ret = _ret.Replace("\n", " ");
 
-			return _ret;
+			return _ret.Trim();
 		}
 
 		private int GetCoverIndex()
@@ -212,14 +183,23 @@ namespace Waveface.Client
 		{
 			m_oldIndex = index;
 
+			if (!IsAllImagesLoadOK)
+			{
+				rectMask.Visibility = Visibility.Visible;
+				tbWaiting.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				rectMask.Visibility = Visibility.Collapsed;
+				tbWaiting.Visibility = Visibility.Collapsed;
+			}
+
 			if (Item.Files.Count == 0)
 			{
 				return;
 			}
 
 			FileEntry _fileEntry = Item.Files[index];
-
-			rectMask.Visibility = Visibility.Collapsed;
 
 			switch (_fileEntry.type)
 			{
@@ -240,8 +220,6 @@ namespace Waveface.Client
 									_sPath = _fileEntry.s92_path;
 								}
 							}
-
-							rectMask.Visibility = Visibility.Visible;
 						}
 
 						BitmapImage _bi = new BitmapImage();
@@ -261,8 +239,6 @@ namespace Waveface.Client
 						if (File.Exists(_fileEntry.s92_path))
 						{
 							_vidoeThumb.UriSource = new Uri(_fileEntry.s92_path, UriKind.Absolute);
-
-							rectMask.Visibility = Visibility.Visible;
 						}
 						else if (File.Exists(_fileEntry.tiny_path))
 						{
@@ -490,6 +466,11 @@ namespace Waveface.Client
 
 		private void gridMain_MouseDown(object sender, MouseButtonEventArgs e)
 		{
+			if (!IsAllImagesLoadOK)
+			{
+				return;
+			}
+
 			if (e.ClickCount == 2)
 			{
 				ToPhotoDiary2ndLevel();
@@ -498,6 +479,11 @@ namespace Waveface.Client
 
 		private void miToPhotoViewer_Click(object sender, RoutedEventArgs e)
 		{
+			if (!IsAllImagesLoadOK)
+			{
+				return;
+			}
+
 			PhotoDiaryUC.ToPhotoViewer(Item.Files, m_oldIndex);
 
 			m_openContextMenu = false;

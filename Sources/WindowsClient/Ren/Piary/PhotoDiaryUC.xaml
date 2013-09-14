@@ -74,7 +74,6 @@
                            VerticalAlignment="Center"
                            FontSize="20"
                            Foreground="White"
-                           MouseDown="tbTitle_MouseDown"
                            Text="" />
 
             <ComboBox x:Name="cbxDevice" Width="140" HorizontalAlignment="Right" Height="22" Margin="16, 0" SelectionChanged="cbxDevice_SelectionChanged" Visibility="Collapsed"/>
@@ -114,7 +113,7 @@
                                       Margin="0, 1, 0, 5"
                                       Maximum="512"
                                       Minimum="236"
-                                      Value="236"
+                                      Value="256"
                                       ValueChanged="zoomSlider_ValueChanged"
                                   />
 
@@ -204,10 +203,7 @@
 
             </Grid>
 
-
-
-            <StackPanel HorizontalAlignment="Right"
-                            Orientation="Horizontal">
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                 <local:ButtonImageText x:Name="btnPushToDevice"
                                            Click="btnPushToDevice_Click"
                                            Margin="0,0,20,0"
@@ -231,10 +227,8 @@
                 <local:AddToCallout AlbumClicked="AddToAlbum_AlbumClicked">
                     <local:AddToCallout.SelectionText>
                         <MultiBinding Converter="{StaticResource addToSelectionTextConvertor}">
-                            <Binding ElementName="lbxContentContainer"
-                                         Path="Items.Count" />
-                            <Binding ElementName="lbxContentContainer"
-                                         Path="SelectedItems.Count" />
+                            <Binding ElementName="lbxContentContainer" Path="Items.Count" />
+                            <Binding ElementName="lbxContentContainer" Path="SelectedItems.Count" />
                         </MultiBinding>
                     </local:AddToCallout.SelectionText>
                     <local:AddToCallout.Effect>
@@ -244,7 +238,6 @@
                                               ShadowDepth="1" />
                     </local:AddToCallout.Effect>
                 </local:AddToCallout>
-
             </Popup>
 
             <Popup x:Name="sharePopup" 
@@ -258,10 +251,8 @@
                 <local:ShareCallout CreateOnlineAlbumClicked="ShareCallout_CreateOnlineAlbumClicked" SaveToClicked="ShareCallout_SaveToClicked" >
                     <local:ShareCallout.SelectionText>
                         <MultiBinding Converter="{StaticResource shareToSelectionTextConvertor}">
-                            <Binding ElementName="lbxContentContainer"
-                                         Path="Items.Count" />
-                            <Binding ElementName="lbxContentContainer"
-                                         Path="SelectedItems.Count" />
+                            <Binding ElementName="lbxContentContainer" Path="Items.Count" />
+                            <Binding ElementName="lbxContentContainer" Path="SelectedItems.Count" />
                         </MultiBinding>
                     </local:ShareCallout.SelectionText>
                     <local:ShareCallout.Effect>

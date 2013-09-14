@@ -9,32 +9,26 @@
              mc:Ignorable="d">
 
     <UserControl.Resources>
-
-        <Style x:Key="ButtonImageTextImageStyle"
-               TargetType="Image">
+        <Style x:Key="ButtonImageTextImageStyle" TargetType="Image">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="Margin" Value="0, 0, 0, -3" />
-            <!--  <Setter Property="Source" Value="file:///C:/Users/shawnliang/workspace/InfiniteStorage/Sources/WindowsClient/Resource/bar2_share_0.png" />  -->
             <Setter Property="Source" Value="{Binding Path=ImageUri, ElementName=userControl}" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button},
-                                               Path=IsMouseOver}"
-                             Value="True">
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsMouseOver}" Value="True">
                     <Setter Property="Source" Value="{Binding Path=ImageEnterUri, ElementName=userControl}" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button},
-                                               Path=IsPressed}"
-                             Value="True">
+
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsPressed}" Value="True">
                     <Setter Property="Source" Value="{Binding Path=ImagePressedUri, ElementName=userControl}" />
                 </DataTrigger>
+
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Source" Value="{Binding Path=ImageDisableUri, ElementName=userControl}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="ButtonImageTextTextBlockStyle"
-               TargetType="TextBlock">
+        <Style x:Key="ButtonImageTextTextBlockStyle" TargetType="TextBlock">
             <Setter Property="Margin" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1}, Path=TextMargin}" />
             <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1}, Path=Foreground}" />
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -46,31 +40,16 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-
-        <Color x:Key="ButtonImageTextBorderHoverColor">Transparent</Color>
-        <Color x:Key="ButtonImageTextBackHoverColor">Transparent</Color>
-
-        <Thickness x:Key="ButtonImageTextHoverThickness">4</Thickness>
     </UserControl.Resources>
 
-    <!--
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-    -->
-
     <Grid>
-        <Button x:Name="btn"
-                Height="{Binding Path=Height}"
-                Click="Button_Click_1">
-
+        <Button x:Name="btn" Height="{Binding Path=Height}" Click="Button_Click">
             <Grid VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
+
                 <Image x:Name="btnImage"
                        Grid.Row="0"
                        Stretch="None"
@@ -79,8 +58,7 @@
                 <TextBlock x:Name="tbText"
                            Grid.Row="1"
                            Style="{StaticResource ButtonImageTextTextBlockStyle}"
-                           Text="{Binding Text,
-                                          ElementName=userControl}" />
+                           Text="{Binding Text, ElementName=userControl}" />
             </Grid>
 
             <Button.Template>
@@ -90,6 +68,4 @@
             </Button.Template>
         </Button>
     </Grid>
-
-    <!--  </Grid>  -->
 </UserControl>

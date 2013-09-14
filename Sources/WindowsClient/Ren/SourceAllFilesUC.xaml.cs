@@ -540,6 +540,11 @@ namespace Waveface.Client
 			tbAutoImport.Content = "開啟自動匯入";
 			refreshTitleInfo();
 		}
+
+		private void gridTitle_SizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			spStatusArea.MaxWidth = gridTitle.ActualWidth - (tbAutoImport.ActualWidth + tbTitle.ActualWidth + 90);
+		}
 	}
 
 
