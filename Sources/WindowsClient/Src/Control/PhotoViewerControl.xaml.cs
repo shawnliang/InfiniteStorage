@@ -207,7 +207,7 @@ namespace Waveface.Client
 
 		private void ImgThumb_DragDelta(Object sender, DragDeltaEventArgs e)
 		{
-			Grid.SetRowSpan(viewbox, 2);
+			Grid.SetRowSpan(ImgCanvas, 2);
 
 			Double _left = Canvas.GetLeft(ImgContentCtrl);
 			Double _top = Canvas.GetTop(ImgContentCtrl);
@@ -247,7 +247,7 @@ namespace Waveface.Client
 
 		private void ImgThumb_MouseWheel(Object sender, MouseWheelEventArgs e)
 		{
-			Grid.SetRowSpan(viewbox, 2);
+			Grid.SetRowSpan(ImgCanvas, 2);
 
 			int _deltaValue = e.Delta;
 
@@ -286,16 +286,16 @@ namespace Waveface.Client
 			m_myScale.ScaleX = 1;
 			m_myScale.ScaleY = 1;
 
+			Canvas.SetLeft(ImgContentCtrl, 0);
+			Canvas.SetTop(ImgContentCtrl, 0);
+
+			Grid.SetRowSpan(ImgCanvas, 1);
+
 			if (resetAngle)
 			{
 				m_myRotate.Angle = 0;
 				m_angle = 0;
-			}
-
-			Canvas.SetLeft(ImgContentCtrl, 0);
-			Canvas.SetTop(ImgContentCtrl, 0);
-
-			Grid.SetRowSpan(viewbox, 1);
+			}		
 		}
 
 		private void VC_OnDeletePic(Object sender, EventArgs e)

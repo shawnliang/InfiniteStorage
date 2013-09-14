@@ -51,7 +51,6 @@ namespace Waveface.Client
 		private List<IContentEntity> m_allEntities_LBIs;
 		private List<IContentEntity> m_selectedEntities_LBIs;
 		private string m_title_LBIs;
-		private bool m_forceShowAllEvent;
 		private int m_hasOriginCount;
 		private int m_last_cbxDevice_SelectedIndex;
 		private int m_oldEventsCount;
@@ -65,7 +64,7 @@ namespace Waveface.Client
 
 			InitTimer();
 
-			setWH(236);
+			setWH(256);
 		}
 
 		private void InitTimer()
@@ -396,7 +395,7 @@ namespace Waveface.Client
 										PhotoDiaryUC = this,
 									};
 
-				_ctl.SetUI(m_myWidth, m_myHeight, m_forceShowAllEvent);
+				_ctl.SetUI(m_myWidth, m_myHeight);
 
 				m_photosCount += _ctl.PhotosCount;
 				m_videosCount += _ctl.VideosCount;
@@ -451,7 +450,7 @@ namespace Waveface.Client
 					m_eventUCs.Add(_ctl);
 				}
 
-				_ctl.SetUI(m_myWidth, m_myHeight, m_forceShowAllEvent);
+				_ctl.SetUI(m_myWidth, m_myHeight);
 
 				m_photosCount += _ctl.PhotosCount;
 				m_videosCount += _ctl.VideosCount;
@@ -524,6 +523,7 @@ namespace Waveface.Client
 
 				int _ps = 0;
 				int _vs = 0;
+				int _s = 0;
 
 				for (int i = 0; i < m_eventUCs.Count; i++)
 				{
@@ -535,6 +535,13 @@ namespace Waveface.Client
 
 					if (_lbi.IsSelected)
 					{
+						if (!_pItemUc.IsAllImagesLoadOK)
+						{
+							_pItemUc.IsSelected = false;
+							_lbi.IsSelected = false;
+							continue;
+						}
+
 						_pItemUc.IsSelected = true;
 
 						foreach (FileEntry _fe in _pItemUc.Item.Files)
@@ -548,10 +555,21 @@ namespace Waveface.Client
 								_vs++;
 							}
 						}
+
+						_s++;
 					}
 				}
 
-				selectionText.Text = "已選取" + listBoxEvent.SelectedItems.Count + "個事件 (" + GetCountsString(_ps, _vs) + ")";
+				if (_s == 0)
+				{
+					selectionText.Visibility = Visibility.Collapsed;
+				}
+				else
+				{
+					selectionText.Visibility = Visibility.Visible;
+
+					selectionText.Text = "已選取" + listBoxEvent.SelectedItems.Count + "個事件 (" + GetCountsString(_ps, _vs) + ")";
+				}
 			}
 		}
 
@@ -627,6 +645,9 @@ namespace Waveface.Client
 			m_selectedEntities_LBIs = new List<IContentEntity>();
 			m_title_LBIs = string.Empty;
 
+			bool _isFirst = true;
+			string _firstItemDate = "";
+
 			for (int i = 0; i < m_eventUCs.Count; i++)
 			{
 				ListBoxItem _lbi = listBoxEvent.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
@@ -639,6 +660,13 @@ namespace Waveface.Client
 				if (_lbi.IsSelected)
 				{
 					P_ItemUC _pItemUc = (P_ItemUC)_lbi.Content;
+
+					if(_isFirst)
+					{
+						_isFirst = false;
+
+						_firstItemDate = _pItemUc.Item.Event.start.ToString("MMM dd, yyyy H:mm");
+					}
 
 					m_title_LBIs += _pItemUc.Item.Event.content + " ";
 
@@ -654,6 +682,29 @@ namespace Waveface.Client
 					}
 				}
 			}
+
+			m_title_LBIs = GetFlatString(m_title_LBIs);
+
+			if(string.IsNullOrEmpty(m_title_LBIs))
+			{
+				m_title_LBIs = _firstItemDate;
+			}
+		}
+
+		private string GetFlatString(string s)
+		{
+			if (string.IsNullOrEmpty(s))
+			{
+				return "";
+			}
+
+			string _ret = s;
+
+			_ret = _ret.Replace("\r\n", " ");
+			_ret = _ret.Replace("\r", " ");
+			_ret = _ret.Replace("\n", " ");
+
+			return _ret.Trim();
 		}
 
 		private void CreateNormalAlbum(IEnumerable<IContentEntity> allEntities, IEnumerable<IContentEntity> selectedEntities, string title)
@@ -727,13 +778,6 @@ namespace Waveface.Client
 		}
 
 		#endregion
-
-		private void tbTitle_MouseDown(object sender, MouseButtonEventArgs e)
-		{
-			m_forceShowAllEvent = !m_forceShowAllEvent;
-
-			ShowEvents();
-		}
 
 		private void cbxDevice_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{

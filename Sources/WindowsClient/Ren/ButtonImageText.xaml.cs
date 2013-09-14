@@ -112,11 +112,10 @@ namespace Waveface.Client
 		public ButtonImageText()
 		{
 			InitializeComponent();
-
-			//DataContext = this;
 		}
 
 		#region Click Event Procedure
+
 		public delegate void ClickEventHandler(object sender, RoutedEventArgs e);
 
 		public event ClickEventHandler Click;
@@ -124,14 +123,16 @@ namespace Waveface.Client
 		protected void RaiseClick(RoutedEventArgs e)
 		{
 			var handler = Click;
+
 			if (handler != null)
 				Click(this, e);
 		}
 
-		private void Button_Click_1(object sender, RoutedEventArgs e)
+		private void Button_Click(object sender, RoutedEventArgs e)
 		{
 			RaiseClick(e);
 		}
+
 		#endregion
 	}
 }

@@ -62,37 +62,35 @@
 
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="*" x:Name="rowClient"/>
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
 
-        <Viewbox x:Name="viewbox" Stretch="UniformToFill">
-            <Canvas x:Name="ImgCanvas" Width="602" Height="371" ClipToBounds="True">
+        <Canvas x:Name="ImgCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ClipToBounds="True">
 
-                <ContentControl x:Name="ImgContentCtrl" Canvas.Left="0" Canvas.Top="1" RenderTransformOrigin=".5,.5"
+            <ContentControl x:Name="ImgContentCtrl" Canvas.Left="0" Canvas.Top="1" RenderTransformOrigin=".5,.5"
                                 Width="{Binding ActualWidth, ElementName=ImgCanvas}"
                                 Height="{Binding ActualHeight,  ElementName=ImgCanvas}"
                                 Cursor="Arrow"
                                 MouseDoubleClick="ImgContentCtrl_MouseDoubleClick">
-                    
-                    <Grid x:Name="ImgGrid">
-                        <MediaElement x:Name="meVideo"
+
+                <Grid x:Name="ImgGrid">
+                    <MediaElement x:Name="meVideo"
                                       DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"
                                       LoadedBehavior="Manual"
                                       MediaEnded="meVideo_MediaEnded"
                                       MediaFailed="meVideo_MediaFailed"
                                       MediaOpened="meVideo_MediaOpened"
                                       ScrubbingEnabled="True" />
-                        
-                        <Image x:Name="ImgObject"
+
+                    <Image x:Name="ImgObject"
                                DataContext="{Binding SelectedItem, ElementName=lbImages, IsAsync=True}"
                                Style="{StaticResource imgStyle}" />
-                        
-                        <Thumb x:Name="ImgThumb" DragDelta="ImgThumb_DragDelta" MouseWheel="ImgThumb_MouseWheel" Opacity="0" />
-                    </Grid>
-                </ContentControl>
-            </Canvas>
-        </Viewbox>
+
+                    <Thumb x:Name="ImgThumb" DragDelta="ImgThumb_DragDelta" MouseWheel="ImgThumb_MouseWheel" Opacity="0" />
+                </Grid>
+            </ContentControl>
+        </Canvas>
 
         <ListBox x:Name="lbImages"
                  HorizontalAlignment="Center"

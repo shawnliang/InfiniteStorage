@@ -21,13 +21,11 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    <local:CalloutMenu MaxWidth="280"
-                       Background="#d5d5d5"
-                       BorderBrush="#d5d5d5">
+    
+    <local:CalloutMenu MaxWidth="280" Background="#d5d5d5" BorderBrush="#d5d5d5">
         <StackPanel Margin="10, 5, 10, 20" Orientation="Vertical">
             <Label HorizontalAlignment="Center"
-                   Content="{Binding RelativeSource={RelativeSource AncestorType=local:ShareCallout},
-                                     Path=SelectionText}"
+                   Content="{Binding RelativeSource={RelativeSource AncestorType=local:ShareCallout}, Path=SelectionText}"
                    FontSize="16"
                    Foreground="#4d4d4d" />
             <StackPanel Orientation="Horizontal">
@@ -38,6 +36,7 @@
                                        ImageUri="pack://application:,,,/Resource/pop_online.png"
                                        Style="{StaticResource buttonStyle}"
                                        Text="{StaticResource res_11}" />
+                
                 <local:ButtonImageText Click="btnSaveTo_click"
                                        ImageDisableUri="pack://application:,,,/Resource/pop_save.png"
                                        ImageEnterUri="pack://application:,,,/Resource/pop_save.png"

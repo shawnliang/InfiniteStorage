@@ -57,7 +57,7 @@
             
         </StackPanel>
         
-        <Rectangle Grid.Column="1"
+        <Rectangle Grid.Column="1" x:Name="rectLine1"
                    Width="0.872"
                    Height="40"
                    Margin="1.003,0,0,0"
@@ -101,8 +101,8 @@
                               Cursor="Hand"
                               MouseDown="NextButton_MouseDown" />
         </StackPanel>
-        
-        <Rectangle Grid.Column="2"
+
+        <Rectangle Grid.Column="2" x:Name="rectLine2"
                    Width="0.872"
                    Height="40"
                    Margin="1.003,0,0,0"
@@ -113,12 +113,12 @@
                    StrokeThickness="0.5" />
 
         <StackPanel Grid.Column="2" Orientation="Horizontal">
-            <local:LB_CCW_Button Margin="8,0,4,0" Background="Transparent" MouseDown="CCW_Button_MouseDown"/>
+            <local:LB_CCW_Button Margin="8,0,4,0" Background="Transparent" MouseDown="CCW_Button_MouseDown" Visibility="Collapsed"/>
             
-            <local:LB_CW_Button Margin="4,0" Background="Transparent" MouseDown="CW_Button_MouseDown"/>
+            <local:LB_CW_Button Margin="4,0" Background="Transparent" MouseDown="CW_Button_MouseDown" Visibility="Collapsed"/>
             
             <local:LightBoxStar x:Name="staredControl"
-                                Margin="4,0"
+                                Margin="8,0,4,0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Background="Transparent"
@@ -134,8 +134,8 @@
                    Style="{StaticResource LBDeleteImageStyle}" />
 
         </StackPanel>
-        
-        <Rectangle Grid.Column="3"
+
+        <Rectangle Grid.Column="3" x:Name="rectLine3"
                    Width="0.872"
                    Height="40"
                    Margin="1.003,0,0,0"

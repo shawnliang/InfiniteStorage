@@ -199,14 +199,8 @@
                                             BorderBrush="#b0ffffff"
                                             BorderThickness="3"
                                             Visibility="Collapsed">
-                                        <Grid Height="27"
-                                              VerticalAlignment="Bottom"
-                                              Background="#a0000000">
-                                            <TextBlock HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center"
-                                                       FontSize="16"
-                                                       Foreground="#ccffffff"
-                                                       Text="{Binding Day}" />
+                                        <Grid>
+                                            <TextBlock FontSize="32" FontWeight="ExtraBold"  HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="#ccffffff" Text="{Binding Day}"/>
                                         </Grid>
                                     </Border>
                                 </Grid>
