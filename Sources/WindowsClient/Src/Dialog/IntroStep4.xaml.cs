@@ -11,20 +11,19 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using GoogleAnalyticsTracker;
 
 namespace Waveface.Client
 {
 	/// <summary>
 	/// IntroStep5.xaml 的互動邏輯
 	/// </summary>
-	public partial class IntroStep5 : Window
+	public partial class IntroStep4 : Window
 	{
 		private int num_of_star = 4;
 		private Style starredStyle;
 		private Style unstarredStyle;
 
-		public IntroStep5()
+		public IntroStep4()
 		{
 			InitializeComponent();
 
@@ -105,9 +104,6 @@ namespace Waveface.Client
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-			var googleAnalyticsTracker = new Tracker("UA-43968892-1", "waveface.com");
-			googleAnalyticsTracker.TrackPageViewAsync(string.Format("{0} Stars", num_of_star), "stars/" + num_of_star);
-
 			Close();
 		}
 	}

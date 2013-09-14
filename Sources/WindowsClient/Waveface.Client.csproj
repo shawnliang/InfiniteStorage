@@ -53,9 +53,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\EntityFramework.5.0.0\net40\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="GoogleAnalyticsTracker">
-      <HintPath>..\..\packages\GoogleAnalyticsTracker.1.7.08\lib\net40\GoogleAnalyticsTracker.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\log4net-1.2.11\log4net.dll</HintPath>
@@ -247,8 +244,11 @@
     <Compile Include="Src\Dialog\HomeSharingDialog.xaml.cs">
       <DependentUpon>HomeSharingDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Src\Dialog\IntroStep5.xaml.cs">
-      <DependentUpon>IntroStep5.xaml</DependentUpon>
+    <Compile Include="Src\Dialog\IntroStep3.xaml.cs">
+      <DependentUpon>IntroStep3.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Src\Dialog\IntroStep4.xaml.cs">
+      <DependentUpon>IntroStep4.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Dialog\MoveToFolderDialog.xaml.cs">
       <DependentUpon>MoveToFolderDialog.xaml</DependentUpon>
@@ -318,6 +318,12 @@
     <Compile Include="Src\Class\Converter\ContentTypeCountConverter.cs" />
     <Compile Include="Src\Dialog\TakeTourDialog.xaml.cs">
       <DependentUpon>TakeTourDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Src\Dialog\IntroStep2.xaml.cs">
+      <DependentUpon>IntroStep2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Src\Dialog\IntroStep1.xaml.cs">
+      <DependentUpon>IntroStep1.xaml</DependentUpon>
     </Compile>
     <Compile Include="Src\Event\UnSortedItemEventArgs.cs" />
     <Compile Include="Src\Extension\CollectionExtension.cs" />
@@ -394,9 +400,21 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Src\Dialog\IntroStep5.xaml">
+    <Page Include="Src\Dialog\IntroStep3.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Src\Dialog\IntroStep4.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Src\Dialog\IntroStep2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Src\Dialog\IntroStep1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Src\ResourceDictionary\ButtonResourceDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -426,8 +444,6 @@
     <Resource Include="Resource\folder.png" />
     <Resource Include="Resource\loading.gif" />
     <Resource Include="Resource\clock16.png" />
-    <Resource Include="Resource\map32.png" />
-    <Resource Include="Resource\map32.png" />
     <Resource Include="Resource\5_graystar.png" />
     <Resource Include="Resource\5_hat.png" />
     <Resource Include="Resource\5_label.png" />
@@ -446,6 +462,26 @@
     <Resource Include="Resource\LB_zoomin_1.png" />
     <Resource Include="Resource\LB_zoomout_0.png" />
     <Resource Include="Resource\LB_zoomout_1.png" />
+    <Resource Include="Resource\1.jpg" />
+    <Resource Include="Resource\1_card.png" />
+    <Resource Include="Resource\1_icon1.png" />
+    <Resource Include="Resource\1_icon2.png" />
+    <Resource Include="Resource\1_number.png" />
+    <Resource Include="Resource\2.jpg" />
+    <Resource Include="Resource\2_card.png" />
+    <Resource Include="Resource\2_icon1.png" />
+    <Resource Include="Resource\2_icon2.png" />
+    <Resource Include="Resource\2_number.png" />
+    <Resource Include="Resource\3.jpg" />
+    <Resource Include="Resource\3_card.png" />
+    <Resource Include="Resource\3_icon1.png" />
+    <Resource Include="Resource\3_icon2.png" />
+    <Resource Include="Resource\3_number.png" />
+    <Resource Include="Resource\4.jpg" />
+    <Resource Include="Resource\4_crown.png" />
+    <Resource Include="Resource\4_nostar.png" />
+    <Resource Include="Resource\4_number.png" />
+    <Resource Include="Resource\4_star.png" />
     <Content Include="StringTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

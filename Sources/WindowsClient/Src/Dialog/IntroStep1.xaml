@@ -1,0 +1,67 @@
+﻿<Window x:Class="Waveface.Client.IntroStep1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Waveface.Client"
+        Width="600"
+        Height="450"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None">
+
+
+    <local:IntroLayout NavigatorImageUri="/Waveface.Client;component/Resource/1_number.png">
+        <StackPanel Margin="0, 40">
+            <TextBlock HorizontalAlignment="Center"
+                       FontSize="20"
+                       Text="{StaticResource intro_step1_title}"
+                       TextWrapping="WrapWithOverflow" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image Margin="10, 30, 0, 0" Source="/Waveface.Client;component/Resource/1_card.png" />
+
+                <Grid Grid.Column="1" Margin="20,60, 0, 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <Image Margin="3"
+                           VerticalAlignment="Top"
+                           Source="/Waveface.Client;component/Resource/1_icon1.png" />
+                    <TextBlock Grid.Column="1"
+                               FontSize="18"
+                               Text="{StaticResource intro_step1_desc1}"
+                               TextWrapping="WrapWithOverflow" />
+
+
+                    <Image Grid.Row="1"
+                           Margin="3,53,3,0"
+                           VerticalAlignment="Top"
+                           Source="/Waveface.Client;component/Resource/1_icon2.png" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Margin="0,50,0,0"
+                               FontSize="18"
+                               Text="{StaticResource intro_step1_desc2}"
+                               TextWrapping="WrapWithOverflow" />
+                </Grid>
+            </Grid>
+            <Button MinWidth="120"
+                    Margin="0,-80,0,0"
+                    HorizontalAlignment="Right"
+                    Click="Button_Click"
+                    Content="{StaticResource intro_step1_button}" />
+        </StackPanel>
+    </local:IntroLayout>
+
+
+</Window>

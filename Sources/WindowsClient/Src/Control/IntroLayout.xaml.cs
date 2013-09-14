@@ -14,11 +14,20 @@ using System.Windows.Shapes;
 
 namespace Waveface.Client
 {
+
 	/// <summary>
 	/// IntroLayout.xaml 的互動邏輯
 	/// </summary>
 	public partial class IntroLayout : UserControl
 	{
+		public static readonly DependencyProperty NavigatorImageUriProperty = DependencyProperty.Register("NavigatorImageUriProperty", typeof(Uri), typeof(IntroLayout));
+
+		public Uri NavigatorImageUri
+		{
+			get { return (Uri)GetValue(NavigatorImageUriProperty); }
+			set { SetValue(NavigatorImageUriProperty, value); }
+		}
+
 		public IntroLayout()
 		{
 			InitializeComponent();

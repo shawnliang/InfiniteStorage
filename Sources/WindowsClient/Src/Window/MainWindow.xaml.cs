@@ -189,7 +189,7 @@ namespace Waveface.Client
 				JumpToDevice(ClientFramework.Client.Default.GetLastImportDevice(), false);
 
 
-			var win = new IntroStep5() { Owner = this };
+			var win = new IntroStep4() { Owner = this };
 			win.Show();
 		}
 
@@ -198,34 +198,6 @@ namespace Waveface.Client
 		private void RefreshStarFavorite()
 		{
 			RefreshFavorite(lbxFavorites.Items.OfType<IContentGroup>().FirstOrDefault());
-		}
-
-		private void TryDisplayFavoriteTutorial()
-		{
-			if (!Settings.Default.IsFirstSelectFavorite)
-			{
-				var result = TakeTourDialog.ShowWithDynamicResource("TakeTourMsgShare", this);
-
-				if (result.HasValue && result.Value)
-					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215523-step4-share-favorites-with-your-favorite-people");
-
-				Settings.Default.IsFirstSelectFavorite = true;
-				Settings.Default.Save();
-			}
-		}
-
-		private void TryDisplayStarredTutorial()
-		{
-			if (!Settings.Default.IsFirstSelectStarred)
-			{
-				var result = TakeTourDialog.ShowWithDynamicResource("TakeTourMSgHomeShare", this);
-
-				if (result.HasValue && result.Value)
-					Process.Start(@"http://waveface.uservoice.com/knowledgebase/articles/215522-step3-view-favorite-memories-on-tablets-and-tvs-");
-
-				Settings.Default.IsFirstSelectStarred = true;
-				Settings.Default.Save();
-			}
 		}
 
 		public void StarContent(IEnumerable<IContentEntity> contentEntities)
@@ -1004,12 +976,9 @@ namespace Waveface.Client
 
 			if (group.ID.Equals(ClientFramework.Client.StarredLabelId, StringComparison.CurrentCultureIgnoreCase))
 			{
-				TryDisplayStarredTutorial();
 			}
 			else
 			{
-				TryDisplayFavoriteTutorial();
-
 				updateRightSidePanel2(group);
 			}
 

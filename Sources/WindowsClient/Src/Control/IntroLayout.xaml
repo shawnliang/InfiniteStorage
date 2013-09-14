@@ -18,7 +18,8 @@
 
                     <Image Margin="0, 10"
                            VerticalAlignment="Top"
-                           Source="/Waveface.Client;component/Resource/5_label.png" />
+                           Source="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                            Path=NavigatorImageUri}" />
 
                     <Grid Grid.Column="1">
                         <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" />

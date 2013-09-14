@@ -154,8 +154,25 @@
     <system:String x:Key="0_days_ago">Today</system:String>
     <system:String x:Key="x_days_ago">{0} days ago</system:String>
 
-    <system:String x:Key="intro_step5_desc">Congratulation! You've completed Piary Windows tutorial!!</system:String>
+    <system:String x:Key="intro_step5_desc">Please rate this app and feedback your comments</system:String>
     <system:String x:Key="intro_step5_rateUs">Rate Us</system:String>
     <system:String x:Key="intro_step5_your_suggestion">Your suggestion...</system:String>
     <system:String x:Key="intro_step5_submit">Submit</system:String>
+
+
+    <system:String x:Key="intro_step3_title">Oline album is generated and being uploaded</system:String>
+    <system:String x:Key="intro_step3_desc1">Copy the album link and share it with your friends</system:String>
+    <system:String x:Key="intro_step3_desc2">Click th button to browse it online</system:String>
+    <system:String x:Key="intro_step3_button">Open Now</system:String>
+
+    <system:String x:Key="intro_step2_title">Enjoy your precious moments</system:String>
+    <system:String x:Key="intro_step2_desc1">Double click to view it on full screen</system:String>
+    <system:String x:Key="intro_step2_desc2">One click to create online album</system:String>
+    <system:String x:Key="intro_step2_button">Try Online Album Now</system:String>
+
+    <system:String x:Key="intro_step1_title">Welcome to your photo journal</system:String>
+    <system:String x:Key="intro_step1_desc1">Each card represents an event</system:String>
+    <system:String x:Key="intro_step1_desc2">Double click on cards to enter your events</system:String>
+    <system:String x:Key="intro_step1_button">OK</system:String>
+
 </ResourceDictionary>

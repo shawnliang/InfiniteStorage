@@ -167,8 +167,24 @@
     <system:String x:Key="0_days_ago">今日</system:String>
     <system:String x:Key="x_days_ago">{0}日前</system:String>
 
-    <system:String x:Key="intro_step5_desc">恭喜你已經完成了 Piary Windows 的導覽!!</system:String>
+    <system:String x:Key="intro_step5_desc">請給予我們評價及您寶貴的意見</system:String>
     <system:String x:Key="intro_step5_rateUs">給我們評價</system:String>
     <system:String x:Key="intro_step5_your_suggestion">您的建議...</system:String>
     <system:String x:Key="intro_step5_submit">送出</system:String>
+
+    <system:String x:Key="intro_step3_title">您的雲端相簿已產生，並在背景上傳中</system:String>
+    <system:String x:Key="intro_step3_desc1">複製連結寄送給親朋好友</system:String>
+    <system:String x:Key="intro_step3_desc2">按下開啟網頁來線上瀏覽</system:String>
+    <system:String x:Key="intro_step3_button">馬上開啟</system:String>
+
+    <system:String x:Key="intro_step2_title">瀏覽你的精采時刻</system:String>
+    <system:String x:Key="intro_step2_desc1">雙擊圖片進行全螢幕瀏覽</system:String>
+    <system:String x:Key="intro_step2_desc2">由工具列一鑑建立雲相冊</system:String>
+    <system:String x:Key="intro_step2_button">馬上試試看</system:String>
+
+    <system:String x:Key="intro_step1_title">歡迎來到你的相片日記</system:String>
+    <system:String x:Key="intro_step1_desc1">每張卡代表一個事件</system:String>
+    <system:String x:Key="intro_step1_desc2">雙擊卡片進入你的影像日記</system:String>
+    <system:String x:Key="intro_step1_button">好</system:String>
+
 </ResourceDictionary>
