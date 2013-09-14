@@ -56,6 +56,7 @@ namespace Waveface.Client
 
 				staredControl.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
 				image.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
+				rectLine3.Visibility= value ? Visibility.Visible : Visibility.Collapsed;
 			}
 		}
 
