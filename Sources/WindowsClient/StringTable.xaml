@@ -158,6 +158,7 @@
     <system:String x:Key="intro_step5_rateUs">Rate Us</system:String>
     <system:String x:Key="intro_step5_your_suggestion">Your suggestion...</system:String>
     <system:String x:Key="intro_step5_submit">Submit</system:String>
+    <system:String x:Key="intro_step5_no_stars">Please click on stars to rate us</system:String>
 
 
     <system:String x:Key="intro_step3_title">Oline album is generated and being uploaded</system:String>

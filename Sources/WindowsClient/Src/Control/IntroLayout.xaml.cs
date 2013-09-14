@@ -20,7 +20,11 @@ namespace Waveface.Client
 	/// </summary>
 	public partial class IntroLayout : UserControl
 	{
+		public event EventHandler CloseButtomClicked;
+
+
 		public static readonly DependencyProperty NavigatorImageUriProperty = DependencyProperty.Register("NavigatorImageUriProperty", typeof(Uri), typeof(IntroLayout));
+		public static readonly DependencyProperty AllowCloseProperty = DependencyProperty.Register("AllowCloseProperty", typeof(bool), typeof(IntroLayout), new PropertyMetadata(false));
 
 		public Uri NavigatorImageUri
 		{
@@ -28,9 +32,22 @@ namespace Waveface.Client
 			set { SetValue(NavigatorImageUriProperty, value); }
 		}
 
+		public bool AllowClose
+		{
+			get { return (bool)GetValue(AllowCloseProperty); }
+			set { SetValue(AllowCloseProperty, value); }
+		}
+
 		public IntroLayout()
 		{
 			InitializeComponent();
+		}
+
+		private void CloseImage_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			var handler = CloseButtomClicked;
+			if (handler != null)
+				handler(this, EventArgs.Empty);
 		}
 	}
 }

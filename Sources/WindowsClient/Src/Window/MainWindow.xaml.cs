@@ -188,9 +188,6 @@ namespace Waveface.Client
 			else if (ClientFramework.Client.Default.Services.Any())
 				JumpToDevice(ClientFramework.Client.Default.GetLastImportDevice(), false);
 
-
-			var win = new IntroStep4() { Owner = this };
-			win.Show();
 		}
 
 		#region Private Method
@@ -917,6 +914,28 @@ namespace Waveface.Client
 				((listbox == lbxCloudAlbums) ? lbxFavorites : lbxCloudAlbums).SelectedItem = null;
 				lbxRecent.SelectedItem = null;
 				lbxPhotoDiary.SelectedItem = null;
+
+
+				if (listbox == lbxCloudAlbums)
+				{
+					if (!Settings.Default.IntroStep3Displayed)
+					{
+						var dialog = new IntroStep3() { Owner = this };
+						dialog.OpenNowButtonClicked += (s, ev) => { btnOpenShareLink_Click(this, new RoutedEventArgs()); };
+						dialog.ShowDialog();
+
+						Settings.Default.IntroStep3Displayed = true;
+						Settings.Default.Save();
+
+
+
+						var dialog4 = new IntroStep4() { Owner = this };
+						dialog4.ShowDialog();
+
+						Settings.Default.IntroStep4Displayed = true;
+						Settings.Default.Save();
+					}
+				}
 			}
 		}
 
@@ -1467,7 +1486,7 @@ namespace Waveface.Client
 			CreateNormalAlbum(_allEntities, _selectedEntities, _title);
 		}
 
-		private void createCloudAlbum(bool noSelectMeansSelectAll = false)
+		public void CreateCloudAlbum(bool noSelectMeansSelectAll = false)
 		{
 			IEnumerable<IContentEntity> _allEntities = lbxContentContainer.Items.OfType<IContentEntity>().ToArray();
 			IEnumerable<IContentEntity> _selectedEntities = GetSelectedContents();
@@ -1577,7 +1596,7 @@ namespace Waveface.Client
 
 		private void ShareCallout_CreateOnlineAlbumClicked_1(object sender, EventArgs e)
 		{
-			createCloudAlbum(true);
+			CreateCloudAlbum(true);
 		}
 
 		private void ShareCallout_SaveToClicked(object sender, EventArgs e)
@@ -1653,6 +1672,16 @@ namespace Waveface.Client
 			btnDelete.IsEnabled = false;
 
 			GC.Collect();
+
+			if (!Settings.Default.IntroStep2Displayed && !Settings.Default.IntroStep3Displayed)
+			{
+				var dialog = new IntroStep2() { Owner = System.Windows.Application.Current.MainWindow };
+				if (dialog.ShowDialog() == true)
+				{
+					Settings.Default.IntroStep2Displayed = true;
+					Settings.Default.Save();
+				}
+			}
 		}
 
 		private void lbxContentContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)

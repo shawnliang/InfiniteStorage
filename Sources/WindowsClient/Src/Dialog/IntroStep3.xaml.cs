@@ -18,9 +18,20 @@ namespace Waveface.Client
 	/// </summary>
 	public partial class IntroStep3 : Window
 	{
+		public event EventHandler OpenNowButtonClicked;
+
 		public IntroStep3()
 		{
 			InitializeComponent();
+		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			Close();
+
+			var handler = OpenNowButtonClicked;
+			if (handler != null)
+				handler(this, EventArgs.Empty);
 		}
 	}
 }

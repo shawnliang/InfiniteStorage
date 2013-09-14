@@ -6,6 +6,10 @@
              d:DesignHeight="336"
              d:DesignWidth="489"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
     <UserControl.Template>
         <ControlTemplate>
             <Border Background="White" CornerRadius="6">
@@ -13,7 +17,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="71" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="71" />
+                        <ColumnDefinition Width="50" />
                     </Grid.ColumnDefinitions>
 
                     <Image Margin="0, 10"
@@ -24,6 +28,19 @@
                     <Grid Grid.Column="1">
                         <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" />
                     </Grid>
+
+
+                    <Image Grid.Column="2"
+                           Margin="0,10,10,0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Top"
+                           Cursor="Hand"
+                           MouseDown="CloseImage_MouseDown"
+                           Source="/Waveface.Client;component/Resource/2_close.png"
+                           Stretch="None"
+                           Visibility="{Binding RelativeSource={RelativeSource TemplatedParent},
+                                                Path=AllowClose,
+                                                Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </Grid>
             </Border>
         </ControlTemplate>

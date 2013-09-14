@@ -168,9 +168,10 @@
     <system:String x:Key="x_days_ago">{0}日前</system:String>
 
     <system:String x:Key="intro_step5_desc">請給予我們評價及您寶貴的意見</system:String>
-    <system:String x:Key="intro_step5_rateUs">給我們評價</system:String>
+    <system:String x:Key="intro_step5_rateUs">點選星星給我們評價</system:String>
     <system:String x:Key="intro_step5_your_suggestion">您的建議...</system:String>
     <system:String x:Key="intro_step5_submit">送出</system:String>
+    <system:String x:Key="intro_step5_no_stars">點選星星給我們評價</system:String>
 
     <system:String x:Key="intro_step3_title">您的雲端相簿已產生，並在背景上傳中</system:String>
     <system:String x:Key="intro_step3_desc1">複製連結寄送給親朋好友</system:String>

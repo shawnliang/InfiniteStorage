@@ -10,7 +10,10 @@
         WindowStyle="None">
 
 
-    <local:IntroLayout NavigatorImageUri="/Waveface.Client;component/Resource/3_number.png">
+    <local:IntroLayout Margin="3" NavigatorImageUri="/Waveface.Client;component/Resource/3_number.png">
+        <local:IntroLayout.Effect>
+            <DropShadowEffect ShadowDepth="1" />
+        </local:IntroLayout.Effect>
         <StackPanel Margin="0, 40">
             <TextBlock HorizontalAlignment="Center"
                        FontSize="20"
@@ -22,16 +25,16 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Image Source="/Waveface.Client;component/Resource/3_card.png" />
+                <Image Margin="20,20,0,0" Source="/Waveface.Client;component/Resource/3_card.png" />
 
-                <Grid Grid.Column="1" Margin="40,60, 0, 0">
+                <Grid Grid.Column="1" Margin="20,60, 0, 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
                     <Image Margin="3"
@@ -44,20 +47,20 @@
 
 
                     <Image Grid.Row="1"
-                           Margin="3,80,3,0"
+                           Margin="3"
                            VerticalAlignment="Top"
                            Source="/Waveface.Client;component/Resource/3_icon2.png" />
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
-                               Margin="0,80,0,0"
                                FontSize="18"
                                Text="{StaticResource intro_step3_desc2}"
                                TextWrapping="WrapWithOverflow" />
                 </Grid>
             </Grid>
             <Button MinWidth="120"
-                    Margin="0,0,50,0"
+                    Margin="0,-10,0,0"
                     HorizontalAlignment="Right"
+                    Click="Button_Click"
                     Content="{StaticResource intro_step3_button}" />
         </StackPanel>
     </local:IntroLayout>

@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using InfiniteStorage.Model;
 using Microsoft.Win32;
+using Waveface.Client.Properties;
 using Waveface.ClientFramework;
 using Waveface.Model;
 using WpfAnimatedGif;
@@ -148,6 +149,17 @@ namespace Waveface.Client
 			m_refreshTimer.Start();
 
 			m_inited = true;
+
+
+
+			if (!Settings.Default.IntroStep1Displayed)
+			{
+				var dialog = new IntroStep1() { Owner = Application.Current.MainWindow };
+				dialog.ShowDialog();
+
+				Settings.Default.IntroStep1Displayed = true;
+				Settings.Default.Save();
+			}
 		}
 
 		private void InitDeviceComboBox()

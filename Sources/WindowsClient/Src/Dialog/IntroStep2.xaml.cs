@@ -22,5 +22,20 @@ namespace Waveface.Client
 		{
 			InitializeComponent();
 		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			DialogResult = true;
+			Close();
+
+			var main = (MainWindow)this.Owner;
+			main.CreateCloudAlbum(true);
+		}
+
+		private void IntroLayout_CloseButtomClicked(object sender, EventArgs e)
+		{
+			DialogResult = false;
+			Close();
+		}
 	}
 }

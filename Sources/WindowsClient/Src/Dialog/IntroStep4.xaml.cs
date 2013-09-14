@@ -19,7 +19,7 @@ namespace Waveface.Client
 	/// </summary>
 	public partial class IntroStep4 : Window
 	{
-		private int num_of_star = 4;
+		private int num_of_star = 0;
 		private Style starredStyle;
 		private Style unstarredStyle;
 
@@ -104,6 +104,20 @@ namespace Waveface.Client
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
+			if (num_of_star == 0)
+			{
+				Panel parent = LogicalTreeHelper.GetParent(sender as DependencyObject) as Panel;
+				foreach (var child in LogicalTreeHelper.GetChildren(parent))
+				{
+					if (child is TextBlock)
+					{
+						(child as TextBlock).Visibility = System.Windows.Visibility.Visible;
+					}
+				}
+
+				return;
+			}
+
 			Close();
 		}
 	}

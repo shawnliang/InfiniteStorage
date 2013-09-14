@@ -34,11 +34,11 @@
         </Style>
 
     </Window.Resources>
-    <Window.Effect>
-        <DropShadowEffect Opacity="60" ShadowDepth="1" />
-    </Window.Effect>
 
-    <local:IntroLayout NavigatorImageUri="/Waveface.Client;component/Resource/4_number.png">
+    <local:IntroLayout Margin="3" NavigatorImageUri="/Waveface.Client;component/Resource/4_number.png">
+        <local:IntroLayout.Effect>
+            <DropShadowEffect ShadowDepth="1" />
+        </local:IntroLayout.Effect>
         <StackPanel Margin="0,70, 0, 0" Orientation="Vertical">
             <Grid>
                 <Image HorizontalAlignment="Center"
@@ -80,10 +80,10 @@
             </Grid>
 
             <UniformGrid Margin="150, 10" Columns="5">
-                <Image MouseLeftButtonDown="star_MouseLeftButtonDown" Style="{StaticResource starredStyle}" />
-                <Image MouseLeftButtonDown="star_MouseLeftButtonDown" Style="{StaticResource starredStyle}" />
-                <Image MouseLeftButtonDown="star_MouseLeftButtonDown" Style="{StaticResource starredStyle}" />
-                <Image MouseLeftButtonDown="star_MouseLeftButtonDown" Style="{StaticResource starredStyle}" />
+                <Image MouseLeftButtonDown="star_MouseLeftButtonDown" Style="{StaticResource unstarredStyle}" />
+                <Image MouseLeftButtonDown="star_MouseLeftButtonDown" Style="{StaticResource unstarredStyle}" />
+                <Image MouseLeftButtonDown="star_MouseLeftButtonDown" Style="{StaticResource unstarredStyle}" />
+                <Image MouseLeftButtonDown="star_MouseLeftButtonDown" Style="{StaticResource unstarredStyle}" />
                 <Image MouseLeftButtonDown="star_MouseLeftButtonDown" Style="{StaticResource unstarredStyle}" />
             </UniformGrid>
 
@@ -95,11 +95,22 @@
                      LostFocus="suggestion_LostFocus"
                      Text="{StaticResource intro_step5_your_suggestion}" />
 
-            <Button MaxWidth="120"
-                    Margin="40,20"
-                    HorizontalAlignment="Right"
-                    Click="Button_Click"
-                    Content="{StaticResource intro_step5_submit}" />
+            <Grid>
+                <TextBlock Margin="40,0,20,7"
+                           VerticalAlignment="Bottom"
+                           FontSize="15"
+                           Foreground="Red"
+                           Text="{StaticResource intro_step5_no_stars}"
+                           TextWrapping="WrapWithOverflow"
+                           Visibility="Collapsed" />
+                <Button MinWidth="120"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Click="Button_Click"
+                        Content="{StaticResource intro_step5_submit}" />
+            </Grid>
+
         </StackPanel>
     </local:IntroLayout>
 

@@ -82,5 +82,53 @@ namespace Waveface.Client.Properties {
                 this["IsUpgraded"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IntroStep1Displayed {
+            get {
+                return ((bool)(this["IntroStep1Displayed"]));
+            }
+            set {
+                this["IntroStep1Displayed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IntroStep2Displayed {
+            get {
+                return ((bool)(this["IntroStep2Displayed"]));
+            }
+            set {
+                this["IntroStep2Displayed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IntroStep3Displayed {
+            get {
+                return ((bool)(this["IntroStep3Displayed"]));
+            }
+            set {
+                this["IntroStep3Displayed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IntroStep4Displayed {
+            get {
+                return ((bool)(this["IntroStep4Displayed"]));
+            }
+            set {
+                this["IntroStep4Displayed"] = value;
+            }
+        }
     }
 }

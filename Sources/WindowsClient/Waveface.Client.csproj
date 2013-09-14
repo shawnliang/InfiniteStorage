@@ -482,6 +482,7 @@
     <Resource Include="Resource\4_nostar.png" />
     <Resource Include="Resource\4_number.png" />
     <Resource Include="Resource\4_star.png" />
+    <Resource Include="Resource\2_close.png" />
     <Content Include="StringTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
