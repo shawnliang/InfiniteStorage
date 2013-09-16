@@ -32,7 +32,9 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <ResourceOverride Include="en-US\SharpSetup.Overrides.resx" />
+    <ResourceOverride Include="en-US\SharpSetup.Overrides.resx">
+      <SubType>Designer</SubType>
+    </ResourceOverride>
   </ItemGroup>
   <ItemGroup>
     <ResourceOverride Include="zh-TW\SharpSetup.Overrides.resx">

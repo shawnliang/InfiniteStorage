@@ -8,15 +8,15 @@
     <system:String x:Key="addto_all_selection_text">Add all {0} items to</system:String>
     <system:String x:Key="addto_selection_text">Add {0} items to</system:String>
     <system:String x:Key="AddToFavorite">Add To Album</system:String>
-    <system:String x:Key="AddToFavoriteButtonText">Add to An Existing Favorite</system:String>
+    <system:String x:Key="AddToFavoriteButtonText">Add to an existing album</system:String>
     <system:String x:Key="ANS_9">Learn more</system:String>
     <system:String x:Key="ANS_step1">Make sure 'Piary' is installed and running on your phone.</system:String>
     <system:String x:Key="ANS_step1_title">Run the App</system:String>
     <system:String x:Key="ANS_step2">Connect your phone to the same Wi-Fi network with your PC</system:String>
     <system:String x:Key="ANS_step2_title">Connect WiFi</system:String>
-    <system:String x:Key="ANS_step3">Turn on "Sync to PC" (from the menu) on your phone and enter the 4 digits code below. That's it!</system:String>
+    <system:String x:Key="ANS_step3">Turn on &quot;Sync to PC&quot; (from the menu) on your phone and enter the 4 digits code below. That's it!</system:String>
     <system:String x:Key="ANS_step3_title">Enter the code</system:String>
-    <system:String x:Key="AppTitle">Piary Gallery</system:String>
+    <system:String x:Key="AppTitle">Piary Photos</system:String>
     <system:String x:Key="CancelButtonText">Cancel</system:String>
     <system:String x:Key="ClearAllButtonText">Clear All</system:String>
     <system:String x:Key="CloseButtonText">Cancel</system:String>
@@ -32,7 +32,7 @@
     <system:String x:Key="Create">Create</system:String>
     <system:String x:Key="createAlbumDialogTitle">Create Album</system:String>
     <system:String x:Key="CreateFavorite">Create Album</system:String>
-    <system:String x:Key="CreateFavoriteButtonText">Create New Favorite</system:String>
+    <system:String x:Key="CreateFavoriteButtonText">Create New Album</system:String>
     <system:String x:Key="CreateNewAlbumDialogDescription">Your album name is:</system:String>
     <system:String x:Key="CreateNewAlbumDialogTitle">Create New Album</system:String>
     <system:String x:Key="CreateNewFolder">Create New Folder</system:String>
@@ -77,17 +77,17 @@
     <system:String x:Key="Starred">Starred</system:String>
     <system:String x:Key="TakeTourButtonText">Yes</system:String>
     <system:String x:Key="TakeTourDialogTitle">Take A Quick Tour?</system:String>
-    <system:String x:Key="TakeTourMSgHomeShare">See your recent and favorited moments on your tablet and TV anywhere at home. Check out how it works.</system:String>
-    <system:String x:Key="TakeTourMsgShare">You can share your favorite moments to favorite people outside. Check out how.</system:String>
     <system:String x:Key="UnselectAll">Unselect All</system:String>
     <system:String x:Key="video">video</system:String>
     <system:String x:Key="videos">videos</system:String>
     <system:String x:Key="WithoutContentMessageText">Please select something first.</system:String>
-    <system:String x:Key="res_1">Push your photo albums locally to your Android devices and Google TV, wirelessly and cloudlessly. \r\n 
-    (Because to it's a BETA feature, you need to install a separate app on the target device.</system:String>
+    <system:String x:Key="res_1">
+        Push your photo albums locally to your Android devices and Google TV, wirelessly and cloudlessly. \r\n
+        (Because to it's a BETA feature, you need to install a separate app on the target device.)
+    </system:String>
     <system:String x:Key="res_2">Wi-Fi Sharing：OFF</system:String>
     <system:String x:Key="res_3">Turn on</system:String>
-    <system:String x:Key="res_4">Search for "Waveface Favorite TV" on Google TV</system:String>
+    <system:String x:Key="res_4">Search for &quot;Waveface Favorite TV&quot; on Google TV</system:String>
     <system:String x:Key="res_5">Select items to add to the album</system:String>
     <system:String x:Key="res_6">Album title</system:String>
     <system:String x:Key="res_7">Select all</system:String>

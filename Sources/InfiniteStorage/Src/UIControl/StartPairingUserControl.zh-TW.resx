@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="label1.Text" xml:space="preserve">
-    <value>歡迎使用 Favorite Home!</value>
+    <value>歡迎使用Piary圖庫!</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>請在手機上啟動 Favorite Photo Uploader， 立刻把您珍愛的照片與家庭影片送回本電腦</value>

@@ -125,12 +125,12 @@
     <value>271, 13</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
-    <value>Favorite Home 將會把照片與影片存放到此資料夾：</value>
+    <value>Piary圖庫將會把照片與影片存放到此資料夾：</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>160, 16</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
-    <value>Favorite Home 資料夾：</value>
+    <value>Piary圖庫資料夾：</value>
   </data>
 </root>

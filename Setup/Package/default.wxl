@@ -3,8 +3,8 @@
   <!-- This is translation to English (United States) -->
   <String Id="LANGUAGE">1033</String>
   <String Id="CULTURE">en-US</String>
-  <String Id="APPNAME">Favorite Home</String>
-  <String Id="SHORTCUT.UNINSTALLER.NAME">Uninstall Favorite Home</String>
+  <String Id="APPNAME">Piary Photos</String>
+  <String Id="SHORTCUT.UNINSTALLER.NAME">Uninstall Piary Photos</String>
   <String Id="SetUrlAcl">Configuring network</String>
   
   <!-- Copied from Wix 3.6 src\ext\FirewallExtension\wixlib\en-us.wxl -->

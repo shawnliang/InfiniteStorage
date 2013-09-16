@@ -187,7 +187,7 @@
     <value>7</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
-    <value>Favorite Home saves photos and home videos to this folder:</value>
+    <value>Piary Photos saves photos and home videos to this folder:</value>
   </data>
   <data name="&gt;&gt;label7.Name" xml:space="preserve">
     <value>label7</value>
@@ -214,7 +214,7 @@
     <value>6</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
-    <value>Favorite Home Folder:</value>
+    <value>Piary Photos Folder:</value>
   </data>
   <data name="&gt;&gt;label6.Name" xml:space="preserve">
     <value>label6</value>

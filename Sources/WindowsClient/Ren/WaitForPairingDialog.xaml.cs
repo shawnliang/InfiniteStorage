@@ -167,7 +167,7 @@ namespace Waveface.Client
 
 		private void Image_MouseDown_1(object sender, MouseButtonEventArgs e)
 		{
-			Process.Start("https://play.google.com/store/apps/details?id=com.waveface.uploader");
+			Process.Start("https://play.google.com/store/apps/details?id=com.waveface.photojournal");
 		}
 	}
 }

@@ -16,7 +16,7 @@ namespace InfiniteStorage.Manipulation
 		public static MoveResult Move(List<Guid> files, string full_target_path)
 		{
 			if (!full_target_path.StartsWith(MyFileFolder.Photo))
-				throw new ArgumentException("targe path must be under Favorite folder: " + full_target_path);
+				throw new ArgumentException("Invalid target path: " + full_target_path);
 
 			var partial_taget_path = PathUtil.MakeRelative(full_target_path, MyFileFolder.Photo);
 

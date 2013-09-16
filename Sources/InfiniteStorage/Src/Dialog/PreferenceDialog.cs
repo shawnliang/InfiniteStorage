@@ -17,11 +17,11 @@ namespace InfiniteStorage
 			Text = Resources.ProductName;
 			Icon = Resources.ProductIcon;
 
-			deviceListControl.SettingChanged += handleAnySettingChanged;
+			//deviceListControl.SettingChanged += handleAnySettingChanged;
 			aboutControl1.SettingsChanged += handleAnySettingChanged;
 			generalPreferenceControl1.SettingsChanged += handleAnySettingChanged;
 			tabAbout.Text = string.Format(Resources.AboutTab, Resources.ProductName);
-			homeSharingControl1.SettingsChanged += handleAnySettingChanged;
+			//homeSharingControl1.SettingsChanged += handleAnySettingChanged;
 
 			generalPreferenceControl1.Enabled = true;
 		}
@@ -70,10 +70,10 @@ namespace InfiniteStorage
 				Settings.Default.LibraryName = generalPreferenceControl1.LibraryName;
 				Settings.Default.Save();
 
-				saveDeviceListChanges();
+				//saveDeviceListChanges();
 				setAutoStartValue();
 				saveLogLevel();
-				saveHomeSharing();
+				//saveHomeSharing();
 				return true;
 			}
 			catch (Exception err)
@@ -85,46 +85,46 @@ namespace InfiniteStorage
 			}
 		}
 
-		private void saveHomeSharing()
-		{
-			bool somethingChanged = false;
+		//private void saveHomeSharing()
+		//{
+		//    bool somethingChanged = false;
 
-			if (homeSharingControl1.HomeSharingEnabled != HomeSharing.Enabled)
-			{
-				HomeSharing.Enabled = homeSharingControl1.HomeSharingEnabled;
-				somethingChanged = true;
-			}
+		//    if (homeSharingControl1.HomeSharingEnabled != HomeSharing.Enabled)
+		//    {
+		//        HomeSharing.Enabled = homeSharingControl1.HomeSharingEnabled;
+		//        somethingChanged = true;
+		//    }
 
-			if (homeSharingControl1.PasswordRequired != Settings.Default.HomeSharingPasswordRequired)
-			{
-				Settings.Default.HomeSharingPasswordRequired = homeSharingControl1.PasswordRequired;
-				somethingChanged = true;
-			}
+		//    if (homeSharingControl1.PasswordRequired != Settings.Default.HomeSharingPasswordRequired)
+		//    {
+		//        Settings.Default.HomeSharingPasswordRequired = homeSharingControl1.PasswordRequired;
+		//        somethingChanged = true;
+		//    }
 
-			if (homeSharingControl1.Password != Settings.Default.HomeSharingPassword)
-			{
-				Settings.Default.HomeSharingPassword = homeSharingControl1.Password;
-				somethingChanged = true;
-			}
+		//    if (homeSharingControl1.Password != Settings.Default.HomeSharingPassword)
+		//    {
+		//        Settings.Default.HomeSharingPassword = homeSharingControl1.Password;
+		//        somethingChanged = true;
+		//    }
 
-			if (somethingChanged)
-			{
-				Settings.Default.Save();
+		//    if (somethingChanged)
+		//    {
+		//        Settings.Default.Save();
 
-				if (homeSharingControl1.HomeSharingEnabled)
-				{
-					NginxUtility.Instance.PrepareNginxConfig(12888, Settings.Default.SingleFolderLocation);
-					NginxUtility.Instance.Start();
-				}
-				else
-				{
-					NginxUtility.Instance.Stop();
-				}
+		//        if (homeSharingControl1.HomeSharingEnabled)
+		//        {
+		//            NginxUtility.Instance.PrepareNginxConfig(12888, Settings.Default.SingleFolderLocation);
+		//            NginxUtility.Instance.Start();
+		//        }
+		//        else
+		//        {
+		//            NginxUtility.Instance.Stop();
+		//        }
 
-				BonjourServiceRegistrator.Instance.Register();
-			}
+		//        BonjourServiceRegistrator.Instance.Register();
+		//    }
 
-		}
+		//}
 
 		private void saveLogLevel()
 		{
@@ -141,47 +141,47 @@ namespace InfiniteStorage
 			}
 		}
 
-		private void saveDeviceListChanges()
-		{
-			Settings.Default.RejectOtherDevices = deviceListControl.RejectOtherDevices;
-			Settings.Default.ShowBackupProgressDialog = deviceListControl.ShowBackupProgress;
-			Settings.Default.Save();
+		//private void saveDeviceListChanges()
+		//{
+		//    Settings.Default.RejectOtherDevices = deviceListControl.RejectOtherDevices;
+		//    Settings.Default.ShowBackupProgressDialog = deviceListControl.ShowBackupProgress;
+		//    Settings.Default.Save();
 
-			if (!deviceListControl.DeletedDevices.Any())
-				return;
+		//    if (!deviceListControl.DeletedDevices.Any())
+		//        return;
 
-			var deviceIds = deviceListControl.DeletedDevices.Select(x => x.device_id).ToList();
-			using (var db = new MyDbContext())
-			{
-				var query = from dev in db.Object.Devices
-							where deviceIds.Contains(dev.device_id)
-							select dev;
+		//    var deviceIds = deviceListControl.DeletedDevices.Select(x => x.device_id).ToList();
+		//    using (var db = new MyDbContext())
+		//    {
+		//        var query = from dev in db.Object.Devices
+		//                    where deviceIds.Contains(dev.device_id)
+		//                    select dev;
 
-				foreach (var dev in query)
-					dev.deleted = true;
+		//        foreach (var dev in query)
+		//            dev.deleted = true;
 
-				db.Object.SaveChanges();
-			}
+		//        db.Object.SaveChanges();
+		//    }
 
-			var conns = ConnectedClientCollection.Instance.GetAllConnections();
+		//    var conns = ConnectedClientCollection.Instance.GetAllConnections();
 
-			foreach (var dev in deviceListControl.DeletedDevices)
-			{
-				var devConns = conns.Where((x) => x.device_id == dev.device_id);
+		//    foreach (var dev in deviceListControl.DeletedDevices)
+		//    {
+		//        var devConns = conns.Where((x) => x.device_id == dev.device_id);
 
-				devConns.ToList().ForEach(x =>
-				{
-					try
-					{
-						x.Stop(WebSocketSharp.Frame.CloseStatusCode.POLICY_VIOLATION, "Removed by user");
-					}
-					catch (Exception err)
-					{
-						log4net.LogManager.GetLogger(GetType()).Warn("Unable to send stop ws cmd to " + x.device_name, err);
-					}
-				});
-			}
-		}
+		//        devConns.ToList().ForEach(x =>
+		//        {
+		//            try
+		//            {
+		//                x.Stop(WebSocketSharp.Frame.CloseStatusCode.POLICY_VIOLATION, "Removed by user");
+		//            }
+		//            catch (Exception err)
+		//            {
+		//                log4net.LogManager.GetLogger(GetType()).Warn("Unable to send stop ws cmd to " + x.device_name, err);
+		//            }
+		//        });
+		//    }
+		//}
 
 		private void loadAutoStartValue()
 		{

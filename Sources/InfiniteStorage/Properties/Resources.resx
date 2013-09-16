@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ProductName" xml:space="preserve">
-    <value>Favorite Home</value>
+    <value>Piary Photos</value>
   </data>
   <data name="TrayMenuItem_OpenBackupFolder" xml:space="preserve">
     <value>Open backup folder</value>
@@ -194,13 +194,13 @@
     <value>Open</value>
   </data>
   <data name="DefLibraryName" xml:space="preserve">
-    <value>{0}'s Favorite Home</value>
+    <value>{0}'s Piary Photo Library</value>
   </data>
   <data name="AreYouSure" xml:space="preserve">
     <value>Are you sure?</value>
   </data>
   <data name="MoveFolderConfirmMsg" xml:space="preserve">
-    <value>This will move the Favorite Home folder and all the files inside from its current location to {0}.</value>
+    <value>This will move the Piary Photos folder and all the files inside from its current location to {0}.</value>
   </data>
   <data name="MoveFolderFailTitle" xml:space="preserve">
     <value>Move folder unsuccessful</value>
@@ -218,7 +218,7 @@
     <value>Unsorted</value>
   </data>
   <data name="DBVersionIncompatible" xml:space="preserve">
-    <value>Database is imcompatible because you have installed a newer version of this product and now downgrade to an older version. Please upgrade to the latest version of Favorite Home to proceed.</value>
+    <value>Database is imcompatible because you have installed a newer version of this product and now downgrade to an older version. Please upgrade to the latest version of Piary Photos to proceed.</value>
   </data>
   <data name="IncompatibleVersionDetected" xml:space="preserve">
     <value>Incompatible version detected</value>

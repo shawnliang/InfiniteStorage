@@ -121,21 +121,21 @@
     <value>正在安裝 Bonjour 服務...</value>
   </data>
   <data name="DowngradeNotSupported" xml:space="preserve">
-    <value>安裝精靈偵測到您已有較新版本的 Favorite Home 安裝在此部電腦上。無法繼續安裝。</value>
+    <value>安裝精靈偵測到您已有較新版本的Piary圖庫安裝在此部電腦上。無法繼續安裝。</value>
   </data>
   <data name="InstallBonjourService" xml:space="preserve">
     <value>正在安裝 Bonjour 服務...</value>
   </data>
   <data name="WelcomeStepGreetingInstall" xml:space="preserve">
-    <value>安裝精靈將自動在您的電腦上開始設定 Favorite Home。</value>
+    <value>安裝精靈將自動在您的電腦上開始設定Piary圖庫。</value>
   </data>
   <data name="WelcomeStepGreetingModify" xml:space="preserve">
-    <value>安裝精靈將修改 Favorite Home。</value>
+    <value>安裝精靈將修改Piary圖庫。</value>
   </data>
   <data name="WelcomeStepGreetingReinstall" xml:space="preserve">
-    <value>安裝精靈將重新安裝 Favorite Home。</value>
+    <value>安裝精靈將重新安裝Piary圖庫。</value>
   </data>
   <data name="WelcomeStepGreetingUninstall" xml:space="preserve">
-    <value>安裝精靈將解除安裝 Favoite Home。</value>
+    <value>安裝精靈將解除安裝Piary圖庫。</value>
   </data>
 </root>

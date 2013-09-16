@@ -507,16 +507,6 @@ namespace Waveface.Client
 
 			if (Settings.Default.IsFirstUse)
 			{
-				/*
-				MessageBoxResult _messageBoxResult = MessageBox.Show(Application.Current.MainWindow, "See a quick tour ?", "Favorite*", MessageBoxButton.YesNo, MessageBoxImage.Question,
-																	 MessageBoxResult.Yes);
-
-				if (_messageBoxResult == MessageBoxResult.Yes)
-				{
-					Process.Start(HELP_URL);
-				}
-				*/
-
 				showWaitForPairingDialog();
 
 				Settings.Default.IsFirstUse = false;

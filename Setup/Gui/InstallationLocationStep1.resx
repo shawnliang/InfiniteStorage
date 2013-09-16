@@ -136,7 +136,7 @@
     <value>14</value>
   </data>
   <data name="lblDescription.Text" xml:space="preserve">
-    <value>Choose your Favorite Home location:</value>
+    <value>Choose your Piary Photos location:</value>
   </data>
   <data name="&gt;&gt;lblDescription.Name" xml:space="preserve">
     <value>lblDescription</value>
@@ -205,10 +205,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Subtitle" xml:space="preserve">
-    <value>Please choose where Favorite Home saves synced files</value>
+    <value>Please choose where Piary Photos saves synced files</value>
   </data>
   <data name="$this.Title" xml:space="preserve">
-    <value>Favorite Home location</value>
+    <value>Piary Photos location</value>
   </data>
   <data name="&gt;&gt;errorProvider1.Name" xml:space="preserve">
     <value>errorProvider1</value>

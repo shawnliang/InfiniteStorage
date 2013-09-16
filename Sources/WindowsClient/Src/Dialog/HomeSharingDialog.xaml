@@ -51,7 +51,8 @@
         <TextBlock Margin="0,0,40,0"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   Text="{StaticResource res_1}"
+                   Text="{Binding Converter={StaticResource MultiLineStringConvertor},
+                                  Source={StaticResource res_1}}"
                    TextWrapping="Wrap" />
         <StackPanel Grid.Row="1"
                     VerticalAlignment="Center"

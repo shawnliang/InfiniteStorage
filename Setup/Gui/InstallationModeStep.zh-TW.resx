@@ -121,10 +121,10 @@
     <value>按"下一步"繼續</value>
   </data>
   <data name="lblDetails.Text" xml:space="preserve">
-    <value>安裝程式已偵測到您的電腦已安裝了 Favorite Home，請選擇您要執行的動作並按"下一步"繼續執行
+    <value>安裝程式已偵測到您的電腦已安裝了Piary圖庫，請選擇您要執行的動作並按"下一步"繼續執行
 </value>
   </data>
   <data name="lblWelcome.Text" xml:space="preserve">
-    <value>歡迎執行 Favorite Home 安裝程式</value>
+    <value>歡迎執行Piary圖庫安裝程式</value>
   </data>
 </root>

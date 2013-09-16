@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using InfiniteStorage.Properties;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Favorite Home")]
+[assembly: AssemblyTitle("Piary Photos")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Waveface")]
-[assembly: AssemblyProduct("Favorite Home")]
+[assembly: AssemblyProduct("Piary Photos")]
 [assembly: AssemblyCopyright("Copyright © Waveface 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

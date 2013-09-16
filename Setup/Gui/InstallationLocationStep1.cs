@@ -19,7 +19,7 @@ namespace Gui
 
 		private void InstallationLocationStep1_Entering(object sender, ChangeStepEventArgs e)
 		{
-			location.Text = Path.Combine(Environment.GetEnvironmentVariable("UserProfile"), "Favorite Home");
+			location.Text = Path.Combine(Environment.GetEnvironmentVariable("UserProfile"), "Piary Photos");
 			
 			if (!isLocationValid())
 				errorProvider1.SetError(location, Resources.LocationStep_NotEmpty);
@@ -50,7 +50,7 @@ namespace Gui
 
 
 			if (dialog.ShowDialog() == DialogResult.OK)
-				location.Text = Path.Combine(dialog.SelectedPath, "Favorite Home");
+				location.Text = Path.Combine(dialog.SelectedPath, "Piary Photos");
 		}
 
 		private void InstallationLocationStep1_MoveNext(object sender, ChangeStepEventArgs e)

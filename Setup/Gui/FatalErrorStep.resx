@@ -172,7 +172,7 @@
     <value>An unexpected error has occurred. Setup cannot continue.</value>
   </data>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>Favorite Home installation error</value>
+    <value>Piary Photos installation error</value>
   </data>
   <data name="lblTitle.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>10, 20, 10, 10</value>
