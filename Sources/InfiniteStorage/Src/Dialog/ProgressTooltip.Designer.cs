@@ -66,16 +66,16 @@
 			this.tabControlEx1.HideTabs = true;
 			this.tabControlEx1.Multiline = true;
 			this.tabControlEx1.Name = "tabControlEx1";
-			this.tabControlEx1.PageIndex = 1;
+			this.tabControlEx1.PageIndex = 2;
 			this.tabControlEx1.SelectedIndex = 0;
 			// 
 			// tabProgress
 			// 
+			resources.ApplyResources(this.tabProgress, "tabProgress");
 			this.tabProgress.BackColor = System.Drawing.SystemColors.Control;
 			this.tabProgress.Controls.Add(this.devname);
 			this.tabProgress.Controls.Add(this.progressBar1);
 			this.tabProgress.Controls.Add(this.progressText);
-			resources.ApplyResources(this.tabProgress, "tabProgress");
 			this.tabProgress.Name = "tabProgress";
 			this.tabProgress.DoubleClick += new System.EventHandler(this.onDoubleClick);
 			// 
@@ -98,11 +98,11 @@
 			// 
 			// tabDisconnected
 			// 
+			resources.ApplyResources(this.tabDisconnected, "tabDisconnected");
 			this.tabDisconnected.BackColor = System.Drawing.SystemColors.Control;
 			this.tabDisconnected.Controls.Add(this.devname3);
 			this.tabDisconnected.Controls.Add(this.disconnectedText);
 			this.tabDisconnected.Controls.Add(this.disconnect_desc);
-			resources.ApplyResources(this.tabDisconnected, "tabDisconnected");
 			this.tabDisconnected.Name = "tabDisconnected";
 			this.tabDisconnected.DoubleClick += new System.EventHandler(this.onDoubleClick);
 			// 
@@ -126,10 +126,10 @@
 			// 
 			// tabComplete
 			// 
+			resources.ApplyResources(this.tabComplete, "tabComplete");
 			this.tabComplete.BackColor = System.Drawing.SystemColors.Control;
 			this.tabComplete.Controls.Add(this.importCompleteText);
 			this.tabComplete.Controls.Add(this.devname2);
-			resources.ApplyResources(this.tabComplete, "tabComplete");
 			this.tabComplete.Name = "tabComplete";
 			this.tabComplete.DoubleClick += new System.EventHandler(this.onDoubleClick);
 			// 
