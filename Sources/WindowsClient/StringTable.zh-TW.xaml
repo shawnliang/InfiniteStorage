@@ -85,7 +85,7 @@
     <system:String x:Key="intro_step3_desc1">複製連結，分享給親朋好友</system:String>
     <system:String x:Key="intro_step3_desc2">按下開啟網頁，看看雲相冊的樣子</system:String>
     <system:String x:Key="intro_step3_title">您的雲端相冊網頁已經產生，正在上傳圖片...</system:String>
-    <system:String x:Key="intro_step5_desc">謝謝您的使用！最後，請針對這套軟體，給我們評分，以及及您寶貴的意見（可不填）</system:String>
+    <system:String x:Key="intro_step5_desc">謝謝您的使用！最後，請針對這套軟體，給我們評分，以及您寶貴的意見（可不填）</system:String>
     <system:String x:Key="intro_step5_no_stars">點選一到五顆星，給我們評價</system:String>
     <system:String x:Key="intro_step5_rateUs">點選一到五顆星，給我們評價</system:String>
     <system:String x:Key="intro_step5_submit">送出反饋</system:String>

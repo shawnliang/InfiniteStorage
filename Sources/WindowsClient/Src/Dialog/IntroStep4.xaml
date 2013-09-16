@@ -58,7 +58,7 @@
                     <Image HorizontalAlignment="Center"
                            Source="/Waveface.Client;component/Resource/4_crown.png"
                            Stretch="None" />
-                    <TextBlock Margin="100,-10,100, 0"
+                    <TextBlock Margin="120,-10,120, 0"
                                VerticalAlignment="Center"
                                FontSize="20"
                                Text="{StaticResource intro_step5_desc}"
