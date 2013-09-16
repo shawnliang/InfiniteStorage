@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Favorite Home")]
+[assembly: AssemblyTitle("Piary Photos")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Waveface Inc")]
-[assembly: AssemblyProduct("Favorite Home")]
+[assembly: AssemblyProduct("Piary Photos")]
 [assembly: AssemblyCopyright("Copyright © Waveface 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

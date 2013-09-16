@@ -118,19 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DowngradeNotSupported" xml:space="preserve">
-    <value>The wizard has detected that newer version of Favorite Home is already installed on your computer. Setup cannot continue.</value>
+    <value>The wizard has detected that newer version of Piary Photos is already installed on your computer. Setup cannot continue.</value>
   </data>
   <data name="WelcomeStepGreetingInstall" xml:space="preserve">
-    <value>The wizard will install Favorite Home on your computer.</value>
+    <value>The wizard will install Piary Photos on your computer.</value>
   </data>
   <data name="WelcomeStepGreetingUninstall" xml:space="preserve">
-    <value>The wizard will uninstall Favorite Home from your computer.</value>
+    <value>The wizard will uninstall Piary Photos from your computer.</value>
   </data>
   <data name="WelcomeStepGreetingReinstall" xml:space="preserve">
-    <value>The wizard will reinstall Favorite Home on your computer.</value>
+    <value>The wizard will reinstall Piary Photos on your computer.</value>
   </data>
   <data name="WelcomeStepGreetingModify" xml:space="preserve">
-    <value>The wizard will modify Favorite Home on your computer.</value>
+    <value>The wizard will modify Piary Photos on your computer.</value>
   </data>
   <data name="MainMsiFile" xml:space="preserve">
     <value>Package.msi</value>

@@ -171,7 +171,7 @@
     <value>177, 96</value>
   </data>
   <data name="lblWelcome.Text" xml:space="preserve">
-    <value>Welcome to Favorite Home installer</value>
+    <value>Welcome to Piary Photos installer</value>
   </data>
   <data name="lblDetails.Text" xml:space="preserve">
     <value>The wizard has detected that the application is installed on your computer. Please choose one of the options below and press Next button to continue.</value>

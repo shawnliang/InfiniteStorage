@@ -35,84 +35,111 @@
 
     </Window.Resources>
 
-    <local:IntroLayout Margin="3" NavigatorImageUri="/Waveface.Client;component/Resource/4_number.png">
-        <local:IntroLayout.Effect>
-            <DropShadowEffect ShadowDepth="1" />
-        </local:IntroLayout.Effect>
-        <StackPanel Margin="0,70, 0, 0" Orientation="Vertical">
-            <Grid>
-                <Image HorizontalAlignment="Center"
-                       Source="/Waveface.Client;component/Resource/4_crown.png"
-                       Stretch="None" />
-                <TextBlock Margin="100,-10,100, 0"
-                           VerticalAlignment="Center"
-                           FontSize="20"
-                           Text="{StaticResource intro_step5_desc}"
-                           TextAlignment="Center"
-                           TextWrapping="WrapWithOverflow" />
-            </Grid>
-            <Grid Margin="40, 30, 40, 0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Line Grid.Column="0"
-                      Stretch="Fill"
-                      Stroke="Gray"
-                      StrokeThickness="1"
-                      X1="1"
-                      X2="100"
-                      Y1="0"
-                      Y2="0" />
-                <TextBlock Grid.Column="1"
-                           Margin="10,0"
-                           Foreground="gray"
-                           Text="{StaticResource intro_step5_rateUs}" />
-                <Line Grid.Column="2"
-                      Stretch="Fill"
-                      Stroke="Gray"
-                      StrokeThickness="1"
-                      X1="1"
-                      X2="100"
-                      Y1="0"
-                      Y2="0" />
-            </Grid>
+    <Grid>
 
-            <UniformGrid Margin="150, 10" Columns="5">
-                <Image MouseLeftButtonDown="star_MouseLeftButtonDown" Style="{StaticResource unstarredStyle}" />
-                <Image MouseLeftButtonDown="star_MouseLeftButtonDown" Style="{StaticResource unstarredStyle}" />
-                <Image MouseLeftButtonDown="star_MouseLeftButtonDown" Style="{StaticResource unstarredStyle}" />
-                <Image MouseLeftButtonDown="star_MouseLeftButtonDown" Style="{StaticResource unstarredStyle}" />
-                <Image MouseLeftButtonDown="star_MouseLeftButtonDown" Style="{StaticResource unstarredStyle}" />
-            </UniformGrid>
+        <local:IntroLayout Margin="3" NavigatorImageUri="/Waveface.Client;component/Resource/4_number.png">
+            <local:IntroLayout.Effect>
+                <DropShadowEffect ShadowDepth="1" />
+            </local:IntroLayout.Effect>
 
-            <TextBox MinHeight="60"
-                     Margin="40,10"
-                     FontSize="14"
-                     Foreground="Gray"
-                     GotFocus="TextBox_GotFocus"
-                     LostFocus="suggestion_LostFocus"
-                     Text="{StaticResource intro_step5_your_suggestion}" />
+        </local:IntroLayout>
 
-            <Grid>
-                <TextBlock Margin="40,0,20,7"
-                           VerticalAlignment="Bottom"
-                           FontSize="15"
-                           Foreground="Red"
-                           Text="{StaticResource intro_step5_no_stars}"
-                           TextWrapping="WrapWithOverflow"
-                           Visibility="Collapsed" />
-                <Button MinWidth="120"
-                        Margin="0,10,0,0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Click="Button_Click"
-                        Content="{StaticResource intro_step5_submit}" />
-            </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="71" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="40" />
+            </Grid.ColumnDefinitions>
 
-        </StackPanel>
-    </local:IntroLayout>
+            <StackPanel Grid.Column="1"
+                        Margin="0,70, 0, 0"
+                        Orientation="Vertical">
+                <Grid>
+                    <Image HorizontalAlignment="Center"
+                           Source="/Waveface.Client;component/Resource/4_crown.png"
+                           Stretch="None" />
+                    <TextBlock Margin="120,-10,120, 0"
+                               VerticalAlignment="Center"
+                               FontSize="20"
+                               Text="{StaticResource intro_step5_desc}"
+                               TextAlignment="Center"
+                               TextWrapping="WrapWithOverflow" />
+                </Grid>
+                <Grid Margin="40, 30, 40, 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Line Grid.Column="0"
+                          Stretch="Fill"
+                          Stroke="Gray"
+                          StrokeThickness="1"
+                          X1="1"
+                          X2="100"
+                          Y1="0"
+                          Y2="0" />
+                    <TextBlock Grid.Column="1"
+                               Margin="10,0"
+                               Foreground="gray"
+                               Text="{StaticResource intro_step5_rateUs}" />
+                    <Line Grid.Column="2"
+                          Stretch="Fill"
+                          Stroke="Gray"
+                          StrokeThickness="1"
+                          X1="1"
+                          X2="100"
+                          Y1="0"
+                          Y2="0" />
+                </Grid>
+
+                <UniformGrid Margin="150, 10" Columns="5">
+                    <Image x:Name="star1"
+                           MouseLeftButtonDown="star_MouseLeftButtonDown"
+                           Style="{StaticResource unstarredStyle}" />
+                    <Image x:Name="star2"
+                           MouseLeftButtonDown="star_MouseLeftButtonDown"
+                           Style="{StaticResource unstarredStyle}" />
+                    <Image x:Name="star3"
+                           MouseLeftButtonDown="star_MouseLeftButtonDown"
+                           Style="{StaticResource unstarredStyle}" />
+                    <Image x:Name="star4"
+                           MouseLeftButtonDown="star_MouseLeftButtonDown"
+                           Style="{StaticResource unstarredStyle}" />
+                    <Image x:Name="star5"
+                           MouseLeftButtonDown="star_MouseLeftButtonDown"
+                           Style="{StaticResource unstarredStyle}" />
+                </UniformGrid>
+
+                <TextBox x:Name="suggestion"
+                         MinHeight="60"
+                         Margin="40,10"
+                         FontSize="14"
+                         Foreground="Gray"
+                         GotFocus="TextBox_GotFocus"
+                         LostFocus="suggestion_LostFocus"
+                         Text="{StaticResource intro_step5_your_suggestion}" />
+
+                <Grid>
+                    <TextBlock x:Name="errorText"
+                               Margin="40,0,20,7"
+                               VerticalAlignment="Bottom"
+                               FontSize="15"
+                               Foreground="Red"
+                               Text="{StaticResource intro_step5_no_stars}"
+                               TextWrapping="WrapWithOverflow"
+                               Visibility="Collapsed" />
+                    <Button MinWidth="120"
+                            Margin="0,10,0,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Click="Button_Click"
+                            Content="{StaticResource intro_step5_submit}" />
+                </Grid>
+
+            </StackPanel>
+        </Grid>
+    </Grid>
 
 
 </Window>

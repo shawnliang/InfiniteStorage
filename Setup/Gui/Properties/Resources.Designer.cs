@@ -80,7 +80,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The wizard has detected that newer version of Favorite Home is already installed on your computer. Setup cannot continue..
+        ///   Looks up a localized string similar to The wizard has detected that newer version of Piary Photos is already installed on your computer. Setup cannot continue..
         /// </summary>
         internal static string DowngradeNotSupported {
             get {
@@ -144,7 +144,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The wizard will install Favorite Home on your computer..
+        ///   Looks up a localized string similar to The wizard will install Piary Photos on your computer..
         /// </summary>
         internal static string WelcomeStepGreetingInstall {
             get {
@@ -153,7 +153,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The wizard will modify Favorite Home on your computer..
+        ///   Looks up a localized string similar to The wizard will modify Piary Photos on your computer..
         /// </summary>
         internal static string WelcomeStepGreetingModify {
             get {
@@ -162,7 +162,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The wizard will reinstall Favorite Home on your computer..
+        ///   Looks up a localized string similar to The wizard will reinstall Piary Photos on your computer..
         /// </summary>
         internal static string WelcomeStepGreetingReinstall {
             get {
@@ -171,7 +171,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The wizard will uninstall Favorite Home from your computer..
+        ///   Looks up a localized string similar to The wizard will uninstall Piary Photos from your computer..
         /// </summary>
         internal static string WelcomeStepGreetingUninstall {
             get {

@@ -47,11 +47,11 @@
     <system:String x:Key="CreateFavoriteButtonText">建新相冊</system:String>
     <system:String x:Key="CreateNewAlbumDialogDescription">請輸入相冊名稱:</system:String>
     <system:String x:Key="CreateNewAlbumDialogTitle">新增相冊</system:String>
-    
+
     <system:String x:Key="CreateNewFolder">新增至新建資料夾</system:String>
     <system:String x:Key="CreateNewFolderDialogDescription">請輸入資料夾名稱:</system:String>
     <system:String x:Key="CreateNewFolderDialogTitle">新增資料夾</system:String>
-    
+
     <system:String x:Key="Day">同一天</system:String>
     <system:String x:Key="DefaultFavoriteName">未命名的相冊</system:String>
     <system:String x:Key="EmailButtonText">Email給...</system:String>
@@ -59,7 +59,7 @@
     <system:String x:Key="ExistingFolder">現有目錄</system:String>
     <system:String x:Key="ExitButtonText">離開</system:String>
     <system:String x:Key="Favorite">最愛相簿</system:String>
-    
+
     <system:String x:Key="FavoritesGroupTitle">本地相冊</system:String>
     <system:String x:Key="header_subtitle_complete">點選下方縮圖，即可跳至資料夾</system:String>
     <system:String x:Key="header_subtitle_importing">正在匯入第 {0} 個項目，剩餘時間約 {1} 分鐘</system:String>
@@ -73,7 +73,7 @@
     <system:String x:Key="header_title_stopped">裝置內尚有 {0} 個項目未能匯入</system:String>
     <system:String x:Key="ImportContactButtonText">匯入Gmail聯絡人</system:String>
     <system:String x:Key="intro_step1_button">好</system:String>
-    
+
     <system:String x:Key="intro_step1_desc1">每張卡片就是一個事件</system:String>
     <system:String x:Key="intro_step1_desc2">請雙擊卡片，觀看裏頭的相片</system:String>
     <system:String x:Key="intro_step1_title">歡迎來到你的相片日記</system:String>
@@ -85,11 +85,11 @@
     <system:String x:Key="intro_step3_desc1">複製連結，分享給親朋好友</system:String>
     <system:String x:Key="intro_step3_desc2">按下開啟網頁，看看雲相冊的樣子</system:String>
     <system:String x:Key="intro_step3_title">您的雲端相冊網頁已經產生，正在上傳圖片...</system:String>
-    <system:String x:Key="intro_step5_desc">謝謝您的使用！最後，請針對這套軟體，給我們評分，以及及您寶貴的意見（可不填）</system:String>
+    <system:String x:Key="intro_step5_desc">謝謝您的使用！最後，請針對這套軟體，給我們評分，以及您寶貴的意見（可不填）</system:String>
     <system:String x:Key="intro_step5_no_stars">點選一到五顆星，給我們評價</system:String>
     <system:String x:Key="intro_step5_rateUs">點選一到五顆星，給我們評價</system:String>
     <system:String x:Key="intro_step5_submit">送出反饋</system:String>
-    
+
     <system:String x:Key="intro_step5_your_suggestion">您的建議...</system:String>
     <system:String x:Key="LaterButtonText">下次再說</system:String>
     <system:String x:Key="menuitem_add_album">加入現有相冊</system:String>
@@ -176,8 +176,6 @@
     <system:String x:Key="Starred">星號標記</system:String>
     <system:String x:Key="TakeTourButtonText">觀看</system:String>
     <system:String x:Key="TakeTourDialogTitle">觀看快速導覽?</system:String>
-    <system:String x:Key="TakeTourMSgHomeShare">See your recent and favorited moments on your tablet and TV anywhere at home. Check out how it works.</system:String>
-    <system:String x:Key="TakeTourMsgShare">You can share your favorite moments to favorite people outside. Check out how.</system:String>
     <system:String x:Key="UnselectAll">全不選</system:String>
     <system:String x:Key="video">部影片</system:String>
     <system:String x:Key="videos">部影片</system:String>

@@ -7,6 +7,7 @@ namespace InfiniteStorage.Data
 	{
 		public static Uri WebBaseUri { get; private set; }
 		public static Uri ApiBaseUri { get; private set; }
+		public static Uri UserTrackUri { get; private set; }
 
 		static ProgramConfig()
 		{
@@ -15,6 +16,9 @@ namespace InfiniteStorage.Data
 
 			var apiServer = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ApiServer", "https://develop.waveface.com");
 			ApiBaseUri = new Uri(apiServer);
+
+			var userTrackUri = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "UserTrackUri", "https://dev.waveface.com/usertrack");
+			UserTrackUri = new Uri(userTrackUri);
 		}
 
 		public static string FromWebBase(string relativePath)

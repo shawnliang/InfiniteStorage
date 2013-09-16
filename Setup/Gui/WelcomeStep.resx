@@ -145,7 +145,7 @@
     <value>$this</value>
   </data>
   <data name="lblMode.Text" xml:space="preserve">
-    <value>The wizard will configure Favorite Home on your computer.</value>
+    <value>The wizard will configure Piary Photos on your computer.</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>SharpSetup.UI.Forms.Modern.ModernInfoStep, SharpSetup, Version=1.4.1.158, Culture=neutral, PublicKeyToken=null</value>

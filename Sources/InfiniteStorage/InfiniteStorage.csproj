@@ -328,6 +328,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\HomeSharingControl.resx">
       <DependentUpon>HomeSharingControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\HomeSharingControl.zh-TW.resx">
       <DependentUpon>HomeSharingControl.cs</DependentUpon>
@@ -356,15 +357,19 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\StartPairingUserControl.zh-TW.resx">
       <DependentUpon>StartPairingUserControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\StorageLocationControl.resx">
       <DependentUpon>StorageLocationControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\StartPairingUserControl.resx">
       <DependentUpon>StartPairingUserControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\StorageLocationControl.zh-TW.resx">
       <DependentUpon>StorageLocationControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="..\..\Libs\nginx-1.2.3\conf\mime.types">
       <Link>nginx\conf\mime.types</Link>

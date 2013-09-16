@@ -208,7 +208,7 @@
     <value>3</value>
   </data>
   <data name="lblHomeSharingExplain.Text" xml:space="preserve">
-    <value>By enabling Home Sharing, you can enjoy your favorite photos and home videos on Android pads and Google TV.</value>
+    <value>By enabling Home Sharing, you can enjoy your Piary Photos and home videos on Android pads and Google TV.</value>
   </data>
   <data name="pwdProtection.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>

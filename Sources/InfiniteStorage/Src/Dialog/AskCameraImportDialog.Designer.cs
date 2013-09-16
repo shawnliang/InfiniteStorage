@@ -50,9 +50,9 @@
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(411, 60);
 			this.label1.TabIndex = 0;
-			this.label1.Text = "Favorite Home automatically imports photos and videos from your digital camera. Y" +
+			this.label1.Text = "Piary Photos automatically imports photos and videos from your digital camera. Y" +
     "ou can then organize your photos and videos and even share them with your friend" +
-    "s with Favorite Home.";
+	"s with Piary Photos.";
 			// 
 			// button1
 			// 
@@ -137,7 +137,7 @@
 			this.radioImport.Size = new System.Drawing.Size(107, 17);
 			this.radioImport.TabIndex = 0;
 			this.radioImport.TabStop = true;
-			this.radioImport.Text = "Import to Favorite";
+			this.radioImport.Text = "Import to Piary Photos";
 			this.radioImport.UseVisualStyleBackColor = true;
 			// 
 			// checkBoxRemember
@@ -169,7 +169,7 @@
 			this.MinimizeBox = false;
 			this.Name = "AskCameraImportDialog";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "Favorite Auto Import";
+			this.Text = "Piary Photos Auto Import";
 			this.TopMost = true;
 			this.Load += new System.EventHandler(this.AskCameraImportDialog_Load);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

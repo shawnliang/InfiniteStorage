@@ -8,7 +8,7 @@ def upload_s3(source, target):
     bucket = s3.get_bucket('wammer-station')
       
     key = bucket.new_key('WindowsStation/' + target)
-    key.set_contents_from_filename(source)
+    key.set_contents_from_filename(source, replace = True)
     key.set_acl('public-read')
 
 

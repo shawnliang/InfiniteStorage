@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>Favorite Home 安裝失敗</value>
+    <value>Piary圖庫安裝失敗</value>
   </data>
   <data name="lblDetails.Text" xml:space="preserve">
     <value>發生了不預期的錯誤，無法繼續安裝
