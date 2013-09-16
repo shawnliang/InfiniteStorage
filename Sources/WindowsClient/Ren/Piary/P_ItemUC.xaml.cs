@@ -121,6 +121,8 @@ namespace Waveface.Client
 		{
 			m_updateUI = true;
 
+			IsAllImagesLoadOK = true;
+
 			foreach (FileEntry _fileEntry in Item.Files)
 			{
 				if (!_fileEntry.has_origin)
@@ -183,15 +185,15 @@ namespace Waveface.Client
 		{
 			m_oldIndex = index;
 
-			if (!IsAllImagesLoadOK)
-			{
-				rectMask.Visibility = Visibility.Visible;
-				tbWaiting.Visibility = Visibility.Visible;
-			}
-			else
+			if (IsAllImagesLoadOK)
 			{
 				rectMask.Visibility = Visibility.Collapsed;
 				tbWaiting.Visibility = Visibility.Collapsed;
+			}
+			else
+			{
+				rectMask.Visibility = Visibility.Visible;
+				tbWaiting.Visibility = Visibility.Visible;
 			}
 
 			if (Item.Files.Count == 0)
