@@ -68,7 +68,8 @@
                        TextAlignment="Center"
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
-            <StackPanel Margin="8, 4"
+
+            <StackPanel Margin="8, 4" x:Name="spTime"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Orientation="Horizontal">
@@ -81,20 +82,27 @@
                 <TextBlock x:Name="tbTime"
                            FontSize="12"
                            FontWeight="Bold"
+                           TextTrimming="CharacterEllipsis"
+                           TextWrapping="NoWrap"
                            Foreground="#676767" />
             </StackPanel>
-            <StackPanel Margin="8, 4"
+
+            <StackPanel Margin="8, 4" x:Name="spLocation"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Orientation="Horizontal">
                 <Image x:Name="imgLocation"
                        Width="12"
                        Height="12"
+                       HorizontalAlignment="Right"
                        VerticalAlignment="Center"
                        Source="pack://application:,,,/Resource/map16.png" />
                 <TextBlock x:Name="tbLocation"
+                           HorizontalAlignment="Right"
                            FontSize="12"
                            FontWeight="Bold"
+                           TextWrapping="NoWrap"
+                           TextTrimming="CharacterEllipsis"
                            Foreground="#676767" />
             </StackPanel>
             <TextBlock x:Name="tbCount"

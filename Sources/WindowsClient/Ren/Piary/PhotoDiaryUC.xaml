@@ -263,7 +263,7 @@
 
             <Popup x:Name="sharePopup"
                    AllowsTransparency="True"
-                   HorizontalOffset="-85"
+                   HorizontalOffset="-96"
                    Placement="Top"
                    PlacementTarget="{Binding ElementName=btnShare}"
                    PopupAnimation="Fade"

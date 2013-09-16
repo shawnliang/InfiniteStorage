@@ -182,7 +182,7 @@
     <system:String x:Key="video">部影片</system:String>
     <system:String x:Key="videos">部影片</system:String>
     <system:String x:Key="WithoutContentMessageText">請先選擇一些項目</system:String>
-    <system:String x:Key="x_days_ago">{0}日前</system:String>
+    <system:String x:Key="x_days_ago">{0}天前</system:String>
     <system:String x:Key="Diary_title">焦點動態</system:String>
     <system:String x:Key="Diary_filter_all">全部</system:String>
     <system:String x:Key="Diary_selectionText">已選取{0}個事件 ({1})</system:String>

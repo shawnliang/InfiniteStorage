@@ -140,6 +140,10 @@ namespace Waveface.Client
 			MyWidth = myWidth;
 			MyHeight = myHeight;
 			MySquare = MyWidth - 20;
+			spTime.Width = (MyWidth / 2);
+			spLocation.Width = (MyWidth / 2);
+			tbLocation.Width = (MyWidth / 2) - 16;
+			tbTime.Width = (MyWidth / 2) - 16;
 
 			GetCounts();
 
