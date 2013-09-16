@@ -496,33 +496,6 @@ namespace Waveface.Client
 			m_YM_Files = _YM_Files;
 		}
 
-		public static string GetCountsString(int photosCount, int videosCount)
-		{
-			string _c = string.Empty;
-
-			string _photo = " " + (string)Application.Current.FindResource("photo");
-			string _photos = " " + (string)Application.Current.FindResource("photos");
-			string _video = " " + (string)Application.Current.FindResource("video");
-			string _videos = " " + (string)Application.Current.FindResource("videos");
-
-			if (photosCount > 0)
-			{
-				_c = photosCount + ((photosCount == 1) ? _photo : _photos);
-			}
-
-			if (videosCount > 0)
-			{
-				if (photosCount > 0)
-				{
-					_c = _c + ", ";
-				}
-
-				_c = _c + videosCount + ((videosCount == 1) ? _video : _videos);
-			}
-
-			return _c;
-		}
-
 		#endregion
 
 		private void tbtnCloudSharing_Checked(object sender, RoutedEventArgs e)

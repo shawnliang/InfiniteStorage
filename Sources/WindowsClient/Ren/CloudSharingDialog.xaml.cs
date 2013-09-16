@@ -54,8 +54,8 @@ namespace Waveface.Client
 
 		private void CenterWindowOnScreen()
 		{
-			double _screenWidth = SystemParameters.PrimaryScreenWidth;
-			double _screenHeight = SystemParameters.PrimaryScreenHeight;
+			double _screenWidth = SystemParameters.WorkArea.Width;
+			double _screenHeight = SystemParameters.WorkArea.Height;
 
 			Width = _screenWidth * 0.75;
 			Height = _screenHeight * 0.75;

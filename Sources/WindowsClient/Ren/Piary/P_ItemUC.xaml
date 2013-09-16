@@ -68,45 +68,55 @@
                        TextAlignment="Center"
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap" />
-            <StackPanel Margin="8, 4"
+
+            <StackPanel Margin="8, 4" x:Name="spTime"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Orientation="Horizontal">
                 <Image x:Name="imgClock"
-                       Width="12"
-                       Height="12"
+                       Width="11"
+                       Height="11"
                        Margin="0,0,1,0"
                        VerticalAlignment="Center"
                        Source="pack://application:,,,/Resource/clock16.png" />
                 <TextBlock x:Name="tbTime"
-                           FontSize="12"
+                           FontSize="11"
                            FontWeight="Bold"
+                           TextTrimming="CharacterEllipsis"
+                           TextWrapping="NoWrap"
                            Foreground="#676767" />
             </StackPanel>
-            <StackPanel Margin="8, 4"
+
+            <StackPanel Margin="8, 4" x:Name="spLocation"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Orientation="Horizontal">
                 <Image x:Name="imgLocation"
-                       Width="12"
-                       Height="12"
+                       Width="11"
+                       Height="11"
+                       HorizontalAlignment="Right"
                        VerticalAlignment="Center"
                        Source="pack://application:,,,/Resource/map16.png" />
                 <TextBlock x:Name="tbLocation"
-                           FontSize="12"
+                           HorizontalAlignment="Right"
+                           FontSize="11"
                            FontWeight="Bold"
+                           TextWrapping="NoWrap"
+                           TextTrimming="CharacterEllipsis"
                            Foreground="#676767" />
             </StackPanel>
+            
             <TextBlock x:Name="tbCount"
                        Margin="8, 4"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Bottom"
-                       FontSize="12" />
+                       FontSize="11" />
+            
             <TextBlock x:Name="tbDevice"
                        Margin="8, 4"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Bottom"
-                       FontSize="12" />
+                       FontSize="11" />
         </Grid>
         <Border Grid.RowSpan="2"
                 BorderBrush="#E0E0E0"

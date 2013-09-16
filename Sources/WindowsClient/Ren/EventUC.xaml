@@ -200,7 +200,9 @@
                                             BorderThickness="3"
                                             Visibility="Collapsed">
                                         <Grid>
-                                            <TextBlock FontSize="32" FontWeight="ExtraBold"  HorizontalAlignment="Center" VerticalAlignment="Center"  Foreground="#ccffffff" Text="{Binding Day}"/>
+                                            <Rectangle Fill="#80000000" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" /> 
+                                            <TextBlock FontSize="24" FontWeight="ExtraBold"  HorizontalAlignment="Center" VerticalAlignment="Top"  Foreground="#ccffffff" Text="{Binding Day}"/>
+                                            <TextBlock FontSize="12" FontWeight="ExtraBold" Margin="0, 0, 0, 4"  HorizontalAlignment="Center" VerticalAlignment="Bottom"  Foreground="#ccffffff" Text="{Binding Week}"/>
                                         </Grid>
                                     </Border>
                                 </Grid>

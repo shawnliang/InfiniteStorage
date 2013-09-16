@@ -112,7 +112,7 @@ namespace Waveface.Client
 
 			//rspRightSidePane2.lblHomeSharingTutorialTip.MouseDown += lblHomeSharingTutorialTip_MouseDown;
 
-			lblContentTypeCount.Content = string.Format("0 photos 0 videos");
+			lblContentTypeCount.Content = "";
 
 			//Observable.FromEventPattern(
 			//    h => lbxDeviceContainer.TreeViewItemClick += h,
@@ -774,7 +774,7 @@ namespace Waveface.Client
 			if (group == null)
 				lblContentTypeCount.Content = "";
 			else
-				lblContentTypeCount.Content = string.Format("{0} photos {1} videos",
+				lblContentTypeCount.Content = GetCountsString(
 															group.Contents.Count(item =>
 																					 {
 																						 var content = item as IContent;
@@ -2030,5 +2030,33 @@ namespace Waveface.Client
 		}
 
 		#endregion
+
+		public static string GetCountsString(int photosCount, int videosCount)
+		{
+			string _c = string.Empty;
+
+			string _photo = " " + (string)System.Windows.Application.Current.FindResource("photo");
+			string _photos = " " + (string)System.Windows.Application.Current.FindResource("photos");
+			string _video = " " + (string)System.Windows.Application.Current.FindResource("video");
+			string _videos = " " + (string)System.Windows.Application.Current.FindResource("videos");
+
+			if (photosCount > 0)
+			{
+				_c = photosCount + ((photosCount == 1) ? _photo : _photos);
+			}
+
+			if (videosCount > 0)
+			{
+				if (photosCount > 0)
+				{
+					_c = _c + ", ";
+				}
+
+				_c = _c + videosCount + ((videosCount == 1) ? _video : _videos);
+			}
+
+			return _c;
+		}
+
 	}
 }

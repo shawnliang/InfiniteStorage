@@ -52,7 +52,7 @@
                    Visibility="{Binding Path=IsVideo,
                                         Converter={StaticResource BoolToHiddenConverter}}" />
 
-            <Rectangle Fill="#c0000000"
+            <Rectangle Fill="#40000000"
                        Visibility="{Binding Converter={StaticResource BoolToVisibilityConverter},
                                             RelativeSource={RelativeSource Mode=FindAncestor,
                                                                            AncestorType={x:Type ListBoxItem},

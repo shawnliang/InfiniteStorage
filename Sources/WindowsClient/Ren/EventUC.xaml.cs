@@ -4,11 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using Waveface.Model;
 
 #endregion
@@ -27,6 +25,7 @@ namespace Waveface.Client
 		public bool IsLess { get; set; }
 		public string MoreText { get; set; }
 		public string Day { get; set; }
+		public string Week { get; set; }
 		public BitmapSource MediaSource { get; set; }
 		public string FileID { get; set; }
 
@@ -148,7 +147,8 @@ namespace Waveface.Client
 															   IsVideo = false,
 															   IsPhoto = true,
 															   HasOrigin = _file.has_origin,
-															   Day = _file.taken_time.Day.ToString()
+															   Day = _file.taken_time.Day.ToString(),
+															   Week=_file.taken_time.ToString("ddd")
 														   };
 
 								try
@@ -176,7 +176,8 @@ namespace Waveface.Client
 															   IsVideo = true,
 															   IsPhoto = false,
 															   HasOrigin = _file.has_origin,
-															   Day = _file.taken_time.Day.ToString()
+															   Day = _file.taken_time.Day.ToString(),
+															   Week = _file.taken_time.ToString("ddd")
 														   };
 
 								try
@@ -287,7 +288,7 @@ namespace Waveface.Client
 			tbTitleMonth.Text = FileEntrys[0].taken_time.ToString("MMMM").ToUpper();
 			tbTitleYear.Text = FileEntrys[0].taken_time.ToString("yyyy");
 
-			tbTotalCount.Text = SourceAllFilesUC.GetCountsString(PhotosCount, VideosCount);
+			tbTotalCount.Text = MainWindow.GetCountsString(PhotosCount, VideosCount);
 		}
 
 		public void GetCounts()

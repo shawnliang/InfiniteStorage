@@ -335,12 +335,17 @@ namespace Waveface.Client
 
 				string _eventID = _event.event_id.ToString();
 
+				if(!m_eventID_FileEntrys.ContainsKey(_eventID))
+				{
+					continue;
+				}
+
 				EventEntry _eventEntry = new EventEntry
 											 {
 												 event_id = _eventID,
 												 DeviceName = GetDeviceName(_event.device_id),
 												 Event = _event,
-												 Files = m_eventID_FileEntrys.ContainsKey(_eventID) ? m_eventID_FileEntrys[_eventID] : new List<FileEntry>()
+												 Files = m_eventID_FileEntrys[_eventID]
 											 };
 
 				_id_event_s.Add(_eventID, _eventEntry);
