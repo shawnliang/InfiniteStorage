@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using InfiniteStorage.Data;
+using Waveface.ClientFramework;
 
 namespace Waveface.Client
 {
@@ -33,15 +36,7 @@ namespace Waveface.Client
 
 		private void star_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			var panel = LogicalTreeHelper.GetParent(sender as DependencyObject) as UniformGrid;
-
-			var stars = new List<Image> {};
-
-			foreach (Image star in LogicalTreeHelper.GetChildren(panel))
-			{
-				stars.Add(star);
-			}
-			
+			var stars = new List<Image> { star1, star2, star3, star4, star5 };
 
 			if (sender == stars[0])
 				num_of_star = 1;
@@ -70,34 +65,14 @@ namespace Waveface.Client
 
 		private void TextBox_GotFocus(object sender, RoutedEventArgs e)
 		{
-			TextBox suggestion = findSuggestionBox(sender);
-
 			var defString = FindResource("intro_step5_your_suggestion") as String;
 
 			if (suggestion.Text == defString)
 				suggestion.Text = "";
 		}
 
-		private static TextBox findSuggestionBox(object sender)
-		{
-			var panel = LogicalTreeHelper.GetParent(sender as DependencyObject) as Panel;
-			TextBox suggestion = null;
-
-			foreach (var child in LogicalTreeHelper.GetChildren(panel))
-			{
-				if (child is TextBox)
-				{
-					suggestion = child as TextBox;
-					break;
-				}
-			}
-			return suggestion;
-		}
-
 		private void suggestion_LostFocus(object sender, RoutedEventArgs e)
 		{
-			TextBox suggestion = findSuggestionBox(sender);
-
 			if (suggestion.Text.Trim().Length == 0)
 				suggestion.Text = FindResource("intro_step5_your_suggestion") as String;
 		}
@@ -106,17 +81,19 @@ namespace Waveface.Client
 		{
 			if (num_of_star == 0)
 			{
-				Panel parent = LogicalTreeHelper.GetParent(sender as DependencyObject) as Panel;
-				foreach (var child in LogicalTreeHelper.GetChildren(parent))
-				{
-					if (child is TextBlock)
-					{
-						(child as TextBlock).Visibility = System.Windows.Visibility.Visible;
-					}
-				}
-
+				errorText.Visibility = System.Windows.Visibility.Visible;
 				return;
 			}
+
+			var comment = suggestion.Text;
+			var api = new UserTrackApi();
+			api.CallAync(
+				Environment.OSVersion.ToString(),
+				Assembly.GetExecutingAssembly().GetName().Version.ToString(),
+				ProgramConfig.ApiBaseUri.Host.Contains("dev") ? "development" : "production",
+				num_of_star,
+				comment,
+				"install");
 
 			Close();
 		}

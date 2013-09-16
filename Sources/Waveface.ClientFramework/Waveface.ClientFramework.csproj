@@ -84,6 +84,7 @@
     <Compile Include="Src\Class\BunnyDeviceTimelineContentGroup.cs" />
     <Compile Include="Src\Class\Client.cs" />
     <Compile Include="Src\Class\StationAPI.cs" />
+    <Compile Include="Src\Class\UserTrackApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Src\Enum\" />
