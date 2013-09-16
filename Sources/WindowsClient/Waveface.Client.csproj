@@ -121,6 +121,9 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Src\Dialog\IntroDialog.xaml.cs">
+      <DependentUpon>IntroDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Src\Class\Converter\MultiLineStringConvertor.cs" />
     <Compile Include="Src\Control\AddToButton.xaml.cs">
       <DependentUpon>AddToButton.xaml</DependentUpon>
@@ -348,6 +351,10 @@
     <Compile Include="Src\Control\StepPanel.xaml.cs">
       <DependentUpon>StepPanel.xaml</DependentUpon>
     </Compile>
+    <Page Include="Src\Dialog\IntroDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Ren\CloudSharingContentItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -483,6 +490,15 @@
     <Resource Include="Resource\4_number.png" />
     <Resource Include="Resource\4_star.png" />
     <Resource Include="Resource\2_close.png" />
+    <Resource Include="Resource\Intro1.en-US.png" />
+    <Resource Include="Resource\Intro1.zh-CN.png" />
+    <Resource Include="Resource\Intro1.zh-TW.png" />
+    <Resource Include="Resource\Intro2.en-US.png" />
+    <Resource Include="Resource\Intro2.zh-CN.png" />
+    <Resource Include="Resource\Intro2.zh-TW.png" />
+    <Resource Include="Resource\Intro3.en-US.png" />
+    <Resource Include="Resource\Intro3.zh-CN.png" />
+    <Resource Include="Resource\Intro3.zh-TW.png" />
     <Content Include="StringTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

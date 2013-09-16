@@ -1,0 +1,36 @@
+﻿<Window x:Class="Waveface.Client.IntroDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="IntroDialog"
+        Width="810"
+        Height="620"
+        AllowsTransparency="True"
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None">
+    <Grid>
+        <Image x:Name="img"
+               Width="830"
+               Height="645"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Source="pack://application:,,,/Resource/Intro1.zh-TW.png"
+               Stretch="UniformToFill" />
+
+        <Button x:Name="nextBtn"
+                MinWidth="120"
+                Margin="0,0, 20, 20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Click="nextBtn_Click"
+                Content="{StaticResource intro_next}" />
+
+        <Button x:Name="prevBtn"
+                MinWidth="120"
+                Margin="20, 0, 0, 20"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Click="prevBtn_Click"
+                Content="{StaticResource intro_prev}" />
+    </Grid>
+</Window>

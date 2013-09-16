@@ -184,4 +184,8 @@
     <system:String x:Key="Diary_title">焦點動態</system:String>
     <system:String x:Key="Diary_filter_all">全部</system:String>
     <system:String x:Key="Diary_selectionText">已選取{0}個事件 ({1})</system:String>
+
+    <system:String x:Key="intro_prev">上一步</system:String>
+    <system:String x:Key="intro_next">下一步</system:String>
+    <system:String x:Key="intro_last_step">關閉</system:String>
 </ResourceDictionary>

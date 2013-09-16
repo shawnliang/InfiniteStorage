@@ -166,4 +166,8 @@
     <system:String x:Key="Diary_title">Events</system:String>
     <system:String x:Key="Diary_filter_all">All</system:String>
     <system:String x:Key="Diary_selectionText">{0} events selected ({1})</system:String>
+
+    <system:String x:Key="intro_prev">Previous</system:String>
+    <system:String x:Key="intro_next">Next</system:String>
+    <system:String x:Key="intro_last_step">Close</system:String>
 </ResourceDictionary>

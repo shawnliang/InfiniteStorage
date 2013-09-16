@@ -525,8 +525,18 @@ namespace Waveface.Client
 
 			if (dialog.PairedDevices.Any())
 			{
-				var device_id = dialog.PairedDevices.LastOrDefault().device_id;
-				JumpToDevice(device_id, false);
+
+				if (!Settings.Default.IntroStep0Displayed)
+				{
+					var intro = new IntroDialog() { Owner = this };
+					intro.ShowDialog();
+
+					Settings.Default.IntroStep0Displayed = true;
+					Settings.Default.Save();
+
+					var device_id = dialog.PairedDevices.LastOrDefault().device_id;
+					JumpToDevice(device_id, false);
+				}
 			}
 		}
 

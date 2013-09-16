@@ -130,5 +130,17 @@ namespace Waveface.Client.Properties {
                 this["IntroStep4Displayed"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IntroStep0Displayed {
+            get {
+                return ((bool)(this["IntroStep0Displayed"]));
+            }
+            set {
+                this["IntroStep0Displayed"] = value;
+            }
+        }
     }
 }
