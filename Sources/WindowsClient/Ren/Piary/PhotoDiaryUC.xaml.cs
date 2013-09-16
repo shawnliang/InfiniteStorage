@@ -149,8 +149,6 @@ namespace Waveface.Client
 
 			m_inited = true;
 
-
-
 			if (!Settings.Default.IntroStep1Displayed)
 			{
 				var dialog = new IntroStep1() { Owner = Application.Current.MainWindow };
