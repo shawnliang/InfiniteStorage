@@ -187,7 +187,6 @@ namespace Waveface.Client
 				JumpToDevice(options.select_device, false);
 			else if (ClientFramework.Client.Default.Services.Any())
 				JumpToPhotoDiary();
-
 		}
 
 		#region Private Method
@@ -940,9 +939,12 @@ namespace Waveface.Client
 
 		private void lbxPhotoDiary_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			var listbox = sender as ListBox;
+			lbxPhotoDiarySelectionChanged();
+		}
 
-			if (listbox.SelectedIndex >= 0)
+		private void lbxPhotoDiarySelectionChanged()
+		{
+			if (lbxPhotoDiary.SelectedIndex >= 0)
 			{
 				ToPhotoDiary();
 
@@ -957,10 +959,13 @@ namespace Waveface.Client
 			}
 		}
 
-
 		private void JumpToPhotoDiary()
 		{
 			lbxPhotoDiary.SelectedIndex = 0;
+
+			Application.DoEvents();
+
+			lbxPhotoDiarySelectionChanged();
 		}
 
 		private void ToPhotoDiary()

@@ -191,4 +191,8 @@
 
     <system:String x:Key="delete_confirm_title">確定刪除?</system:String>
     <system:String x:Key="delete_confirm_desc">你要刪除所選擇的檔案嗎?</system:String>
+
+    <system:String x:Key="strItem">個項目</system:String>
+    <system:String x:Key="strItems">個項目</system:String>
+    <system:String x:Key="unnamedUEvent">未命名事件</system:String>
 </ResourceDictionary>

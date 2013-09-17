@@ -293,7 +293,7 @@ namespace Waveface.Client
 				tbTitle.Text = GetFlatString(Item.Event.content);
 			}
 
-			tbCount.Text = Item.Files.Count + "個項目";
+			tbCount.Text = Item.Files.Count + " " + ((Item.Files.Count == 1) ? (string)FindResource("strItem") : (string)FindResource("strItems"));
 			tbTime.Text = PrettyDate(Item.Event.start);
 			tbLocation.Text = Item.Event.short_address;
 			tbDevice.Text = Item.DeviceName;
@@ -318,7 +318,7 @@ namespace Waveface.Client
 
 				if (string.IsNullOrEmpty(Item.Event.content))
 				{
-					tbTitle.Text = "未命名的事件";
+					tbTitle.Text = (string)FindResource("unnamedUEvent");
 				}
 			}
 			else

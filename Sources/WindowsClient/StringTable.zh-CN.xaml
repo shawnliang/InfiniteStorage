@@ -1,0 +1,199 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="0_days_ago">今天</system:String>
+    <system:String x:Key="AddDeviceIconText">加入同步装置</system:String>
+    <system:String x:Key="AddNewSource">请依照下列步骤设定，同步手机里的影像日记</system:String>
+    <system:String x:Key="AddStarredItemTitle">将选择之项目加入相册</system:String>
+    <system:String x:Key="AddTo">加入至</system:String>
+    <system:String x:Key="addto_all_selection_text">将全部项目共 {0} 个加入</system:String>
+    <system:String x:Key="addto_selection_text">将 {0} 个项目加入到</system:String>
+    <system:String x:Key="AddToFavorite">加入至相册</system:String>
+    <system:String x:Key="AddToFavoriteButtonText">加入现有相册</system:String>
+    <system:String x:Key="ANS_9">点此获得更多信息</system:String>
+    <system:String x:Key="ANS_deviveNotFound" xml:space="preserve">
+        找不到可同步的手机。请将手机Wi-Fi连接到与计算机相同的网络，并开启App再试试。
+        Do you want to search for available device again?
+        Press 'Yes' to search again. Press 'No' to quit pairing mode.
+    </system:String>
+    <system:String x:Key="ANS_deviveNotFound_title">找不到装置</system:String>
+    <system:String x:Key="ANS_disallowAll">Disallow all</system:String>
+    <system:String x:Key="ANS_findDev">Finding device...</system:String>
+    <system:String x:Key="ANS_importQuestion">Do you want to allow following devices to auto import their photos and videos to this PC?</system:String>
+    <system:String x:Key="ANS_step1">请在手机上打开您的「Piary相片日记」App，并开启「同步至PC」功能</system:String>
+    <system:String x:Key="ANS_step1_1">Install Favorite on your mobile device</system:String>
+    <system:String x:Key="ANS_step1_2">and turn it on.</system:String>
+    <system:String x:Key="ANS_step1_title">运行Piary</system:String>
+    <system:String x:Key="ANS_step2">将手机利用Wi-Fi连上与本计算机相同的局域网络。</system:String>
+    <system:String x:Key="ANS_step2_title">开启手机Wi-Fi</system:String>
+    <system:String x:Key="ANS_step3">拿起手机，输入下面四位数的配对码，就会开始自动同步了。</system:String>
+    <system:String x:Key="ANS_step3_title">输入四位配对码</system:String>
+    <system:String x:Key="AppTitle">Piary图库</system:String>
+    <system:String x:Key="CancelButtonText">取消</system:String>
+    <system:String x:Key="ClearAllButtonText">全部清除</system:String>
+    <system:String x:Key="CloseButtonText">取消</system:String>
+    <system:String x:Key="ConfirmSync_1">{0} 已成功连接您的手机。</system:String>
+    <system:String x:Key="ConfirmSync_2">Everything on your device gets synced to this PC automatically -- from now on.</system:String>
+    <system:String x:Key="ConfirmSync_3">Import photos and vedios from this devices</system:String>
+    <system:String x:Key="ConfirmSync_4">Import the latest 150 items</system:String>
+    <system:String x:Key="ConfirmSync_5">(Around 3 minutes)</system:String>
+    <system:String x:Key="ConfirmSync_6">Import all items</system:String>
+    <system:String x:Key="ConfirmSync_7">(It takes longer)</system:String>
+    <system:String x:Key="ConfirmSync_Title">What do you want to sync?</system:String>
+    <system:String x:Key="CopyButtonText">复制连结</system:String>
+    <system:String x:Key="Create">新增相册</system:String>
+    <system:String x:Key="createAlbumDialogTitle">建立新的相册</system:String>
+    <system:String x:Key="CreateFavorite">新增至相册</system:String>
+    <system:String x:Key="CreateFavoriteButtonText">建新相册</system:String>
+    <system:String x:Key="CreateNewAlbumDialogDescription">请输入相册名称:</system:String>
+    <system:String x:Key="CreateNewAlbumDialogTitle">新增相册</system:String>
+
+    <system:String x:Key="CreateNewFolder">新增至新建文件夹</system:String>
+    <system:String x:Key="CreateNewFolderDialogDescription">请输入文件夹名称:</system:String>
+    <system:String x:Key="CreateNewFolderDialogTitle">新增文件夹</system:String>
+
+    <system:String x:Key="Day">同一天</system:String>
+    <system:String x:Key="DefaultFavoriteName">未命名的相册</system:String>
+    <system:String x:Key="EmailButtonText">Email给...</system:String>
+    <system:String x:Key="EventInterval">事件区分:</system:String>
+    <system:String x:Key="ExistingFolder">现有目录</system:String>
+    <system:String x:Key="ExitButtonText">离开</system:String>
+    <system:String x:Key="Favorite">最爱相簿</system:String>
+
+    <system:String x:Key="FavoritesGroupTitle">本地相册</system:String>
+    <system:String x:Key="header_subtitle_complete">点选下方缩图，即可跳至文件夹</system:String>
+    <system:String x:Key="header_subtitle_importing">正在汇入第 {0} 个项目，剩余时间约 {1} 分钟</system:String>
+    <system:String x:Key="header_subtitle_indexing">正在为您的照片建立索引，请稍候...</system:String>
+    <system:String x:Key="header_subtitle_paused">请按右方按钮继续</system:String>
+    <system:String x:Key="header_subtitle_stopped">请将装置连接到与PC相同的局域网络，自动同步会自动开始</system:String>
+    <system:String x:Key="header_title_complete">上次从装置汇入了 {0} 个项目于{1}</system:String>
+    <system:String x:Key="header_title_importing">装置内共有 {0} 个新项目</system:String>
+    <system:String x:Key="header_title_indexing">装置已连接</system:String>
+    <system:String x:Key="header_title_paused">自动同步已暂停</system:String>
+    <system:String x:Key="header_title_stopped">装置内尚有 {0} 个项目未能汇入</system:String>
+    <system:String x:Key="ImportContactButtonText">汇入Gmail联络人</system:String>
+    <system:String x:Key="intro_step1_button">好</system:String>
+
+    <system:String x:Key="intro_step1_desc1">每张卡片就是一个事件</system:String>
+    <system:String x:Key="intro_step1_desc2">请双击卡片，观看里头的相片</system:String>
+    <system:String x:Key="intro_step1_title">欢迎来到你的相片日记</system:String>
+    <system:String x:Key="intro_step2_button">现在就试试</system:String>
+    <system:String x:Key="intro_step2_desc1">双击图片观看大图</system:String>
+    <system:String x:Key="intro_step2_desc2">一键即可将所有事件照片上传云相册</system:String>
+    <system:String x:Key="intro_step2_title">浏览你的精采时刻</system:String>
+    <system:String x:Key="intro_step3_button">现在就去看</system:String>
+    <system:String x:Key="intro_step3_desc1">复制连结，分享给亲朋好友</system:String>
+    <system:String x:Key="intro_step3_desc2">按下开启网页，看看云相册的样子</system:String>
+    <system:String x:Key="intro_step3_title">您的云端相册网页已经产生，正在上传图片...</system:String>
+    <system:String x:Key="intro_step5_desc">谢谢您的使用！最后，请针对这套软件，给我们评分，以及您宝贵的意见（可不填）</system:String>
+    <system:String x:Key="intro_step5_no_stars">点选一到五颗星，给我们评价</system:String>
+    <system:String x:Key="intro_step5_rateUs">点选一到五颗星，给我们评价</system:String>
+    <system:String x:Key="intro_step5_submit">送出反馈</system:String>
+
+    <system:String x:Key="intro_step5_your_suggestion">您的建议...</system:String>
+    <system:String x:Key="LaterButtonText">下次再说</system:String>
+    <system:String x:Key="menuitem_add_album">加入现有相册</system:String>
+    <system:String x:Key="menuitem_create_album">新建本地相册...</system:String>
+    <system:String x:Key="menuitem_delete">删除</system:String>
+    <system:String x:Key="menuitem_locate">在档案总管打开</system:String>
+    <system:String x:Key="menuitem_star">标记星号</system:String>
+    <system:String x:Key="Month">同一月</system:String>
+    <system:String x:Key="MoveTo">移动至</system:String>
+    <system:String x:Key="MoveToExistFolderTitle">将选择之项目移至下面的目录:</system:String>
+    <system:String x:Key="NoExistingFavoriteMessageText">请先新增一个相簿</system:String>
+    <system:String x:Key="OkButtonText">确定</system:String>
+    <system:String x:Key="photo">张照片</system:String>
+    <system:String x:Key="photos">张照片</system:String>
+    <system:String x:Key="RecentGroupTitle">最近</system:String>
+    <system:String x:Key="Refresh">点此观看更新内容</system:String>
+    <system:String x:Key="res_1">试试看Wi-Fi快送功能，自动把你图库中的相簿推送到您的Android 平板或 Google TV上。由于现正在Beta测试阶段，您必须在欲同步的装置另外安装应用。</system:String>
+    <system:String x:Key="res_10">取消</system:String>
+    <system:String x:Key="res_11">云相册</system:String>
+    <system:String x:Key="res_12">导出至...</system:String>
+    <system:String x:Key="res_13">0 张相片 0 段影片</system:String>
+    <system:String x:Key="res_14">PIARY</system:String>
+    <system:String x:Key="res_15">云相册</system:String>
+    <system:String x:Key="res_16">缩图大小</system:String>
+    <system:String x:Key="res_17">立即上传到云相册</system:String>
+    <system:String x:Key="res_18">点这里</system:String>
+    <system:String x:Key="res_19">免账号上传照片、影片</system:String>
+    <system:String x:Key="res_2">Wi-Fi快送：未开启</system:String>
+    <system:String x:Key="res_20">透过Wi-Fi，将整理好的相册快送给</system:String>
+    <system:String x:Key="res_21">自己或亲朋好友的Android装置</system:String>
+    <system:String x:Key="res_22">新建相册</system:String>
+    <system:String x:Key="res_23">增加到相册</system:String>
+    <system:String x:Key="res_24">分享与应用</system:String>
+    <system:String x:Key="res_25">删除项目</system:String>
+    <system:String x:Key="res_26">Wi-Fi快送设定</system:String>
+    <system:String x:Key="res_27">昨天</system:String>
+    <system:String x:Key="res_28">收合</system:String>
+    <system:String x:Key="res_29">继续自动汇入</system:String>
+    <system:String x:Key="res_3">开启Wi-Fi快送</system:String>
+    <system:String x:Key="res_30">打开网页</system:String>
+    <system:String x:Key="res_31">正在上传...</system:String>
+    <system:String x:Key="res_32">公开相册网址</system:String>
+    <system:String x:Key="res_33">看大图</system:String>
+    <system:String x:Key="res_34">结束分享</system:String>
+    <system:String x:Key="res_35">打开</system:String>
+    <system:String x:Key="res_36">影像日记</system:String>
+    <system:String x:Key="res_37">等待手机同步完成...</system:String>
+    <system:String x:Key="res_4">在 Google Play 上搜寻&quot;Waveface Favorite TV&quot;或由此直接安装到你的装置</system:String>
+    <system:String x:Key="res_5">选择加至相册的项目</system:String>
+    <system:String x:Key="res_6">相册标题</system:String>
+    <system:String x:Key="res_7">选取全部</system:String>
+    <system:String x:Key="res_8">全部不选</system:String>
+    <system:String x:Key="res_9">建立相册</system:String>
+    <system:String x:Key="res_getStartedTip1">在您的手机上安装「Piary影像日记」App，将手机相片透过Wi-Fi自动同步到PC</system:String>
+    <system:String x:Key="res_getStartedTip2">利用USB连接数字相机或iPhone，汇入影像内容</system:String>
+    <system:String x:Key="res_getStartedTip3">下载 Player 程序，从平板上欣赏您的影像内容</system:String>
+    <system:String x:Key="res_getStartedTitle">第一次使用吗？请试试以下步骤加入照片及影片...</system:String>
+    <system:String x:Key="res_takeATour">瞧瞧还有哪些好用的功能</system:String>
+    <system:String x:Key="RigntSidePanel_HowToCloudSharingTutorial">
+        想分享这个相册给亲友？\r\n
+        只要按下这个按钮上传相册\r\n
+        自动上传所有内容到\r\n
+        Waveface.com\r\n
+        您只要将连结寄送分享就可以了
+    </system:String>
+    <system:String x:Key="RigntSidePanel_HowToStarTutorial">
+        点击图片上的星号图标\r\n
+        或拖曳至侧栏的星号区\r\n
+        来标示该图片
+    </system:String>
+    <system:String x:Key="SeeFavoriteTitle">此为半公开网站；任何人必须得知下列连结才可以看到您的相册:</system:String>
+    <system:String x:Key="SelectAll">全选</system:String>
+    <system:String x:Key="selection_all_text">选取了整个文件夹共 {0} 个项目</system:String>
+    <system:String x:Key="selection_text">选取了 {0} 个项目</system:String>
+    <system:String x:Key="SendButtonText">传送</system:String>
+    <system:String x:Key="SenderNameTitle">请提供您的姓名供收件者辨识:</system:String>
+    <system:String x:Key="SendMessageTitle">写几句话描述相册内容:</system:String>
+    <system:String x:Key="Share">分享</system:String>
+    <system:String x:Key="share_all_selection_text">用下列方式分享 {0} 选取的项目</system:String>
+    <system:String x:Key="share_selection_text">分享 {0} 个项目至</system:String>
+    <system:String x:Key="ShareWithTitle">寄送连结给:</system:String>
+    <system:String x:Key="SourceGroupTitle">装置来源</system:String>
+    <system:String x:Key="StarAllButtonText">全部标星号</system:String>
+    <system:String x:Key="Starred">星号标记</system:String>
+    <system:String x:Key="TakeTourButtonText">观看</system:String>
+    <system:String x:Key="TakeTourDialogTitle">观看快速导览?</system:String>
+    <system:String x:Key="UnselectAll">全不选</system:String>
+    <system:String x:Key="video">部影片</system:String>
+    <system:String x:Key="videos">部影片</system:String>
+    <system:String x:Key="WithoutContentMessageText">请先选择一些项目</system:String>
+    <system:String x:Key="x_days_ago">{0}天前</system:String>
+    <system:String x:Key="Diary_title">焦点动态</system:String>
+    <system:String x:Key="Diary_filter_all">全部</system:String>
+    <system:String x:Key="Diary_selectionText">已选取{0}个事件 ({1})</system:String>
+
+    <system:String x:Key="intro_prev">上一步</system:String>
+    <system:String x:Key="intro_next">下一步</system:String>
+    <system:String x:Key="intro_last_step">关闭</system:String>
+
+    <system:String x:Key="delete_confirm_title">确定删除?</system:String>
+    <system:String x:Key="delete_confirm_desc">你要删除所选择的档案吗?</system:String>
+
+    <system:String x:Key="strItem">个项目</system:String>
+    <system:String x:Key="strItems">个项目</system:String>
+    <system:String x:Key="unnamedUEvent">未命名事件</system:String>
+</ResourceDictionary>
+
