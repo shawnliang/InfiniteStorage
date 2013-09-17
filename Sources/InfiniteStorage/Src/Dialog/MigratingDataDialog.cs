@@ -10,12 +10,14 @@ namespace InfiniteStorage
 		public MigratingDataDialog()
 		{
 			InitializeComponent();
+
 			Icon = Resources.ProductIcon;
 		}
 
 		public void CloseByApp()
 		{
 			closeByApp = true;
+
 			Close();
 		}
 

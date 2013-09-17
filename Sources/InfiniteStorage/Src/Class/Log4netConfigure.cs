@@ -1,8 +1,13 @@
-﻿using System.IO;
+﻿#region
+
+using System.IO;
+using log4net.Config;
+
+#endregion
 
 namespace InfiniteStorage
 {
-	class Log4netConfigure
+	internal class Log4netConfigure
 	{
 		public static void InitLog4net()
 		{
@@ -18,7 +23,7 @@ namespace InfiniteStorage
 #endif
 
 
-			log4net.Config.XmlConfigurator.ConfigureAndWatch(configFileInfo);
+			XmlConfigurator.ConfigureAndWatch(configFileInfo);
 		}
 
 		private static string getLog4netConfigFilePath()
@@ -56,7 +61,6 @@ namespace InfiniteStorage
 </log4net>");
 			}
 		}
-
 
 		public static void SetLevel(DebugLevel level)
 		{

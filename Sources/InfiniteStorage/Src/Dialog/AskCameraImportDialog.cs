@@ -1,6 +1,10 @@
-﻿using InfiniteStorage.Properties;
+﻿#region
+
 using System;
 using System.Windows.Forms;
+using InfiniteStorage.Properties;
+
+#endregion
 
 namespace InfiniteStorage
 {
@@ -16,13 +20,15 @@ namespace InfiniteStorage
 		public AskCameraImportDialog()
 		{
 			InitializeComponent();
+
 			Icon = Resources.ProductIcon;
 		}
 
 		public AskCameraImportDialog(string deviceName, string deviceId)
 		{
 			InitializeComponent();
-			this.DeviceName = deviceName;
+
+			DeviceName = deviceName;
 			this.deviceId = deviceId;
 		}
 
@@ -49,7 +55,8 @@ namespace InfiniteStorage
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			DialogResult = DialogResult.Cancel;
+
 			Close();
 		}
 	}

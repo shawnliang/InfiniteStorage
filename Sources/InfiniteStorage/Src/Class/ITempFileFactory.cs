@@ -1,4 +1,8 @@
-﻿using InfiniteStorage.WebsocketProtocol;
+﻿#region
+
+using InfiniteStorage.WebsocketProtocol;
+
+#endregion
 
 namespace InfiniteStorage
 {

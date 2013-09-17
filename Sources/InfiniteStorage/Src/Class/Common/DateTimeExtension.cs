@@ -1,5 +1,8 @@
-﻿using System;
+﻿#region
 
+using System;
+
+#endregion
 
 public static class DateTimeExtension
 {

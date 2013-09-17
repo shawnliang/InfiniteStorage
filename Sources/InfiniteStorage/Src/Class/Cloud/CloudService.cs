@@ -1,17 +1,21 @@
-﻿using InfiniteStorage.Properties;
-using postServiceLibrary;
+﻿#region
+
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using InfiniteStorage.Properties;
 using Waveface.Common;
+using postServiceLibrary;
+
+#endregion
 
 namespace InfiniteStorage.Cloud
 {
-	static class CloudService
+	internal static class CloudService
 	{
-		static byte[] ENTROPY = { 25, 22, 89, 00, 77, 06, 25 };
+		private static byte[] ENTROPY = {25, 22, 89, 00, 77, 06, 25};
 
-		private static string _session_token = null;
+		private static string _session_token;
 
 		public static string UserEmail
 		{
@@ -66,7 +70,7 @@ namespace InfiniteStorage.Cloud
 				{
 					if (!Settings.Default.UserRegistered)
 					{
-						var post = new postServiceClass { APIKEY = APIKey };
+						var post = new postServiceClass {APIKEY = APIKey};
 						_session_token = post.createAccount(UserEmail, Password, "anonymous");
 
 						_session_token = post.callLogin(UserEmail, Password);
@@ -77,7 +81,7 @@ namespace InfiniteStorage.Cloud
 					}
 					else
 					{
-						var post = new postServiceClass { APIKEY = APIKey };
+						var post = new postServiceClass {APIKEY = APIKey};
 						_session_token = post.callLogin(UserEmail, Password);
 					}
 				}
@@ -93,7 +97,7 @@ namespace InfiniteStorage.Cloud
 
 		public static postServiceClass CreateCloudAPI()
 		{
-			return new postServiceClass { APIKEY = APIKey, session_token = SessionToken, group_id = Settings.Default.GroupId };
+			return new postServiceClass {APIKEY = APIKey, session_token = SessionToken, group_id = Settings.Default.GroupId};
 		}
 
 		private static string randomPassword()
@@ -101,9 +105,10 @@ namespace InfiniteStorage.Cloud
 			var random = new Random();
 
 			StringBuilder sb = new StringBuilder();
+
 			for (int i = 0; i < 10; i++)
 			{
-				char cur = (char)('a' + random.Next(26));
+				char cur = (char) ('a' + random.Next(26));
 
 				if (random.Next(3) == 0)
 					cur = Char.ToUpper(cur);
@@ -113,7 +118,5 @@ namespace InfiniteStorage.Cloud
 
 			return sb.ToString();
 		}
-
 	}
-
 }

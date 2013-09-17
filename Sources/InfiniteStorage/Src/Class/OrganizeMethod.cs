@@ -1,5 +1,4 @@
-﻿
-namespace InfiniteStorage
+﻿namespace InfiniteStorage
 {
 	public enum OrganizeMethod
 	{

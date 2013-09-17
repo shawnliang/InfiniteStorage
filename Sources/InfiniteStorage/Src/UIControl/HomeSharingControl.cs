@@ -1,6 +1,10 @@
-﻿using InfiniteStorage.Properties;
+﻿#region
+
 using System;
 using System.Windows.Forms;
+using InfiniteStorage.Properties;
+
+#endregion
 
 namespace InfiniteStorage.Src.UIControl
 {
@@ -11,7 +15,6 @@ namespace InfiniteStorage.Src.UIControl
 		public HomeSharingControl()
 		{
 			InitializeComponent();
-
 		}
 
 		private void HomeSharingControl_Load(object sender, EventArgs e)
@@ -69,6 +72,7 @@ namespace InfiniteStorage.Src.UIControl
 		private void raiseSettingsChanged()
 		{
 			var handler = SettingsChanged;
+
 			if (handler != null)
 				handler(this, EventArgs.Empty);
 		}

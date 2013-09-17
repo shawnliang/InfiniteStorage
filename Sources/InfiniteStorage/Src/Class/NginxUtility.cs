@@ -1,21 +1,26 @@
-﻿using InfiniteStorage.Properties;
+﻿#region
+
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using InfiniteStorage.Properties;
+using log4net;
+
+#endregion
 
 namespace InfiniteStorage
 {
-	class NginxUtility
+	internal class NginxUtility
 	{
-		const string TEMPLATE_FILE_NAME = "nginx.conf.template";
+		//private const string TEMPLATE_FILE_NAME = "nginx.conf.template";
 
 		private static string install_dir;
 		private static string nginx_dir;
 		private static NginxUtility instance = new NginxUtility();
 
 		private Process nginxProcess;
-		private bool stopping = false;
+		private bool stopping;
 
 		static NginxUtility()
 		{
@@ -88,11 +93,10 @@ namespace InfiniteStorage
 			if (!Directory.Exists(temp_dir))
 				Directory.CreateDirectory(temp_dir);
 
-
 			var resFolder = Path.Combine(origFileDir, ".resource");
+
 			if (!Directory.Exists(resFolder))
 			{
-
 				var dir = new DirectoryInfo(resFolder);
 				dir.Create();
 				dir.Attributes |= FileAttributes.Hidden;
@@ -104,6 +108,7 @@ namespace InfiniteStorage
 		private static void copyFolder(string from, string to)
 		{
 			var froms = Directory.GetFiles(from);
+
 			foreach (var file in froms)
 			{
 				var file_name = Path.GetFileName(file);
@@ -118,9 +123,11 @@ namespace InfiniteStorage
 
 			stopping = false;
 			var processes = Process.GetProcessesByName("nginx");
+
 			if (processes != null)
 			{
 				cmd(cfg_dir, "-s stop");
+
 				foreach (var p in processes)
 				{
 					try
@@ -129,16 +136,15 @@ namespace InfiniteStorage
 					}
 					catch
 					{
-
 					}
 				}
 			}
 
 			nginxProcess = start(cfg_dir, (s, e) =>
-			{
-				if (!stopping)
-					Start();
-			});
+				                              {
+					                              if (!stopping)
+						                              Start();
+				                              });
 
 			reload(cfg_dir);
 		}
@@ -173,15 +179,15 @@ namespace InfiniteStorage
 				p.Exited += onExit;
 			}
 
-			log4net.LogManager.GetLogger("nginx").Debug(nginx_exe + " " + arg + " " + cmd);
+			LogManager.GetLogger("nginx").Debug(nginx_exe + " " + arg + " " + cmd);
 			p.StartInfo = new ProcessStartInfo
-			{
-				FileName = nginx_exe,
-				Arguments = arg + " " + cmd,
-				CreateNoWindow = true,
-				WindowStyle = ProcessWindowStyle.Hidden,
-				UseShellExecute = false
-			};
+				              {
+					              FileName = nginx_exe,
+					              Arguments = arg + " " + cmd,
+					              CreateNoWindow = true,
+					              WindowStyle = ProcessWindowStyle.Hidden,
+					              UseShellExecute = false
+				              };
 			p.Start();
 
 			return p;

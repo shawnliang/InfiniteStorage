@@ -1,6 +1,10 @@
-﻿using InfiniteStorage.Properties;
+﻿#region
+
 using System;
 using System.IO;
+using InfiniteStorage.Properties;
+
+#endregion
 
 namespace InfiniteStorage
 {
@@ -11,7 +15,7 @@ namespace InfiniteStorage
 		Custom,
 	}
 
-	static class MyFileFolder
+	internal static class MyFileFolder
 	{
 		public static string Temp
 		{
@@ -19,7 +23,7 @@ namespace InfiniteStorage
 			{
 				var settings = Settings.Default;
 
-				switch ((LocationType)settings.LocationType)
+				switch ((LocationType) settings.LocationType)
 				{
 					case LocationType.SingleFolder:
 						return Path.Combine(settings.SingleFolderLocation, ".temp");
@@ -38,18 +42,12 @@ namespace InfiniteStorage
 
 		public static string Pending
 		{
-			get
-			{
-				return Path.Combine(Settings.Default.SingleFolderLocation, ".pending");
-			}
+			get { return Path.Combine(Settings.Default.SingleFolderLocation, ".pending"); }
 		}
 
 		public static string Thumbs
 		{
-			get
-			{
-				return Path.Combine(Settings.Default.SingleFolderLocation, ".thumbs");
-			}
+			get { return Path.Combine(Settings.Default.SingleFolderLocation, ".thumbs"); }
 		}
 
 		public static string Photo
@@ -58,7 +56,7 @@ namespace InfiniteStorage
 			{
 				var settings = Settings.Default;
 
-				switch ((LocationType)settings.LocationType)
+				switch ((LocationType) settings.LocationType)
 				{
 					case LocationType.SingleFolder:
 						return settings.SingleFolderLocation;
@@ -82,7 +80,7 @@ namespace InfiniteStorage
 			{
 				var settings = Settings.Default;
 
-				switch ((LocationType)settings.LocationType)
+				switch ((LocationType) settings.LocationType)
 				{
 					case LocationType.SingleFolder:
 						return settings.SingleFolderLocation;
@@ -107,11 +105,10 @@ namespace InfiniteStorage
 			{
 				var settings = Settings.Default;
 
-				switch ((LocationType)settings.LocationType)
+				switch ((LocationType) settings.LocationType)
 				{
 					case LocationType.SingleFolder:
 						return settings.SingleFolderLocation;
-
 
 					case LocationType.MediaLibrary:
 						return Path.Combine(MediaLibrary.MyPodcasts, Resources.ProductName);

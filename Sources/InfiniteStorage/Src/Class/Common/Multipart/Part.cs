@@ -1,7 +1,11 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Text;
+
+#endregion
 
 namespace Wammer.MultiPart
 {
@@ -75,9 +79,10 @@ namespace Wammer.MultiPart
 			get
 			{
 				var header = headers["content-transfer-encoding"];
-				if (header != null &&
-					header.Equals("binary"))
+
+				if (header != null && header.Equals("binary"))
 					return null;
+
 				return text ?? (text = Encoding.UTF8.GetString(data.Array, data.Offset, data.Count));
 
 				// text might have \r\n at its end
@@ -113,10 +118,8 @@ namespace Wammer.MultiPart
 
 			foreach (string name in headers.AllKeys)
 			{
-				if (disposition != null && name.Equals(
-					"content-disposition", StringComparison.CurrentCultureIgnoreCase))
+				if (disposition != null && name.Equals("content-disposition", StringComparison.CurrentCultureIgnoreCase))
 					continue;
-
 
 				string hdr = name + ":" + headers[name];
 				byte[] hdrData = Encoding.UTF8.GetBytes(hdr);

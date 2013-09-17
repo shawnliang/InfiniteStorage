@@ -1,12 +1,15 @@
-﻿using log4net;
-using Newtonsoft.Json;
+﻿#region
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading;
+using Newtonsoft.Json;
+using log4net;
 
+#endregion
 
 namespace Wammer.Station
 {
@@ -21,15 +24,18 @@ namespace Wammer.Station
 	public class HttpServer : IDisposable
 	{
 		#region Var
+
 		private IHttpHandler _defaultHandler;
 		private Dictionary<string, IHttpHandler> _handlers;
 		private HttpListener _listener;
 		private Object _lockSwitchObj;
 		private ILog _logger;
 		private bool _started;
+
 		#endregion
 
 		#region Private Property
+
 		private bool m_Disposed { get; set; }
 
 		private ILog m_Logger
@@ -67,9 +73,8 @@ namespace Wammer.Station
 		{
 			Dispose(false);
 		}
+
 		#endregion
-
-
 
 		#region Private Method
 
@@ -81,7 +86,7 @@ namespace Wammer.Station
 		{
 			try
 			{
-				ctx.Response.StatusCode = (int)HttpStatusCode.NotFound;
+				ctx.Response.StatusCode = (int) HttpStatusCode.NotFound;
 				ctx.Response.Close();
 			}
 			catch (Exception e)
@@ -89,7 +94,6 @@ namespace Wammer.Station
 				m_Logger.Warn("Unable to respond 404 Not Found", e);
 			}
 		}
-
 
 
 		/// <summary>
@@ -100,6 +104,7 @@ namespace Wammer.Station
 		private IHttpHandler FindBestMatch(string requestAbsPath)
 		{
 			string path = requestAbsPath;
+			
 			if (!path.EndsWith("/"))
 				path += "/";
 
@@ -126,6 +131,7 @@ namespace Wammer.Station
 		#endregion
 
 		#region Protected Method
+
 		/// <summary>
 		/// Raises the <see cref="E:TaskQueue"/> event.
 		/// </summary>
@@ -134,7 +140,6 @@ namespace Wammer.Station
 		//{
 		//    //this.RaiseEvent(TaskEnqueue, e);
 		//}
-
 		protected virtual void Dispose(bool disposing)
 		{
 			if (m_Disposed)
@@ -292,7 +297,7 @@ namespace Wammer.Station
 		#endregion
 	}
 
-	interface ITask
+	internal interface ITask
 	{
 		void Execute();
 	}
@@ -306,7 +311,7 @@ namespace Wammer.Station
 
 		public HttpHandlingTask(IHttpHandler handler, HttpListenerContext context, long beginTime)
 		{
-			this.handler = (IHttpHandler)handler.Clone();
+			this.handler = (IHttpHandler) handler.Clone();
 			this.context = context;
 			this.beginTime = beginTime;
 		}
@@ -315,12 +320,11 @@ namespace Wammer.Station
 
 		public void Execute()
 		{
-
 			Action action = () =>
-			{
-				handler.SetBeginTimestamp(beginTime);
-				handler.HandleRequest(context.Request, context.Response);
-			};
+				                {
+					                handler.SetBeginTimestamp(beginTime);
+					                handler.HandleRequest(context.Request, context.Response);
+				                };
 
 			HandleRequestWithinExceptionHandler(action, context.Response);
 		}
@@ -335,17 +339,17 @@ namespace Wammer.Station
 			{
 				logger.Warn(e.ToString());
 
-				response.StatusCode = (int)HttpStatusCode.BadRequest;
+				response.StatusCode = (int) HttpStatusCode.BadRequest;
 				response.ContentType = "application/json";
 				using (var output = new StreamWriter(response.OutputStream))
 				{
 					output.WriteLine(JsonConvert.SerializeObject(
 						new
-						{
-							api_ret_code = 400,
-							api_ret_message = e.Message,
-							status = (int)HttpStatusCode.BadRequest
-						}));
+							{
+								api_ret_code = 400,
+								api_ret_message = e.Message,
+								status = (int) HttpStatusCode.BadRequest
+							}));
 				}
 			}
 		}

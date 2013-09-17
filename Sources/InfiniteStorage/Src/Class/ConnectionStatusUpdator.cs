@@ -1,25 +1,31 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Linq;
+using InfiniteStorage.WebsocketProtocol;
+using log4net;
+
+#endregion
 
 namespace InfiniteStorage
 {
-	class ConnectionStatusUpdator
+	internal class ConnectionStatusUpdator
 	{
 		public void UpdateStatusToPeers()
 		{
 			var peers = ConnectedClientCollection.Instance.GetAllConnections();
-			var util = new WebsocketProtocol.ConnectMsgHandlerUtil();
+			var util = new ConnectMsgHandlerUtil();
 
 			foreach (var peer in peers.Distinct())
 			{
 				try
 				{
 					peer.Ping();
-					log4net.LogManager.GetLogger(GetType()).Debug("Ping to " + peer.device_name);
+					LogManager.GetLogger(GetType()).Debug("Ping to " + peer.device_name);
 				}
 				catch (Exception e)
 				{
-					log4net.LogManager.GetLogger(this.GetType()).Warn("Unable to send backup info to peer:" + peer.device_name, e);
+					LogManager.GetLogger(GetType()).Warn("Unable to send backup info to peer:" + peer.device_name, e);
 				}
 			}
 		}

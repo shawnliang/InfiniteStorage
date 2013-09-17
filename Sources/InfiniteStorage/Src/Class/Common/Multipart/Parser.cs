@@ -1,7 +1,11 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
+
+#endregion
 
 namespace Wammer.MultiPart
 {
@@ -29,17 +33,21 @@ namespace Wammer.MultiPart
 			var parts = new List<Part>();
 
 			int startFrom = IndexOf(content, 0, head_boundry, head_boundry_next);
+
 			if (startFrom != -1)
 			{
 				startFrom += head_boundry.Length + CRLF.Length;
 				bool end = false;
+				
 				while (!end)
 				{
 					Part part = ParsePartBody(content, startFrom, out startFrom, out end);
 					parts.Add(part);
 				}
+
 				return parts.ToArray();
 			}
+
 			throw new FormatException("Not a wellformed multipart content");
 		}
 
@@ -66,19 +74,18 @@ namespace Wammer.MultiPart
 
 			int next_head_index = IndexOf(data, startIdx, head_boundry, head_boundry_next);
 			next_startIdx = next_head_index + head_boundry.Length;
+			
 			if (next_head_index < 0 || next_startIdx + CRLF.Length > data.Length)
 				throw new FormatException("Bad part body format");
 
 			end = false;
 
 			// cheat on looking close_boundary & following \r\n
-			if (data[next_startIdx] == '-' &&
-				data[next_startIdx + 1] == '-')
+			if (data[next_startIdx] == '-' && data[next_startIdx + 1] == '-')
 			{
 				end = true;
 			}
-			else if (data[next_startIdx] == '\r' &&
-					 data[next_startIdx + 1] == '\n')
+			else if (data[next_startIdx] == '\r' && data[next_startIdx + 1] == '\n')
 			{
 				next_startIdx += CRLF.Length;
 			}
@@ -96,12 +103,13 @@ namespace Wammer.MultiPart
 		private static void ParseHeaders(NameValueCollection collection, byte[] data, int from, int len)
 		{
 			string headerText = Encoding.UTF8.GetString(data, from, len);
-			var stringSeparators = new[] { "\r\n" };
+			var stringSeparators = new[] {"\r\n"};
 			string[] headers = headerText.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
 
 			foreach (string header in headers)
 			{
 				var delimitIdx = header.IndexOf(":");
+
 				if (delimitIdx < 0)
 					throw new FormatException("Bad header: " + header);
 
@@ -124,13 +132,16 @@ namespace Wammer.MultiPart
 		{
 			var next = new int[pattern.Length];
 			next[0] = -1;
+			
 			if (pattern.Length < 2)
 			{
 				return next;
 			}
+
 			next[1] = 0;
 			int i = 2;
 			int j = 0;
+
 			while (i < pattern.Length)
 			{
 				if (pattern[i - 1] == pattern[j])
@@ -140,12 +151,14 @@ namespace Wammer.MultiPart
 				else
 				{
 					j = next[j];
+
 					if (j == -1)
 					{
 						next[i++] = ++j;
 					}
 				}
 			}
+
 			return next;
 		}
 
@@ -154,6 +167,7 @@ namespace Wammer.MultiPart
 		{
 			int i = 0;
 			int j = 0;
+
 			while (j < pattern.Length && i < source.Length - stardIdx)
 			{
 				if (source[stardIdx + i] == pattern[j])
@@ -171,6 +185,7 @@ namespace Wammer.MultiPart
 					}
 				}
 			}
+
 			return j < pattern.Length ? -1 : stardIdx + i - j;
 		}
 	}

@@ -16,10 +16,9 @@ namespace InfiniteStorage
 	class ThumbnailCreator
 	{
 		private NoReentrantTimer timer;
-		private long from = 0;
+		private long from;
 		private string thumbnailLocation;
-		private object cs = new object();
-
+		// private object cs = new object();
 
 		public ThumbnailCreator()
 		{
@@ -32,7 +31,6 @@ namespace InfiniteStorage
 				var dirinfo = new DirectoryInfo(thumbnailLocation);
 				dirinfo.Attributes |= FileAttributes.Hidden;
 			}
-
 
 			timer = new NoReentrantTimer(timer_Elapsed, null, 5000, 1000);
 		}
@@ -64,18 +62,19 @@ namespace InfiniteStorage
 			var files = getNoThumbnailFiles(0);
 
 			var successFiles = new List<FileAsset>();
+
 			foreach (var file in files)
 			{
 				try
 				{
 					int width = 0, height = 0;
+			
 					if (file.type == (int)FileAssetType.image)
 						generateThumbnail(file, out width, out height);
 					else if (file.type == (int)FileAssetType.video)
 						extractStillImage(file);
 					else
 						continue;
-
 
 					file.width = width;
 					file.height = height;
@@ -84,6 +83,7 @@ namespace InfiniteStorage
 				catch (BadBitmapException e)
 				{
 					log4net.LogManager.GetLogger(GetType()).Warn(file.file_path + "is a bad image. delete it", e);
+
 					deleteFile(file);
 				}
 				catch (Exception e)
@@ -151,6 +151,7 @@ namespace InfiniteStorage
 					};
 
 				process.Start();
+
 				if (!process.WaitForExit(30 * 1000))
 					throw new Exception("ffmpeg does not exit in 30 secs: " + process.StartInfo.Arguments);
 

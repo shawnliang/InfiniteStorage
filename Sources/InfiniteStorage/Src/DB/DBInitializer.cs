@@ -15,7 +15,6 @@ namespace InfiniteStorage.Model
 			if (connString == null)
 				connString = MyDbContext.ConnectionString;
 
-
 			var migratePendingFilesToFiles = new List<FileAndDevFolder>();
 
 			using (var conn = new SQLiteConnection(connString))
@@ -220,7 +219,6 @@ values (@videoThisWeek, 'This Weeks''s video', 3, 0, 6);
 						}
 					}
 
-
 					if (schemaVersion == 6L)
 					{
 						using (var cmd = conn.CreateCommand())
@@ -228,6 +226,7 @@ values (@videoThisWeek, 'This Weeks''s video', 3, 0, 6);
 							cmd.CommandText = @"select * from PendingFiles";
 
 							var newData = new List<PendingFile>();
+
 							using (var reader = cmd.ExecuteReader())
 							{
 								while (reader.Read())
@@ -252,7 +251,6 @@ values (@videoThisWeek, 'This Weeks''s video', 3, 0, 6);
 									}
 								}
 							}
-
 
 							using (var update = conn.CreateCommand())
 							{
@@ -557,8 +555,6 @@ PRIMARY KEY ([event_id],[file_id])
 					schemaVersion = 20;
 				}
 
-
-
 				if (schemaVersion == 20)
 				{
 					using (var cmd = conn.CreateCommand())
@@ -580,7 +576,6 @@ PRIMARY KEY ([event_id],[file_id])
 			}
 		}
 
-
 		private static long getDbSchemaVersion(SQLiteConnection conn)
 		{
 			using (var cmd = conn.CreateCommand())
@@ -598,7 +593,6 @@ PRIMARY KEY ([event_id],[file_id])
 				return cmd.ExecuteNonQuery();
 			}
 		}
-
 	}
 
 
@@ -609,6 +603,4 @@ PRIMARY KEY ([event_id],[file_id])
 		{
 		}
 	}
-
-
 }

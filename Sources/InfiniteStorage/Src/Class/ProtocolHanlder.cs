@@ -1,6 +1,13 @@
-﻿using InfiniteStorage.WebsocketProtocol;
+﻿#region
+
 using System;
+using InfiniteStorage.WebsocketProtocol;
+using Newtonsoft.Json;
 using WebSocketSharp;
+using WebSocketSharp.Frame;
+using log4net;
+
+#endregion
 
 namespace InfiniteStorage
 {
@@ -10,7 +17,7 @@ namespace InfiniteStorage
 
 		public ProtocolHanlder(ITempFileFactory tempfileFactory, IFileStorage storage, AbstractProtocolState initialState)
 		{
-			this.ctx = new ProtocolContext(tempfileFactory, storage, initialState);
+			ctx = new ProtocolContext(tempfileFactory, storage, initialState);
 		}
 
 		public ProtocolHanlder(IProtocolHandlerContext ctx)
@@ -22,9 +29,9 @@ namespace InfiniteStorage
 		{
 			try
 			{
-				if (e.Type == WebSocketSharp.Frame.Opcode.TEXT)
+				if (e.Type == Opcode.TEXT)
 				{
-					log4net.LogManager.GetLogger("wsproto").Debug(e.Data);
+					LogManager.GetLogger("wsproto").Debug(e.Data);
 
 					TextCommand cmd = parseTextCommand(e);
 
@@ -43,7 +50,7 @@ namespace InfiniteStorage
 					else
 						throw new ProtocolErrorException("Unknown action: " + cmd.action);
 				}
-				else if (e.Type == WebSocketSharp.Frame.Opcode.BINARY)
+				else if (e.Type == Opcode.BINARY)
 				{
 					ctx.handleBinaryData(e.RawData);
 				}
@@ -62,7 +69,7 @@ namespace InfiniteStorage
 		{
 			try
 			{
-				return Newtonsoft.Json.JsonConvert.DeserializeObject<WebsocketProtocol.TextCommand>(e.Data);
+				return JsonConvert.DeserializeObject<TextCommand>(e.Data);
 			}
 			catch (Exception err)
 			{
@@ -77,6 +84,5 @@ namespace InfiniteStorage
 				ctx.Clear();
 			}
 		}
-
 	}
 }

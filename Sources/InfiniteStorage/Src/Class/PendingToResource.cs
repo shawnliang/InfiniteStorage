@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.IO;
+
+#endregion
 
 namespace InfiniteStorage
 {
@@ -34,9 +38,9 @@ namespace InfiniteStorage
 
 		public void Do(PendingEvent evt)
 		{
-
 			IEventDirOrganizer organizer = null;
-			if (evt.type == (int)EventType.Monthly)
+
+			if (evt.type == (int) EventType.Monthly)
 				organizer = new MonthlyDirOrganizer();
 			else
 				organizer = new EventDirOrganizer();
@@ -44,6 +48,7 @@ namespace InfiniteStorage
 			var folder = util.CreateFolder(organizer.GetEventFolder(evt));
 
 			var pending_files = util.GetPendingFiles(evt.files);
+
 			if (pending_files == null)
 				return;
 
@@ -61,11 +66,11 @@ namespace InfiniteStorage
 
 				fileData.Add(
 					new FileData
-					{
-						file_id = pending_file.file_id,
-						parent_folder = Path.GetDirectoryName(relative_path),
-						saved_path = relative_path,
-					});
+						{
+							file_id = pending_file.file_id,
+							parent_folder = Path.GetDirectoryName(relative_path),
+							saved_path = relative_path,
+						});
 			}
 
 			util.CreateFolderRecord(util.DevFolder, folder);

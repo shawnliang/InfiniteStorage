@@ -1,10 +1,16 @@
-﻿using InfiniteStorage.Properties;
+﻿#region
+
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using InfiniteStorage.Properties;
+using Microsoft.Win32;
+using log4net;
+
+#endregion
 
 namespace InfiniteStorage
 {
@@ -20,6 +26,7 @@ namespace InfiniteStorage
 			if (!DesignMode)
 			{
 				var storageLocation = Settings.Default.SingleFolderLocation;
+
 				if (string.IsNullOrEmpty(storageLocation))
 					storageLocation = Path.Combine(MediaLibrary.UserFolder, Resources.ProductName);
 
@@ -31,11 +38,11 @@ namespace InfiniteStorage
 		{
 			var openLocation = Path.GetDirectoryName(storageLocationBox.Text);
 			var dialog = new FolderBrowserDialog
-			{
-				SelectedPath = openLocation
-			};
+				             {
+					             SelectedPath = openLocation
+				             };
 
-			if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			if (dialog.ShowDialog() == DialogResult.OK)
 			{
 				var target = Path.Combine(dialog.SelectedPath, Resources.ProductName);
 
@@ -46,17 +53,16 @@ namespace InfiniteStorage
 				if (confirm == DialogResult.Cancel)
 					return;
 
-
 				Cursor.Current = Cursors.WaitCursor;
-				this.Enabled = false;
+				Enabled = false;
 
 				Station.Stop();
 				NginxUtility.Instance.Stop();
 				Thread.Sleep(3000);
 
 				var bgworker = new BackgroundWorker();
-				bgworker.DoWork += new DoWorkEventHandler(bgworker_DoWork);
-				bgworker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bgworker_RunWorkerCompleted);
+				bgworker.DoWork += bgworker_DoWork;
+				bgworker.RunWorkerCompleted += bgworker_RunWorkerCompleted;
 				bgworker.RunWorkerAsync(target);
 			}
 		}
@@ -64,6 +70,7 @@ namespace InfiniteStorage
 		private void closeClientProgram()
 		{
 			var clients = Process.GetProcessesByName("Waveface.Client");
+
 			foreach (var client in clients)
 			{
 				client.CloseMainWindow();
@@ -71,21 +78,20 @@ namespace InfiniteStorage
 			}
 		}
 
-		void bgworker_DoWork(object sender, DoWorkEventArgs e)
+		private void bgworker_DoWork(object sender, DoWorkEventArgs e)
 		{
-
 			closeClientProgram();
 
 			Station.MoveFolder(e.Argument as string);
 			e.Result = e.Argument;
 		}
 
-		void bgworker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		private void bgworker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			if (e.Error != null)
 			{
 				MessageBox.Show(e.Error.Message, Resources.MoveFolderFailTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				log4net.LogManager.GetLogger(GetType()).Warn("Move folder unsuccessful", e.Error);
+				LogManager.GetLogger(GetType()).Warn("Move folder unsuccessful", e.Error);
 			}
 			else if (e.Cancelled)
 			{
@@ -93,10 +99,10 @@ namespace InfiniteStorage
 			}
 			else
 			{
-				storageLocationBox.Text = (string)e.Result;
+				storageLocationBox.Text = (string) e.Result;
 				Settings.Default.SingleFolderLocation = e.Result as string;
 				Settings.Default.Save();
-				Microsoft.Win32.Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", e.Result);
+				Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", e.Result);
 			}
 
 			Station.Start();
@@ -104,10 +110,8 @@ namespace InfiniteStorage
 			NginxUtility.Instance.Start();
 
 			Cursor.Current = Cursors.Default;
-			this.Enabled = true;
+			Enabled = true;
 		}
-
-
 
 		public string StoragePath
 		{

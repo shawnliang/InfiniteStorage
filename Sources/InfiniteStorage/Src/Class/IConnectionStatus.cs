@@ -1,4 +1,9 @@
-﻿
+﻿#region
+
+using WebSocketSharp.Frame;
+
+#endregion
+
 namespace InfiniteStorage
 {
 	public interface IConnectionStatus
@@ -9,7 +14,7 @@ namespace InfiniteStorage
 
 		void Send(object data);
 
-		void Stop(WebSocketSharp.Frame.CloseStatusCode code, string reason);
+		void Stop(CloseStatusCode code, string reason);
 
 		bool IsRecving { get; }
 

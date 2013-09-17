@@ -1,4 +1,8 @@
-﻿using Microsoft.Win32;
+﻿#region
+
+using Microsoft.Win32;
+
+#endregion
 
 namespace InfiniteStorage
 {
@@ -6,15 +10,9 @@ namespace InfiniteStorage
 	{
 		public static bool Enabled
 		{
-			get
-			{
-				return Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", "true").Equals("true");
-			}
+			get { return Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", "true").Equals("true"); }
 
-			set
-			{
-				Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", value ? "true" : "false");
-			}
+			set { Registry.SetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "HomeSharing", value ? "true" : "false"); }
 		}
 	}
 }

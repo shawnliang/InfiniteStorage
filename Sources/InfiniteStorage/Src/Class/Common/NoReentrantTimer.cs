@@ -1,6 +1,10 @@
-﻿using System;
-using System.Threading;
+﻿#region
 
+using System;
+using System.Threading;
+using log4net;
+
+#endregion
 
 namespace Waveface.Common
 {
@@ -19,9 +23,8 @@ namespace Waveface.Common
 			this.cb = cb;
 			this.period = period;
 			this.dueTime = dueTime;
-			this.timer = new Timer(timeouted, state, Timeout.Infinite, Timeout.Infinite);
+			timer = new Timer(timeouted, state, Timeout.Infinite, Timeout.Infinite);
 		}
-
 
 		private void timeouted(object state)
 		{
@@ -31,7 +34,7 @@ namespace Waveface.Common
 			}
 			catch (Exception err)
 			{
-				log4net.LogManager.GetLogger(GetType()).Warn("Periodical tasks failed", err);
+				LogManager.GetLogger(GetType()).Warn("Periodical tasks failed", err);
 			}
 
 			lock (cs)

@@ -1,24 +1,25 @@
-﻿using InfiniteStorage.Model;
-using InfiniteStorage.Notify;
-using InfiniteStorage.WebsocketProtocol;
-using log4net;
+﻿#region
+
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
+using InfiniteStorage.WebsocketProtocol;
 using Waveface.Common;
 using WebSocketSharp;
+using WebSocketSharp.Frame;
 using WebSocketSharp.Server;
+using log4net;
+using ErrorEventArgs = WebSocketSharp.ErrorEventArgs;
+
+#endregion
 
 namespace InfiniteStorage
 {
-	class InfiniteStorageWebSocketService : WebSocketService
+	internal class InfiniteStorageWebSocketService : WebSocketService
 	{
 		private static ILog logger = LogManager.GetLogger("WebsocketService");
 		private ProtocolHanlder handler;
 		private NoReentrantTimer flushTimer;
-
 
 		public static event EventHandler<WebsocketEventArgs> DeviceAccepted;
 		public static event EventHandler<WebsocketEventArgs> DeviceDisconnected;
@@ -43,11 +44,11 @@ namespace InfiniteStorage
 			var storage = new ByMonthFileStorage();
 
 			var ctx = new ProtocolContext(new TempFileFactory(MyFileFolder.Temp), storage, new UnconnectedState())
-			{
-				SendFunc = this.Send,
-				StopFunc = this.Stop,
-				PingFunc = this.Ping
-			};
+				          {
+					          SendFunc = Send,
+					          StopFunc = Stop,
+					          PingFunc = Ping
+				          };
 
 			ctx.OnConnectAccepted += DeviceAccepted;
 			ctx.OnPairingRequired += PairingRequesting;
@@ -69,9 +70,10 @@ namespace InfiniteStorage
 
 		private void raiseDeviceDisconnectedEvent(WebsocketEventArgs e)
 		{
-			var handler = DeviceDisconnected;
-			if (handler != null)
-				handler(this, e);
+			var _handler = DeviceDisconnected;
+
+			if (_handler != null)
+				_handler(this, e);
 		}
 
 		protected override void onMessage(object sender, MessageEventArgs e)
@@ -83,22 +85,22 @@ namespace InfiniteStorage
 				handler.HandleMessage(e);
 				sw.Stop();
 
-				if (e.Type == WebSocketSharp.Frame.Opcode.TEXT)
+				if (e.Type == Opcode.TEXT)
 					logger.Debug("proc cmd : " + sw.ElapsedMilliseconds + " ms");
 
 				base.onMessage(sender, e);
 			}
-			catch (WebsocketProtocol.ProtocolErrorException err)
+			catch (ProtocolErrorException err)
 			{
 				logger.Warn("Protocol error. Close connection.", err);
 				cleanupForClose();
-				Stop(WebSocketSharp.Frame.CloseStatusCode.PROTOCOL_ERROR, err.Message);
+				Stop(CloseStatusCode.PROTOCOL_ERROR, err.Message);
 			}
 			catch (Exception err)
 			{
 				logger.Warn("Error handing websocket data", err);
 				cleanupForClose();
-				Stop(WebSocketSharp.Frame.CloseStatusCode.SERVER_ERROR, err.Message);
+				Stop(CloseStatusCode.SERVER_ERROR, err.Message);
 			}
 		}
 
@@ -107,7 +109,7 @@ namespace InfiniteStorage
 			base.onOpen(sender, e);
 		}
 
-		protected override void onError(object sender, WebSocketSharp.ErrorEventArgs e)
+		protected override void onError(object sender, ErrorEventArgs e)
 		{
 			logger.Warn("Error occured: " + e.Message);
 			cleanupForClose();
@@ -134,7 +136,7 @@ namespace InfiniteStorage
 			}
 			finally
 			{
-				raiseDeviceDisconnectedEvent(new WebsocketEventArgs((ProtocolContext)handler.ctx));
+				raiseDeviceDisconnectedEvent(new WebsocketEventArgs((ProtocolContext) handler.ctx));
 			}
 		}
 
@@ -142,14 +144,14 @@ namespace InfiniteStorage
 		{
 			try
 			{
-				var ctx = this.handler.ctx as ProtocolContext;
+				var ctx = handler.ctx as ProtocolContext;
 
 				var util = new TransmitUtility();
-				util.FlushFileRecordsIfNoFlushedForXSec(TransmitUtility.BULK_INSERT_BATCH_SECONDS * 2, ctx);
+				util.FlushFileRecordsIfNoFlushedForXSec(TransmitUtility.BULK_INSERT_BATCH_SECONDS*2, ctx);
 			}
 			catch (Exception err)
 			{
-				log4net.LogManager.GetLogger(GetType()).Warn("periodically flush file queue failed", err);
+				LogManager.GetLogger(GetType()).Warn("periodically flush file queue failed", err);
 			}
 		}
 	}
