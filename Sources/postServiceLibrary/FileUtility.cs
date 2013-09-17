@@ -1,5 +1,9 @@
-﻿using Microsoft.Win32;
+﻿#region
+
 using System.IO;
+using Microsoft.Win32;
+
+#endregion
 
 namespace postServiceLibrary
 {
@@ -1389,7 +1393,7 @@ namespace postServiceLibrary
 		public static string saveFileWithoutOverwrite(string fileName, string saveToFolder)
 		{
 			int _count = 1;
-			string[] _fileNameSplit = fileName.Split(new[] { '.' });
+			string[] _fileNameSplit = fileName.Split(new[] {'.'});
 			string _ext = "." + _fileNameSplit[_fileNameSplit.Length - 1];
 			string _prefix = fileName.Substring(0, fileName.Length - _ext.Length);
 
@@ -1444,7 +1448,7 @@ namespace postServiceLibrary
 
 		public static float ConvertBytesToMegaBytes(long bytes)
 		{
-			return (bytes / 1024f) / 1024f;
+			return (bytes/1024f)/1024f;
 		}
 	}
 }
