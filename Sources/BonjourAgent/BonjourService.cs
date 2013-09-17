@@ -1,6 +1,9 @@
-﻿using Mono.Zeroconf;
-using System;
+﻿#region
 
+using System;
+using Mono.Zeroconf;
+
+#endregion
 
 namespace BonjourAgent
 {
@@ -14,16 +17,18 @@ namespace BonjourAgent
 
 		public BonjourService(string serviceName)
 		{
-			this.ServiceName = serviceName;
+			ServiceName = serviceName;
+
 			m_svc = new RegisterService();
-			m_svc.Response += new RegisterServiceEventHandler(m_svc_Response);
+			m_svc.Response += m_svc_Response;
 		}
 
-		void m_svc_Response(object o, RegisterServiceEventArgs args)
+		private void m_svc_Response(object o, RegisterServiceEventArgs args)
 		{
 			if (!args.IsRegistered)
 			{
 				var handler = Error;
+
 				if (handler != null)
 					handler(this, new BonjourErrorEventArgs { error = args.ServiceError });
 			}
@@ -36,25 +41,24 @@ namespace BonjourAgent
 			m_svc.RegType = SVC_TYPE;
 			m_svc.ReplyDomain = "local.";
 
-			var txt = new TxtRecord();
-			txt.Add("server_id", server_id);
-			txt.Add("ws_port", backup_port.ToString());
-			txt.Add("notify_port", notify_port.ToString());
-			txt.Add("rest_port", rest_port.ToString());
-			txt.Add("version", "1.0");
-			txt.Add("service_name", ServiceName);
-			txt.Add("passcode", passcode);
-			txt.Add("waiting_for_pair", is_accepting ? "true" : "false");
-			txt.Add("home_sharing", home_sharing ? "true" : "false");
+			var txt = new TxtRecord
+				          {
+					          {"server_id", server_id},
+					          {"ws_port", backup_port.ToString()},
+					          {"notify_port", notify_port.ToString()},
+					          {"rest_port", rest_port.ToString()},
+					          {"version", "1.0"},
+					          {"service_name", ServiceName},
+					          {"passcode", passcode},
+					          {"waiting_for_pair", is_accepting ? "true" : "false"},
+					          {"home_sharing", home_sharing ? "true" : "false"}
+				          };
+
 			m_svc.TxtRecord = txt;
 			m_svc.Register();
 		}
 
-		public string ServiceName
-		{
-			get;
-			set;
-		}
+		public string ServiceName { get; set; }
 
 		public void Dispose()
 		{
@@ -64,6 +68,6 @@ namespace BonjourAgent
 
 	public class BonjourErrorEventArgs : EventArgs
 	{
-		public Mono.Zeroconf.ServiceErrorCode error { get; set; }
+		public ServiceErrorCode error { get; set; }
 	}
 }

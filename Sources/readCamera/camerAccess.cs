@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿#region
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,30 +9,35 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 using WIA;
+using log4net;
 
+#endregion
 
 namespace readCamera
 {
+
+	#region camerAccess
+
 	public partial class camerAccess : Form
 	{
 		private static readonly ILog log = LogManager.GetLogger(typeof(camerAccess));
 
-		const string wiaFormatPNG = "{B96B3CAF-0728-11D3-9D7B-0000F81EF32E}";
-		const string wiaFormatBMP = "{B96B3CAB-0728-11D3-9D7B-0000F81EF32E}";
-		const string wiaFormatJPEG = "{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}";
-		const string wiaFormatTIFF = "{B96B3CB1-0728-11D3-9D7B-0000F81EF32E}";
-
+		private const string wiaFormatPNG = "{B96B3CAF-0728-11D3-9D7B-0000F81EF32E}";
+		private const string wiaFormatBMP = "{B96B3CAB-0728-11D3-9D7B-0000F81EF32E}";
+		private const string wiaFormatJPEG = "{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}";
+		private const string wiaFormatTIFF = "{B96B3CB1-0728-11D3-9D7B-0000F81EF32E}";
 
 		public ImportService ImportService { get; set; }
 		public event EventHandler<CameraDetectedEventArgs> CameraDetected;
 
-		private IStorage storage = null;
-		private System.Management.ManagementEventWatcher watcher;
+		private IStorage storage;
+		private ManagementEventWatcher watcher;
 		private List<_deviceInfo> prevDevList;
 
 		public camerAccess()
 		{
 			InitializeComponent();
+
 			ImportService = new NullImportService();
 
 			prevDevList = populateCameraDevice();
@@ -39,9 +45,9 @@ namespace readCamera
 
 		public void startListen()
 		{
-			watcher = new System.Management.ManagementEventWatcher();
+			watcher = new ManagementEventWatcher();
 			var query = new WqlEventQuery("SELECT * FROM Win32_DeviceChangeEvent WHERE EventType = 2 or EventType = 3");
-			watcher.EventArrived += new EventArrivedEventHandler(watcher_EventArrived);
+			watcher.EventArrived += watcher_EventArrived;
 			watcher.Query = query;
 			watcher.Start();
 		}
@@ -73,10 +79,12 @@ namespace readCamera
 		public void readCameraServiceStart(_deviceInfo device)
 		{
 			var handler = CameraDetected;
+
 			if (handler == null)
 				return;
 
 			var args = new CameraDetectedEventArgs(device.Name, device.UID);
+
 			handler(this, args);
 
 			if (args.DoImport)
@@ -88,6 +96,7 @@ namespace readCamera
 			var allCameras = new List<_deviceInfo>();
 
 			var devMgr = new DeviceManager();
+
 			if (devMgr.DeviceInfos != null)
 			{
 				foreach (IDeviceInfo dev in devMgr.DeviceInfos)
@@ -101,7 +110,15 @@ namespace readCamera
 					var manufacrurer = dev.Properties.Exists("Manufacturer") ? dev.Properties["Manufacturer"].get_Value().ToString() : "";
 					var picturesTaken = dev.Properties.Exists("Pictures Taken") ? dev.Properties["Pictures Taken"].get_Value().ToString() : "";
 
-					allCameras.Add(new _deviceInfo { UID = devId, Name = devName, Description = description, Manufacturer = manufacrurer, DeviceInfo = dev, PictureTaken = picturesTaken });
+					allCameras.Add(new _deviceInfo
+									   {
+										   UID = devId,
+										   Name = devName,
+										   Description = description,
+										   Manufacturer = manufacrurer,
+										   DeviceInfo = dev,
+										   PictureTaken = picturesTaken
+									   });
 				}
 			}
 
@@ -118,10 +135,10 @@ namespace readCamera
 			}
 		}
 
-
 		private void GetPictures(_deviceInfo dev)
 		{
 			storage = ImportService.GetStorage(dev.UID, dev.Name);
+
 			try
 			{
 				storage.Connecting();
@@ -142,8 +159,7 @@ namespace readCamera
 
 		private delegate void ItemCallback(Item item, string path);
 
-
-		static void findImageVideoItems(Items items, ItemCallback cb)
+		private static void findImageVideoItems(Items items, ItemCallback cb)
 		{
 			var queue = new Queue<QueueItem>();
 			var curPath = @"";
@@ -153,10 +169,10 @@ namespace readCamera
 				procItem(queue, item, curPath, cb);
 			}
 
-
 			while (queue.Count > 0)
 			{
 				var item = queue.Dequeue();
+
 				foreach (Item subIten in item.item.Items)
 					procItem(queue, subIten, item.parent, cb);
 			}
@@ -165,6 +181,7 @@ namespace readCamera
 		private static void procItem(Queue<QueueItem> queue, Item item, string parent, ItemCallback cb)
 		{
 			Property flag;
+
 			try
 			{
 				flag = item.Properties["Item Flags"];
@@ -181,6 +198,7 @@ namespace readCamera
 				if ((val & (int)WiaItemFlag.FolderItemFlag) != 0)
 				{
 					string itemName;
+
 					try
 					{
 						itemName = item.Properties["Item Name"].get_Value().ToString();
@@ -208,7 +226,7 @@ namespace readCamera
 			}
 		}
 
-		void itemFound(Item item, string parent)
+		private void itemFound(Item item, string parent)
 		{
 			try
 			{
@@ -221,7 +239,6 @@ namespace readCamera
 				var path = Path.Combine(parent, name + "." + extension);
 				var timestamp = (Vector)item.Properties["Item Time Stamp"].get_Value();
 
-
 				if (storage.IsFileExist(path))
 					return;
 
@@ -229,7 +246,7 @@ namespace readCamera
 
 				FileType type = getFileTypeFromItemFlags(flags);
 
-				var tranferItem = (WIA.ImageFile)item.Transfer(format);
+				var tranferItem = (ImageFile)item.Transfer(format);
 
 				var tempFile = Path.Combine(storage.TempFolder, Guid.NewGuid().ToString() + "." + extension);
 				tranferItem.SaveFile(tempFile);
@@ -251,8 +268,11 @@ namespace readCamera
 			else
 				throw new ArgumentException("Nither image nor video flags: " + flags.ToString());
 		}
-
 	}
+
+	#endregion
+
+	#region _deviceInfo
 
 	public class _deviceInfo
 	{
@@ -264,10 +284,9 @@ namespace readCamera
 		public string PictureTaken { get; set; }
 		public IDeviceInfo DeviceInfo { get; set; }
 
-
 		public override string ToString()
 		{
-			return Name.ToString();
+			return Name;
 		}
 
 		public override int GetHashCode()
@@ -277,16 +296,21 @@ namespace readCamera
 
 		public override bool Equals(object obj)
 		{
-			if (object.ReferenceEquals(obj, this))
+			if (ReferenceEquals(obj, this))
 				return true;
 
 			var rhs = obj as _deviceInfo;
+
 			if (rhs == null)
 				return false;
 
 			return UID.Equals(rhs.UID);
 		}
 	}
+
+	#endregion
+
+	#region CameraDetectedEventArgs
 
 	public class CameraDetectedEventArgs : EventArgs
 	{
@@ -301,10 +325,15 @@ namespace readCamera
 		}
 	}
 
-	class QueueItem
+	#endregion
+
+	#region QueueItem
+
+	internal class QueueItem
 	{
 		public Item item { get; set; }
 		public string parent { get; set; }
 	}
 
+	#endregion
 }
