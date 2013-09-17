@@ -26,7 +26,6 @@ namespace postServiceLibrary
 			return PostForm(postUrl, userAgent, contentType, formData);
 		}
 
-
 		public static HttpWebResponse PostWammerImage(string postUrl, string userAgent, Dictionary<string, object> postParameters, string fileName, string mimeType)
 		{
 			string formDataBoundary = "--ABCDEFG";

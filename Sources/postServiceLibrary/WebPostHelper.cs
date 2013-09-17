@@ -8,7 +8,7 @@ namespace postServiceLibrary
 {
 	class WebPostHelper
 	{
-		//    private static Logger s_logger = LogManager.GetCurrentClassLogger();
+		// private static Logger s_logger = LogManager.GetCurrentClassLogger();
 
 		//回傳的網頁內容
 		private String m_buff;
@@ -53,7 +53,7 @@ namespace postServiceLibrary
 
 				_urlConn.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
 
-				//自動從導
+				//自動重導
 				// _urlConn.AllowAutoRedirect = true;
 
 				if (data == null)

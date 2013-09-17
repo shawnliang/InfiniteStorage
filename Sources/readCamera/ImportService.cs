@@ -1,4 +1,8 @@
-﻿using System;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace readCamera
 {
@@ -12,7 +16,6 @@ namespace readCamera
 	{
 		IStorage GetStorage(string deviceId, string deviceName);
 	}
-
 
 	public interface IStorage
 	{

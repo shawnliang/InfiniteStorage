@@ -1,8 +1,14 @@
-﻿using System;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace readCamera
 {
-	class NullImportService : ImportService
+	#region NullImportService
+
+	internal class NullImportService : ImportService
 	{
 		public IStorage GetStorage(string deviceId, string deviceName)
 		{
@@ -10,10 +16,12 @@ namespace readCamera
 		}
 	}
 
+	#endregion
 
-	class NullStorageDevice : IStorage
+	#region NullStorageDevice
+
+	internal class NullStorageDevice : IStorage
 	{
-
 		public bool IsFileExist(string path)
 		{
 			return false;
@@ -28,7 +36,6 @@ namespace readCamera
 			get { return @"C:\00000000"; }
 		}
 
-
 		public void Connecting()
 		{
 		}
@@ -41,4 +48,6 @@ namespace readCamera
 		{
 		}
 	}
+
+	#endregion
 }

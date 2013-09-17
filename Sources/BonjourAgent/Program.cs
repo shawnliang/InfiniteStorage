@@ -1,18 +1,22 @@
-﻿using CommandLine;
-using CommandLine.Text;
+﻿#region
+
 using System;
+using CommandLine;
+using CommandLine.Text;
+
+#endregion
 
 namespace BonjourAgent
 {
-	class Program
+	internal class Program
 	{
-		static void Main(string[] args)
+		private static void Main(string[] args)
 		{
 			try
 			{
 				var options = new Options();
 
-				if (!CommandLine.Parser.Default.ParseArguments(args, options))
+				if (!Parser.Default.ParseArguments(args, options))
 					Environment.Exit(1);
 
 				if (options.help)
@@ -26,17 +30,15 @@ namespace BonjourAgent
 
 					Console.Read();
 				}
-
 			}
 			catch
 			{
-
 			}
 		}
 	}
 
 
-	class Options
+	internal class Options
 	{
 		[Option("server-name", Required = true)]
 		public string server_name { get; set; }
@@ -68,8 +70,7 @@ namespace BonjourAgent
 		[HelpOption]
 		public string GetUsage()
 		{
-			return HelpText.AutoBuild(this,
-			  (HelpText current) => HelpText.DefaultParsingErrorsHandler(this, current));
+			return HelpText.AutoBuild(this, current => HelpText.DefaultParsingErrorsHandler(this, current));
 		}
 	}
 }
