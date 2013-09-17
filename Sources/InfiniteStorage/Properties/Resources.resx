@@ -247,4 +247,7 @@
   <data name="LabelName_Yesterday" xml:space="preserve">
     <value>Yesterday</value>
   </data>
+  <data name="LabelName_Starred" xml:space="preserve">
+    <value>Starred</value>
+  </data>
 </root>

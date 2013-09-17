@@ -210,6 +210,15 @@ namespace InfiniteStorage.Properties {
         }
         
         /// <summary>
+        ///   查詢類似 Starred 的當地語系化字串。
+        /// </summary>
+        internal static string LabelName_Starred {
+            get {
+                return ResourceManager.GetString("LabelName_Starred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 Earlier this week 的當地語系化字串。
         /// </summary>
         internal static string LabelName_ThisWeek {
