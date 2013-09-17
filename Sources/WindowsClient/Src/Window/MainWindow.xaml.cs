@@ -186,7 +186,7 @@ namespace Waveface.Client
 			if (!string.IsNullOrEmpty(options.select_device))
 				JumpToDevice(options.select_device, false);
 			else if (ClientFramework.Client.Default.Services.Any())
-				JumpToDevice(ClientFramework.Client.Default.GetLastImportDevice(), false);
+				JumpToPhotoDiary();
 
 		}
 
@@ -534,8 +534,7 @@ namespace Waveface.Client
 					Settings.Default.IntroStep0Displayed = true;
 					Settings.Default.Save();
 
-					var device_id = dialog.PairedDevices.LastOrDefault().device_id;
-					JumpToDevice(device_id, false);
+					JumpToPhotoDiary();
 				}
 			}
 		}
@@ -956,6 +955,12 @@ namespace Waveface.Client
 
 				Application.DoEvents();
 			}
+		}
+
+
+		private void JumpToPhotoDiary()
+		{
+			lbxPhotoDiary.SelectedIndex = 0;
 		}
 
 		private void ToPhotoDiary()
