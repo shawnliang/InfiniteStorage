@@ -963,6 +963,8 @@ namespace Waveface.Client
 		{
 			lbxPhotoDiary.SelectedIndex = 0;
 
+			Application.DoEvents();
+
 			lbxPhotoDiarySelectionChanged();
 		}
 
