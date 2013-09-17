@@ -7,21 +7,25 @@ namespace InfiniteStorage.Win32
 	public class MessageReceiver : IDisposable
 	{
 		#region Const
-		private const int ERROR_CLASS_ALREADY_EXISTS = 1410;
-		#endregion
 
+		private const int ERROR_CLASS_ALREADY_EXISTS = 1410;
+
+		#endregion
 
 		#region Readonly Static Var
-		private static readonly WndProcDelegate m_WndProc = CustomWndProc;
-		#endregion
 
+		private static readonly WndProcDelegate m_WndProc = CustomWndProc;
+
+		#endregion
 
 		#region Static Var
+
 		private static Dictionary<IntPtr, MessageReceiver> _receiverPool;
+
 		#endregion
 
-
 		#region Private Static Property
+
 		/// <summary>
 		/// Gets the m_ receiver pool.
 		/// </summary>
@@ -35,10 +39,11 @@ namespace InfiniteStorage.Win32
 				return _receiverPool ?? (_receiverPool = new Dictionary<IntPtr, MessageReceiver>());
 			}
 		}
+
 		#endregion
 
-
 		#region Private Property
+
 		/// <summary>
 		/// Gets or sets a value indicating whether [m_ disposed].
 		/// </summary>
@@ -54,14 +59,17 @@ namespace InfiniteStorage.Win32
 		/// The M_HWND.
 		/// </value>
 		private IntPtr m_Hwnd { get; set; }
+
 		#endregion
 
 		#region Event
+
 		public event EventHandler<MessageEventArgs> WndProc;
+
 		#endregion
 
-
 		#region Constructor
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MessageReceiver" /> class.
 		/// </summary>
@@ -80,14 +88,13 @@ namespace InfiniteStorage.Win32
 				lpfnWndProc = m_WndProc
 			};
 
-
 			UInt16 class_atom = NativeMethods.RegisterClassW(ref wndClass);
 
 			int last_error = Marshal.GetLastWin32Error();
 
 			if (class_atom == 0 && last_error != ERROR_CLASS_ALREADY_EXISTS)
 			{
-				throw new System.Exception("Could not register window class");
+				throw new Exception("Could not register window class");
 			}
 
 			// Create window
@@ -111,8 +118,8 @@ namespace InfiniteStorage.Win32
 
 			m_ReceiverPool[m_Hwnd] = this;
 		}
-		#endregion
 
+		#endregion
 
 		#region Private Static Method
 		/// <summary>
@@ -132,8 +139,8 @@ namespace InfiniteStorage.Win32
 		}
 		#endregion
 
-
 		#region Private Method
+
 		private void Dispose(bool disposing)
 		{
 			if (!m_Disposed)
@@ -150,13 +157,15 @@ namespace InfiniteStorage.Win32
 					NativeMethods.DestroyWindow(m_Hwnd);
 					m_Hwnd = IntPtr.Zero;
 				}
+
 				m_Disposed = true;
 			}
 		}
+
 		#endregion
 
-
 		#region Protected Method
+		
 		/// <summary>
 		/// Raises the <see cref="E:WndProc" /> event.
 		/// </summary>
@@ -165,18 +174,21 @@ namespace InfiniteStorage.Win32
 		{
 			if (WndProc == null)
 				return;
+
 			WndProc(this, e);
 		}
+
 		#endregion
 
-
 		#region Public Method
+
 		/// <summary>
 		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
 		/// </summary>
 		public void Dispose()
 		{
 			Dispose(true);
+
 			GC.SuppressFinalize(this);
 		}
 
@@ -192,6 +204,7 @@ namespace InfiniteStorage.Win32
 			//if (!res)
 			//	throw new Exception("AllowMessage not success");
 		}
+
 		#endregion
 	}
 }

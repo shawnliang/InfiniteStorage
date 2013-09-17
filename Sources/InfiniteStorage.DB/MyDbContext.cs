@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Data.SQLite;
 using System.IO;
+
+#endregion
 
 namespace InfiniteStorage.Model
 {
@@ -17,6 +21,7 @@ namespace InfiniteStorage.Model
 			var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Bunny");
 
 			DbFilePath = Path.Combine(appDir, "database.s3db");
+
 			ConnectionString = "Data Source=" + DbFilePath;
 		}
 

@@ -1,5 +1,4 @@
-﻿
-namespace InfiniteStorage.Data.Notify
+﻿namespace InfiniteStorage.Data.Notify
 {
 	public class SubscribeMsg
 	{

@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
+
+#endregion
 
 namespace InfiniteStorage.Data.Notify
 {
 	public class NotificationMsg
 	{
 		public List<ReceivingStatus> recving_devices { get; set; }
-
 		public string new_device { get; set; }
-
 		public folder_info new_folder { get; set; }
-
 		public folder_info update_folder { get; set; }
 	}
 
@@ -25,9 +26,7 @@ namespace InfiniteStorage.Data.Notify
 	public class folder_info
 	{
 		public string name { get; set; }
-
 		public string parent_folder { get; set; }
-
 		public string path { get; set; }
 	}
 }

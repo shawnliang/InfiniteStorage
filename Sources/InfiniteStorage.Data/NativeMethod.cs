@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 public class NativeMethods
 {
 	#region Const
+
 	public const int WM_USER = 0x400;
 	public const int WM_COPYDATA = 0x004A;
 	public const uint GENERIC_READ = 0x80000000;
@@ -12,10 +13,11 @@ public class NativeMethods
 	public const uint FILE_SHARE_WRITE = 0x00000002;
 	public const uint FILE_ATTRIBUTE_NORMAL = 128;
 	public const uint FILE_FLAG_BACKUP_SEMANTICS = 0x02000000;
+
 	#endregion
 
-
 	#region user32.dll
+
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[DllImport("user32.dll", SetLastError = true)]
 	public static extern bool PostMessage(IntPtr hWnd, Int32 Msg, IntPtr wParam, IntPtr lParam);
@@ -235,10 +237,11 @@ public class NativeMethods
 		/// <remarks>See SW_FORCEMINIMIZE</remarks>
 		ForceMinimized = 11
 	}
+
 	#endregion
 
-
 	#region kernel32.dll
+
 	[DllImport("kernel32.dll")]
 	public static extern uint GetCurrentThreadId();
 
@@ -269,14 +272,16 @@ public class NativeMethods
 	public static extern bool CloseHandle(
 		  IntPtr hObject   // handle to object
 		  );
+
 	#endregion
 
-
 	#region wininet
+
 	[DllImport("wininet")]
 	public static extern bool InternetGetConnectedState(
 		ref uint lpdwFlags,
 		uint dwReserved
 		);
+
 	#endregion
 }

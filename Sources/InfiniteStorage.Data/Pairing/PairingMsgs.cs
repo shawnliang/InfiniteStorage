@@ -1,15 +1,10 @@
-﻿
-
-namespace InfiniteStorage.Data.Pairing
+﻿namespace InfiniteStorage.Data.Pairing
 {
 	public class PairingClientMsgs
 	{
 		public subscribe subscribe { get; set; }
-
 		public pairing_mode pairing_mode { get; set; }
-
 		public accept_reject accept { get; set; }
-
 		public accept_reject reject { get; set; }
 	}
 

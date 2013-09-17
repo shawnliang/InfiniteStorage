@@ -1,5 +1,9 @@
-﻿using Microsoft.Win32;
+﻿#region
+
 using System;
+using Microsoft.Win32;
+
+#endregion
 
 namespace InfiniteStorage.Data
 {
@@ -11,13 +15,13 @@ namespace InfiniteStorage.Data
 
 		static ProgramConfig()
 		{
-			var webServer = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "WebServer", "https://devweb.waveface.com");
+			var webServer = (string) Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "WebServer", "https://devweb.waveface.com");
 			WebBaseUri = new Uri(webServer);
 
-			var apiServer = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ApiServer", "https://develop.waveface.com");
+			var apiServer = (string) Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ApiServer", "https://develop.waveface.com");
 			ApiBaseUri = new Uri(apiServer);
 
-			var userTrackUri = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "UserTrackUri", "https://dev.waveface.com/usertrack");
+			var userTrackUri = (string) Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "UserTrackUri", "https://dev.waveface.com/usertrack");
 			UserTrackUri = new Uri(userTrackUri);
 		}
 
@@ -28,7 +32,6 @@ namespace InfiniteStorage.Data
 
 			return b.ToString();
 		}
-
 
 		public static string FromApiBase(string relativePath)
 		{
