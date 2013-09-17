@@ -173,4 +173,8 @@
 
     <system:String x:Key="delete_confirm_title">Are you sure?</system:String>
     <system:String x:Key="delete_confirm_desc">Do you want to delete the selected files?</system:String>
+    
+    <system:String x:Key="strItem">Item</system:String>
+    <system:String x:Key="strItems">Items</system:String>
+    <system:String x:Key="unnamedUEvent">Unnamed Event</system:String>
 </ResourceDictionary>
