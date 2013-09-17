@@ -347,7 +347,7 @@ namespace Waveface.Client
 			if (folder == null)
 				return;
 
-			if (MessageBox.Show(System.Windows.Application.Current.MainWindow, "Are you sure you want to delete?", "Confirm", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
+			if (MessageBox.Show(System.Windows.Application.Current.MainWindow, FindResource("delete_confirm_desc") as string, FindResource("delete_confirm_title") as string, MessageBoxButton.OKCancel) != MessageBoxResult.OK)
 				return;
 
 			var service = folder.Service;
@@ -383,7 +383,7 @@ namespace Waveface.Client
 		{
 			if (ask)
 			{
-				if (MessageBox.Show(System.Windows.Application.Current.MainWindow, "Are you sure you want to delete?", "Confirm", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
+				if (MessageBox.Show(System.Windows.Application.Current.MainWindow, FindResource("delete_confirm_desc") as string, FindResource("delete_confirm_title") as string, MessageBoxButton.OKCancel) != MessageBoxResult.OK)
 					return;
 			}
 

@@ -304,7 +304,7 @@ namespace Waveface.Client
 
 			IContentEntity _contentEntity = (IContentEntity)lbImages.SelectedItem;
 
-			if (MessageBox.Show(Application.Current.MainWindow, "Are you sure you want to delete?", "Confirm", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
+			if (MessageBox.Show(Application.Current.MainWindow, FindResource("delete_confirm_desc") as string, FindResource("delete_confirm_title") as string, MessageBoxButton.OKCancel) != MessageBoxResult.OK)
 				return;
 
 			var parentWindow = Tag as Window;
