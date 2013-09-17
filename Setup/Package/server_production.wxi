@@ -5,7 +5,7 @@
     <Component Id="ServerSetting" Guid="{C6862A99-40AF-4F2D-AFF5-68959A867267}">
       <RegistryKey Root="HKCU" Key="Software\BunnyHome">
         <RegistryValue Type="string" Name="ApiServer" Value="https://api.waveface.com/" KeyPath="yes" />
-        <RegistryValue Type="string" Name="WebServer" Value="https://waveface.com/" KeyPath="no" />
+        <RegistryValue Type="string" Name="WebServer" Value="https://www.waveface.com/" KeyPath="no" />
         <RegistryValue Type="string" Name="UserTrackUri" Value="https://waveface.com/usertrack" KeyPath="no" />
       </RegistryKey>
     </Component>
