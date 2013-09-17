@@ -195,4 +195,17 @@
     <system:String x:Key="strItem">個項目</system:String>
     <system:String x:Key="strItems">個項目</system:String>
     <system:String x:Key="unnamedUEvent">未命名事件</system:String>
+
+
+    <system:String x:Key="AllPhoto_DisableAutoImport">關閉自動匯入</system:String>
+    <system:String x:Key="AllPhoto_EnableAutoImport">開啟自動匯入</system:String>
+    <system:String x:Key="RightSide_DisableCloudSharing">關閉</system:String>
+    <system:String x:Key="RightSide_CloudSharing_StatusOpened">已開啟</system:String>
+    <system:String x:Key="RightSide_EnabledCloudSharing">開啟</system:String>
+    <system:String x:Key="RightSide_CloudSharing_StatusClosed">已關閉</system:String>
+
+    <system:String x:Key="HomeSharing_Enable">開啟快送</system:String>
+    <system:String x:Key="HomeSharing_Enabled">快送：已開啟</system:String>
+    <system:String x:Key="HomeSharing_Disable">關閉快送</system:String>
+    <system:String x:Key="HomeSharing_Disabled">快送：已關閉</system:String>
 </ResourceDictionary>

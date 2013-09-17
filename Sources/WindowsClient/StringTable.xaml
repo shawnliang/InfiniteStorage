@@ -173,8 +173,21 @@
 
     <system:String x:Key="delete_confirm_title">Are you sure?</system:String>
     <system:String x:Key="delete_confirm_desc">Do you want to delete the selected files?</system:String>
-    
+
     <system:String x:Key="strItem">Item</system:String>
     <system:String x:Key="strItems">Items</system:String>
     <system:String x:Key="unnamedUEvent">Unnamed Event</system:String>
+
+    <system:String x:Key="AllPhoto_DisableAutoImport">Disable auto import</system:String>
+    <system:String x:Key="AllPhoto_EnableAutoImport">Enable auto import</system:String>
+    <system:String x:Key="RightSide_DisableCloudSharing">Disable</system:String>
+    <system:String x:Key="RightSide_CloudSharing_StatusOpened">Enabled</system:String>
+    <system:String x:Key="RightSide_EnabledCloudSharing">Enabled</system:String>
+    <system:String x:Key="RightSide_CloudSharing_StatusClosed">Disabled</system:String>
+
+    <system:String x:Key="HomeSharing_Enable">Enable home sharing</system:String>
+    <system:String x:Key="HomeSharing_Enabled">Home Sharing：Enabled</system:String>
+    <system:String x:Key="HomeSharing_Disable">Disable home sharing</system:String>
+    <system:String x:Key="HomeSharing_Disabled">Home Sharing：Disabled</system:String>
+
 </ResourceDictionary>

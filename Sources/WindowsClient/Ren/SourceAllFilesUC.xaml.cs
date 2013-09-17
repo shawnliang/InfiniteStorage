@@ -502,7 +502,7 @@ namespace Waveface.Client
 		{
 			(m_currentDevice as BunnyService).SyncEnabled = true;
 			tbAutoImport.Background = m_solidColorBrush;
-			tbAutoImport.Content = "關閉自動匯入";
+			tbAutoImport.Content = FindResource("AllPhoto_DisableAutoImport") as string;
 			refreshTitleInfo();
 		}
 
@@ -510,7 +510,7 @@ namespace Waveface.Client
 		{
 			(m_currentDevice as BunnyService).SyncEnabled = false;
 			tbAutoImport.Background = Brushes.DodgerBlue;
-			tbAutoImport.Content = "開啟自動匯入";
+			tbAutoImport.Content = FindResource("AllPhoto_EnableAutoImport") as string; ;
 			refreshTitleInfo();
 		}
 

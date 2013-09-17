@@ -32,8 +32,8 @@ namespace Waveface.Client.Src.Dialog
 		private void AdjustStatus()
 		{
 			ClientFramework.Client.Default.HomeSharingEnabled = tbtnSwitch.IsChecked.Value;
-			tbtnSwitch.Content = tbtnSwitch.IsChecked.Value ? "關閉快送" : "開啟快送";
-			tbxSwitchStatus.Text = tbtnSwitch.IsChecked.Value ? "快送：已開啟" : "快送：已關閉";
+			tbtnSwitch.Content = tbtnSwitch.IsChecked.Value ? FindResource("HomeSharing_Disable") : FindResource("HomeSharing_Enable");
+			tbxSwitchStatus.Text = tbtnSwitch.IsChecked.Value ? FindResource("HomeSharing_Enabled") as string: FindResource("HomeSharing_Disabled") as string;
 		}
 
 		private void tbtnSwitch_Unchecked(Object sender, System.Windows.RoutedEventArgs e)

@@ -147,19 +147,19 @@ namespace Waveface.Client
 		private void tbtnCloudSharing_Checked(Object sender, RoutedEventArgs e)
 		{
 			tbtnCloudSharing.Background = m_solidColorBrush;
-			tbtnCloudSharing.Content = "關閉";
+			tbtnCloudSharing.Content = FindResource("RightSide_DisableCloudSharing") as string;
 			sbCloudSharing.Visibility = Visibility.Visible;
-			tbLinkOpenClose.Text = "已開啟";
+			tbLinkOpenClose.Text = FindResource("RightSide_CloudSharing_StatusOpened") as string;
 			tipText.Visibility = Visibility.Collapsed;
 		}
 
 		private void tbtnCloudSharing_Unchecked(Object sender, RoutedEventArgs e)
 		{
 			tbtnCloudSharing.Background = Brushes.DodgerBlue;
-			tbtnCloudSharing.Content = "開啟";
+			tbtnCloudSharing.Content = FindResource("RightSide_EnableCloudSharing") as string;
 			sbCloudSharing.Visibility = Visibility.Collapsed;
 			spProgressBar.Visibility = Visibility.Collapsed;
-			tbLinkOpenClose.Text = "已關閉";
+			tbLinkOpenClose.Text = FindResource("RightSide_CloudSharing_StatusClosed") as string;
 			tipText.Visibility = Visibility.Visible;
 		}
 
