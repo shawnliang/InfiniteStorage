@@ -200,4 +200,16 @@
   <data name="WaitForPair_SearchAgainTitle" xml:space="preserve">
     <value>找不到裝置</value>
   </data>
+  <data name="LabelName_ThisWeek" xml:space="preserve">
+    <value>本周稍早</value>
+  </data>
+  <data name="LabelName_Today" xml:space="preserve">
+    <value>今天</value>
+  </data>
+  <data name="LabelName_Yesterday" xml:space="preserve">
+    <value>昨天</value>
+  </data>
+  <data name="LabelName_Starred" xml:space="preserve">
+    <value>標記星號</value>
+  </data>
 </root>

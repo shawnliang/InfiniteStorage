@@ -188,4 +188,7 @@
     <system:String x:Key="intro_prev">上一步</system:String>
     <system:String x:Key="intro_next">下一步</system:String>
     <system:String x:Key="intro_last_step">關閉</system:String>
+
+    <system:String x:Key="delete_confirm_title">確定刪除?</system:String>
+    <system:String x:Key="delete_confirm_desc">你要刪除所選擇的檔案嗎?</system:String>
 </ResourceDictionary>

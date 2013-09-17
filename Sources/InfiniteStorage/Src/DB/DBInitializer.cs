@@ -558,9 +558,24 @@ PRIMARY KEY ([event_id],[file_id])
 				}
 
 
+
+				if (schemaVersion == 20)
+				{
+					using (var cmd = conn.CreateCommand())
+					{
+						cmd.CommandText = "update [labels] set name = @name where label_id = @label";
+						cmd.Parameters.AddWithValue("@name", Resources.LabelName_Starred);
+						cmd.Parameters.AddWithValue("@label", Guid.Empty);
+						cmd.ExecuteNonQuery();
+					}
+
+					updateDbSchemaVersion(conn, 21);
+					schemaVersion = 21;
+				}
+
 				var curSchema = getDbSchemaVersion(conn);
 
-				if (curSchema > 20L)
+				if (curSchema > 21L)
 					throw new DBDowngradeException(string.Format("Existing db version {0} is newer than the installed version", curSchema));
 			}
 		}

@@ -151,7 +151,14 @@ namespace InfiniteStorage.WebsocketProtocol
 			var handler = OnFileReceived;
 			if (handler != null)
 			{
-				handler(this, new WebsocketEventArgs(this));
+				try
+				{
+					handler(this, new WebsocketEventArgs(this));
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn("raiseOnFileReceived", err);
+				}
 			}
 		}
 
@@ -159,28 +166,65 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			var handler = OnThumbnailReceived;
 			if (handler != null)
-				handler(this, new ThumbnailReceivedEventArgs(thumbPath, this, transferCount));
+			{
+				try
+				{
+					handler(this, new ThumbnailReceivedEventArgs(thumbPath, this, transferCount));
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn("raiseOnThumbnailReceived", err);
+				}
+			}
 		}
 
 		public void raiseOnFileDropped()
 		{
 			var handler = OnFileDropped;
 			if (handler != null)
-				handler(this, new WebsocketEventArgs(this));
+			{
+				try
+				{
+					handler(this, new WebsocketEventArgs(this));
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn("raiseOnFileDropped", err);
+				}
+			}
+
 		}
 
 		public void raiseOnFileEnding()
 		{
 			var handler = OnFileEnding;
 			if (handler != null)
-				handler(this, new WebsocketEventArgs(this));
+			{
+				try
+				{
+					handler(this, new WebsocketEventArgs(this));
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn("raiseOnFileEnding", err);
+				}
+			}
 		}
 
 		public void raiseOnFileReceiving()
 		{
 			var handler = OnFileReceiving;
 			if (handler != null)
-				handler(this, new WebsocketEventArgs(this));
+			{
+				try
+				{
+					handler(this, new WebsocketEventArgs(this));
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn("raiseOnFileReceiving", err);
+				}
+			}
 
 		}
 
@@ -188,7 +232,16 @@ namespace InfiniteStorage.WebsocketProtocol
 		{
 			var handler = OnFileProgress;
 			if (handler != null)
-				handler(this, new WebsocketEventArgs(this));
+			{
+				try
+				{
+					handler(this, new WebsocketEventArgs(this));
+				}
+				catch (Exception err)
+				{
+					log4net.LogManager.GetLogger(GetType()).Warn("raiseOnFileProgress", err);
+				}
+			}
 		}
 
 		public void Send(object data)
