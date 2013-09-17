@@ -182,7 +182,7 @@
     <system:String x:Key="AllPhoto_EnableAutoImport">Enable auto import</system:String>
     <system:String x:Key="RightSide_DisableCloudSharing">Disable</system:String>
     <system:String x:Key="RightSide_CloudSharing_StatusOpened">Enabled</system:String>
-    <system:String x:Key="RightSide_EnabledCloudSharing">Enabled</system:String>
+    <system:String x:Key="RightSide_EnableCloudSharing">Enable</system:String>
     <system:String x:Key="RightSide_CloudSharing_StatusClosed">Disabled</system:String>
 
     <system:String x:Key="HomeSharing_Enable">Turn on</system:String>
