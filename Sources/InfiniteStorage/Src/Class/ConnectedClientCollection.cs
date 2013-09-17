@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using System.Linq;
+
+#endregion
 
 namespace InfiniteStorage
 {
-	class ConnectedClientCollection
+	internal class ConnectedClientCollection
 	{
 		private static ConnectedClientCollection instance = new ConnectedClientCollection();
 
@@ -38,7 +42,6 @@ namespace InfiniteStorage
 				return connections.ToList();
 			}
 		}
-
 
 		public static ConnectedClientCollection Instance
 		{

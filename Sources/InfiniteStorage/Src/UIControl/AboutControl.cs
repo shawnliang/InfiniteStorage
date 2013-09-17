@@ -1,9 +1,15 @@
-﻿using InfiniteStorage.Properties;
+﻿#region
+
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using InfiniteStorage.Properties;
+using Waveface.Common;
+using log4net;
+
+#endregion
 
 namespace InfiniteStorage
 {
@@ -28,7 +34,7 @@ namespace InfiniteStorage
 		{
 			if (!DesignMode)
 			{
-				versionLabel.Text = string.Format(Resources.VersionLable, Assembly.GetExecutingAssembly().GetName().Version.ToString());
+				versionLabel.Text = string.Format(Resources.VersionLable, Assembly.GetExecutingAssembly().GetName().Version);
 				comboBox1.SelectedItem = Settings.Default.LogLevel;
 			}
 		}
@@ -41,6 +47,7 @@ namespace InfiniteStorage
 		private void raiseSettingsChangedEvent()
 		{
 			var handler = SettingsChanged;
+
 			if (handler != null)
 				handler(this, EventArgs.Empty);
 		}
@@ -52,17 +59,15 @@ namespace InfiniteStorage
 				if (comboBox1.SelectedItem != null)
 				{
 					DebugLevel level;
-					if (Enum.TryParse<DebugLevel>(comboBox1.SelectedItem.ToString(), out level))
+
+					if (Enum.TryParse(comboBox1.SelectedItem.ToString(), out level))
 						return level;
 				}
 
 				return DebugLevel.WARN;
 			}
 
-			set
-			{
-				comboBox1.SelectedItem = value.ToString();
-			}
+			set { comboBox1.SelectedItem = value.ToString(); }
 		}
 
 		private void openLogButton_Click(object sender, EventArgs e)
@@ -71,14 +76,13 @@ namespace InfiniteStorage
 
 			if (File.Exists(file))
 				Process.Start(file);
-
 		}
 
 		private void checkForUpdateButton_Click(object sender, EventArgs e)
 		{
 			try
 			{
-				var update = new Waveface.Common.AutoUpdate(false);
+				var update = new AutoUpdate(false);
 
 				if (update.IsUpdateRequired())
 					update.ShowUpdateNeededUI();
@@ -88,7 +92,7 @@ namespace InfiniteStorage
 			catch (Exception err)
 			{
 				MessageBox.Show(err.Message, Resources.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-				log4net.LogManager.GetLogger(GetType()).Error("Unable to check for update", err);
+				LogManager.GetLogger(GetType()).Error("Unable to check for update", err);
 			}
 		}
 	}

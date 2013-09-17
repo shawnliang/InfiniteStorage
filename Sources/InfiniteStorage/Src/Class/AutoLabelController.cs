@@ -1,14 +1,19 @@
-﻿using InfiniteStorage.Model;
-using InfiniteStorage.Properties;
-using InfiniteStorage.WebsocketProtocol;
+﻿#region
+
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
+using InfiniteStorage.Model;
+using InfiniteStorage.Properties;
+using InfiniteStorage.WebsocketProtocol;
+using log4net;
+
+#endregion
 
 namespace InfiniteStorage
 {
-	class AutoLabelController
+	internal class AutoLabelController
 	{
 		public void FileReceived(object sender, WebsocketEventArgs args)
 		{
@@ -21,27 +26,27 @@ namespace InfiniteStorage
 
 				if (withinToday(file.datetime))
 				{
-					var labels = new Guid[] { Settings.Default.LabelPhotoToday };
+					var labels = new[] {Settings.Default.LabelPhotoToday};
 
 					updateLabels(args, labels);
 				}
 
 				if (withinYesterday(file.datetime))
 				{
-					var labels = new Guid[] { Settings.Default.LabelPhotoYesterday };
+					var labels = new[] {Settings.Default.LabelPhotoYesterday};
 					updateLabels(args, labels);
 				}
 
 				if (withinThisWeek(file.datetime))
 				{
-					var labels = new Guid[] { Settings.Default.LabelPhotoThisWeek };
+					var labels = new[] {Settings.Default.LabelPhotoThisWeek};
 
 					updateLabels(args, labels);
 				}
 			}
 			catch (Exception e)
 			{
-				log4net.LogManager.GetLogger(GetType()).Warn("unable to auto label on file: " + args.ctx.fileCtx.file_id, e);
+				LogManager.GetLogger(GetType()).Warn("unable to auto label on file: " + args.ctx.fileCtx.file_id, e);
 			}
 		}
 
@@ -73,9 +78,9 @@ namespace InfiniteStorage
 			using (var db = new SQLiteConnection(MyDbContext.ConnectionString))
 			{
 				db.Open();
+
 				using (var transaction = db.BeginTransaction())
 				{
-
 					tagLabelsOnFile(args, db, labels);
 					updateLabelSeq(db, labels);
 
@@ -137,7 +142,6 @@ namespace InfiniteStorage
 			var yesterday = DateTime.Now.AddDays(-1.0).TrimToDay();
 			var sevenDaysAgo = DateTime.Now.AddDays(-7.0).TrimToDay();
 
-
 			recomputePeriodForLabel(label_id, sevenDaysAgo, yesterday);
 		}
 
@@ -148,7 +152,6 @@ namespace InfiniteStorage
 			var yes_start = DateTime.Now.AddDays(-1.0).TrimToDay();
 			var yes_end = DateTime.Now.TrimToDay();
 
-
 			recomputePeriodForLabel(label_id, yes_start, yes_end);
 		}
 
@@ -157,14 +160,14 @@ namespace InfiniteStorage
 			using (var db = new MyDbContext())
 			{
 				var actual = (from f in db.Object.Files
-							  where f.event_time >= start && f.event_time < end && !f.deleted && f.has_origin
-							  select f.file_id).ToList();
+				              where f.event_time >= start && f.event_time < end && !f.deleted && f.has_origin
+				              select f.file_id).ToList();
 
 				var current = (from f in db.Object.LabelFiles
-							   where f.label_id == label_id
-							   select f).ToList();
+				               where f.label_id == label_id
+				               select f).ToList();
 
-				var areCurrentAndActualIdentical = actual.Count == current.Count && actual.TrueForAll(x => current.Where(y => y.file_id == x).Any());
+				var areCurrentAndActualIdentical = actual.Count == current.Count && actual.TrueForAll(x => current.Any(y => y.file_id == x));
 
 				if (!areCurrentAndActualIdentical)
 				{
@@ -175,12 +178,12 @@ namespace InfiniteStorage
 
 					foreach (var act in actual)
 					{
-						db.Object.LabelFiles.Add(new LabeledFile { file_id = act, label_id = label_id });
+						db.Object.LabelFiles.Add(new LabeledFile {file_id = act, label_id = label_id});
 					}
 
 					var lbRecord = (from lb in db.Object.Labels
-									where lb.label_id == label_id
-									select lb).First();
+					                where lb.label_id == label_id
+					                select lb).First();
 					lbRecord.seq = SeqNum.GetNextSeq();
 
 					db.Object.SaveChanges();
@@ -223,46 +226,44 @@ namespace InfiniteStorage
 			using (var db = new MyDbContext())
 			{
 				var labelFiles = (from f in db.Object.LabelFiles
-								  join l in db.Object.Labels on f.label_id equals l.label_id
-								  join t in db.Object.Files on f.file_id equals t.file_id
-								  where l.auto_type > (int)AutoLabelType.NotAuto
-								  select
-								  new
-								  {
-									  file_id = f.file_id,
-									  label_id = f.label_id,
-									  auto_type = l.auto_type,
-									  taken_time = t.event_time
-								  });
+				                  join l in db.Object.Labels on f.label_id equals l.label_id
+				                  join t in db.Object.Files on f.file_id equals t.file_id
+				                  where l.auto_type > (int) AutoLabelType.NotAuto
+				                  select
+					                  new
+						                  {
+							                  f.file_id,
+							                  f.label_id,
+							                  l.auto_type,
+							                  taken_time = t.event_time
+						                  });
 
 				foreach (var labelFile in labelFiles)
 				{
 					switch (labelFile.auto_type)
 					{
-						case (int)AutoLabelType.PhotoThisWeek:
-						case (int)AutoLabelType.VideoThisWeek:
+						case (int) AutoLabelType.PhotoThisWeek:
+						case (int) AutoLabelType.VideoThisWeek:
 							if (!withinThisWeek(labelFile.taken_time))
-								toRemove.Add(new LabeledFile { label_id = labelFile.label_id, file_id = labelFile.file_id });
+								toRemove.Add(new LabeledFile {label_id = labelFile.label_id, file_id = labelFile.file_id});
 							break;
 
-						case (int)AutoLabelType.PhotoYesterday:
-						case (int)AutoLabelType.VideoYesterday:
+						case (int) AutoLabelType.PhotoYesterday:
+						case (int) AutoLabelType.VideoYesterday:
 							if (!withinYesterday(labelFile.taken_time))
-								toRemove.Add(new LabeledFile { label_id = labelFile.label_id, file_id = labelFile.file_id });
+								toRemove.Add(new LabeledFile {label_id = labelFile.label_id, file_id = labelFile.file_id});
 							break;
 
-						case (int)AutoLabelType.PhotoToday:
-						case (int)AutoLabelType.VideoToday:
+						case (int) AutoLabelType.PhotoToday:
+						case (int) AutoLabelType.VideoToday:
 							if (!withinToday(labelFile.taken_time))
-								toRemove.Add(new LabeledFile { label_id = labelFile.label_id, file_id = labelFile.file_id });
+								toRemove.Add(new LabeledFile {label_id = labelFile.label_id, file_id = labelFile.file_id});
 							break;
 					}
 				}
 			}
+
 			return toRemove;
 		}
-
-
 	}
-
 }

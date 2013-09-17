@@ -1,6 +1,10 @@
-﻿using InfiniteStorage.Properties;
+﻿#region
+
 using System;
 using System.Windows.Forms;
+using InfiniteStorage.Properties;
+
+#endregion
 
 namespace InfiniteStorage
 {
@@ -16,6 +20,7 @@ namespace InfiniteStorage
 		private void libraryName_TextChanged(object sender, EventArgs e)
 		{
 			var handler = SettingsChanged;
+
 			if (handler != null)
 				handler(this, EventArgs.Empty);
 		}

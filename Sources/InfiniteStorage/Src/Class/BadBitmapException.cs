@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace InfiniteStorage
 {
-	class BadBitmapException : Exception
+	internal class BadBitmapException : Exception
 	{
 		public BadBitmapException(string msg, Exception innerException)
 			: base(msg, innerException)

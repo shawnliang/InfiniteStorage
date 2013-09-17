@@ -1,11 +1,15 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.IO;
+
+#endregion
 
 namespace InfiniteStorage
 {
-	static class MediaLibrary
+	internal static class MediaLibrary
 	{
-		static string userFolder;
+		private static string userFolder;
 
 		public static string UserFolder
 		{
@@ -19,26 +23,17 @@ namespace InfiniteStorage
 
 		public static string MyPictures
 		{
-			get
-			{
-				return Path.Combine(userFolder, "Pictures");
-			}
+			get { return Path.Combine(userFolder, "Pictures"); }
 		}
 
 		public static string MyVideos
 		{
-			get
-			{
-				return Path.Combine(userFolder, "Videos");
-			}
+			get { return Path.Combine(userFolder, "Videos"); }
 		}
 
 		public static string MyPodcasts
 		{
-			get
-			{
-				return Path.Combine(userFolder, "Podcasts");
-			}
+			get { return Path.Combine(userFolder, "Podcasts"); }
 		}
 	}
 }

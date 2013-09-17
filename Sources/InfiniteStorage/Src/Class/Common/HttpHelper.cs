@@ -1,13 +1,17 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Web;
 
+#endregion
+
 namespace Waveface.Common
 {
-	class HttpHelper
+	internal class HttpHelper
 	{
 		private static string ToQueryString(NameValueCollection nvc)
 		{
@@ -30,8 +34,10 @@ namespace Waveface.Common
 			}
 
 			var response = request.GetResponse();
+
 			// Get the stream containing content returned by the server.
 			var dataStream = response.GetResponseStream();
+
 			// Open the stream using a StreamReader for easy access.
 			using (var sr = new StreamReader(dataStream))
 			{

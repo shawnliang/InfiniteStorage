@@ -1,13 +1,17 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Text;
+
+#endregion
 
 namespace Wammer.MultiPart
 {
 	public class Disposition
 	{
-		private static readonly char[] SEPARATOR = new[] { ';' };
+		private static readonly char[] SEPARATOR = new[] {';'};
 		private readonly NameValueCollection parameters = new NameValueCollection();
 		private string value;
 
@@ -35,9 +39,10 @@ namespace Wammer.MultiPart
 			try
 			{
 				string[] segments = text.Split(SEPARATOR,
-											   StringSplitOptions.RemoveEmptyEntries);
+				                               StringSplitOptions.RemoveEmptyEntries);
 
-				var disp = new Disposition { value = segments[0].Trim() };
+				var disp = new Disposition {value = segments[0].Trim()};
+
 				for (int i = 1; i < segments.Length; i++)
 				{
 					string[] nameValue = segments[i].Split('=');
@@ -59,6 +64,7 @@ namespace Wammer.MultiPart
 		{
 			if (str.StartsWith("\"") && str.EndsWith("\""))
 				return str.Substring(1, str.Length - 2);
+
 			return str;
 		}
 
@@ -67,6 +73,7 @@ namespace Wammer.MultiPart
 			var buff = new StringBuilder();
 			buff.Append("Content-Disposition: ");
 			buff.Append(value);
+
 			if (parameters.Count > 0)
 			{
 				foreach (string key in parameters.AllKeys)
@@ -79,6 +86,7 @@ namespace Wammer.MultiPart
 					buff.Append("\"");
 				}
 			}
+			
 			buff.Append("\r\n");
 
 			byte[] data = Encoding.UTF8.GetBytes(buff.ToString());

@@ -1,13 +1,17 @@
-﻿using InfiniteStorage.Model;
+﻿#region
+
 using System;
 using System.Linq;
 using System.Threading;
+using InfiniteStorage.Model;
+
+#endregion
 
 namespace InfiniteStorage
 {
-	static class SeqNum
+	internal static class SeqNum
 	{
-		private static long seq = 0;
+		private static long seq;
 
 		public static long GetNextSeq()
 		{
@@ -19,17 +23,16 @@ namespace InfiniteStorage
 			using (var db = new MyDbContext())
 			{
 				var q = from f in db.Object.Files
-						orderby f.seq descending
-						select f.seq;
-
+				        orderby f.seq descending
+				        select f.seq;
 
 				var q2 = from f in db.Object.PendingFiles
-						 orderby f.seq descending
-						 select f.seq;
+				         orderby f.seq descending
+				         select f.seq;
 
 				var q3 = from f in db.Object.Labels
-						 orderby f.seq descending
-						 select f.seq;
+				         orderby f.seq descending
+				         select f.seq;
 
 				var max1 = q.Any() ? q.Max() : 0;
 				var max2 = q2.Any() ? q2.Max() : 0;

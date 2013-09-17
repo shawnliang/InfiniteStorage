@@ -1,4 +1,8 @@
-﻿using System.IO;
+﻿#region
+
+using System.IO;
+
+#endregion
 
 namespace InfiniteStorage
 {
@@ -25,6 +29,7 @@ namespace InfiniteStorage
 			{
 				name = name.Replace(inv_char, '_');
 			}
+
 			return name;
 		}
 	}

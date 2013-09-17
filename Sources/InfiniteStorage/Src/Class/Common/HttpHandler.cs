@@ -1,5 +1,5 @@
-﻿using log4net;
-using Newtonsoft.Json;
+﻿#region
+
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -9,7 +9,11 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
+using Newtonsoft.Json;
 using Wammer.MultiPart;
+using log4net;
+
+#endregion
 
 namespace Wammer.Station
 {
@@ -43,10 +47,6 @@ namespace Wammer.Station
 		private static readonly ILog logger = LogManager.GetLogger("HttpHandler");
 		private long beginTime;
 
-		protected HttpHandler()
-		{
-		}
-
 		#region Protected Method
 
 		/// <summary>
@@ -59,15 +59,14 @@ namespace Wammer.Station
 				throw new ArgumentNullException("arguementNames");
 
 			var nullArgumentNames = from arguementName in arguementNames
-									where Parameters[arguementName] == null
-									select arguementName;
+			                        where Parameters[arguementName] == null
+			                        select arguementName;
 
 			if (!nullArgumentNames.Any())
 				return;
 
 			throw new FormatException(string.Format("Parameter {0} is null.", string.Join("、", nullArgumentNames.ToArray())));
 		}
-
 
 		#endregion
 
@@ -97,10 +96,10 @@ namespace Wammer.Station
 				var content = readPostContent(request);
 
 				Action action = () =>
-				{
-					RawPostData = content.ToArray();
-					ParseAndHandleRequest();
-				};
+					                {
+						                RawPostData = content.ToArray();
+						                ParseAndHandleRequest();
+					                };
 
 				HttpHandlingTask.HandleRequestWithinExceptionHandler(action, Response);
 				return;
@@ -124,7 +123,7 @@ namespace Wammer.Station
 
 		private int postBufferSize()
 		{
-			var initialSize = (int)Request.ContentLength64;
+			var initialSize = (int) Request.ContentLength64;
 			if (initialSize <= 0)
 				initialSize = 65535;
 			return initialSize;
@@ -147,11 +146,11 @@ namespace Wammer.Station
 
 
 				if (Request.RemoteEndPoint.Address.ToString() == "127.0.0.1" &&
-					Request.Url.AbsolutePath.Contains("/ping"))
+				    Request.Url.AbsolutePath.Contains("/ping"))
 					return;
 
 				logger.Info("====== Request " + Request.Url.AbsolutePath +
-							 " from " + Request.RemoteEndPoint.Address + " ======");
+				            " from " + Request.RemoteEndPoint.Address + " ======");
 				foreach (string key in Parameters.AllKeys)
 				{
 					if (key == "password")
@@ -234,7 +233,7 @@ namespace Wammer.Station
 
 			if (disp == null)
 				throw new ArgumentException("incorrect use of this function: " +
-											"input part.ContentDisposition is null");
+				                            "input part.ContentDisposition is null");
 
 			if (disp.Value.Equals("form-data", StringComparison.CurrentCultureIgnoreCase))
 			{
@@ -243,7 +242,7 @@ namespace Wammer.Station
 				if (filename != null)
 				{
 					var file = new UploadedFile(filename, part.Bytes,
-												part.Headers["Content-Type"]);
+					                            part.Headers["Content-Type"]);
 					Files.Add(file);
 				}
 				else
@@ -257,7 +256,7 @@ namespace Wammer.Station
 		private static bool HasMultiPartFormData(HttpListenerRequest request)
 		{
 			return request.ContentType != null &&
-				   request.ContentType.StartsWith(MULTIPART_FORM, StringComparison.CurrentCultureIgnoreCase);
+			       request.ContentType.StartsWith(MULTIPART_FORM, StringComparison.CurrentCultureIgnoreCase);
 		}
 
 		private static string GetMultipartBoundary(string contentType)
@@ -282,15 +281,15 @@ namespace Wammer.Station
 			catch (Exception e)
 			{
 				throw new FormatException("Error finding multipart boundary. Content-Type: " +
-										  contentType, e);
+				                          contentType, e);
 			}
 		}
 
 		private NameValueCollection InitParameters(HttpListenerRequest req)
 		{
 			if (RawPostData != null &&
-				req.ContentType != null &&
-				req.ContentType.StartsWith(URL_ENCODED_FORM, StringComparison.CurrentCultureIgnoreCase))
+			    req.ContentType != null &&
+			    req.ContentType.StartsWith(URL_ENCODED_FORM, StringComparison.CurrentCultureIgnoreCase))
 			{
 				var postData = Encoding.UTF8.GetString(RawPostData);
 				return HttpUtility.ParseQueryString(postData);
@@ -308,11 +307,11 @@ namespace Wammer.Station
 		{
 			var replyContent = "";
 			if (data == null)
-				replyContent = JsonConvert.SerializeObject(new { api_ret_code = 0, api_ret_message = "success", status = 200 });
+				replyContent = JsonConvert.SerializeObject(new {api_ret_code = 0, api_ret_message = "success", status = 200});
 			else
 				replyContent = JsonConvert.SerializeObject(data);
 
-			Response.StatusCode = (int)HttpStatusCode.OK;
+			Response.StatusCode = (int) HttpStatusCode.OK;
 			Response.ContentType = "application/json";
 			using (var w = new StreamWriter(Response.OutputStream))
 			{

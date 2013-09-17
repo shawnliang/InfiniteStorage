@@ -1,31 +1,29 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
+#endregion
+
 namespace InfiniteStorage
 {
-	[ToolboxBitmap(typeof(TabControl))]
+	[ToolboxBitmap(typeof (TabControl))]
 	public class TabControlEx : TabControl
 	{
 		private bool m_HideTabs;
 
-
 		#region Public Property
+
 		/// <summary>
 		/// Gets or sets the index of the page.
 		/// </summary>
 		/// <value>The index of the page.</value>
 		public int PageIndex
 		{
-			get
-			{
-				return SelectedIndex + 1;
-			}
-			set
-			{
-				SelectedIndex = value - 1;
-			}
+			get { return SelectedIndex + 1; }
+			set { SelectedIndex = value - 1; }
 		}
 
 		/// <summary>
@@ -34,18 +32,12 @@ namespace InfiniteStorage
 		/// <value>The page count.</value>
 		public int PageCount
 		{
-			get
-			{
-				return TabPages.Count;
-			}
+			get { return TabPages.Count; }
 		}
 
 		public Boolean IsLastPage
 		{
-			get
-			{
-				return PageIndex == this.PageCount;
-			}
+			get { return PageIndex == PageCount; }
 		}
 
 		[DefaultValue(false), RefreshProperties(RefreshProperties.All)]
@@ -56,9 +48,12 @@ namespace InfiniteStorage
 			{
 				if (m_HideTabs == value)
 					return;
+
 				m_HideTabs = value;
+
 				if (value)
 					Multiline = true;
+
 				UpdateStyles();
 			}
 		}
@@ -70,12 +65,10 @@ namespace InfiniteStorage
 			{
 				if (HideTabs)
 					return true;
+
 				return base.Multiline;
 			}
-			set
-			{
-				base.Multiline = HideTabs || value;
-			}
+			set { base.Multiline = HideTabs || value; }
 		}
 
 		public override Rectangle DisplayRectangle
@@ -86,6 +79,7 @@ namespace InfiniteStorage
 				{
 					return new Rectangle(0, 0, Width, Height);
 				}
+
 				Int32 tabStripHeight = default(Int32);
 				Int32 itemHeight = default(Int32);
 
@@ -93,12 +87,13 @@ namespace InfiniteStorage
 
 				if (Appearance == TabAppearance.Normal)
 				{
-					tabStripHeight = 5 + (itemHeight * RowCount);
+					tabStripHeight = 5 + (itemHeight*RowCount);
 				}
 				else
 				{
-					tabStripHeight = (3 + itemHeight) * RowCount;
+					tabStripHeight = (3 + itemHeight)*RowCount;
 				}
+
 				switch (Alignment)
 				{
 					case TabAlignment.Top:
@@ -110,13 +105,15 @@ namespace InfiniteStorage
 					case TabAlignment.Right:
 						return new Rectangle(4, 4, Width - tabStripHeight - 4, Height - 8);
 				}
+
 				return base.DisplayRectangle;
 			}
 		}
+
 		#endregion
 
-
 		#region Protected Method
+
 		/// <summary>
 		/// Processes a command key.
 		/// </summary>
@@ -133,16 +130,20 @@ namespace InfiniteStorage
 				{
 					return true;
 				}
+
 				if (keyData == (Keys.Control | Keys.Shift | Keys.Tab))
 				{
 					return true;
 				}
 			}
+
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
+
 		#endregion
 
 		#region Public Method
+
 		/// <summary>
 		/// Firsts the page.
 		/// </summary>
@@ -164,11 +165,12 @@ namespace InfiniteStorage
 		/// </summary>
 		public void PreviousPage()
 		{
-			var pageIndex = this.PageIndex;
+			var pageIndex = PageIndex;
+
 			if (pageIndex <= 1)
 				return;
 
-			this.PageIndex = pageIndex - 1;
+			PageIndex = pageIndex - 1;
 		}
 
 		/// <summary>
@@ -176,14 +178,16 @@ namespace InfiniteStorage
 		/// </summary>
 		public void NextPage()
 		{
-			var pageIndex = this.PageIndex;
+			var pageIndex = PageIndex;
+
 			if (pageIndex >= PageCount)
 				return;
 
 			Cursor.Current = Cursors.WaitCursor;
 
-			this.PageIndex = pageIndex + 1;
+			PageIndex = pageIndex + 1;
 		}
+
 		#endregion
 	}
 }

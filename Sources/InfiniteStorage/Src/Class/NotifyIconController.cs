@@ -1,15 +1,21 @@
-﻿using InfiniteStorage.Properties;
-using InfiniteStorage.WebsocketProtocol;
-using InfiniteStorage.Win32;
+﻿#region
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using InfiniteStorage.Properties;
+using InfiniteStorage.WebsocketProtocol;
+using InfiniteStorage.Win32;
+using log4net;
+
+#endregion
 
 namespace InfiniteStorage
 {
-	class NotifyIconController
+	internal class NotifyIconController
 	{
 		private PreferenceDialog preferenceForm;
 		private NotifyIcon notifyIcon;
@@ -19,7 +25,7 @@ namespace InfiniteStorage
 		public NotifyIconController(NotifyIcon notifyIcon, StationServer station)
 		{
 			this.notifyIcon = notifyIcon;
-			this.stationServer = station;
+			stationServer = station;
 		}
 
 		public void OnOpenPhotoBackupFolderMenuItemClicked(object sender, EventArgs arg)
@@ -68,21 +74,14 @@ namespace InfiniteStorage
 			Application.Exit();
 		}
 
-
 		public void OnDeviceConnected(object sender, WebsocketEventArgs evt)
 		{
-			SynchronizationContextHelper.SendMainSyncContext(() =>
-			{
-				showNotifyIconMenu(evt.ctx);
-			});
+			SynchronizationContextHelper.SendMainSyncContext(() => showNotifyIconMenu(evt.ctx));
 		}
 
 		public void OnTotalCountUpdated(object sender, WebsocketEventArgs evt)
 		{
-			SynchronizationContextHelper.SendMainSyncContext(() =>
-			{
-				updateNotifyIconMenu(evt.ctx);
-			});
+			SynchronizationContextHelper.SendMainSyncContext(() => updateNotifyIconMenu(evt.ctx));
 		}
 
 		private void updateNotifyIconMenu(ProtocolContext ctx)
@@ -101,15 +100,14 @@ namespace InfiniteStorage
 
 		private void showNotifyIconMenu(ProtocolContext ctx)
 		{
-
 			int index;
 			var saveDev = findItemFromSameDevice(ctx, out index);
+			
 			if (saveDev != null)
 			{
 				notifyIcon.ContextMenuStrip.Items.RemoveAt(index + 1);
 				notifyIcon.ContextMenuStrip.Items.Remove(saveDev);
 			}
-
 
 			ToolStripItem itemFound = findItemFromSameCtx(ctx);
 
@@ -119,24 +117,20 @@ namespace InfiniteStorage
 				item.Text = getOverallProgressText(ctx);
 				item.Tag = ctx;
 				item.Click += item2_Click;
-				item.ForeColor = System.Drawing.Color.Gray;
+				item.ForeColor = Color.Gray;
 				deviceStipItems.Add(ctx, item);
-
 
 				var item2 = new ToolStripMenuItem();
 				item2.Text = getSingleFileText(ctx);
 				item2.Enabled = false;
-				item2.ForeColor = System.Drawing.Color.Gray;
-
-
+				item2.ForeColor = Color.Gray;
 
 				notifyIcon.ContextMenuStrip.Items.Insert(2, item);
 				notifyIcon.ContextMenuStrip.Items.Insert(3, item2);
 			}
-
 		}
 
-		void item2_Click(object sender, EventArgs e)
+		private void item2_Click(object sender, EventArgs e)
 		{
 			try
 			{
@@ -157,11 +151,9 @@ namespace InfiniteStorage
 			}
 			catch (Exception err)
 			{
-				log4net.LogManager.GetLogger(GetType()).Warn("Unable to bring out progress tooltip", err);
+				LogManager.GetLogger(GetType()).Warn("Unable to bring out progress tooltip", err);
 			}
 		}
-
-
 
 		private static string getSingleFileText(ProtocolContext ctx)
 		{
@@ -171,17 +163,19 @@ namespace InfiniteStorage
 			}
 
 			var percentage = 0L;
-			if (ctx.fileCtx != null && ctx.fileCtx.file_size > 0)
-				percentage = 100 * ctx.temp_file.BytesWritten / ctx.fileCtx.file_size;
 
-			return ctx.temp_file != null ?
-							string.Format("  - {0} : {1}%", ctx.fileCtx.file_name, percentage) :
-							Resources.MenuItem_Preparing;
+			if (ctx.fileCtx != null && ctx.fileCtx.file_size > 0)
+				percentage = 100*ctx.temp_file.BytesWritten/ctx.fileCtx.file_size;
+
+			return ctx.temp_file != null
+				       ? string.Format("  - {0} : {1}%", ctx.fileCtx.file_name, percentage)
+				       : Resources.MenuItem_Preparing;
 		}
 
 		private static string getOverallProgressText(ProtocolContext ctx)
 		{
 			var total = ctx.total_count - ctx.backup_count + ctx.recved_files;
+
 			if (ctx.recved_files > total)
 				total = ctx.recved_files;
 
@@ -195,11 +189,13 @@ namespace InfiniteStorage
 				for (int i = 0; i < notifyIcon.ContextMenuStrip.Items.Count; i++)
 				{
 					var item = notifyIcon.ContextMenuStrip.Items[i];
+
 					if (item.Tag != null)
 					{
-						var ctx = item.Tag as WebsocketProtocol.ProtocolContext;
+						var ctx = item.Tag as ProtocolContext;
 
 						var overallProgress = getOverallProgressText(ctx);
+
 						if (overallProgress != item.Text)
 							item.Text = overallProgress;
 
@@ -209,7 +205,7 @@ namespace InfiniteStorage
 			}
 			catch (Exception err)
 			{
-				log4net.LogManager.GetLogger(GetType()).Warn("Unable to update tray icon status", err);
+				LogManager.GetLogger(GetType()).Warn("Unable to update tray icon status", err);
 			}
 		}
 
@@ -221,7 +217,8 @@ namespace InfiniteStorage
 			//foreach (var it in notifyIcon.ContextMenuStrip.Items)
 			for (int i = 0; i < notifyIcon.ContextMenuStrip.Items.Count; i++)
 			{
-				var stripItem = notifyIcon.ContextMenuStrip.Items[i] as ToolStripItem;
+				var stripItem = notifyIcon.ContextMenuStrip.Items[i];
+
 				if (stripItem != null && stripItem.Tag is ProtocolContext)
 				{
 					var ctx = stripItem.Tag as ProtocolContext;
@@ -234,6 +231,7 @@ namespace InfiniteStorage
 					}
 				}
 			}
+
 			return itemFound;
 		}
 
@@ -244,6 +242,7 @@ namespace InfiniteStorage
 			foreach (var it in notifyIcon.ContextMenuStrip.Items)
 			{
 				var stripItem = it as ToolStripItem;
+
 				if (stripItem != null && stripItem.Tag is ProtocolContext)
 				{
 					var ctx = stripItem.Tag as ProtocolContext;
@@ -255,13 +254,13 @@ namespace InfiniteStorage
 					}
 				}
 			}
+
 			return itemFound;
 		}
 
 		public void OnDeviceDisconnected(object sender, WebsocketEventArgs evt)
 		{
-			SynchronizationContextHelper.SendMainSyncContext(() => { removeDeviceFromNotifyIconMenu(evt); });
-
+			SynchronizationContextHelper.SendMainSyncContext(() => removeDeviceFromNotifyIconMenu(evt));
 		}
 
 		private void removeDeviceFromNotifyIconMenu(WebsocketEventArgs evt)
@@ -273,6 +272,7 @@ namespace InfiniteStorage
 				if (deviceStipItems.ContainsKey(key))
 				{
 					var item = deviceStipItems[key];
+					
 					if (notifyIcon.ContextMenuStrip.Items.Contains(item))
 					{
 						var nextIdx = notifyIcon.ContextMenuStrip.Items.IndexOf(item) + 1;
@@ -287,7 +287,7 @@ namespace InfiniteStorage
 			}
 			catch (Exception err)
 			{
-				log4net.LogManager.GetLogger(GetType()).Warn("Error in removeDeviceFromNotifyIconMenu", err);
+				LogManager.GetLogger(GetType()).Warn("Error in removeDeviceFromNotifyIconMenu", err);
 			}
 		}
 	}

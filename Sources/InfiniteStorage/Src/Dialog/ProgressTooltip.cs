@@ -1,9 +1,13 @@
-﻿using InfiniteStorage.Properties;
+﻿#region
+
 using System;
-using System.Linq;
-using System.Drawing;
-using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using InfiniteStorage.Properties;
+
+#endregion
 
 namespace InfiniteStorage
 {
@@ -11,6 +15,7 @@ namespace InfiniteStorage
 	{
 		private string device_id;
 		private bool inCompleteState;
+
 		private static List<ProgressTooltip> dialogs = new List<ProgressTooltip>();
 
 		public bool UserHide { get; set; }
@@ -18,14 +23,15 @@ namespace InfiniteStorage
 		private ProgressTooltip()
 		{
 			InitializeComponent();
-			this.progressText.Text = Resources.MenuItem_Preparing;
+
+			progressText.Text = Resources.MenuItem_Preparing;
 		}
 
 		public ProgressTooltip(string deviceName, string deviceId)
 			: this()
 		{
-			this.devname.Text = this.devname2.Text = this.devname3.Text = deviceName;
-			this.device_id = deviceId;
+			devname.Text = devname2.Text = devname3.Text = deviceName;
+			device_id = deviceId;
 		}
 
 		private void ProgressTooltip_Load(object sender, EventArgs e)
@@ -33,9 +39,9 @@ namespace InfiniteStorage
 			Icon = Resources.ProductIcon;
 			Text = Resources.ProductName;
 
-			this.StartPosition = FormStartPosition.Manual;
-			Location = new Point(Screen.PrimaryScreen.WorkingArea.Width - this.Size.Width,
-								 Screen.PrimaryScreen.WorkingArea.Height - this.Size.Height);
+			StartPosition = FormStartPosition.Manual;
+			Location = new Point(Screen.PrimaryScreen.WorkingArea.Width - Size.Width,
+			                     Screen.PrimaryScreen.WorkingArea.Height - Size.Height);
 		}
 
 		public void UpdateProgress(int current, int totoal, int percentage)
@@ -59,6 +65,7 @@ namespace InfiniteStorage
 
 			inCompleteState = true;
 			UserHide = false;
+
 			Show();
 		}
 
@@ -68,6 +75,7 @@ namespace InfiniteStorage
 			disconnectedText.Text = string.Format(Resources.ProgressTooltip_Interrupted, received, total);
 
 			UserHide = false;
+
 			Show();
 		}
 
@@ -101,6 +109,7 @@ namespace InfiniteStorage
 			}
 		}
 
+		/*
 		private void viewButton_Click(object sender, EventArgs e)
 		{
 			MainUIWrapper.Instance.StartViewer(device_id);
@@ -108,6 +117,7 @@ namespace InfiniteStorage
 			// will trigger progress tooltip
 			Hide();
 		}
+		*/
 
 		private void onDoubleClick(object sender, EventArgs e)
 		{
@@ -127,15 +137,14 @@ namespace InfiniteStorage
 		public static void RemoveDialog(string deviceId)
 		{
 			var toRemove = (from d in dialogs
-							where d.device_id == deviceId
-							select d).ToList();
+			                where d.device_id == deviceId
+			                select d).ToList();
 
-			foreach(var del in toRemove)
+			foreach (var del in toRemove)
 			{
 				del.Close();
 				dialogs.Remove(del);
 			}
 		}
 	}
-
 }

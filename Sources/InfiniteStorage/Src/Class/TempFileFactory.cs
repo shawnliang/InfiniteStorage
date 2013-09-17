@@ -1,8 +1,12 @@
-﻿using System.IO;
+﻿#region
+
+using System.IO;
+
+#endregion
 
 namespace InfiniteStorage
 {
-	class TempFileFactory : ITempFileFactory
+	internal class TempFileFactory : ITempFileFactory
 	{
 		private string tempFolder;
 

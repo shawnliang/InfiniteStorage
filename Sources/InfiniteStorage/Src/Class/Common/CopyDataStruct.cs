@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Runtime.InteropServices;
+
+#endregion
 
 [StructLayout(LayoutKind.Sequential)]
 public struct CopyDataStruct

@@ -1,11 +1,13 @@
-﻿using InfiniteStorage.Model;
-using InfiniteStorage.Properties;
-using Microsoft.Win32;
+﻿#region
+
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using InfiniteStorage.Properties;
+using Microsoft.Win32;
+using log4net;
 
+#endregion
 
 namespace InfiniteStorage
 {
@@ -14,6 +16,7 @@ namespace InfiniteStorage
 		public PreferenceDialog()
 		{
 			InitializeComponent();
+
 			Text = Resources.ProductName;
 			Icon = Resources.ProductIcon;
 
@@ -32,7 +35,7 @@ namespace InfiniteStorage
 			generalPreferenceControl1.Station = station;
 		}
 
-		void handleAnySettingChanged(object sender, EventArgs e)
+		private void handleAnySettingChanged(object sender, EventArgs e)
 		{
 			buttonApply.Enabled = true;
 		}
@@ -44,7 +47,8 @@ namespace InfiniteStorage
 
 		private void buttonCancel_Click(object sender, EventArgs e)
 		{
-			DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			DialogResult = DialogResult.Cancel;
+
 			Close();
 		}
 
@@ -52,7 +56,8 @@ namespace InfiniteStorage
 		{
 			if (saveChanges())
 			{
-				DialogResult = System.Windows.Forms.DialogResult.OK;
+				DialogResult = DialogResult.OK;
+
 				Close();
 			}
 		}
@@ -78,7 +83,7 @@ namespace InfiniteStorage
 			}
 			catch (Exception err)
 			{
-				log4net.LogManager.GetLogger(GetType()).Warn("Unable to apply changes", err);
+				LogManager.GetLogger(GetType()).Warn("Unable to apply changes", err);
 				MessageBox.Show(err.Message, "Unable to save settings", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
 				return false;
@@ -137,7 +142,7 @@ namespace InfiniteStorage
 			}
 			catch (Exception e)
 			{
-				log4net.LogManager.GetLogger(GetType()).Warn("Unable to set debug log level: " + aboutControl1.LogLevel.ToString(), e);
+				LogManager.GetLogger(GetType()).Warn("Unable to set debug log level: " + aboutControl1.LogLevel.ToString(), e);
 			}
 		}
 

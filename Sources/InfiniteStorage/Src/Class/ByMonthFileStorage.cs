@@ -1,15 +1,20 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.IO;
+using InfiniteStorage.WebsocketProtocol;
+
+#endregion
 
 namespace InfiniteStorage
 {
-	class ByMonthFileStorage : IFileStorage
+	internal class ByMonthFileStorage : IFileStorage
 	{
 		private string devFolderPath;
 		private string devName;
 		private FileMover fileMover = new FileMover();
 
-		public string MoveToStorage(string tempfile, WebsocketProtocol.FileContext file)
+		public string MoveToStorage(string tempfile, FileContext file)
 		{
 			if (file.is_thumbnail)
 			{
@@ -25,6 +30,7 @@ namespace InfiniteStorage
 			else
 			{
 				var folder = "";
+
 				if (file.datetime.Kind == DateTimeKind.Utc)
 					folder = file.datetime.ToLocalTime().ToString("yyyy-MM");
 				else

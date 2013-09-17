@@ -1,10 +1,15 @@
-﻿using InfiniteStorage.Properties;
+﻿#region
+
 using System;
 using System.IO;
+using InfiniteStorage.Properties;
+using InfiniteStorage.WebsocketProtocol;
+
+#endregion
 
 namespace InfiniteStorage
 {
-	class DefaultFolderFileStorage : IFileStorage
+	internal class DefaultFolderFileStorage : IFileStorage
 	{
 		private string storage_path;
 		private string devFolder;
@@ -12,7 +17,7 @@ namespace InfiniteStorage
 
 		private FileMover mover = new FileMover();
 
-		public string MoveToStorage(string tempfile, WebsocketProtocol.FileContext file)
+		public string MoveToStorage(string tempfile, FileContext file)
 		{
 			if (string.IsNullOrEmpty(storage_path))
 				throw new InvalidOperationException("storage path is not set");
@@ -28,8 +33,8 @@ namespace InfiniteStorage
 				throw new ArgumentNullException(devFolder);
 
 			this.devFolder = devFolder;
-			this.partial_path = Path.Combine(this.devFolder, Resources.UnsortedFolderName);
-			this.storage_path = Path.Combine(MyFileFolder.Photo, partial_path);
+			partial_path = Path.Combine(this.devFolder, Resources.UnsortedFolderName);
+			storage_path = Path.Combine(MyFileFolder.Photo, partial_path);
 
 			createDefaultFolderIfNotExist();
 		}
@@ -39,7 +44,7 @@ namespace InfiniteStorage
 			if (!Directory.Exists(storage_path))
 				Directory.CreateDirectory(storage_path);
 
-			Manipulation.Manipulation.AddFolderRecord(Resources.UnsortedFolderName, this.devFolder, partial_path);
+			Manipulation.Manipulation.AddFolderRecord(Resources.UnsortedFolderName, devFolder, partial_path);
 		}
 	}
 }

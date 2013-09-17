@@ -1,5 +1,4 @@
-﻿
-namespace InfiniteStorage.Data
+﻿namespace InfiniteStorage.Data
 {
 	public enum CopyDataType
 	{

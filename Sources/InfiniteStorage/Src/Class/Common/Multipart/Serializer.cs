@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.IO;
 using System.Text;
+
+#endregion
 
 namespace Wammer.MultiPart
 {

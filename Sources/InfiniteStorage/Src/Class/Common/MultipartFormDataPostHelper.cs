@@ -1,11 +1,16 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
 
+#endregion
+
 namespace Waveface.Common
 {
+
 	#region MultipartFormDataPostHelper
 
 	public static class MultipartFormDataPostHelper
@@ -82,7 +87,8 @@ namespace Waveface.Common
 					byte[] fileData = param.Value as byte[];
 
 					// Add just the first part of this param, since we will write the file data directly to the Stream
-					string _header = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n", boundary, param.Key, fileName.Equals("") ? param.Key : fileName, mimeType.Equals("") ? "application/octet-stream" : mimeType);
+					string _header = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n", boundary, param.Key,
+					                               fileName.Equals("") ? param.Key : fileName, mimeType.Equals("") ? "application/octet-stream" : mimeType);
 
 					//formDataStream.Write(encoding.GetBytes(_header), 0, _header.Length);
 

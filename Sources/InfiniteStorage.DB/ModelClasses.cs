@@ -1,10 +1,13 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Common;
 using System.Data.Entity;
 
+#endregion
 
 namespace InfiniteStorage.Model
 {
@@ -67,7 +70,6 @@ namespace InfiniteStorage.Model
 
 		public DateTime? import_time { get; set; }
 	}
-
 
 	public enum AutoLabelType
 	{
@@ -258,6 +260,5 @@ namespace InfiniteStorage.Model
 			: base(conn, contextOwnsConnection)
 		{
 		}
-
 	}
 }

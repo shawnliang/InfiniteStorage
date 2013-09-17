@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
+
+#endregion
 
 namespace InfiniteStorage
 {
@@ -18,9 +22,9 @@ namespace InfiniteStorage
 		public PendingToResourceUtil(string connString, string dev_folder, string res_folder = null)
 		{
 			this.connString = connString;
-			this.resource_dir = res_folder ?? MyFileFolder.Photo;
-			this.dev_path = Path.Combine(resource_dir, dev_folder);
-			this.DevFolder = dev_folder;
+			resource_dir = res_folder ?? MyFileFolder.Photo;
+			dev_path = Path.Combine(resource_dir, dev_folder);
+			DevFolder = dev_folder;
 		}
 
 		public string CreateFolder(string folderUnderDevFolder)
@@ -40,11 +44,13 @@ namespace InfiniteStorage
 			using (var conn = new SQLiteConnection(connString))
 			{
 				conn.Open();
+
 				using (var transaction = conn.BeginTransaction())
 				using (var cmd = conn.CreateCommand())
 				{
 					var i = 0;
 					var pars = new List<string>();
+
 					foreach (var fid in file_ids)
 					{
 						cmd.Parameters.Add(new SQLiteParameter("@fid" + i, fid));
@@ -59,17 +65,18 @@ namespace InfiniteStorage
 						"select f.file_name, f.saved_path, d.folder_name, f.file_id from PendingFiles f, devices d " +
 						"where f.device_id = d.device_id and f.file_id in " + inClause;
 					cmd.Connection = conn;
+
 					using (var reader = cmd.ExecuteReader())
 					{
 						while (reader.Read())
 						{
 							var data = new PendingFileData
-							{
-								file_name = reader.GetString(0),
-								saved_path = reader.GetString(1),
-								dev_folder = reader.GetString(2),
-								file_id = reader.GetGuid(3)
-							};
+								           {
+									           file_name = reader.GetString(0),
+									           saved_path = reader.GetString(1),
+									           dev_folder = reader.GetString(2),
+									           file_id = reader.GetGuid(3)
+								           };
 
 							ret.Add(data);
 						}
@@ -108,8 +115,7 @@ namespace InfiniteStorage
 		{
 			using (var delCmd = db.CreateCommand())
 			{
-				delCmd.CommandText =
-				   "delete from PendingFiles where file_id = @fid";
+				delCmd.CommandText = "delete from PendingFiles where file_id = @fid";
 				delCmd.Prepare();
 
 				foreach (var file in data)
@@ -126,9 +132,9 @@ namespace InfiniteStorage
 			using (var cmd = db.CreateCommand())
 			{
 				cmd.CommandText =
-				"insert into Files (file_id, file_name, file_path, file_size, saved_path, parent_folder, device_id, type, event_time, seq, deleted, thumb_ready, width, height, orientation) " +
-				"select file_id, file_name, file_path, file_size, @saved, @parent, device_id, type, event_time, @seq, deleted, thumb_ready, width, height, orientation from [PendingFiles] " +
-				"where file_id = @fid";
+					"insert into Files (file_id, file_name, file_path, file_size, saved_path, parent_folder, device_id, type, event_time, seq, deleted, thumb_ready, width, height, orientation) " +
+					"select file_id, file_name, file_path, file_size, @saved, @parent, device_id, type, event_time, @seq, deleted, thumb_ready, width, height, orientation from [PendingFiles] " +
+					"where file_id = @fid";
 				cmd.Prepare();
 
 				foreach (var file in data)
@@ -153,10 +159,9 @@ namespace InfiniteStorage
 			return MyFileFolder.Pending;
 		}
 
-
 		public void CreateFolderRecord(string dev_folder, string sub_folder)
 		{
-			var path = Path.Combine(dev_folder, sub_folder);
+			//var path = Path.Combine(dev_folder, sub_folder);
 
 			Manipulation.Manipulation.AddFolderRecord(sub_folder, dev_folder, Path.Combine(dev_folder, sub_folder));
 		}

@@ -1,4 +1,8 @@
-﻿using System.IO;
+﻿#region
+
+using System.IO;
+
+#endregion
 
 namespace InfiniteStorage
 {
@@ -33,6 +37,7 @@ namespace InfiniteStorage
 						throw new IOException("Unable to move file to " + dest, e);
 				}
 			}
+
 			return dest;
 		}
 	}

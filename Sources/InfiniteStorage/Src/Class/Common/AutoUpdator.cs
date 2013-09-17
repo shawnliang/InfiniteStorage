@@ -1,5 +1,9 @@
-﻿using AppLimit.NetSparkle;
+﻿#region
+
 using System;
+using AppLimit.NetSparkle;
+
+#endregion
 
 namespace Waveface.Common
 {
@@ -33,8 +37,8 @@ namespace Waveface.Common
 			var honorSkippedVersion = !forceUpgrade;
 
 			return m_autoUpdator.IsUpdateRequired(m_autoUpdator.GetApplicationConfig(),
-				out versionInfo,
-				honorSkippedVersion);
+			                                      out versionInfo,
+			                                      honorSkippedVersion);
 		}
 
 		public void ShowUpdateNeededUI()
@@ -47,10 +51,7 @@ namespace Waveface.Common
 
 		private static string UpdateURL
 		{
-			get
-			{
-				return "https://waveface.com/extensions/bunnyUpdate/versioninfo.xml";
-			}
+			get { return "https://waveface.com/extensions/bunnyUpdate/versioninfo.xml"; }
 		}
 	}
 }

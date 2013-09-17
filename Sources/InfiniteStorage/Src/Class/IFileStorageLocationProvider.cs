@@ -1,5 +1,4 @@
-﻿
-namespace InfiniteStorage
+﻿namespace InfiniteStorage
 {
 	public interface IFileStorageLocationProvider
 	{
@@ -8,10 +7,8 @@ namespace InfiniteStorage
 		string AudioLocation { get; }
 	}
 
-
-	class FileStorageLocationProvider : IFileStorageLocationProvider
+	internal class FileStorageLocationProvider : IFileStorageLocationProvider
 	{
-
 		public string PhotoLocation
 		{
 			get { return MyFileFolder.Photo; }
@@ -27,5 +24,4 @@ namespace InfiniteStorage
 			get { return MyFileFolder.Audio; }
 		}
 	}
-
 }

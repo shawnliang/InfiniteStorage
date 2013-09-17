@@ -1,5 +1,4 @@
-﻿
-namespace InfiniteStorage
+﻿namespace InfiniteStorage
 {
 	public class Normalizer
 	{
@@ -14,8 +13,8 @@ namespace InfiniteStorage
 				shiftBits += 1;
 			}
 
-			norVal1 = (int)(val1 >> shiftBits);
-			norVal2 = (int)(val2 >> shiftBits);
+			norVal1 = (int) (val1 >> shiftBits);
+			norVal2 = (int) (val2 >> shiftBits);
 		}
 	}
 }

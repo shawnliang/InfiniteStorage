@@ -1,14 +1,20 @@
-﻿using InfiniteStorage.Win32;
+﻿#region
+
 using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using InfiniteStorage.Win32;
+
+#endregion
 
 namespace InfiniteStorage
 {
-	class ProgramIPC
+	internal class ProgramIPC
 	{
 		public const int MsgShowTooltip = 0x401;
+
 		private const string CLS_NAME_PREFIX = "infiniteStorage.";
 
 		private static ProgramIPC instance;
@@ -16,15 +22,8 @@ namespace InfiniteStorage
 
 		public event EventHandler<MessageEventArgs> OnWinMsg
 		{
-			add
-			{
-				msgReceiver.WndProc += value;
-			}
-
-			remove
-			{
-				msgReceiver.WndProc -= value;
-			}
+			add { msgReceiver.WndProc += value; }
+			remove { msgReceiver.WndProc -= value; }
 		}
 
 		private ProgramIPC()
@@ -61,10 +60,10 @@ namespace InfiniteStorage
 
 		public static int SendStringMsg(IntPtr hWnd, int wParam, string msg, int code)
 		{
-			byte[] sarr = System.Text.Encoding.Default.GetBytes(msg);
+			byte[] sarr = Encoding.Default.GetBytes(msg);
 
 			NativeMethods.COPYDATASTRUCT cds;
-			cds.dwData = (IntPtr)code;
+			cds.dwData = (IntPtr) code;
 			cds.lpData = msg;
 			cds.cbData = sarr.Length + 1;
 
@@ -72,6 +71,5 @@ namespace InfiniteStorage
 
 			return result;
 		}
-
 	}
 }

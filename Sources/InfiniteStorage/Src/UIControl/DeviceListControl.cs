@@ -1,10 +1,15 @@
-﻿using InfiniteStorage.Model;
-using InfiniteStorage.Properties;
+﻿#region
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
+using InfiniteStorage.Model;
+using InfiniteStorage.Properties;
+using log4net;
+
+#endregion
 
 namespace InfiniteStorage
 {
@@ -18,6 +23,7 @@ namespace InfiniteStorage
 		public DeviceListControl()
 		{
 			InitializeComponent();
+
 			DeletedDevices = new List<Device>();
 		}
 
@@ -28,6 +34,7 @@ namespace InfiniteStorage
 				bgPopulate.RunWorkerAsync();
 			}
 		}
+
 		private void DeviceListControl_Load(object sender, EventArgs e)
 		{
 			dataGridView1.AutoGenerateColumns = false;
@@ -48,8 +55,8 @@ namespace InfiniteStorage
 			using (var db = new MyDbContext())
 			{
 				var query = from dev in db.Object.Devices
-							where !dev.deleted
-							select dev;
+				            where !dev.deleted
+				            select dev;
 
 				return query.ToList();
 			}
@@ -64,7 +71,7 @@ namespace InfiniteStorage
 		{
 			if (e.Error != null)
 			{
-				log4net.LogManager.GetLogger(GetType()).Warn("Error populate device list", e.Error);
+				LogManager.GetLogger(GetType()).Warn("Error populate device list", e.Error);
 				MessageBox.Show(e.Error.Message, "Unable to populate device list", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
