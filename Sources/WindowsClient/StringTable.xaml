@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <system:String x:Key="AddDeviceIconText">Connect Phone</system:String>
-    <system:String x:Key="AddNewSource">Sync Piary photos from your Phone</system:String>
+    <system:String x:Key="AddNewSource">Sync your Piary events and photos from your Phone</system:String>
     <system:String x:Key="AddStarredItemTitle">Add selected items to the following album:</system:String>
     <system:String x:Key="AddTo">Add To</system:String>
     <system:String x:Key="addto_all_selection_text">Add all {0} items to</system:String>
@@ -10,10 +10,10 @@
     <system:String x:Key="AddToFavorite">Add To Album</system:String>
     <system:String x:Key="AddToFavoriteButtonText">Add to an existing album</system:String>
     <system:String x:Key="ANS_9">Learn more</system:String>
-    <system:String x:Key="ANS_step1">Make sure 'Piary' is installed and running on your phone.</system:String>
-    <system:String x:Key="ANS_step1_title">Run the App</system:String>
+    <system:String x:Key="ANS_step1">Install 'Piary' on your phone. Run it.</system:String>
+    <system:String x:Key="ANS_step1_title">Get the App</system:String>
     <system:String x:Key="ANS_step2">Connect your phone to the same Wi-Fi network with your PC</system:String>
-    <system:String x:Key="ANS_step2_title">Connect WiFi</system:String>
+    <system:String x:Key="ANS_step2_title">Connect to Wi-Fi</system:String>
     <system:String x:Key="ANS_step3">Turn on &quot;Sync to PC&quot; (from the menu) on your phone and enter the 4 digits code below. That's it!</system:String>
     <system:String x:Key="ANS_step3_title">Enter the code</system:String>
     <system:String x:Key="AppTitle">Piary Photos</system:String>
@@ -83,10 +83,10 @@
     <system:String x:Key="WithoutContentMessageText">Please select something first.</system:String>
     <system:String x:Key="res_1">
         Push your photo albums locally to your Android devices and Google TV, wirelessly and cloudlessly. \r\n
-        (Because to it's a BETA feature, you need to install a separate app on the target device.)
+        (Still a BETA feature; You need to install a separate app on the target device.)
     </system:String>
     <system:String x:Key="res_2">Wi-Fi Sharing：OFF</system:String>
-    <system:String x:Key="res_3">Turn on</system:String>
+    <system:String x:Key="res_3">View this photo now</system:String>
     <system:String x:Key="res_4">Search for &quot;Waveface Favorite TV&quot; on Google TV</system:String>
     <system:String x:Key="res_5">Select items to add to the album</system:String>
     <system:String x:Key="res_6">Album title</system:String>
@@ -102,21 +102,21 @@
     <system:String x:Key="res_16">Thumbnail Size</system:String>
     <system:String x:Key="res_17">Create online album now</system:String>
     <system:String x:Key="res_18">Click Here</system:String>
-    <system:String x:Key="res_19">免帳號上傳照片、影片</system:String>
-    <system:String x:Key="res_20">自動同步到裝置中帶著走</system:String>
-    <system:String x:Key="res_21">輕鬆分享給親朋好友</system:String>
-    <system:String x:Key="res_22">Create</system:String>
-    <system:String x:Key="res_23">Add</system:String>
-    <system:String x:Key="res_24">Share</system:String>
+    <system:String x:Key="res_19">_</system:String>
+    <system:String x:Key="res_20">__</system:String>
+    <system:String x:Key="res_21">___</system:String>
+    <system:String x:Key="res_22">Create album</system:String>
+    <system:String x:Key="res_23">Add to album</system:String>
+    <system:String x:Key="res_24">Share\Export</system:String>
     <system:String x:Key="res_25">Delete</system:String>
-    <system:String x:Key="res_26">Push to Devices</system:String>
+    <system:String x:Key="res_26">Push to devices</system:String>
     <system:String x:Key="res_27">Yesterday</system:String>
     <system:String x:Key="res_28">Less</system:String>
     <system:String x:Key="res_29">Turn on auto upload</system:String>
-    <system:String x:Key="res_30">Open webpage</system:String>
+    <system:String x:Key="res_30">Visit page</system:String>
     <system:String x:Key="res_31">Uploading...</system:String>
-    <system:String x:Key="res_32">Public webpage</system:String>
-    <system:String x:Key="res_33">Turn on</system:String>
+    <system:String x:Key="res_32">Make a public webpage on waveface.com</system:String>
+    <system:String x:Key="res_33">Upload album</system:String>
     <system:String x:Key="res_34">Off</system:String>
     <system:String x:Key="res_35">On</system:String>
     <system:String x:Key="res_36">Events</system:String>
@@ -126,8 +126,8 @@
     <system:String x:Key="res_getStartedTip3">Get our Player app to enjoy Home Sharing for all albums created.</system:String>
     <system:String x:Key="res_getStartedTitle">To Get Started, you can ...</system:String>
     <system:String x:Key="RigntSidePanel_HowToCloudSharingTutorial">
-        Upload your photos to waveface.com\r\n
-        Share with family and friends
+        With a simple click, you can upload this album to \r\n waveface.com\r\n
+        and share with family and friends. Only people with the link are able to access the photos.
     </system:String>
     <system:String x:Key="RigntSidePanel_HowToStarTutorial">
         Click Star on the thumbnail\r\n
@@ -140,7 +140,7 @@
     <system:String x:Key="header_title_stopped">{0} items waiting to be imported.</system:String>
     <system:String x:Key="header_subtitle_stopped">When you conntect your device to the same Wi-Fi network with your PC, importing will resume automatically.</system:String>
     <system:String x:Key="header_title_complete">You have imported {0} items at {1}.</system:String>
-    <system:String x:Key="header_subtitle_complete">Click HERE to view these items.</system:String>
+    <system:String x:Key="header_subtitle_complete">Click the thumbnail to go to the folder.</system:String>
     <system:String x:Key="header_title_paused">Auto uploading paused.</system:String>
     <system:String x:Key="header_subtitle_paused">To continue, click the button on the right.</system:String>
     <system:String x:Key="0_days_ago">Today</system:String>
@@ -176,7 +176,7 @@
 
     <system:String x:Key="strItem">Item</system:String>
     <system:String x:Key="strItems">Items</system:String>
-    <system:String x:Key="unnamedUEvent">Unnamed Event</system:String>
+    <system:String x:Key="unnamedUEvent">Untitled Event</system:String>
 
     <system:String x:Key="AllPhoto_DisableAutoImport">Disable auto import</system:String>
     <system:String x:Key="AllPhoto_EnableAutoImport">Enable auto import</system:String>
@@ -185,9 +185,9 @@
     <system:String x:Key="RightSide_EnabledCloudSharing">Enabled</system:String>
     <system:String x:Key="RightSide_CloudSharing_StatusClosed">Disabled</system:String>
 
-    <system:String x:Key="HomeSharing_Enable">Enable home sharing</system:String>
-    <system:String x:Key="HomeSharing_Enabled">Home Sharing：Enabled</system:String>
-    <system:String x:Key="HomeSharing_Disable">Disable home sharing</system:String>
-    <system:String x:Key="HomeSharing_Disabled">Home Sharing：Disabled</system:String>
+    <system:String x:Key="HomeSharing_Enable">Turn on</system:String>
+    <system:String x:Key="HomeSharing_Enabled">Wi-Fi push：ON</system:String>
+    <system:String x:Key="HomeSharing_Disable">Turn off</system:String>
+    <system:String x:Key="HomeSharing_Disabled">Wi-Fi push: OFF</system:String>
 
 </ResourceDictionary>
