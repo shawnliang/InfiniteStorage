@@ -36,6 +36,7 @@ namespace Waveface.ClientFramework
 			}
 
 			var formData = buff.ToString().Substring(0, buff.Length - 1);
+			webAgent.Headers.Add(HttpRequestHeader.ContentType, "application/x-www-form-urlencoded");
 			webAgent.UploadDataCompleted += uploadCompleted;
 			webAgent.UploadDataAsync(ProgramConfig.UserTrackUri, "POST", Encoding.UTF8.GetBytes(formData));
 		}
