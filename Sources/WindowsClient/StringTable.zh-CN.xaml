@@ -12,7 +12,7 @@
     <system:String x:Key="AddToFavoriteButtonText">加入现有相册</system:String>
     <system:String x:Key="ANS_9">点此获得更多信息</system:String>
     <system:String x:Key="ANS_deviveNotFound" xml:space="preserve">
-        找不到可同步的手机。请将手机Wi-Fi连接到与计算机相同的网络，并开启App再试试。
+        找不到可同步的手机。请将手机Wi-Fi连接到与电脑相同的网络，并开启App再试试。
         Do you want to search for available device again?
         Press 'Yes' to search again. Press 'No' to quit pairing mode.
     </system:String>
@@ -24,7 +24,7 @@
     <system:String x:Key="ANS_step1_1">Install Favorite on your mobile device</system:String>
     <system:String x:Key="ANS_step1_2">and turn it on.</system:String>
     <system:String x:Key="ANS_step1_title">运行Piary</system:String>
-    <system:String x:Key="ANS_step2">将手机利用Wi-Fi连上与本计算机相同的局域网络。</system:String>
+    <system:String x:Key="ANS_step2">将手机利用Wi-Fi连上与本电脑相同的局域网络。</system:String>
     <system:String x:Key="ANS_step2_title">开启手机Wi-Fi</system:String>
     <system:String x:Key="ANS_step3">拿起手机，输入下面四位数的配对码，就会开始自动同步了。</system:String>
     <system:String x:Key="ANS_step3_title">输入四位配对码</system:String>
