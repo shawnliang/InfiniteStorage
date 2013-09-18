@@ -75,7 +75,7 @@
     
     <system:String x:Key="intro_step1_button">好的</system:String>
 
-    <system:String x:Key="intro_step1_desc1">每張卡片就是一個事件；第一次同不需要些時間，請稍等片刻，時間較近的事件會先出現。</system:String>
+    <system:String x:Key="intro_step1_desc1">每張卡片就是一個事件；第一次同步需要些時間，請稍等片刻，時間較近的事件會先同步。</system:String>
     <system:String x:Key="intro_step1_desc2">事件照片傳回電腦後，卡片就會點亮。請雙擊卡片，進行第二步驟。</system:String>
     <system:String x:Key="intro_step1_title">您的影像日記已經開始傳送回PC</system:String>
     <system:String x:Key="intro_step2_button">建個雲相冊</system:String>
