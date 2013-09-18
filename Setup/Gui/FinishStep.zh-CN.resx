@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,26 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="lblInstruction.Text" xml:space="preserve">
+    <value>请按 "完成" 结束安装精灵。</value>
+  </data>
+  <data name="lblDetails.Text" xml:space="preserve">
+    <value>安装程序已完成设定完毕
+</value>
+  </data>
+  <data name="lblFinished.Text" xml:space="preserve">
+    <value>设定完成</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+  <data name="cbRunNow.Size" type="System.Drawing.Size, System.Drawing">
+    <value>146, 17</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>SharpSetup.UI.Forms.Modern.ModernWizard, SharpSetup, Version=1.4.1.158, Culture=neutral, PublicKeyToken=null</value>
+  <data name="cbRunNow.Text" xml:space="preserve">
+    <value>立刻执行Piary图库</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>496, 357</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>SetupWizard</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Piary Photos Installation Wizard</value>
-  </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>zh-CN</value>
-  </metadata>
 </root>

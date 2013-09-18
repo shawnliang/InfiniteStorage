@@ -111,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <SharpSetupTranslationCompiler Include="translation_overrides.sstf" />
+    <SharpSetupTranslationCompiler Include="translation_overrides.zh-CN.sstf" />
     <SharpSetupTranslationCompiler Include="translation_overrides.zh-TW.sstf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

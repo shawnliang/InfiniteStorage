@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="zh-CN" xmlns="http://schemas.microsoft.com/wix/2006/localization" Codepage="65001">
+  <!-- This is translation to Chinese (Simplified, PRC) -->
+  <String Id="LANGUAGE">2052</String>
+  <String Id="CULTURE">zh-CN</String>
+  <String Id="APPNAME">Piary 图库</String>
+  <String Id="SHORTCUT.UNINSTALLER.NAME">移除Piary图库</String>
+  <String Id="SetUrlAcl">设定网络</String>
+
+  <!-- Copied from Wix 3.6 src\ext\FirewallExtension\wixlib\en-us.wxl -->
+  <String Id="msierrFirewallCannotConnect" Overridable="yes">无法连结至Windows防火墙.  ([2]   [3]   [4]   [5])</String>
+  <String Id="WixSchedFirewallExceptionsInstall" Overridable="yes">Windows防火墙设定中</String>
+  <String Id="WixSchedFirewallExceptionsUninstall" Overridable="yes">Windows防火墙设定中</String>
+  <String Id="WixRollbackFirewallExceptionsInstall" Overridable="yes">恢复Windows防火墙配置文件</String>
+  <String Id="WixExecFirewallExceptionsInstall" Overridable="yes">安装Windows防火墙配置文件</String>
+  <String Id="WixRollbackFirewallExceptionsUninstall" Overridable="yes">恢复Windows防火墙配置文件</String>
+  <String Id="WixExecFirewallExceptionsUninstall" Overridable="yes">卸载Windows防火墙配置文件</String>
+</WixLocalization>
+

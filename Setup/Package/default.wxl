@@ -6,7 +6,7 @@
   <String Id="APPNAME">Piary Photos</String>
   <String Id="SHORTCUT.UNINSTALLER.NAME">Uninstall Piary Photos</String>
   <String Id="SetUrlAcl">Configuring network</String>
-  
+
   <!-- Copied from Wix 3.6 src\ext\FirewallExtension\wixlib\en-us.wxl -->
   <String Id="msierrFirewallCannotConnect" Overridable="yes">Cannot connect to Windows Firewall.  ([2]   [3]   [4]   [5])</String>
   <String Id="WixSchedFirewallExceptionsInstall" Overridable="yes">Configuring Windows Firewall</String>
