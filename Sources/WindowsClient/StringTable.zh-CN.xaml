@@ -72,19 +72,24 @@
     <system:String x:Key="header_title_paused">自动同步已暂停</system:String>
     <system:String x:Key="header_title_stopped">装置内尚有 {0} 个项目未能汇入</system:String>
     <system:String x:Key="ImportContactButtonText">汇入Gmail联络人</system:String>
-    <system:String x:Key="intro_step1_button">好</system:String>
+    
+    
+    <system:String x:Key="intro_step1_button">好的</system:String>
 
-    <system:String x:Key="intro_step1_desc1">每张卡片就是一个事件</system:String>
-    <system:String x:Key="intro_step1_desc2">请双击卡片，观看里头的相片</system:String>
-    <system:String x:Key="intro_step1_title">欢迎来到你的相片日记</system:String>
-    <system:String x:Key="intro_step2_button">现在就试试</system:String>
-    <system:String x:Key="intro_step2_desc1">双击图片观看大图</system:String>
-    <system:String x:Key="intro_step2_desc2">一键即可将所有事件照片上传云相册</system:String>
-    <system:String x:Key="intro_step2_title">浏览你的精采时刻</system:String>
-    <system:String x:Key="intro_step3_button">现在就去看</system:String>
-    <system:String x:Key="intro_step3_desc1">复制连结，分享给亲朋好友</system:String>
-    <system:String x:Key="intro_step3_desc2">按下开启网页，看看云相册的样子</system:String>
-    <system:String x:Key="intro_step3_title">您的云端相册网页已经产生，正在上传图片...</system:String>
+    <system:String x:Key="intro_step1_desc1">每张卡片就是一个事件；第一次同步需要些时间，请稍微等一下，时间较近事件会先出现。</system:String>
+    <system:String x:Key="intro_step1_desc2">当事件照片传回电脑后，卡片就会点亮。请双击卡片，进行第二步骤。</system:String>
+    <system:String x:Key="intro_step1_title">你的影像日记已经开始传送到电脑了！</system:String>
+    
+    <system:String x:Key="intro_step2_button">現在就建雲相冊</system:String>
+    <system:String x:Key="intro_step2_desc1">您可双击图片检视原始尺寸大图，删除不要的照片；</system:String>
+    <system:String x:Key="intro_step2_desc2">或是按下按钮，立即上传事件的照片到Piary云相册。</system:String>
+    <system:String x:Key="intro_step2_title">快速使用事件照片的方式</system:String>
+    
+    <system:String x:Key="intro_step3_button">开启相冊网页</system:String>
+    <system:String x:Key="intro_step3_desc1">按下「复制连结」，就可以贴在信息或邮件，分享给亲朋好友</system:String>
+    <system:String x:Key="intro_step3_desc2">按下「开启网页」看看云相册的样子。如果網頁空白，可能還沒傳好，請稍等一下，再按下更新鈕試試。</system:String>
+    <system:String x:Key="intro_step3_title">您的云相册网页已经建立好，正在上传图片...</system:String>
+    
     <system:String x:Key="intro_step5_desc">谢谢您的使用！最后，请针对这套软件，给我们评分，以及您宝贵的意见（可不填）</system:String>
     <system:String x:Key="intro_step5_no_stars">点选一到五颗星，给我们评价</system:String>
     <system:String x:Key="intro_step5_rateUs">点选一到五颗星，给我们评价</system:String>
