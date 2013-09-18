@@ -6,7 +6,7 @@
   <String Id="APPNAME">Piary 圖庫</String>
   <String Id="SHORTCUT.UNINSTALLER.NAME">移除Piary圖庫</String>
   <String Id="SetUrlAcl">設定網路</String>
-  
+
   <!-- Copied from Wix 3.6 src\ext\FirewallExtension\wixlib\en-us.wxl -->
   <String Id="msierrFirewallCannotConnect" Overridable="yes">無法連結至Windows防火牆.  ([2]   [3]   [4]   [5])</String>
   <String Id="WixSchedFirewallExceptionsInstall" Overridable="yes">Windows防火牆設定中</String>
@@ -15,5 +15,5 @@
   <String Id="WixExecFirewallExceptionsInstall" Overridable="yes">安裝Windows防火牆設定檔</String>
   <String Id="WixRollbackFirewallExceptionsUninstall" Overridable="yes">恢復Windows防火牆設定檔</String>
   <String Id="WixExecFirewallExceptionsUninstall" Overridable="yes">解除安裝Windows防火牆設定檔</String>
-  
+
 </WixLocalization>

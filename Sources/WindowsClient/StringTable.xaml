@@ -169,7 +169,7 @@
 
     <system:String x:Key="intro_prev">Previous</system:String>
     <system:String x:Key="intro_next">Next</system:String>
-    <system:String x:Key="intro_last_step">Close</system:String>
+    <system:String x:Key="intro_last_step">Turn off</system:String>
 
     <system:String x:Key="delete_confirm_title">Are you sure?</system:String>
     <system:String x:Key="delete_confirm_desc">Do you want to delete the selected files?</system:String>

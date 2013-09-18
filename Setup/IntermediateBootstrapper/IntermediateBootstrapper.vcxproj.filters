@@ -57,5 +57,8 @@
     <SharpSetupTranslationCompiler Include="translation_overrides.zh-TW.sstf">
       <Filter>Translation Files</Filter>
     </SharpSetupTranslationCompiler>
+    <SharpSetupTranslationCompiler Include="translation_overrides.zh-CN.sstf">
+      <Filter>Translation Files</Filter>
+    </SharpSetupTranslationCompiler>
   </ItemGroup>
 </Project>

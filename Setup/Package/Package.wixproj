@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="default.wxl" />
+    <EmbeddedResource Include="zh-CN.wxl" />
     <EmbeddedResource Include="zh-TW.wxl" />
   </ItemGroup>
   <ItemGroup>

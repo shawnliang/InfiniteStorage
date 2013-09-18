@@ -116,11 +116,20 @@
     <EmbeddedResource Include="BonjourInstallationStep.zh-TW.resx">
       <DependentUpon>BonjourInstallationStep.cs</DependentUpon>
     </EmbeddedResource>
+
+    <EmbeddedResource Include="BonjourInstallationStep.zh-CN.resx">
+      <DependentUpon>BonjourInstallationStep.cs</DependentUpon>
+    </EmbeddedResource>
+
     <EmbeddedResource Include="FatalErrorStep.resx">
       <DependentUpon>FatalErrorStep.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FatalErrorStep.zh-TW.resx">
+      <DependentUpon>FatalErrorStep.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FatalErrorStep.zh-CN.resx">
       <DependentUpon>FatalErrorStep.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -132,10 +141,17 @@
       <DependentUpon>FinishStep.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="FinishStep.zh-CN.resx">
+      <DependentUpon>FinishStep.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="InitializationStep.resx">
       <DependentUpon>InitializationStep.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InitializationStep.zh-TW.resx">
+      <DependentUpon>InitializationStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InitializationStep.zh-CN.resx">
       <DependentUpon>InitializationStep.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InstallationLocationStep1.resx">
@@ -143,6 +159,10 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="InstallationLocationStep1.zh-TW.resx">
+      <DependentUpon>InstallationLocationStep1.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstallationLocationStep1.zh-CN.resx">
       <DependentUpon>InstallationLocationStep1.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -154,10 +174,17 @@
       <DependentUpon>InstallationModeStep.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="InstallationModeStep.zh-CN.resx">
+      <DependentUpon>InstallationModeStep.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="InstallationStep.resx">
       <DependentUpon>InstallationStep.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InstallationStep.zh-TW.resx">
+      <DependentUpon>InstallationStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstallationStep.zh-CN.resx">
       <DependentUpon>InstallationStep.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -170,12 +197,16 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Properties\Resources.zh-CN.resx" />
     <EmbeddedResource Include="Properties\Resources.zh-TW.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="SetupWizard.resx">
       <DependentUpon>SetupWizard.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SetupWizard.zh-CN.resx">
+      <DependentUpon>SetupWizard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SetupWizard.zh-TW.resx">
       <DependentUpon>SetupWizard.cs</DependentUpon>
@@ -186,6 +217,10 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="WelcomeStep.zh-TW.resx">
+      <DependentUpon>WelcomeStep.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WelcomeStep.zh-CN.resx">
       <DependentUpon>WelcomeStep.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
