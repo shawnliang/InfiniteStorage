@@ -54,16 +54,16 @@
 
     <system:String x:Key="Day">同一天</system:String>
     <system:String x:Key="DefaultFavoriteName">未命名的相冊</system:String>
-    <system:String x:Key="EmailButtonText">Email給...</system:String>
+    <system:String x:Key="EmailButtonText">郵寄連結...</system:String>
     <system:String x:Key="EventInterval">事件區分:</system:String>
     <system:String x:Key="ExistingFolder">現有目錄</system:String>
     <system:String x:Key="ExitButtonText">離開</system:String>
     <system:String x:Key="Favorite">最愛相簿</system:String>
 
     <system:String x:Key="FavoritesGroupTitle">本地相冊</system:String>
-    <system:String x:Key="header_subtitle_complete">點選下方縮圖，即可跳至資料夾</system:String>
+    <system:String x:Key="header_subtitle_complete">點選下方縮圖，即可檢視資料夾</system:String>
     <system:String x:Key="header_subtitle_importing">正在匯入第 {0} 個項目，剩餘時間約 {1} 分鐘</system:String>
-    <system:String x:Key="header_subtitle_indexing">正在為您的照片建立索引，請稍候...</system:String>
+    <system:String x:Key="header_subtitle_indexing">首次同步需要一點時間為您的照片建立索引，請耐心等候...</system:String>
     <system:String x:Key="header_subtitle_paused">請按右方按鈕繼續</system:String>
     <system:String x:Key="header_subtitle_stopped">請將裝置連接到與PC相同的區域網路，自動同步會自動開始</system:String>
     <system:String x:Key="header_title_complete">上次從裝置匯入了 {0} 個項目於{1}</system:String>
@@ -72,19 +72,20 @@
     <system:String x:Key="header_title_paused">自動同步已暫停</system:String>
     <system:String x:Key="header_title_stopped">裝置內尚有 {0} 個項目未能匯入</system:String>
     <system:String x:Key="ImportContactButtonText">匯入Gmail聯絡人</system:String>
-    <system:String x:Key="intro_step1_button">好</system:String>
+    
+    <system:String x:Key="intro_step1_button">好的</system:String>
 
-    <system:String x:Key="intro_step1_desc1">每張卡片就是一個事件</system:String>
-    <system:String x:Key="intro_step1_desc2">請雙擊卡片，觀看裏頭的相片</system:String>
-    <system:String x:Key="intro_step1_title">歡迎來到你的相片日記</system:String>
-    <system:String x:Key="intro_step2_button">現在就試試</system:String>
-    <system:String x:Key="intro_step2_desc1">雙擊圖片觀看大圖</system:String>
-    <system:String x:Key="intro_step2_desc2">一鍵即可將所有事件照片上傳雲相冊</system:String>
-    <system:String x:Key="intro_step2_title">瀏覽你的精采時刻</system:String>
-    <system:String x:Key="intro_step3_button">現在就去看</system:String>
-    <system:String x:Key="intro_step3_desc1">複製連結，分享給親朋好友</system:String>
-    <system:String x:Key="intro_step3_desc2">按下開啟網頁，看看雲相冊的樣子</system:String>
-    <system:String x:Key="intro_step3_title">您的雲端相冊網頁已經產生，正在上傳圖片...</system:String>
+    <system:String x:Key="intro_step1_desc1">每張卡片就是一個事件；第一次同不需要些時間，請稍等片刻，時間較近的事件會先出現。</system:String>
+    <system:String x:Key="intro_step1_desc2">事件照片傳回電腦後，卡片就會點亮。請雙擊卡片，進行第二步驟。</system:String>
+    <system:String x:Key="intro_step1_title">您的影像日記已經開始傳送回PC</system:String>
+    <system:String x:Key="intro_step2_button">建個雲相冊</system:String>
+    <system:String x:Key="intro_step2_desc1">您可點兩下圖片檢視原尺寸大圖，刪除不要的照片。</system:String>
+    <system:String x:Key="intro_step2_desc2">或是點一下「分享」裡的「雲相冊」按鈕，一鍵上傳事件照片到Piary雲端相冊。</system:String>
+    <system:String x:Key="intro_step2_title">回顧精彩時刻，就這麼方便</system:String>
+    <system:String x:Key="intro_step3_button">開啓相冊網頁</system:String>
+    <system:String x:Key="intro_step3_desc1">按下「複製連結」，就可以貼到訊息或郵件，分享給親朋好友。</system:String>
+    <system:String x:Key="intro_step3_desc2">按下「開啓網頁」看看雲相冊的樣子。如果網頁空白可能是還沒傳好，請稍等一下按下更新按鈕試試。</system:String>
+    <system:String x:Key="intro_step3_title">您的雲端相冊網頁已經建好，正在上傳圖片...</system:String>
     <system:String x:Key="intro_step5_desc">謝謝您的使用！最後，請針對這套軟體，給我們評分，以及您寶貴的意見（可不填）</system:String>
     <system:String x:Key="intro_step5_no_stars">點選一到五顆星，給我們評價</system:String>
     <system:String x:Key="intro_step5_rateUs">點選一到五顆星，給我們評價</system:String>
