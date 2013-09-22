@@ -2,6 +2,8 @@
 
 using System;
 using AppLimit.NetSparkle;
+using InfiniteStorage.Data;
+using InfiniteStorage.Properties;
 
 #endregion
 
@@ -13,12 +15,14 @@ namespace Waveface.Common
 		private NetSparkleAppCastItem versionInfo;
 		private bool forceUpgrade;
 
+		private static string DEV_VERSION_INFO = "http://cdn.waveface.com/WindowsStation/versioninfo.dev.xml";
+		private static string PRO_VERSION_INFO = "http://cdn.waveface.com/WindowsStation/versioninfo.xml";
+
 		public AutoUpdate(bool forceUpgrade)
 		{
 			m_autoUpdator = new Sparkle(UpdateURL);
-			//m_autoUpdator.ApplicationIcon = Resources.software_update_available;
-			//m_autoUpdator.ApplicationWindowIcon = Resources.UpdateAvailable;
-
+			m_autoUpdator.ApplicationIcon = Resources.ProductIcon.ToBitmap();
+			m_autoUpdator.ApplicationWindowIcon = Resources.ProductIcon;
 			this.forceUpgrade = forceUpgrade;
 		}
 
@@ -51,7 +55,16 @@ namespace Waveface.Common
 
 		private static string UpdateURL
 		{
-			get { return "https://waveface.com/extensions/bunnyUpdate/versioninfo.xml"; }
+			get {
+#if DEBUG
+				return DEV_VERSION_INFO;
+#else
+				if (ProgramConfig.ApiBaseUri.ToString().Contains("develop"))
+					return DEV_VERSION_INFO;
+				else
+					return PRO_VERSION_INFO;
+#endif
+			}
 		}
 	}
 }

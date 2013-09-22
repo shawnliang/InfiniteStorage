@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>Piary Photos</title>
+        <link>https://waveface.com/extensions/bunnyUpdate/versioninfo.xml</link>
+        <description></description>
+        <language>all</language>
+        <item>
+            <title>Version 1.1.0.88</title>
+            <sparkle:releaseNotesLink>http://cdn.waveface.com/WindowsStation/updateinfo.html</sparkle:releaseNotesLink>
+            <pubDate>2013-09-22 13:00:59+0800</pubDate>
+            <enclosure
+                url="http://cdn.waveface.com/WindowsStation/FavoriteHomeInstaller.exe"
+                length="26247376"
+                type="application/octet-stream"
+                sparkle:version="1.1.0.88"
+            />
+        </item>
+    </channel>
+</rss>

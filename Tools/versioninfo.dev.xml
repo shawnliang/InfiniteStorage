@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>Waveface Windows Program</title>
+        <link>https://waveface.com/extensions/windowsUpdate/versioninfo.xml</link>
+        <description></description>
+        <language>all</language>
+        <item>
+            <title>Version 1.0.6.600</title>
+            <sparkle:releaseNotesLink>http://develop.waveface.com:4343/extensions/windowsUpdate/rnotes-1.0.6.600.html</sparkle:releaseNotesLink>
+            <pubDate>2012-08-14 03:31:40+0800</pubDate>
+            <enclosure
+                url="http://develop.waveface.com:4343/extensions/windowsUpdate/production-WavefaceSetup-1.0.6.600.exe"
+                length="14622904"
+                type="application/octet-stream"
+                sparkle:version="1.0.6.600"
+            />
+        </item>
+    </channel>
+</rss>
