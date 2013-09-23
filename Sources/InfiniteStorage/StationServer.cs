@@ -159,35 +159,44 @@ namespace InfiniteStorage
 			cameraImport.ImportService = new ImportService();
 		}
 
-		private void InfiniteStorageWebSocketService_FileDropped(object sender, WebsocketEventArgs e)
+		#region NotifyIcon
+
+		private void initNotifyIconAndController()
 		{
-			if (e.ctx.fileCtx != null && e.ctx.fileCtx.is_thumbnail)
-				return;
+			m_notifyIcon.Text = Resources.ProductName;
+			m_notifyIcon.Icon = Resources.ProductIcon;
+			m_notifyIcon.ContextMenuStrip = new ContextMenuStrip();
 
-			SynchronizationContextHelper.PostMainSyncContext(() =>
-																 {
-																	 try
-																	 {
-																		 ProgressTooltip dialog = (ProgressTooltip)e.ctx.GetData(DATA_KEY_PROGRESS_DIALOG);
+			var openUIItem = m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Open, null, m_notifyIconController.OnOpenUIMenuItemCliecked);
+			openUIItem.Font = new Font(openUIItem.Font, FontStyle.Bold);
 
-																		 // +1 because when the last photo is received, backuped_count is (n-1) and total_count is (n).
-																		 // Device will then send update-count command to update backuped_count to (n) after some delays.
-																		 if (e.ctx.backup_count + 1 >= e.ctx.total_count)
-																		 {
-																			 dialog.UpdateComplete((int)e.ctx.recved_files, (int)e.ctx.recved_files);
-																			 e.ctx.recved_files = 0;
-																		 }
-																		 else
-																		 {
-																			 updateProgressDialog(e, dialog);
-																		 }
-																	 }
-																	 catch (Exception err)
-																	 {
-																		 LogManager.GetLogger(GetType()).Warn("Update progress ui error", err);
-																	 }
-																 });
+			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_OpenBackupFolder, null, m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked);
+
+			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Preferences, null, m_notifyIconController.OnPreferencesMenuItemClicked);
+			m_notifyIcon.ContextMenuStrip.Items.Add("-");
+
+			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Quit, null, m_notifyIconController.OnQuitMenuItemClicked);
+
+			m_notifyIcon.Visible = true;
+
+			showProgramIsAtServiceBallonTips();
+
+			m_notifyIcon.DoubleClick += m_notifyIconController.OnOpenUIMenuItemCliecked;
+
+			InfiniteStorageWebSocketService.DeviceAccepted += m_notifyIconController.OnDeviceConnected;
+			InfiniteStorageWebSocketService.DeviceDisconnected += m_notifyIconController.OnDeviceDisconnected;
+			InfiniteStorageWebSocketService.TotalCountUpdated += m_notifyIconController.OnTotalCountUpdated;
 		}
+
+		private void showProgramIsAtServiceBallonTips()
+		{
+			var ballonText = string.Format(Resources.BallonText_AtService, Resources.ProductName);
+			m_notifyIcon.ShowBalloonTip(3000, Resources.ProductName, ballonText, ToolTipIcon.None);
+		}
+
+		#endregion
+
+		#region auto label
 
 		private void InfiniteStorageWebSocketService_DeviceDisconnected(object sender, WebsocketEventArgs e)
 		{
@@ -213,6 +222,36 @@ namespace InfiniteStorage
 
 																			 if (total > 0)
 																				 dialog.UpdateInterrupted((int)e.ctx.recved_files, (int)total);
+																		 }
+																	 }
+																	 catch (Exception err)
+																	 {
+																		 LogManager.GetLogger(GetType()).Warn("Update progress ui error", err);
+																	 }
+																 });
+		}
+
+		private void InfiniteStorageWebSocketService_FileDropped(object sender, WebsocketEventArgs e)
+		{
+			if (e.ctx.fileCtx != null && e.ctx.fileCtx.is_thumbnail)
+				return;
+
+			SynchronizationContextHelper.PostMainSyncContext(() =>
+																 {
+																	 try
+																	 {
+																		 ProgressTooltip dialog = (ProgressTooltip)e.ctx.GetData(DATA_KEY_PROGRESS_DIALOG);
+
+																		 // +1 because when the last photo is received, backuped_count is (n-1) and total_count is (n).
+																		 // Device will then send update-count command to update backuped_count to (n) after some delays.
+																		 if (e.ctx.backup_count + 1 >= e.ctx.total_count)
+																		 {
+																			 dialog.UpdateComplete((int)e.ctx.recved_files, (int)e.ctx.recved_files);
+																			 e.ctx.recved_files = 0;
+																		 }
+																		 else
+																		 {
+																			 updateProgressDialog(e, dialog);
 																		 }
 																	 }
 																	 catch (Exception err)
@@ -284,17 +323,6 @@ namespace InfiniteStorage
 																 });
 		}
 
-		private static void updateProgressDialog(WebsocketEventArgs e, ProgressTooltip dialog)
-		{
-			var percentage = 100L;
-
-			if (e.ctx.fileCtx != null)
-				percentage = e.ctx.temp_file.BytesWritten * 100 / e.ctx.fileCtx.file_size;
-
-			var toTransfer = e.ctx.total_count - e.ctx.backup_count + e.ctx.recved_files;
-			dialog.UpdateProgress((int)e.ctx.recved_files, (int)toTransfer, (int)percentage);
-		}
-
 		private void InfiniteStorageWebSocketService_FileProgress(object sender, WebsocketEventArgs e)
 		{
 			if (e.ctx.fileCtx != null && e.ctx.fileCtx.is_thumbnail)
@@ -340,6 +368,21 @@ namespace InfiniteStorage
 																	 }
 																 });
 		}
+
+		private static void updateProgressDialog(WebsocketEventArgs e, ProgressTooltip dialog)
+		{
+			var percentage = 100L;
+
+			if (e.ctx.fileCtx != null)
+				percentage = e.ctx.temp_file.BytesWritten * 100 / e.ctx.fileCtx.file_size;
+
+			var toTransfer = e.ctx.total_count - e.ctx.backup_count + e.ctx.recved_files;
+			dialog.UpdateProgress((int)e.ctx.recved_files, (int)toTransfer, (int)percentage);
+		}
+
+		#endregion
+
+		#region pair
 
 		private void InfiniteStorageWebSocketService_ThumbnailReceived(object sender, ThumbnailReceivedEventArgs e)
 		{
@@ -430,6 +473,10 @@ namespace InfiniteStorage
 			}
 		}
 
+		#endregion
+
+		#region cameraImport
+
 		private static void _fm1_CameraDetected(object sender, CameraDetectedEventArgs e)
 		{
 			SynchronizationContextHelper.SendMainSyncContext(() =>
@@ -451,6 +498,8 @@ namespace InfiniteStorage
 																	 e.DoImport = dialog.ShowDialog() == DialogResult.OK;
 																 });
 		}
+
+		#endregion
 
 		public void Start()
 		{
@@ -506,38 +555,6 @@ namespace InfiniteStorage
 			{
 				LogManager.GetLogger("main").Error("Unable to register bonjour service", err);
 			}
-		}
-
-		private void initNotifyIconAndController()
-		{
-			m_notifyIcon.Text = Resources.ProductName;
-			m_notifyIcon.Icon = Resources.ProductIcon;
-			m_notifyIcon.ContextMenuStrip = new ContextMenuStrip();
-
-			var openUIItem = m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Open, null, m_notifyIconController.OnOpenUIMenuItemCliecked);
-			openUIItem.Font = new Font(openUIItem.Font, FontStyle.Bold);
-
-			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_OpenBackupFolder, null, m_notifyIconController.OnOpenPhotoBackupFolderMenuItemClicked);
-
-			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Preferences, null, m_notifyIconController.OnPreferencesMenuItemClicked);
-			m_notifyIcon.ContextMenuStrip.Items.Add("-");
-
-			m_notifyIcon.ContextMenuStrip.Items.Add(Resources.TrayMenuItem_Quit, null, m_notifyIconController.OnQuitMenuItemClicked);
-
-			m_notifyIcon.Visible = true;
-
-			showProgramIsAtServiceBallonTips();
-
-			m_notifyIcon.DoubleClick += m_notifyIconController.OnOpenUIMenuItemCliecked;
-			InfiniteStorageWebSocketService.DeviceAccepted += m_notifyIconController.OnDeviceConnected;
-			InfiniteStorageWebSocketService.DeviceDisconnected += m_notifyIconController.OnDeviceDisconnected;
-			InfiniteStorageWebSocketService.TotalCountUpdated += m_notifyIconController.OnTotalCountUpdated;
-		}
-
-		private void showProgramIsAtServiceBallonTips()
-		{
-			var ballonText = string.Format(Resources.BallonText_AtService, Resources.ProductName);
-			m_notifyIcon.ShowBalloonTip(3000, Resources.ProductName, ballonText, ToolTipIcon.None);
 		}
 
 		private void pingPeerToCheckConnection(object nil)

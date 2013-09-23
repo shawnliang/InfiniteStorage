@@ -39,12 +39,12 @@ namespace InfiniteStorage
 
 		public void PrepareNginxConfig(ushort port, string origFileDir)
 		{
-			var install_dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			var nginx_dir = Path.Combine(install_dir, "nginx");
-			var log_dir = Path.Combine(MyFileFolder.AppData, "logs");
-			var temp_dir = Path.Combine(MyFileFolder.AppData, "kemp");
+			var _installDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+			var _nginxDir = Path.Combine(_installDir, "nginx");
+			var _logDir = Path.Combine(MyFileFolder.AppData, "logs");
+			var _tempDir = Path.Combine(MyFileFolder.AppData, "kemp");
 
-			File.Copy(Path.Combine(nginx_dir, @"conf\mime.types"), Path.Combine(MyFileFolder.AppData, "mime.types"), true);
+			File.Copy(Path.Combine(_nginxDir, @"conf\mime.types"), Path.Combine(MyFileFolder.AppData, "mime.types"), true);
 
 			if (Settings.Default.HomeSharingPasswordRequired)
 			{
@@ -54,10 +54,11 @@ namespace InfiniteStorage
 				}
 			}
 
-			var escaped_log_dir = log_dir.Replace("\'", @"\'");
-			var escaped_temp_dir = temp_dir.Replace("\'", @"\'");
+			var escaped_log_dir = _logDir.Replace("\'", @"\'");
+			var escaped_temp_dir = _tempDir.Replace("\'", @"\'");
 			var escaped_orig_file_dir = origFileDir.Replace("\'", @"\'");
-			using (var template = new StreamReader(Path.Combine(nginx_dir, @"conf\nginx.conf.template")))
+
+			using (var template = new StreamReader(Path.Combine(_nginxDir, @"conf\nginx.conf.template")))
 			using (var target_cfg = new StreamWriter(Path.Combine(MyFileFolder.AppData, "nginx.cfg")))
 			{
 				while (!template.EndOfStream)
@@ -82,16 +83,15 @@ namespace InfiniteStorage
 						line = line.Replace("#auth_basic_user_file", "auth_basic_user_file      nginx.pwd;");
 					}
 
-
 					target_cfg.WriteLine(line);
 				}
 			}
 
-			if (!Directory.Exists(log_dir))
-				Directory.CreateDirectory(log_dir);
+			if (!Directory.Exists(_logDir))
+				Directory.CreateDirectory(_logDir);
 
-			if (!Directory.Exists(temp_dir))
-				Directory.CreateDirectory(temp_dir);
+			if (!Directory.Exists(_tempDir))
+				Directory.CreateDirectory(_tempDir);
 
 			var resFolder = Path.Combine(origFileDir, ".resource");
 
@@ -122,6 +122,7 @@ namespace InfiniteStorage
 			var cfg_dir = MyFileFolder.AppData;
 
 			stopping = false;
+
 			var processes = Process.GetProcessesByName("nginx");
 
 			if (processes != null)
