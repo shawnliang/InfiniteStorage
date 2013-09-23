@@ -35,10 +35,8 @@ namespace InfiniteStorage
 				return;
 			}
 
-			Boolean bCreatedNew;
+			var cultureName = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "Culture", "");
 
-			var cultureName = (string) Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "Culture", "");
-			
 			if (!string.IsNullOrEmpty(cultureName))
 			{
 				var cultureInfo = new CultureInfo(cultureName);
@@ -47,6 +45,8 @@ namespace InfiniteStorage
 				currentThread.CurrentCulture = cultureInfo;
 				currentThread.CurrentUICulture = cultureInfo;
 			}
+
+			Boolean bCreatedNew;
 
 			m_InstanceMutex = new Mutex(false, Application.ProductName + Environment.UserName, out bCreatedNew);
 
@@ -59,7 +59,6 @@ namespace InfiniteStorage
 			Application.EnableVisualStyles();
 
 			Application.ApplicationExit += Application_ApplicationExit;
-
 			AppDomain.CurrentDomain.UnhandledException += Handler.UnhandledException;
 			Application.ThreadException += Handler.ThreadException;
 
@@ -77,9 +76,9 @@ namespace InfiniteStorage
 			if (string.IsNullOrEmpty(Settings.Default.ServerId))
 			{
 				Settings.Default.ServerId = Guid.NewGuid().ToString();
-				Settings.Default.SingleFolderLocation = (string) Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", "");
-				Settings.Default.OrganizeMethod = (int) OrganizeMethod.YearMonth;
-				Settings.Default.LocationType = (int) LocationType.SingleFolder;
+				Settings.Default.SingleFolderLocation = (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\BunnyHome", "ResourceFolder", "");
+				Settings.Default.OrganizeMethod = (int)OrganizeMethod.YearMonth;
+				Settings.Default.LocationType = (int)LocationType.SingleFolder;
 				Settings.Default.Save();
 
 				if (!Directory.Exists(Settings.Default.SingleFolderLocation))
@@ -112,7 +111,7 @@ namespace InfiniteStorage
 				LogManager.GetLogger("main").Error(err.Message, err);
 
 				MessageBox.Show(Resources.DBVersionIncompatible, Resources.IncompatibleVersionDetected, MessageBoxButtons.OK, MessageBoxIcon.Error);
-				
+
 				return;
 			}
 
@@ -125,18 +124,18 @@ namespace InfiniteStorage
 
 			var bg = new BackgroundWorker();
 			bg.DoWork += (s, e) =>
-				             {
-					             ConsistencyChecker.RemoveMissingFilesFromDB();
-					             ConsistencyChecker.RemoveMissingFoldersFromDB();
-					             ConsistencyChecker.RemoveMissingDevicesFromDB();
+							 {
+								 ConsistencyChecker.RemoveMissingFilesFromDB();
+								 ConsistencyChecker.RemoveMissingFoldersFromDB();
+								 ConsistencyChecker.RemoveMissingDevicesFromDB();
 
-					             removeTempFiles();
-				             };
+								 removeTempFiles();
+							 };
 			bg.RunWorkerCompleted += (s, e) =>
-				                         {
-					                         dialog.CloseByApp();
-					                         migratingCompleted = true;
-				                         };
+										 {
+											 dialog.CloseByApp();
+											 migratingCompleted = true;
+										 };
 			bg.RunWorkerAsync();
 
 			while (!migratingCompleted)
@@ -176,29 +175,6 @@ namespace InfiniteStorage
 				LogManager.GetLogger("main").Warn("Delete temp files not success", err);
 			}
 		}
-
-		/*
-		private static string generateSameServerIdForSameUserOnSamePC()
-		{
-			string serialNum = getMachineSerialNo();
-
-			var md5 = MD5.Create().ComputeHash(Encoding.Default.GetBytes(serialNum + Environment.UserName + Environment.MachineName));
-			return new Guid(md5).ToString();
-		}
-		
-		private static string getMachineSerialNo()
-		{
-			string serialNum = null;
-			ManagementObjectSearcher MOS = new ManagementObjectSearcher("Select * From Win32_BaseBoard");
-			
-		    foreach (ManagementObject getserial in MOS.Get())
-			{
-				serialNum = getserial["SerialNumber"].ToString();
-			}
-		 
-			return serialNum;
-		}
-		*/
 
 		private static void invokeAnotherRunningProcess()
 		{
@@ -296,5 +272,28 @@ namespace InfiniteStorage
 				retry--;
 			}
 		}
+
+		/*
+		private static string generateSameServerIdForSameUserOnSamePC()
+		{
+			string serialNum = getMachineSerialNo();
+
+			var md5 = MD5.Create().ComputeHash(Encoding.Default.GetBytes(serialNum + Environment.UserName + Environment.MachineName));
+			return new Guid(md5).ToString();
+		}
+		
+		private static string getMachineSerialNo()
+		{
+			string serialNum = null;
+			ManagementObjectSearcher MOS = new ManagementObjectSearcher("Select * From Win32_BaseBoard");
+			
+			foreach (ManagementObject getserial in MOS.Get())
+			{
+				serialNum = getserial["SerialNumber"].ToString();
+			}
+		 
+			return serialNum;
+		}
+		*/
 	}
 }
