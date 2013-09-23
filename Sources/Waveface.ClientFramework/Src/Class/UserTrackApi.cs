@@ -1,11 +1,12 @@
-﻿using System;
+﻿#region
+
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text;
-using Microsoft.Win32;
-using InfiniteStorage.Data;
 using System.Web;
+using InfiniteStorage.Data;
+
+#endregion
 
 namespace Waveface.ClientFramework
 {
@@ -13,23 +14,20 @@ namespace Waveface.ClientFramework
 	{
 		private WebClient webAgent = new WebClient();
 
-		public UserTrackApi()
-		{
-			
-		}
-
 		public void CallAync(string os, string version, string stage, int rating, string comment, string action)
 		{
-			var param = new Dictionary<string, object>() { 
-				{"os", os},
-				{ "version", version },
-				{"stage", stage},
-				{"rating", rating},
-				{"comment", comment},
-				{ "action", action}
-			};
+			var param = new Dictionary<string, object>
+				            {
+					            {"os", os},
+					            {"version", version},
+					            {"stage", stage},
+					            {"rating", rating},
+					            {"comment", comment},
+					            {"action", action}
+				            };
 
 			var buff = new StringBuilder();
+
 			foreach (var par in param)
 			{
 				buff.Append(par.Key).Append("=").Append(HttpUtility.UrlEncode(par.Value.ToString())).Append("&");

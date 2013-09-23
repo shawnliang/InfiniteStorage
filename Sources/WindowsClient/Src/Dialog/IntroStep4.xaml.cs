@@ -1,28 +1,21 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using InfiniteStorage.Data;
 using Waveface.ClientFramework;
 
+#endregion
+
 namespace Waveface.Client
 {
-	/// <summary>
-	/// IntroStep5.xaml 的互動邏輯
-	/// </summary>
 	public partial class IntroStep4 : Window
 	{
-		private int num_of_star = 0;
+		private int num_of_star;
 		private Style starredStyle;
 		private Style unstarredStyle;
 
@@ -30,13 +23,13 @@ namespace Waveface.Client
 		{
 			InitializeComponent();
 
-			starredStyle = (Style)FindResource("starredStyle");
-			unstarredStyle = (Style)FindResource("unstarredStyle");
+			starredStyle = (Style) FindResource("starredStyle");
+			unstarredStyle = (Style) FindResource("unstarredStyle");
 		}
 
 		private void star_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			var stars = new List<Image> { star1, star2, star3, star4, star5 };
+			var stars = new List<Image> {star1, star2, star3, star4, star5};
 
 			if (sender == stars[0])
 				num_of_star = 1;
@@ -81,12 +74,13 @@ namespace Waveface.Client
 		{
 			if (num_of_star == 0)
 			{
-				errorText.Visibility = System.Windows.Visibility.Visible;
+				errorText.Visibility = Visibility.Visible;
 				return;
 			}
 
 			var comment = suggestion.Text;
 			var api = new UserTrackApi();
+
 			api.CallAync(
 				Environment.OSVersion.ToString(),
 				Assembly.GetExecutingAssembly().GetName().Version.ToString(),

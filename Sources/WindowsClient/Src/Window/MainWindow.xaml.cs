@@ -57,6 +57,7 @@ namespace Waveface.Client
 		private Boolean m_clickOnContentArea;
 
 		private IService m_tempCurrentService;
+		private bool m_showIntroStep4;
 
 		public MainWindow()
 		{
@@ -65,6 +66,19 @@ namespace Waveface.Client
 #if !DEBUG
 			AppDomain.CurrentDomain.UnhandledException += NBug.Handler.UnhandledException;
 #endif
+
+			AddLaunchCount();		
+		}
+
+		private void AddLaunchCount()
+		{
+			Settings.Default.LaunchCount += 1;
+			Settings.Default.Save();
+
+			if (Settings.Default.LaunchCount == 3)
+			{
+				m_showIntroStep4 = true;
+			}
 		}
 
 		private bool CloudAlbumFilter(object item)
@@ -187,6 +201,25 @@ namespace Waveface.Client
 				JumpToDevice(options.select_device, false);
 			else if (ClientFramework.Client.Default.Services.Any())
 				JumpToPhotoDiary();
+
+			if(m_showIntroStep4)
+			{
+				m_showIntroStep4 = false;
+
+				ShowIntroStep4();
+			}
+		}
+
+		private void ShowIntroStep4()
+		{
+			if (!Settings.Default.IntroStep4Displayed)
+			{
+				var dialog4 = new IntroStep4 { Owner = this };
+				dialog4.ShowDialog();
+
+				Settings.Default.IntroStep4Displayed = true;
+				Settings.Default.Save();
+			}
 		}
 
 		#region Private Method
@@ -524,10 +557,9 @@ namespace Waveface.Client
 
 			if (dialog.PairedDevices.Any())
 			{
-
 				if (!Settings.Default.IntroStep0Displayed)
 				{
-					var intro = new IntroDialog() { Owner = this };
+					var intro = new IntroDialog { Owner = this };
 					intro.ShowDialog();
 
 					Settings.Default.IntroStep0Displayed = true;
@@ -913,25 +945,18 @@ namespace Waveface.Client
 				lbxRecent.SelectedItem = null;
 				lbxPhotoDiary.SelectedItem = null;
 
-
 				if (listbox == lbxCloudAlbums)
 				{
 					if (!Settings.Default.IntroStep3Displayed)
 					{
-						var dialog = new IntroStep3() { Owner = this };
-						dialog.OpenNowButtonClicked += (s, ev) => { btnOpenShareLink_Click(this, new RoutedEventArgs()); };
+						var dialog = new IntroStep3 { Owner = this };
+						dialog.OpenNowButtonClicked += (s, ev) => btnOpenShareLink_Click(this, new RoutedEventArgs());
 						dialog.ShowDialog();
 
 						Settings.Default.IntroStep3Displayed = true;
 						Settings.Default.Save();
 
-
-
-						var dialog4 = new IntroStep4() { Owner = this };
-						dialog4.ShowDialog();
-
-						Settings.Default.IntroStep4Displayed = true;
-						Settings.Default.Save();
+						//ShowIntroStep4();
 					}
 				}
 			}
