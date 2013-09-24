@@ -289,6 +289,7 @@
       <DependentUpon>StartPairingUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="StationServer.cs" />
+    <EmbeddedResource Include="Properties\Resources.zh-CN.resx" />
     <EmbeddedResource Include="Src\Dialog\AskCameraImportDialog.resx">
       <DependentUpon>AskCameraImportDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -298,10 +299,16 @@
     <EmbeddedResource Include="Src\Dialog\MigratingDataDialog.resx">
       <DependentUpon>MigratingDataDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Src\Dialog\PreferenceDialog.zh-CN.resx">
+      <DependentUpon>PreferenceDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\PreferenceDialog.zh-TW.resx">
       <DependentUpon>PreferenceDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\ProgressTooltip.resx">
+      <DependentUpon>ProgressTooltip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Src\Dialog\ProgressTooltip.zh-CN.resx">
       <DependentUpon>ProgressTooltip.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\ProgressTooltip.zh-TW.resx">
@@ -310,11 +317,17 @@
     <EmbeddedResource Include="Src\UIControl\AboutControl.resx">
       <DependentUpon>AboutControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Src\UIControl\AboutControl.zh-CN.resx">
+      <DependentUpon>AboutControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\AboutControl.zh-TW.resx">
       <DependentUpon>AboutControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\DeviceListControl.zh-TW.resx">
       <DependentUpon>DeviceListControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Src\UIControl\GeneralPreferenceControl.zh-CN.resx">
+      <DependentUpon>GeneralPreferenceControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\GeneralPreferenceControl.zh-TW.resx">
       <DependentUpon>GeneralPreferenceControl.cs</DependentUpon>
@@ -359,6 +372,9 @@
     <EmbeddedResource Include="Src\UIControl\StartPairingUserControl.resx">
       <DependentUpon>StartPairingUserControl.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Src\UIControl\StorageLocationControl.zh-CN.resx">
+      <DependentUpon>StorageLocationControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\StorageLocationControl.zh-TW.resx">
       <DependentUpon>StorageLocationControl.cs</DependentUpon>
