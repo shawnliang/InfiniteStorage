@@ -20,7 +20,7 @@ namespace Waveface.ClientFramework
 			get
 			{
 				if (!string.IsNullOrWhiteSpace(m_shareCode))
-					return ProgramConfig.FromWebBase("/favorite/" + m_shareCode);
+					return ProgramConfig.FromWebBase("/favorite/" + m_shareCode + "?utm_source=PiaryPc");
 				else
 					return string.Empty;
 			}
