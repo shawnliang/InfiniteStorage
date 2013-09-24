@@ -50,31 +50,8 @@ namespace InfiniteStorage.REST
 									 device_folder = d.folder_name,
 									 _orientation = f.orientation,
 									 original_path = f.file_path,
-								 }).Union(
-								 from f in db.Object.PendingFiles
-								 join d in db.Object.Devices on f.device_id equals d.device_id
-								 where fid == f.file_id
-								 select new FileChangeData
-								 {
-									 id = f.file_id,
-									 file_name = f.file_name,
-									 thumb_ready = f.thumb_ready,
-									 width = f.width,
-									 height = f.height,
-									 size = f.file_size,
-									 type = f.type,
-									 dev_id = f.device_id,
-									 dev_name = d.device_name,
-									 dev_type = 0,//TODO
-									 deleted = f.deleted,
-									 seq = f.seq,
-									 event_time = f.event_time,
-									 saved_path = f.saved_path,
-									 device_folder = d.folder_name,
-									 _orientation = f.orientation,
-									 original_path = f.file_path,
 								 });
-
+				
 					var file = query.FirstOrDefault();
 
 					if (file != null)

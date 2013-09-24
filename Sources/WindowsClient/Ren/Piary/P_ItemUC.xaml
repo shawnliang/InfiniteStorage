@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="Waveface.Client.P_ItemUC"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:PendingUI="clr-namespace:Waveface.Client"
+             xmlns:Client="clr-namespace:Waveface.Client"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
     <UserControl.Resources>
         <SolidColorBrush x:Key="Brush676767">#676767</SolidColorBrush>
@@ -23,7 +23,7 @@
           MouseMove="gridMain_MouseMove"
           MouseRightButtonDown="gridMain_MouseRightButtonDown">
         <i:Interaction.Behaviors>
-            <PendingUI:IgnoreMouseWheelBehavior />
+            <Client:IgnoreMouseWheelBehavior />
         </i:Interaction.Behaviors>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

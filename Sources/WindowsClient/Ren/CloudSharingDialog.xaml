@@ -2,7 +2,7 @@
 <Window x:Class="Waveface.Client.CloudSharingDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:PendingUI="clr-namespace:Waveface.Client"
+        xmlns:Client="clr-namespace:Waveface.Client"
         Title="Create Online Album"
         Width="900"
         Height="600"
@@ -16,10 +16,10 @@
         TextOptions.TextRenderingMode="Auto"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <PendingUI:BoolToVisibilityConverter x:Key="BoolToHiddenConverter"
+        <Client:BoolToVisibilityConverter x:Key="BoolToHiddenConverter"
                                              FalseValue="Hidden"
                                              TrueValue="Visible" />
-        <PendingUI:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"
+        <Client:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"
                                              FalseValue="Visible"
                                              TrueValue="Hidden" />
         <Style x:Key="SimpleListBoxItem" TargetType="ListBoxItem">
@@ -99,14 +99,14 @@
                      SelectionMode="Multiple">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <PendingUI:WrapperControl Width="144"
+                        <Client:WrapperControl Width="144"
                                                   Height="144"
                                                   Margin="8"
                                                   HorizontalAlignment="Center"
                                                   VerticalAlignment="Center"
                                                   Cursor="Hand"
                                                   RenderTransformOrigin="0.5,0.5"
-                                                  Type="{x:Type PendingUI:CloudSharingContentItem}" />
+                                                  Type="{x:Type Client:CloudSharingContentItem}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
                 <ListBox.Template>

@@ -1,17 +1,17 @@
 ﻿<UserControl x:Class="Waveface.Client.CloudSharingContentItem"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:PendingUI="clr-namespace:Waveface.Client"
+             xmlns:Client="clr-namespace:Waveface.Client"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <PendingUI:BoolToVisibilityConverter x:Key="BoolToHiddenConverter"
+        <Client:BoolToVisibilityConverter x:Key="BoolToHiddenConverter"
                                              FalseValue="Hidden"
                                              TrueValue="Visible" />
-        <PendingUI:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"
+        <Client:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"
                                              FalseValue="Visible"
                                              TrueValue="Hidden" />
     </UserControl.Resources>
