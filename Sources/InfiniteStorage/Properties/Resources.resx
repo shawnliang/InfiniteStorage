@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
+	<!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,195 +59,195 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="ProductName" xml:space="preserve">
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="ProductName" xml:space="preserve">
     <value>Piary Photos</value>
   </data>
-  <data name="TrayMenuItem_OpenBackupFolder" xml:space="preserve">
+	<data name="TrayMenuItem_OpenBackupFolder" xml:space="preserve">
     <value>Open backup folder</value>
   </data>
-  <data name="TrayMenuItem_Preferences" xml:space="preserve">
+	<data name="TrayMenuItem_Preferences" xml:space="preserve">
     <value>Prefereces...</value>
   </data>
-  <data name="TrayMenuItem_Quit" xml:space="preserve">
+	<data name="TrayMenuItem_Quit" xml:space="preserve">
     <value>Quit</value>
   </data>
-  <data name="BallonText_AtService" xml:space="preserve">
+	<data name="BallonText_AtService" xml:space="preserve">
     <value>{0} is servicing</value>
   </data>
-  <data name="BallonText_Transferring" xml:space="preserve">
+	<data name="BallonText_Transferring" xml:space="preserve">
     <value>Sync in progress</value>
   </data>
-  <data name="DeleteDevice_Description" xml:space="preserve">
+	<data name="DeleteDevice_Description" xml:space="preserve">
     <value>Unlinking this device does not remove any file from this PC. Photo and home video on the device will not sync to this PC any more.</value>
   </data>
-  <data name="DeleteDevice_Title" xml:space="preserve">
+	<data name="DeleteDevice_Title" xml:space="preserve">
     <value>Unlink</value>
   </data>
-  <data name="VersionLable" xml:space="preserve">
+	<data name="VersionLable" xml:space="preserve">
     <value>Version：{0}</value>
   </data>
-  <data name="AboutTab" xml:space="preserve">
+	<data name="AboutTab" xml:space="preserve">
     <value>About {0}</value>
   </data>
-  <data name="AllowPairingRequest" xml:space="preserve">
+	<data name="AllowPairingRequest" xml:space="preserve">
     <value>{0} will sync all photos and home videos to this PC. Are you sure?</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Tea_Cup1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Tea-Cup1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ChooseThisPCOnYourPhone" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ChooseThisPCOnYourPhone.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="AlreadyLastestVersion" xml:space="preserve">
+	<assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+	<data name="Tea_Cup1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\Tea-Cup1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="ChooseThisPCOnYourPhone" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\ChooseThisPCOnYourPhone.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="AlreadyLastestVersion" xml:space="preserve">
     <value>You have the latest version installed.</value>
   </data>
-  <data name="MenuItem_BackupComplete" xml:space="preserve">
+	<data name="MenuItem_BackupComplete" xml:space="preserve">
     <value>- Backup complete</value>
   </data>
-  <data name="MenuItem_Preparing" xml:space="preserve">
+	<data name="MenuItem_Preparing" xml:space="preserve">
     <value>- Preparing to sync</value>
   </data>
-  <data name="ProductIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Bunnydesktop.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="google_play" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\en_generic_rgb_wo_60.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Waiting" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ajax-loader.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="video" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\video (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Scanning" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\380.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="back_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\back.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="backToPhone" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\For Shawn - Copy - Copy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ProgressTooltip" xml:space="preserve">
+	<data name="ProductIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\Bunnydesktop.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="google_play" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\en_generic_rgb_wo_60.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="Waiting" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\ajax-loader.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="video" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\video (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="Scanning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\380.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="back_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\back.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="backToPhone" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\For Shawn - Copy - Copy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="ProgressTooltip" xml:space="preserve">
     <value>File synced from {0}</value>
   </data>
-  <data name="TrayMenuItem_Open" xml:space="preserve">
+	<data name="TrayMenuItem_Open" xml:space="preserve">
     <value>Open</value>
   </data>
-  <data name="DefLibraryName" xml:space="preserve">
+	<data name="DefLibraryName" xml:space="preserve">
     <value>{0}'s Piary Photo Library</value>
   </data>
-  <data name="AreYouSure" xml:space="preserve">
+	<data name="AreYouSure" xml:space="preserve">
     <value>Are you sure?</value>
   </data>
-  <data name="MoveFolderConfirmMsg" xml:space="preserve">
+	<data name="MoveFolderConfirmMsg" xml:space="preserve">
     <value>This will move the Piary Photos folder and all the files inside from its current location to {0}.</value>
   </data>
-  <data name="MoveFolderFailTitle" xml:space="preserve">
+	<data name="MoveFolderFailTitle" xml:space="preserve">
     <value>Move folder unsuccessful</value>
   </data>
-  <data name="MoveFolder_TargetAlreadyExist" xml:space="preserve">
+	<data name="MoveFolder_TargetAlreadyExist" xml:space="preserve">
     <value>Directory {0} is not empty.</value>
   </data>
-  <data name="WaitForPair_SearchAgainMsg" xml:space="preserve">
+	<data name="WaitForPair_SearchAgainMsg" xml:space="preserve">
     <value>No available Favorite Uploader device is found. Search again?</value>
   </data>
-  <data name="WaitForPair_SearchAgainTitle" xml:space="preserve">
+	<data name="WaitForPair_SearchAgainTitle" xml:space="preserve">
     <value>No device found</value>
   </data>
-  <data name="UnsortedFolderName" xml:space="preserve">
+	<data name="UnsortedFolderName" xml:space="preserve">
     <value>Unsorted</value>
   </data>
-  <data name="DBVersionIncompatible" xml:space="preserve">
+	<data name="DBVersionIncompatible" xml:space="preserve">
     <value>Database is imcompatible because you have installed a newer version of this product and now downgrade to an older version. Please upgrade to the latest version of Piary Photos to proceed.</value>
   </data>
-  <data name="IncompatibleVersionDetected" xml:space="preserve">
+	<data name="IncompatibleVersionDetected" xml:space="preserve">
     <value>Incompatible version detected</value>
   </data>
-  <data name="check" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\check.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="photography_camera" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\photography_camera.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ProgressTooltip_Complete" xml:space="preserve">
+	<data name="check" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\check.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="photography_camera" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>..\Resources\photography_camera.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+	</data>
+	<data name="ProgressTooltip_Complete" xml:space="preserve">
     <value>Import complete: {0} / {1}</value>
   </data>
-  <data name="ProgressTooltip_Progress" xml:space="preserve">
+	<data name="ProgressTooltip_Progress" xml:space="preserve">
     <value>Progress: {0} / {1} ({2}%)</value>
   </data>
-  <data name="ProgressTooltip_Interrupted" xml:space="preserve">
+	<data name="ProgressTooltip_Interrupted" xml:space="preserve">
     <value>Device disconnected: {0} / {1}</value>
   </data>
-  <data name="LabelName_ThisWeek" xml:space="preserve">
+	<data name="LabelName_ThisWeek" xml:space="preserve">
     <value>Earlier this week</value>
   </data>
-  <data name="LabelName_Today" xml:space="preserve">
+	<data name="LabelName_Today" xml:space="preserve">
     <value>Today</value>
   </data>
-  <data name="LabelName_Yesterday" xml:space="preserve">
+	<data name="LabelName_Yesterday" xml:space="preserve">
     <value>Yesterday</value>
   </data>
-  <data name="LabelName_Starred" xml:space="preserve">
+	<data name="LabelName_Starred" xml:space="preserve">
     <value>Starred</value>
   </data>
 </root>

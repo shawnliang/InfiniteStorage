@@ -31,13 +31,13 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PreferenceDialog));
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.tabGeneral = new System.Windows.Forms.TabPage();
+			this.generalPreferenceControl1 = new InfiniteStorage.GeneralPreferenceControl();
 			this.tabAbout = new System.Windows.Forms.TabPage();
+			this.aboutControl1 = new InfiniteStorage.AboutControl();
 			this.buttonOK = new System.Windows.Forms.Button();
 			this.buttonCancel = new System.Windows.Forms.Button();
 			this.buttonApply = new System.Windows.Forms.Button();
 			this.checkboxAutoRun = new System.Windows.Forms.CheckBox();
-			this.generalPreferenceControl1 = new InfiniteStorage.GeneralPreferenceControl();
-			this.aboutControl1 = new InfiniteStorage.AboutControl();
 			this.tabControl.SuspendLayout();
 			this.tabGeneral.SuspendLayout();
 			this.tabAbout.SuspendLayout();
@@ -58,12 +58,25 @@
 			this.tabGeneral.Name = "tabGeneral";
 			this.tabGeneral.UseVisualStyleBackColor = true;
 			// 
+			// generalPreferenceControl1
+			// 
+			resources.ApplyResources(this.generalPreferenceControl1, "generalPreferenceControl1");
+			this.generalPreferenceControl1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.generalPreferenceControl1.Name = "generalPreferenceControl1";
+			this.generalPreferenceControl1.Station = null;
+			// 
 			// tabAbout
 			// 
 			resources.ApplyResources(this.tabAbout, "tabAbout");
 			this.tabAbout.Controls.Add(this.aboutControl1);
 			this.tabAbout.Name = "tabAbout";
 			this.tabAbout.UseVisualStyleBackColor = true;
+			// 
+			// aboutControl1
+			// 
+			resources.ApplyResources(this.aboutControl1, "aboutControl1");
+			this.aboutControl1.LogLevel = InfiniteStorage.DebugLevel.WARN;
+			this.aboutControl1.Name = "aboutControl1";
 			// 
 			// buttonOK
 			// 
@@ -92,19 +105,6 @@
 			this.checkboxAutoRun.Name = "checkboxAutoRun";
 			this.checkboxAutoRun.UseVisualStyleBackColor = true;
 			this.checkboxAutoRun.Click += new System.EventHandler(this.handleAnySettingChanged);
-			// 
-			// generalPreferenceControl1
-			// 
-			resources.ApplyResources(this.generalPreferenceControl1, "generalPreferenceControl1");
-			this.generalPreferenceControl1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-			this.generalPreferenceControl1.Name = "generalPreferenceControl1";
-			this.generalPreferenceControl1.Station = null;
-			// 
-			// aboutControl1
-			// 
-			resources.ApplyResources(this.aboutControl1, "aboutControl1");
-			this.aboutControl1.LogLevel = InfiniteStorage.DebugLevel.WARN;
-			this.aboutControl1.Name = "aboutControl1";
 			// 
 			// PreferenceDialog
 			// 
