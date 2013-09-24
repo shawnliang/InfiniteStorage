@@ -10,12 +10,9 @@
     <system:String x:Key="addto_selection_text">將 {0} 個項目加入到</system:String>
     <system:String x:Key="AddToFavorite">加入至相冊</system:String>
     <system:String x:Key="AddToFavoriteButtonText">加入現有相冊</system:String>
+    <system:String x:Key="AllPhoto_DisableAutoImport">關閉自動匯入</system:String>
+    <system:String x:Key="AllPhoto_EnableAutoImport">開啟自動匯入</system:String>
     <system:String x:Key="ANS_9">點此獲得更多資訊</system:String>
-    <system:String x:Key="ANS_deviveNotFound" xml:space="preserve">
-        找不到可同步的手機。請將手機Wi-Fi連接到與電腦相同的網路，並開啟App再試試。
-        Do you want to search for available device again?
-        Press 'Yes' to search again. Press 'No' to quit pairing mode.
-    </system:String>
     <system:String x:Key="ANS_deviveNotFound_title">找不到裝置</system:String>
     <system:String x:Key="ANS_disallowAll">Disallow all</system:String>
     <system:String x:Key="ANS_findDev">Finding device...</system:String>
@@ -47,19 +44,21 @@
     <system:String x:Key="CreateFavoriteButtonText">建新相冊</system:String>
     <system:String x:Key="CreateNewAlbumDialogDescription">請輸入相冊名稱:</system:String>
     <system:String x:Key="CreateNewAlbumDialogTitle">新增相冊</system:String>
-
     <system:String x:Key="CreateNewFolder">新增至新建資料夾</system:String>
     <system:String x:Key="CreateNewFolderDialogDescription">請輸入資料夾名稱:</system:String>
     <system:String x:Key="CreateNewFolderDialogTitle">新增資料夾</system:String>
-
     <system:String x:Key="Day">同一天</system:String>
     <system:String x:Key="DefaultFavoriteName">未命名的相冊</system:String>
+    <system:String x:Key="delete_confirm_desc">你要刪除所選擇的檔案嗎?</system:String>
+    <system:String x:Key="delete_confirm_title">確定刪除?</system:String>
+    <system:String x:Key="Diary_filter_all">全部</system:String>
+    <system:String x:Key="Diary_selectionText">已選取{0}個事件 ({1})</system:String>
+    <system:String x:Key="Diary_title">焦點動態</system:String>
     <system:String x:Key="EmailButtonText">郵寄連結...</system:String>
     <system:String x:Key="EventInterval">事件區分:</system:String>
     <system:String x:Key="ExistingFolder">現有目錄</system:String>
     <system:String x:Key="ExitButtonText">離開</system:String>
     <system:String x:Key="Favorite">最愛相簿</system:String>
-
     <system:String x:Key="FavoritesGroupTitle">本地相冊</system:String>
     <system:String x:Key="header_subtitle_complete">點選下方縮圖，即可檢視資料夾</system:String>
     <system:String x:Key="header_subtitle_importing">正在匯入第 {0} 個項目，剩餘時間約 {1} 分鐘</system:String>
@@ -71,10 +70,15 @@
     <system:String x:Key="header_title_indexing">裝置已連接</system:String>
     <system:String x:Key="header_title_paused">自動同步已暫停</system:String>
     <system:String x:Key="header_title_stopped">裝置內尚有 {0} 個項目未能匯入</system:String>
+    <system:String x:Key="HomeSharing_Disable">關閉快送</system:String>
+    <system:String x:Key="HomeSharing_Disabled">快送：已關閉</system:String>
+    <system:String x:Key="HomeSharing_Enable">開啟快送</system:String>
+    <system:String x:Key="HomeSharing_Enabled">快送：已開啟</system:String>
     <system:String x:Key="ImportContactButtonText">匯入Gmail聯絡人</system:String>
-    
+    <system:String x:Key="intro_last_step">關閉</system:String>
+    <system:String x:Key="intro_next">下一步</system:String>
+    <system:String x:Key="intro_prev">上一步</system:String>
     <system:String x:Key="intro_step1_button">好的</system:String>
-
     <system:String x:Key="intro_step1_desc1">每張卡片就是一個事件；第一次同步需要些時間，請稍等片刻，時間較近的事件會先同步。</system:String>
     <system:String x:Key="intro_step1_desc2">事件照片傳回電腦後，卡片就會點亮。請雙擊卡片，進行第二步驟。</system:String>
     <system:String x:Key="intro_step1_title">您的影像日記已經開始傳送回PC</system:String>
@@ -90,7 +94,6 @@
     <system:String x:Key="intro_step5_no_stars">點選一到五顆星，給我們評價</system:String>
     <system:String x:Key="intro_step5_rateUs">點選一到五顆星，給我們評價</system:String>
     <system:String x:Key="intro_step5_submit">送出反饋</system:String>
-
     <system:String x:Key="intro_step5_your_suggestion">您的建議...</system:String>
     <system:String x:Key="LaterButtonText">下次再說</system:String>
     <system:String x:Key="menuitem_add_album">加入現有相冊</system:String>
@@ -149,6 +152,11 @@
     <system:String x:Key="res_getStartedTip3">下載 Player 程式，從平板上欣賞您的影像內容</system:String>
     <system:String x:Key="res_getStartedTitle">第一次使用嗎？請試試以下步驟加入照片及影片...</system:String>
     <system:String x:Key="res_takeATour">瞧瞧還有哪些好用的功能</system:String>
+    <system:String x:Key="RightSide_CloudSharing_StatusClosed">已關閉</system:String>
+    <system:String x:Key="RightSide_CloudSharing_StatusOpened">已開啟</system:String>
+    <system:String x:Key="RightSide_DisableCloudSharing">關閉</system:String>
+    <system:String x:Key="RightSide_EnableCloudSharing">Enable</system:String>
+    <system:String x:Key="RightSide_EnabledCloudSharing">開啟</system:String>
     <system:String x:Key="RigntSidePanel_HowToCloudSharingTutorial">
         想分享這個相冊給親友？\r\n
         只要按下這個按鈕上傳相冊\r\n
@@ -175,38 +183,14 @@
     <system:String x:Key="SourceGroupTitle">裝置來源</system:String>
     <system:String x:Key="StarAllButtonText">全部標星號</system:String>
     <system:String x:Key="Starred">星號標記</system:String>
+    <system:String x:Key="strItem">個項目</system:String>
+    <system:String x:Key="strItems">個項目</system:String>
     <system:String x:Key="TakeTourButtonText">觀看</system:String>
     <system:String x:Key="TakeTourDialogTitle">觀看快速導覽?</system:String>
+    <system:String x:Key="unnamedUEvent">未命名事件</system:String>
     <system:String x:Key="UnselectAll">全不選</system:String>
     <system:String x:Key="video">部影片</system:String>
     <system:String x:Key="videos">部影片</system:String>
     <system:String x:Key="WithoutContentMessageText">請先選擇一些項目</system:String>
     <system:String x:Key="x_days_ago">{0}天前</system:String>
-    <system:String x:Key="Diary_title">焦點動態</system:String>
-    <system:String x:Key="Diary_filter_all">全部</system:String>
-    <system:String x:Key="Diary_selectionText">已選取{0}個事件 ({1})</system:String>
-
-    <system:String x:Key="intro_prev">上一步</system:String>
-    <system:String x:Key="intro_next">下一步</system:String>
-    <system:String x:Key="intro_last_step">關閉</system:String>
-
-    <system:String x:Key="delete_confirm_title">確定刪除?</system:String>
-    <system:String x:Key="delete_confirm_desc">你要刪除所選擇的檔案嗎?</system:String>
-
-    <system:String x:Key="strItem">個項目</system:String>
-    <system:String x:Key="strItems">個項目</system:String>
-    <system:String x:Key="unnamedUEvent">未命名事件</system:String>
-
-
-    <system:String x:Key="AllPhoto_DisableAutoImport">關閉自動匯入</system:String>
-    <system:String x:Key="AllPhoto_EnableAutoImport">開啟自動匯入</system:String>
-    <system:String x:Key="RightSide_DisableCloudSharing">關閉</system:String>
-    <system:String x:Key="RightSide_CloudSharing_StatusOpened">已開啟</system:String>
-    <system:String x:Key="RightSide_EnabledCloudSharing">開啟</system:String>
-    <system:String x:Key="RightSide_CloudSharing_StatusClosed">已關閉</system:String>
-
-    <system:String x:Key="HomeSharing_Enable">開啟快送</system:String>
-    <system:String x:Key="HomeSharing_Enabled">快送：已開啟</system:String>
-    <system:String x:Key="HomeSharing_Disable">關閉快送</system:String>
-    <system:String x:Key="HomeSharing_Disabled">快送：已關閉</system:String>
 </ResourceDictionary>
