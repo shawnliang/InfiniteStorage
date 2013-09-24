@@ -248,7 +248,7 @@ namespace InfiniteStorage.Model
 
 		public DbSet<LabeledFile> LabelFiles { get; set; }
 
-		public DbSet<PendingFile> PendingFiles { get; set; }
+		//public DbSet<PendingFile> PendingFiles { get; set; }
 
 		public DbSet<ShareRecipient> ShareRecipients { get; set; }
 

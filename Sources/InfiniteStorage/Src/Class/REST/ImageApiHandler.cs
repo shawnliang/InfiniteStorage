@@ -53,20 +53,6 @@ namespace InfiniteStorage.REST
 							deleted = f.deleted,
 							type = f.type
 						}).FirstOrDefault();
-
-				if (file == null)
-
-					file = (from f in db.Object.PendingFiles
-							join d in db.Object.Devices on f.device_id equals d.device_id
-							where f.file_id == file_id
-							select new FileResult
-							{
-								file_id = f.file_id,
-								saved_path = @".pending\" + f.saved_path,
-								thumb_ready = f.thumb_ready,
-								deleted = f.deleted,
-								type = f.type
-							}).FirstOrDefault();
 			}
 
 			if (file == null || file.deleted)

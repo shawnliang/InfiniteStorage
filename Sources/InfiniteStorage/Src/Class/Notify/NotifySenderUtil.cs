@@ -55,64 +55,34 @@ namespace InfiniteStorage.Notify
 			using (var db = new MyDbContext())
 			{
 				var query = (from lb in db.Object.LabelFiles
-							 join f in db.Object.Files on lb.file_id equals f.file_id
-							 join dev in db.Object.Devices on f.device_id equals dev.device_id
-							 where lb.label_id == label_id
-							 //						 orderby f.event_time ascending
-							 select new
-							 {
-								 evt_time = f.event_time,
-								 data = new FileChangeData
-								 {
-									 id = f.file_id,
-									 file_name = f.file_name,
-									 thumb_ready = f.thumb_ready,
-									 width = f.width,
-									 height = f.height,
-									 size = f.file_size,
-									 type = f.type,
-									 dev_id = f.device_id,
-									 dev_name = dev.device_name,
-									 dev_type = 0,//TODO
-									 deleted = f.deleted,
-									 seq = f.seq,
-									 event_time = f.event_time,
-									 saved_path = f.saved_path,
-									 device_folder = dev.folder_name,
-									 _orientation = f.orientation,
-									 original_path = f.file_path,
-								 }
-							 }).Union(
-							 from lb in db.Object.LabelFiles
-							 join f in db.Object.PendingFiles on lb.file_id equals f.file_id
-							 join dev in db.Object.Devices on f.device_id equals dev.device_id
-							 where lb.label_id == label_id
-							 //							 orderby f.event_time ascending 
-							 select new
-							 {
-								 evt_time = f.event_time,
-								 data = new FileChangeData
-								 {
-									 id = f.file_id,
-									 file_name = f.file_name,
-									 thumb_ready = f.thumb_ready,
-									 width = f.width,
-									 height = f.height,
-									 size = f.file_size,
-									 type = f.type,
-									 dev_id = f.device_id,
-									 dev_name = dev.device_name,
-									 dev_type = 0,//TODO
-									 deleted = f.deleted,
-									 seq = f.seq,
-									 event_time = f.event_time,
-									 saved_path = f.saved_path,
-									 device_folder = dev.folder_name,
-									 _orientation = f.orientation,
-									 original_path = f.file_path,
-								 }
-							 }
-							 );
+				             join f in db.Object.Files on lb.file_id equals f.file_id
+				             join dev in db.Object.Devices on f.device_id equals dev.device_id
+				             where lb.label_id == label_id
+				             //						 orderby f.event_time ascending
+				             select new
+					                    {
+						                    evt_time = f.event_time,
+						                    data = new FileChangeData
+							                           {
+								                           id = f.file_id,
+								                           file_name = f.file_name,
+								                           thumb_ready = f.thumb_ready,
+								                           width = f.width,
+								                           height = f.height,
+								                           size = f.file_size,
+								                           type = f.type,
+								                           dev_id = f.device_id,
+								                           dev_name = dev.device_name,
+								                           dev_type = 0, //TODO
+								                           deleted = f.deleted,
+								                           seq = f.seq,
+								                           event_time = f.event_time,
+								                           saved_path = f.saved_path,
+								                           device_folder = dev.folder_name,
+								                           _orientation = f.orientation,
+								                           original_path = f.file_path,
+							                           }
+					                    });							 
 
 				var result = query.ToList();
 				result.Sort((x, y) => x.evt_time.CompareTo(y.evt_time));
