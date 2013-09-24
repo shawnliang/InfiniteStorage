@@ -311,13 +311,24 @@
 
           <Directory Id="zhTW" Name="zh-TW">
             <Component Id="AppLimit.NetSparkle.resources.dll_zhTW" Guid="*">
-              <File Id="AppLimit.NetSparkle.resources.dll" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\zh-TW\AppLimit.NetSparkle.resources.dll" />
+              <File Id="AppLimit.NetSparkle.resources.dll.zhtw" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\zh-TW\AppLimit.NetSparkle.resources.dll" />
             </Component>
 
             <Component Id="InfiniteStorage.resources.zhtw" Guid="*">
               <File Id="InfiniteStorage.resources.zhtw" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\zh-TW\InfiniteStorage.resources.dll" />
             </Component>
             
+          </Directory>
+
+          <Directory Id="zhCN" Name="zh-CN">
+            <Component Id="AppLimit.NetSparkle.resources.dll_zhCN" Guid="*">
+              <File Id="AppLimit.NetSparkle.resources.dll.zhcn" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\zh-CN\AppLimit.NetSparkle.resources.dll" />
+            </Component>
+
+            <Component Id="InfiniteStorage.resources.zhCN" Guid="*">
+              <File Id="InfiniteStorage.resources.zhCN" KeyPath="yes" Source="$(var.SolutionDir)\Bin\$(var.InfiniteStorage.Configuration)\zh-CN\InfiniteStorage.resources.dll" />
+            </Component>
+
           </Directory>
           
           <Directory Id="x86_folder" Name="x86">
@@ -362,6 +373,7 @@
       <ComponentRef Id="NBug.config" />
       <ComponentRef Id="AppLimit.NetSparkle.dll" />
       <ComponentRef Id="AppLimit.NetSparkle.resources.dll_zhTW" />
+      <ComponentRef Id="AppLimit.NetSparkle.resources.dll_zhCN" />
       <ComponentRef Id="System.Windows.Interactivity.dll"/>
 
       <ComponentRef Id="EntityFramework.dll" />
@@ -384,6 +396,7 @@
       <ComponentRef Id="CultureSetting"/>
       <ComponentRef Id='ServerSetting'/>
       <ComponentRef Id="InfiniteStorage.resources.zhtw" />
+      <ComponentRef Id="InfiniteStorage.resources.zhCN" />
       <ComponentRef Id="ffmpeg.exe"/>
       <ComponentRef Id="postServiceLibrary.dll"/>
 

@@ -305,10 +305,16 @@
     <EmbeddedResource Include="Src\Dialog\MigratingDataDialog.resx">
       <DependentUpon>MigratingDataDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Src\Dialog\PreferenceDialog.zh-CN.resx">
+      <DependentUpon>PreferenceDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\PreferenceDialog.zh-TW.resx">
       <DependentUpon>PreferenceDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\ProgressTooltip.resx">
+      <DependentUpon>ProgressTooltip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Src\Dialog\ProgressTooltip.zh-CN.resx">
       <DependentUpon>ProgressTooltip.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\ProgressTooltip.zh-TW.resx">
@@ -372,6 +378,9 @@
     <EmbeddedResource Include="Src\UIControl\StartPairingUserControl.resx">
       <DependentUpon>StartPairingUserControl.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Src\UIControl\StorageLocationControl.zh-CN.resx">
+      <DependentUpon>StorageLocationControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\StorageLocationControl.zh-TW.resx">
       <DependentUpon>StorageLocationControl.cs</DependentUpon>
