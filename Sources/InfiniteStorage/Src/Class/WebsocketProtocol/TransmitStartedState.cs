@@ -26,7 +26,7 @@ namespace InfiniteStorage.WebsocketProtocol
 
 			ctx.raiseOnFileEnding();
 
-			if (ctx.fileCtx.is_thumbnail || !Util.HasDuplicateFile(ctx.fileCtx, ctx.device_id))
+			if (!Util.HasDuplicateFile(ctx.fileCtx, ctx.device_id))
 			{
 				string saved;
 
@@ -80,9 +80,13 @@ namespace InfiniteStorage.WebsocketProtocol
 			}
 			else
 			{
-				ctx.recved_files++;
+				if (!ctx.fileCtx.is_thumbnail)
+				{
+					ctx.recved_files++;
+					ctx.raiseOnFileDropped();
+				}
+
 				ctx.temp_file.Delete();
-				ctx.raiseOnFileDropped();
 			}
 
 			if (!ctx.fileCtx.is_thumbnail)

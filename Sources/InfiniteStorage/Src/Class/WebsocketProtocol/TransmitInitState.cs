@@ -53,7 +53,9 @@ namespace InfiniteStorage.WebsocketProtocol
 			if (!string.IsNullOrEmpty(cmd.object_id))
 				fileCtx.file_id = new Guid(cmd.object_id);
 
-			if (!fileCtx.is_thumbnail && util.HasDuplicateFile(fileCtx, ctx.device_id))
+			var isDuplicate = util.HasDuplicateFile(fileCtx, ctx.device_id);
+
+			if (!fileCtx.is_thumbnail && isDuplicate)
 			{
 				ctx.fileCtx = null;
 				ctx.raiseOnFileReceiving();
