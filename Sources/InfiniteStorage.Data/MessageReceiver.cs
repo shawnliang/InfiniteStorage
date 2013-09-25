@@ -1,46 +1,23 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+
+#endregion
 
 namespace InfiniteStorage.Win32
 {
 	public class MessageReceiver : IDisposable
 	{
-		#region Const
-
 		private const int ERROR_CLASS_ALREADY_EXISTS = 1410;
-
-		#endregion
-
-		#region Readonly Static Var
-
 		private static readonly WndProcDelegate m_WndProc = CustomWndProc;
+		private static Dictionary<IntPtr, MessageReceiver> s_receiverPool;
 
-		#endregion
-
-		#region Static Var
-
-		private static Dictionary<IntPtr, MessageReceiver> _receiverPool;
-
-		#endregion
-
-		#region Private Static Property
-
-		/// <summary>
-		/// Gets the m_ receiver pool.
-		/// </summary>
-		/// <value>
-		/// The m_ receiver pool.
-		/// </value>
 		public static Dictionary<IntPtr, MessageReceiver> m_ReceiverPool
 		{
-			get
-			{
-				return _receiverPool ?? (_receiverPool = new Dictionary<IntPtr, MessageReceiver>());
-			}
+			get { return s_receiverPool ?? (s_receiverPool = new Dictionary<IntPtr, MessageReceiver>()); }
 		}
-
-		#endregion
 
 		#region Private Property
 
@@ -82,11 +59,11 @@ namespace InfiniteStorage.Win32
 				className = Guid.NewGuid().ToString();
 
 			// Create WNDCLASS
-			var wndClass = new WNDCLASS()
-			{
-				lpszClassName = className,
-				lpfnWndProc = m_WndProc
-			};
+			var wndClass = new WNDCLASS
+				               {
+					               lpszClassName = className,
+					               lpfnWndProc = m_WndProc
+				               };
 
 			UInt16 class_atom = NativeMethods.RegisterClassW(ref wndClass);
 
@@ -111,7 +88,7 @@ namespace InfiniteStorage.Win32
 				IntPtr.Zero,
 				IntPtr.Zero,
 				IntPtr.Zero
-			);
+				);
 
 			if (m_Hwnd == IntPtr.Zero)
 				return;
@@ -122,6 +99,7 @@ namespace InfiniteStorage.Win32
 		#endregion
 
 		#region Private Static Method
+
 		/// <summary>
 		/// Customs the WND proc.
 		/// </summary>
@@ -137,6 +115,7 @@ namespace InfiniteStorage.Win32
 
 			return NativeMethods.DefWindowProcW(hWnd, msg, wParam, lParam);
 		}
+
 		#endregion
 
 		#region Private Method
@@ -165,7 +144,7 @@ namespace InfiniteStorage.Win32
 		#endregion
 
 		#region Protected Method
-		
+
 		/// <summary>
 		/// Raises the <see cref="E:WndProc" /> event.
 		/// </summary>

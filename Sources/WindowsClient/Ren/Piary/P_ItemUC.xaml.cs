@@ -371,6 +371,7 @@ namespace Waveface.Client
 
 			string _ret = dateTime.ToString("MMM dd, yyyy H:mm");
 
+			/*
 			if (_diff.Days == 0)
 			{
 				string _today = FindResource("0_days_ago") as string;
@@ -391,6 +392,7 @@ namespace Waveface.Client
 
 				_ret = string.Format(_x_days_ago, _diff.Days) + " " + dateTime.ToString("h:mm tt");
 			}
+			*/
 
 			return _ret;
 		}

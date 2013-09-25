@@ -221,55 +221,8 @@ values (@videoThisWeek, 'This Weeks''s video', 3, 0, 6);
 
 					if (schemaVersion == 6L)
 					{
-						using (var cmd = conn.CreateCommand())
-						{
-							cmd.CommandText = @"select * from PendingFiles";
-
-							var newData = new List<PendingFile>();
-
-							using (var reader = cmd.ExecuteReader())
-							{
-								while (reader.Read())
-								{
-									var filename = reader["file_name"] as string;
-									var saved_path = reader["saved_path"] as string;
-									var file_id = (Guid)reader["file_id"];
-
-									try
-									{
-										var src = Path.Combine(MyFileFolder.Photo, ".pending", saved_path);
-										var newSavedPath = saved_path + Path.GetExtension(filename) + "_";
-										var dest = Path.Combine(MyFileFolder.Photo, ".pending", newSavedPath);
-
-										File.Move(src, dest);
-
-										newData.Add(new PendingFile { file_id = file_id, saved_path = newSavedPath });
-									}
-									catch (Exception err)
-									{
-										log4net.LogManager.GetLogger("migrate").Warn("unable to migrate pending file", err);
-									}
-								}
-							}
-
-							using (var update = conn.CreateCommand())
-							{
-								update.CommandText = @"update [PendingFiles] set saved_path = @path where file_id = @file_id";
-								update.Prepare();
-
-								foreach (var newd in newData)
-								{
-									update.Parameters.Clear();
-									update.Parameters.Add(new SQLiteParameter("@file_id", newd.file_id));
-									update.Parameters.Add(new SQLiteParameter("@path", newd.saved_path));
-
-									update.ExecuteNonQuery();
-								}
-							}
-
-							updateDbSchemaVersion(conn, 7);
-							schemaVersion = 7;
-						}
+						updateDbSchemaVersion(conn, 7);
+						schemaVersion = 7;
 					}
 
 					if (schemaVersion == 7L)
