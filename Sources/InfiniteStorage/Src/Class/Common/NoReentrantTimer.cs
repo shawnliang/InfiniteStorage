@@ -10,61 +10,61 @@ namespace Waveface.Common
 {
 	public class NoReentrantTimer
 	{
-		private int period;
-		private Timer timer;
-		private TimerCallback cb;
-		private bool stop;
-		private object cs = new object();
-		private int dueTime;
-		private bool executed;
+		private int m_period;
+		private Timer m_timer;
+		private TimerCallback m_cb;
+		private bool m_stop;
+		private object m_cs = new object();
+		private int m_dueTime;
+		private bool m_executed;
 
 		public NoReentrantTimer(TimerCallback cb, object state, int dueTime, int period)
 		{
-			this.cb = cb;
-			this.period = period;
-			this.dueTime = dueTime;
-			timer = new Timer(timeouted, state, Timeout.Infinite, Timeout.Infinite);
+			m_cb = cb;
+			m_period = period;
+			m_dueTime = dueTime;
+			m_timer = new Timer(timeouted, state, Timeout.Infinite, Timeout.Infinite);
 		}
 
 		private void timeouted(object state)
 		{
 			try
 			{
-				cb(state);
+				m_cb(state);
 			}
 			catch (Exception err)
 			{
 				LogManager.GetLogger(GetType()).Warn("Periodical tasks failed", err);
 			}
 
-			lock (cs)
+			lock (m_cs)
 			{
-				executed = true;
+				m_executed = true;
 
-				if (!stop)
-					timer.Change(period, Timeout.Infinite);
+				if (!m_stop)
+					m_timer.Change(m_period, Timeout.Infinite);
 			}
 		}
 
 		public void Stop()
 		{
-			lock (cs)
+			lock (m_cs)
 			{
-				stop = true;
-				timer.Change(Timeout.Infinite, Timeout.Infinite);
+				m_stop = true;
+				m_timer.Change(Timeout.Infinite, Timeout.Infinite);
 			}
 		}
 
 		public void Start()
 		{
-			lock (cs)
+			lock (m_cs)
 			{
-				stop = false;
+				m_stop = false;
 
-				if (executed)
-					timer.Change(period, Timeout.Infinite);
+				if (m_executed)
+					m_timer.Change(m_period, Timeout.Infinite);
 				else
-					timer.Change(dueTime, Timeout.Infinite);
+					m_timer.Change(m_dueTime, Timeout.Infinite);
 			}
 		}
 	}

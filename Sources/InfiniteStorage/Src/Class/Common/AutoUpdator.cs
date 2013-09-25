@@ -12,18 +12,21 @@ namespace Waveface.Common
 	public class AutoUpdate
 	{
 		private Sparkle m_autoUpdator;
-		private NetSparkleAppCastItem versionInfo;
-		private bool forceUpgrade;
+		private NetSparkleAppCastItem m_versionInfo;
+		private bool m_forceUpgrade;
 
 		private static string DEV_VERSION_INFO = "http://cdn.waveface.com/WindowsStation/versioninfo.dev.xml";
 		private static string PRO_VERSION_INFO = "http://cdn.waveface.com/WindowsStation/versioninfo.xml";
 
 		public AutoUpdate(bool forceUpgrade)
 		{
-			m_autoUpdator = new Sparkle(UpdateURL);
-			m_autoUpdator.ApplicationIcon = Resources.ProductIcon.ToBitmap();
-			m_autoUpdator.ApplicationWindowIcon = Resources.ProductIcon;
-			this.forceUpgrade = forceUpgrade;
+			m_autoUpdator = new Sparkle(UpdateURL)
+								{
+									ApplicationIcon = Resources.ProductIcon.ToBitmap(),
+									ApplicationWindowIcon = Resources.ProductIcon
+								};
+
+			m_forceUpgrade = forceUpgrade;
 		}
 
 		public void StartLoop()
@@ -38,24 +41,25 @@ namespace Waveface.Common
 
 		public bool IsUpdateRequired()
 		{
-			var honorSkippedVersion = !forceUpgrade;
+			var honorSkippedVersion = !m_forceUpgrade;
 
 			return m_autoUpdator.IsUpdateRequired(m_autoUpdator.GetApplicationConfig(),
-			                                      out versionInfo,
-			                                      honorSkippedVersion);
+												  out m_versionInfo,
+												  honorSkippedVersion);
 		}
 
 		public void ShowUpdateNeededUI()
 		{
-			if (versionInfo == null)
+			if (m_versionInfo == null)
 				throw new InvalidOperationException("No version info. Call IsUpdateRequired() first");
 
-			m_autoUpdator.ShowUpdateNeededUI(versionInfo, forceUpgrade);
+			m_autoUpdator.ShowUpdateNeededUI(m_versionInfo, m_forceUpgrade);
 		}
 
 		private static string UpdateURL
 		{
-			get {
+			get
+			{
 #if DEBUG
 				return DEV_VERSION_INFO;
 #else
