@@ -17,6 +17,8 @@ using log4net;
 
 namespace Wammer.Station
 {
+	#region UploadedFile
+
 	public class UploadedFile
 	{
 		public UploadedFile(string name, ArraySegment<byte> data, string contentType)
@@ -31,6 +33,9 @@ namespace Wammer.Station
 		public string ContentType { get; private set; }
 	}
 
+	#endregion
+
+	#region HttpHandler
 
 	public abstract class HttpHandler : IHttpHandler
 	{
@@ -39,36 +44,13 @@ namespace Wammer.Station
 		private const string BOUNDARY = "boundary=";
 		private const string URL_ENCODED_FORM = "application/x-www-form-urlencoded";
 		private const string MULTIPART_FORM = "multipart/form-data";
-		private const string API_PATH_GROUP_NAME = @"APIPath";
-		private const string API_PATH_MATCH_PATTERN = @"/V\d+/(?<" + API_PATH_GROUP_NAME + ">.+)";
+		// private const string API_PATH_GROUP_NAME = @"APIPath";
+		// private const string API_PATH_MATCH_PATTERN = @"/V\d+/(?<" + API_PATH_GROUP_NAME + ">.+)";
 
 		#endregion
 
-		private static readonly ILog logger = LogManager.GetLogger("HttpHandler");
-		private long beginTime;
-
-		#region Protected Method
-
-		/// <summary>
-		/// Checks the parameter.
-		/// </summary>
-		/// <param name="arguementNames">The arguement names.</param>
-		protected void CheckParameter(params string[] arguementNames)
-		{
-			if (arguementNames == null)
-				throw new ArgumentNullException("arguementNames");
-
-			var nullArgumentNames = from arguementName in arguementNames
-			                        where Parameters[arguementName] == null
-			                        select arguementName;
-
-			if (!nullArgumentNames.Any())
-				return;
-
-			throw new FormatException(string.Format("Parameter {0} is null.", string.Join("、", nullArgumentNames.ToArray())));
-		}
-
-		#endregion
+		private static readonly ILog s_logger = LogManager.GetLogger("HttpHandler");
+		private long m_beginTime;
 
 		public HttpListenerRequest Request { get; internal set; }
 		public HttpListenerResponse Response { get; internal set; }
@@ -82,7 +64,7 @@ namespace Wammer.Station
 
 		public void SetBeginTimestamp(long beginTime)
 		{
-			this.beginTime = beginTime;
+			m_beginTime = beginTime;
 		}
 
 		public void HandleRequest(HttpListenerRequest request, HttpListenerResponse response)
@@ -96,10 +78,10 @@ namespace Wammer.Station
 				var content = readPostContent(request);
 
 				Action action = () =>
-					                {
-						                RawPostData = content.ToArray();
-						                ParseAndHandleRequest();
-					                };
+									{
+										RawPostData = content.ToArray();
+										ParseAndHandleRequest();
+									};
 
 				HttpHandlingTask.HandleRequestWithinExceptionHandler(action, Response);
 				return;
@@ -123,7 +105,7 @@ namespace Wammer.Station
 
 		private int postBufferSize()
 		{
-			var initialSize = (int) Request.ContentLength64;
+			var initialSize = (int)Request.ContentLength64;
 			if (initialSize <= 0)
 				initialSize = 65535;
 			return initialSize;
@@ -138,32 +120,51 @@ namespace Wammer.Station
 
 		#endregion
 
+		#region Protected Method
+
+		protected void CheckParameter(params string[] arguementNames)
+		{
+			if (arguementNames == null)
+				throw new ArgumentNullException("arguementNames");
+
+			var nullArgumentNames = from arguementName in arguementNames
+									where Parameters[arguementName] == null
+									select arguementName;
+
+			if (!nullArgumentNames.Any())
+				return;
+
+			throw new FormatException(string.Format("Parameter {0} is null.", string.Join("、", nullArgumentNames.ToArray())));
+		}
+
+		#endregion
+
 		private void LogRequest()
 		{
-			if (logger.IsDebugEnabled)
+			if (s_logger.IsDebugEnabled)
 			{
 				Debug.Assert(Request.RemoteEndPoint != null, "Request.RemoteEndPoint != null");
 
 
 				if (Request.RemoteEndPoint.Address.ToString() == "127.0.0.1" &&
-				    Request.Url.AbsolutePath.Contains("/ping"))
+					Request.Url.AbsolutePath.Contains("/ping"))
 					return;
 
-				logger.Info("====== Request " + Request.Url.AbsolutePath +
-				            " from " + Request.RemoteEndPoint.Address + " ======");
+				s_logger.Info("====== Request " + Request.Url.AbsolutePath +
+							" from " + Request.RemoteEndPoint.Address + " ======");
 				foreach (string key in Parameters.AllKeys)
 				{
 					if (key == "password")
 					{
-						logger.InfoFormat("{0} : *", key);
+						s_logger.InfoFormat("{0} : *", key);
 					}
 					else
 					{
-						logger.InfoFormat("{0} : {1}", key, Parameters[key]);
+						s_logger.InfoFormat("{0} : {1}", key, Parameters[key]);
 					}
 				}
 				foreach (UploadedFile file in Files)
-					logger.InfoFormat("file: {0}, mime: {1}, size: {2}", file.Name, file.ContentType, file.Data.Count.ToString());
+					s_logger.InfoFormat("file: {0}, mime: {1}, size: {2}", file.Name, file.ContentType, file.Data.Count.ToString());
 			}
 		}
 
@@ -192,7 +193,7 @@ namespace Wammer.Station
 
 			long end = Stopwatch.GetTimestamp();
 
-			long duration = end - beginTime;
+			long duration = end - m_beginTime;
 			if (duration < 0)
 				duration += long.MaxValue;
 
@@ -222,7 +223,7 @@ namespace Wammer.Station
 				{
 					w.Write(RawPostData);
 				}
-				logger.Warn("Parsing multipart data error. Post data written to log\\" + filename);
+				s_logger.Warn("Parsing multipart data error. Post data written to log\\" + filename);
 				throw;
 			}
 		}
@@ -233,7 +234,7 @@ namespace Wammer.Station
 
 			if (disp == null)
 				throw new ArgumentException("incorrect use of this function: " +
-				                            "input part.ContentDisposition is null");
+											"input part.ContentDisposition is null");
 
 			if (disp.Value.Equals("form-data", StringComparison.CurrentCultureIgnoreCase))
 			{
@@ -242,7 +243,7 @@ namespace Wammer.Station
 				if (filename != null)
 				{
 					var file = new UploadedFile(filename, part.Bytes,
-					                            part.Headers["Content-Type"]);
+												part.Headers["Content-Type"]);
 					Files.Add(file);
 				}
 				else
@@ -256,7 +257,7 @@ namespace Wammer.Station
 		private static bool HasMultiPartFormData(HttpListenerRequest request)
 		{
 			return request.ContentType != null &&
-			       request.ContentType.StartsWith(MULTIPART_FORM, StringComparison.CurrentCultureIgnoreCase);
+				   request.ContentType.StartsWith(MULTIPART_FORM, StringComparison.CurrentCultureIgnoreCase);
 		}
 
 		private static string GetMultipartBoundary(string contentType)
@@ -281,15 +282,15 @@ namespace Wammer.Station
 			catch (Exception e)
 			{
 				throw new FormatException("Error finding multipart boundary. Content-Type: " +
-				                          contentType, e);
+										  contentType, e);
 			}
 		}
 
 		private NameValueCollection InitParameters(HttpListenerRequest req)
 		{
 			if (RawPostData != null &&
-			    req.ContentType != null &&
-			    req.ContentType.StartsWith(URL_ENCODED_FORM, StringComparison.CurrentCultureIgnoreCase))
+				req.ContentType != null &&
+				req.ContentType.StartsWith(URL_ENCODED_FORM, StringComparison.CurrentCultureIgnoreCase))
 			{
 				var postData = Encoding.UTF8.GetString(RawPostData);
 				return HttpUtility.ParseQueryString(postData);
@@ -302,16 +303,15 @@ namespace Wammer.Station
 			return new NameValueCollection();
 		}
 
-
 		protected void respondSuccess(object data = null)
 		{
 			var replyContent = "";
 			if (data == null)
-				replyContent = JsonConvert.SerializeObject(new {api_ret_code = 0, api_ret_message = "success", status = 200});
+				replyContent = JsonConvert.SerializeObject(new { api_ret_code = 0, api_ret_message = "success", status = 200 });
 			else
 				replyContent = JsonConvert.SerializeObject(data);
 
-			Response.StatusCode = (int) HttpStatusCode.OK;
+			Response.StatusCode = (int)HttpStatusCode.OK;
 			Response.ContentType = "application/json";
 			using (var w = new StreamWriter(Response.OutputStream))
 			{
@@ -320,6 +320,9 @@ namespace Wammer.Station
 		}
 	}
 
+	#endregion
+
+	#region HttpHandlerEventArgs
 
 	public class HttpHandlerEventArgs : EventArgs
 	{
@@ -330,4 +333,6 @@ namespace Wammer.Station
 
 		public long DurationInTicks { get; private set; }
 	}
+
+	#endregion
 }

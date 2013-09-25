@@ -10,11 +10,11 @@ namespace InfiniteStorage.Common
 {
 	internal static class FFmpegHelper
 	{
-		private static string program_path;
+		private static string s_programPath;
 
 		static FFmpegHelper()
 		{
-			program_path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ffmpeg.exe");
+			s_programPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "ffmpeg.exe");
 		}
 
 		public static void MakeVideoThumbnail(string video_path, string thumb_path)
@@ -39,12 +39,12 @@ namespace InfiniteStorage.Common
 			using (var proc = new Process())
 			{
 				proc.StartInfo = new ProcessStartInfo
-					                 {
-						                 FileName = program_path,
-						                 Arguments = args,
-						                 CreateNoWindow = true,
-						                 WindowStyle = ProcessWindowStyle.Hidden
-					                 };
+									 {
+										 FileName = s_programPath,
+										 Arguments = args,
+										 CreateNoWindow = true,
+										 WindowStyle = ProcessWindowStyle.Hidden
+									 };
 				proc.Start();
 
 				try
@@ -66,14 +66,14 @@ namespace InfiniteStorage.Common
 			using (var proc = new Process())
 			{
 				proc.StartInfo = new ProcessStartInfo
-					                 {
-						                 FileName = program_path,
-						                 Arguments = string.Format(
-							                 "-i \"{0}\" -vf \"scale={1}:trunc(ow/a/2)*2\" -r {2} -t {3} -y \"{4}\"",
-							                 video_path, width, framerate, duration, outputFile),
-						                 CreateNoWindow = true,
-						                 WindowStyle = ProcessWindowStyle.Hidden
-					                 };
+									 {
+										 FileName = s_programPath,
+										 Arguments = string.Format(
+											 "-i \"{0}\" -vf \"scale={1}:trunc(ow/a/2)*2\" -r {2} -t {3} -y \"{4}\"",
+											 video_path, width, framerate, duration, outputFile),
+										 CreateNoWindow = true,
+										 WindowStyle = ProcessWindowStyle.Hidden
+									 };
 				proc.Start();
 
 				try

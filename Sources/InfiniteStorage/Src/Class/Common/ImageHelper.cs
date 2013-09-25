@@ -54,15 +54,14 @@ namespace Wammer.Utility
 
 		public static Image ScaleBasedOnLongSide(Bitmap original, int sideLength)
 		{
-			var ratio = sideLength/(float) ((original.Width > original.Height) ? original.Width : original.Height);
-
+			var ratio = sideLength / (float)((original.Width > original.Height) ? original.Width : original.Height);
 
 			return Scale(original, ratio);
 		}
 
 		public static Image ScaleBasedOnShortSide(Bitmap original, int sideLength)
 		{
-			var ratio = sideLength/(float) ((original.Width < original.Height) ? original.Width : original.Height);
+			var ratio = sideLength / (float)((original.Width < original.Height) ? original.Width : original.Height);
 
 			return Scale(original, ratio);
 		}
@@ -72,8 +71,8 @@ namespace Wammer.Utility
 			if (ratio >= 1)
 				return original;
 
-			var scaledWidth = (int) (original.Width*ratio);
-			var scaledHeight = (int) (original.Height*ratio);
+			var scaledWidth = (int)(original.Width * ratio);
+			var scaledHeight = (int)(original.Height * ratio);
 			return new Bitmap(original, new Size(scaledWidth, scaledHeight));
 		}
 
@@ -84,7 +83,7 @@ namespace Wammer.Utility
 			using (Graphics g = Graphics.FromImage(cropedImage))
 			{
 				g.DrawImage(original, new Rectangle(0, 0, width, height),
-				            new Rectangle(0, 0, width, height), GraphicsUnit.Pixel);
+							new Rectangle(0, 0, width, height), GraphicsUnit.Pixel);
 			}
 
 			return cropedImage;
@@ -103,7 +102,7 @@ namespace Wammer.Utility
 					y = original.Height - y;
 
 				g.DrawImage(original, new Rectangle(0, 0, squareSize, squareSize),
-				            new Rectangle(x, y, squareSize, squareSize), GraphicsUnit.Pixel);
+							new Rectangle(x, y, squareSize, squareSize), GraphicsUnit.Pixel);
 			}
 
 			return cropedImage;
@@ -129,7 +128,7 @@ namespace Wammer.Utility
 			if (orientation_index < 0) return ExifOrientations.Unknown;
 
 			// Return the orientation value.
-			return (ExifOrientations) img.GetPropertyItem(OrientationId).Value[0];
+			return (ExifOrientations)img.GetPropertyItem(OrientationId).Value[0];
 		}
 
 		public static void CorrectOrientation(ExifOrientations orientation, Image pic)

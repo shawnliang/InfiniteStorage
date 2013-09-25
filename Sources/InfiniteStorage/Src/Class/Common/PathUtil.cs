@@ -1,9 +1,11 @@
-﻿using System;
+﻿#region
 
+using System;
 
-static class PathUtil
+#endregion
+
+internal static class PathUtil
 {
-
 	public static string MakeRelative(string path, string base_path)
 	{
 		if (!path.StartsWith(base_path))
