@@ -15,7 +15,7 @@ namespace InfiniteStorage
 			set { devName.Text = value; }
 		}
 
-		private string deviceId { get; set; }
+		private string m_deviceId { get; set; }
 
 		public AskCameraImportDialog()
 		{
@@ -29,7 +29,7 @@ namespace InfiniteStorage
 			InitializeComponent();
 
 			DeviceName = deviceName;
-			this.deviceId = deviceId;
+			m_deviceId = deviceId;
 		}
 
 		private void AskCameraImportDialog_Load(object sender, EventArgs e)
@@ -43,9 +43,9 @@ namespace InfiniteStorage
 			if (checkBoxRemember.Checked)
 			{
 				if (radioImport.Checked)
-					Settings.Default.AlwaysImportDevices.Add(deviceId);
+					Settings.Default.AlwaysImportDevices.Add(m_deviceId);
 				else
-					Settings.Default.AlwaysNotImportDevices.Add(deviceId);
+					Settings.Default.AlwaysNotImportDevices.Add(m_deviceId);
 
 				Settings.Default.Save();
 			}

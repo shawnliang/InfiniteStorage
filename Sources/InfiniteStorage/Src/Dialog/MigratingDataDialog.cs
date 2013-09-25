@@ -5,7 +5,7 @@ namespace InfiniteStorage
 {
 	public partial class MigratingDataDialog : Form
 	{
-		bool closeByApp;
+		bool m_closeByApp;
 
 		public MigratingDataDialog()
 		{
@@ -16,14 +16,14 @@ namespace InfiniteStorage
 
 		public void CloseByApp()
 		{
-			closeByApp = true;
+			m_closeByApp = true;
 
 			Close();
 		}
 
 		private void MigratingDataDialog_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (e.CloseReason == CloseReason.UserClosing && !closeByApp)
+			if (e.CloseReason == CloseReason.UserClosing && !m_closeByApp)
 			{
 				e.Cancel = true;
 			}

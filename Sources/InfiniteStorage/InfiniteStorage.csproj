@@ -282,12 +282,6 @@
     <Compile Include="Src\UIControl\StorageLocationControl.Designer.cs">
       <DependentUpon>StorageLocationControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Src\UIControl\StartPairingUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Src\UIControl\StartPairingUserControl.Designer.cs">
-      <DependentUpon>StartPairingUserControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="StationServer.cs" />
     <EmbeddedResource Include="Properties\Resources.zh-CN.resx" />
     <EmbeddedResource Include="Src\Dialog\AskCameraImportDialog.resx">
@@ -344,6 +338,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Src\Dialog\PreferenceDialog.resx">
       <DependentUpon>PreferenceDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -361,16 +356,8 @@
     <EmbeddedResource Include="Src\UIControl\GeneralPreferenceControl.resx">
       <DependentUpon>GeneralPreferenceControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Src\UIControl\StartPairingUserControl.zh-TW.resx">
-      <DependentUpon>StartPairingUserControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\StorageLocationControl.resx">
       <DependentUpon>StorageLocationControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Src\UIControl\StartPairingUserControl.resx">
-      <DependentUpon>StartPairingUserControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Src\UIControl\StorageLocationControl.zh-CN.resx">
