@@ -13,6 +13,8 @@ using log4net;
 
 namespace Wammer.Station
 {
+	#region IHttpHandler
+
 	public interface IHttpHandler : ICloneable
 	{
 		void HandleRequest(HttpListenerRequest request, HttpListenerResponse response);
@@ -21,52 +23,52 @@ namespace Wammer.Station
 		event EventHandler<HttpHandlerEventArgs> ProcessSucceeded;
 	}
 
+	#endregion
+
+	#region HttpServer
+
 	public class HttpServer : IDisposable
 	{
 		#region Var
 
-		private IHttpHandler _defaultHandler;
-		private Dictionary<string, IHttpHandler> _handlers;
-		private HttpListener _listener;
-		private Object _lockSwitchObj;
-		private ILog _logger;
-		private bool _started;
+		private IHttpHandler m_defaultHandler;
+		private Dictionary<string, IHttpHandler> m_handlers;
+		private HttpListener m_listener;
+		private Object m_lockSwitchObj;
+		private ILog m_logger;
+		private bool m_started;
+		private int m_port;
+		private bool m_disposed;
 
 		#endregion
 
 		#region Private Property
 
-		private bool m_Disposed { get; set; }
-
-		private ILog m_Logger
+		private ILog Logger
 		{
-			get { return _logger ?? (_logger = LogManager.GetLogger("HttpServer")); }
+			get { return m_logger ?? (m_logger = LogManager.GetLogger("HttpServer")); }
 		}
 
-		private object m_LockSwitchObj
+		private object LockSwitchObj
 		{
-			get { return _lockSwitchObj ?? (_lockSwitchObj = new object()); }
+			get { return m_lockSwitchObj ?? (m_lockSwitchObj = new object()); }
 		}
 
-		private int m_Port { get; set; }
-
-		private HttpListener m_Listener
+		private HttpListener Listener
 		{
-			get { return _listener ?? (_listener = new HttpListener()); }
+			get { return m_listener ?? (m_listener = new HttpListener()); }
 		}
 
-		public Dictionary<string, IHttpHandler> m_Handlers
+		public Dictionary<string, IHttpHandler> Handlers
 		{
-			get { return _handlers ?? (_handlers = new Dictionary<string, IHttpHandler>()); }
+			get { return m_handlers ?? (m_handlers = new Dictionary<string, IHttpHandler>()); }
 		}
 
 		#endregion
 
-		#region Constructor
-
 		public HttpServer(int port)
 		{
-			m_Port = port;
+			m_port = port;
 		}
 
 		~HttpServer()
@@ -74,44 +76,32 @@ namespace Wammer.Station
 			Dispose(false);
 		}
 
-		#endregion
-
 		#region Private Method
 
-		/// <summary>
-		/// Responds 404 not found.
-		/// </summary>
-		/// <param name="ctx">The CTX.</param>
 		private void respond404NotFound(HttpListenerContext ctx)
 		{
 			try
 			{
-				ctx.Response.StatusCode = (int) HttpStatusCode.NotFound;
+				ctx.Response.StatusCode = (int)HttpStatusCode.NotFound;
 				ctx.Response.Close();
 			}
 			catch (Exception e)
 			{
-				m_Logger.Warn("Unable to respond 404 Not Found", e);
+				Logger.Warn("Unable to respond 404 Not Found", e);
 			}
 		}
 
-
-		/// <summary>
-		/// Finds the best match.
-		/// </summary>
-		/// <param name="requestAbsPath">The request abs path.</param>
-		/// <returns></returns>
 		private IHttpHandler FindBestMatch(string requestAbsPath)
 		{
 			string path = requestAbsPath;
-			
+
 			if (!path.EndsWith("/"))
 				path += "/";
 
 			int maxMatchLen = 0;
 			IHttpHandler handler = null;
 
-			foreach (var pair in m_Handlers)
+			foreach (var pair in Handlers)
 			{
 				if (path.StartsWith(pair.Key))
 				{
@@ -125,29 +115,21 @@ namespace Wammer.Station
 				}
 			}
 
-			return handler ?? _defaultHandler;
+			return handler ?? m_defaultHandler;
 		}
 
 		#endregion
 
 		#region Protected Method
 
-		/// <summary>
-		/// Raises the <see cref="E:TaskQueue"/> event.
-		/// </summary>
-		/// <param name="e">The <see cref="Wammer.TaskQueueEventArgs"/> instance containing the event data.</param>
-		//protected void OnTaskQueue(TaskQueueEventArgs e)
-		//{
-		//    //this.RaiseEvent(TaskEnqueue, e);
-		//}
 		protected virtual void Dispose(bool disposing)
 		{
-			if (m_Disposed)
+			if (m_disposed)
 				return;
 
 			Close();
 
-			m_Disposed = true;
+			m_disposed = true;
 		}
 
 		#endregion
@@ -177,7 +159,7 @@ namespace Wammer.Station
 				throw new ArgumentNullException("handler");
 
 			string absPath = null;
-			string urlPrefix = "http://+:" + m_Port.ToString();
+			string urlPrefix = "http://+:" + m_port.ToString();
 
 			if (path.StartsWith("/"))
 			{
@@ -196,11 +178,11 @@ namespace Wammer.Station
 				absPath += "/";
 			}
 
-			if (m_Handlers.ContainsKey(absPath))
+			if (Handlers.ContainsKey(absPath))
 				return;
 
-			m_Handlers.Add(absPath, handler);
-			m_Listener.Prefixes.Add(urlPrefix);
+			Handlers.Add(absPath, handler);
+			Listener.Prefixes.Add(urlPrefix);
 		}
 
 		/// <summary>
@@ -212,7 +194,7 @@ namespace Wammer.Station
 			if (handler == null)
 				throw new ArgumentNullException();
 
-			_defaultHandler = handler;
+			m_defaultHandler = handler;
 		}
 
 		/// <summary>
@@ -220,14 +202,14 @@ namespace Wammer.Station
 		/// </summary>
 		public void Start()
 		{
-			lock (m_LockSwitchObj)
+			lock (LockSwitchObj)
 			{
-				if (_started)
+				if (m_started)
 					return;
 
-				m_Listener.Start();
-				_started = true;
-				m_Listener.BeginGetContext(ConnectionAccepted, null);
+				Listener.Start();
+				m_started = true;
+				Listener.BeginGetContext(ConnectionAccepted, null);
 			}
 		}
 
@@ -236,12 +218,12 @@ namespace Wammer.Station
 		/// </summary>
 		public void Stop()
 		{
-			lock (m_LockSwitchObj)
+			lock (LockSwitchObj)
 			{
-				if (_started)
+				if (m_started)
 				{
-					m_Listener.Stop();
-					_started = false;
+					Listener.Stop();
+					m_started = false;
 				}
 			}
 		}
@@ -252,7 +234,7 @@ namespace Wammer.Station
 		public void Close()
 		{
 			Stop();
-			m_Listener.Close();
+			Listener.Close();
 		}
 
 		/// <summary>
@@ -263,16 +245,16 @@ namespace Wammer.Station
 		{
 			try
 			{
-				var context = m_Listener.EndGetContext(result);
+				HttpListenerContext context = Listener.EndGetContext(result);
 
 				if (context == null)
 					return;
 
-				var beginTime = Stopwatch.GetTimestamp();
-				m_Listener.BeginGetContext(ConnectionAccepted, null);
+				long beginTime = Stopwatch.GetTimestamp();
 
+				Listener.BeginGetContext(ConnectionAccepted, null);
 
-				var handler = FindBestMatch(context.Request.Url.AbsolutePath);
+				IHttpHandler handler = FindBestMatch(context.Request.Url.AbsolutePath);
 
 				if (handler == null)
 				{
@@ -280,53 +262,62 @@ namespace Wammer.Station
 					return;
 				}
 
-				var task = new HttpHandlingTask(handler, context, beginTime);
+				HttpHandlingTask task = new HttpHandlingTask(handler, context, beginTime);
 
-				ThreadPool.QueueUserWorkItem((x) => { task.Execute(); });
+				ThreadPool.QueueUserWorkItem(x => task.Execute());
 			}
 			catch (ObjectDisposedException)
 			{
-				m_Logger.Warn("Http server disposed. Shutdown server");
+				Logger.Warn("Http server disposed. Shutdown server");
 			}
 			catch (Exception e)
 			{
-				m_Logger.Warn("Shutdown server", e);
+				Logger.Warn("Shutdown server", e);
 			}
 		}
 
 		#endregion
 	}
 
+	#endregion
+
+	#region ITask
+
 	internal interface ITask
 	{
 		void Execute();
 	}
 
+	#endregion
+
+	#region HttpHandlingTask
+
 	internal class HttpHandlingTask : ITask
 	{
-		private static readonly ILog logger = LogManager.GetLogger("HttpHandler");
-		private readonly long beginTime;
-		private readonly HttpListenerContext context;
-		private readonly IHttpHandler handler;
+		private static readonly ILog s_logger = LogManager.GetLogger("HttpHandler");
+
+		private readonly long m_beginTime;
+		private readonly HttpListenerContext m_context;
+		private readonly IHttpHandler m_handler;
 
 		public HttpHandlingTask(IHttpHandler handler, HttpListenerContext context, long beginTime)
 		{
-			this.handler = (IHttpHandler) handler.Clone();
-			this.context = context;
-			this.beginTime = beginTime;
+			m_handler = (IHttpHandler)handler.Clone();
+			m_context = context;
+			m_beginTime = beginTime;
 		}
 
-		#region ITask Members
+		#region ITask
 
 		public void Execute()
 		{
 			Action action = () =>
-				                {
-					                handler.SetBeginTimestamp(beginTime);
-					                handler.HandleRequest(context.Request, context.Response);
-				                };
+								{
+									m_handler.SetBeginTimestamp(m_beginTime);
+									m_handler.HandleRequest(m_context.Request, m_context.Response);
+								};
 
-			HandleRequestWithinExceptionHandler(action, context.Response);
+			HandleRequestWithinExceptionHandler(action, m_context.Response);
 		}
 
 		public static void HandleRequestWithinExceptionHandler(Action action, HttpListenerResponse response)
@@ -337,10 +328,11 @@ namespace Wammer.Station
 			}
 			catch (Exception e)
 			{
-				logger.Warn(e.ToString());
+				s_logger.Warn(e.ToString());
 
-				response.StatusCode = (int) HttpStatusCode.BadRequest;
+				response.StatusCode = (int)HttpStatusCode.BadRequest;
 				response.ContentType = "application/json";
+
 				using (var output = new StreamWriter(response.OutputStream))
 				{
 					output.WriteLine(JsonConvert.SerializeObject(
@@ -348,7 +340,7 @@ namespace Wammer.Station
 							{
 								api_ret_code = 400,
 								api_ret_message = e.Message,
-								status = (int) HttpStatusCode.BadRequest
+								status = (int)HttpStatusCode.BadRequest
 							}));
 				}
 			}
@@ -356,4 +348,6 @@ namespace Wammer.Station
 
 		#endregion
 	}
+
+	#endregion
 }

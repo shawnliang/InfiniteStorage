@@ -100,14 +100,17 @@ namespace Wammer.Station
 			{
 				content.Write(buff, 0, nread);
 			}
+
 			return content;
 		}
 
 		private int postBufferSize()
 		{
 			var initialSize = (int)Request.ContentLength64;
+			
 			if (initialSize <= 0)
 				initialSize = 65535;
+
 			return initialSize;
 		}
 
@@ -145,13 +148,11 @@ namespace Wammer.Station
 			{
 				Debug.Assert(Request.RemoteEndPoint != null, "Request.RemoteEndPoint != null");
 
-
-				if (Request.RemoteEndPoint.Address.ToString() == "127.0.0.1" &&
-					Request.Url.AbsolutePath.Contains("/ping"))
+				if (Request.RemoteEndPoint.Address.ToString() == "127.0.0.1" && Request.Url.AbsolutePath.Contains("/ping"))
 					return;
 
-				s_logger.Info("====== Request " + Request.Url.AbsolutePath +
-							" from " + Request.RemoteEndPoint.Address + " ======");
+				s_logger.Info("====== Request " + Request.Url.AbsolutePath + " from " + Request.RemoteEndPoint.Address + " ======");
+				
 				foreach (string key in Parameters.AllKeys)
 				{
 					if (key == "password")
@@ -163,6 +164,7 @@ namespace Wammer.Station
 						s_logger.InfoFormat("{0} : {1}", key, Parameters[key]);
 					}
 				}
+
 				foreach (UploadedFile file in Files)
 					s_logger.InfoFormat("file: {0}, mime: {1}, size: {2}", file.Name, file.ContentType, file.Data.Count.ToString());
 			}
@@ -194,6 +196,7 @@ namespace Wammer.Station
 			long end = Stopwatch.GetTimestamp();
 
 			long duration = end - m_beginTime;
+
 			if (duration < 0)
 				duration += long.MaxValue;
 
@@ -208,6 +211,7 @@ namespace Wammer.Station
 				var parser = new Parser(boundary);
 
 				var parts = parser.Parse(RawPostData);
+
 				foreach (var part in parts)
 				{
 					if (part.ContentDisposition == null)
@@ -219,10 +223,12 @@ namespace Wammer.Station
 			catch (FormatException)
 			{
 				string filename = Guid.NewGuid().ToString();
+
 				using (var w = new BinaryWriter(File.OpenWrite(@"log\" + filename)))
 				{
 					w.Write(RawPostData);
 				}
+
 				s_logger.Warn("Parsing multipart data error. Post data written to log\\" + filename);
 				throw;
 			}
@@ -233,8 +239,7 @@ namespace Wammer.Station
 			Disposition disp = part.ContentDisposition;
 
 			if (disp == null)
-				throw new ArgumentException("incorrect use of this function: " +
-											"input part.ContentDisposition is null");
+				throw new ArgumentException("incorrect use of this function: " + "input part.ContentDisposition is null");
 
 			if (disp.Value.Equals("form-data", StringComparison.CurrentCultureIgnoreCase))
 			{
@@ -242,8 +247,7 @@ namespace Wammer.Station
 
 				if (filename != null)
 				{
-					var file = new UploadedFile(filename, part.Bytes,
-												part.Headers["Content-Type"]);
+					var file = new UploadedFile(filename, part.Bytes, part.Headers["Content-Type"]);
 					Files.Add(file);
 				}
 				else
@@ -268,9 +272,11 @@ namespace Wammer.Station
 			try
 			{
 				var parts = contentType.Split(';');
+
 				foreach (var part in parts)
 				{
 					var idx = part.IndexOf(BOUNDARY);
+				
 					if (idx < 0)
 						continue;
 
@@ -305,7 +311,8 @@ namespace Wammer.Station
 
 		protected void respondSuccess(object data = null)
 		{
-			var replyContent = "";
+			string replyContent;
+
 			if (data == null)
 				replyContent = JsonConvert.SerializeObject(new { api_ret_code = 0, api_ret_message = "success", status = 200 });
 			else
@@ -313,6 +320,7 @@ namespace Wammer.Station
 
 			Response.StatusCode = (int)HttpStatusCode.OK;
 			Response.ContentType = "application/json";
+
 			using (var w = new StreamWriter(Response.OutputStream))
 			{
 				w.Write(replyContent);

@@ -15,30 +15,26 @@ namespace Wammer.MultiPart
 		private static readonly byte[] DCRLF = Encoding.UTF8.GetBytes("\r\n\r\n");
 		private static readonly int[] DCRLF_next = Next(DCRLF);
 
-		private readonly byte[] head_boundry;
-		private readonly int[] head_boundry_next;
-
-		//private byte[] close_boundry;
+		private readonly byte[] m_headBoundry;
+		private readonly int[] m_headBoundryNext;
 
 		public Parser(string boundry)
 		{
-			head_boundry = Encoding.UTF8.GetBytes("--" + boundry);
-			head_boundry_next = Next(head_boundry);
-
-			//close_boundry = Encoding.UTF8.GetBytes("--" + boundry + "--");
+			m_headBoundry = Encoding.UTF8.GetBytes("--" + boundry);
+			m_headBoundryNext = Next(m_headBoundry);
 		}
 
 		public Part[] Parse(byte[] content)
 		{
 			var parts = new List<Part>();
 
-			int startFrom = IndexOf(content, 0, head_boundry, head_boundry_next);
+			int startFrom = IndexOf(content, 0, m_headBoundry, m_headBoundryNext);
 
 			if (startFrom != -1)
 			{
-				startFrom += head_boundry.Length + CRLF.Length;
+				startFrom += m_headBoundry.Length + CRLF.Length;
 				bool end = false;
-				
+
 				while (!end)
 				{
 					Part part = ParsePartBody(content, startFrom, out startFrom, out end);
@@ -72,9 +68,9 @@ namespace Wammer.MultiPart
 				ParseHeaders(headers, data, startIdx, sep_index - startIdx);
 			}
 
-			int next_head_index = IndexOf(data, startIdx, head_boundry, head_boundry_next);
-			next_startIdx = next_head_index + head_boundry.Length;
-			
+			int next_head_index = IndexOf(data, startIdx, m_headBoundry, m_headBoundryNext);
+			next_startIdx = next_head_index + m_headBoundry.Length;
+
 			if (next_head_index < 0 || next_startIdx + CRLF.Length > data.Length)
 				throw new FormatException("Bad part body format");
 
@@ -103,7 +99,7 @@ namespace Wammer.MultiPart
 		private static void ParseHeaders(NameValueCollection collection, byte[] data, int from, int len)
 		{
 			string headerText = Encoding.UTF8.GetString(data, from, len);
-			var stringSeparators = new[] {"\r\n"};
+			var stringSeparators = new[] { "\r\n" };
 			string[] headers = headerText.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
 
 			foreach (string header in headers)
@@ -119,20 +115,12 @@ namespace Wammer.MultiPart
 			}
 		}
 
-		//private static byte[] ToByteArray(Stream stream)
-		//{
-		//    long buff_len = stream.Length;
-		//    byte[] buff = new byte[buff_len];
-		//    stream.Read(buff, 0, (int)buff_len);
-		//    return buff;
-		//}
-
 		// KMP algorithm reference: http://www.cnblogs.com/zhy2002/archive/2008/03/31/1131794.html
 		public static int[] Next(byte[] pattern)
 		{
 			var next = new int[pattern.Length];
 			next[0] = -1;
-			
+
 			if (pattern.Length < 2)
 			{
 				return next;

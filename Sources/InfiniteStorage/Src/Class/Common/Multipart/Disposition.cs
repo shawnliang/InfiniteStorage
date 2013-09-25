@@ -12,12 +12,12 @@ namespace Wammer.MultiPart
 	public class Disposition
 	{
 		private static readonly char[] SEPARATOR = new[] {';'};
-		private readonly NameValueCollection parameters = new NameValueCollection();
-		private string value;
+		private readonly NameValueCollection m_parameters = new NameValueCollection();
+		private string m_value;
 
 		public Disposition(string value)
 		{
-			this.value = value;
+			m_value = value;
 		}
 
 		private Disposition()
@@ -26,12 +26,12 @@ namespace Wammer.MultiPart
 
 		public string Value
 		{
-			get { return value; }
+			get { return m_value; }
 		}
 
 		public NameValueCollection Parameters
 		{
-			get { return parameters; }
+			get { return m_parameters; }
 		}
 
 		public static Disposition Parse(string text)
@@ -41,14 +41,14 @@ namespace Wammer.MultiPart
 				string[] segments = text.Split(SEPARATOR,
 				                               StringSplitOptions.RemoveEmptyEntries);
 
-				var disp = new Disposition {value = segments[0].Trim()};
+				var disp = new Disposition {m_value = segments[0].Trim()};
 
 				for (int i = 1; i < segments.Length; i++)
 				{
 					string[] nameValue = segments[i].Split('=');
 
 					string paramValue = RemoveDoubleQuote(nameValue[1].Trim());
-					disp.parameters.Add(nameValue[0].Trim(), paramValue);
+					disp.m_parameters.Add(nameValue[0].Trim(), paramValue);
 				}
 
 				return disp;
@@ -72,17 +72,17 @@ namespace Wammer.MultiPart
 		{
 			var buff = new StringBuilder();
 			buff.Append("Content-Disposition: ");
-			buff.Append(value);
+			buff.Append(m_value);
 
-			if (parameters.Count > 0)
+			if (m_parameters.Count > 0)
 			{
-				foreach (string key in parameters.AllKeys)
+				foreach (string key in m_parameters.AllKeys)
 				{
 					buff.Append(";");
 					buff.Append(key);
 					buff.Append("=");
 					buff.Append("\"");
-					buff.Append(parameters[key]);
+					buff.Append(m_parameters[key]);
 					buff.Append("\"");
 				}
 			}

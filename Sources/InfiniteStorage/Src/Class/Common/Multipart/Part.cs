@@ -14,11 +14,11 @@ namespace Wammer.MultiPart
 		public static byte[] DASH_DASH = Encoding.UTF8.GetBytes("--");
 		public static byte[] CRLF = Encoding.UTF8.GetBytes("\r\n");
 
-		private readonly ArraySegment<byte> bytes;
-		private readonly NameValueCollection headers;
-		private ArraySegment<byte> data;
-		private Disposition disposition;
-		private string text;
+		private readonly ArraySegment<byte> m_bytes;
+		private readonly NameValueCollection m_headers;
+		private ArraySegment<byte> m_data;
+		private Disposition m_disposition;
+		private string m_text;
 
 		public Part(ArraySegment<byte> data, NameValueCollection headers)
 		{
@@ -28,13 +28,13 @@ namespace Wammer.MultiPart
 			if (headers == null)
 				throw new ArgumentNullException("headers");
 
-			this.data = data;
-			bytes = data;
-			this.headers = headers;
+			m_data = data;
+			m_bytes = data;
+			m_headers = headers;
 
 			if (headers["content-disposition"] != null)
 			{
-				disposition = Disposition.Parse(headers["content-disposition"]);
+				m_disposition = Disposition.Parse(headers["content-disposition"]);
 			}
 		}
 
@@ -43,8 +43,8 @@ namespace Wammer.MultiPart
 			if (data == null)
 				throw new ArgumentNullException();
 
-			this.data = data;
-			headers = new NameValueCollection();
+			m_data = data;
+			m_headers = new NameValueCollection();
 		}
 
 		//public Part(string data)
@@ -65,12 +65,12 @@ namespace Wammer.MultiPart
 
 			byte[] dataUtf8 = Encoding.UTF8.GetBytes(data);
 
-			this.data = new ArraySegment<byte>(dataUtf8);
-			this.headers = headers;
+			m_data = new ArraySegment<byte>(dataUtf8);
+			m_headers = headers;
 
 			if (headers["content-disposition"] != null)
 			{
-				disposition = Disposition.Parse(headers["content-disposition"]);
+				m_disposition = Disposition.Parse(headers["content-disposition"]);
 			}
 		}
 
@@ -78,12 +78,12 @@ namespace Wammer.MultiPart
 		{
 			get
 			{
-				var header = headers["content-transfer-encoding"];
+				var header = m_headers["content-transfer-encoding"];
 
 				if (header != null && header.Equals("binary"))
 					return null;
 
-				return text ?? (text = Encoding.UTF8.GetString(data.Array, data.Offset, data.Count));
+				return m_text ?? (m_text = Encoding.UTF8.GetString(m_data.Array, m_data.Offset, m_data.Count));
 
 				// text might have \r\n at its end
 				//return text.TrimEnd(CRLFtail);
@@ -92,18 +92,18 @@ namespace Wammer.MultiPart
 
 		public ArraySegment<byte> Bytes
 		{
-			get { return bytes; }
+			get { return m_bytes; }
 		}
 
 		public NameValueCollection Headers
 		{
-			get { return headers; }
+			get { return m_headers; }
 		}
 
 		public Disposition ContentDisposition
 		{
-			get { return disposition; }
-			set { disposition = value; }
+			get { return m_disposition; }
+			set { m_disposition = value; }
 		}
 
 		public void CopyTo(Stream output, byte[] boundaryData)
@@ -113,15 +113,15 @@ namespace Wammer.MultiPart
 			output.Write(boundaryData, 0, boundaryData.Length);
 			output.Write(CRLF, 0, CRLF.Length);
 
-			if (disposition != null)
-				disposition.CopyTo(output);
+			if (m_disposition != null)
+				m_disposition.CopyTo(output);
 
-			foreach (string name in headers.AllKeys)
+			foreach (string name in m_headers.AllKeys)
 			{
-				if (disposition != null && name.Equals("content-disposition", StringComparison.CurrentCultureIgnoreCase))
+				if (m_disposition != null && name.Equals("content-disposition", StringComparison.CurrentCultureIgnoreCase))
 					continue;
 
-				string hdr = name + ":" + headers[name];
+				string hdr = name + ":" + m_headers[name];
 				byte[] hdrData = Encoding.UTF8.GetBytes(hdr);
 
 				output.Write(hdrData, 0, hdr.Length);
@@ -130,7 +130,7 @@ namespace Wammer.MultiPart
 
 			output.Write(CRLF, 0, CRLF.Length);
 
-			output.Write(data.Array, data.Offset, data.Count);
+			output.Write(m_data.Array, m_data.Offset, m_data.Count);
 		}
 	}
 }

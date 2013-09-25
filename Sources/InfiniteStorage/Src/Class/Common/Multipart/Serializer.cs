@@ -10,18 +10,18 @@ namespace Wammer.MultiPart
 {
 	public class Serializer
 	{
-		private readonly string boundary;
-		private readonly byte[] boundaryData;
-		private readonly Stream output;
+		private readonly string m_boundary;
+		private readonly byte[] m_boundaryData;
+		private readonly Stream m_output;
 
 		public Serializer(Stream output)
 		{
 			if (output == null)
 				throw new ArgumentNullException("output");
 
-			this.output = output;
-			boundary = Guid.NewGuid().ToString("N");
-			boundaryData = Encoding.UTF8.GetBytes(boundary);
+			m_output = output;
+			m_boundary = Guid.NewGuid().ToString("N");
+			m_boundaryData = Encoding.UTF8.GetBytes(m_boundary);
 		}
 
 		public Serializer(Stream output, string boundary)
@@ -29,19 +29,19 @@ namespace Wammer.MultiPart
 			if (output == null)
 				throw new ArgumentNullException("output");
 
-			this.output = output;
-			this.boundary = boundary;
-			boundaryData = Encoding.UTF8.GetBytes(boundary);
+			m_output = output;
+			m_boundary = boundary;
+			m_boundaryData = Encoding.UTF8.GetBytes(boundary);
 		}
 
 		public string Boundary
 		{
-			get { return boundary; }
+			get { return m_boundary; }
 		}
 
 		public void Put(Part part)
 		{
-			part.CopyTo(output, boundaryData);
+			part.CopyTo(m_output, m_boundaryData);
 		}
 
 		public void Put(Part[] parts)
@@ -52,11 +52,11 @@ namespace Wammer.MultiPart
 
 		public void PutNoMoreData()
 		{
-			output.Write(Part.CRLF, 0, Part.CRLF.Length);
-			output.Write(Part.DASH_DASH, 0, Part.DASH_DASH.Length);
-			output.Write(boundaryData, 0, boundaryData.Length);
-			output.Write(Part.DASH_DASH, 0, Part.DASH_DASH.Length);
-			output.Write(Part.CRLF, 0, Part.CRLF.Length);
+			m_output.Write(Part.CRLF, 0, Part.CRLF.Length);
+			m_output.Write(Part.DASH_DASH, 0, Part.DASH_DASH.Length);
+			m_output.Write(m_boundaryData, 0, m_boundaryData.Length);
+			m_output.Write(Part.DASH_DASH, 0, Part.DASH_DASH.Length);
+			m_output.Write(Part.CRLF, 0, Part.CRLF.Length);
 		}
 	}
 }
