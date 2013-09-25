@@ -40,11 +40,6 @@ namespace InfiniteStorage
 			}
 		}
 
-		public static string Pending
-		{
-			get { return Path.Combine(Settings.Default.SingleFolderLocation, ".pending"); }
-		}
-
 		public static string Thumbs
 		{
 			get { return Path.Combine(Settings.Default.SingleFolderLocation, ".thumbs"); }

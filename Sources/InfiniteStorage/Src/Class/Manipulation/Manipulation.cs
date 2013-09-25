@@ -53,27 +53,22 @@ namespace InfiniteStorage.Manipulation
 				conn.Open();
 				using (var cmd = conn.CreateCommand())
 				{
-					cmd.CommandText = "select 0 as kind, saved_path, file_name from files where file_id = @file and deleted = 0 " +
-									  "union " +
-									  "select 1 as kind, saved_path, file_name from pendingfiles where file_id = @file and deleted = 0";
+					cmd.CommandText = "select saved_path, file_name from files where file_id = @file and deleted = 0 ";
 					cmd.Prepare();
 
 					foreach (var file_id in file_ids)
 					{
 						cmd.Parameters.Clear();
 						cmd.Parameters.Add(new SQLiteParameter("@file", file_id));
+
 						using (var reader = cmd.ExecuteReader())
 						{
 							if (reader.Read())
 							{
 								var saved_path = reader["saved_path"].ToString();
-								var kind = (long)reader["kind"];
 								var file_name = reader["file_name"].ToString();
 
-								if (kind == 0)
-									ret.Add(new FileToManipulate { file_id = file_id, saved_path = saved_path, file_name = file_name });
-								else
-									ret.Add(new PendingFileToManipulate { file_id = file_id, saved_path = saved_path, file_name = file_name });
+								ret.Add(new FileToManipulate { file_id = file_id, saved_path = saved_path, file_name = file_name });
 							}
 						}
 					}
@@ -247,40 +242,20 @@ namespace InfiniteStorage.Manipulation
 			using (var conn = new SQLiteConnection(MyDbContext.ConnectionString))
 			{
 				conn.Open();
+
 				using (var transaction = conn.BeginTransaction())
 				using (var cmdUpdate = conn.CreateCommand())
-				using (var cmdInsert = conn.CreateCommand())
 				{
 					cmdUpdate.CommandText = "update Files set saved_path = @saved, parent_folder = @parent where file_id = @file";
 					cmdUpdate.Prepare();
 
-					cmdInsert.CommandText =
-						"insert into Files (file_id, file_name, file_path, file_size, saved_path, parent_folder, device_id, type, event_time, seq, deleted, thumb_ready, width, height, orientation) " +
-						"select file_id, file_name, file_path, file_size, @saved, @parent, device_id, type, event_time, @seq, deleted, thumb_ready, width, height, orientation from [PendingFiles] " +
-						"where file_id = @fid; " +
-
-						"delete from pendingFiles where file_id = @fid";
-					cmdInsert.Prepare();
-
 					foreach (var file in movedFiles)
 					{
-						if (file.IsPendingFile)
-						{
-							cmdInsert.Parameters.Clear();
-							cmdInsert.Parameters.Add(new SQLiteParameter("@saved", PathUtil.MakeRelative(file.temp_file_path, MyFileFolder.Photo)));
-							cmdInsert.Parameters.Add(new SQLiteParameter("@parent", partial_folder_path));
-							cmdInsert.Parameters.Add(new SQLiteParameter("@fid", file.file_id));
-							cmdInsert.Parameters.Add(new SQLiteParameter("@seq", SeqNum.GetNextSeq()));
-							cmdInsert.ExecuteNonQuery();
-						}
-						else
-						{
-							cmdUpdate.Parameters.Clear();
-							cmdUpdate.Parameters.Add(new SQLiteParameter("@saved", PathUtil.MakeRelative(file.temp_file_path, MyFileFolder.Photo)));
-							cmdUpdate.Parameters.Add(new SQLiteParameter("@parent", partial_folder_path));
-							cmdUpdate.Parameters.Add(new SQLiteParameter("@file", file.file_id));
-							cmdUpdate.ExecuteNonQuery();
-						}
+						cmdUpdate.Parameters.Clear();
+						cmdUpdate.Parameters.Add(new SQLiteParameter("@saved", PathUtil.MakeRelative(file.temp_file_path, MyFileFolder.Photo)));
+						cmdUpdate.Parameters.Add(new SQLiteParameter("@parent", partial_folder_path));
+						cmdUpdate.Parameters.Add(new SQLiteParameter("@file", file.file_id));
+						cmdUpdate.ExecuteNonQuery();
 					}
 
 					transaction.Commit();

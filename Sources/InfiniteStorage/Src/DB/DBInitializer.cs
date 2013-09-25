@@ -1,10 +1,10 @@
-﻿using InfiniteStorage.DB;
-using InfiniteStorage.Properties;
+﻿#region
+
 using System;
-using System.Collections.Generic;
 using System.Data.SQLite;
-using System.IO;
-using System.Linq;
+using InfiniteStorage.Properties;
+
+#endregion
 
 namespace InfiniteStorage.Model
 {
@@ -14,8 +14,6 @@ namespace InfiniteStorage.Model
 		{
 			if (connString == null)
 				connString = MyDbContext.ConnectionString;
-
-			var migratePendingFilesToFiles = new List<FileAndDevFolder>();
 
 			using (var conn = new SQLiteConnection(connString))
 			{
@@ -30,7 +28,7 @@ namespace InfiniteStorage.Model
 						using (var cmd = conn.CreateCommand())
 						{
 							cmd.CommandText =
-@"CREATE TABLE [Devices] (
+								@"CREATE TABLE [Devices] (
 [device_id] NVARCHAR(36)  UNIQUE NULL PRIMARY KEY,
 [device_name] NVARCHAR(80)  NULL,
 [folder_name] NVARCHAR      NULL
@@ -49,7 +47,7 @@ namespace InfiniteStorage.Model
 						using (var cmd = conn.CreateCommand())
 						{
 							cmd.CommandText =
-@"CREATE TABLE [Files] (
+								@"CREATE TABLE [Files] (
 [file_id] GUID  NOT NULL PRIMARY KEY,
 [file_name] NVARCHAR(100)  NOT NULL,
 [file_path] NVARCHAR(1024)  NOT NULL,
@@ -88,7 +86,7 @@ CREATE INDEX [idx_Files_seq_1] ON [Files](
 						using (var cmd = conn.CreateCommand())
 						{
 							cmd.CommandText =
-@"CREATE TABLE [LabelFiles] (
+								@"CREATE TABLE [LabelFiles] (
 [label_id] GUID  NOT NULL,
 [file_id] GUID  NOT NULL,
 PRIMARY KEY ([label_id],[file_id])
@@ -114,38 +112,8 @@ VALUES (@labelId, 'STARRED', 1, 0);
 
 					if (schemaVersion == 3L)
 					{
-						using (var cmd = conn.CreateCommand())
-						{
-							cmd.CommandText =
-@"CREATE TABLE [PendingFiles] (
-[file_id] GUID  NOT NULL PRIMARY KEY,
-[file_name] NVARCHAR(100)  NOT NULL,
-[file_path] NVARCHAR(1024)  NOT NULL,
-[file_size] INTEGER  NULL,
-[saved_path] NVARCHAR NULL,
-[device_id] NVARCHAR(36)  NULL,
-[type] INTEGER NOT NULL,
-[event_time] TIMESTAMP NULL,
-[seq] INTEGER NULL,
-[deleted] BOOLEAN NULL,
-[thumb_ready] BOOLEAN NULL,
-[width] INTEGER NULL,
-[height] INTEGER NULL
-);
-
-
-CREATE INDEX [idx_PendingFiles_seq_1] ON [PendingFiles](
-[seq]  ASC);
-
-CREATE INDEX [idx_PendingFiles_file_path_1] ON [PendingFiles](
-[file_path]  ASC);
-
-";
-							cmd.ExecuteNonQuery();
-
-							updateDbSchemaVersion(conn, 4);
-							schemaVersion = 4;
-						}
+						updateDbSchemaVersion(conn, 4);
+						schemaVersion = 4;
 					}
 
 					if (schemaVersion == 4L)
@@ -153,7 +121,7 @@ CREATE INDEX [idx_PendingFiles_file_path_1] ON [PendingFiles](
 						using (var cmd = conn.CreateCommand())
 						{
 							cmd.CommandText =
-@"
+								@"
 ALTER TABLE [Labels] Add Column [auto_type] INTEGER NULL;
 update [Labels] set auto_type = 0;
 ";
@@ -169,7 +137,7 @@ update [Labels] set auto_type = 0;
 						using (var cmd = conn.CreateCommand())
 						{
 							cmd.CommandText =
-@"
+								@"
 insert into [Labels] (label_id, name, seq, deleted, auto_type)
 values (@photoToday, 'Today''s Photo', 2, 0, 1);
 
@@ -230,7 +198,7 @@ values (@videoThisWeek, 'This Weeks''s video', 3, 0, 6);
 						using (var cmd = conn.CreateCommand())
 						{
 							cmd.CommandText =
-@"
+								@"
 ALTER TABLE [Labels] Add Column [on_air] BOOLEAN NULL;
 update [Labels] set on_air = 1;
 ";
@@ -246,16 +214,12 @@ update [Labels] set on_air = 1;
 						using (var cmd = conn.CreateCommand())
 						{
 							cmd.CommandText =
-@"
+								@"
 CREATE TABLE [Folders] (
 [path] NVARCHAR  UNIQUE NULL PRIMARY KEY,
 [parent_folder] NVARCHAR  NULL,
 [name] NVARCHAR      NULL
 );
-
-CREATE INDEX [idx_PendingFiles_parent_folder_1] ON [Folders](
-[parent_folder]  ASC);
-
 
 ";
 							cmd.ExecuteNonQuery();
@@ -270,9 +234,8 @@ CREATE INDEX [idx_PendingFiles_parent_folder_1] ON [Folders](
 						using (var cmd = conn.CreateCommand())
 						{
 							cmd.CommandText =
-@"
+								@"
 ALTER TABLE [Files] Add Column [orientation] INTEGER NULL;
-ALTER TABLE [PendingFiles] Add Column [orientation] INTEGER NULL;
 ";
 							cmd.ExecuteNonQuery();
 
@@ -286,7 +249,7 @@ ALTER TABLE [PendingFiles] Add Column [orientation] INTEGER NULL;
 						using (var cmd = conn.CreateCommand())
 						{
 							cmd.CommandText =
-@"
+								@"
 ALTER TABLE [Files] Add Column [on_cloud] BOOLEAN NULL;
 ALTER TABLE [Labels] Add Column [share_enabled] BOOLEAN NULL;
 ALTER TABLE [Labels] Add Column [share_proc_seq] INTEGER NULL;
@@ -318,43 +281,12 @@ update [Labels] set share_enabled = 0, share_proc_seq = seq;
 
 					if (schemaVersion == 11L)
 					{
-						using (var cmd = conn.CreateCommand())
-						{
-							cmd.CommandText =
-								@"select f.file_id, d.folder_name from pendingFiles f, devices d where f.deleted = 0 and d.device_id = f.device_id";
-
-							using (var reader = cmd.ExecuteReader())
-							{
-								while (reader.Read())
-								{
-									var file_id = (Guid)reader["file_id"];
-									var dev_folder = reader["folder_name"].ToString();
-
-									migratePendingFilesToFiles.Add(new FileAndDevFolder(file_id, dev_folder));
-								}
-							}
-						}
-
 						updateDbSchemaVersion(conn, 12);
 					}
 
 					transaction.Commit();
 				}
 			}
-
-
-			if (migratePendingFilesToFiles.Any())
-			{
-				var deviceFolders = migratePendingFilesToFiles.Select(x => x.dev_folder).Distinct().ToList();
-
-				foreach (var devFolder in deviceFolders)
-				{
-					var files = migratePendingFilesToFiles.Where(x => x.dev_folder == devFolder).Select(x => x.file_id).ToList();
-
-					Manipulation.Manipulation.Move(files, Path.Combine(MyFileFolder.Photo, devFolder, Resources.UnsortedFolderName));
-				}
-			}
-
 
 			using (var conn = new SQLiteConnection(connString))
 			{
@@ -548,12 +480,15 @@ PRIMARY KEY ([event_id],[file_id])
 		}
 	}
 
+	#region DBDowngradeException
 
-	class DBDowngradeException : Exception
+	internal class DBDowngradeException : Exception
 	{
 		public DBDowngradeException(string err)
 			: base(err)
 		{
 		}
 	}
+
+	#endregion
 }

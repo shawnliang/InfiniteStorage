@@ -116,7 +116,7 @@ namespace InfiniteStorage.REST
 				using (var transaction = conn.BeginTransaction())
 				using (var cmd = conn.CreateCommand())
 				{
-					cmd.CommandText = "update Files set deleted = 1 where file_id = @file; update PendingFiles set deleted = 1 where file_id = @file";
+					cmd.CommandText = "update Files set deleted = 1 where file_id = @file;";
 					cmd.Prepare();
 
 					foreach (var file in pendingDeleteFiles)

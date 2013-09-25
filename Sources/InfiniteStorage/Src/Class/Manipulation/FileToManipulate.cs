@@ -9,24 +9,6 @@ namespace InfiniteStorage.Manipulation
 		{
 			get { return Path.Combine(MyFileFolder.Photo, saved_path); }
 		}
-
-		public override bool IsPendingFile
-		{
-			get { return false; }
-		}
-	}
-
-	internal class PendingFileToManipulate : AbstractFileToManipulate
-	{
-		public override string saved_full_path
-		{
-			get { return Path.Combine(MyFileFolder.Pending, saved_path); }
-		}
-
-		public override bool IsPendingFile
-		{
-			get { return true; }
-		}
 	}
 
 	internal abstract class AbstractFileToManipulate
@@ -37,12 +19,6 @@ namespace InfiniteStorage.Manipulation
 		public string temp_file_path { get; set; }
 
 		public abstract string saved_full_path { get; }
-		public abstract bool IsPendingFile { get; }
-
-		protected AbstractFileToManipulate()
-		{
-
-		}
 
 		public string small_thumb_path
 		{

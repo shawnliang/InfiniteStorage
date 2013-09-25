@@ -15,15 +15,6 @@ namespace Wpf_testHTTP
 		public string current_device { get; set; }
 		private static string invite_cmd = _HostIP + "/label/invite"; //?label_id=";            //...&recipients=...
 
-		/*
-		private string getAllLabel_cmd = _HostIP + "/label/list_all";
-		private string getAll_cmd0 = _HostIP + "/pending/get?device_id="; //
-		private string getAll_cmd1 = "&seq=0&limit=500";
-		private string getNextFiles_cmd = _HostIP + "/pending/get?seq="; //10234&limit=500
-		private string tagLabel_cmd = _HostIP + "/label/tag?file_id="; // + file_guid + "&label_id=" + label_id;"; 
-		private string clearLabel_cmd = _HostIP + "label/clear?" + "label_id="; // + label_id;
-		*/
-
 		#endregion
 
 		public static string inviteShared(string label_id, string name, string message, string recipients_json)
